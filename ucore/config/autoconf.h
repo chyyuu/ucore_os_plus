@@ -1,6 +1,6 @@
 /*
  * Automatically generated C config: don't edit
- * Wed Aug 22 18:13:02 2012
+ * Sat Aug 25 18:57:06 2012
  */
 #define UCONFIG_DRAM_START 0x0
 #define UCONFIG_ARM_CPU_V7 1
@@ -15,7 +15,7 @@
 #define UCONFIG_DDE_GOLDFISH_EVENT 1
 #define UCONFIG_DDE_GOLDFISH_FB 1
 #define UCONFIG_HAVE_SFS 1
-#define UCONFIG_RAMDISK_FILE "/home/chenyh/os/ucore-arch-arm/ucore/sfs.img"
+#define UCONFIG_RAMDISK_FILE "/home/chenyh/os/ucore_plus/ucore/sfs.img"
 #define UCONFIG_HAVE_RAMDISK 1
 #define UCONFIG_DDE_MMC_SUPPORT 1
 #define UCONFIG_DDE_MMC_UCORE_BLOCK 1
