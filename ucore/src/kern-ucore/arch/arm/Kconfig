@@ -1,0 +1,74 @@
+menu "Ucore Kernel Configuration (ARM)"
+
+choice
+	prompt "ARM CPU version"
+	default ARM_CPU_V7
+	help
+    Select ARM CPU version
+	
+config ARM_CPU_V5
+	bool "ARMv5"
+
+config ARM_CPU_V7
+	bool "ARMv7"
+
+endchoice
+
+choice
+  prompt "Board"
+  default ARM_BOARD_GOLDFISH
+
+config ARM_BOARD_GOLDFISH
+  bool "Goldfish"
+
+config ARM_BOARD_VERSATILEPB
+  bool "Versatilepb"
+
+config ARM_BOARD_AT91
+  bool "AT91SAM"
+
+config ARM_BOARD_PANDABOARD
+  bool "Pandaboard ES rev2"
+
+endchoice
+
+config HAVE_RAMDISK
+  bool "Enable Ramdisk"
+  default y
+
+config RAMDISK_FILE
+  depends HAVE_RAMDISK
+  string "Ramdisk File"
+
+
+config DRAM_START
+  hex "DRAM start address"
+  default 0x0
+
+config DRAM_SIZE
+  hex "DRAM size(Byte) "
+  default 0x1000000
+
+config KERNEL_BASE
+  hex  "Kernel base address"
+  default 0x10000
+
+config HAVE_BOOTLOADER
+  bool "Use uCore bootloader"
+  default n
+
+config BOOTLOADER_START_ADDR
+  depends HAVE_BOOTLOADER
+  hex "Bootloader start address"
+  default 0x0
+
+config LIBGCC_PATH
+  string "libgcc Path"
+
+endmenu
+
+source src/kern-ucore/module/Kconfig
+source src/kern-ucore/fs/Kconfig
+source src/kern-ucore/schedule/Kconfig
+source src/kern-ucore/Kconfig
+

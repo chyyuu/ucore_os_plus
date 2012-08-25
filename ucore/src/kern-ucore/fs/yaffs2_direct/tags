@@ -1,0 +1,1275 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.9~svn20110310	//
+ALL_EXTRA_FLAGS	yaffs_packedtags2.c	34;"	d	file:
+ATTR_ATIME	yportenv.h	60;"	d
+ATTR_CTIME	yportenv.h	62;"	d
+ATTR_GID	yportenv.h	58;"	d
+ATTR_MODE	yportenv.h	56;"	d
+ATTR_MTIME	yportenv.h	61;"	d
+ATTR_SIZE	yportenv.h	59;"	d
+ATTR_UID	yportenv.h	57;"	d
+BUG	ydirectenv.h	33;"	d
+BUG	yportenv.h	328;"	d
+Block	yramsim.c	/^} Block;$/;"	t	typeref:struct:__anon5	file:
+CONFIG_YAFFSFS_PROVIDE_VALUES	yportenv.h	33;"	d
+CONFIG_YAFFS_DIRECT	yportenv.h	29;"	d
+CONFIG_YAFFS_PROVIDE_DEFS	yportenv.h	32;"	d
+CONFIG_YAFFS_SHORT_NAMES_IN_RAM	yportenv.h	30;"	d
+CONFIG_YAFFS_YAFFS2	yportenv.h	31;"	d
+CheckInitialised	yramsim.c	/^static void CheckInitialised(void)$/;"	f	file:
+DATA_SIZE	yramsim.c	30;"	d	file:
+DT_BLK	yportenv.h	45;"	d
+DT_CHR	yportenv.h	43;"	d
+DT_DIR	yportenv.h	44;"	d
+DT_FIFO	yportenv.h	42;"	d
+DT_LNK	yportenv.h	47;"	d
+DT_REG	yportenv.h	46;"	d
+DT_SOCK	yportenv.h	48;"	d
+DT_UNKNOWN	yportenv.h	41;"	d
+DT_WHT	yportenv.h	49;"	d
+DevToSim	yramsim.c	/^static SimData *DevToSim(struct yaffs_dev *dev)$/;"	f	file:
+EACCES	yportenv.h	165;"	d
+EBADF	yportenv.h	161;"	d
+EBUSY	yportenv.h	145;"	d
+EEXIST	yportenv.h	209;"	d
+EFAULT	yportenv.h	205;"	d
+EINVAL	yportenv.h	153;"	d
+EISDIR	yportenv.h	217;"	d
+ELOOP	yportenv.h	221;"	d
+ENAMETOOLONG	yportenv.h	197;"	d
+ENFILE	yportenv.h	157;"	d
+ENODATA	yportenv.h	189;"	d
+ENODEV	yportenv.h	149;"	d
+ENOENT	yportenv.h	173;"	d
+ENOMEM	yportenv.h	201;"	d
+ENOSPC	yportenv.h	177;"	d
+ENOTDIR	yportenv.h	213;"	d
+ENOTEMPTY	yportenv.h	193;"	d
+ERANGE	yportenv.h	185;"	d
+EROFS	yportenv.h	181;"	d
+EXDEV	yportenv.h	169;"	d
+EXTRA_HEADER_INFO_FLAG	yaffs_packedtags2.c	29;"	d	file:
+EXTRA_OBJECT_TYPE_MASK	yaffs_packedtags2.c	38;"	d	file:
+EXTRA_OBJECT_TYPE_SHIFT	yaffs_packedtags2.c	37;"	d	file:
+EXTRA_SHADOWS_FLAG	yaffs_packedtags2.c	31;"	d	file:
+EXTRA_SHRINK_FLAG	yaffs_packedtags2.c	30;"	d	file:
+EXTRA_SPARE_FLAGS	yaffs_packedtags2.c	32;"	d	file:
+F_OK	yportenv.h	312;"	d
+INIT_LIST_HEAD	yaffs_list.h	45;"	d
+LIST_HEAD	yaffs_list.h	39;"	d
+NAME_MAX	yaffsfs.h	35;"	d
+NO_Y_INLINE	yportenv.h	34;"	d
+NULL	yaffsfs.c	25;"	d	file:
+N_RAM_SIM_DEVS	yramsim.h	24;"	d
+O_APPEND	yportenv.h	129;"	d
+O_CREAT	yportenv.h	117;"	d
+O_EXCL	yportenv.h	121;"	d
+O_RDONLY	yportenv.h	105;"	d
+O_RDWR	yportenv.h	113;"	d
+O_TRUNC	yportenv.h	125;"	d
+O_WRONLY	yportenv.h	109;"	d
+PAGES_PER_BLOCK	yramsim.c	34;"	d	file:
+PAGE_SIZE	yramsim.c	32;"	d	file:
+PARTITION_CNT	mtd_glue.c	30;"	d	file:
+R_OK	yportenv.h	309;"	d
+SEEK_CUR	yportenv.h	137;"	d
+SEEK_END	yportenv.h	141;"	d
+SEEK_SET	yportenv.h	133;"	d
+SPARE_SIZE	yramsim.c	31;"	d	file:
+SWAPINIT	yaffs_qsort.c	47;"	d	file:
+S_IEXEC	yportenv.h	297;"	d
+S_IFBLK	yportenv.h	244;"	d
+S_IFCHR	yportenv.h	240;"	d
+S_IFDIR	yportenv.h	252;"	d
+S_IFIFO	yportenv.h	236;"	d
+S_IFLNK	yportenv.h	248;"	d
+S_IFMT	yportenv.h	228;"	d
+S_IFREG	yportenv.h	256;"	d
+S_IFSOCK	yportenv.h	232;"	d
+S_IREAD	yportenv.h	289;"	d
+S_ISBLK	yportenv.h	276;"	d
+S_ISCHR	yportenv.h	280;"	d
+S_ISDIR	yportenv.h	268;"	d
+S_ISFIFO	yportenv.h	284;"	d
+S_ISLNK	yportenv.h	264;"	d
+S_ISREG	yportenv.h	272;"	d
+S_ISSOCK	yportenv.h	260;"	d
+S_IWRITE	yportenv.h	293;"	d
+SimData	yramsim.c	/^} SimData;$/;"	t	typeref:struct:__anon6	file:
+W_OK	yportenv.h	310;"	d
+XATTR_CREATE	yportenv.h	301;"	d
+XATTR_REPLACE	yportenv.h	305;"	d
+X_OK	yportenv.h	311;"	d
+YAFFSFS_MAX_SYMLINK_DEREFERENCES	yaffsfs.c	22;"	d	file:
+YAFFSFS_N_HANDLES	yaffscfg.h	28;"	d
+YAFFSFS_RW_SHIFT	yaffsfs.c	30;"	d	file:
+YAFFSFS_RW_SIZE	yaffsfs.c	31;"	d	file:
+YAFFS_ALLOCATION_NLINKS	yaffs_guts.h	71;"	d
+YAFFS_ALLOCATION_NOBJECTS	yaffs_guts.h	69;"	d
+YAFFS_ALLOCATION_NTNODES	yaffs_guts.h	70;"	d
+YAFFS_BLOCK_STATE_ALLOCATING	yaffs_guts.h	/^	YAFFS_BLOCK_STATE_ALLOCATING,$/;"	e	enum:yaffs_block_state
+YAFFS_BLOCK_STATE_CHECKPOINT	yaffs_guts.h	/^	YAFFS_BLOCK_STATE_CHECKPOINT,$/;"	e	enum:yaffs_block_state
+YAFFS_BLOCK_STATE_COLLECTING	yaffs_guts.h	/^	YAFFS_BLOCK_STATE_COLLECTING,$/;"	e	enum:yaffs_block_state
+YAFFS_BLOCK_STATE_DEAD	yaffs_guts.h	/^	YAFFS_BLOCK_STATE_DEAD$/;"	e	enum:yaffs_block_state
+YAFFS_BLOCK_STATE_DIRTY	yaffs_guts.h	/^	YAFFS_BLOCK_STATE_DIRTY,$/;"	e	enum:yaffs_block_state
+YAFFS_BLOCK_STATE_EMPTY	yaffs_guts.h	/^	YAFFS_BLOCK_STATE_EMPTY,$/;"	e	enum:yaffs_block_state
+YAFFS_BLOCK_STATE_FULL	yaffs_guts.h	/^	YAFFS_BLOCK_STATE_FULL,$/;"	e	enum:yaffs_block_state
+YAFFS_BLOCK_STATE_NEEDS_SCAN	yaffs_guts.h	/^	YAFFS_BLOCK_STATE_NEEDS_SCAN,$/;"	e	enum:yaffs_block_state
+YAFFS_BLOCK_STATE_SCANNING	yaffs_guts.h	/^	YAFFS_BLOCK_STATE_SCANNING,$/;"	e	enum:yaffs_block_state
+YAFFS_BLOCK_STATE_UNKNOWN	yaffs_guts.h	/^	YAFFS_BLOCK_STATE_UNKNOWN = 0,$/;"	e	enum:yaffs_block_state
+YAFFS_BYTES_PER_BLOCK	yaffs_guts.h	62;"	d
+YAFFS_BYTES_PER_CHUNK	yaffs_guts.h	59;"	d
+YAFFS_BYTES_PER_SPARE	yaffs_guts.h	58;"	d
+YAFFS_CHECKPOINT_MIN_BLOCKS	yaffs_yaffs2.c	31;"	d	file:
+YAFFS_CHECKPOINT_VERSION	yaffs_guts.h	80;"	d
+YAFFS_CHUNKS_PER_BLOCK	yaffs_guts.h	61;"	d
+YAFFS_CHUNK_SIZE_SHIFT	yaffs_guts.h	60;"	d
+YAFFS_ECC_RESULT_FIXED	yaffs_guts.h	/^	YAFFS_ECC_RESULT_FIXED,$/;"	e	enum:yaffs_ecc_result
+YAFFS_ECC_RESULT_NO_ERROR	yaffs_guts.h	/^	YAFFS_ECC_RESULT_NO_ERROR,$/;"	e	enum:yaffs_ecc_result
+YAFFS_ECC_RESULT_UNFIXED	yaffs_guts.h	/^	YAFFS_ECC_RESULT_UNFIXED$/;"	e	enum:yaffs_ecc_result
+YAFFS_ECC_RESULT_UNKNOWN	yaffs_guts.h	/^	YAFFS_ECC_RESULT_UNKNOWN,$/;"	e	enum:yaffs_ecc_result
+YAFFS_FAIL	yaffs_guts.h	22;"	d
+YAFFS_GC_GOOD_ENOUGH	yaffs_guts.c	33;"	d	file:
+YAFFS_GC_PASSIVE_THRESHOLD	yaffs_guts.c	34;"	d	file:
+YAFFS_HIGHEST_SEQUENCE_NUMBER	yaffs_guts.h	123;"	d
+YAFFS_LOSTNFOUND_MODE	ydirectenv.h	93;"	d
+YAFFS_LOSTNFOUND_NAME	ydirectenv.h	84;"	d
+YAFFS_LOSTNFOUND_PREFIX	ydirectenv.h	85;"	d
+YAFFS_LOWEST_SEQUENCE_NUMBER	yaffs_guts.h	122;"	d
+YAFFS_MAGIC	yaffs_guts.h	30;"	d
+YAFFS_MAX_ALIAS_LENGTH	yaffs_guts.h	84;"	d
+YAFFS_MAX_ALIAS_LENGTH	yaffs_guts.h	87;"	d
+YAFFS_MAX_CHUNK_ID	yaffs_guts.h	55;"	d
+YAFFS_MAX_FILE_SIZE	yaffsfs.h	38;"	d
+YAFFS_MAX_NAME_LENGTH	yaffs_guts.h	83;"	d
+YAFFS_MAX_NAME_LENGTH	yaffs_guts.h	86;"	d
+YAFFS_MAX_OBJECT_ID	yaffs_guts.h	76;"	d
+YAFFS_MAX_SHORT_OP_CACHES	yaffs_guts.h	105;"	d
+YAFFS_MIN_YAFFS2_CHUNK_SIZE	yaffs_guts.h	64;"	d
+YAFFS_MIN_YAFFS2_SPARE_SIZE	yaffs_guts.h	65;"	d
+YAFFS_NOBJECT_BUCKETS	yaffs_guts.h	73;"	d
+YAFFS_NTNODES_INTERNAL	yaffs_guts.h	48;"	d
+YAFFS_NTNODES_LEVEL0	yaffs_guts.h	44;"	d
+YAFFS_NUMBER_OF_BLOCK_STATES	yaffs_guts.h	284;"	d
+YAFFS_N_TEMP_BUFFERS	yaffs_guts.h	107;"	d
+YAFFS_OBJECTID_CHECKPOINT_DATA	yaffs_guts.h	102;"	d
+YAFFS_OBJECTID_DELETED	yaffs_guts.h	96;"	d
+YAFFS_OBJECTID_LOSTNFOUND	yaffs_guts.h	94;"	d
+YAFFS_OBJECTID_ROOT	yaffs_guts.h	93;"	d
+YAFFS_OBJECTID_SUMMARY	yaffs_guts.h	99;"	d
+YAFFS_OBJECTID_UNLINKED	yaffs_guts.h	95;"	d
+YAFFS_OBJECT_SPACE	yaffs_guts.h	75;"	d
+YAFFS_OBJECT_TYPE_DIRECTORY	yaffs_guts.h	/^	YAFFS_OBJECT_TYPE_DIRECTORY,$/;"	e	enum:yaffs_obj_type
+YAFFS_OBJECT_TYPE_FILE	yaffs_guts.h	/^	YAFFS_OBJECT_TYPE_FILE,$/;"	e	enum:yaffs_obj_type
+YAFFS_OBJECT_TYPE_HARDLINK	yaffs_guts.h	/^	YAFFS_OBJECT_TYPE_HARDLINK,$/;"	e	enum:yaffs_obj_type
+YAFFS_OBJECT_TYPE_MAX	yaffs_guts.h	177;"	d
+YAFFS_OBJECT_TYPE_SPECIAL	yaffs_guts.h	/^	YAFFS_OBJECT_TYPE_SPECIAL$/;"	e	enum:yaffs_obj_type
+YAFFS_OBJECT_TYPE_SYMLINK	yaffs_guts.h	/^	YAFFS_OBJECT_TYPE_SYMLINK,$/;"	e	enum:yaffs_obj_type
+YAFFS_OBJECT_TYPE_UNKNOWN	yaffs_guts.h	/^	YAFFS_OBJECT_TYPE_UNKNOWN,$/;"	e	enum:yaffs_obj_type
+YAFFS_OK	yaffs_guts.h	21;"	d
+YAFFS_PATH_DIVIDERS	ydirectenv.h	62;"	d
+YAFFS_ROOT_MODE	ydirectenv.h	92;"	d
+YAFFS_SEQUENCE_BAD_BLOCK	yaffs_guts.h	126;"	d
+YAFFS_SEQUENCE_CHECKPOINT_DATA	yaffs_guts.h	103;"	d
+YAFFS_SHARE_READ	yaffsfs.h	179;"	d
+YAFFS_SHARE_WRITE	yaffsfs.h	180;"	d
+YAFFS_SHORT_NAME_LENGTH	yaffs_guts.h	90;"	d
+YAFFS_SMALL_HOLE_THRESHOLD	yaffs_yaffs2.c	32;"	d	file:
+YAFFS_SUMMARY_VERSION	yaffs_guts.h	79;"	d
+YAFFS_TNODES_INTERNAL_BITS	yaffs_guts.h	49;"	d
+YAFFS_TNODES_INTERNAL_MASK	yaffs_guts.h	50;"	d
+YAFFS_TNODES_LEVEL0_BITS	yaffs_guts.h	45;"	d
+YAFFS_TNODES_LEVEL0_MASK	yaffs_guts.h	46;"	d
+YAFFS_TNODES_MAX_BITS	yaffs_guts.h	52;"	d
+YAFFS_TNODES_MAX_LEVEL	yaffs_guts.h	51;"	d
+YAFFS_TRACE_ALLOCATE	yaffs_trace.h	28;"	d
+YAFFS_TRACE_ALWAYS	yaffs_trace.h	55;"	d
+YAFFS_TRACE_BACKGROUND	yaffs_trace.h	49;"	d
+YAFFS_TRACE_BAD_BLOCKS	yaffs_trace.h	30;"	d
+YAFFS_TRACE_BUFFERS	yaffs_trace.h	36;"	d
+YAFFS_TRACE_BUG	yaffs_trace.h	54;"	d
+YAFFS_TRACE_CHECKPOINT	yaffs_trace.h	41;"	d
+YAFFS_TRACE_DELETION	yaffs_trace.h	35;"	d
+YAFFS_TRACE_ERASE	yaffs_trace.h	31;"	d
+YAFFS_TRACE_ERROR	yaffs_trace.h	53;"	d
+YAFFS_TRACE_GC	yaffs_trace.h	32;"	d
+YAFFS_TRACE_GC_DETAIL	yaffs_trace.h	38;"	d
+YAFFS_TRACE_LOCK	yaffs_trace.h	50;"	d
+YAFFS_TRACE_MOUNT	yaffs_trace.h	51;"	d
+YAFFS_TRACE_MTD	yaffs_trace.h	40;"	d
+YAFFS_TRACE_NANDACCESS	yaffs_trace.h	37;"	d
+YAFFS_TRACE_OS	yaffs_trace.h	27;"	d
+YAFFS_TRACE_SCAN	yaffs_trace.h	29;"	d
+YAFFS_TRACE_SCAN_DEBUG	yaffs_trace.h	39;"	d
+YAFFS_TRACE_SYNC	yaffs_trace.h	48;"	d
+YAFFS_TRACE_TRACING	yaffs_trace.h	34;"	d
+YAFFS_TRACE_VERIFY	yaffs_trace.h	43;"	d
+YAFFS_TRACE_VERIFY_ALL	yaffs_trace.h	46;"	d
+YAFFS_TRACE_VERIFY_FULL	yaffs_trace.h	45;"	d
+YAFFS_TRACE_VERIFY_NAND	yaffs_trace.h	44;"	d
+YAFFS_TRACE_WRITE	yaffs_trace.h	33;"	d
+YAFFS_WR_ATTEMPTS	yaffs_guts.h	113;"	d
+YCHAR	ydirectenv.h	38;"	d
+YUCHAR	ydirectenv.h	39;"	d
+Y_CURRENT_TIME	ydirectenv.h	89;"	d
+Y_DUMP_STACK	yportenv.h	324;"	d
+Y_TIME_CONVERT	ydirectenv.h	90;"	d
+_Y	ydirectenv.h	40;"	d
+__KERN_FS_YAFFS_VFS_H	yaffs_vfs.h	19;"	d
+__NAMEVAL_H__	yaffs_nameval.h	17;"	d
+__YAFFSCFG_H__	yaffscfg.h	23;"	d
+__YAFFSFS_H__	yaffsfs.h	23;"	d
+__YAFFS_ALLOCATOR_H__	yaffs_allocator.h	17;"	d
+__YAFFS_ATTRIBS_H__	yaffs_attribs.h	17;"	d
+__YAFFS_BITMAP_H__	yaffs_bitmap.h	21;"	d
+__YAFFS_CHECKPTRW_H__	yaffs_checkptrw.h	17;"	d
+__YAFFS_ECC_H__	yaffs_ecc.h	27;"	d
+__YAFFS_GETBLOCKINFO_H__	yaffs_getblockinfo.h	17;"	d
+__YAFFS_GUTS_H__	yaffs_guts.h	17;"	d
+__YAFFS_HWEIGHT_H__	yaffs_hweight.h	17;"	d
+__YAFFS_LIST_H__	yaffs_list.h	24;"	d
+__YAFFS_NAND_H__	yaffs_nand.h	17;"	d
+__YAFFS_OSGLUE_H__	yaffs_osglue.h	23;"	d
+__YAFFS_PACKEDTAGS1_H__	yaffs_packedtags1.h	19;"	d
+__YAFFS_PACKEDTAGS2_H__	yaffs_packedtags2.h	19;"	d
+__YAFFS_RAM_SIM_H__	yramsim.h	19;"	d
+__YAFFS_SUMMARY_H__	yaffs_summary.h	17;"	d
+__YAFFS_TAGSCOMPAT_H__	yaffs_tagscompat.h	17;"	d
+__YAFFS_VERIFY_H__	yaffs_verify.h	17;"	d
+__YAFFS_YAFFS1_H__	yaffs_yaffs1.h	17;"	d
+__YAFFS_YAFFS2_H__	yaffs_yaffs2.h	17;"	d
+__YDIRECTENV_H__	ydirectenv.h	21;"	d
+__YNANDIF_H__	yaffs_nandif.h	18;"	d
+__YPORTENV_H__	yportenv.h	18;"	d
+__YTRACE_H__	yaffs_trace.h	17;"	d
+__error_handler_h__	yaffsfs.h	226;"	d
+abs	yportenv.h	341;"	d
+actime	yaffsfs.h	/^	unsigned long actime;$/;"	m	struct:yaffs_utimbuf
+alias	yaffs_guts.h	/^	YCHAR *alias;$/;"	m	struct:yaffs_symlink_var
+alias	yaffs_guts.h	/^	YCHAR alias[YAFFS_MAX_ALIAS_LENGTH + 1];$/;"	m	struct:yaffs_obj_hdr
+all_ff	yaffs_packedtags1.c	/^static const u8 all_ff[20] = {$/;"	v	file:
+all_gcs	yaffs_guts.h	/^	u32 all_gcs;$/;"	m	struct:yaffs_dev
+alloc_block	yaffs_guts.h	/^	int alloc_block;	\/* Current block being allocated off *\/$/;"	m	struct:yaffs_checkpt_dev
+alloc_block	yaffs_guts.h	/^	int alloc_block;	\/* Current block being allocated off *\/$/;"	m	struct:yaffs_dev
+alloc_block_finder	yaffs_guts.h	/^	int alloc_block_finder;	\/* Used to search for next allocation block *\/$/;"	m	struct:yaffs_dev
+alloc_page	yaffs_guts.h	/^	u32 alloc_page;$/;"	m	struct:yaffs_checkpt_dev
+alloc_page	yaffs_guts.h	/^	u32 alloc_page;$/;"	m	struct:yaffs_dev
+alloc_tnode_list	yaffs_allocator.c	/^	struct yaffs_tnode_list *alloc_tnode_list;$/;"	m	struct:yaffs_allocator	typeref:struct:yaffs_allocator::yaffs_tnode_list	file:
+allocated_obj_list	yaffs_allocator.c	/^	struct yaffs_obj_list *allocated_obj_list;$/;"	m	struct:yaffs_allocator	typeref:struct:yaffs_allocator::yaffs_obj_list	file:
+allocator	yaffs_guts.h	/^	void *allocator;$/;"	m	struct:yaffs_dev
+always_check_erased	yaffs_guts.h	/^	int always_check_erased;	\/* Force chunk erased check always on *\/$/;"	m	struct:yaffs_param
+append	yaffsfs.c	/^	u8 	append:1;$/;"	m	struct:__anon2	file:
+as_bytes	yaffs_guts.h	/^	u8 as_bytes[8];$/;"	m	union:yaffs_tags_union
+as_tags	yaffs_guts.h	/^	struct yaffs_tags as_tags;$/;"	m	union:yaffs_tags_union	typeref:struct:yaffs_tags_union::yaffs_tags
+auto_unicode	yaffs_guts.h	/^	int auto_unicode;$/;"	m	struct:yaffs_param
+bad_block_fn	yaffs_guts.h	/^	int (*bad_block_fn) (struct yaffs_dev *dev, int block_no);$/;"	m	struct:yaffs_param
+being_created	yaffs_guts.h	/^	u8 being_created:1;	\/* This object is still being created$/;"	m	struct:yaffs_obj
+bg_gcs	yaffs_guts.h	/^	u32 bg_gcs;$/;"	m	struct:yaffs_dev
+block	yaffs_summary.c	/^	unsigned block;		\/* Must be this block *\/$/;"	m	struct:yaffs_summary_header	file:
+block	yaffs_yaffs2.c	/^	int block;$/;"	m	struct:yaffs_block_index	file:
+blockList	yramsim.c	/^	Block **blockList;$/;"	m	struct:__anon6	file:
+blockOk	yramsim.c	/^	unsigned blockOk;$/;"	m	struct:__anon5	file:
+block_bad	yaffs_guts.h	/^	unsigned block_bad;$/;"	m	struct:yaffs_ext_tags
+block_info	yaffs_guts.h	/^	struct yaffs_block_info *block_info;$/;"	m	struct:yaffs_dev	typeref:struct:yaffs_dev::yaffs_block_info
+block_info_alt	yaffs_guts.h	/^	unsigned block_info_alt:1;	\/* allocated using alternative alloc *\/$/;"	m	struct:yaffs_dev
+block_offset	yaffs_guts.h	/^	int block_offset;$/;"	m	struct:yaffs_dev
+block_state	yaffs_guts.h	/^	unsigned block_state:4;	\/* One of the above block states. *\/$/;"	m	struct:yaffs_block_info
+block_state_name	yaffs_verify.c	/^static const char * const block_state_name[] = {$/;"	v	file:
+block_status	yaffs_guts.h	/^	u8 block_status;$/;"	m	struct:yaffs_spare
+blocks_in_checkpt	yaffs_guts.h	/^	int blocks_in_checkpt;$/;"	m	struct:yaffs_dev
+bucket_finder	yaffs_guts.h	/^	u32 bucket_finder;$/;"	m	struct:yaffs_dev
+buffer	yaffs_guts.h	/^	u8 *buffer;$/;"	m	struct:yaffs_buffer
+buffered_block	yaffs_guts.h	/^	int buffered_block;	\/* Which block is buffered here? *\/$/;"	m	struct:yaffs_dev
+cache	yaffs_guts.h	/^	struct yaffs_cache *cache;$/;"	m	struct:yaffs_dev	typeref:struct:yaffs_dev::yaffs_cache
+cache_hits	yaffs_guts.h	/^	u32 cache_hits;$/;"	m	struct:yaffs_dev
+cache_last_use	yaffs_guts.h	/^	int cache_last_use;$/;"	m	struct:yaffs_dev
+calc_shifts	yaffs_guts.c	/^static inline u32 calc_shifts(u32 x)$/;"	f	file:
+calc_shifts_ceiling	yaffs_guts.c	/^static inline u32 calc_shifts_ceiling(u32 x)$/;"	f	file:
+checkBlockOk	yaffs_nandif.h	/^	int (*checkBlockOk)(struct yaffs_dev *dev, unsigned blockId);$/;"	m	struct:__anon7
+checkpoint_blocks_required	yaffs_guts.h	/^	int checkpoint_blocks_required;	\/* Number of blocks needed to store$/;"	m	struct:yaffs_dev
+checkpt_block_list	yaffs_guts.h	/^	int *checkpt_block_list;$/;"	m	struct:yaffs_dev
+checkpt_buffer	yaffs_guts.h	/^	u8 *checkpt_buffer;$/;"	m	struct:yaffs_dev
+checkpt_byte_count	yaffs_guts.h	/^	int checkpt_byte_count;$/;"	m	struct:yaffs_dev
+checkpt_byte_offs	yaffs_guts.h	/^	int checkpt_byte_offs;$/;"	m	struct:yaffs_dev
+checkpt_cur_block	yaffs_guts.h	/^	int checkpt_cur_block;$/;"	m	struct:yaffs_dev
+checkpt_cur_chunk	yaffs_guts.h	/^	int checkpt_cur_chunk;$/;"	m	struct:yaffs_dev
+checkpt_max_blocks	yaffs_guts.h	/^	int checkpt_max_blocks;$/;"	m	struct:yaffs_dev
+checkpt_next_block	yaffs_guts.h	/^	int checkpt_next_block;$/;"	m	struct:yaffs_dev
+checkpt_open_write	yaffs_guts.h	/^	int checkpt_open_write;$/;"	m	struct:yaffs_dev
+checkpt_page_seq	yaffs_guts.h	/^	int checkpt_page_seq;	\/* running sequence number of checkpt pages *\/$/;"	m	struct:yaffs_dev
+checkpt_sum	yaffs_guts.h	/^	u32 checkpt_sum;$/;"	m	struct:yaffs_dev
+checkpt_xor	yaffs_guts.h	/^	u32 checkpt_xor;$/;"	m	struct:yaffs_dev
+children	yaffs_guts.h	/^	struct list_head children;	\/* list of child links *\/$/;"	m	struct:yaffs_dir_var	typeref:struct:yaffs_dir_var::list_head
+chunk_bit_stride	yaffs_guts.h	/^	int chunk_bit_stride;	\/* Number of bytes of chunk_bits per block.$/;"	m	struct:yaffs_dev
+chunk_bits	yaffs_guts.h	/^	u8 *chunk_bits;		\/* bitmap of chunks in use *\/$/;"	m	struct:yaffs_dev
+chunk_bits_alt	yaffs_guts.h	/^	unsigned chunk_bits_alt:1;	\/* allocated using alternative alloc *\/$/;"	m	struct:yaffs_dev
+chunk_div	yaffs_guts.h	/^	u32 chunk_div;		\/* Divisor after shifting: 1 for 2^n sizes *\/$/;"	m	struct:yaffs_dev
+chunk_error_strikes	yaffs_guts.h	/^	u32 chunk_error_strikes:3;	\/* How many times we've had ecc etc$/;"	m	struct:yaffs_block_info
+chunk_grp_bits	yaffs_guts.h	/^	u16 chunk_grp_bits;	\/* Number of bits that need to be resolved if$/;"	m	struct:yaffs_dev
+chunk_grp_size	yaffs_guts.h	/^	u16 chunk_grp_size;	\/* == 2^^chunk_grp_bits *\/$/;"	m	struct:yaffs_dev
+chunk_id	yaffs_guts.h	/^	int chunk_id;$/;"	m	struct:yaffs_cache
+chunk_id	yaffs_guts.h	/^	unsigned chunk_id:20;$/;"	m	struct:yaffs_tags
+chunk_id	yaffs_guts.h	/^	unsigned chunk_id;	\/* If 0 this is a header, else a data chunk *\/$/;"	m	struct:yaffs_ext_tags
+chunk_id	yaffs_packedtags1.h	/^	unsigned chunk_id:20;$/;"	m	struct:yaffs_packed_tags1
+chunk_id	yaffs_packedtags2.h	/^	unsigned chunk_id;$/;"	m	struct:yaffs_packed_tags2_tags_only
+chunk_id	yaffs_summary.c	/^	unsigned chunk_id;$/;"	m	struct:yaffs_summary_tags	file:
+chunk_mask	yaffs_guts.h	/^	u32 chunk_mask;		\/* Mask to use for power-of-2 case *\/$/;"	m	struct:yaffs_dev
+chunk_offset	yaffs_guts.h	/^	int chunk_offset;$/;"	m	struct:yaffs_dev
+chunk_shift	yaffs_guts.h	/^	u32 chunk_shift;	\/* Shift value *\/$/;"	m	struct:yaffs_dev
+chunk_used	yaffs_guts.h	/^	unsigned chunk_used;	\/*  Status of the chunk: used or unused *\/$/;"	m	struct:yaffs_ext_tags
+chunks_per_block	yaffs_guts.h	/^	int chunks_per_block;	\/* does not need to be a power of 2 *\/$/;"	m	struct:yaffs_param
+chunks_per_summary	yaffs_guts.h	/^	int chunks_per_summary;$/;"	m	struct:yaffs_dev
+code	yaffs_error.c	/^  int code;$/;"	m	struct:error_entry	file:
+col_parity	yaffs_ecc.h	/^	unsigned char col_parity;$/;"	m	struct:yaffs_ecc_other
+column_parity_table	yaffs_ecc.c	/^static const unsigned char column_parity_table[] = {$/;"	v	file:
+cond_resched	ydirectenv.h	75;"	d
+count	yaffs_guts.h	/^	int count;$/;"	m	struct:yaffs_obj_bucket
+count	yaffsfs.c	/^	int count;	\/* Number of handles accessing this inode *\/$/;"	m	struct:__anon1	file:
+d_dont_use	yaffsfs.h	/^    unsigned d_dont_use;	\/* debug pointer, not for public consumption *\/$/;"	m	struct:yaffs_dirent
+d_ino	yaffsfs.h	/^    long d_ino;                 \/* inode number *\/$/;"	m	struct:yaffs_dirent
+d_name	yaffsfs.h	/^    YCHAR d_name [NAME_MAX+1];   \/* file name (null-terminated) *\/$/;"	m	struct:yaffs_dirent
+d_off	yaffsfs.h	/^    off_t d_off;                \/* offset to this dirent *\/$/;"	m	struct:yaffs_dirent
+d_reclen	yaffsfs.h	/^    unsigned short d_reclen;    \/* length of this dirent *\/$/;"	m	struct:yaffs_dirent
+d_type	yaffsfs.h	/^    YUCHAR  d_type;	\/* type of this record *\/$/;"	m	struct:yaffs_dirent
+data	yaffs_guts.h	/^	const void *data;$/;"	m	struct:yaffs_xattr_mod
+data	yaffs_guts.h	/^	u8 *data;$/;"	m	struct:yaffs_cache
+dataSize	yaffs_nandif.h	/^	unsigned dataSize;$/;"	m	struct:__anon7
+data_bytes_per_chunk	yaffs_guts.h	/^	int data_bytes_per_chunk;$/;"	m	struct:yaffs_dev
+data_page_buf	mtd_glue.c	/^static unsigned char data_page_buf[MAX_PAGE_BUF];$/;"	v	file:
+de	yaffsfs.c	/^	yaffs_dirent de;		\/* directory entry being used by this dsc *\/$/;"	m	struct:__anon4	file:
+defered_dir_update	yaffs_guts.h	/^	int defered_dir_update;	\/* Set to defer directory updates *\/$/;"	m	struct:yaffs_param
+defered_free	yaffs_guts.h	/^	u8 defered_free:1;	\/* Object is removed from NAND, but is$/;"	m	struct:yaffs_obj
+deinitialise	yaffs_nandif.h	/^	int (*deinitialise)(struct yaffs_dev *dev);$/;"	m	struct:__anon7
+deinitialise_flash_fn	yaffs_guts.h	/^	int (*deinitialise_flash_fn) (struct yaffs_dev *dev);$/;"	m	struct:yaffs_param
+del_dir	yaffs_guts.h	/^	struct yaffs_obj *del_dir;	\/* Directory where deleted objects are$/;"	m	struct:yaffs_dev	typeref:struct:yaffs_dev::yaffs_obj
+deleted	yaffs_guts.h	/^	u8 deleted:1;		\/* This should only apply to unlinked files. *\/$/;"	m	struct:yaffs_obj
+deleted	yaffs_guts.h	/^	u8 deleted:1;$/;"	m	struct:yaffs_checkpt_obj
+deleted	yaffs_packedtags1.h	/^	unsigned deleted:1;$/;"	m	struct:yaffs_packed_tags1
+dev	yaffs_vfs.h	/^    struct device *dev;                             \/* device mounted on *\/$/;"	m	struct:yaffs2_fs	typeref:struct:yaffs2_fs::device
+dev	yaffscfg.h	/^	struct yaffs_dev *dev;$/;"	m	struct:yaffsfs_DeviceConfigurationStruct	typeref:struct:yaffsfs_DeviceConfigurationStruct::yaffs_dev
+dev_list	yaffs_guts.h	/^	struct list_head dev_list;$/;"	m	struct:yaffs_dev	typeref:struct:yaffs_dev::list_head
+dirObj	yaffsfs.c	/^        struct yaffs_obj *dirObj;           \/* ptr to directory being searched *\/$/;"	m	struct:__anon4	typeref:struct:__anon4::yaffs_obj	file:
+dir_variant	yaffs_guts.h	/^	struct yaffs_dir_var dir_variant;$/;"	m	union:yaffs_obj_var	typeref:struct:yaffs_obj_var::yaffs_dir_var
+dirty	yaffs_guts.h	/^	int dirty;$/;"	m	struct:yaffs_cache
+dirty	yaffs_guts.h	/^	struct list_head dirty;	\/* Entry for list of dirty directories *\/$/;"	m	struct:yaffs_dir_var	typeref:struct:yaffs_dir_var::list_head
+dirty	yaffs_guts.h	/^	u8 dirty:1;		\/* the object needs to be written to flash *\/$/;"	m	struct:yaffs_obj
+dirty_dirs	yaffs_guts.h	/^	struct list_head dirty_dirs;	\/* List of dirty directories *\/$/;"	m	struct:yaffs_dev	typeref:struct:yaffs_dev::list_head
+disable_lazy_load	yaffs_guts.h	/^	int disable_lazy_load;	\/* Disable lazy loading on this device *\/$/;"	m	struct:yaffs_param
+disable_soft_del	yaffs_guts.h	/^	int disable_soft_del;	\/* yaffs 1 only: Set to disable the use of$/;"	m	struct:yaffs_param
+disable_summary	yaffs_guts.h	/^	int disable_summary;$/;"	m	struct:yaffs_param
+doing_buffered_block_rewrite	yaffs_guts.h	/^	int doing_buffered_block_rewrite;$/;"	m	struct:yaffs_dev
+driver_context	yaffs_guts.h	/^	void *driver_context;$/;"	m	struct:yaffs_dev
+dump_directory_tree_worker	yaffsfs.c	/^void dump_directory_tree_worker(const char *dname,int recursive)$/;"	f
+ecc	yaffs_guts.h	/^	unsigned ecc:12;$/;"	m	struct:yaffs_tags
+ecc	yaffs_packedtags1.h	/^	unsigned ecc:12;$/;"	m	struct:yaffs_packed_tags1
+ecc	yaffs_packedtags2.h	/^	struct yaffs_ecc_other ecc;$/;"	m	struct:yaffs_packed_tags2	typeref:struct:yaffs_packed_tags2::yaffs_ecc_other
+ecc1	yaffs_guts.h	/^	u8 ecc1[3];$/;"	m	struct:yaffs_spare
+ecc2	yaffs_guts.h	/^	u8 ecc2[3];$/;"	m	struct:yaffs_spare
+ecc_result	yaffs_guts.h	/^	enum yaffs_ecc_result ecc_result;$/;"	m	struct:yaffs_ext_tags	typeref:enum:yaffs_ext_tags::yaffs_ecc_result
+eccres1	yaffs_guts.h	/^	int eccres1;$/;"	m	struct:yaffs_nand_spare
+eccres2	yaffs_guts.h	/^	int eccres2;$/;"	m	struct:yaffs_nand_spare
+empty_lost_n_found	yaffs_guts.h	/^	int empty_lost_n_found;	\/* Auto-empty lost+found directory on mount *\/$/;"	m	struct:yaffs_param
+enable_xattr	yaffs_guts.h	/^	int enable_xattr;	\/* Enable xattribs *\/$/;"	m	struct:yaffs_param
+end_block	yaffs_guts.h	/^	int end_block;		\/* End block we're allowed to use *\/$/;"	m	struct:yaffs_param
+end_block	yaffs_nandif.h	/^	unsigned end_block;$/;"	m	struct:__anon7
+equiv_id	yaffs_guts.h	/^	int equiv_id;$/;"	m	struct:yaffs_obj_hdr
+equiv_id	yaffs_guts.h	/^	u32 equiv_id;$/;"	m	struct:yaffs_hardlink_var
+equiv_obj	yaffs_guts.h	/^	struct yaffs_obj *equiv_obj;$/;"	m	struct:yaffs_hardlink_var	typeref:struct:yaffs_hardlink_var::yaffs_obj
+eraseBlock	yaffs_nandif.h	/^	int (*eraseBlock)(struct yaffs_dev *dev, unsigned blockId);$/;"	m	struct:__anon7
+erase_fn	yaffs_guts.h	/^	int (*erase_fn) (struct yaffs_dev *dev, int flash_block);$/;"	m	struct:yaffs_param
+error_entry	yaffs_error.c	/^struct error_entry {$/;"	s	file:
+error_list	yaffs_error.c	/^static const struct error_entry error_list[] = {$/;"	v	typeref:struct:error_entry	file:
+extra_available	yaffs_guts.h	/^	unsigned extra_available;	\/* Extra info available if not zero *\/$/;"	m	struct:yaffs_ext_tags
+extra_equiv_id	yaffs_guts.h	/^	unsigned extra_equiv_id;	\/* Equivalent object for a hard link *\/$/;"	m	struct:yaffs_ext_tags
+extra_file_size	yaffs_guts.h	/^	loff_t extra_file_size;		\/* Length if it is a file *\/$/;"	m	struct:yaffs_ext_tags
+extra_is_shrink	yaffs_guts.h	/^	unsigned extra_is_shrink;	\/* Is it a shrink header? *\/$/;"	m	struct:yaffs_ext_tags
+extra_obj_type	yaffs_guts.h	/^	enum yaffs_obj_type extra_obj_type;	\/* What object type? *\/$/;"	m	struct:yaffs_ext_tags	typeref:enum:yaffs_ext_tags::yaffs_obj_type
+extra_parent_id	yaffs_guts.h	/^	unsigned extra_parent_id;	\/* The parent object *\/$/;"	m	struct:yaffs_ext_tags
+extra_shadows	yaffs_guts.h	/^	unsigned extra_shadows;	\/* Does this shadow another object? *\/$/;"	m	struct:yaffs_ext_tags
+fake	yaffs_guts.h	/^	u8 fake:1;		\/* A fake object has no presence on NAND. *\/$/;"	m	struct:yaffs_obj
+fake	yaffs_guts.h	/^	u8 fake:1;$/;"	m	struct:yaffs_checkpt_obj
+fdId	yaffsfs.c	/^	short int fdId;$/;"	m	struct:__anon3	file:
+file_size	yaffs_guts.h	/^	loff_t file_size;$/;"	m	struct:yaffs_file_var
+file_size_high	yaffs_guts.h	/^	u32 file_size_high;$/;"	m	struct:yaffs_obj_hdr
+file_size_low	yaffs_guts.h	/^	u32 file_size_low;$/;"	m	struct:yaffs_obj_hdr
+file_variant	yaffs_guts.h	/^	struct yaffs_file_var file_variant;$/;"	m	union:yaffs_obj_var	typeref:struct:yaffs_obj_var::yaffs_file_var
+flags	yaffs_guts.h	/^	int flags;$/;"	m	struct:yaffs_xattr_mod
+free_objs	yaffs_allocator.c	/^	struct list_head free_objs;$/;"	m	struct:yaffs_allocator	typeref:struct:yaffs_allocator::list_head	file:
+free_tnodes	yaffs_allocator.c	/^	struct yaffs_tnode *free_tnodes;$/;"	m	struct:yaffs_allocator	typeref:struct:yaffs_allocator::yaffs_tnode	file:
+gc_block	yaffs_guts.h	/^	unsigned gc_block;$/;"	m	struct:yaffs_dev
+gc_block_finder	yaffs_guts.h	/^	unsigned gc_block_finder;$/;"	m	struct:yaffs_dev
+gc_chunk	yaffs_guts.h	/^	unsigned gc_chunk;$/;"	m	struct:yaffs_dev
+gc_cleanup_list	yaffs_guts.h	/^	u32 *gc_cleanup_list;	\/* objects to delete at the end of a GC. *\/$/;"	m	struct:yaffs_dev
+gc_control	yaffs_guts.h	/^	unsigned (*gc_control) (struct yaffs_dev *dev);$/;"	m	struct:yaffs_param
+gc_dirtiest	yaffs_guts.h	/^	unsigned gc_dirtiest;$/;"	m	struct:yaffs_dev
+gc_disable	yaffs_guts.h	/^	unsigned gc_disable;$/;"	m	struct:yaffs_dev
+gc_not_done	yaffs_guts.h	/^	unsigned gc_not_done;$/;"	m	struct:yaffs_dev
+gc_pages_in_use	yaffs_guts.h	/^	unsigned gc_pages_in_use;$/;"	m	struct:yaffs_dev
+gc_prioritise	yaffs_guts.h	/^	u32 gc_prioritise:1;	\/* An ECC check or blank check has failed.$/;"	m	struct:yaffs_block_info
+gc_skip	yaffs_guts.h	/^	unsigned gc_skip;$/;"	m	struct:yaffs_dev
+gc_sum_tags	yaffs_guts.h	/^	struct yaffs_summary_tags *gc_sum_tags;$/;"	m	struct:yaffs_dev	typeref:struct:yaffs_dev::yaffs_summary_tags
+geo	mtd_glue.c	/^static  ynandif_Geometry geo;$/;"	v	file:
+get_mtd_partition	mtd_glue.c	/^struct mtd_partition* get_mtd_partition()$/;"	f
+get_mtd_partition_cnt	mtd_glue.c	/^int    get_mtd_partition_cnt()$/;"	f
+handleCount	yaffsfs.c	/^	int	handleCount:10;	\/* Number of handles for this fd *\/$/;"	m	struct:__anon2	file:
+hard_links	yaffs_guts.h	/^	struct list_head hard_links;	\/* hard linked object chain*\/$/;"	m	struct:yaffs_obj	typeref:struct:yaffs_obj::list_head
+hardlink_variant	yaffs_guts.h	/^	struct yaffs_hardlink_var hardlink_variant;$/;"	m	union:yaffs_obj_var	typeref:struct:yaffs_obj_var::yaffs_hardlink_var
+hasECC	yaffs_nandif.h	/^	unsigned hasECC;$/;"	m	struct:__anon7
+has_pending_prioritised_gc	yaffs_guts.h	/^	unsigned has_pending_prioritised_gc;	\/* We think this device might$/;"	m	struct:yaffs_dev
+has_shrink_hdr	yaffs_guts.h	/^	u32 has_shrink_hdr:1;	\/* This block has at least one shrink header *\/$/;"	m	struct:yaffs_block_info
+has_summary	yaffs_guts.h	/^	u32 has_summary:1;	\/* The block has a summary *\/$/;"	m	struct:yaffs_block_info
+has_xattr	yaffs_guts.h	/^	u8 has_xattr:1;		\/* This object has xattribs.$/;"	m	struct:yaffs_obj
+hash_link	yaffs_guts.h	/^	struct list_head hash_link;	\/* list of objects in hash bucket *\/$/;"	m	struct:yaffs_obj	typeref:struct:yaffs_obj::list_head
+hdr_chunk	yaffs_guts.h	/^	int hdr_chunk;$/;"	m	struct:yaffs_checkpt_obj
+hdr_chunk	yaffs_guts.h	/^	int hdr_chunk;$/;"	m	struct:yaffs_obj
+head	yaffs_guts.h	/^	u32 head;$/;"	m	struct:yaffs_checkpt_validity
+hweight32	ydirectenv.h	55;"	d
+hweight8	ydirectenv.h	54;"	d
+iObj	yaffsfs.c	/^	struct yaffs_obj *iObj;$/;"	m	struct:__anon1	typeref:struct:__anon1::yaffs_obj	file:
+ia_atime	yportenv.h	/^	unsigned ia_atime;$/;"	m	struct:iattr
+ia_attr_flags	yportenv.h	/^	unsigned int ia_attr_flags;$/;"	m	struct:iattr
+ia_ctime	yportenv.h	/^	unsigned ia_ctime;$/;"	m	struct:iattr
+ia_gid	yportenv.h	/^	unsigned ia_gid;$/;"	m	struct:iattr
+ia_mode	yportenv.h	/^	unsigned ia_mode;$/;"	m	struct:iattr
+ia_mtime	yportenv.h	/^	unsigned ia_mtime;$/;"	m	struct:iattr
+ia_size	yportenv.h	/^	unsigned ia_size;$/;"	m	struct:iattr
+ia_uid	yportenv.h	/^	unsigned ia_uid;$/;"	m	struct:iattr
+ia_valid	yportenv.h	/^	unsigned int ia_valid;$/;"	m	struct:iattr
+iattr	yportenv.h	/^struct iattr {$/;"	s
+in_use	yaffs_guts.h	/^	int in_use;$/;"	m	struct:yaffs_buffer
+inband_is_shrink	yaffs_guts.h	/^	u32 inband_is_shrink;$/;"	m	struct:yaffs_obj_hdr
+inband_shadowed_obj_id	yaffs_guts.h	/^	u32 inband_shadowed_obj_id;$/;"	m	struct:yaffs_obj_hdr
+inband_tags	yaffs_guts.h	/^	int inband_tags;	\/* Use unband tags *\/$/;"	m	struct:yaffs_param
+inband_tags	yaffs_nandif.h	/^	unsigned inband_tags;$/;"	m	struct:__anon7
+initialise	yaffs_nandif.h	/^	int (*initialise)(struct yaffs_dev *dev);$/;"	m	struct:__anon7
+initialise_flash_fn	yaffs_guts.h	/^	int (*initialise_flash_fn) (struct yaffs_dev *dev);$/;"	m	struct:yaffs_param
+inline	ydirectenv.h	65;"	d
+inline	ydirectenv.h	67;"	d
+inodeId	yaffsfs.c	/^	int	inodeId:12;	\/* Index to corresponding yaffsfs_Inode *\/$/;"	m	struct:__anon2	file:
+inode_list	yaffs_vfs.h	/^    list_entry_t inode_list;                        \/* inode linked-list *\/$/;"	m	struct:yaffs2_fs
+internal	yaffs_guts.h	/^	struct yaffs_tnode *internal[YAFFS_NTNODES_INTERNAL];$/;"	m	struct:yaffs_tnode	typeref:struct:yaffs_tnode::yaffs_tnode
+internal_end_block	yaffs_guts.h	/^	int internal_end_block;$/;"	m	struct:yaffs_dev
+internal_start_block	yaffs_guts.h	/^	int internal_start_block;$/;"	m	struct:yaffs_dev
+is_checkpointed	yaffs_guts.h	/^	int is_checkpointed;$/;"	m	struct:yaffs_dev
+is_deleted	yaffs_guts.h	/^	unsigned is_deleted;	\/* The chunk is marked deleted *\/$/;"	m	struct:yaffs_ext_tags
+is_mounted	yaffs_guts.h	/^	int is_mounted;$/;"	m	struct:yaffs_dev
+is_shadowed	yaffs_guts.h	/^	u8 is_shadowed:1;	\/* This object is shadowed on the way$/;"	m	struct:yaffs_obj
+is_shrink	yaffs_guts.h	/^	u32 is_shrink;$/;"	m	struct:yaffs_obj_hdr
+is_yaffs2	yaffs_guts.h	/^	int is_yaffs2;		\/* Use yaffs2 mode on this device *\/$/;"	m	struct:yaffs_param
+kfree	ydirectenv.h	71;"	d
+kmalloc	ydirectenv.h	70;"	d
+last_use	yaffs_guts.h	/^	int last_use;$/;"	m	struct:yaffs_cache
+lazy_loaded	yaffs_guts.h	/^	u8 lazy_loaded:1;	\/* This object has been lazy loaded and$/;"	m	struct:yaffs_obj
+line_parity	yaffs_ecc.h	/^	unsigned line_parity;$/;"	m	struct:yaffs_ecc_other
+line_parity_prime	yaffs_ecc.h	/^	unsigned line_parity_prime;$/;"	m	struct:yaffs_ecc_other
+list	yaffs_guts.h	/^	struct list_head list;$/;"	m	struct:yaffs_obj_bucket	typeref:struct:yaffs_obj_bucket::list_head
+list_entry	yaffs_list.h	109;"	d
+list_for_each	yaffs_list.h	117;"	d
+list_for_each_safe	yaffs_list.h	120;"	d
+list_head	yaffs_list.h	/^struct list_head {$/;"	s
+locked	yaffs_guts.h	/^	int locked;		\/* Can't push out or flush while locked. *\/$/;"	m	struct:yaffs_cache
+loff_t	ydirectenv.h	/^typedef unsigned long loff_t;$/;"	t
+lost_n_found	yaffs_guts.h	/^	struct yaffs_obj *lost_n_found;$/;"	m	struct:yaffs_dev	typeref:struct:yaffs_dev::yaffs_obj
+magic	yaffs_guts.h	/^	u32 magic;$/;"	m	struct:yaffs_checkpt_validity
+magic	yaffsfs.c	/^	u32 magic;$/;"	m	struct:__anon4	file:
+markBlockBad	yaffs_nandif.h	/^	int (*markBlockBad)(struct yaffs_dev *dev, unsigned blockId);$/;"	m	struct:__anon7
+max_objects	yaffs_guts.h	/^	int max_objects;	\/*$/;"	m	struct:yaffs_param
+max_temp	yaffs_guts.h	/^	int max_temp;$/;"	m	struct:yaffs_dev
+med3	yaffs_qsort.c	/^med3(char *a, char *b, char *c, int (*cmp)(const void *, const void *))$/;"	f	file:
+min	yaffs_qsort.c	79;"	d	file:
+modtime	yaffsfs.h	/^	unsigned long modtime;$/;"	m	struct:yaffs_utimbuf
+mount_partition	yaffs_vfs.c	/^static const char *mount_partition = "\/data";$/;"	v	file:
+mtd_check_block	mtd_glue.c	/^static int mtd_check_block(struct yaffs_dev *dev, unsigned blockId)$/;"	f	file:
+mtd_deinitialise	mtd_glue.c	/^static int mtd_deinitialise(struct yaffs_dev *dev)$/;"	f	file:
+mtd_erase_block	mtd_glue.c	/^static int mtd_erase_block(struct yaffs_dev *dev, unsigned blockId)$/;"	f	file:
+mtd_erase_partition	mtd_glue.c	/^void mtd_erase_partition(struct nand_chip*chip ,const char* name)$/;"	f
+mtd_initialise	mtd_glue.c	/^static int mtd_initialise(struct yaffs_dev *dev)$/;"	f	file:
+mtd_mark_block	mtd_glue.c	/^static int mtd_mark_block(struct yaffs_dev *dev, unsigned blockId)$/;"	f	file:
+mtd_read_page	mtd_glue.c	/^static int mtd_read_page(struct yaffs_dev *dev,$/;"	f	file:
+mtd_write_page	mtd_glue.c	/^static int mtd_write_page(struct yaffs_dev *dev, unsigned pageId, $/;"	f	file:
+my_dev	yaffs_guts.h	/^	struct yaffs_dev *my_dev;	\/* The device I'm on *\/$/;"	m	struct:yaffs_obj	typeref:struct:yaffs_obj::yaffs_dev
+my_inode	yaffs_guts.h	/^	void *my_inode;$/;"	m	struct:yaffs_obj
+nBlocks	yramsim.c	/^	int nBlocks;$/;"	m	struct:__anon6	file:
+n_bg_deletions	yaffs_guts.h	/^	int n_bg_deletions;	\/* Count of background deletions. *\/$/;"	m	struct:yaffs_checkpt_dev
+n_bg_deletions	yaffs_guts.h	/^	int n_bg_deletions;	\/* Count of background deletions. *\/$/;"	m	struct:yaffs_dev
+n_bytes	yaffs_guts.h	/^	int n_bytes;		\/* Only valid if the cache is dirty *\/$/;"	m	struct:yaffs_cache
+n_bytes	yaffs_guts.h	/^	unsigned n_bytes;	\/* Only valid for data chunks *\/$/;"	m	struct:yaffs_ext_tags
+n_bytes	yaffs_packedtags1.h	/^	unsigned n_bytes:10;$/;"	m	struct:yaffs_packed_tags1
+n_bytes	yaffs_packedtags2.h	/^	unsigned n_bytes;$/;"	m	struct:yaffs_packed_tags2_tags_only
+n_bytes	yaffs_summary.c	/^	unsigned n_bytes;$/;"	m	struct:yaffs_summary_tags	file:
+n_bytes_lsb	yaffs_guts.h	/^	unsigned n_bytes_lsb:10;$/;"	m	struct:yaffs_tags
+n_bytes_msb	yaffs_guts.h	/^	unsigned n_bytes_msb:2;$/;"	m	struct:yaffs_tags
+n_caches	yaffs_guts.h	/^	int n_caches;		\/* If <= 0, then short op caching is disabled,$/;"	m	struct:yaffs_param
+n_clean_ups	yaffs_guts.h	/^	u32 n_clean_ups;$/;"	m	struct:yaffs_dev
+n_data_chunks	yaffs_guts.h	/^	int n_data_chunks;	\/* Number of data chunks for this file. *\/$/;"	m	struct:yaffs_obj
+n_data_chunks	yaffs_guts.h	/^	int n_data_chunks;$/;"	m	struct:yaffs_checkpt_obj
+n_deleted_files	yaffs_guts.h	/^	int n_deleted_files;	\/* Count of files awaiting deletion; *\/$/;"	m	struct:yaffs_checkpt_dev
+n_deleted_files	yaffs_guts.h	/^	int n_deleted_files;	\/* Count of files awaiting deletion; *\/$/;"	m	struct:yaffs_dev
+n_deletions	yaffs_guts.h	/^	u32 n_deletions;$/;"	m	struct:yaffs_dev
+n_ecc_fixed	yaffs_guts.h	/^	u32 n_ecc_fixed;$/;"	m	struct:yaffs_dev
+n_ecc_unfixed	yaffs_guts.h	/^	u32 n_ecc_unfixed;$/;"	m	struct:yaffs_dev
+n_erase_failures	yaffs_guts.h	/^	u32 n_erase_failures;$/;"	m	struct:yaffs_dev
+n_erased_blocks	yaffs_guts.h	/^	int n_erased_blocks;$/;"	m	struct:yaffs_checkpt_dev
+n_erased_blocks	yaffs_guts.h	/^	int n_erased_blocks;$/;"	m	struct:yaffs_dev
+n_erasures	yaffs_guts.h	/^	u32 n_erasures;$/;"	m	struct:yaffs_dev
+n_free_chunks	yaffs_guts.h	/^	int n_free_chunks;$/;"	m	struct:yaffs_checkpt_dev
+n_free_chunks	yaffs_guts.h	/^	int n_free_chunks;$/;"	m	struct:yaffs_dev
+n_free_objects	yaffs_allocator.c	/^	int n_free_objects;$/;"	m	struct:yaffs_allocator	file:
+n_free_tnodes	yaffs_allocator.c	/^	int n_free_tnodes;$/;"	m	struct:yaffs_allocator	file:
+n_gc_blocks	yaffs_guts.h	/^	u32 n_gc_blocks;$/;"	m	struct:yaffs_dev
+n_gc_copies	yaffs_guts.h	/^	u32 n_gc_copies;$/;"	m	struct:yaffs_dev
+n_hardlinks	yaffs_guts.h	/^	int n_hardlinks;$/;"	m	struct:yaffs_dev
+n_obj	yaffs_guts.h	/^	int n_obj;$/;"	m	struct:yaffs_dev
+n_obj_created	yaffs_allocator.c	/^	int n_obj_created;$/;"	m	struct:yaffs_allocator	file:
+n_page_reads	yaffs_guts.h	/^	u32 n_page_reads;$/;"	m	struct:yaffs_dev
+n_page_writes	yaffs_guts.h	/^	u32 n_page_writes;$/;"	m	struct:yaffs_dev
+n_reserved_blocks	yaffs_guts.h	/^	int n_reserved_blocks;	\/* Tuneable so that we can reduce$/;"	m	struct:yaffs_param
+n_retired_blocks	yaffs_guts.h	/^	u32 n_retired_blocks;$/;"	m	struct:yaffs_dev
+n_retried_writes	yaffs_guts.h	/^	u32 n_retried_writes;$/;"	m	struct:yaffs_dev
+n_tags_ecc_fixed	yaffs_guts.h	/^	u32 n_tags_ecc_fixed;$/;"	m	struct:yaffs_dev
+n_tags_ecc_unfixed	yaffs_guts.h	/^	u32 n_tags_ecc_unfixed;$/;"	m	struct:yaffs_dev
+n_tnodes	yaffs_guts.h	/^	int n_tnodes;$/;"	m	struct:yaffs_dev
+n_tnodes_created	yaffs_allocator.c	/^	int n_tnodes_created;$/;"	m	struct:yaffs_allocator	file:
+n_unlinked_files	yaffs_guts.h	/^	int n_unlinked_files;	\/* Count of unlinked files. *\/$/;"	m	struct:yaffs_checkpt_dev
+n_unlinked_files	yaffs_guts.h	/^	int n_unlinked_files;	\/* Count of unlinked files. *\/$/;"	m	struct:yaffs_dev
+n_unmarked_deletions	yaffs_guts.h	/^	u32 n_unmarked_deletions;$/;"	m	struct:yaffs_dev
+name	yaffs_guts.h	/^	YCHAR name[YAFFS_MAX_NAME_LENGTH + 1];$/;"	m	struct:yaffs_obj_hdr
+name	yaffs_guts.h	/^	const YCHAR *name;$/;"	m	struct:yaffs_param
+name	yaffs_guts.h	/^	const YCHAR *name;$/;"	m	struct:yaffs_xattr_mod
+name	yaffsfs.c	/^	YCHAR name[NAME_MAX+1];		\/* name of directory being searched *\/$/;"	m	struct:__anon4	file:
+needs_retiring	yaffs_guts.h	/^	u32 needs_retiring:1;	\/* Data has failed on this block, *\/$/;"	m	struct:yaffs_block_info
+next	yaffs_allocator.c	/^	struct yaffs_obj_list *next;$/;"	m	struct:yaffs_obj_list	typeref:struct:yaffs_obj_list::yaffs_obj_list	file:
+next	yaffs_allocator.c	/^	struct yaffs_tnode_list *next;$/;"	m	struct:yaffs_tnode_list	typeref:struct:yaffs_tnode_list::yaffs_tnode_list	file:
+next	yaffs_guts.h	/^	struct yaffs_shadow_fixer *next;$/;"	m	struct:yaffs_shadow_fixer	typeref:struct:yaffs_shadow_fixer::yaffs_shadow_fixer
+next	yaffs_list.h	/^	struct list_head *next; \/* next in chain *\/$/;"	m	struct:list_head	typeref:struct:list_head::list_head
+nextReturn	yaffsfs.c	/^        struct yaffs_obj *nextReturn;       \/* obj to be returned by next readddir *\/$/;"	m	struct:__anon4	typeref:struct:__anon4::yaffs_obj	file:
+no_tags_ecc	yaffs_guts.h	/^	int no_tags_ecc;	\/* Flag to decide whether or not to do ECC$/;"	m	struct:yaffs_param
+nval_del	yaffs_nameval.c	/^int nval_del(char *xb, int xb_size, const YCHAR *name)$/;"	f
+nval_find	yaffs_nameval.c	/^static int nval_find(const char *xb, int xb_size, const YCHAR *name,$/;"	f	file:
+nval_get	yaffs_nameval.c	/^int nval_get(const char *xb, int xb_size, const YCHAR * name, char *buf,$/;"	f
+nval_hasvalues	yaffs_nameval.c	/^int nval_hasvalues(const char *xb, int xb_size)$/;"	f
+nval_list	yaffs_nameval.c	/^int nval_list(const char *xb, int xb_size, char *buf, int bsize)$/;"	f
+nval_set	yaffs_nameval.c	/^int nval_set(char *xb, int xb_size, const YCHAR *name, const char *buf,$/;"	f
+nval_used	yaffs_nameval.c	/^static int nval_used(const char *xb, int xb_size)$/;"	f	file:
+obj	yaffs_vfs.h	/^  struct yaffs_obj * obj;$/;"	m	struct:yaffs2_inode	typeref:struct:yaffs2_inode::yaffs_obj
+obj_bucket	yaffs_guts.h	/^	struct yaffs_obj_bucket obj_bucket[YAFFS_NOBJECT_BUCKETS];$/;"	m	struct:yaffs_dev	typeref:struct:yaffs_dev::yaffs_obj_bucket
+obj_id	yaffs_guts.h	/^	int obj_id;$/;"	m	struct:yaffs_shadow_fixer
+obj_id	yaffs_guts.h	/^	u32 obj_id;		\/* the object id value *\/$/;"	m	struct:yaffs_obj
+obj_id	yaffs_guts.h	/^	u32 obj_id;$/;"	m	struct:yaffs_checkpt_obj
+obj_id	yaffs_guts.h	/^	unsigned obj_id:18;$/;"	m	struct:yaffs_tags
+obj_id	yaffs_guts.h	/^	unsigned obj_id;	\/* If 0 this is not used *\/$/;"	m	struct:yaffs_ext_tags
+obj_id	yaffs_packedtags1.h	/^	unsigned obj_id:18;$/;"	m	struct:yaffs_packed_tags1
+obj_id	yaffs_packedtags2.h	/^	unsigned obj_id;$/;"	m	struct:yaffs_packed_tags2_tags_only
+obj_id	yaffs_summary.c	/^	unsigned obj_id;$/;"	m	struct:yaffs_summary_tags	file:
+object	yaffs_guts.h	/^	struct yaffs_obj *object;$/;"	m	struct:yaffs_cache	typeref:struct:yaffs_cache::yaffs_obj
+objects	yaffs_allocator.c	/^	struct yaffs_obj *objects;$/;"	m	struct:yaffs_obj_list	typeref:struct:yaffs_obj_list::yaffs_obj	file:
+offset	yaffsfs.c	/^        int offset;$/;"	m	struct:__anon4	file:
+oldest_dirty_block	yaffs_guts.h	/^	unsigned oldest_dirty_block;$/;"	m	struct:yaffs_dev
+oldest_dirty_gc_count	yaffs_guts.h	/^	u32 oldest_dirty_gc_count;$/;"	m	struct:yaffs_dev
+oldest_dirty_seq	yaffs_guts.h	/^	unsigned oldest_dirty_seq;$/;"	m	struct:yaffs_dev
+os_context	yaffs_guts.h	/^	void *os_context;$/;"	m	struct:yaffs_dev
+others	yaffsfs.c	/^        struct list_head others;$/;"	m	struct:__anon4	typeref:struct:__anon4::list_head	file:
+page	yramsim.c	/^	unsigned char page[PAGES_PER_BLOCK][PAGE_SIZE];$/;"	m	struct:__anon5	file:
+page_status	yaffs_guts.h	/^	u8 page_status;		\/* set to 0 to delete the chunk *\/$/;"	m	struct:yaffs_spare
+pagesPerBlock	yaffs_nandif.h	/^	unsigned pagesPerBlock;$/;"	m	struct:__anon7
+pages_in_use	yaffs_guts.h	/^	int pages_in_use:10;	\/* number of pages in use *\/$/;"	m	struct:yaffs_block_info
+param	yaffs_guts.h	/^	struct yaffs_param param;$/;"	m	struct:yaffs_dev	typeref:struct:yaffs_dev::yaffs_param
+parent	yaffs_guts.h	/^	struct yaffs_obj *parent;$/;"	m	struct:yaffs_obj	typeref:struct:yaffs_obj::yaffs_obj
+parent_id	yaffs_guts.h	/^	u32 parent_id;$/;"	m	struct:yaffs_checkpt_obj
+parent_obj_id	yaffs_guts.h	/^	int parent_obj_id;$/;"	m	struct:yaffs_obj_hdr
+partition	mtd_glue.c	/^static struct mtd_partition partition[] = {$/;"	v	typeref:struct:mtd_partition	file:
+passive_gc_count	yaffs_guts.h	/^	u32 passive_gc_count;$/;"	m	struct:yaffs_dev
+position	yaffsfs.c	/^	loff_t	position;		\/* current position in file *\/$/;"	m	struct:__anon2	file:
+prefix	yaffscfg.h	/^	const YCHAR *prefix;$/;"	m	struct:yaffsfs_DeviceConfigurationStruct
+prev	yaffs_list.h	/^	struct list_head *prev; \/* previous in chain *\/$/;"	m	struct:list_head	typeref:struct:list_head::list_head
+printf	yportenv.h	337;"	d
+privateData	yaffs_nandif.h	/^	void *privateData;$/;"	m	struct:__anon7
+query_block_fn	yaffs_guts.h	/^	int (*query_block_fn) (struct yaffs_dev *dev, int block_no,$/;"	m	struct:yaffs_param
+readChunk	yaffs_nandif.h	/^	int (*readChunk) (struct yaffs_dev *dev,$/;"	m	struct:__anon7
+read_chunk_fn	yaffs_guts.h	/^	int (*read_chunk_fn) (struct yaffs_dev *dev,$/;"	m	struct:yaffs_param
+read_chunk_tags_fn	yaffs_guts.h	/^	int (*read_chunk_tags_fn) (struct yaffs_dev *dev,$/;"	m	struct:yaffs_param
+read_only	yaffs_guts.h	/^	int read_only;$/;"	m	struct:yaffs_dev
+reading	yaffsfs.c	/^	u8 	reading:1;$/;"	m	struct:__anon2	file:
+refresh_count	yaffs_guts.h	/^	u32 refresh_count;$/;"	m	struct:yaffs_dev
+refresh_period	yaffs_guts.h	/^	int refresh_period;	\/* How often to check for a block refresh *\/$/;"	m	struct:yaffs_param
+refresh_skip	yaffs_guts.h	/^	int refresh_skip;	\/* A skip down counter.$/;"	m	struct:yaffs_dev
+remove_obj_fn	yaffs_guts.h	/^	void (*remove_obj_fn) (struct yaffs_obj *obj);$/;"	m	struct:yaffs_param
+rename_allowed	yaffs_guts.h	/^	u8 rename_allowed:1;	\/* Some objects cannot be renamed. *\/$/;"	m	struct:yaffs_obj
+rename_allowed	yaffs_guts.h	/^	u8 rename_allowed:1;$/;"	m	struct:yaffs_checkpt_obj
+reserved	yaffs_guts.h	/^	u32 reserved[1];$/;"	m	struct:yaffs_obj_hdr
+result	yaffs_guts.h	/^	int result;$/;"	m	struct:yaffs_xattr_mod
+root_dir	yaffs_guts.h	/^	struct yaffs_obj *root_dir;$/;"	m	struct:yaffs_dev	typeref:struct:yaffs_dev::yaffs_obj
+sb_dirty_fn	yaffs_guts.h	/^	void (*sb_dirty_fn) (struct yaffs_dev *dev);$/;"	m	struct:yaffs_param
+scanned_size	yaffs_guts.h	/^	loff_t scanned_size;$/;"	m	struct:yaffs_file_var
+search_contexts	yaffsfs.c	/^static struct list_head search_contexts;$/;"	v	typeref:struct:list_head	file:
+seq	yaffs_summary.c	/^	unsigned seq;		\/* Must be this sequence number *\/$/;"	m	struct:yaffs_summary_header	file:
+seq	yaffs_yaffs2.c	/^	int seq;$/;"	m	struct:yaffs_block_index	file:
+seq_number	yaffs_guts.h	/^	u32 seq_number;		\/* block sequence number for yaffs2 *\/$/;"	m	struct:yaffs_block_info
+seq_number	yaffs_guts.h	/^	unsigned seq_number;	\/* Sequence number of currently$/;"	m	struct:yaffs_checkpt_dev
+seq_number	yaffs_guts.h	/^	unsigned seq_number;	\/* Sequence number of currently$/;"	m	struct:yaffs_dev
+seq_number	yaffs_guts.h	/^	unsigned seq_number;	\/* The sequence number of this block *\/$/;"	m	struct:yaffs_ext_tags
+seq_number	yaffs_packedtags2.h	/^	unsigned seq_number;$/;"	m	struct:yaffs_packed_tags2_tags_only
+serial	yaffs_guts.h	/^	u8 serial;		\/* serial number of chunk in NAND.*\/$/;"	m	struct:yaffs_obj
+serial	yaffs_guts.h	/^	u8 serial;$/;"	m	struct:yaffs_checkpt_obj
+serial_number	yaffs_guts.h	/^	unsigned serial_number:2;$/;"	m	struct:yaffs_tags
+serial_number	yaffs_guts.h	/^	unsigned serial_number;	\/* Yaffs1 2-bit serial number *\/$/;"	m	struct:yaffs_ext_tags
+serial_number	yaffs_packedtags1.h	/^	unsigned serial_number:2;$/;"	m	struct:yaffs_packed_tags1
+set	yaffs_guts.h	/^	int set;		\/* If 0 then this is a deletion *\/$/;"	m	struct:yaffs_xattr_mod
+shadowed_id	yaffs_guts.h	/^	int shadowed_id;$/;"	m	struct:yaffs_shadow_fixer
+shadows_obj	yaffs_guts.h	/^	int shadows_obj;	\/* This object header shadows the$/;"	m	struct:yaffs_obj_hdr
+shareRead	yaffsfs.c	/^	u8	shareRead:1;$/;"	m	struct:__anon2	file:
+shareWrite	yaffsfs.c	/^	u8	shareWrite:1;$/;"	m	struct:__anon2	file:
+short_name	yaffs_guts.h	/^	YCHAR short_name[YAFFS_SHORT_NAME_LENGTH + 1];$/;"	m	struct:yaffs_obj
+should_be_ff	yaffs_packedtags1.h	/^	unsigned should_be_ff;$/;"	m	struct:yaffs_packed_tags1
+shrink_size	yaffs_guts.h	/^	loff_t shrink_size;$/;"	m	struct:yaffs_file_var
+siblings	yaffs_guts.h	/^	struct list_head siblings;$/;"	m	struct:yaffs_obj	typeref:struct:yaffs_obj::list_head
+simDevs	yramsim.c	/^SimData *simDevs[N_RAM_SIM_DEVS];$/;"	v
+size	yaffs_guts.h	/^	int size;$/;"	m	struct:yaffs_xattr_mod
+size_or_equiv_obj	yaffs_guts.h	/^	loff_t size_or_equiv_obj;$/;"	m	struct:yaffs_checkpt_obj
+skip_checkpt_rd	yaffs_guts.h	/^	u8 skip_checkpt_rd;$/;"	m	struct:yaffs_param
+skip_checkpt_wr	yaffs_guts.h	/^	u8 skip_checkpt_wr;$/;"	m	struct:yaffs_param
+skip_erased_check	yaffs_guts.h	/^	u32 skip_erased_check:1;\/* Skip the erased check on this block *\/$/;"	m	struct:yaffs_block_info
+soft_del	yaffs_guts.h	/^	u8 soft_del:1;		\/* it has also been soft deleted *\/$/;"	m	struct:yaffs_obj
+soft_del	yaffs_guts.h	/^	u8 soft_del:1;$/;"	m	struct:yaffs_checkpt_obj
+soft_del_pages	yaffs_guts.h	/^	int soft_del_pages:10;	\/* number of soft deleted pages *\/$/;"	m	struct:yaffs_block_info
+sort	ydirectenv.h	60;"	d
+spare	yaffs_guts.h	/^	struct yaffs_spare spare;$/;"	m	struct:yaffs_nand_spare	typeref:struct:yaffs_nand_spare::yaffs_spare
+spareSize	yaffs_nandif.h	/^	unsigned spareSize;$/;"	m	struct:__anon7
+spare_bytes_per_chunk	yaffs_guts.h	/^	int spare_bytes_per_chunk;	\/* spare area size *\/$/;"	m	struct:yaffs_param
+st_blksize	yaffsfs.h	/^    unsigned long st_blksize;  \/* blocksize for filesystem I\/O *\/$/;"	m	struct:yaffs_stat
+st_blocks	yaffsfs.h	/^    unsigned long st_blocks;   \/* number of blocks allocated *\/$/;"	m	struct:yaffs_stat
+st_dev	yaffsfs.h	/^    int		  st_dev;      \/* device *\/$/;"	m	struct:yaffs_stat
+st_gid	yaffsfs.h	/^    int           st_gid;      \/* group ID of owner *\/$/;"	m	struct:yaffs_stat
+st_ino	yaffsfs.h	/^    int           st_ino;      \/* inode *\/$/;"	m	struct:yaffs_stat
+st_mode	yaffsfs.h	/^    unsigned      st_mode;     \/* protection *\/$/;"	m	struct:yaffs_stat
+st_nlink	yaffsfs.h	/^    int           st_nlink;    \/* number of hard links *\/$/;"	m	struct:yaffs_stat
+st_rdev	yaffsfs.h	/^    unsigned      st_rdev;     \/* device type (if inode device) *\/$/;"	m	struct:yaffs_stat
+st_size	yaffsfs.h	/^    loff_t         st_size;     \/* total size, in bytes *\/$/;"	m	struct:yaffs_stat
+st_uid	yaffsfs.h	/^    int           st_uid;      \/* user ID of owner *\/$/;"	m	struct:yaffs_stat
+start_block	yaffs_guts.h	/^	int start_block;	\/* Start block we're allowed to use *\/$/;"	m	struct:yaffs_param
+start_block	yaffs_nandif.h	/^	unsigned start_block;$/;"	m	struct:__anon7
+struct_type	yaffs_guts.h	/^	int struct_type;$/;"	m	struct:yaffs_checkpt_dev
+struct_type	yaffs_guts.h	/^	int struct_type;$/;"	m	struct:yaffs_checkpt_obj
+struct_type	yaffs_guts.h	/^	int struct_type;$/;"	m	struct:yaffs_checkpt_validity
+sum	yaffs_guts.h	/^	u16 sum;		\/* sum of the name to speed searching *\/$/;"	m	struct:yaffs_obj
+sum	yaffs_summary.c	/^	unsigned sum;		\/* Just add up all the bytes in the tags *\/$/;"	m	struct:yaffs_summary_header	file:
+sum_no_longer_used	yaffs_guts.h	/^	u16 sum_no_longer_used;	\/* checksum of name. No longer used *\/$/;"	m	struct:yaffs_obj_hdr
+sum_tags	yaffs_guts.h	/^	struct yaffs_summary_tags *sum_tags;$/;"	m	struct:yaffs_dev	typeref:struct:yaffs_dev::yaffs_summary_tags
+summary_used	yaffs_guts.h	/^	u32 summary_used;$/;"	m	struct:yaffs_dev
+swapcode	yaffs_qsort.c	36;"	d	file:
+swapfunc	yaffs_qsort.c	/^swapfunc(char *a, char *b, int n, int swaptype)$/;"	f	file:
+symlink_variant	yaffs_guts.h	/^	struct yaffs_symlink_var symlink_variant;$/;"	m	union:yaffs_obj_var	typeref:struct:yaffs_obj_var::yaffs_symlink_var
+t	yaffs_packedtags2.h	/^	struct yaffs_packed_tags2_tags_only t;$/;"	m	struct:yaffs_packed_tags2	typeref:struct:yaffs_packed_tags2::yaffs_packed_tags2_tags_only
+tags_9bytes	yaffs_guts.h	/^        int tags_9bytes;	\/* Use 9 byte tags *\/$/;"	m	struct:yaffs_param
+tags_used	yaffs_guts.h	/^	u32 tags_used;$/;"	m	struct:yaffs_dev
+tb0	yaffs_guts.h	/^	u8 tb0;$/;"	m	struct:yaffs_spare
+tb1	yaffs_guts.h	/^	u8 tb1;$/;"	m	struct:yaffs_spare
+tb2	yaffs_guts.h	/^	u8 tb2;$/;"	m	struct:yaffs_spare
+tb3	yaffs_guts.h	/^	u8 tb3;$/;"	m	struct:yaffs_spare
+tb4	yaffs_guts.h	/^	u8 tb4;$/;"	m	struct:yaffs_spare
+tb5	yaffs_guts.h	/^	u8 tb5;$/;"	m	struct:yaffs_spare
+tb6	yaffs_guts.h	/^	u8 tb6;$/;"	m	struct:yaffs_spare
+tb7	yaffs_guts.h	/^	u8 tb7;$/;"	m	struct:yaffs_spare
+temp_buffer	yaffs_guts.h	/^	struct yaffs_buffer temp_buffer[YAFFS_N_TEMP_BUFFERS];$/;"	m	struct:yaffs_dev	typeref:struct:yaffs_dev::yaffs_buffer
+temp_in_use	yaffs_guts.h	/^	int temp_in_use;$/;"	m	struct:yaffs_dev
+text	yaffs_error.c	/^  char * text;  $/;"	m	struct:error_entry	file:
+tnode_mask	yaffs_guts.h	/^	u32 tnode_mask;$/;"	m	struct:yaffs_dev
+tnode_size	yaffs_guts.h	/^	u32 tnode_size;$/;"	m	struct:yaffs_dev
+tnode_width	yaffs_guts.h	/^	u32 tnode_width;$/;"	m	struct:yaffs_dev
+tnodes	yaffs_allocator.c	/^	struct yaffs_tnode *tnodes;$/;"	m	struct:yaffs_tnode_list	typeref:struct:yaffs_tnode_list::yaffs_tnode	file:
+top	yaffs_guts.h	/^	struct yaffs_tnode *top;$/;"	m	struct:yaffs_file_var	typeref:struct:yaffs_file_var::yaffs_tnode
+top_level	yaffs_guts.h	/^	int top_level;$/;"	m	struct:yaffs_file_var
+total_bytes_per_chunk	yaffs_guts.h	/^	u32 total_bytes_per_chunk;	\/* Should be >= 512, does not need to$/;"	m	struct:yaffs_param
+type	yaffs_guts.h	/^	enum yaffs_obj_type type;$/;"	m	struct:yaffs_obj_hdr	typeref:enum:yaffs_obj_hdr::yaffs_obj_type
+type	yaffs_vfs.h	/^  int type;$/;"	m	struct:yaffs2_inode
+u16	yportenv.h	/^typedef unsigned short u16;$/;"	t
+u32	yportenv.h	/^typedef unsigned u32;$/;"	t
+u8	yportenv.h	/^typedef unsigned char u8;$/;"	t
+unlink_allowed	yaffs_guts.h	/^	u8 unlink_allowed:1;$/;"	m	struct:yaffs_checkpt_obj
+unlink_allowed	yaffs_guts.h	/^	u8 unlink_allowed:1;$/;"	m	struct:yaffs_obj
+unlinked	yaffs_guts.h	/^	u8 unlinked:1;		\/* An unlinked file.*\/$/;"	m	struct:yaffs_obj
+unlinked	yaffs_guts.h	/^	u8 unlinked:1;$/;"	m	struct:yaffs_checkpt_obj
+unlinked_deletion	yaffs_guts.h	/^	struct yaffs_obj *unlinked_deletion;	\/* Current file being$/;"	m	struct:yaffs_dev	typeref:struct:yaffs_dev::yaffs_obj
+unlinked_dir	yaffs_guts.h	/^	struct yaffs_obj *unlinked_dir;	\/* Directory where unlinked and deleted$/;"	m	struct:yaffs_dev	typeref:struct:yaffs_dev::yaffs_obj
+unmanaged_buffer_allocs	yaffs_guts.h	/^	int unmanaged_buffer_allocs;$/;"	m	struct:yaffs_dev
+unmanaged_buffer_deallocs	yaffs_guts.h	/^	int unmanaged_buffer_deallocs;$/;"	m	struct:yaffs_dev
+unused_stuff	yaffs_packedtags1.h	/^	unsigned unused_stuff:1;$/;"	m	struct:yaffs_packed_tags1
+useCount	yaffsfs.c	/^	short int useCount;$/;"	m	struct:__anon3	file:
+useYaffs2	yaffs_nandif.h	/^	unsigned useYaffs2;$/;"	m	struct:__anon7
+use_header_file_size	yaffs_guts.h	/^	int use_header_file_size;	\/* Flag to determine if we should use$/;"	m	struct:yaffs_param
+use_nand_ecc	yaffs_guts.h	/^	int use_nand_ecc;	\/* Flag to decide whether or not to use$/;"	m	struct:yaffs_param
+valid	yaffs_guts.h	/^	u8 valid:1;		\/* When the file system is being loaded up, this$/;"	m	struct:yaffs_obj
+variant	yaffs_guts.h	/^	union yaffs_obj_var variant;$/;"	m	struct:yaffs_obj	typeref:union:yaffs_obj::yaffs_obj_var
+variant_type	yaffs_guts.h	/^	enum yaffs_obj_type variant_type:3;$/;"	m	struct:yaffs_checkpt_obj	typeref:enum:yaffs_checkpt_obj::yaffs_obj_type
+variant_type	yaffs_guts.h	/^	enum yaffs_obj_type variant_type;$/;"	m	struct:yaffs_obj	typeref:enum:yaffs_obj::yaffs_obj_type
+vecswap	yaffs_qsort.c	68;"	d	file:
+version	yaffs_guts.h	/^	u32 version;$/;"	m	struct:yaffs_checkpt_validity
+version	yaffs_summary.c	/^	unsigned version;	\/* Must match current version *\/$/;"	m	struct:yaffs_summary_header	file:
+vfree	ydirectenv.h	73;"	d
+vmalloc	ydirectenv.h	72;"	d
+wide_tnodes_disabled	yaffs_guts.h	/^	int wide_tnodes_disabled;	\/* Set to disable wide tnodes *\/$/;"	m	struct:yaffs_param
+win_atime	yaffs_guts.h	/^	u32 win_atime[2];$/;"	m	struct:yaffs_obj
+win_atime	yaffs_guts.h	/^	u32 win_atime[2];$/;"	m	struct:yaffs_obj_hdr
+win_ctime	yaffs_guts.h	/^	u32 win_ctime[2];$/;"	m	struct:yaffs_obj
+win_ctime	yaffs_guts.h	/^	u32 win_ctime[2];$/;"	m	struct:yaffs_obj_hdr
+win_mtime	yaffs_guts.h	/^	u32 win_mtime[2];$/;"	m	struct:yaffs_obj
+win_mtime	yaffs_guts.h	/^	u32 win_mtime[2];$/;"	m	struct:yaffs_obj_hdr
+writeChunk	yaffs_nandif.h	/^	int (*writeChunk)(struct yaffs_dev *dev,$/;"	m	struct:__anon7
+write_chunk_fn	yaffs_guts.h	/^	int (*write_chunk_fn) (struct yaffs_dev *dev,$/;"	m	struct:yaffs_param
+write_chunk_tags_fn	yaffs_guts.h	/^	int (*write_chunk_tags_fn) (struct yaffs_dev *dev,$/;"	m	struct:yaffs_param
+writing	yaffsfs.c	/^	u8 	writing:1;$/;"	m	struct:__anon2	file:
+xattr_known	yaffs_guts.h	/^	u8 xattr_known:1;	\/* We know if this has object has xattribs$/;"	m	struct:yaffs_obj
+yaffs1_scan	yaffs_yaffs1.c	/^int yaffs1_scan(struct yaffs_dev *dev)$/;"	f
+yaffs2_checkpt_find_block	yaffs_checkptrw.c	/^static void yaffs2_checkpt_find_block(struct yaffs_dev *dev)$/;"	f	file:
+yaffs2_checkpt_find_erased_block	yaffs_checkptrw.c	/^static void yaffs2_checkpt_find_erased_block(struct yaffs_dev *dev)$/;"	f	file:
+yaffs2_checkpt_flush_buffer	yaffs_checkptrw.c	/^static int yaffs2_checkpt_flush_buffer(struct yaffs_dev *dev)$/;"	f	file:
+yaffs2_checkpt_invalidate	yaffs_yaffs2.c	/^void yaffs2_checkpt_invalidate(struct yaffs_dev *dev)$/;"	f
+yaffs2_checkpt_invalidate_stream	yaffs_checkptrw.c	/^int yaffs2_checkpt_invalidate_stream(struct yaffs_dev *dev)$/;"	f
+yaffs2_checkpt_obj_to_obj	yaffs_yaffs2.c	/^static int yaffs2_checkpt_obj_to_obj(struct yaffs_obj *obj,$/;"	f	file:
+yaffs2_checkpt_open	yaffs_checkptrw.c	/^int yaffs2_checkpt_open(struct yaffs_dev *dev, int writing)$/;"	f
+yaffs2_checkpt_rd	yaffs_checkptrw.c	/^int yaffs2_checkpt_rd(struct yaffs_dev *dev, void *data, int n_bytes)$/;"	f
+yaffs2_checkpt_required	yaffs_yaffs2.c	/^int yaffs2_checkpt_required(struct yaffs_dev *dev)$/;"	f
+yaffs2_checkpt_restore	yaffs_yaffs2.c	/^int yaffs2_checkpt_restore(struct yaffs_dev *dev)$/;"	f
+yaffs2_checkpt_space_ok	yaffs_checkptrw.c	/^static int yaffs2_checkpt_space_ok(struct yaffs_dev *dev)$/;"	f	file:
+yaffs2_checkpt_tnode_worker	yaffs_yaffs2.c	/^static int yaffs2_checkpt_tnode_worker(struct yaffs_obj *in,$/;"	f	file:
+yaffs2_checkpt_wr	yaffs_checkptrw.c	/^int yaffs2_checkpt_wr(struct yaffs_dev *dev, const void *data, int n_bytes)$/;"	f
+yaffs2_clear_oldest_dirty_seq	yaffs_yaffs2.c	/^void yaffs2_clear_oldest_dirty_seq(struct yaffs_dev *dev,$/;"	f
+yaffs2_dev_to_checkpt_dev	yaffs_yaffs2.c	/^static void yaffs2_dev_to_checkpt_dev(struct yaffs_checkpt_dev *cp,$/;"	f	file:
+yaffs2_find_oldest_dirty_seq	yaffs_yaffs2.c	/^void yaffs2_find_oldest_dirty_seq(struct yaffs_dev *dev)$/;"	f
+yaffs2_find_refresh_block	yaffs_yaffs2.c	/^u32 yaffs2_find_refresh_block(struct yaffs_dev *dev)$/;"	f
+yaffs2_fs	yaffs_vfs.h	/^struct yaffs2_fs {$/;"	s
+yaffs2_get_checkpt_sum	yaffs_checkptrw.c	/^int yaffs2_get_checkpt_sum(struct yaffs_dev *dev, u32 * sum)$/;"	f
+yaffs2_handle_hole	yaffs_yaffs2.c	/^int yaffs2_handle_hole(struct yaffs_obj *obj, loff_t new_size)$/;"	f
+yaffs2_inode	yaffs_vfs.h	/^struct yaffs2_inode{$/;"	s
+yaffs2_obj_checkpt_obj	yaffs_yaffs2.c	/^static void yaffs2_obj_checkpt_obj(struct yaffs_checkpt_obj *cp,$/;"	f	file:
+yaffs2_rd_checkpt_data	yaffs_yaffs2.c	/^static int yaffs2_rd_checkpt_data(struct yaffs_dev *dev)$/;"	f	file:
+yaffs2_rd_checkpt_dev	yaffs_yaffs2.c	/^static int yaffs2_rd_checkpt_dev(struct yaffs_dev *dev)$/;"	f	file:
+yaffs2_rd_checkpt_objs	yaffs_yaffs2.c	/^static int yaffs2_rd_checkpt_objs(struct yaffs_dev *dev)$/;"	f	file:
+yaffs2_rd_checkpt_sum	yaffs_yaffs2.c	/^static int yaffs2_rd_checkpt_sum(struct yaffs_dev *dev)$/;"	f	file:
+yaffs2_rd_checkpt_tnodes	yaffs_yaffs2.c	/^static int yaffs2_rd_checkpt_tnodes(struct yaffs_obj *obj)$/;"	f	file:
+yaffs2_rd_checkpt_validity_marker	yaffs_yaffs2.c	/^static int yaffs2_rd_checkpt_validity_marker(struct yaffs_dev *dev, int head)$/;"	f	file:
+yaffs2_scan_backwards	yaffs_yaffs2.c	/^int yaffs2_scan_backwards(struct yaffs_dev *dev)$/;"	f
+yaffs2_scan_chunk	yaffs_yaffs2.c	/^static inline int yaffs2_scan_chunk(struct yaffs_dev *dev,$/;"	f	file:
+yaffs2_update_oldest_dirty_seq	yaffs_yaffs2.c	/^void yaffs2_update_oldest_dirty_seq(struct yaffs_dev *dev, unsigned block_no,$/;"	f
+yaffs2_wr_checkpt_data	yaffs_yaffs2.c	/^static int yaffs2_wr_checkpt_data(struct yaffs_dev *dev)$/;"	f	file:
+yaffs2_wr_checkpt_dev	yaffs_yaffs2.c	/^static int yaffs2_wr_checkpt_dev(struct yaffs_dev *dev)$/;"	f	file:
+yaffs2_wr_checkpt_objs	yaffs_yaffs2.c	/^static int yaffs2_wr_checkpt_objs(struct yaffs_dev *dev)$/;"	f	file:
+yaffs2_wr_checkpt_sum	yaffs_yaffs2.c	/^static int yaffs2_wr_checkpt_sum(struct yaffs_dev *dev)$/;"	f	file:
+yaffs2_wr_checkpt_tnodes	yaffs_yaffs2.c	/^static int yaffs2_wr_checkpt_tnodes(struct yaffs_obj *obj)$/;"	f	file:
+yaffs2_wr_checkpt_validity_marker	yaffs_yaffs2.c	/^static int yaffs2_wr_checkpt_validity_marker(struct yaffs_dev *dev, int head)$/;"	f	file:
+yaffs2_ybicmp	yaffs_yaffs2.c	/^static int yaffs2_ybicmp(const void *a, const void *b)$/;"	f	file:
+yaffsDev	mtd_glue.c	/^static struct yaffs_dev yaffsDev[PARTITION_CNT];$/;"	v	typeref:struct:yaffs_dev	file:
+yaffs_DIR	yaffsfs.h	/^typedef struct __opaque yaffs_DIR;$/;"	t	typeref:struct:__opaque
+yaffs_Dofsync	yaffsfs.c	/^int yaffs_Dofsync(int handle,int datasync)$/;"	f
+yaffs_access	yaffsfs.c	/^int yaffs_access(const YCHAR *path, int amode)$/;"	f
+yaffs_add_dev_from_geometry	yaffs_nandif.c	/^	yaffs_add_dev_from_geometry(struct yaffs_dev* dev, const YCHAR *name,$/;"	f
+yaffs_add_device	yaffsfs.c	/^void yaffs_add_device(struct yaffs_dev *dev)$/;"	f
+yaffs_add_find_tnode_0	yaffs_guts.c	/^struct yaffs_tnode *yaffs_add_find_tnode_0(struct yaffs_dev *dev,$/;"	f
+yaffs_add_obj_to_dir	yaffs_guts.c	/^void yaffs_add_obj_to_dir(struct yaffs_obj *directory, struct yaffs_obj *obj)$/;"	f
+yaffs_addr_to_chunk	yaffs_guts.c	/^void yaffs_addr_to_chunk(struct yaffs_dev *dev, loff_t addr,$/;"	f
+yaffs_alloc_chunk	yaffs_guts.c	/^static int yaffs_alloc_chunk(struct yaffs_dev *dev, int use_reserver,$/;"	f	file:
+yaffs_alloc_empty_obj	yaffs_guts.c	/^static struct yaffs_obj *yaffs_alloc_empty_obj(struct yaffs_dev *dev)$/;"	f	file:
+yaffs_alloc_raw_obj	yaffs_allocator.c	/^struct yaffs_obj *yaffs_alloc_raw_obj(struct yaffs_dev *dev)$/;"	f
+yaffs_alloc_raw_tnode	yaffs_allocator.c	/^struct yaffs_tnode *yaffs_alloc_raw_tnode(struct yaffs_dev *dev)$/;"	f
+yaffs_allocator	yaffs_allocator.c	/^struct yaffs_allocator {$/;"	s	file:
+yaffs_apply_xattrib_mod	yaffs_guts.c	/^static int yaffs_apply_xattrib_mod(struct yaffs_obj *obj, char *buffer,$/;"	f	file:
+yaffs_attribs_init	yaffs_attribs.c	/^void yaffs_attribs_init(struct yaffs_obj *obj, u32 gid, u32 uid, u32 rdev)$/;"	f
+yaffs_bg_gc	yaffs_guts.c	/^int yaffs_bg_gc(struct yaffs_dev *dev, unsigned urgency)$/;"	f
+yaffs_block_became_dirty	yaffs_guts.c	/^void yaffs_block_became_dirty(struct yaffs_dev *dev, int block_no)$/;"	f
+yaffs_block_bits	yaffs_bitmap.c	/^static inline u8 *yaffs_block_bits(struct yaffs_dev *dev, int blk)$/;"	f	file:
+yaffs_block_index	yaffs_yaffs2.c	/^struct yaffs_block_index {$/;"	s	file:
+yaffs_block_info	yaffs_guts.h	/^struct yaffs_block_info {$/;"	s
+yaffs_block_ok_for_gc	yaffs_yaffs2.c	/^int yaffs_block_ok_for_gc(struct yaffs_dev *dev, struct yaffs_block_info *bi)$/;"	f
+yaffs_block_state	yaffs_guts.h	/^enum yaffs_block_state {$/;"	g
+yaffs_buffer	yaffs_guts.h	/^struct yaffs_buffer {$/;"	s
+yaffs_cache	yaffs_guts.h	/^struct yaffs_cache {$/;"	s
+yaffs_calc_checkpt_blocks_required	yaffs_yaffs2.c	/^int yaffs_calc_checkpt_blocks_required(struct yaffs_dev *dev)$/;"	f
+yaffs_calc_ecc	yaffs_tagscompat.c	/^void yaffs_calc_ecc(const u8 *data, struct yaffs_spare *spare)$/;"	f
+yaffs_calc_name_sum	yaffs_guts.c	/^static u16 yaffs_calc_name_sum(const YCHAR *name)$/;"	f	file:
+yaffs_calc_oldest_dirty_seq	yaffs_yaffs2.c	/^void yaffs_calc_oldest_dirty_seq(struct yaffs_dev *dev)$/;"	f
+yaffs_calc_tags_ecc	yaffs_tagscompat.c	/^void yaffs_calc_tags_ecc(struct yaffs_tags *tags)$/;"	f
+yaffs_change_obj_name	yaffs_guts.c	/^static int yaffs_change_obj_name(struct yaffs_obj *obj,$/;"	f	file:
+yaffs_check_alloc_available	yaffs_guts.c	/^int yaffs_check_alloc_available(struct yaffs_dev *dev, int n_chunks)$/;"	f
+yaffs_check_chunk_bit	yaffs_bitmap.c	/^int yaffs_check_chunk_bit(struct yaffs_dev *dev, int blk, int chunk)$/;"	f
+yaffs_check_chunk_erased	yaffs_guts.c	/^static int yaffs_check_chunk_erased(struct yaffs_dev *dev, int nand_chunk)$/;"	f	file:
+yaffs_check_dev_fns	yaffs_guts.c	/^static int yaffs_check_dev_fns(const struct yaffs_dev *dev)$/;"	f	file:
+yaffs_check_ff	yaffs_guts.c	/^int yaffs_check_ff(u8 *buffer, int n_bytes)$/;"	f
+yaffs_check_gc	yaffs_guts.c	/^static int yaffs_check_gc(struct yaffs_dev *dev, int background)$/;"	f	file:
+yaffs_check_obj_details_loaded	yaffs_guts.c	/^static void yaffs_check_obj_details_loaded(struct yaffs_obj *in)$/;"	f	file:
+yaffs_check_tags_ecc	yaffs_tagscompat.c	/^int yaffs_check_tags_ecc(struct yaffs_tags *tags)$/;"	f
+yaffs_check_tags_extra_packable	yaffs_packedtags2.c	/^static int yaffs_check_tags_extra_packable(const struct yaffs_ext_tags *t)$/;"	f	file:
+yaffs_checkpoint_save	yaffs_yaffs2.c	/^int yaffs_checkpoint_save(struct yaffs_dev *dev)$/;"	f
+yaffs_checkpt_close	yaffs_checkptrw.c	/^int yaffs_checkpt_close(struct yaffs_dev *dev)$/;"	f
+yaffs_checkpt_dev	yaffs_guts.h	/^struct yaffs_checkpt_dev {$/;"	s
+yaffs_checkpt_dev_to_dev	yaffs_yaffs2.c	/^static void yaffs_checkpt_dev_to_dev(struct yaffs_dev *dev,$/;"	f	file:
+yaffs_checkpt_erase	yaffs_checkptrw.c	/^static int yaffs_checkpt_erase(struct yaffs_dev *dev)$/;"	f	file:
+yaffs_checkpt_obj	yaffs_guts.h	/^struct yaffs_checkpt_obj {$/;"	s
+yaffs_checkpt_validity	yaffs_guts.h	/^struct yaffs_checkpt_validity {$/;"	s
+yaffs_chmod	yaffsfs.c	/^int yaffs_chmod(const YCHAR *path, mode_t mode)$/;"	f
+yaffs_chunk_del	yaffs_guts.c	/^void yaffs_chunk_del(struct yaffs_dev *dev, int chunk_id, int mark_flash,$/;"	f
+yaffs_clear_chunk_bit	yaffs_bitmap.c	/^void yaffs_clear_chunk_bit(struct yaffs_dev *dev, int blk, int chunk)$/;"	f
+yaffs_clear_chunk_bits	yaffs_bitmap.c	/^void yaffs_clear_chunk_bits(struct yaffs_dev *dev, int blk)$/;"	f
+yaffs_clone_str	yaffs_guts.c	/^YCHAR *yaffs_clone_str(const YCHAR *str)$/;"	f
+yaffs_close	yaffsfs.c	/^int yaffs_close(int handle)$/;"	f
+yaffs_closedir	yaffsfs.c	/^int yaffs_closedir(yaffs_DIR *dirp)$/;"	f
+yaffs_count_bits_table	yaffs_hweight.c	/^static const char yaffs_count_bits_table[256] = {$/;"	v	file:
+yaffs_count_chunk_bits	yaffs_bitmap.c	/^int yaffs_count_chunk_bits(struct yaffs_dev *dev, int blk)$/;"	f
+yaffs_count_free_chunks	yaffs_guts.c	/^int yaffs_count_free_chunks(struct yaffs_dev *dev)$/;"	f
+yaffs_create_dir	yaffs_guts.c	/^struct yaffs_obj *yaffs_create_dir(struct yaffs_obj *parent, const YCHAR *name,$/;"	f
+yaffs_create_fake_dir	yaffs_guts.c	/^static struct yaffs_obj *yaffs_create_fake_dir(struct yaffs_dev *dev,$/;"	f	file:
+yaffs_create_file	yaffs_guts.c	/^struct yaffs_obj *yaffs_create_file(struct yaffs_obj *parent,$/;"	f
+yaffs_create_free_objs	yaffs_allocator.c	/^static int yaffs_create_free_objs(struct yaffs_dev *dev, int n_obj)$/;"	f	file:
+yaffs_create_initial_dir	yaffs_guts.c	/^static int yaffs_create_initial_dir(struct yaffs_dev *dev)$/;"	f	file:
+yaffs_create_obj	yaffs_guts.c	/^static struct yaffs_obj *yaffs_create_obj(enum yaffs_obj_type type,$/;"	f	file:
+yaffs_create_special	yaffs_guts.c	/^struct yaffs_obj *yaffs_create_special(struct yaffs_obj *parent,$/;"	f
+yaffs_create_symlink	yaffs_guts.c	/^struct yaffs_obj *yaffs_create_symlink(struct yaffs_obj *parent,$/;"	f
+yaffs_create_tnodes	yaffs_allocator.c	/^static int yaffs_create_tnodes(struct yaffs_dev *dev, int n_tnodes)$/;"	f	file:
+yaffs_deinit_blocks	yaffs_guts.c	/^static void yaffs_deinit_blocks(struct yaffs_dev *dev)$/;"	f	file:
+yaffs_deinit_raw_objs	yaffs_allocator.c	/^static void yaffs_deinit_raw_objs(struct yaffs_dev *dev)$/;"	f	file:
+yaffs_deinit_raw_tnodes	yaffs_allocator.c	/^static void yaffs_deinit_raw_tnodes(struct yaffs_dev *dev)$/;"	f	file:
+yaffs_deinit_raw_tnodes_and_objs	yaffs_allocator.c	/^void yaffs_deinit_raw_tnodes_and_objs(struct yaffs_dev *dev)$/;"	f
+yaffs_deinit_tnodes_and_objs	yaffs_guts.c	/^static void yaffs_deinit_tnodes_and_objs(struct yaffs_dev *dev)$/;"	f	file:
+yaffs_deinitialise	yaffs_guts.c	/^void yaffs_deinitialise(struct yaffs_dev *dev)$/;"	f
+yaffs_del_dir	yaffs_guts.c	/^static int yaffs_del_dir(struct yaffs_obj *obj)$/;"	f	file:
+yaffs_del_dir_contents	yaffs_guts.c	/^static void yaffs_del_dir_contents(struct yaffs_obj *dir)$/;"	f	file:
+yaffs_del_file	yaffs_guts.c	/^int yaffs_del_file(struct yaffs_obj *in)$/;"	f
+yaffs_del_link	yaffs_guts.c	/^static int yaffs_del_link(struct yaffs_obj *in)$/;"	f	file:
+yaffs_del_obj	yaffs_guts.c	/^int yaffs_del_obj(struct yaffs_obj *obj)$/;"	f
+yaffs_del_symlink	yaffs_guts.c	/^static int yaffs_del_symlink(struct yaffs_obj *in)$/;"	f	file:
+yaffs_dev	yaffs_guts.h	/^struct yaffs_dev {$/;"	s
+yaffs_dir_var	yaffs_guts.h	/^struct yaffs_dir_var {$/;"	s
+yaffs_dirent	yaffsfs.h	/^struct yaffs_dirent{$/;"	s
+yaffs_dirent	yaffsfs.h	/^typedef struct yaffs_dirent yaffs_dirent;$/;"	t	typeref:struct:yaffs_dirent
+yaffs_do_file_wr	yaffs_guts.c	/^int yaffs_do_file_wr(struct yaffs_obj *in, const u8 *buffer, loff_t offset,$/;"	f
+yaffs_do_getxattr	yaffsfs.c	/^static int yaffs_do_getxattr(const YCHAR *path, const char *name, void *data, int size, int follow)$/;"	f	file:
+yaffs_do_listxattr	yaffsfs.c	/^static int yaffs_do_listxattr(const YCHAR *path, char *data, int size, int follow)$/;"	f	file:
+yaffs_do_removexattr	yaffsfs.c	/^static int yaffs_do_removexattr(const YCHAR *path, const char *name, int follow)$/;"	f	file:
+yaffs_do_setxattr	yaffsfs.c	/^static int yaffs_do_setxattr(const YCHAR *path, const char *name,$/;"	f	file:
+yaffs_do_xattrib_fetch	yaffs_guts.c	/^static int yaffs_do_xattrib_fetch(struct yaffs_obj *obj, const YCHAR *name,$/;"	f	file:
+yaffs_do_xattrib_mod	yaffs_guts.c	/^static int yaffs_do_xattrib_mod(struct yaffs_obj *obj, int set,$/;"	f	file:
+yaffs_dump_dev	yaffsfs.c	/^int yaffs_dump_dev(const YCHAR *path)$/;"	f
+yaffs_dump_dir	yaffsfs.c	/^void yaffs_dump_dir(const char *dname)$/;"	f
+yaffs_dump_packed_tags2	yaffs_packedtags2.c	/^static void yaffs_dump_packed_tags2(const struct yaffs_packed_tags2 *pt)$/;"	f	file:
+yaffs_dump_packed_tags2_tags_only	yaffs_packedtags2.c	/^static void yaffs_dump_packed_tags2_tags_only($/;"	f	file:
+yaffs_dump_tags2	yaffs_packedtags2.c	/^static void yaffs_dump_tags2(const struct yaffs_ext_tags *t)$/;"	f	file:
+yaffs_dup	yaffsfs.c	/^int yaffs_dup(int handle)$/;"	f
+yaffs_ecc_calc	yaffs_ecc.c	/^void yaffs_ecc_calc(const unsigned char *data, unsigned char *ecc)$/;"	f
+yaffs_ecc_calc_other	yaffs_ecc.c	/^void yaffs_ecc_calc_other(const unsigned char *data, unsigned n_bytes,$/;"	f
+yaffs_ecc_correct	yaffs_ecc.c	/^int yaffs_ecc_correct(unsigned char *data, unsigned char *read_ecc,$/;"	f
+yaffs_ecc_correct_other	yaffs_ecc.c	/^int yaffs_ecc_correct_other(unsigned char *data, unsigned n_bytes,$/;"	f
+yaffs_ecc_other	yaffs_ecc.h	/^struct yaffs_ecc_other {$/;"	s
+yaffs_ecc_result	yaffs_guts.h	/^enum yaffs_ecc_result {$/;"	g
+yaffs_empty_l_n_f	yaffs_guts.c	/^static void yaffs_empty_l_n_f(struct yaffs_dev *dev)$/;"	f	file:
+yaffs_erase_block	yaffs_nand.c	/^int yaffs_erase_block(struct yaffs_dev *dev, int flash_block)$/;"	f
+yaffs_errno	yaffs_osglue.c	/^int yaffs_errno;$/;"	v
+yaffs_error_to_str	yaffs_error.c	/^const char * yaffs_error_to_str(int err)$/;"	f
+yaffs_ext_tags	yaffs_guts.h	/^struct yaffs_ext_tags {$/;"	s
+yaffs_fchmod	yaffsfs.c	/^int yaffs_fchmod(int fd, mode_t mode)$/;"	f
+yaffs_fdatasync	yaffsfs.c	/^int yaffs_fdatasync(int handle)$/;"	f
+yaffs_fgetxattr	yaffsfs.c	/^int yaffs_fgetxattr(int fd, const char *name, void *data, int size)$/;"	f
+yaffs_file_rd	yaffs_guts.c	/^int yaffs_file_rd(struct yaffs_obj *in, u8 * buffer, loff_t offset, int n_bytes)$/;"	f
+yaffs_file_var	yaffs_guts.h	/^struct yaffs_file_var {$/;"	s
+yaffs_fill_inode	yaffs_vfs.c	/^static void yaffs_fill_inode(struct inode *node, int type, struct yaffs_obj* obj)$/;"	f	file:
+yaffs_find_alloc_block	yaffs_guts.c	/^static int yaffs_find_alloc_block(struct yaffs_dev *dev)$/;"	f	file:
+yaffs_find_by_name	yaffs_guts.c	/^struct yaffs_obj *yaffs_find_by_name(struct yaffs_obj *directory,$/;"	f
+yaffs_find_by_number	yaffs_guts.c	/^struct yaffs_obj *yaffs_find_by_number(struct yaffs_dev *dev, u32 number)$/;"	f
+yaffs_find_chunk_cache	yaffs_guts.c	/^static struct yaffs_cache *yaffs_find_chunk_cache(const struct yaffs_obj *obj,$/;"	f	file:
+yaffs_find_chunk_in_file	yaffs_guts.c	/^static int yaffs_find_chunk_in_file(struct yaffs_obj *in, int inode_chunk,$/;"	f	file:
+yaffs_find_chunk_in_group	yaffs_guts.c	/^static int yaffs_find_chunk_in_group(struct yaffs_dev *dev, int the_chunk,$/;"	f	file:
+yaffs_find_del_file_chunk	yaffs_guts.c	/^static int yaffs_find_del_file_chunk(struct yaffs_obj *in, int inode_chunk,$/;"	f	file:
+yaffs_find_gc_block	yaffs_guts.c	/^static unsigned yaffs_find_gc_block(struct yaffs_dev *dev,$/;"	f	file:
+yaffs_find_nice_bucket	yaffs_guts.c	/^static int yaffs_find_nice_bucket(struct yaffs_dev *dev)$/;"	f	file:
+yaffs_find_or_create_by_number	yaffs_guts.c	/^struct yaffs_obj *yaffs_find_or_create_by_number(struct yaffs_dev *dev,$/;"	f
+yaffs_find_tnode_0	yaffs_guts.c	/^struct yaffs_tnode *yaffs_find_tnode_0(struct yaffs_dev *dev,$/;"	f
+yaffs_fix_hanging_objs	yaffs_guts.c	/^static void yaffs_fix_hanging_objs(struct yaffs_dev *dev)$/;"	f	file:
+yaffs_fix_null_name	yaffs_guts.c	/^static void yaffs_fix_null_name(struct yaffs_obj *obj, YCHAR *name,$/;"	f	file:
+yaffs_flistxattr	yaffsfs.c	/^int yaffs_flistxattr(int fd, char *data, int size)$/;"	f
+yaffs_flush	yaffsfs.c	/^int yaffs_flush(int handle)$/;"	f
+yaffs_flush_file	yaffs_guts.c	/^int yaffs_flush_file(struct yaffs_obj *in, int update_time, int data_sync)$/;"	f
+yaffs_flush_file_cache	yaffs_guts.c	/^static void yaffs_flush_file_cache(struct yaffs_obj *obj)$/;"	f	file:
+yaffs_flush_whole_cache	yaffs_guts.c	/^void yaffs_flush_whole_cache(struct yaffs_dev *dev)$/;"	f
+yaffs_free_obj	yaffs_guts.c	/^static void yaffs_free_obj(struct yaffs_obj *obj)$/;"	f	file:
+yaffs_free_raw_obj	yaffs_allocator.c	/^void yaffs_free_raw_obj(struct yaffs_dev *dev, struct yaffs_obj *obj)$/;"	f
+yaffs_free_raw_tnode	yaffs_allocator.c	/^void yaffs_free_raw_tnode(struct yaffs_dev *dev, struct yaffs_tnode *tn)$/;"	f
+yaffs_free_tnode	yaffs_guts.c	/^static void yaffs_free_tnode(struct yaffs_dev *dev, struct yaffs_tnode *tn)$/;"	f	file:
+yaffs_free_verification_failures	yaffs_verify.c	/^static int yaffs_free_verification_failures;$/;"	v	file:
+yaffs_freespace	yaffsfs.c	/^loff_t yaffs_freespace(const YCHAR *path)$/;"	f
+yaffs_fremovexattr	yaffsfs.c	/^int yaffs_fremovexattr(int fd, const char *name)$/;"	f
+yaffs_fsetxattr	yaffsfs.c	/^int yaffs_fsetxattr(int fd, const char *name, const void *data, int size, int flags)$/;"	f
+yaffs_fstat	yaffsfs.c	/^int yaffs_fstat(int fd, struct yaffs_stat *buf)$/;"	f
+yaffs_fsync	yaffsfs.c	/^int yaffs_fsync(int handle)$/;"	f
+yaffs_ftruncate	yaffsfs.c	/^int yaffs_ftruncate(int handle, loff_t new_size)$/;"	f
+yaffs_futime	yaffsfs.c	/^int yaffs_futime(int fd, const struct yaffs_utimbuf *buf)$/;"	f
+yaffs_gc_block	yaffs_guts.c	/^static int yaffs_gc_block(struct yaffs_dev *dev, int block, int whole_block)$/;"	f	file:
+yaffs_gc_process_chunk	yaffs_guts.c	/^static inline int yaffs_gc_process_chunk(struct yaffs_dev *dev,$/;"	f	file:
+yaffs_generic_obj_del	yaffs_guts.c	/^static int yaffs_generic_obj_del(struct yaffs_obj *in)$/;"	f	file:
+yaffs_get_attribs	yaffs_attribs.c	/^int yaffs_get_attribs(struct yaffs_obj *obj, struct iattr *attr)$/;"	f
+yaffs_get_block_info	yaffs_getblockinfo.h	/^static inline struct yaffs_block_info *yaffs_get_block_info(struct yaffs_dev$/;"	f
+yaffs_get_equivalent_obj	yaffs_guts.c	/^struct yaffs_obj *yaffs_get_equivalent_obj(struct yaffs_obj *obj)$/;"	f
+yaffs_get_erased_chunks	yaffs_guts.c	/^static int yaffs_get_erased_chunks(struct yaffs_dev *dev)$/;"	f	file:
+yaffs_get_error	yaffsfs.c	/^int yaffs_get_error(void)$/;"	f
+yaffs_get_file_size	yaffs_attribs.c	/^loff_t yaffs_get_file_size(struct yaffs_obj *obj)$/;"	f
+yaffs_get_group_base	yaffs_guts.c	/^u32 yaffs_get_group_base(struct yaffs_dev *dev, struct yaffs_tnode *tn,$/;"	f
+yaffs_get_inode	yaffs_vfs.c	/^static struct inode *yaffs_get_inode(struct fs *fs, int type, struct yaffs_obj* obj)$/;"	f	file:
+yaffs_get_n_free_chunks	yaffs_guts.c	/^int yaffs_get_n_free_chunks(struct yaffs_dev *dev)$/;"	f
+yaffs_get_obj_inode	yaffs_guts.c	/^int yaffs_get_obj_inode(struct yaffs_obj *obj)$/;"	f
+yaffs_get_obj_length	yaffs_guts.c	/^loff_t yaffs_get_obj_length(struct yaffs_obj *obj)$/;"	f
+yaffs_get_obj_link_count	yaffs_guts.c	/^int yaffs_get_obj_link_count(struct yaffs_obj *obj)$/;"	f
+yaffs_get_obj_name	yaffs_guts.c	/^int yaffs_get_obj_name(struct yaffs_obj *obj, YCHAR *name, int buffer_size)$/;"	f
+yaffs_get_obj_type	yaffs_guts.c	/^unsigned yaffs_get_obj_type(struct yaffs_obj *obj)$/;"	f
+yaffs_get_ops	yaffs_vfs.c	/^yaffs_get_ops(int type) {$/;"	f	file:
+yaffs_get_symlink_alias	yaffs_guts.c	/^YCHAR *yaffs_get_symlink_alias(struct yaffs_obj *obj)$/;"	f
+yaffs_get_tags_from_spare	yaffs_tagscompat.c	/^static void yaffs_get_tags_from_spare(struct yaffs_dev *dev,$/;"	f	file:
+yaffs_get_temp_buffer	yaffs_guts.c	/^u8 *yaffs_get_temp_buffer(struct yaffs_dev * dev)$/;"	f
+yaffs_get_tnode	yaffs_guts.c	/^struct yaffs_tnode *yaffs_get_tnode(struct yaffs_dev *dev)$/;"	f
+yaffs_get_trace	yaffsfs.c	/^unsigned yaffs_get_trace(void)$/;"	f
+yaffs_get_wince_times	yaffsfs.c	/^int yaffs_get_wince_times(int fd, unsigned *wctime, unsigned *watime, unsigned *wmtime)$/;"	f
+yaffs_get_xattrib	yaffs_guts.c	/^int yaffs_get_xattrib(struct yaffs_obj *obj, const YCHAR * name, void *value,$/;"	f
+yaffs_getdev	yaffsfs.c	/^void * yaffs_getdev(const YCHAR *path)$/;"	f
+yaffs_getxattr	yaffsfs.c	/^int yaffs_getxattr(const YCHAR *path, const char *name, void *data, int size)$/;"	f
+yaffs_grab_chunk_cache	yaffs_guts.c	/^static struct yaffs_cache *yaffs_grab_chunk_cache(struct yaffs_dev *dev)$/;"	f	file:
+yaffs_grab_chunk_worker	yaffs_guts.c	/^static struct yaffs_cache *yaffs_grab_chunk_worker(struct yaffs_dev *dev)$/;"	f	file:
+yaffs_guts_initialise	yaffs_guts.c	/^int yaffs_guts_initialise(struct yaffs_dev *dev)$/;"	f
+yaffs_handle_chunk_error	yaffs_guts.c	/^void yaffs_handle_chunk_error(struct yaffs_dev *dev,$/;"	f
+yaffs_handle_chunk_update	yaffs_guts.c	/^static void yaffs_handle_chunk_update(struct yaffs_dev *dev, int nand_chunk,$/;"	f	file:
+yaffs_handle_chunk_wr_error	yaffs_guts.c	/^static void yaffs_handle_chunk_wr_error(struct yaffs_dev *dev, int nand_chunk,$/;"	f	file:
+yaffs_handle_chunk_wr_ok	yaffs_guts.c	/^static void yaffs_handle_chunk_wr_ok(struct yaffs_dev *dev, int nand_chunk,$/;"	f	file:
+yaffs_handle_defered_free	yaffs_guts.c	/^void yaffs_handle_defered_free(struct yaffs_obj *obj)$/;"	f
+yaffs_handle_rd_data_error	yaffs_tagscompat.c	/^static void yaffs_handle_rd_data_error(struct yaffs_dev *dev, int nand_chunk)$/;"	f	file:
+yaffs_handle_shadowed_obj	yaffs_guts.c	/^void yaffs_handle_shadowed_obj(struct yaffs_dev *dev, int obj_id,$/;"	f
+yaffs_hardlink_var	yaffs_guts.h	/^struct yaffs_hardlink_var {$/;"	s
+yaffs_has_null_parent	yaffs_guts.c	/^static int yaffs_has_null_parent(struct yaffs_dev *dev, struct yaffs_obj *obj)$/;"	f	file:
+yaffs_hash_fn	yaffs_guts.c	/^static inline int yaffs_hash_fn(int n)$/;"	f	file:
+yaffs_hash_obj	yaffs_guts.c	/^static void yaffs_hash_obj(struct yaffs_obj *in)$/;"	f	file:
+yaffs_hweight32	yaffs_hweight.c	/^int yaffs_hweight32(u32 x)$/;"	f
+yaffs_hweight8	yaffs_hweight.c	/^int yaffs_hweight8(u8 x)$/;"	f
+yaffs_iget	yaffs_vfs.c	/^static struct inode *yaffs_iget(struct fs *fs, unsigned long ino)$/;"	f	file:
+yaffs_init_blocks	yaffs_guts.c	/^static int yaffs_init_blocks(struct yaffs_dev *dev)$/;"	f	file:
+yaffs_init_nand	yaffs_nand.c	/^int yaffs_init_nand(struct yaffs_dev *dev)$/;"	f
+yaffs_init_raw_objs	yaffs_allocator.c	/^static void yaffs_init_raw_objs(struct yaffs_dev *dev)$/;"	f	file:
+yaffs_init_raw_tnodes	yaffs_allocator.c	/^static void yaffs_init_raw_tnodes(struct yaffs_dev *dev)$/;"	f	file:
+yaffs_init_raw_tnodes_and_objs	yaffs_allocator.c	/^void yaffs_init_raw_tnodes_and_objs(struct yaffs_dev *dev)$/;"	f
+yaffs_init_tmp_buffers	yaffs_guts.c	/^static int yaffs_init_tmp_buffers(struct yaffs_dev *dev)$/;"	f	file:
+yaffs_init_tnodes_and_objs	yaffs_guts.c	/^static void yaffs_init_tnodes_and_objs(struct yaffs_dev *dev)$/;"	f	file:
+yaffs_inode_to_obj	yaffs_vfs.c	44;"	d	file:
+yaffs_inode_to_obj_lv	yaffs_vfs.c	43;"	d	file:
+yaffs_inodecount	yaffsfs.c	/^int yaffs_inodecount(const YCHAR *path)$/;"	f
+yaffs_invalidate_chunk_cache	yaffs_guts.c	/^static void yaffs_invalidate_chunk_cache(struct yaffs_obj *object, int chunk_id)$/;"	f	file:
+yaffs_invalidate_whole_cache	yaffs_guts.c	/^static void yaffs_invalidate_whole_cache(struct yaffs_obj *in)$/;"	f	file:
+yaffs_is_managed_tmp_buffer	yaffs_guts.c	/^int yaffs_is_managed_tmp_buffer(struct yaffs_dev *dev, const u8 *buffer)$/;"	f
+yaffs_is_non_empty_dir	yaffs_guts.c	/^int yaffs_is_non_empty_dir(struct yaffs_obj *obj)$/;"	f
+yaffs_lgetxattr	yaffsfs.c	/^int yaffs_lgetxattr(const YCHAR *path, const char *name, void *data, int size)$/;"	f
+yaffs_link	yaffsfs.c	/^int yaffs_link(const YCHAR *oldpath, const YCHAR *linkpath)$/;"	f
+yaffs_link_fixup	yaffs_guts.c	/^void yaffs_link_fixup(struct yaffs_dev *dev, struct list_head *hard_list)$/;"	f
+yaffs_link_obj	yaffs_guts.c	/^struct yaffs_obj *yaffs_link_obj(struct yaffs_obj *parent, const YCHAR * name,$/;"	f
+yaffs_list_add	yaffs_list.h	/^static inline void yaffs_list_add(struct list_head *new_entry,$/;"	f
+yaffs_list_add_tail	yaffs_list.h	/^static inline void yaffs_list_add_tail(struct list_head *new_entry,$/;"	f
+yaffs_list_del	yaffs_list.h	/^static inline void yaffs_list_del(struct list_head *entry)$/;"	f
+yaffs_list_empty	yaffs_list.h	/^static inline int yaffs_list_empty(struct list_head *entry)$/;"	f
+yaffs_list_xattrib	yaffs_guts.c	/^int yaffs_list_xattrib(struct yaffs_obj *obj, char *buffer, int size)$/;"	f
+yaffs_listxattr	yaffsfs.c	/^int yaffs_listxattr(const YCHAR *path, char *data, int size)$/;"	f
+yaffs_llistxattr	yaffsfs.c	/^int yaffs_llistxattr(const YCHAR *path, char *data, int size)$/;"	f
+yaffs_load_attribs	yaffs_attribs.c	/^void yaffs_load_attribs(struct yaffs_obj *obj, struct yaffs_obj_hdr *oh)$/;"	f
+yaffs_load_attribs_oh	yaffs_attribs.c	/^void yaffs_load_attribs_oh(struct yaffs_obj_hdr *oh, struct yaffs_obj *obj)$/;"	f
+yaffs_load_current_time	yaffs_attribs.c	/^void yaffs_load_current_time(struct yaffs_obj *obj, int do_a, int do_c)$/;"	f
+yaffs_load_name_from_oh	yaffs_guts.c	/^static void yaffs_load_name_from_oh(struct yaffs_dev *dev, YCHAR *name,$/;"	f	file:
+yaffs_load_oh_from_name	yaffs_guts.c	/^static void yaffs_load_oh_from_name(struct yaffs_dev *dev, YCHAR *oh_name,$/;"	f	file:
+yaffs_load_tags_to_spare	yaffs_tagscompat.c	/^static void yaffs_load_tags_to_spare(struct yaffs_spare *spare_ptr,$/;"	f	file:
+yaffs_load_tnode_0	yaffs_guts.c	/^void yaffs_load_tnode_0(struct yaffs_dev *dev, struct yaffs_tnode *tn,$/;"	f
+yaffs_lookup_subpath	yaffs_vfs.c	/^yaffs_lookup_subpath(char *path) {$/;"	f	file:
+yaffs_lost_n_found	yaffs_guts.c	/^struct yaffs_obj *yaffs_lost_n_found(struct yaffs_dev *dev)$/;"	f
+yaffs_lremovexattr	yaffsfs.c	/^int yaffs_lremovexattr(const YCHAR *path, const char *name)$/;"	f
+yaffs_lseek	yaffsfs.c	/^loff_t yaffs_lseek(int handle, loff_t offset, int whence)$/;"	f
+yaffs_lsetxattr	yaffsfs.c	/^int yaffs_lsetxattr(const YCHAR *path, const char *name, const void *data, int size, int flags)$/;"	f
+yaffs_lstat	yaffsfs.c	/^int yaffs_lstat(const YCHAR *path, struct yaffs_stat *buf)$/;"	f
+yaffs_mark_bad	yaffs_nand.c	/^int yaffs_mark_bad(struct yaffs_dev *dev, int block_no)$/;"	f
+yaffs_max_file_size	yaffs_guts.c	/^loff_t yaffs_max_file_size(struct yaffs_dev *dev)$/;"	f
+yaffs_mkdir	yaffsfs.c	/^int yaffs_mkdir(const YCHAR *path, mode_t mode)$/;"	f
+yaffs_mknod	yaffsfs.c	/^int yaffs_mknod(const YCHAR *pathname, mode_t mode, dev_t dev)$/;"	f
+yaffs_mount	yaffsfs.c	/^int yaffs_mount(const YCHAR *path)$/;"	f
+yaffs_mount2	yaffsfs.c	/^int yaffs_mount2(const YCHAR *path, int readonly)$/;"	f
+yaffs_mount_common	yaffsfs.c	/^int yaffs_mount_common(const YCHAR *path,int read_only, int skip_checkpt, struct yaffs_dev** dev_stored)$/;"	f
+yaffs_n_handles	yaffsfs.c	/^int yaffs_n_handles(const YCHAR *path)$/;"	f
+yaffs_name_buf	yaffs_vfs.c	/^static char yaffs_name_buf[YAFFS_MAX_NAME_LENGTH];$/;"	v	file:
+yaffs_nand_spare	yaffs_guts.h	/^struct yaffs_nand_spare {$/;"	s
+yaffs_new_obj	yaffs_guts.c	/^struct yaffs_obj *yaffs_new_obj(struct yaffs_dev *dev, int number,$/;"	f
+yaffs_new_obj_id	yaffs_guts.c	/^static int yaffs_new_obj_id(struct yaffs_dev *dev)$/;"	f	file:
+yaffs_node_dirops	yaffs_vfs.c	/^static const struct inode_ops yaffs_node_dirops = {$/;"	v	typeref:struct:inode_ops	file:
+yaffs_node_dirops	yaffs_vfs.c	/^static const struct inode_ops yaffs_node_dirops;$/;"	v	typeref:struct:inode_ops	file:
+yaffs_node_fileops	yaffs_vfs.c	/^static const struct inode_ops yaffs_node_fileops = {$/;"	v	typeref:struct:inode_ops	file:
+yaffs_node_fileops	yaffs_vfs.c	/^static const struct inode_ops yaffs_node_fileops;$/;"	v	typeref:struct:inode_ops	file:
+yaffs_obj	yaffs_guts.h	/^struct yaffs_obj {$/;"	s
+yaffs_obj_bucket	yaffs_guts.h	/^struct yaffs_obj_bucket {$/;"	s
+yaffs_obj_cache_dirty	yaffs_guts.c	/^static int yaffs_obj_cache_dirty(struct yaffs_obj *obj)$/;"	f	file:
+yaffs_obj_hdr	yaffs_guts.h	/^struct yaffs_obj_hdr {$/;"	s
+yaffs_obj_list	yaffs_allocator.c	/^struct yaffs_obj_list {$/;"	s	file:
+yaffs_obj_type	yaffs_guts.h	/^enum yaffs_obj_type {$/;"	g
+yaffs_obj_var	yaffs_guts.h	/^union yaffs_obj_var {$/;"	u
+yaffs_oh_size_load	yaffs_guts.c	/^void yaffs_oh_size_load(struct yaffs_obj_hdr *oh, loff_t fsize)$/;"	f
+yaffs_oh_to_size	yaffs_guts.c	/^loff_t yaffs_oh_to_size(struct yaffs_obj_hdr *oh)$/;"	f
+yaffs_open	yaffsfs.c	/^int yaffs_open(const YCHAR *path, int oflag, int mode)$/;"	f
+yaffs_open_sharing	yaffsfs.c	/^int yaffs_open_sharing(const YCHAR *path, int oflag, int mode, int sharing)$/;"	f
+yaffs_opendir	yaffsfs.c	/^yaffs_DIR *yaffs_opendir(const YCHAR *dirname)$/;"	f
+yaffs_pack_tags1	yaffs_packedtags1.c	/^void yaffs_pack_tags1(struct yaffs_packed_tags1 *pt,$/;"	f
+yaffs_pack_tags2	yaffs_packedtags2.c	/^void yaffs_pack_tags2(struct yaffs_packed_tags2 *pt,$/;"	f
+yaffs_pack_tags2_tags_only	yaffs_packedtags2.c	/^void yaffs_pack_tags2_tags_only(struct yaffs_packed_tags2_tags_only *ptt,$/;"	f
+yaffs_packed_tags1	yaffs_packedtags1.h	/^struct yaffs_packed_tags1 {$/;"	s
+yaffs_packed_tags2	yaffs_packedtags2.h	/^struct yaffs_packed_tags2 {$/;"	s
+yaffs_packed_tags2_tags_only	yaffs_packedtags2.h	/^struct yaffs_packed_tags2_tags_only {$/;"	s
+yaffs_param	yaffs_guts.h	/^struct yaffs_param {$/;"	s
+yaffs_pread	yaffsfs.c	/^int yaffs_pread(int handle, void *buf, unsigned int nbyte, loff_t offset)$/;"	f
+yaffs_prune_chunks	yaffs_guts.c	/^static void yaffs_prune_chunks(struct yaffs_obj *in, loff_t new_size)$/;"	f	file:
+yaffs_prune_tree	yaffs_guts.c	/^static int yaffs_prune_tree(struct yaffs_dev *dev,$/;"	f	file:
+yaffs_prune_worker	yaffs_guts.c	/^static struct yaffs_tnode *yaffs_prune_worker(struct yaffs_dev *dev,$/;"	f	file:
+yaffs_put_chunk_in_file	yaffs_guts.c	/^int yaffs_put_chunk_in_file(struct yaffs_obj *in, int inode_chunk,$/;"	f
+yaffs_pwrite	yaffsfs.c	/^int yaffs_pwrite(int fd, const void *buf, unsigned int nbyte, loff_t offset)$/;"	f
+yaffs_qsort	yaffs_qsort.c	/^yaffs_qsort(void *aa, size_t n, size_t es,$/;"	f
+yaffs_query_init_block_state	yaffs_nand.c	/^int yaffs_query_init_block_state(struct yaffs_dev *dev,$/;"	f
+yaffs_rd_chunk_nand	yaffs_tagscompat.c	/^static int yaffs_rd_chunk_nand(struct yaffs_dev *dev,$/;"	f	file:
+yaffs_rd_chunk_tags_nand	yaffs_nand.c	/^int yaffs_rd_chunk_tags_nand(struct yaffs_dev *dev, int nand_chunk,$/;"	f
+yaffs_rd_data_obj	yaffs_guts.c	/^static int yaffs_rd_data_obj(struct yaffs_obj *in, int inode_chunk, u8 * buffer)$/;"	f	file:
+yaffs_read	yaffsfs.c	/^int yaffs_read(int handle, void *buf, unsigned int nbyte)$/;"	f
+yaffs_readdir	yaffsfs.c	/^struct yaffs_dirent *yaffs_readdir(yaffs_DIR *dirp)$/;"	f
+yaffs_readlink	yaffsfs.c	/^int yaffs_readlink(const YCHAR *path, YCHAR *buf, int bufsiz)$/;"	f
+yaffs_release_temp_buffer	yaffs_guts.c	/^void yaffs_release_temp_buffer(struct yaffs_dev *dev, u8 *buffer)$/;"	f
+yaffs_remount	yaffsfs.c	/^int yaffs_remount(const YCHAR *path, int force, int read_only)$/;"	f
+yaffs_remove_device	yaffsfs.c	/^void yaffs_remove_device(struct yaffs_dev *dev)$/;"	f
+yaffs_remove_obj_from_dir	yaffs_guts.c	/^static void yaffs_remove_obj_from_dir(struct yaffs_obj *obj)$/;"	f	file:
+yaffs_remove_xattrib	yaffs_guts.c	/^int yaffs_remove_xattrib(struct yaffs_obj *obj, const YCHAR * name)$/;"	f
+yaffs_removexattr	yaffsfs.c	/^int yaffs_removexattr(const YCHAR *path, const char *name)$/;"	f
+yaffs_rename	yaffsfs.c	/^int yaffs_rename(const YCHAR *oldPath, const YCHAR *newPath)$/;"	f
+yaffs_rename_obj	yaffs_guts.c	/^int yaffs_rename_obj(struct yaffs_obj *old_dir, const YCHAR *old_name,$/;"	f
+yaffs_resize_file	yaffs_guts.c	/^int yaffs_resize_file(struct yaffs_obj *in, loff_t new_size)$/;"	f
+yaffs_resize_file_down	yaffs_guts.c	/^void yaffs_resize_file_down(struct yaffs_obj *obj, loff_t new_size)$/;"	f
+yaffs_retire_block	yaffs_guts.c	/^static void yaffs_retire_block(struct yaffs_dev *dev, int flash_block)$/;"	f	file:
+yaffs_rewinddir	yaffsfs.c	/^void yaffs_rewinddir(yaffs_DIR *dirp)$/;"	f
+yaffs_rmdir	yaffsfs.c	/^int yaffs_rmdir(const YCHAR *path)$/;"	f
+yaffs_root	yaffs_guts.c	/^struct yaffs_obj *yaffs_root(struct yaffs_dev *dev)$/;"	f
+yaffs_sem	yaffs_osglue.c	/^static semaphore_t yaffs_sem;$/;"	v	file:
+yaffs_set_attribs	yaffs_attribs.c	/^int yaffs_set_attribs(struct yaffs_obj *obj, struct iattr *attr)$/;"	f
+yaffs_set_chunk_bit	yaffs_bitmap.c	/^void yaffs_set_chunk_bit(struct yaffs_dev *dev, int blk, int chunk)$/;"	f
+yaffs_set_error	yaffsfs.c	/^int yaffs_set_error(int error)$/;"	f
+yaffs_set_obj_name	yaffs_guts.c	/^void yaffs_set_obj_name(struct yaffs_obj *obj, const YCHAR * name)$/;"	f
+yaffs_set_obj_name_from_oh	yaffs_guts.c	/^void yaffs_set_obj_name_from_oh(struct yaffs_obj *obj,$/;"	f
+yaffs_set_trace	yaffsfs.c	/^unsigned yaffs_set_trace(unsigned  tm)$/;"	f
+yaffs_set_wince_times	yaffsfs.c	/^int yaffs_set_wince_times(int fd,$/;"	f
+yaffs_set_xattrib	yaffs_guts.c	/^int yaffs_set_xattrib(struct yaffs_obj *obj, const YCHAR * name,$/;"	f
+yaffs_setxattr	yaffsfs.c	/^int yaffs_setxattr(const YCHAR *path, const char *name, const void *data, int size, int flags)$/;"	f
+yaffs_shadow_fixer	yaffs_guts.h	/^struct yaffs_shadow_fixer {$/;"	s
+yaffs_skip_full_verification	yaffs_verify.c	/^static int yaffs_skip_full_verification(struct yaffs_dev *dev)$/;"	f	file:
+yaffs_skip_nand_verification	yaffs_verify.c	/^static int yaffs_skip_nand_verification(struct yaffs_dev *dev)$/;"	f	file:
+yaffs_skip_rest_of_block	yaffs_guts.c	/^void yaffs_skip_rest_of_block(struct yaffs_dev *dev)$/;"	f
+yaffs_skip_verification	yaffs_verify.c	/^int yaffs_skip_verification(struct yaffs_dev *dev)$/;"	f
+yaffs_soft_del_chunk	yaffs_guts.c	/^static void yaffs_soft_del_chunk(struct yaffs_dev *dev, int chunk)$/;"	f	file:
+yaffs_soft_del_file	yaffs_guts.c	/^static void yaffs_soft_del_file(struct yaffs_obj *obj)$/;"	f	file:
+yaffs_soft_del_worker	yaffs_guts.c	/^static int yaffs_soft_del_worker(struct yaffs_obj *in, struct yaffs_tnode *tn,$/;"	f	file:
+yaffs_spare	yaffs_guts.h	/^struct yaffs_spare {$/;"	s
+yaffs_spare_init	yaffs_tagscompat.c	/^static void yaffs_spare_init(struct yaffs_spare *spare)$/;"	f	file:
+yaffs_start_up	mtd_glue.c	/^int yaffs_start_up(void)$/;"	f
+yaffs_stat	yaffsfs.c	/^int yaffs_stat(const YCHAR *path, struct yaffs_stat *buf)$/;"	f
+yaffs_stat	yaffsfs.h	/^struct yaffs_stat{$/;"	s
+yaffs_still_some_chunks	yaffs_bitmap.c	/^int yaffs_still_some_chunks(struct yaffs_dev *dev, int blk)$/;"	f
+yaffs_strcat	ydirectenv.h	42;"	d
+yaffs_strcmp	ydirectenv.h	47;"	d
+yaffs_strcmp	ydirectenv.h	50;"	d
+yaffs_strcpy	ydirectenv.h	43;"	d
+yaffs_strip_deleted_objs	yaffs_guts.c	/^static void yaffs_strip_deleted_objs(struct yaffs_dev *dev)$/;"	f	file:
+yaffs_strncmp	ydirectenv.h	48;"	d
+yaffs_strncmp	ydirectenv.h	51;"	d
+yaffs_strncpy	ydirectenv.h	44;"	d
+yaffs_strnlen	ydirectenv.h	45;"	d
+yaffs_summary_add	yaffs_summary.c	/^int yaffs_summary_add(struct yaffs_dev *dev,$/;"	f
+yaffs_summary_clear	yaffs_summary.c	/^static void yaffs_summary_clear(struct yaffs_dev *dev)$/;"	f	file:
+yaffs_summary_deinit	yaffs_summary.c	/^void yaffs_summary_deinit(struct yaffs_dev *dev)$/;"	f
+yaffs_summary_fetch	yaffs_summary.c	/^int yaffs_summary_fetch(struct yaffs_dev *dev,$/;"	f
+yaffs_summary_gc	yaffs_summary.c	/^void yaffs_summary_gc(struct yaffs_dev *dev, int blk)$/;"	f
+yaffs_summary_header	yaffs_summary.c	/^struct yaffs_summary_header {$/;"	s	file:
+yaffs_summary_init	yaffs_summary.c	/^int yaffs_summary_init(struct yaffs_dev *dev)$/;"	f
+yaffs_summary_read	yaffs_summary.c	/^int yaffs_summary_read(struct yaffs_dev *dev,$/;"	f
+yaffs_summary_sum	yaffs_summary.c	/^static unsigned yaffs_summary_sum(struct yaffs_dev *dev)$/;"	f	file:
+yaffs_summary_tags	yaffs_summary.c	/^struct yaffs_summary_tags {$/;"	s	file:
+yaffs_summary_write	yaffs_summary.c	/^static int yaffs_summary_write(struct yaffs_dev *dev, int blk)$/;"	f	file:
+yaffs_symlink	yaffsfs.c	/^int yaffs_symlink(const YCHAR *oldpath, const YCHAR *newpath)$/;"	f
+yaffs_symlink_var	yaffs_guts.h	/^struct yaffs_symlink_var {$/;"	s
+yaffs_sync	yaffsfs.c	/^int yaffs_sync(const YCHAR *path)$/;"	f
+yaffs_tags	yaffs_guts.h	/^struct yaffs_tags {$/;"	s
+yaffs_tags_compat_mark_bad	yaffs_tagscompat.c	/^int yaffs_tags_compat_mark_bad(struct yaffs_dev *dev, int flash_block)$/;"	f
+yaffs_tags_compat_query_block	yaffs_tagscompat.c	/^int yaffs_tags_compat_query_block(struct yaffs_dev *dev,$/;"	f
+yaffs_tags_compat_rd	yaffs_tagscompat.c	/^int yaffs_tags_compat_rd(struct yaffs_dev *dev,$/;"	f
+yaffs_tags_compat_wr	yaffs_tagscompat.c	/^int yaffs_tags_compat_wr(struct yaffs_dev *dev,$/;"	f
+yaffs_tags_match	yaffs_guts.c	/^static int yaffs_tags_match(const struct yaffs_ext_tags *tags, int obj_id,$/;"	f	file:
+yaffs_tags_union	yaffs_guts.h	/^union yaffs_tags_union {$/;"	u
+yaffs_tnode	yaffs_guts.h	/^struct yaffs_tnode {$/;"	s
+yaffs_tnode_list	yaffs_allocator.c	/^struct yaffs_tnode_list {$/;"	s	file:
+yaffs_totalspace	yaffsfs.c	/^loff_t yaffs_totalspace(const YCHAR *path)$/;"	f
+yaffs_toupper	yaffsfs.c	/^static int yaffs_toupper(YCHAR a)$/;"	f	file:
+yaffs_trace	ydirectenv.h	77;"	d
+yaffs_trace_mask	yaffs_osglue.c	/^unsigned yaffs_trace_mask =$/;"	v
+yaffs_truncate	yaffsfs.c	/^int yaffs_truncate(const YCHAR *path,loff_t new_size)$/;"	f
+yaffs_unhash_obj	yaffs_guts.c	/^static void yaffs_unhash_obj(struct yaffs_obj *obj)$/;"	f	file:
+yaffs_unlink	yaffsfs.c	/^int yaffs_unlink(const YCHAR *path)$/;"	f
+yaffs_unlink_file_if_needed	yaffs_guts.c	/^static int yaffs_unlink_file_if_needed(struct yaffs_obj *in)$/;"	f	file:
+yaffs_unlink_obj	yaffs_guts.c	/^static int yaffs_unlink_obj(struct yaffs_obj *obj)$/;"	f	file:
+yaffs_unlink_worker	yaffs_guts.c	/^static int yaffs_unlink_worker(struct yaffs_obj *obj)$/;"	f	file:
+yaffs_unlinker	yaffs_guts.c	/^int yaffs_unlinker(struct yaffs_obj *dir, const YCHAR *name)$/;"	f
+yaffs_unmount	yaffsfs.c	/^int yaffs_unmount(const YCHAR *path)$/;"	f
+yaffs_unmount2	yaffsfs.c	/^int yaffs_unmount2(const YCHAR *path, int force)$/;"	f
+yaffs_unpack_tags1	yaffs_packedtags1.c	/^void yaffs_unpack_tags1(struct yaffs_ext_tags *t,$/;"	f
+yaffs_unpack_tags2	yaffs_packedtags2.c	/^void yaffs_unpack_tags2(struct yaffs_ext_tags *t, struct yaffs_packed_tags2 *pt,$/;"	f
+yaffs_unpack_tags2_tags_only	yaffs_packedtags2.c	/^void yaffs_unpack_tags2_tags_only(struct yaffs_ext_tags *t,$/;"	f
+yaffs_update_dirty_dirs	yaffs_guts.c	/^void yaffs_update_dirty_dirs(struct yaffs_dev *dev)$/;"	f
+yaffs_update_oh	yaffs_guts.c	/^int yaffs_update_oh(struct yaffs_obj *in, const YCHAR *name, int force,$/;"	f
+yaffs_update_parent	yaffs_guts.c	/^static void yaffs_update_parent(struct yaffs_obj *obj)$/;"	f	file:
+yaffs_use_cache	yaffs_guts.c	/^static void yaffs_use_cache(struct yaffs_dev *dev, struct yaffs_cache *cache,$/;"	f	file:
+yaffs_utimbuf	yaffsfs.h	/^struct yaffs_utimbuf {$/;"	s
+yaffs_utime	yaffsfs.c	/^int yaffs_utime(const YCHAR *path, const struct yaffs_utimbuf *buf)$/;"	f
+yaffs_verify_blk	yaffs_verify.c	/^void yaffs_verify_blk(struct yaffs_dev *dev, struct yaffs_block_info *bi, int n)$/;"	f
+yaffs_verify_blocks	yaffs_verify.c	/^void yaffs_verify_blocks(struct yaffs_dev *dev)$/;"	f
+yaffs_verify_chunk_bit_id	yaffs_bitmap.c	/^void yaffs_verify_chunk_bit_id(struct yaffs_dev *dev, int blk, int chunk)$/;"	f
+yaffs_verify_chunk_written	yaffs_guts.c	/^static int yaffs_verify_chunk_written(struct yaffs_dev *dev,$/;"	f	file:
+yaffs_verify_collected_blk	yaffs_verify.c	/^void yaffs_verify_collected_blk(struct yaffs_dev *dev,$/;"	f
+yaffs_verify_dir	yaffs_verify.c	/^void yaffs_verify_dir(struct yaffs_obj *directory)$/;"	f
+yaffs_verify_file	yaffs_verify.c	/^void yaffs_verify_file(struct yaffs_obj *obj)$/;"	f
+yaffs_verify_file_sane	yaffs_verify.c	/^int yaffs_verify_file_sane(struct yaffs_obj *in)$/;"	f
+yaffs_verify_free_chunks	yaffs_verify.c	/^void yaffs_verify_free_chunks(struct yaffs_dev *dev)$/;"	f
+yaffs_verify_link	yaffs_verify.c	/^void yaffs_verify_link(struct yaffs_obj *obj)$/;"	f
+yaffs_verify_obj	yaffs_verify.c	/^void yaffs_verify_obj(struct yaffs_obj *obj)$/;"	f
+yaffs_verify_obj_in_dir	yaffs_verify.c	/^void yaffs_verify_obj_in_dir(struct yaffs_obj *obj)$/;"	f
+yaffs_verify_objects	yaffs_verify.c	/^void yaffs_verify_objects(struct yaffs_dev *dev)$/;"	f
+yaffs_verify_oh	yaffs_verify.c	/^void yaffs_verify_oh(struct yaffs_obj *obj, struct yaffs_obj_hdr *oh,$/;"	f
+yaffs_verify_special	yaffs_verify.c	/^void yaffs_verify_special(struct yaffs_obj *obj)$/;"	f
+yaffs_verify_symlink	yaffs_verify.c	/^void yaffs_verify_symlink(struct yaffs_obj *obj)$/;"	f
+yaffs_vfs_do_cleanup	yaffs_vfs.c	/^static void yaffs_vfs_do_cleanup(struct fs *fs)$/;"	f	file:
+yaffs_vfs_do_get_root	yaffs_vfs.c	/^struct inode * yaffs_vfs_do_get_root(struct fs *fs)$/;"	f
+yaffs_vfs_do_mount	yaffs_vfs.c	/^yaffs_vfs_do_mount(struct device *dev, struct fs **fs_store)$/;"	f	file:
+yaffs_vfs_do_sync	yaffs_vfs.c	/^static int yaffs_vfs_do_sync(struct fs *fs)$/;"	f	file:
+yaffs_vfs_do_unmount	yaffs_vfs.c	/^static int yaffs_vfs_do_unmount(struct fs *fs)$/;"	f	file:
+yaffs_vfs_init	yaffs_vfs.c	/^yaffs_vfs_init(void) {$/;"	f
+yaffs_vfs_mount	yaffs_vfs.c	/^int yaffs_vfs_mount(const char *devname)$/;"	f
+yaffs_vop_close	yaffs_vfs.c	/^yaffs_vop_close(struct inode *node) {$/;"	f	file:
+yaffs_vop_fstat	yaffs_vfs.c	/^yaffs_vop_fstat(struct inode *node, struct stat *stat) {$/;"	f	file:
+yaffs_vop_fsync	yaffs_vfs.c	/^yaffs_vop_fsync(struct inode *node)$/;"	f	file:
+yaffs_vop_getdirentry	yaffs_vfs.c	/^yaffs_vop_getdirentry(struct inode *node, struct iobuf *iob) {$/;"	f	file:
+yaffs_vop_gettype	yaffs_vfs.c	/^int yaffs_vop_gettype(struct inode *node, uint32_t *type_store)$/;"	f
+yaffs_vop_lookup	yaffs_vfs.c	/^static int yaffs_vop_lookup(struct inode *node, char *path, struct inode **node_store)$/;"	f	file:
+yaffs_vop_lookup_parent	yaffs_vfs.c	/^static int yaffs_vop_lookup_parent(struct inode *node, char *path, $/;"	f	file:
+yaffs_vop_mkdir	yaffs_vfs.c	/^yaffs_vop_mkdir(struct inode *node, const char *name) {$/;"	f	file:
+yaffs_vop_namefile	yaffs_vfs.c	/^int yaffs_vop_namefile(struct inode *node, struct iobuf *iob)$/;"	f
+yaffs_vop_opendir	yaffs_vfs.c	/^yaffs_vop_opendir(struct inode *node, uint32_t open_flags) {$/;"	f	file:
+yaffs_vop_reclaim	yaffs_vfs.c	/^static int yaffs_vop_reclaim(struct inode *node)$/;"	f	file:
+yaffs_vop_rename	yaffs_vfs.c	/^yaffs_vop_rename(struct inode *node, const char *name, struct inode *new_node, const char *new_name) {$/;"	f	file:
+yaffs_wr_attempts	yaffsfs.c	/^unsigned int yaffs_wr_attempts;$/;"	v
+yaffs_wr_chunk_tags_nand	yaffs_nand.c	/^int yaffs_wr_chunk_tags_nand(struct yaffs_dev *dev,$/;"	f
+yaffs_wr_data_obj	yaffs_guts.c	/^static int yaffs_wr_data_obj(struct yaffs_obj *in, int inode_chunk,$/;"	f	file:
+yaffs_wr_file	yaffs_guts.c	/^int yaffs_wr_file(struct yaffs_obj *in, const u8 *buffer, loff_t offset,$/;"	f
+yaffs_wr_nand	yaffs_tagscompat.c	/^static int yaffs_wr_nand(struct yaffs_dev *dev,$/;"	f	file:
+yaffs_write	yaffsfs.c	/^int yaffs_write(int fd, const void *buf, unsigned int nbyte)$/;"	f
+yaffs_write_new_chunk	yaffs_guts.c	/^static int yaffs_write_new_chunk(struct yaffs_dev *dev,$/;"	f	file:
+yaffs_xattr_mod	yaffs_guts.h	/^struct yaffs_xattr_mod {$/;"	s
+yaffs_yaffs_list_del_init	yaffs_list.h	/^static inline void yaffs_yaffs_list_del_init(struct list_head *entry)$/;"	f
+yaffsfs_BreakDeviceHandles	yaffsfs.c	/^static void yaffsfs_BreakDeviceHandles(struct yaffs_dev *dev)$/;"	f	file:
+yaffsfs_CheckNameLength	yaffsfs.c	/^int yaffsfs_CheckNameLength(const char *name)$/;"	f
+yaffsfs_CheckPath	yaffsfs.c	/^static int yaffsfs_CheckPath(const YCHAR *path)$/;"	f	file:
+yaffsfs_CountHandles	yaffsfs.c	/^static int yaffsfs_CountHandles(struct yaffs_obj *obj)$/;"	f	file:
+yaffsfs_CurrentTime	yaffs_osglue.c	/^uint32_t yaffsfs_CurrentTime(void)$/;"	f
+yaffsfs_DeviceConfiguration	yaffscfg.h	/^} yaffsfs_DeviceConfiguration;$/;"	t	typeref:struct:yaffsfs_DeviceConfigurationStruct
+yaffsfs_DeviceConfigurationStruct	yaffscfg.h	/^typedef struct yaffsfs_DeviceConfigurationStruct {$/;"	s
+yaffsfs_DirAdvance	yaffsfs.c	/^static void yaffsfs_DirAdvance(yaffsfs_DirectorySearchContext *dsc)$/;"	f	file:
+yaffsfs_DirectorySearchContext	yaffsfs.c	/^} yaffsfs_DirectorySearchContext;$/;"	t	typeref:struct:__anon4	file:
+yaffsfs_DoChMod	yaffsfs.c	/^static int yaffsfs_DoChMod(struct yaffs_obj *obj,mode_t mode)$/;"	f	file:
+yaffsfs_DoFindDirectory	yaffsfs.c	/^static struct yaffs_obj *yaffsfs_DoFindDirectory(struct yaffs_obj *startDir,$/;"	f	file:
+yaffsfs_DoStat	yaffsfs.c	/^static int yaffsfs_DoStat(struct yaffs_obj *obj,struct yaffs_stat *buf)$/;"	f	file:
+yaffsfs_DoStatOrLStat	yaffsfs.c	/^static int yaffsfs_DoStatOrLStat(const YCHAR *path, struct yaffs_stat *buf,int doLStat)$/;"	f	file:
+yaffsfs_DoUnlink	yaffsfs.c	/^int yaffsfs_DoUnlink(const YCHAR *path,int isDirectory)$/;"	f
+yaffsfs_DoUtime	yaffsfs.c	/^static int yaffsfs_DoUtime(struct yaffs_obj *obj,const struct yaffs_utimbuf *buf)$/;"	f	file:
+yaffsfs_FileDes	yaffsfs.c	/^}yaffsfs_FileDes;$/;"	t	typeref:struct:__anon2	file:
+yaffsfs_FindDevice	yaffsfs.c	/^static struct yaffs_dev *yaffsfs_FindDevice(const YCHAR *path, YCHAR **restOfPath)$/;"	f	file:
+yaffsfs_FindDirectory	yaffsfs.c	/^static struct yaffs_obj *yaffsfs_FindDirectory(struct yaffs_obj *relDir,$/;"	f	file:
+yaffsfs_FindInodeIdForObject	yaffsfs.c	/^static int yaffsfs_FindInodeIdForObject(struct yaffs_obj *obj)$/;"	f	file:
+yaffsfs_FindMountPoint	yaffsfs.c	/^static struct yaffs_dev *yaffsfs_FindMountPoint(const YCHAR *path)$/;"	f	file:
+yaffsfs_FindObject	yaffsfs.c	/^static struct yaffs_obj *yaffsfs_FindObject(struct yaffs_obj *relDir,$/;"	f	file:
+yaffsfs_FindRoot	yaffsfs.c	/^static struct yaffs_obj *yaffsfs_FindRoot(const YCHAR *path, YCHAR **restOfPath)$/;"	f	file:
+yaffsfs_FollowLink	yaffsfs.c	/^static struct yaffs_obj *yaffsfs_FollowLink(struct yaffs_obj *obj,$/;"	f	file:
+yaffsfs_GetHandle	yaffsfs.c	/^static int yaffsfs_GetHandle(int handle)$/;"	f	file:
+yaffsfs_GetInodeIdForObject	yaffsfs.c	/^static int yaffsfs_GetInodeIdForObject(struct yaffs_obj *obj)$/;"	f	file:
+yaffsfs_GetLastError	yaffs_osglue.c	/^int yaffsfs_GetLastError()$/;"	f
+yaffsfs_Handle	yaffsfs.c	/^} yaffsfs_Handle;$/;"	t	typeref:struct:__anon3	file:
+yaffsfs_HandleToFileDes	yaffsfs.c	/^static yaffsfs_FileDes *yaffsfs_HandleToFileDes(int handle)$/;"	f	file:
+yaffsfs_HandleToInode	yaffsfs.c	/^static yaffsfs_Inode *yaffsfs_HandleToInode(int handle)$/;"	f	file:
+yaffsfs_HandleToObject	yaffsfs.c	/^static struct yaffs_obj *yaffsfs_HandleToObject(int handle)$/;"	f	file:
+yaffsfs_HandleToPointer	yaffsfs.c	/^static yaffsfs_Handle *yaffsfs_HandleToPointer(int h)$/;"	f	file:
+yaffsfs_InitHandles	yaffsfs.c	/^static void yaffsfs_InitHandles(void)$/;"	f	file:
+yaffsfs_Inode	yaffsfs.c	/^} yaffsfs_Inode;$/;"	t	typeref:struct:__anon1	file:
+yaffsfs_IsDevBusy	yaffsfs.c	/^static int yaffsfs_IsDevBusy(struct yaffs_dev * dev)$/;"	f	file:
+yaffsfs_IsPathDivider	yaffsfs.c	/^int yaffsfs_IsPathDivider(YCHAR ch)$/;"	f
+yaffsfs_Lock	yaffs_osglue.c	/^void yaffsfs_Lock()$/;"	f
+yaffsfs_Match	yaffsfs.c	/^int yaffsfs_Match(YCHAR a, YCHAR b)$/;"	f
+yaffsfs_NewHandle	yaffsfs.c	/^static int yaffsfs_NewHandle(yaffsfs_Handle **hptr)$/;"	f	file:
+yaffsfs_NewHandleAndFileDes	yaffsfs.c	/^static int yaffsfs_NewHandleAndFileDes(void)$/;"	f	file:
+yaffsfs_OSInitialisation	yaffs_osglue.c	/^void yaffsfs_OSInitialisation()$/;"	f
+yaffsfs_PutFileDes	yaffsfs.c	/^static int yaffsfs_PutFileDes(int fdId)$/;"	f	file:
+yaffsfs_PutHandle	yaffsfs.c	/^static int yaffsfs_PutHandle(int handle)$/;"	f	file:
+yaffsfs_PutInode	yaffsfs.c	/^static void yaffsfs_PutInode(int inodeId)$/;"	f	file:
+yaffsfs_ReleaseInode	yaffsfs.c	/^static void yaffsfs_ReleaseInode(yaffsfs_Inode *in)$/;"	f	file:
+yaffsfs_RemoveObjectCallback	yaffsfs.c	/^static void yaffsfs_RemoveObjectCallback(struct yaffs_obj *obj)$/;"	f	file:
+yaffsfs_SetDirRewound	yaffsfs.c	/^static void yaffsfs_SetDirRewound(yaffsfs_DirectorySearchContext *dsc)$/;"	f	file:
+yaffsfs_SetError	yaffs_osglue.c	/^void yaffsfs_SetError(int err)$/;"	f
+yaffsfs_TooManyObjects	yaffsfs.c	/^static int yaffsfs_TooManyObjects(struct yaffs_dev *dev)$/;"	f	file:
+yaffsfs_Unlock	yaffs_osglue.c	/^void yaffsfs_Unlock()$/;"	f
+yaffsfs_alt_dir_path	yaffsfs.c	/^static int yaffsfs_alt_dir_path(const YCHAR *path, YCHAR **ret_path)$/;"	f	file:
+yaffsfs_deviceList	yaffsfs.c	/^LIST_HEAD(yaffsfs_deviceList);$/;"	v
+yaffsfs_do_read	yaffsfs.c	/^int yaffsfs_do_read(int handle, void *vbuf, unsigned int nbyte, int isPread, loff_t offset)$/;"	f
+yaffsfs_do_write	yaffsfs.c	/^int yaffsfs_do_write(int handle, const void *vbuf, unsigned int nbyte, int isPwrite, loff_t offset)$/;"	f
+yaffsfs_fd	yaffsfs.c	/^static yaffsfs_FileDes yaffsfs_fd[YAFFSFS_N_HANDLES];$/;"	v	file:
+yaffsfs_free	yaffs_osglue.c	/^void yaffsfs_free(void *ptr)$/;"	f
+yaffsfs_handle	yaffsfs.c	/^static yaffsfs_Handle yaffsfs_handle[YAFFSFS_N_HANDLES];$/;"	v	file:
+yaffsfs_handlesInitialised	yaffsfs.c	/^static int yaffsfs_handlesInitialised;$/;"	v	file:
+yaffsfs_inode	yaffsfs.c	/^static yaffsfs_Inode yaffsfs_inode[YAFFSFS_N_HANDLES];$/;"	v	file:
+yaffsfs_malloc	yaffs_osglue.c	/^void *yaffsfs_malloc(size_t size)$/;"	f
+ydev	yaffs_vfs.h	/^    struct yaffs_dev *ydev;$/;"	m	struct:yaffs2_fs	typeref:struct:yaffs2_fs::yaffs_dev
+ynandif_Deinitialise_flash_fn	yaffs_nandif.c	/^int ynandif_Deinitialise_flash_fn(struct yaffs_dev *dev)$/;"	f
+ynandif_EraseBlockInNAND	yaffs_nandif.c	/^int ynandif_EraseBlockInNAND(struct yaffs_dev *dev, int blockId)$/;"	f
+ynandif_Geometry	yaffs_nandif.h	/^} ynandif_Geometry;$/;"	t	typeref:struct:__anon7
+ynandif_InitialiseNAND	yaffs_nandif.c	/^int ynandif_InitialiseNAND(struct yaffs_dev *dev)$/;"	f
+ynandif_IsBlockOk	yaffs_nandif.c	/^static int ynandif_IsBlockOk(struct yaffs_dev *dev, int blockId)$/;"	f	file:
+ynandif_MarkNANDBlockBad	yaffs_nandif.c	/^int ynandif_MarkNANDBlockBad(struct yaffs_dev *dev, int blockId)$/;"	f
+ynandif_QueryNANDBlock	yaffs_nandif.c	/^int ynandif_QueryNANDBlock(struct yaffs_dev *dev, int blockId, $/;"	f
+ynandif_ReadChunkWithTagsFromNAND	yaffs_nandif.c	/^int ynandif_ReadChunkWithTagsFromNAND(struct yaffs_dev * dev, int nand_chunk,$/;"	f
+ynandif_WriteChunkWithTagsToNAND	yaffs_nandif.c	/^int ynandif_WriteChunkWithTagsToNAND(struct yaffs_dev * dev, int nand_chunk,$/;"	f
+yramsim_CreateRamSim	yramsim.c	/^struct yaffs_dev *yramsim_CreateRamSim(const YCHAR *name,$/;"	f
+yramsim_alloc_sim_data	yramsim.c	/^static SimData *yramsim_alloc_sim_data(u32 devId, u32 nBlocks)$/;"	f	file:
+yramsim_check_block_ok	yramsim.c	/^static int yramsim_check_block_ok(struct yaffs_dev *dev,unsigned blockId)$/;"	f	file:
+yramsim_deinitialise	yramsim.c	/^static int yramsim_deinitialise(struct yaffs_dev *dev)$/;"	f	file:
+yramsim_dev0	yramsim.c	/^static struct  yaffs_dev yramsim_dev0;$/;"	v	typeref:struct:yaffs_dev	file:
+yramsim_erase	yramsim.c	/^static int yramsim_erase(struct yaffs_dev *dev,unsigned blockId)$/;"	f	file:
+yramsim_erase_internal	yramsim.c	/^static int yramsim_erase_internal(SimData *sim, unsigned blockId,int force)$/;"	f	file:
+yramsim_initialise	yramsim.c	/^static int yramsim_initialise(struct yaffs_dev *dev)$/;"	f	file:
+yramsim_mark_block_bad	yramsim.c	/^static int yramsim_mark_block_bad(struct yaffs_dev *dev,unsigned blockId)$/;"	f	file:
+yramsim_name0	yramsim.c	/^static char    yramsim_name0[64];$/;"	v	file:
+yramsim_rd_chunk	yramsim.c	/^static int yramsim_rd_chunk (struct yaffs_dev *dev, unsigned pageId,$/;"	f	file:
+yramsim_wr_chunk	yramsim.c	/^static int yramsim_wr_chunk (struct yaffs_dev *dev,unsigned pageId,$/;"	f	file:
+yst_atime	yaffs_guts.h	/^	u32 yst_atime;$/;"	m	struct:yaffs_obj
+yst_atime	yaffs_guts.h	/^	u32 yst_atime;$/;"	m	struct:yaffs_obj_hdr
+yst_atime	yaffsfs.h	/^    unsigned long yst_atime;    \/* time of last access *\/$/;"	m	struct:yaffs_stat
+yst_ctime	yaffs_guts.h	/^	u32 yst_ctime;$/;"	m	struct:yaffs_obj
+yst_ctime	yaffs_guts.h	/^	u32 yst_ctime;$/;"	m	struct:yaffs_obj_hdr
+yst_ctime	yaffsfs.h	/^    unsigned long yst_ctime;    \/* time of last change *\/$/;"	m	struct:yaffs_stat
+yst_gid	yaffs_guts.h	/^	u32 yst_gid;$/;"	m	struct:yaffs_obj
+yst_gid	yaffs_guts.h	/^	u32 yst_gid;$/;"	m	struct:yaffs_obj_hdr
+yst_mode	yaffs_guts.h	/^	u32 yst_mode;		\/* protection *\/$/;"	m	struct:yaffs_obj_hdr
+yst_mode	yaffs_guts.h	/^	u32 yst_mode;$/;"	m	struct:yaffs_obj
+yst_mtime	yaffs_guts.h	/^	u32 yst_mtime;$/;"	m	struct:yaffs_obj
+yst_mtime	yaffs_guts.h	/^	u32 yst_mtime;$/;"	m	struct:yaffs_obj_hdr
+yst_mtime	yaffsfs.h	/^    unsigned long yst_mtime;    \/* time of last modification *\/$/;"	m	struct:yaffs_stat
+yst_rdev	yaffs_guts.h	/^	u32 yst_rdev;	\/* stuff for block and char devices (major\/min) *\/$/;"	m	struct:yaffs_obj_hdr
+yst_rdev	yaffs_guts.h	/^	u32 yst_rdev;$/;"	m	struct:yaffs_obj
+yst_uid	yaffs_guts.h	/^	u32 yst_uid;$/;"	m	struct:yaffs_obj
+yst_uid	yaffs_guts.h	/^	u32 yst_uid;$/;"	m	struct:yaffs_obj_hdr
+yst_wince_atime	yaffsfs.h	/^	unsigned long yst_wince_atime[2];$/;"	m	struct:yaffs_stat
+yst_wince_ctime	yaffsfs.h	/^	unsigned long yst_wince_ctime[2];$/;"	m	struct:yaffs_stat
+yst_wince_mtime	yaffsfs.h	/^	unsigned long yst_wince_mtime[2];$/;"	m	struct:yaffs_stat
+yswap	yaffs_qsort.c	59;"	d	file:

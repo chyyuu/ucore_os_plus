@@ -1,0 +1,132 @@
+Font File                   Font Type   Font Name in MiniGUI.cfg
+
+6x12-iso8859-1.bin          RBF         rbf-fixed-rrncnn-6-12-ISO8859-1
+song-12-gb2312.bin          RBF         rbf-fixed-rrncnn-12-12-GB2312-0
+8x16-iso8859-1.bin          RBF         rbf-fixed-rrncnn-8-16-ISO8859-1
+song-16-gb2312.bin          RBF         rbf-fixed-rrncnn-16-16-GB2312-0
+8x16-iso8859-1.bin          RBF         rbf-fixed-rrncnn-8-16-ISO8859-1
+12x24-iso8859-1.bin         RBF         rbf-fixed-rrncnn-12-24-ISO8859-1
+song-24-gb2312.bin          RBF         rbf-fixed-rrncnn-24-24-GB2312-0
+fmfsong-12-gb2312.bin       RBF         rbf-fmfsong-rrncnn-12-12-GB2312-0
+fmfsong-14-gb2312.bin       RBF         rbf-fmfsong-rrncnn-14-14-GB2312-0
+fmfsong-16-gb2312.bin       RBF         rbf-fmfsong-rrncnn-16-16-GB2312-0
+fmfsong-24-gb2312.bin       RBF         rbf-fmfsong-rrncnn-24-24-GB2312-0
+ming-12-big5.bin            RBF         rbf-ming-rrncnn-12-12-BIG5
+ming-16-big5.bin            RBF         rbf-ming-rrncnn-16-16-BIG5
+ming-24-big5.bin            RBF         rbf-ming-rrncnn-24-24-BIG5
+fmhei-16-gb2312.bin         RBF         rbf-fmhei-rrncnn-16-16-GB2312-0
+fmhei-18-gb2312.bin         RBF         rbf-fmhei-rrncnn-18-18-GB2312-0
+fmhei-20-gb2312.bin         RBF         rbf-fmhei-rrncnn-20-20-GB2312-0
+fmhei-24-gb2312.bin         RBF         rbf-fmhei-rrncnn-24-24-GB2312-0
+fixed-16-jiskan.bin         RBF         rbf-fixed-rrncnn-16-16-JISX0208-1
+gothic-12-jiskan.bin        RBF         rbf-gothic-rrncnn-12-12-JISX0208-1
+mincho-12-jiskan.bin        RBF         rbf-mincho-rrncnn-12-12-JISX0208-1
+gothic-6x12-jisx0201.bin    RBF         rbf-gothic-rrncnn-12-12-JISX0201-1
+gothic-6x12rk.bin           RBF         rbf-gothic-rrncnn-12-12-JISX0201-1
+batang-12-ksc5601.bin       RBF         rbf-batang-rrncnn-12-12-EUC-KR
+mincho-16-ksc5601.bin       RBF         rbf-mincho-rrncnn-16-16-EUC-KR
+
+Courier-rr-8-13.vbf         VBF         vbf-Courier-rrncnn-8-13-ISO8859-1
+Helvetica-rr-11-12.vbf      VBF         vbf-Helvetica-rrncnn-11-12-ISO8859-1
+Times-rr-10-12.vbf          VBF         vbf-Times-rrncnn-10-12-ISO8859-1
+Courier-rr-10-15.vbf        VBF         vbf-Courier-rrncnn-10-15-ISO8859-1
+Helvetica-rr-15-16.vbf      VBF         vbf-Helvetica-rrncnn-15-16-ISO8859-1
+Times-rr-13-15.vbf          VBF         vbf-Times-rrncnn-13-15-ISO8859-1
+naskhi-18-21-iso8859-6.vbf  VBF         vbf-naskhi-rrncnn-18-21-ISO8859-6
+fixed-10-20-iso8859-8.vbf   VBF         vbf-fixed-mrncnn-10-20-ISO8859-8
+
+smoothtimes_100_50.upf    UPF   upf-times-rrncnn-5-10-ISO8859-1,ISO8859-15
+micro_40_50.upf           UPF   upf-micro-rrncnn-4-4-ISO8859-1,ISO8859-15
+
+unifont_160_50.upf        UPF
+    upf-unifont-rrncnn-16-16-ISO8859-1,ISO8859-15,GB2312,BIG5,GBK,UTF-8,UTF-16LE,UTF-16BE
+
+fmsong-latin-gb18030-12.upf   UPF
+    upf-fmsong-rrncnn-12-12-ISO8859-1,GB2312,BIG5,GBK,GB18030,UTF-8,UTF-16LE,UTF-16BE 
+fmsong-latin-gb18030-14.upf   UPF
+    upf-fmsong-rrncnn-14-14-ISO8859-1,GB2312,BIG5,GBK,GB18030,UTF-8,UTF-16LE,UTF-16BE 
+fmsong-latin-gb18030-16.upf   UPF
+    upf-fmsong-rrncnn-16-16-ISO8859-1,GB2312,BIG5,GBK,GB18030,UTF-8,UTF-16LE,UTF-16BE 
+
+fmsong-latin-gb2312-8.upf   UPF
+    upf-fmsong-rrncnn-8-8-ISO8859-1,GB2312,UTF-8,UTF-16LE,UTF-16BE 
+fmsong-latin-gb2312-9.upf   UPF
+    upf-fmsong-rrncnn-9-9-ISO8859-1,GB2312,UTF-8,UTF-16LE,UTF-16BE 
+fmsong-latin-gbk-10.upf   UPF
+    upf-fmsong-rrncnn-10-10-ISO8859-1,GB2312,BIG5,GBK,UTF-8,UTF-16LE,UTF-16BE 
+fmsong-latin-gbk-12.upf   UPF
+    upf-fmsong-rrncnn-12-12-ISO8859-1,GB2312,BIG5,GBK,UTF-8,UTF-16LE,UTF-16BE 
+fmsong-latin-gbk-13.upf   UPF
+    upf-fmsong-rrncnn-13-13-ISO8859-1,GB2312,BIG5,GBK,UTF-8,UTF-16LE,UTF-16BE 
+fmsong-latin-gbk-14.upf   UPF
+    upf-fmsong-rrncnn-14-14-ISO8859-1,GB2312,BIG5,GBK,UTF-8,UTF-16LE,UTF-16BE 
+fmsong-latin-gbk-15.upf   UPF
+    upf-fmsong-rrncnn-15-15-ISO8859-1,GB2312,BIG5,GBK,UTF-8,UTF-16LE,UTF-16BE 
+fmsong-latin-gbk-16.upf   UPF
+    upf-fmsong-rrncnn-16-16-ISO8859-1,GB2312,BIG5,GBK,UTF-8,UTF-16LE,UTF-16BE 
+fmsong-latin-gbk-18.upf   UPF
+    upf-fmsong-rrncnn-18-18-ISO8859-1,GB2312,BIG5,GBK,UTF-8,UTF-16LE,UTF-16BE 
+
+fmfsong-latin-gb2312-12.upf UPF
+    upf-fmfsong-rrncnn-12-12-ISO8859-1,GB2312,UTF-8,UTF-16LE,UTF-16BE 
+fmfsong-latin-gb2312-13.upf UPF
+    upf-fmfsong-rrncnn-13-13-ISO8859-1,GB2312,UTF-8,UTF-16LE,UTF-16BE 
+fmfsong-latin-gb2312-14.upf UPF
+    upf-fmfsong-rrncnn-14-14-ISO8859-1,GB2312,UTF-8,UTF-16LE,UTF-16BE 
+fmfsong-latin-gb2312-15.upf UPF
+    upf-fmfsong-rrncnn-15-15-ISO8859-1,GB2312,UTF-8,UTF-16LE,UTF-16BE 
+fmfsong-latin-gb2312-16.upf UPF
+    upf-fmfsong-rrncnn-16-16-ISO8859-1,GB2312,UTF-8,UTF-16LE,UTF-16BE 
+fmfsong-latin-gb2312-18.upf UPF
+    upf-fmfsong-rrncnn-18-18-ISO8859-1,GB2312,UTF-8,UTF-16LE,UTF-16BE 
+fmfsong-latin-gb2312-20.upf UPF
+    upf-fmfsong-rrncnn-20-20-ISO8859-1,GB2312,UTF-8,UTF-16LE,UTF-16BE 
+
+fmhei-latin-gbk-16.upf  UPF
+    upf-fmhei-rrncnn-16-16-ISO8859-1,GB2312,BIG5,GBK,UTF-8,UTF-16LE,UTF-16BE 
+fmhei-latin-gbk-18.upf  UPF
+    upf-fmhei-rrncnn-18-18-ISO8859-1,GB2312,BIG5,GBK,UTF-8,UTF-16LE,UTF-16BE 
+fmhei-latin-gbk-20.upf  UPF
+    upf-fmhei-rrncnn-20-20-ISO8859-1,GB2312,BIG5,GBK,UTF-8,UTF-16LE,UTF-16BE 
+
+fmkai-latin-gb2312-12.upf   UPF
+    upf-fmkai-rrncnn-12-12-ISO8859-1,GB2312,UTF-8,UTF-16LE,UTF-16BE 
+fmkai-latin-gb2312-13.upf   UPF
+    upf-fmkai-rrncnn-13-13-ISO8859-1,GB2312,UTF-8,UTF-16LE,UTF-16BE 
+fmkai-latin-gb2312-14.upf   UPF
+    upf-fmkai-rrncnn-14-14-ISO8859-1,GB2312,UTF-8,UTF-16LE,UTF-16BE 
+fmkai-latin-gb2312-15.upf   UPF
+    upf-fmkai-rrncnn-15-15-ISO8859-1,GB2312,UTF-8,UTF-16LE,UTF-16BE 
+fmkai-latin-gb2312-16.upf   UPF
+    upf-fmkai-rrncnn-16-16-ISO8859-1,GB2312,UTF-8,UTF-16LE,UTF-16BE 
+fmkai-latin-gb2312-18.upf   UPF
+    upf-fmkai-rrncnn-18-18-ISO8859-1,GB2312,UTF-8,UTF-16LE,UTF-16BE 
+fmkai-latin-gb2312-20.upf   UPF
+    upf-fmkai-rrncnn-20-20-ISO8859-1,GB2312,UTF-8,UTF-16LE,UTF-16BE 
+
+courier-mr-8.upf          UPF   upf-courier-rrncnn-8-8-ISO8859-1,ISO8859-15
+courier-mr-10.upf         UPF   upf-courier-rrncnn-10-10-ISO8859-1,ISO8859-15
+courier-mr-12.upf         UPF   upf-courier-rrncnn-12-12-ISO8859-1,ISO8859-15
+courier-mr-14.upf         UPF   upf-courier-rrncnn-14-14-ISO8859-1,ISO8859-15
+courier-mr-18.upf         UPF   upf-courier-rrncnn-18-18-ISO8859-1,ISO8859-15
+courier-mr-24.upf         UPF   upf-courier-rrncnn-24-24-ISO8859-1,ISO8859-15
+lucida-mr-8.upf           UPF   upf-lucida-rrncnn-8-8-ISO8859-1,ISO8859-15
+lucida-mr-10.upf          UPF   upf-lucida-rrncnn-10-10-ISO8859-1,ISO8859-15
+lucida-mr-12.upf          UPF   upf-lucida-rrncnn-12-12-ISO8859-1,ISO8859-15
+lucida-mr-14.upf          UPF   upf-lucida-rrncnn-14-14-ISO8859-1,ISO8859-15
+lucida-mr-18.upf          UPF   upf-lucida-rrncnn-18-18-ISO8859-1,ISO8859-15
+lucida-mr-19.upf          UPF   upf-lucida-rrncnn-19-19-ISO8859-1,ISO8859-15
+lucida-mr-24.upf          UPF   upf-lucida-rrncnn-24-24-ISO8859-1,ISO8859-15
+times-mr-8.upf            UPF   upf-times-rrncnn-8-8-ISO8859-1,ISO8859-15
+times-mr-10.upf           UPF   upf-times-rrncnn-10-10-ISO8859-1,ISO8859-15
+times-mr-12.upf           UPF   upf-times-rrncnn-12-12-ISO8859-1,ISO8859-15
+times-mr-14.upf           UPF   upf-times-rrncnn-14-14-ISO8859-1,ISO8859-15
+times-mr-18.upf           UPF   upf-times-rrncnn-18-18-ISO8859-1,ISO8859-15
+times-mr-24.upf           UPF   upf-times-rrncnn-24-24-ISO8859-1,ISO8859-15
+helvetica-mr-8.upf        UPF   upf-helvetica-rrncnn-8-8-ISO8859-1,ISO8859-15
+helvetica-mr-10.upf       UPF   upf-helvetica-rrncnn-10-10-ISO8859-1,ISO8859-15
+helvetica-mr-12.upf       UPF   upf-helvetica-rrncnn-12-12-ISO8859-1,ISO8859-15
+helvetica-mr-14.upf       UPF   upf-helvetica-rrncnn-14-14-ISO8859-1,ISO8859-15
+helvetica-mr-18.upf       UPF   upf-helvetica-rrncnn-18-18-ISO8859-1,ISO8859-15
+helvetica-mr-24.upf       UPF   upf-helvetica-rrncnn-24-24-ISO8859-1,ISO8859-15
+

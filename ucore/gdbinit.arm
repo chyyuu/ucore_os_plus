@@ -1,0 +1,15 @@
+#file obj/kernel-initrd-versatilepb
+file obj/kernel/kernel-arm.elf
+define hook-stop
+x/2i $pc
+end
+
+target remote 127.0.0.1:1234
+#file obj/user-sfs/tt
+#file obj/user-sfs/bin/sigtest1
+#b main
+#c
+#b switch_to
+#b yaffs_vop_namefile
+#display yramsim_dev0.param.name
+

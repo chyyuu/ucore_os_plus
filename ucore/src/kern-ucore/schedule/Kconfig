@@ -1,0 +1,15 @@
+menu Schedule
+
+choice
+  prompt "Scheduler"
+  default SCHEDULER_MLFQ 
+
+config SCHEDULER_RR
+  bool "Round-Robin"
+
+config SCHEDULER_MLFQ
+  bool "MLFQ"
+
+endchoice
+
+endmenu

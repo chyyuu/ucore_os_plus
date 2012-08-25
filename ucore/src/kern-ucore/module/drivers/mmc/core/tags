@@ -1,0 +1,347 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.9~svn20110310	//
+DEFINE_IDR	host.c	/^static DEFINE_IDR(mmc_host_idr);$/;"	p	file:
+DEFINE_SPINLOCK	host.c	/^static DEFINE_SPINLOCK(mmc_host_lock);$/;"	p	file:
+MMC_CMD_RETRIES	core.h	16;"	d
+MMC_DEV_ATTR	bus.h	14;"	d
+UNSTUFF_BITS	mmc.c	42;"	d	file:
+UNSTUFF_BITS	sd.c	44;"	d	file:
+_MMC_CORE_BUS_H	bus.h	12;"	d
+_MMC_CORE_CORE_H	core.h	12;"	d
+_MMC_CORE_HOST_H	host.h	12;"	d
+_MMC_CORE_SDIO_BUS_H	sdio_bus.h	12;"	d
+_MMC_MMC_OPS_H	mmc_ops.h	13;"	d
+_MMC_SDIO_CIS_H	sdio_cis.h	15;"	d
+_MMC_SDIO_OPS_H	sdio_ops.h	13;"	d
+_MMC_SD_OPS_H	sd_ops.h	13;"	d
+__mmc_claim_host	core.c	/^EXPORT_SYMBOL(__mmc_claim_host);$/;"	v
+__mmc_claim_host	core.c	/^int __mmc_claim_host(struct mmc_host *host, atomic_t *abort)$/;"	f	signature:(struct mmc_host *host, atomic_t *abort)
+__mmc_release_bus	core.c	/^static void __mmc_release_bus(struct mmc_host *host)$/;"	f	file:	signature:(struct mmc_host *host)
+_mmc_select_card	mmc_ops.c	/^static int _mmc_select_card(struct mmc_host *host, struct mmc_card *card)$/;"	f	file:	signature:(struct mmc_host *host, struct mmc_card *card)
+cis_tpl	sdio_cis.c	/^struct cis_tpl {$/;"	s	file:
+cis_tpl::code	sdio_cis.c	/^	unsigned char code;$/;"	m	struct:cis_tpl	file:	access:public
+cis_tpl::min_size	sdio_cis.c	/^	unsigned char min_size;$/;"	m	struct:cis_tpl	file:	access:public
+cis_tpl::parse	sdio_cis.c	/^	tpl_parse_t *parse;$/;"	m	struct:cis_tpl	file:	access:public
+cis_tpl_list	sdio_cis.c	/^static const struct cis_tpl cis_tpl_list[] = {$/;"	v	typeref:struct:cis_tpl	file:
+cistpl_funce	sdio_cis.c	/^static int cistpl_funce(struct mmc_card *card, struct sdio_func *func,$/;"	f	file:	signature:(struct mmc_card *card, struct sdio_func *func, const unsigned char *buf, unsigned size)
+cistpl_funce_common	sdio_cis.c	/^static int cistpl_funce_common(struct mmc_card *card,$/;"	f	file:	signature:(struct mmc_card *card, const unsigned char *buf, unsigned size)
+cistpl_funce_func	sdio_cis.c	/^static int cistpl_funce_func(struct sdio_func *func,$/;"	f	file:	signature:(struct sdio_func *func, const unsigned char *buf, unsigned size)
+cistpl_manfid	sdio_cis.c	/^static int cistpl_manfid(struct mmc_card *card, struct sdio_func *func,$/;"	f	file:	signature:(struct mmc_card *card, struct sdio_func *func, const unsigned char *buf, unsigned size)
+cistpl_vers_1	sdio_cis.c	/^static int cistpl_vers_1(struct mmc_card *card, struct sdio_func *func,$/;"	f	file:	signature:(struct mmc_card *card, struct sdio_func *func, const unsigned char *buf, unsigned size)
+cls_dev_to_mmc_host	host.c	25;"	d	file:
+code	sdio_cis.c	/^	unsigned char code;$/;"	m	struct:cis_tpl	file:	access:public
+detect	core.h	/^	void (*detect)(struct mmc_host *);$/;"	m	struct:mmc_bus_ops	access:public
+dev_to_mmc_card	bus.c	24;"	d	file:
+dev_to_sdio_func	sdio_bus.c	27;"	d	file:
+min_size	sdio_cis.c	/^	unsigned char min_size;$/;"	m	struct:cis_tpl	file:	access:public
+mmc_add_card	bus.c	/^int mmc_add_card(struct mmc_card *card)$/;"	f	signature:(struct mmc_card *card)
+mmc_add_card	bus.h	/^int mmc_add_card(struct mmc_card *card);$/;"	p	signature:(struct mmc_card *card)
+mmc_add_card_debugfs	core.h	/^void mmc_add_card_debugfs(struct mmc_card *card);$/;"	p	signature:(struct mmc_card *card)
+mmc_add_host	host.c	/^EXPORT_SYMBOL(mmc_add_host);$/;"	v
+mmc_add_host	host.c	/^int mmc_add_host(struct mmc_host *host)$/;"	f	signature:(struct mmc_host *host)
+mmc_add_host_debugfs	core.h	/^void mmc_add_host_debugfs(struct mmc_host *host);$/;"	p	signature:(struct mmc_host *host)
+mmc_align_data_size	core.c	/^EXPORT_SYMBOL(mmc_align_data_size);$/;"	v
+mmc_align_data_size	core.c	/^unsigned int mmc_align_data_size(struct mmc_card *card, unsigned int sz)$/;"	f	signature:(struct mmc_card *card, unsigned int sz)
+mmc_all_send_cid	mmc_ops.c	/^int mmc_all_send_cid(struct mmc_host *host, u32 *cid)$/;"	f	signature:(struct mmc_host *host, u32 *cid)
+mmc_all_send_cid	mmc_ops.h	/^int mmc_all_send_cid(struct mmc_host *host, u32 *cid);$/;"	p	signature:(struct mmc_host *host, u32 *cid)
+mmc_alloc_card	bus.c	/^struct mmc_card *mmc_alloc_card(struct mmc_host *host, struct device_type *type)$/;"	f	signature:(struct mmc_host *host, struct device_type *type)
+mmc_alloc_card	bus.h	/^struct mmc_card *mmc_alloc_card(struct mmc_host *host,$/;"	p	signature:(struct mmc_host *host, struct device_type *type)
+mmc_alloc_host	host.c	/^EXPORT_SYMBOL(mmc_alloc_host);$/;"	v
+mmc_alloc_host	host.c	/^struct mmc_host *mmc_alloc_host(int extra, struct device *dev)$/;"	f	signature:(int extra, struct device *dev)
+mmc_app_cmd	sd_ops.c	/^static int mmc_app_cmd(struct mmc_host *host, struct mmc_card *card)$/;"	f	file:	signature:(struct mmc_host *host, struct mmc_card *card)
+mmc_app_send_scr	sd_ops.c	/^int mmc_app_send_scr(struct mmc_card *card, u32 *scr)$/;"	f	signature:(struct mmc_card *card, u32 *scr)
+mmc_app_send_scr	sd_ops.h	/^int mmc_app_send_scr(struct mmc_card *card, u32 *scr);$/;"	p	signature:(struct mmc_card *card, u32 *scr)
+mmc_app_set_bus_width	sd_ops.c	/^int mmc_app_set_bus_width(struct mmc_card *card, int width)$/;"	f	signature:(struct mmc_card *card, int width)
+mmc_app_set_bus_width	sd_ops.h	/^int mmc_app_set_bus_width(struct mmc_card *card, int width);$/;"	p	signature:(struct mmc_card *card, int width)
+mmc_attach_bus	core.c	/^void mmc_attach_bus(struct mmc_host *host, const struct mmc_bus_ops *ops)$/;"	f	signature:(struct mmc_host *host, const struct mmc_bus_ops *ops)
+mmc_attach_bus	core.h	/^void mmc_attach_bus(struct mmc_host *host, const struct mmc_bus_ops *ops);$/;"	p	signature:(struct mmc_host *host, const struct mmc_bus_ops *ops)
+mmc_attach_mmc	core.h	/^int mmc_attach_mmc(struct mmc_host *host, u32 ocr);$/;"	p	signature:(struct mmc_host *host, u32 ocr)
+mmc_attach_mmc	mmc.c	/^int mmc_attach_mmc(struct mmc_host *host, u32 ocr)$/;"	f	signature:(struct mmc_host *host, u32 ocr)
+mmc_attach_sd	core.h	/^int mmc_attach_sd(struct mmc_host *host, u32 ocr);$/;"	p	signature:(struct mmc_host *host, u32 ocr)
+mmc_attach_sd	sd.c	/^int mmc_attach_sd(struct mmc_host *host, u32 ocr)$/;"	f	signature:(struct mmc_host *host, u32 ocr)
+mmc_attach_sdio	core.h	/^int mmc_attach_sdio(struct mmc_host *host, u32 ocr);$/;"	p	signature:(struct mmc_host *host, u32 ocr)
+mmc_attach_sdio	sdio.c	/^int mmc_attach_sdio(struct mmc_host *host, u32 ocr)$/;"	f	signature:(struct mmc_host *host, u32 ocr)
+mmc_attr_groups	mmc.c	/^static struct attribute_group *mmc_attr_groups[] = {$/;"	v	typeref:struct:attribute_group	file:
+mmc_bus_get	core.c	/^static inline void mmc_bus_get(struct mmc_host *host)$/;"	f	file:	signature:(struct mmc_host *host)
+mmc_bus_match	bus.c	/^static int mmc_bus_match(struct device *dev, struct device_driver *drv)$/;"	f	file:	signature:(struct device *dev, struct device_driver *drv)
+mmc_bus_ops	core.h	/^struct mmc_bus_ops {$/;"	s
+mmc_bus_ops::detect	core.h	/^	void (*detect)(struct mmc_host *);$/;"	m	struct:mmc_bus_ops	access:public
+mmc_bus_ops::remove	core.h	/^	void (*remove)(struct mmc_host *);$/;"	m	struct:mmc_bus_ops	access:public
+mmc_bus_ops::resume	core.h	/^	void (*resume)(struct mmc_host *);$/;"	m	struct:mmc_bus_ops	access:public
+mmc_bus_ops::suspend	core.h	/^	void (*suspend)(struct mmc_host *);$/;"	m	struct:mmc_bus_ops	access:public
+mmc_bus_probe	bus.c	/^static int mmc_bus_probe(struct device *dev)$/;"	f	file:	signature:(struct device *dev)
+mmc_bus_put	core.c	/^static inline void mmc_bus_put(struct mmc_host *host)$/;"	f	file:	signature:(struct mmc_host *host)
+mmc_bus_remove	bus.c	/^static int mmc_bus_remove(struct device *dev)$/;"	f	file:	signature:(struct device *dev)
+mmc_bus_resume	bus.c	/^static int mmc_bus_resume(struct device *dev)$/;"	f	file:	signature:(struct device *dev)
+mmc_bus_suspend	bus.c	/^static int mmc_bus_suspend(struct device *dev, pm_message_t state)$/;"	f	file:	signature:(struct device *dev, pm_message_t state)
+mmc_bus_type	bus.c	/^static struct bus_type mmc_bus_type = {$/;"	v	typeref:struct:bus_type	file:
+mmc_bus_uevent	bus.c	/^mmc_bus_uevent(struct device *dev, struct kobj_uevent_env *env)$/;"	f	file:	signature:(struct device *dev, struct kobj_uevent_env *env)
+mmc_decode_cid	mmc.c	/^static int mmc_decode_cid(struct mmc_card *card)$/;"	f	file:	signature:(struct mmc_card *card)
+mmc_decode_cid	sd.c	/^static void mmc_decode_cid(struct mmc_card *card)$/;"	f	file:	signature:(struct mmc_card *card)
+mmc_decode_csd	mmc.c	/^static int mmc_decode_csd(struct mmc_card *card)$/;"	f	file:	signature:(struct mmc_card *card)
+mmc_decode_csd	sd.c	/^static int mmc_decode_csd(struct mmc_card *card)$/;"	f	file:	signature:(struct mmc_card *card)
+mmc_decode_scr	sd.c	/^static int mmc_decode_scr(struct mmc_card *card)$/;"	f	file:	signature:(struct mmc_card *card)
+mmc_delay	core.h	/^static inline void mmc_delay(unsigned int ms)$/;"	f	signature:(unsigned int ms)
+mmc_delayed_work_wake_lock	core.c	/^static struct wake_lock mmc_delayed_work_wake_lock;$/;"	v	typeref:struct:wake_lock	file:
+mmc_deselect_cards	mmc_ops.c	/^int mmc_deselect_cards(struct mmc_host *host)$/;"	f	signature:(struct mmc_host *host)
+mmc_deselect_cards	mmc_ops.h	/^int mmc_deselect_cards(struct mmc_host *host);$/;"	p	signature:(struct mmc_host *host)
+mmc_detach_bus	core.c	/^void mmc_detach_bus(struct mmc_host *host)$/;"	f	signature:(struct mmc_host *host)
+mmc_detach_bus	core.h	/^void mmc_detach_bus(struct mmc_host *host);$/;"	p	signature:(struct mmc_host *host)
+mmc_detect	mmc.c	/^static void mmc_detect(struct mmc_host *host)$/;"	f	file:	signature:(struct mmc_host *host)
+mmc_detect_change	core.c	/^EXPORT_SYMBOL(mmc_detect_change);$/;"	v
+mmc_detect_change	core.c	/^void mmc_detect_change(struct mmc_host *host, unsigned long delay)$/;"	f	signature:(struct mmc_host *host, unsigned long delay)
+mmc_dev_attrs	bus.c	/^static struct device_attribute mmc_dev_attrs[] = {$/;"	v	typeref:struct:device_attribute	file:
+mmc_exit	core.c	/^module_exit(mmc_exit);$/;"	v
+mmc_exit	core.c	/^static void __exit mmc_exit(void)$/;"	f	file:	signature:(void)
+mmc_flush_scheduled_work	core.c	/^static void mmc_flush_scheduled_work(void)$/;"	f	file:	signature:(void)
+mmc_free_host	host.c	/^EXPORT_SYMBOL(mmc_free_host);$/;"	v
+mmc_free_host	host.c	/^void mmc_free_host(struct mmc_host *host)$/;"	f	signature:(struct mmc_host *host)
+mmc_go_idle	mmc_ops.c	/^int mmc_go_idle(struct mmc_host *host)$/;"	f	signature:(struct mmc_host *host)
+mmc_go_idle	mmc_ops.h	/^int mmc_go_idle(struct mmc_host *host);$/;"	p	signature:(struct mmc_host *host)
+mmc_host_class	host.c	/^static struct class mmc_host_class = {$/;"	v	typeref:struct:class	file:
+mmc_host_classdev_release	host.c	/^static void mmc_host_classdev_release(struct device *dev)$/;"	f	file:	signature:(struct device *dev)
+mmc_init	core.c	/^static int __init mmc_init(void)$/;"	f	file:	signature:(void)
+mmc_init	core.c	/^subsys_initcall(mmc_init);$/;"	v
+mmc_init_card	mmc.c	/^static int mmc_init_card(struct mmc_host *host, u32 ocr,$/;"	f	file:	signature:(struct mmc_host *host, u32 ocr, struct mmc_card *oldcard)
+mmc_io_rw_direct	sdio_ops.c	/^int mmc_io_rw_direct(struct mmc_card *card, int write, unsigned fn,$/;"	f	signature:(struct mmc_card *card, int write, unsigned fn, unsigned addr, u8 in, u8* out)
+mmc_io_rw_direct	sdio_ops.h	/^int mmc_io_rw_direct(struct mmc_card *card, int write, unsigned fn,$/;"	p	signature:(struct mmc_card *card, int write, unsigned fn, unsigned addr, u8 in, u8* out)
+mmc_io_rw_extended	sdio_ops.c	/^int mmc_io_rw_extended(struct mmc_card *card, int write, unsigned fn,$/;"	f	signature:(struct mmc_card *card, int write, unsigned fn, unsigned addr, int incr_addr, u8 *buf, unsigned blocks, unsigned blksz)
+mmc_io_rw_extended	sdio_ops.h	/^int mmc_io_rw_extended(struct mmc_card *card, int write, unsigned fn,$/;"	p	signature:(struct mmc_card *card, int write, unsigned fn, unsigned addr, int incr_addr, u8 *buf, unsigned blocks, unsigned blksz)
+mmc_ops	mmc.c	/^static const struct mmc_bus_ops mmc_ops = {$/;"	v	typeref:struct:mmc_bus_ops	file:
+mmc_power_off	core.c	/^static void mmc_power_off(struct mmc_host *host)$/;"	f	file:	signature:(struct mmc_host *host)
+mmc_power_up	core.c	/^static void mmc_power_up(struct mmc_host *host)$/;"	f	file:	signature:(struct mmc_host *host)
+mmc_read_ext_csd	mmc.c	/^static int mmc_read_ext_csd(struct mmc_card *card)$/;"	f	file:	signature:(struct mmc_card *card)
+mmc_read_switch	sd.c	/^static int mmc_read_switch(struct mmc_card *card)$/;"	f	file:	signature:(struct mmc_card *card)
+mmc_register_bus	bus.c	/^int mmc_register_bus(void)$/;"	f	signature:(void)
+mmc_register_bus	bus.h	/^int mmc_register_bus(void);$/;"	p	signature:(void)
+mmc_register_driver	bus.c	/^EXPORT_SYMBOL(mmc_register_driver);$/;"	v
+mmc_register_driver	bus.c	/^int mmc_register_driver(struct mmc_driver *drv)$/;"	f	signature:(struct mmc_driver *drv)
+mmc_register_host_class	host.c	/^int mmc_register_host_class(void)$/;"	f	signature:(void)
+mmc_register_host_class	host.h	/^int mmc_register_host_class(void);$/;"	p	signature:(void)
+mmc_release_card	bus.c	/^static void mmc_release_card(struct device *dev)$/;"	f	file:	signature:(struct device *dev)
+mmc_release_host	core.c	/^EXPORT_SYMBOL(mmc_release_host);$/;"	v
+mmc_release_host	core.c	/^void mmc_release_host(struct mmc_host *host)$/;"	f	signature:(struct mmc_host *host)
+mmc_remove	mmc.c	/^static void mmc_remove(struct mmc_host *host)$/;"	f	file:	signature:(struct mmc_host *host)
+mmc_remove_card	bus.c	/^void mmc_remove_card(struct mmc_card *card)$/;"	f	signature:(struct mmc_card *card)
+mmc_remove_card	bus.h	/^void mmc_remove_card(struct mmc_card *card);$/;"	p	signature:(struct mmc_card *card)
+mmc_remove_card_debugfs	core.h	/^void mmc_remove_card_debugfs(struct mmc_card *card);$/;"	p	signature:(struct mmc_card *card)
+mmc_remove_host	host.c	/^EXPORT_SYMBOL(mmc_remove_host);$/;"	v
+mmc_remove_host	host.c	/^void mmc_remove_host(struct mmc_host *host)$/;"	f	signature:(struct mmc_host *host)
+mmc_remove_host_debugfs	core.h	/^void mmc_remove_host_debugfs(struct mmc_host *host);$/;"	p	signature:(struct mmc_host *host)
+mmc_request_done	core.c	/^EXPORT_SYMBOL(mmc_request_done);$/;"	v
+mmc_request_done	core.c	/^void mmc_request_done(struct mmc_host *host, struct mmc_request *mrq)$/;"	f	signature:(struct mmc_host *host, struct mmc_request *mrq)
+mmc_rescan	core.c	/^void mmc_rescan(struct work_struct *work)$/;"	f	signature:(struct work_struct *work)
+mmc_rescan	core.h	/^void mmc_rescan(struct work_struct *work);$/;"	p	signature:(struct work_struct *work)
+mmc_resume	mmc.c	/^static void mmc_resume(struct mmc_host *host)$/;"	f	file:	signature:(struct mmc_host *host)
+mmc_resume	mmc.c	557;"	d	file:
+mmc_resume_bus	core.c	/^EXPORT_SYMBOL(mmc_resume_bus);$/;"	v
+mmc_resume_bus	core.c	/^int mmc_resume_bus(struct mmc_host *host)$/;"	f	signature:(struct mmc_host *host)
+mmc_resume_host	core.c	/^EXPORT_SYMBOL(mmc_resume_host);$/;"	v
+mmc_resume_host	core.c	/^int mmc_resume_host(struct mmc_host *host)$/;"	f	signature:(struct mmc_host *host)
+mmc_schedule_delayed_work	core.c	/^static int mmc_schedule_delayed_work(struct delayed_work *work,$/;"	f	file:	signature:(struct delayed_work *work, unsigned long delay)
+mmc_sd_detect	sd.c	/^static void mmc_sd_detect(struct mmc_host *host)$/;"	f	file:	signature:(struct mmc_host *host)
+mmc_sd_init_card	sd.c	/^static int mmc_sd_init_card(struct mmc_host *host, u32 ocr,$/;"	f	file:	signature:(struct mmc_host *host, u32 ocr, struct mmc_card *oldcard)
+mmc_sd_ops	sd.c	/^static const struct mmc_bus_ops mmc_sd_ops = {$/;"	v	typeref:struct:mmc_bus_ops	file:
+mmc_sd_remove	sd.c	/^static void mmc_sd_remove(struct mmc_host *host)$/;"	f	file:	signature:(struct mmc_host *host)
+mmc_sd_resume	sd.c	/^static void mmc_sd_resume(struct mmc_host *host)$/;"	f	file:	signature:(struct mmc_host *host)
+mmc_sd_resume	sd.c	665;"	d	file:
+mmc_sd_suspend	sd.c	/^static void mmc_sd_suspend(struct mmc_host *host)$/;"	f	file:	signature:(struct mmc_host *host)
+mmc_sd_suspend	sd.c	664;"	d	file:
+mmc_sd_switch	sd_ops.c	/^int mmc_sd_switch(struct mmc_card *card, int mode, int group,$/;"	f	signature:(struct mmc_card *card, int mode, int group, u8 value, u8 *resp)
+mmc_sd_switch	sd_ops.h	/^int mmc_sd_switch(struct mmc_card *card, int mode, int group,$/;"	p	signature:(struct mmc_card *card, int mode, int group, u8 value, u8 *resp)
+mmc_sdio_detect	sdio.c	/^static void mmc_sdio_detect(struct mmc_host *host)$/;"	f	file:	signature:(struct mmc_host *host)
+mmc_sdio_ops	sdio.c	/^static const struct mmc_bus_ops mmc_sdio_ops = {$/;"	v	typeref:struct:mmc_bus_ops	file:
+mmc_sdio_remove	sdio.c	/^static void mmc_sdio_remove(struct mmc_host *host)$/;"	f	file:	signature:(struct mmc_host *host)
+mmc_select_card	mmc_ops.c	/^int mmc_select_card(struct mmc_card *card)$/;"	f	signature:(struct mmc_card *card)
+mmc_select_card	mmc_ops.h	/^int mmc_select_card(struct mmc_card *card);$/;"	p	signature:(struct mmc_card *card)
+mmc_select_voltage	core.c	/^u32 mmc_select_voltage(struct mmc_host *host, u32 ocr)$/;"	f	signature:(struct mmc_host *host, u32 ocr)
+mmc_select_voltage	core.h	/^u32 mmc_select_voltage(struct mmc_host *host, u32 ocr);$/;"	p	signature:(struct mmc_host *host, u32 ocr)
+mmc_send_app_op_cond	sd_ops.c	/^int mmc_send_app_op_cond(struct mmc_host *host, u32 ocr, u32 *rocr)$/;"	f	signature:(struct mmc_host *host, u32 ocr, u32 *rocr)
+mmc_send_app_op_cond	sd_ops.h	/^int mmc_send_app_op_cond(struct mmc_host *host, u32 ocr, u32 *rocr);$/;"	p	signature:(struct mmc_host *host, u32 ocr, u32 *rocr)
+mmc_send_cid	mmc_ops.c	/^int mmc_send_cid(struct mmc_host *host, u32 *cid)$/;"	f	signature:(struct mmc_host *host, u32 *cid)
+mmc_send_cid	mmc_ops.h	/^int mmc_send_cid(struct mmc_host *host, u32 *cid);$/;"	p	signature:(struct mmc_host *host, u32 *cid)
+mmc_send_csd	mmc_ops.c	/^int mmc_send_csd(struct mmc_card *card, u32 *csd)$/;"	f	signature:(struct mmc_card *card, u32 *csd)
+mmc_send_csd	mmc_ops.h	/^int mmc_send_csd(struct mmc_card *card, u32 *csd);$/;"	p	signature:(struct mmc_card *card, u32 *csd)
+mmc_send_cxd_data	mmc_ops.c	/^mmc_send_cxd_data(struct mmc_card *card, struct mmc_host *host,$/;"	f	file:	signature:(struct mmc_card *card, struct mmc_host *host, u32 opcode, void *buf, unsigned len)
+mmc_send_cxd_native	mmc_ops.c	/^mmc_send_cxd_native(struct mmc_host *host, u32 arg, u32 *cxd, int opcode)$/;"	f	file:	signature:(struct mmc_host *host, u32 arg, u32 *cxd, int opcode)
+mmc_send_ext_csd	mmc_ops.c	/^int mmc_send_ext_csd(struct mmc_card *card, u8 *ext_csd)$/;"	f	signature:(struct mmc_card *card, u8 *ext_csd)
+mmc_send_ext_csd	mmc_ops.h	/^int mmc_send_ext_csd(struct mmc_card *card, u8 *ext_csd);$/;"	p	signature:(struct mmc_card *card, u8 *ext_csd)
+mmc_send_if_cond	sd_ops.c	/^int mmc_send_if_cond(struct mmc_host *host, u32 ocr)$/;"	f	signature:(struct mmc_host *host, u32 ocr)
+mmc_send_if_cond	sd_ops.h	/^int mmc_send_if_cond(struct mmc_host *host, u32 ocr);$/;"	p	signature:(struct mmc_host *host, u32 ocr)
+mmc_send_io_op_cond	sdio_ops.c	/^int mmc_send_io_op_cond(struct mmc_host *host, u32 ocr, u32 *rocr)$/;"	f	signature:(struct mmc_host *host, u32 ocr, u32 *rocr)
+mmc_send_io_op_cond	sdio_ops.h	/^int mmc_send_io_op_cond(struct mmc_host *host, u32 ocr, u32 *rocr);$/;"	p	signature:(struct mmc_host *host, u32 ocr, u32 *rocr)
+mmc_send_op_cond	mmc_ops.c	/^int mmc_send_op_cond(struct mmc_host *host, u32 ocr, u32 *rocr)$/;"	f	signature:(struct mmc_host *host, u32 ocr, u32 *rocr)
+mmc_send_op_cond	mmc_ops.h	/^int mmc_send_op_cond(struct mmc_host *host, u32 ocr, u32 *rocr);$/;"	p	signature:(struct mmc_host *host, u32 ocr, u32 *rocr)
+mmc_send_relative_addr	sd_ops.c	/^int mmc_send_relative_addr(struct mmc_host *host, unsigned int *rca)$/;"	f	signature:(struct mmc_host *host, unsigned int *rca)
+mmc_send_relative_addr	sd_ops.h	/^int mmc_send_relative_addr(struct mmc_host *host, unsigned int *rca);$/;"	p	signature:(struct mmc_host *host, unsigned int *rca)
+mmc_send_status	mmc_ops.c	/^int mmc_send_status(struct mmc_card *card, u32 *status)$/;"	f	signature:(struct mmc_card *card, u32 *status)
+mmc_send_status	mmc_ops.h	/^int mmc_send_status(struct mmc_card *card, u32 *status);$/;"	p	signature:(struct mmc_card *card, u32 *status)
+mmc_set_bus_mode	core.c	/^void mmc_set_bus_mode(struct mmc_host *host, unsigned int mode)$/;"	f	signature:(struct mmc_host *host, unsigned int mode)
+mmc_set_bus_mode	core.h	/^void mmc_set_bus_mode(struct mmc_host *host, unsigned int mode);$/;"	p	signature:(struct mmc_host *host, unsigned int mode)
+mmc_set_bus_width	core.c	/^void mmc_set_bus_width(struct mmc_host *host, unsigned int width)$/;"	f	signature:(struct mmc_host *host, unsigned int width)
+mmc_set_bus_width	core.h	/^void mmc_set_bus_width(struct mmc_host *host, unsigned int width);$/;"	p	signature:(struct mmc_host *host, unsigned int width)
+mmc_set_chip_select	core.c	/^void mmc_set_chip_select(struct mmc_host *host, int mode)$/;"	f	signature:(struct mmc_host *host, int mode)
+mmc_set_chip_select	core.h	/^void mmc_set_chip_select(struct mmc_host *host, int mode);$/;"	p	signature:(struct mmc_host *host, int mode)
+mmc_set_clock	core.c	/^void mmc_set_clock(struct mmc_host *host, unsigned int hz)$/;"	f	signature:(struct mmc_host *host, unsigned int hz)
+mmc_set_clock	core.h	/^void mmc_set_clock(struct mmc_host *host, unsigned int hz);$/;"	p	signature:(struct mmc_host *host, unsigned int hz)
+mmc_set_data_timeout	core.c	/^EXPORT_SYMBOL(mmc_set_data_timeout);$/;"	v
+mmc_set_data_timeout	core.c	/^void mmc_set_data_timeout(struct mmc_data *data, const struct mmc_card *card)$/;"	f	signature:(struct mmc_data *data, const struct mmc_card *card)
+mmc_set_embedded_sdio_data	core.c	/^EXPORT_SYMBOL(mmc_set_embedded_sdio_data);$/;"	v
+mmc_set_embedded_sdio_data	core.c	/^void mmc_set_embedded_sdio_data(struct mmc_host *host,$/;"	f	signature:(struct mmc_host *host, struct sdio_cis *cis, struct sdio_cccr *cccr, struct sdio_embedded_func *funcs, int num_funcs)
+mmc_set_ios	core.c	/^static inline void mmc_set_ios(struct mmc_host *host)$/;"	f	file:	signature:(struct mmc_host *host)
+mmc_set_relative_addr	mmc_ops.c	/^int mmc_set_relative_addr(struct mmc_card *card)$/;"	f	signature:(struct mmc_card *card)
+mmc_set_relative_addr	mmc_ops.h	/^int mmc_set_relative_addr(struct mmc_card *card);$/;"	p	signature:(struct mmc_card *card)
+mmc_set_timing	core.c	/^void mmc_set_timing(struct mmc_host *host, unsigned int timing)$/;"	f	signature:(struct mmc_host *host, unsigned int timing)
+mmc_set_timing	core.h	/^void mmc_set_timing(struct mmc_host *host, unsigned int timing);$/;"	p	signature:(struct mmc_host *host, unsigned int timing)
+mmc_spi_read_ocr	mmc_ops.c	/^int mmc_spi_read_ocr(struct mmc_host *host, int highcap, u32 *ocrp)$/;"	f	signature:(struct mmc_host *host, int highcap, u32 *ocrp)
+mmc_spi_read_ocr	mmc_ops.h	/^int mmc_spi_read_ocr(struct mmc_host *host, int highcap, u32 *ocrp);$/;"	p	signature:(struct mmc_host *host, int highcap, u32 *ocrp)
+mmc_spi_set_crc	mmc_ops.c	/^int mmc_spi_set_crc(struct mmc_host *host, int use_crc)$/;"	f	signature:(struct mmc_host *host, int use_crc)
+mmc_spi_set_crc	mmc_ops.h	/^int mmc_spi_set_crc(struct mmc_host *host, int use_crc);$/;"	p	signature:(struct mmc_host *host, int use_crc)
+mmc_start_host	core.c	/^void mmc_start_host(struct mmc_host *host)$/;"	f	signature:(struct mmc_host *host)
+mmc_start_host	core.h	/^void mmc_start_host(struct mmc_host *host);$/;"	p	signature:(struct mmc_host *host)
+mmc_start_request	core.c	/^mmc_start_request(struct mmc_host *host, struct mmc_request *mrq)$/;"	f	file:	signature:(struct mmc_host *host, struct mmc_request *mrq)
+mmc_std_attr_group	mmc.c	/^static struct attribute_group mmc_std_attr_group = {$/;"	v	typeref:struct:attribute_group	file:
+mmc_std_attrs	mmc.c	/^static struct attribute *mmc_std_attrs[] = {$/;"	v	typeref:struct:attribute	file:
+mmc_stop_host	core.c	/^void mmc_stop_host(struct mmc_host *host)$/;"	f	signature:(struct mmc_host *host)
+mmc_stop_host	core.h	/^void mmc_stop_host(struct mmc_host *host);$/;"	p	signature:(struct mmc_host *host)
+mmc_suspend	mmc.c	/^static void mmc_suspend(struct mmc_host *host)$/;"	f	file:	signature:(struct mmc_host *host)
+mmc_suspend	mmc.c	556;"	d	file:
+mmc_suspend_host	core.c	/^EXPORT_SYMBOL(mmc_suspend_host);$/;"	v
+mmc_suspend_host	core.c	/^int mmc_suspend_host(struct mmc_host *host, pm_message_t state)$/;"	f	signature:(struct mmc_host *host, pm_message_t state)
+mmc_switch	mmc_ops.c	/^int mmc_switch(struct mmc_card *card, u8 set, u8 index, u8 value)$/;"	f	signature:(struct mmc_card *card, u8 set, u8 index, u8 value)
+mmc_switch	mmc_ops.h	/^int mmc_switch(struct mmc_card *card, u8 set, u8 index, u8 value);$/;"	p	signature:(struct mmc_card *card, u8 set, u8 index, u8 value)
+mmc_switch_hs	sd.c	/^static int mmc_switch_hs(struct mmc_card *card)$/;"	f	file:	signature:(struct mmc_card *card)
+mmc_type	mmc.c	/^static struct device_type mmc_type = {$/;"	v	typeref:struct:device_type	file:
+mmc_type_show	bus.c	/^static ssize_t mmc_type_show(struct device *dev,$/;"	f	file:	signature:(struct device *dev, struct device_attribute *attr, char *buf)
+mmc_unregister_bus	bus.c	/^void mmc_unregister_bus(void)$/;"	f	signature:(void)
+mmc_unregister_bus	bus.h	/^void mmc_unregister_bus(void);$/;"	p	signature:(void)
+mmc_unregister_driver	bus.c	/^EXPORT_SYMBOL(mmc_unregister_driver);$/;"	v
+mmc_unregister_driver	bus.c	/^void mmc_unregister_driver(struct mmc_driver *drv)$/;"	f	signature:(struct mmc_driver *drv)
+mmc_unregister_host_class	host.c	/^void mmc_unregister_host_class(void)$/;"	f	signature:(void)
+mmc_unregister_host_class	host.h	/^void mmc_unregister_host_class(void);$/;"	p	signature:(void)
+mmc_vdd_to_ocrbitnum	core.c	/^static int mmc_vdd_to_ocrbitnum(int vdd, bool low_bits)$/;"	f	file:	signature:(int vdd, bool low_bits)
+mmc_vddrange_to_ocrmask	core.c	/^EXPORT_SYMBOL(mmc_vddrange_to_ocrmask);$/;"	v
+mmc_vddrange_to_ocrmask	core.c	/^u32 mmc_vddrange_to_ocrmask(int vdd_min, int vdd_max)$/;"	f	signature:(int vdd_min, int vdd_max)
+mmc_wait_done	core.c	/^static void mmc_wait_done(struct mmc_request *mrq)$/;"	f	file:	signature:(struct mmc_request *mrq)
+mmc_wait_for_app_cmd	sd_ops.c	/^EXPORT_SYMBOL(mmc_wait_for_app_cmd);$/;"	v
+mmc_wait_for_app_cmd	sd_ops.c	/^int mmc_wait_for_app_cmd(struct mmc_host *host, struct mmc_card *card,$/;"	f	signature:(struct mmc_host *host, struct mmc_card *card, struct mmc_command *cmd, int retries)
+mmc_wait_for_cmd	core.c	/^EXPORT_SYMBOL(mmc_wait_for_cmd);$/;"	v
+mmc_wait_for_cmd	core.c	/^int mmc_wait_for_cmd(struct mmc_host *host, struct mmc_command *cmd, int retries)$/;"	f	signature:(struct mmc_host *host, struct mmc_command *cmd, int retries)
+mmc_wait_for_req	core.c	/^EXPORT_SYMBOL(mmc_wait_for_req);$/;"	v
+mmc_wait_for_req	core.c	/^void mmc_wait_for_req(struct mmc_host *host, struct mmc_request *mrq)$/;"	f	signature:(struct mmc_host *host, struct mmc_request *mrq)
+modalias_show	sdio_bus.c	/^static ssize_t modalias_show(struct device *dev, struct device_attribute *attr, char *buf)$/;"	f	file:	signature:(struct device *dev, struct device_attribute *attr, char *buf)
+parse	sdio_cis.c	/^	tpl_parse_t *parse;$/;"	m	struct:cis_tpl	file:	access:public
+process_sdio_pending_irqs	sdio_irq.c	/^static int process_sdio_pending_irqs(struct mmc_card *card)$/;"	f	file:	signature:(struct mmc_card *card)
+remove	core.h	/^	void (*remove)(struct mmc_host *);$/;"	m	struct:mmc_bus_ops	access:public
+resume	core.h	/^	void (*resume)(struct mmc_host *);$/;"	m	struct:mmc_bus_ops	access:public
+sd_attr_groups	sd.c	/^static struct attribute_group *sd_attr_groups[] = {$/;"	v	typeref:struct:attribute_group	file:
+sd_std_attr_group	sd.c	/^static struct attribute_group sd_std_attr_group = {$/;"	v	typeref:struct:attribute_group	file:
+sd_std_attrs	sd.c	/^static struct attribute *sd_std_attrs[] = {$/;"	v	typeref:struct:attribute	file:
+sd_type	sd.c	/^static struct device_type sd_type = {$/;"	v	typeref:struct:device_type	file:
+sdio_add_func	sdio_bus.c	/^int sdio_add_func(struct sdio_func *func)$/;"	f	signature:(struct sdio_func *func)
+sdio_add_func	sdio_bus.h	/^int sdio_add_func(struct sdio_func *func);$/;"	p	signature:(struct sdio_func *func)
+sdio_align_size	sdio_io.c	/^EXPORT_SYMBOL_GPL(sdio_align_size);$/;"	v
+sdio_align_size	sdio_io.c	/^unsigned int sdio_align_size(struct sdio_func *func, unsigned int sz)$/;"	f	signature:(struct sdio_func *func, unsigned int sz)
+sdio_alloc_func	sdio_bus.c	/^struct sdio_func *sdio_alloc_func(struct mmc_card *card)$/;"	f	signature:(struct mmc_card *card)
+sdio_alloc_func	sdio_bus.h	/^struct sdio_func *sdio_alloc_func(struct mmc_card *card);$/;"	p	signature:(struct mmc_card *card)
+sdio_bus_match	sdio_bus.c	/^static int sdio_bus_match(struct device *dev, struct device_driver *drv)$/;"	f	file:	signature:(struct device *dev, struct device_driver *drv)
+sdio_bus_probe	sdio_bus.c	/^static int sdio_bus_probe(struct device *dev)$/;"	f	file:	signature:(struct device *dev)
+sdio_bus_remove	sdio_bus.c	/^static int sdio_bus_remove(struct device *dev)$/;"	f	file:	signature:(struct device *dev)
+sdio_bus_type	sdio_bus.c	/^static struct bus_type sdio_bus_type = {$/;"	v	typeref:struct:bus_type	file:
+sdio_bus_uevent	sdio_bus.c	/^sdio_bus_uevent(struct device *dev, struct kobj_uevent_env *env)$/;"	f	file:	signature:(struct device *dev, struct kobj_uevent_env *env)
+sdio_card_irq_get	sdio_irq.c	/^static int sdio_card_irq_get(struct mmc_card *card)$/;"	f	file:	signature:(struct mmc_card *card)
+sdio_card_irq_put	sdio_irq.c	/^static int sdio_card_irq_put(struct mmc_card *card)$/;"	f	file:	signature:(struct mmc_card *card)
+sdio_claim_host	sdio_io.c	/^EXPORT_SYMBOL_GPL(sdio_claim_host);$/;"	v
+sdio_claim_host	sdio_io.c	/^void sdio_claim_host(struct sdio_func *func)$/;"	f	signature:(struct sdio_func *func)
+sdio_claim_irq	sdio_irq.c	/^EXPORT_SYMBOL_GPL(sdio_claim_irq);$/;"	v
+sdio_claim_irq	sdio_irq.c	/^int sdio_claim_irq(struct sdio_func *func, sdio_irq_handler_t *handler)$/;"	f	signature:(struct sdio_func *func, sdio_irq_handler_t *handler)
+sdio_config_attr	sdio_bus.c	31;"	d	file:
+sdio_dev_attrs	sdio_bus.c	/^static struct device_attribute sdio_dev_attrs[] = {$/;"	v	typeref:struct:device_attribute	file:
+sdio_disable_func	sdio_io.c	/^EXPORT_SYMBOL_GPL(sdio_disable_func);$/;"	v
+sdio_disable_func	sdio_io.c	/^int sdio_disable_func(struct sdio_func *func)$/;"	f	signature:(struct sdio_func *func)
+sdio_enable_func	sdio_io.c	/^EXPORT_SYMBOL_GPL(sdio_enable_func);$/;"	v
+sdio_enable_func	sdio_io.c	/^int sdio_enable_func(struct sdio_func *func)$/;"	f	signature:(struct sdio_func *func)
+sdio_enable_hs	sdio.c	/^static int sdio_enable_hs(struct mmc_card *card)$/;"	f	file:	signature:(struct mmc_card *card)
+sdio_enable_wide	sdio.c	/^static int sdio_enable_wide(struct mmc_card *card)$/;"	f	file:	signature:(struct mmc_card *card)
+sdio_f0_readb	sdio_io.c	/^EXPORT_SYMBOL_GPL(sdio_f0_readb);$/;"	v
+sdio_f0_readb	sdio_io.c	/^unsigned char sdio_f0_readb(struct sdio_func *func, unsigned int addr,$/;"	f	signature:(struct sdio_func *func, unsigned int addr, int *err_ret)
+sdio_f0_writeb	sdio_io.c	/^EXPORT_SYMBOL_GPL(sdio_f0_writeb);$/;"	v
+sdio_f0_writeb	sdio_io.c	/^void sdio_f0_writeb(struct sdio_func *func, unsigned char b, unsigned int addr,$/;"	f	signature:(struct sdio_func *func, unsigned char b, unsigned int addr, int *err_ret)
+sdio_free_common_cis	sdio_cis.c	/^void sdio_free_common_cis(struct mmc_card *card)$/;"	f	signature:(struct mmc_card *card)
+sdio_free_common_cis	sdio_cis.h	/^void sdio_free_common_cis(struct mmc_card *card);$/;"	p	signature:(struct mmc_card *card)
+sdio_free_func_cis	sdio_cis.c	/^void sdio_free_func_cis(struct sdio_func *func)$/;"	f	signature:(struct sdio_func *func)
+sdio_free_func_cis	sdio_cis.h	/^void sdio_free_func_cis(struct sdio_func *func);$/;"	p	signature:(struct sdio_func *func)
+sdio_init_func	sdio.c	/^static int sdio_init_func(struct mmc_card *card, unsigned int fn)$/;"	f	file:	signature:(struct mmc_card *card, unsigned int fn)
+sdio_io_rw_ext_helper	sdio_io.c	/^static int sdio_io_rw_ext_helper(struct sdio_func *func, int write,$/;"	f	file:	signature:(struct sdio_func *func, int write, unsigned addr, int incr_addr, u8 *buf, unsigned size)
+sdio_irq_thread	sdio_irq.c	/^static int sdio_irq_thread(void *_host)$/;"	f	file:	signature:(void *_host)
+sdio_match_device	sdio_bus.c	/^static const struct sdio_device_id *sdio_match_device(struct sdio_func *func,$/;"	f	file:	signature:(struct sdio_func *func, struct sdio_driver *sdrv)
+sdio_match_one	sdio_bus.c	/^static const struct sdio_device_id *sdio_match_one(struct sdio_func *func,$/;"	f	file:	signature:(struct sdio_func *func, const struct sdio_device_id *id)
+sdio_max_byte_size	sdio_io.c	/^static inline unsigned int sdio_max_byte_size(struct sdio_func *func)$/;"	f	file:	signature:(struct sdio_func *func)
+sdio_memcpy_fromio	sdio_io.c	/^EXPORT_SYMBOL_GPL(sdio_memcpy_fromio);$/;"	v
+sdio_memcpy_fromio	sdio_io.c	/^int sdio_memcpy_fromio(struct sdio_func *func, void *dst,$/;"	f	signature:(struct sdio_func *func, void *dst, unsigned int addr, int count)
+sdio_memcpy_toio	sdio_io.c	/^EXPORT_SYMBOL_GPL(sdio_memcpy_toio);$/;"	v
+sdio_memcpy_toio	sdio_io.c	/^int sdio_memcpy_toio(struct sdio_func *func, unsigned int addr,$/;"	f	signature:(struct sdio_func *func, unsigned int addr, void *src, int count)
+sdio_read_cccr	sdio.c	/^static int sdio_read_cccr(struct mmc_card *card)$/;"	f	file:	signature:(struct mmc_card *card)
+sdio_read_cis	sdio_cis.c	/^static int sdio_read_cis(struct mmc_card *card, struct sdio_func *func)$/;"	f	file:	signature:(struct mmc_card *card, struct sdio_func *func)
+sdio_read_common_cis	sdio_cis.c	/^int sdio_read_common_cis(struct mmc_card *card)$/;"	f	signature:(struct mmc_card *card)
+sdio_read_common_cis	sdio_cis.h	/^int sdio_read_common_cis(struct mmc_card *card);$/;"	p	signature:(struct mmc_card *card)
+sdio_read_fbr	sdio.c	/^static int sdio_read_fbr(struct sdio_func *func)$/;"	f	file:	signature:(struct sdio_func *func)
+sdio_read_func_cis	sdio_cis.c	/^int sdio_read_func_cis(struct sdio_func *func)$/;"	f	signature:(struct sdio_func *func)
+sdio_read_func_cis	sdio_cis.h	/^int sdio_read_func_cis(struct sdio_func *func);$/;"	p	signature:(struct sdio_func *func)
+sdio_readb	sdio_io.c	/^EXPORT_SYMBOL_GPL(sdio_readb);$/;"	v
+sdio_readb	sdio_io.c	/^u8 sdio_readb(struct sdio_func *func, unsigned int addr, int *err_ret)$/;"	f	signature:(struct sdio_func *func, unsigned int addr, int *err_ret)
+sdio_readb_ext	sdio_io.c	/^EXPORT_SYMBOL_GPL(sdio_readb_ext);$/;"	v
+sdio_readb_ext	sdio_io.c	/^unsigned char sdio_readb_ext(struct sdio_func *func, unsigned int addr,$/;"	f	signature:(struct sdio_func *func, unsigned int addr, int *err_ret, unsigned in)
+sdio_readl	sdio_io.c	/^EXPORT_SYMBOL_GPL(sdio_readl);$/;"	v
+sdio_readl	sdio_io.c	/^u32 sdio_readl(struct sdio_func *func, unsigned int addr, int *err_ret)$/;"	f	signature:(struct sdio_func *func, unsigned int addr, int *err_ret)
+sdio_readsb	sdio_io.c	/^EXPORT_SYMBOL_GPL(sdio_readsb);$/;"	v
+sdio_readsb	sdio_io.c	/^int sdio_readsb(struct sdio_func *func, void *dst, unsigned int addr,$/;"	f	signature:(struct sdio_func *func, void *dst, unsigned int addr, int count)
+sdio_readw	sdio_io.c	/^EXPORT_SYMBOL_GPL(sdio_readw);$/;"	v
+sdio_readw	sdio_io.c	/^u16 sdio_readw(struct sdio_func *func, unsigned int addr, int *err_ret)$/;"	f	signature:(struct sdio_func *func, unsigned int addr, int *err_ret)
+sdio_register_bus	sdio_bus.c	/^int sdio_register_bus(void)$/;"	f	signature:(void)
+sdio_register_bus	sdio_bus.h	/^int sdio_register_bus(void);$/;"	p	signature:(void)
+sdio_register_driver	sdio_bus.c	/^EXPORT_SYMBOL_GPL(sdio_register_driver);$/;"	v
+sdio_register_driver	sdio_bus.c	/^int sdio_register_driver(struct sdio_driver *drv)$/;"	f	signature:(struct sdio_driver *drv)
+sdio_release_func	sdio_bus.c	/^static void sdio_release_func(struct device *dev)$/;"	f	file:	signature:(struct device *dev)
+sdio_release_host	sdio_io.c	/^EXPORT_SYMBOL_GPL(sdio_release_host);$/;"	v
+sdio_release_host	sdio_io.c	/^void sdio_release_host(struct sdio_func *func)$/;"	f	signature:(struct sdio_func *func)
+sdio_release_irq	sdio_irq.c	/^EXPORT_SYMBOL_GPL(sdio_release_irq);$/;"	v
+sdio_release_irq	sdio_irq.c	/^int sdio_release_irq(struct sdio_func *func)$/;"	f	signature:(struct sdio_func *func)
+sdio_remove_func	sdio_bus.c	/^void sdio_remove_func(struct sdio_func *func)$/;"	f	signature:(struct sdio_func *func)
+sdio_remove_func	sdio_bus.h	/^void sdio_remove_func(struct sdio_func *func);$/;"	p	signature:(struct sdio_func *func)
+sdio_reset_comm	sdio.c	/^EXPORT_SYMBOL(sdio_reset_comm);$/;"	v
+sdio_reset_comm	sdio.c	/^int sdio_reset_comm(struct mmc_card *card)$/;"	f	signature:(struct mmc_card *card)
+sdio_set_block_size	sdio_io.c	/^EXPORT_SYMBOL_GPL(sdio_set_block_size);$/;"	v
+sdio_set_block_size	sdio_io.c	/^int sdio_set_block_size(struct sdio_func *func, unsigned blksz)$/;"	f	signature:(struct sdio_func *func, unsigned blksz)
+sdio_unregister_bus	sdio_bus.c	/^void sdio_unregister_bus(void)$/;"	f	signature:(void)
+sdio_unregister_bus	sdio_bus.h	/^void sdio_unregister_bus(void);$/;"	p	signature:(void)
+sdio_unregister_driver	sdio_bus.c	/^EXPORT_SYMBOL_GPL(sdio_unregister_driver);$/;"	v
+sdio_unregister_driver	sdio_bus.c	/^void sdio_unregister_driver(struct sdio_driver *drv)$/;"	f	signature:(struct sdio_driver *drv)
+sdio_writeb	sdio_io.c	/^EXPORT_SYMBOL_GPL(sdio_writeb);$/;"	v
+sdio_writeb	sdio_io.c	/^void sdio_writeb(struct sdio_func *func, u8 b, unsigned int addr, int *err_ret)$/;"	f	signature:(struct sdio_func *func, u8 b, unsigned int addr, int *err_ret)
+sdio_writel	sdio_io.c	/^EXPORT_SYMBOL_GPL(sdio_writel);$/;"	v
+sdio_writel	sdio_io.c	/^void sdio_writel(struct sdio_func *func, u32 b, unsigned int addr, int *err_ret)$/;"	f	signature:(struct sdio_func *func, u32 b, unsigned int addr, int *err_ret)
+sdio_writesb	sdio_io.c	/^EXPORT_SYMBOL_GPL(sdio_writesb);$/;"	v
+sdio_writesb	sdio_io.c	/^int sdio_writesb(struct sdio_func *func, unsigned int addr, void *src,$/;"	f	signature:(struct sdio_func *func, unsigned int addr, void *src, int count)
+sdio_writew	sdio_io.c	/^EXPORT_SYMBOL_GPL(sdio_writew);$/;"	v
+sdio_writew	sdio_io.c	/^void sdio_writew(struct sdio_func *func, u16 b, unsigned int addr, int *err_ret)$/;"	f	signature:(struct sdio_func *func, u16 b, unsigned int addr, int *err_ret)
+speed_unit	sdio_cis.c	/^static const unsigned int speed_unit[8] =$/;"	v	file:
+speed_val	sdio_cis.c	/^static const unsigned char speed_val[16] =$/;"	v	file:
+suspend	core.h	/^	void (*suspend)(struct mmc_host *);$/;"	m	struct:mmc_bus_ops	access:public
+tacc_exp	mmc.c	/^static const unsigned int tacc_exp[] = {$/;"	v	file:
+tacc_exp	sd.c	/^static const unsigned int tacc_exp[] = {$/;"	v	file:
+tacc_mant	mmc.c	/^static const unsigned int tacc_mant[] = {$/;"	v	file:
+tacc_mant	sd.c	/^static const unsigned int tacc_mant[] = {$/;"	v	file:
+to_mmc_driver	bus.c	25;"	d	file:
+to_sdio_driver	sdio_bus.c	28;"	d	file:
+tpl_parse_t	sdio_cis.c	/^typedef int (tpl_parse_t)(struct mmc_card *, struct sdio_func *,$/;"	t	file:
+tran_exp	mmc.c	/^static const unsigned int tran_exp[] = {$/;"	v	file:
+tran_exp	sd.c	/^static const unsigned int tran_exp[] = {$/;"	v	file:
+tran_mant	mmc.c	/^static const unsigned char tran_mant[] = {$/;"	v	file:
+tran_mant	sd.c	/^static const unsigned char tran_mant[] = {$/;"	v	file:
+use_spi_crc	core.c	/^int use_spi_crc = 1;$/;"	v
+workqueue	core.c	/^static struct workqueue_struct *workqueue;$/;"	v	typeref:struct:workqueue_struct	file:

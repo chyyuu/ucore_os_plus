@@ -1,0 +1,63 @@
+menu "Linux Device Driver Environment"
+
+config HAVE_LINUX_DDE_BASE
+	bool "Enable Linux DDE base"
+	default y
+	help
+		Enable Linux DDE base
+
+#config DDE_BLOCK_SUPPORT
+#  bool "Enable Linux Block"
+#  default n
+
+config DDE_GOLDFISH_FB
+  depends ARM_BOARD_GOLDFISH
+  depends HAVE_LINUX_DDE_BASE
+  bool "Enable Goldfish Framebuffer"
+  default n
+
+config DDE_GOLDFISH_EVENT
+  depends ARM_BOARD_GOLDFISH
+  depends HAVE_LINUX_DDE_BASE
+  bool "Enable Goldfish Event Input"
+  default n
+
+
+config DDE_EXAMPLE_CHRDEV
+  depends HAVE_LINUX_DDE_BASE
+  bool "Enable Example Chrdev"
+  default n
+
+config DDE_MMC_SUPPORT
+  depends HAVE_LINUX_DDE_BASE
+  bool "Enable MMC Card"
+  default n
+
+config DDE_MMC_HAVE_SDIO
+  depends DDE_MMC_SUPPORT
+  bool "Enable SDIO support"
+  default n
+
+config DDE_GOLDFISH_MMC
+  depends ARM_BOARD_GOLDFISH
+  depends DDE_MMC_SUPPORT
+  bool "Enable Goldfish MMC Host"
+  default n
+
+config DDE_PANDABOARD_MMC
+  depends ARM_BOARD_PANDABOARD
+  depends DDE_MMC_SUPPORT
+  bool "Enable Pandaboard MMC_HS Host"
+  default n
+
+config DDE_MMC_TEST
+  depends DDE_MMC_SUPPORT
+  bool "Enable MMC test driver"
+  default n
+
+config DDE_MMC_UCORE_BLOCK
+  depends DDE_MMC_SUPPORT
+  bool "Enable MMC block driver (Ucore)"
+  default n
+
+endmenu

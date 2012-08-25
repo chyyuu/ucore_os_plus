@@ -1,0 +1,8 @@
+The documentations in this directory (*.rst) are written in reStructuredText. Install the package named docutils to build them.
+
+To build the documentations, type
+    make [man|html|tex]
+for different formats (manual pages, html and latex source respectively).
+
+To open a local manual page, type
+    man -l <filename>

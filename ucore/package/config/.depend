@@ -1,0 +1,12 @@
+conf.o: conf.c lkc.h expr.h lkc_proto.h
+confdata.o: confdata.c lkc.h expr.h lkc_proto.h
+expr.o: expr.c lkc.h expr.h lkc_proto.h
+images.o: images.c
+kxgettext.o: kxgettext.c lkc.h expr.h lkc_proto.h
+lex.zconf.o: lex.zconf.c lkc.h expr.h lkc_proto.h
+mconf.o: mconf.c lkc.h expr.h lkc_proto.h lxdialog/dialog.h
+menu.o: menu.c lkc.h expr.h lkc_proto.h
+symbol.o: symbol.c lkc.h expr.h lkc_proto.h
+zconf.hash.o: zconf.hash.c
+zconf.tab.o: zconf.tab.c lkc.h expr.h lkc_proto.h zconf.hash.c \
+ lex.zconf.c util.c confdata.c expr.c symbol.c menu.c

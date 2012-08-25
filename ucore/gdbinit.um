@@ -1,0 +1,5 @@
+exec-file obj/bootloader
+symbol-file obj/kernel
+set args --kernel=obj/kernel --swap=obj/swap.img --disk=obj/sfs.img --debug
+handle all nostop noprint
+run

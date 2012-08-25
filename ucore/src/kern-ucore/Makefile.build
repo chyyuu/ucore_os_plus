@@ -1,0 +1,63 @@
+ifneq ($(MAKECMDGOALS),clean)
+include $(TOPDIR)/$(KCONFIG_AUTOCONFIG)
+endif
+
+PHONY+=all subdir clean
+
+#TARGET_CFLAGS := -g -ggdb
+TARGET_CFLAGS += -fno-builtin -nostdlib  -nostdinc
+TARGET_CFLAGS += -D__KERNEL__ -D__KERN__ 
+TARGET_CFLAGS += $(shell echo $(UCONFIG_ADDITIONAL_CFLAGS))
+
+KTREE_OBJ_ROOT := $(OBJPATH_ROOT)/kernel
+
+export KTREE_OBJ_ROOT
+
+KERN_INCLUDES :=../glue-kern/arch/${ARCH} glue-ucore glue-ucore/libs \
+libs syscall debug driver mm sync schedule process fs \
+fs/swap fs/vfs fs/pipe fs/sfs fs/devs module module/include 
+
+ifdef UCONFIG_HAVE_LINUX_DDE_BASE
+KERN_INCLUDES += module/include
+endif
+
+TARGET_CFLAGS += $(addprefix -I$(KTREE)/, $(KERN_INCLUDES))
+
+TARGET_CFLAGS += -include $(TOPDIR)/$(KCONFIG_AUTOHEADER)
+
+ifneq ($(MAKECMDGOALS),clean)
+include $(KTREE)/arch/$(ARCH)/include.mk
+endif
+TARGET_CFLAGS += $(addprefix -I$(KTREE)/arch/$(ARCH)/, $(ARCH_INLUCDES))
+TARGET_CFLAGS += $(ARCH_CFLAGS)
+
+TARGET_CFLAGS += $(shell echo $(UCONFIG_ADDITIONAL_CFLAGS))
+
+export TARGET_CFLAGS
+
+KERNEL_BUILTIN_O := $(KTREE_OBJ_ROOT)/kernel-builtin.o
+
+all: $(KTREE_OBJ_ROOT) $(KERNEL_BUILTIN_O)
+	$(Q)$(MAKE) KERNEL_BUILTIN=$(KERNEL_BUILTIN_O)  -C $(KTREE)/arch/$(ARCH) -f $(KTREE)/arch/$(ARCH)/Makefile.image all
+
+$(KERNEL_BUILTIN_O): subdir
+	@echo Building uCore Kernel for $(UCONFIG_ARCH)
+	$(Q)$(TARGET_LD) -r -o $@ $(shell xargs < .builtinlist.tmp)
+
+$(KTREE_OBJ_ROOT):
+	mkdir -p $@
+
+clean:
+	$(Q)rm -f .builtinlist.tmp
+	$(Q)rm -rf $(KTREE_OBJ_ROOT)
+	$(Q)$(MAKE)  -C $(KTREE)/arch/$(ARCH) -f $(KTREE)/arch/$(ARCH)/Makefile.image clean
+
+subdir: $(KTREE_OBJ_ROOT) $(TOPDIR)/$(KCONFIG_AUTOHEADER) $(TOPDIR)/$(KCONFIG_AUTOCONFIG) FORCE
+	$(Q)rm -f .builtinlist.tmp
+	$(Q)touch .builtinlist.tmp
+	$(Q)$(MAKE) -f Makefile.subdir OBJPATH=$(KTREE_OBJ_ROOT) LOCALPATH=$(KTREE) BUILTINLIST=$(KTREE)/.builtinlist.tmp
+
+PHONY +=FORCE
+FORCE:
+
+.PHONY: $(PHONY)

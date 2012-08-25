@@ -1,0 +1,2 @@
+To build the module, you should make a symbolic link to the linux
+source to ${T_BASE}/linux-src-link.

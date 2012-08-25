@@ -1,0 +1,25 @@
+menu Filesystem
+
+config HAVE_SFS
+  bool "Enable Simple Filesystem(SFS)"
+  default y
+
+config SFS_IMAGE_SIZE
+  depends HAVE_SFS
+  int  "SFS Image size"
+  default 4
+
+config HAVE_YAFFS2
+  bool "Enable YAFFS2"
+  default n
+
+config HAVE_YAFFS2_RAMDISK
+  depends HAVE_YAFFS2
+  bool "Enable YAFFS2 Ramdisk (for debugging)"
+  default n
+
+config HAVE_FATFS
+  bool "Enable Fat32"
+  default n
+
+endmenu

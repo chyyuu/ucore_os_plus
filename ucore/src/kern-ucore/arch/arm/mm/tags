@@ -1,0 +1,78 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.9~svn20110310	//
+MAX_ORDER	buddy_pmm.c	28;"	d	file:
+MAX_ZONE_NUM	buddy_pmm.c	35;"	d	file:
+Zone	buddy_pmm.c	/^struct Zone {$/;"	s	file:
+__KERN_MM_BUDDY_PMM_H__	buddy_pmm.h	2;"	d
+alloc_pages	pmm.c	/^alloc_pages(size_t n) {$/;"	f
+boot_alloc_page	pmm.c	/^boot_alloc_page(void) {$/;"	f	file:
+boot_map_segment	pmm.c	/^boot_map_segment(pde_t *pgdir, uintptr_t la, size_t size, uintptr_t pa, uint32_t perm) {$/;"	f	file:
+boot_pgdir	pmm.c	/^pde_t *boot_pgdir = NULL;$/;"	v
+boot_pgdir_pa	pmm.c	/^uintptr_t boot_pgdir_pa;$/;"	v
+buddy_alloc_pages	buddy_pmm.c	/^buddy_alloc_pages(size_t n) {$/;"	f	file:
+buddy_alloc_pages_sub	buddy_pmm.c	/^buddy_alloc_pages_sub(size_t order) {$/;"	f	file:
+buddy_check	buddy_pmm.c	/^buddy_check(void) {$/;"	f	file:
+buddy_free_pages	buddy_pmm.c	/^buddy_free_pages(struct Page *base, size_t n) {$/;"	f	file:
+buddy_free_pages_sub	buddy_pmm.c	/^buddy_free_pages_sub(struct Page *base, size_t order) {$/;"	f	file:
+buddy_init	buddy_pmm.c	/^buddy_init(void) {$/;"	f	file:
+buddy_init_memmap	buddy_pmm.c	/^buddy_init_memmap(struct Page *base, size_t n) {$/;"	f	file:
+buddy_nr_free_pages	buddy_pmm.c	/^buddy_nr_free_pages(void) {$/;"	f	file:
+buddy_pmm_manager	buddy_pmm.c	/^const struct pmm_manager buddy_pmm_manager = {$/;"	v	typeref:struct:pmm_manager
+check_alloc_page	pmm.c	/^check_alloc_page(void) {$/;"	f	file:
+check_boot_pgdir	pmm.c	/^check_boot_pgdir(void) {$/;"	f	file:
+check_mm_shm_swap	swap.c	/^check_mm_shm_swap(void){$/;"	f
+check_mm_swap	swap.c	/^check_mm_swap(void){$/;"	f
+check_pgdir	pmm.c	/^check_pgdir(void) {$/;"	f	file:
+controlSet	mmu.c	/^controlSet(uint32_t value, uint32_t mask)$/;"	f	file:
+copy_from_user	vmm.c	/^copy_from_user(struct mm_struct *mm, void *dst, const void *src, size_t len, bool writable) {$/;"	f
+copy_string	vmm.c	/^copy_string(struct mm_struct *mm, char *dst, const char *src, size_t maxn) {$/;"	f
+copy_to_user	vmm.c	/^copy_to_user(struct mm_struct *mm, void *dst, const void *src, size_t len) {$/;"	f
+domainAccessSet	mmu.c	/^domainAccessSet(uint32_t value, uint32_t mask)$/;"	f	file:
+free_area	buddy_pmm.c	/^static free_area_t free_area[MAX_ORDER + 1];$/;"	v	file:
+free_list	buddy_pmm.c	32;"	d	file:
+free_pages	pmm.c	/^free_pages(struct Page *base, size_t n) {$/;"	f
+get_pgtable_items	pmm.c	/^get_pgtable_items(size_t left, size_t right, size_t start, uintptr_t *table, size_t *left_store, size_t *right_store, size_t mask) {$/;"	f	file:
+getorder	buddy_pmm.c	/^getorder(size_t n) {$/;"	f	file:
+idx2page	buddy_pmm.c	/^idx2page(int zone_num, ppn_t idx) {$/;"	f	file:
+init_memmap	pmm.c	/^init_memmap(struct Page *base, size_t n) {$/;"	f	file:
+init_pmm_manager	pmm.c	/^init_pmm_manager(void) {$/;"	f	file:
+load_pgdir	pmm.c	/^load_pgdir (struct proc_struct *proc) {$/;"	f
+load_rsp0	pmm.c	/^load_rsp0(uintptr_t esp0) {$/;"	f
+map_pgdir	pmm.c	/^map_pgdir (pde_t *pgdir) {$/;"	f
+masterMemmap	pmm.c	/^struct memmap masterMemmap = {1,$/;"	v	typeref:struct:memmap
+masterPT	pmm.c	/^Pagetable masterPT = {0,0,0,MASTER,0};$/;"	v
+mem_base	buddy_pmm.c	/^    struct Page *mem_base;$/;"	m	struct:Zone	typeref:struct:Zone::Page	file:
+mmuAttachPT	mmu.c	/^mmuAttachPT(Pagetable *pt) \/* attach L2 PT to L1 master PT *\/$/;"	f
+mmuMapCoarseTableRegion	mmu.c	/^mmuMapCoarseTableRegion (Region *region)$/;"	f	file:
+mmuMapRegion	mmu.c	/^mmuMapRegion(Region *region)$/;"	f
+mmuMapSectionTableRegion	mmu.c	/^mmuMapSectionTableRegion(Region *region)$/;"	f	file:
+mmu_init	mmu.c	/^mmu_init(void) {$/;"	f
+mmu_init_pdt	mmu.c	/^mmu_init_pdt(Pagetable *pt) {$/;"	f
+npage	pmm.c	/^size_t npage = 0;$/;"	v
+nr_free	buddy_pmm.c	33;"	d	file:
+nr_free_pages	pmm.c	/^nr_free_pages(void) {$/;"	f
+nr_used_pages	pmm.c	/^nr_used_pages(void)$/;"	f
+page2idx	buddy_pmm.c	/^page2idx(struct Page *page) {$/;"	f	file:
+page_init	pmm.c	/^page_init(void) {$/;"	f	file:
+page_is_buddy	buddy_pmm.c	/^page_is_buddy(struct Page *page, size_t order, int zone_num) {$/;"	f	file:
+pages	pmm.c	/^struct Page *pages;$/;"	v	typeref:struct:Page
+perm2str	pmm.c	/^perm2str(int perm) {$/;"	f	file:
+pls_page_struct_free_list	pmm.c	/^PLS list_entry_t pls_page_struct_free_list;$/;"	v
+pls_used_pages	pmm.c	/^PLS static size_t pls_used_pages;$/;"	v	file:
+pmm_init	pmm.c	/^pmm_init(void) {$/;"	f
+pmm_init_ap	pmm.c	/^pmm_init_ap(void)$/;"	f
+pmm_manager	pmm.c	/^const struct pmm_manager *pmm_manager;$/;"	v	typeref:struct:pmm_manager
+print_pgdir	pmm.c	/^void print_pgdir(int (*printf)(const char *fmt, ...)){$/;"	f
+set_pgdir	pmm.c	/^set_pgdir (struct proc_struct *proc, pde_t *pgdir) {$/;"	f
+tlb_clean_flush	pmm.c	/^tlb_clean_flush(pde_t *pgdir, uintptr_t la) {$/;"	f
+tlb_invalidate	pmm.c	/^tlb_invalidate(pde_t *pgdir, uintptr_t la) {$/;"	f
+tlb_invalidate_all	pmm.c	/^void tlb_invalidate_all(){$/;"	f
+tlb_update	pmm.c	/^void tlb_update(pgd_t *pgdir, uintptr_t la){$/;"	f
+ttbSet	mmu.c	/^ttbSet(uint32_t ttb)$/;"	f
+vpd	pmm.c	/^pde_t * const vpd = (pde_t *)PGADDR(PDX(VPT), PDX(VPT), 0);$/;"	v
+vpt	pmm.c	/^pte_t * const vpt = (pte_t *)VPT;$/;"	v
+zones	buddy_pmm.c	/^} zones[MAX_ZONE_NUM] = {{NULL}};$/;"	v	typeref:struct:Zone

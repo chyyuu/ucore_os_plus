@@ -1,0 +1,362 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.9~svn20110310	//
+HASH_LIST_SIZE	proc.c	87;"	d	file:
+HASH_SHIFT	proc.c	86;"	d	file:
+KERNEL_EXECVE	proc.c	1552;"	d	file:
+KERNEL_EXECVE2	proc.c	1554;"	d	file:
+KERNEL_EXECVE3	proc.c	1558;"	d	file:
+MAX_PID	proc.h	30;"	d
+MAX_PROCESS	proc.h	29;"	d
+PF_EXITING	proc.h	78;"	d
+PROC_IS_IDLE	proc.h	26;"	d
+PROC_NAME_LEN	proc.h	28;"	d
+PROC_RUNNABLE	proc.h	/^    PROC_RUNNABLE,    \/\/ runnable(maybe running)$/;"	e	enum:proc_state
+PROC_SLEEPING	proc.h	/^    PROC_SLEEPING,    \/\/ sleeping$/;"	e	enum:proc_state
+PROC_UNINIT	proc.h	/^    PROC_UNINIT = 0,  \/\/ uninitialized$/;"	e	enum:proc_state
+PROC_ZOMBIE	proc.h	/^    PROC_ZOMBIE,      \/\/ almost dead, and wait parent proc to reclaim his resource$/;"	e	enum:proc_state
+RLIMIT_AS	resource.h	/^  RLIMIT_AS = 9,$/;"	e	enum:__rlimit_resource
+RLIMIT_AS	resource.h	70;"	d
+RLIMIT_CORE	resource.h	/^  RLIMIT_CORE = 4,$/;"	e	enum:__rlimit_resource
+RLIMIT_CORE	resource.h	53;"	d
+RLIMIT_CPU	resource.h	/^  RLIMIT_CPU = 0,$/;"	e	enum:__rlimit_resource
+RLIMIT_CPU	resource.h	37;"	d
+RLIMIT_DATA	resource.h	/^  RLIMIT_DATA = 2,$/;"	e	enum:__rlimit_resource
+RLIMIT_DATA	resource.h	45;"	d
+RLIMIT_FSIZE	resource.h	/^  RLIMIT_FSIZE = 1,$/;"	e	enum:__rlimit_resource
+RLIMIT_FSIZE	resource.h	41;"	d
+RLIMIT_LOCKS	resource.h	82;"	d
+RLIMIT_MEMLOCK	resource.h	78;"	d
+RLIMIT_MSGQUEUE	resource.h	90;"	d
+RLIMIT_NICE	resource.h	96;"	d
+RLIMIT_NLIMITS	resource.h	105;"	d
+RLIMIT_NOFILE	resource.h	/^  RLIMIT_NOFILE = 7,$/;"	e	enum:__rlimit_resource
+RLIMIT_NOFILE	resource.h	65;"	d
+RLIMIT_NPROC	resource.h	74;"	d
+RLIMIT_OFILE	resource.h	66;"	d
+RLIMIT_RSS	resource.h	60;"	d
+RLIMIT_RTPRIO	resource.h	101;"	d
+RLIMIT_SIGPENDING	resource.h	86;"	d
+RLIMIT_STACK	resource.h	/^  RLIMIT_STACK = 3,$/;"	e	enum:__rlimit_resource
+RLIMIT_STACK	resource.h	49;"	d
+RLIM_NLIMITS	resource.h	106;"	d
+TIF_SIGPENDING	proc.h	95;"	d
+WT_CHILD	proc.h	81;"	d
+WT_EVENT_RECV	proc.h	88;"	d
+WT_EVENT_SEND	proc.h	87;"	d
+WT_INTERRUPTED	proc.h	93;"	d
+WT_KBD	proc.h	84;"	d
+WT_KSEM	proc.h	85;"	d
+WT_KSWAPD	proc.h	83;"	d
+WT_MBOX_RECV	proc.h	90;"	d
+WT_MBOX_SEND	proc.h	89;"	d
+WT_PIPE	proc.h	91;"	d
+WT_SIGNAL	proc.h	92;"	d
+WT_TIMER	proc.h	82;"	d
+WT_USEM	proc.h	86;"	d
+_HERN_PROCESS_SIGNAL_H_	signal.h	2;"	d
+_UCORE_PROC_RESOURCE_H	resource.h	19;"	d
+__KERNEL_EXECVE	proc.c	1544;"	d	file:
+__KERNEL_EXECVE3	proc.c	1556;"	d	file:
+__KERN_PROCESS_PROC_H__	proc.h	2;"	d
+__RLIMIT_LOCKS	resource.h	/^  __RLIMIT_LOCKS = 10,$/;"	e	enum:__rlimit_resource
+__RLIMIT_MEMLOCK	resource.h	/^  __RLIMIT_MEMLOCK = 8,$/;"	e	enum:__rlimit_resource
+__RLIMIT_MSGQUEUE	resource.h	/^  __RLIMIT_MSGQUEUE = 12,$/;"	e	enum:__rlimit_resource
+__RLIMIT_NICE	resource.h	/^  __RLIMIT_NICE = 13,$/;"	e	enum:__rlimit_resource
+__RLIMIT_NLIMITS	resource.h	/^  __RLIMIT_NLIMITS = 15,$/;"	e	enum:__rlimit_resource
+__RLIMIT_NPROC	resource.h	/^  __RLIMIT_NPROC = 6,$/;"	e	enum:__rlimit_resource
+__RLIMIT_OFILE	resource.h	/^  __RLIMIT_OFILE = RLIMIT_NOFILE, \/* BSD name for same.  *\/$/;"	e	enum:__rlimit_resource
+__RLIMIT_RSS	resource.h	/^  __RLIMIT_RSS = 5,$/;"	e	enum:__rlimit_resource
+__RLIMIT_RTPRIO	resource.h	/^  __RLIMIT_RTPRIO = 14,$/;"	e	enum:__rlimit_resource
+__RLIMIT_SIGPENDING	resource.h	/^  __RLIMIT_SIGPENDING = 11,$/;"	e	enum:__rlimit_resource
+__RLIM_NLIMITS	resource.h	/^  __RLIM_NLIMITS = __RLIMIT_NLIMITS$/;"	e	enum:__rlimit_resource
+__do_exit	proc.c	/^__do_exit(void) {$/;"	f	file:	signature:(void)
+__do_exit	proc.c	/^static int __do_exit(void);$/;"	p	file:	signature:(void)
+__do_kill	proc.c	/^__do_kill(struct proc_struct *proc, int error_code) {$/;"	f	file:	signature:(struct proc_struct *proc, int error_code)
+__do_kill	proc.c	/^static int __do_kill(struct proc_struct *proc, int error_code); $/;"	p	file:	signature:(struct proc_struct *proc, int error_code)
+__do_linux_mmap	proc.c	/^__do_linux_mmap(uintptr_t __user *addr_store, size_t len, uint32_t mmap_flags) {$/;"	f	signature:(uintptr_t __user *addr_store, size_t len, uint32_t mmap_flags)
+__rlimit_resource	resource.h	/^enum __rlimit_resource$/;"	g
+__sig_setup_frame	signal.h	/^int __sig_setup_frame(int sign, struct sigaction *act, sigset_t oldset, struct trapframe *tf);$/;"	p	signature:(int sign, struct sigaction *act, sigset_t oldset, struct trapframe *tf)
+action	signal.h	/^	struct sigaction action[64];$/;"	m	struct:sighand_struct	typeref:struct:sighand_struct::sigaction	access:public
+alloc_proc	proc.h	/^struct proc_struct * alloc_proc(void);$/;"	p	signature:(void)
+arch	proc.h	/^  struct arch_proc_struct arch;               \/\/ Arch dependant info. See arch_proc.h$/;"	m	struct:proc_struct	typeref:struct:proc_struct::arch_proc_struct	access:public
+blocked	signal.h	/^	sigset_t blocked;$/;"	m	struct:proc_signal	access:public
+context	proc.h	/^  struct context context;                     \/\/ Switch here to run process$/;"	m	struct:proc_struct	typeref:struct:proc_struct::context	access:public
+copy_fs	proc.c	/^copy_fs(uint32_t clone_flags, struct proc_struct *proc) {$/;"	f	file:	signature:(uint32_t clone_flags, struct proc_struct *proc)
+copy_kargv	proc.c	/^copy_kargv(struct mm_struct *mm, char **kargv, const char **argv, int max_argc, int *argc_store) {$/;"	f	file:	signature:(struct mm_struct *mm, char **kargv, const char **argv, int max_argc, int *argc_store)
+copy_mm	proc.c	/^copy_mm(uint32_t clone_flags, struct proc_struct *proc) {$/;"	f	file:	signature:(uint32_t clone_flags, struct proc_struct *proc)
+copy_sem	proc.c	/^copy_sem(uint32_t clone_flags, struct proc_struct *proc) {$/;"	f	file:	signature:(uint32_t clone_flags, struct proc_struct *proc)
+copy_sighand	proc.c	/^copy_sighand(uint32_t clone_flags, struct proc_struct *proc) {$/;"	f	file:	signature:(uint32_t clone_flags, struct proc_struct *proc)
+copy_signal	proc.c	/^copy_signal(uint32_t clone_flags, struct proc_struct *proc) {$/;"	f	file:	signature:(uint32_t clone_flags, struct proc_struct *proc)
+copy_thread	proc.h	/^int copy_thread(uint32_t clone_flags, struct proc_struct *proc,$/;"	p	signature:(uint32_t clone_flags, struct proc_struct *proc, uintptr_t user_stack, struct trapframe *tf)
+count	signal.h	/^	atomic_t count;$/;"	m	struct:sighand_struct	access:public
+count	signal.h	/^	atomic_t count;$/;"	m	struct:signal_struct	access:public
+cptr	proc.h	/^  struct proc_struct *cptr, *yptr, *optr;     \/\/ Process's children, yonger sibling, Old sibling$/;"	m	struct:proc_struct	typeref:struct:proc_struct::proc_struct	access:public
+cpu_idle	proc.h	/^void cpu_idle(void) __attribute__((noreturn));$/;"	p	signature:(void)
+cr3	proc.h	/^  uintptr_t cr3;                              \/\/ CR3 register: the base addr of Page Directroy Table(PDT)$/;"	m	struct:proc_struct	access:public
+curr_target	signal.h	/^	struct proc_struct *curr_target;$/;"	m	struct:signal_struct	typeref:struct:signal_struct::proc_struct	access:public
+current	proc.c	78;"	d	file:
+current	signal.c	14;"	d	file:
+de_thread	proc.c	/^de_thread(struct proc_struct *proc) {$/;"	f	file:	signature:(struct proc_struct *proc)
+de_thread_arch_hook	proc.h	/^void de_thread_arch_hook (struct proc_struct *proc);$/;"	p	signature:(struct proc_struct *proc)
+dequeue_signal	signal.c	/^dequeue_signal(struct proc_struct *proc) {$/;"	f	file:	signature:(struct proc_struct *proc)
+do_brk	proc.c	/^do_brk(uintptr_t *brk_store) {$/;"	f	signature:(uintptr_t *brk_store)
+do_brk	proc.h	/^int do_brk(uintptr_t *brk_store);$/;"	p	signature:(uintptr_t *brk_store)
+do_execve	proc.c	/^do_execve(const char *filename, const char **argv, const char **envp) {$/;"	f	signature:(const char *filename, const char **argv, const char **envp)
+do_execve	proc.h	/^int do_execve(const char *name, const char **argv, const char **envp);$/;"	p	signature:(const char *name, const char **argv, const char **envp)
+do_execve_arch_hook	proc.h	/^int do_execve_arch_hook (int argc, char **kargv);$/;"	p	signature:(int argc, char **kargv)
+do_exit	proc.c	/^do_exit(int error_code) {$/;"	f	signature:(int error_code)
+do_exit	proc.h	/^int do_exit(int error_code);$/;"	p	signature:(int error_code)
+do_exit_thread	proc.c	/^do_exit_thread(int error_code) {$/;"	f	signature:(int error_code)
+do_exit_thread	proc.h	/^int do_exit_thread(int error_code);$/;"	p	signature:(int error_code)
+do_fork	proc.c	/^do_fork(uint32_t clone_flags, uintptr_t stack, struct trapframe *tf) {$/;"	f	signature:(uint32_t clone_flags, uintptr_t stack, struct trapframe *tf)
+do_fork	proc.h	/^int do_fork(uint32_t clone_flags, uintptr_t stack, struct trapframe *tf);$/;"	p	signature:(uint32_t clone_flags, uintptr_t stack, struct trapframe *tf)
+do_kill	proc.c	/^do_kill(int pid, int error_code) {$/;"	f	signature:(int pid, int error_code)
+do_kill	proc.h	/^int do_kill(int pid, int error_code);$/;"	p	signature:(int pid, int error_code)
+do_linux_brk	proc.c	/^do_linux_brk(uintptr_t brk) {$/;"	f	signature:(uintptr_t brk)
+do_linux_brk	proc.h	/^int do_linux_brk(uintptr_t brk);$/;"	p	signature:(uintptr_t brk)
+do_linux_sleep	proc.c	/^int do_linux_sleep(const struct linux_timespec __user *req,$/;"	f	signature:(const struct linux_timespec __user *req, struct linux_timespec __user *rem)
+do_linux_ugetrlimit	proc.c	/^int do_linux_ugetrlimit(int res, struct linux_rlimit * __user __limit)$/;"	f	signature:(int res, struct linux_rlimit * __user __limit)
+do_linux_waitpid	proc.c	/^do_linux_waitpid(int pid, int *code_store) {$/;"	f	signature:(int pid, int *code_store)
+do_linux_waitpid	proc.h	/^int do_linux_waitpid(int pid, int *code_store);$/;"	p	signature:(int pid, int *code_store)
+do_mmap	proc.c	/^do_mmap(uintptr_t __user *addr_store, size_t len, uint32_t mmap_flags) {$/;"	f	signature:(uintptr_t __user *addr_store, size_t len, uint32_t mmap_flags)
+do_mmap	proc.h	/^int do_mmap(uintptr_t *addr_store, size_t len, uint32_t mmap_flags);$/;"	p	signature:(uintptr_t *addr_store, size_t len, uint32_t mmap_flags)
+do_munmap	proc.c	/^do_munmap(uintptr_t addr, size_t len) {$/;"	f	signature:(uintptr_t addr, size_t len)
+do_munmap	proc.h	/^int do_munmap(uintptr_t addr, size_t len);$/;"	p	signature:(uintptr_t addr, size_t len)
+do_shmem	proc.c	/^do_shmem(uintptr_t *addr_store, size_t len, uint32_t mmap_flags) {$/;"	f	signature:(uintptr_t *addr_store, size_t len, uint32_t mmap_flags)
+do_shmem	proc.h	/^int do_shmem(uintptr_t *addr_store, size_t len, uint32_t mmap_flags);$/;"	p	signature:(uintptr_t *addr_store, size_t len, uint32_t mmap_flags)
+do_sigaction	signal.c	/^do_sigaction(int sign, const struct sigaction *act, struct sigaction *old) {$/;"	f	signature:(int sign, const struct sigaction *act, struct sigaction *old)
+do_sigaction	signal.h	/^int do_sigaction(int sign, const struct sigaction *act, struct sigaction *old);$/;"	p	signature:(int sign, const struct sigaction *act, struct sigaction *old)
+do_sigaltstack	signal.c	/^do_sigaltstack(const stack_t *ss, stack_t *old) {$/;"	f	signature:(const stack_t *ss, stack_t *old)
+do_sigaltstack	signal.h	/^int do_sigaltstack(const stack_t *ss, stack_t *old);$/;"	p	signature:(const stack_t *ss, stack_t *old)
+do_sigkill	signal.c	/^do_sigkill(int pid, int sign) {$/;"	f	signature:(int pid, int sign)
+do_sigkill	signal.h	/^int do_sigkill(int pid, int sign);$/;"	p	signature:(int pid, int sign)
+do_signal	signal.c	/^do_signal(struct trapframe *tf, sigset_t *old) {$/;"	f	signature:(struct trapframe *tf, sigset_t *old)
+do_signal	signal.h	/^int do_signal(struct trapframe *tf, sigset_t *old);$/;"	p	signature:(struct trapframe *tf, sigset_t *old)
+do_signal_stop	signal.c	/^do_signal_stop(struct proc_struct *proc) {$/;"	f	file:	signature:(struct proc_struct *proc)
+do_sigpending	signal.c	/^do_sigpending(sigset_t *set) {$/;"	f	signature:(sigset_t *set)
+do_sigpending	signal.h	/^int do_sigpending(sigset_t *set);$/;"	p	signature:(sigset_t *set)
+do_sigprocmask	signal.c	/^do_sigprocmask(int how, const sigset_t *set, sigset_t *old) {$/;"	f	signature:(int how, const sigset_t *set, sigset_t *old)
+do_sigprocmask	signal.h	/^int do_sigprocmask(int how, const sigset_t *set, sigset_t *old);$/;"	p	signature:(int how, const sigset_t *set, sigset_t *old)
+do_sigreturn	signal.h	/^int do_sigreturn(void);$/;"	p	signature:(void)
+do_sigsuspend	signal.c	/^do_sigsuspend(sigset_t __user *pmask) {$/;"	f	signature:(sigset_t __user *pmask)
+do_sigsuspend	signal.h	/^int do_sigsuspend(sigset_t __user *pmask);$/;"	p	signature:(sigset_t __user *pmask)
+do_sigtkill	signal.c	/^do_sigtkill(int pid, int sign) {$/;"	f	signature:(int pid, int sign)
+do_sigtkill	signal.h	/^int do_sigtkill(int pid, int sign);$/;"	p	signature:(int pid, int sign)
+do_sigwaitinfo	signal.c	/^int do_sigwaitinfo(const sigset_t *setp, struct siginfo_t *info) {$/;"	f	signature:(const sigset_t *setp, struct siginfo_t *info)
+do_sigwaitinfo	signal.h	/^int do_sigwaitinfo(const sigset_t *set, struct siginfo_t *info);$/;"	p	signature:(const sigset_t *set, struct siginfo_t *info)
+do_sleep	proc.c	/^do_sleep(unsigned int time) {$/;"	f	signature:(unsigned int time)
+do_sleep	proc.h	/^int do_sleep(unsigned int time);$/;"	p	signature:(unsigned int time)
+do_wait	proc.c	/^do_wait(int pid, int *code_store) {$/;"	f	signature:(int pid, int *code_store)
+do_wait	proc.h	/^int do_wait(int pid, int *code_store);$/;"	p	signature:(int pid, int *code_store)
+do_yield	proc.c	/^do_yield(void) {$/;"	f	signature:(void)
+do_yield	proc.h	/^int do_yield(void);$/;"	p	signature:(void)
+event_box	proc.h	/^  event_t event_box;                          \/\/ the event which process waits   $/;"	m	struct:proc_struct	access:public
+exit_code	proc.h	/^  int exit_code;                              \/\/ return value when exit$/;"	m	struct:proc_struct	access:public
+exit_code	signal.h	/^	int exit_code;$/;"	m	struct:signal_struct	access:public
+find_proc	proc.c	/^find_proc(int pid) {$/;"	f	signature:(int pid)
+find_proc	proc.h	/^struct proc_struct *find_proc(int pid);$/;"	p	signature:(int pid)
+flags	proc.h	/^  uint32_t flags;                             \/\/ Process flag$/;"	m	struct:proc_struct	access:public
+flags	signal.h	/^	uint32_t flags;$/;"	m	struct:sigqueue	access:public
+flush_sigqueue	signal.c	/^flush_sigqueue(struct sigpending *queue) {$/;"	f	file:	signature:(struct sigpending *queue)
+fs_struct	proc.h	/^  struct fs_struct *fs_struct;                \/\/ the file related info(pwd, files_count, files_array, fs_semaphore) of process$/;"	m	struct:proc_struct	typeref:struct:proc_struct::fs_struct	access:public
+get_pid	proc.c	/^get_pid(void) {$/;"	f	file:	signature:(void)
+get_proc_name	proc.c	/^get_proc_name(struct proc_struct *proc) {$/;"	f	signature:(struct proc_struct *proc)
+get_proc_name	proc.h	/^char *get_proc_name(struct proc_struct *proc);$/;"	p	signature:(struct proc_struct *proc)
+get_si	signal.c	15;"	d	file:
+gid	proc.h	/^  int gid;$/;"	m	struct:proc_struct	access:public
+group_complete_send	signal.c	/^group_complete_send(int sign, struct proc_struct *proc) {$/;"	f	file:	signature:(int sign, struct proc_struct *proc)
+group_send_sig_info	signal.c	/^group_send_sig_info(int sign, struct siginfo_t *info, struct proc_struct *to) {$/;"	f	file:	signature:(int sign, struct siginfo_t *info, struct proc_struct *to)
+handle_signal	signal.c	/^handle_signal(int sign, struct sigaction *act, sigset_t oldset, struct trapframe *tf) {$/;"	f	file:	signature:(int sign, struct sigaction *act, sigset_t oldset, struct trapframe *tf)
+handle_stop_signal	signal.c	/^handle_stop_signal(int sign, struct proc_struct *to) {$/;"	f	file:	signature:(int sign, struct proc_struct *to)
+hash_link	proc.h	/^  list_entry_t hash_link;                     \/\/ Process hash list$/;"	m	struct:proc_struct	access:public
+hash_list	proc.c	/^static list_entry_t hash_list[HASH_LIST_SIZE];$/;"	v	file:
+hash_proc	proc.c	/^hash_proc(struct proc_struct *proc) {$/;"	f	file:	signature:(struct proc_struct *proc)
+idleproc	proc.c	79;"	d	file:
+ignore_sig	signal.c	/^ignore_sig(int sign, struct proc_struct *proc) {$/;"	f	file:	signature:(int sign, struct proc_struct *proc)
+info	signal.h	/^	struct siginfo_t info;$/;"	m	struct:sigqueue	typeref:struct:sigqueue::siginfo_t	access:public
+init_main	proc.c	/^init_main(void *arg) {$/;"	f	file:	signature:(void *arg)
+init_new_context	proc.h	/^int init_new_context (struct proc_struct *proc, struct elfhdr *elf,$/;"	p	signature:(struct proc_struct *proc, struct elfhdr *elf, int argc, char** kargv, int envc, char **kenvp)
+initproc	proc.c	/^struct proc_struct *initproc;$/;"	v	typeref:struct:proc_struct
+kernel_execve	proc.h	/^int kernel_execve(const char *name, const char **argv, const char** kenvp);$/;"	p	signature:(const char *name, const char **argv, const char** kenvp)
+kernel_thread	proc.h	/^int kernel_thread(int (*fn)(void *), void *arg, uint32_t clone_flags);$/;"	p	signature:(int (*fn)(void *), void *arg, uint32_t clone_flags)
+kernel_thread_entry	proc.h	/^void kernel_thread_entry(void);$/;"	p	signature:(void)
+kstack	proc.h	/^  uintptr_t kstack;                           \/\/ Process kernel stack$/;"	m	struct:proc_struct	access:public
+kswapd	proc.c	/^struct proc_struct *kswapd;$/;"	v	typeref:struct:proc_struct
+le2proc	proc.h	97;"	d
+le2sigqueue	signal.h	44;"	d
+linux_rlim_t	resource.h	/^typedef uint32_t linux_rlim_t;$/;"	t
+linux_rlimit	resource.h	/^struct linux_rlimit {$/;"	s
+linux_rlimit::rlim_cur	resource.h	/^  linux_rlim_t rlim_cur;  \/* Soft limit *\/$/;"	m	struct:linux_rlimit	access:public
+linux_rlimit::rlim_max	resource.h	/^  linux_rlim_t rlim_max;  \/* Hard limit (ceiling for rlim_cur) *\/$/;"	m	struct:linux_rlimit	access:public
+linux_timespec	proc.h	/^struct linux_timespec {$/;"	s
+linux_timespec::tv_nsec	proc.h	/^  long   tv_nsec;       \/* nanoseconds *\/$/;"	m	struct:linux_timespec	access:public
+linux_timespec::tv_sec	proc.h	/^  long   tv_sec;        \/* seconds *\/$/;"	m	struct:linux_timespec	access:public
+list	signal.h	/^	list_entry_t list;$/;"	m	struct:sigpending	access:public
+list	signal.h	/^	list_entry_t list;$/;"	m	struct:sigqueue	access:public
+list_link	proc.h	/^  list_entry_t list_link;                     \/\/ Process link list $/;"	m	struct:proc_struct	access:public
+load_icode	proc.c	/^load_icode(int fd, int argc, char **kargv, int envc, char **kenvp) {$/;"	f	file:	signature:(int fd, int argc, char **kargv, int envc, char **kenvp)
+load_icode_read	proc.c	/^load_icode_read(int fd, void *buf, size_t len, off_t offset) {$/;"	f	file:	signature:(int fd, void *buf, size_t len, off_t offset)
+lock_sig	signal.c	/^lock_sig(struct sighand_struct *sh) {$/;"	f	signature:(struct sighand_struct *sh)
+lock_sig	signal.h	/^void lock_sig(struct sighand_struct *sh);$/;"	p	signature:(struct sighand_struct *sh)
+may_killed	proc.c	/^may_killed(void) {$/;"	f	signature:(void)
+may_killed	proc.h	/^void may_killed(void);$/;"	p	signature:(void)
+mm	proc.h	/^  struct mm_struct *mm;                       \/\/ Process's memory management field$/;"	m	struct:proc_struct	typeref:struct:proc_struct::mm_struct	access:public
+name	proc.h	/^  char name[PROC_NAME_LEN + 1];               \/\/ Process name$/;"	m	struct:proc_struct	access:public
+need_resched	proc.h	/^  volatile bool need_resched;                 \/\/ bool value: need to be rescheduled to release CPU?$/;"	m	struct:proc_struct	access:public
+next_thread	proc.c	/^next_thread(struct proc_struct *proc) {$/;"	f	file:	signature:(struct proc_struct *proc)
+next_thread	signal.c	/^next_thread(struct proc_struct *proc) {$/;"	f	signature:(struct proc_struct *proc)
+nr_process	proc.c	/^static int nr_process = 0;$/;"	v	file:
+obj-y	Makefile	/^obj-y := proc.o signal.o$/;"	m
+optr	proc.h	/^  struct proc_struct *cptr, *yptr, *optr;     \/\/ Process's children, yonger sibling, Old sibling$/;"	m	struct:proc_struct	typeref:struct:proc_struct::	access:public
+parent	proc.h	/^  struct proc_struct *parent;                 \/\/ the parent process$/;"	m	struct:proc_struct	typeref:struct:proc_struct::proc_struct	access:public
+pending	signal.h	/^	struct sigpending pending;$/;"	m	struct:proc_signal	typeref:struct:proc_signal::sigpending	access:public
+pid	proc.h	/^  int pid;                                    \/\/ Process ID$/;"	m	struct:proc_struct	access:public
+pid_hashfn	proc.c	88;"	d	file:
+pls_current	proc.c	/^PLS struct proc_struct *pls_current;$/;"	v	typeref:struct:proc_struct
+pls_idleproc	proc.c	/^PLS struct proc_struct *pls_idleproc;$/;"	v	typeref:struct:proc_struct
+proc_init	proc.c	/^proc_init(void) {$/;"	f	signature:(void)
+proc_init	proc.h	/^void proc_init(void);$/;"	p	signature:(void)
+proc_init_ap	proc.c	/^proc_init_ap(void)$/;"	f	signature:(void)
+proc_init_ap	proc.h	/^void proc_init_ap(void);$/;"	p	signature:(void)
+proc_list	proc.c	/^list_entry_t proc_list;$/;"	v
+proc_mm_list	proc.c	/^list_entry_t proc_mm_list;$/;"	v
+proc_run	proc.c	/^proc_run(struct proc_struct *proc) {$/;"	f	signature:(struct proc_struct *proc)
+proc_run	proc.h	/^void proc_run(struct proc_struct *proc);$/;"	p	signature:(struct proc_struct *proc)
+proc_signal	signal.h	/^struct proc_signal{$/;"	s
+proc_signal::blocked	signal.h	/^	sigset_t blocked;$/;"	m	struct:proc_signal	access:public
+proc_signal::pending	signal.h	/^	struct sigpending pending;$/;"	m	struct:proc_signal	typeref:struct:proc_signal::sigpending	access:public
+proc_signal::rt_blocked	signal.h	/^	sigset_t rt_blocked;$/;"	m	struct:proc_signal	access:public
+proc_signal::sas_ss_size	signal.h	/^	size_t sas_ss_size;$/;"	m	struct:proc_signal	access:public
+proc_signal::sas_ss_sp	signal.h	/^	uintptr_t sas_ss_sp;$/;"	m	struct:proc_signal	access:public
+proc_signal::sighand	signal.h	/^	struct sighand_struct *sighand;$/;"	m	struct:proc_signal	typeref:struct:proc_signal::sighand_struct	access:public
+proc_signal::signal	signal.h	/^	struct signal_struct *signal;$/;"	m	struct:proc_signal	typeref:struct:proc_signal::signal_struct	access:public
+proc_state	proc.h	/^enum proc_state {$/;"	g
+proc_struct	proc.h	/^struct proc_struct {$/;"	s
+proc_struct::arch	proc.h	/^  struct arch_proc_struct arch;               \/\/ Arch dependant info. See arch_proc.h$/;"	m	struct:proc_struct	typeref:struct:proc_struct::arch_proc_struct	access:public
+proc_struct::context	proc.h	/^  struct context context;                     \/\/ Switch here to run process$/;"	m	struct:proc_struct	typeref:struct:proc_struct::context	access:public
+proc_struct::cptr	proc.h	/^  struct proc_struct *cptr, *yptr, *optr;     \/\/ Process's children, yonger sibling, Old sibling$/;"	m	struct:proc_struct	typeref:struct:proc_struct::proc_struct	access:public
+proc_struct::cr3	proc.h	/^  uintptr_t cr3;                              \/\/ CR3 register: the base addr of Page Directroy Table(PDT)$/;"	m	struct:proc_struct	access:public
+proc_struct::event_box	proc.h	/^  event_t event_box;                          \/\/ the event which process waits   $/;"	m	struct:proc_struct	access:public
+proc_struct::exit_code	proc.h	/^  int exit_code;                              \/\/ return value when exit$/;"	m	struct:proc_struct	access:public
+proc_struct::flags	proc.h	/^  uint32_t flags;                             \/\/ Process flag$/;"	m	struct:proc_struct	access:public
+proc_struct::fs_struct	proc.h	/^  struct fs_struct *fs_struct;                \/\/ the file related info(pwd, files_count, files_array, fs_semaphore) of process$/;"	m	struct:proc_struct	typeref:struct:proc_struct::fs_struct	access:public
+proc_struct::gid	proc.h	/^  int gid;$/;"	m	struct:proc_struct	access:public
+proc_struct::hash_link	proc.h	/^  list_entry_t hash_link;                     \/\/ Process hash list$/;"	m	struct:proc_struct	access:public
+proc_struct::kstack	proc.h	/^  uintptr_t kstack;                           \/\/ Process kernel stack$/;"	m	struct:proc_struct	access:public
+proc_struct::list_link	proc.h	/^  list_entry_t list_link;                     \/\/ Process link list $/;"	m	struct:proc_struct	access:public
+proc_struct::mm	proc.h	/^  struct mm_struct *mm;                       \/\/ Process's memory management field$/;"	m	struct:proc_struct	typeref:struct:proc_struct::mm_struct	access:public
+proc_struct::name	proc.h	/^  char name[PROC_NAME_LEN + 1];               \/\/ Process name$/;"	m	struct:proc_struct	access:public
+proc_struct::need_resched	proc.h	/^  volatile bool need_resched;                 \/\/ bool value: need to be rescheduled to release CPU?$/;"	m	struct:proc_struct	access:public
+proc_struct::optr	proc.h	/^  struct proc_struct *cptr, *yptr, *optr;     \/\/ Process's children, yonger sibling, Old sibling$/;"	m	struct:proc_struct	typeref:struct:proc_struct::	access:public
+proc_struct::parent	proc.h	/^  struct proc_struct *parent;                 \/\/ the parent process$/;"	m	struct:proc_struct	typeref:struct:proc_struct::proc_struct	access:public
+proc_struct::pid	proc.h	/^  int pid;                                    \/\/ Process ID$/;"	m	struct:proc_struct	access:public
+proc_struct::rq	proc.h	/^  struct run_queue *rq;                       \/\/ running queue contains Process$/;"	m	struct:proc_struct	typeref:struct:proc_struct::run_queue	access:public
+proc_struct::run_link	proc.h	/^  list_entry_t run_link;                      \/\/ the entry linked in run queue$/;"	m	struct:proc_struct	access:public
+proc_struct::runs	proc.h	/^  int runs;                                   \/\/ the running times of Proces$/;"	m	struct:proc_struct	access:public
+proc_struct::sem_queue	proc.h	/^  sem_queue_t *sem_queue;                     \/\/ the user semaphore queue which process waits$/;"	m	struct:proc_struct	access:public
+proc_struct::signal_info	proc.h	/^  struct proc_signal signal_info;$/;"	m	struct:proc_struct	typeref:struct:proc_struct::proc_signal	access:public
+proc_struct::state	proc.h	/^  enum proc_state state;                      \/\/ Process state$/;"	m	struct:proc_struct	typeref:enum:proc_struct::proc_state	access:public
+proc_struct::tf	proc.h	/^  struct trapframe *tf;                       \/\/ Trap frame for current interrupt$/;"	m	struct:proc_struct	typeref:struct:proc_struct::trapframe	access:public
+proc_struct::thread_group	proc.h	/^  list_entry_t thread_group;                  \/\/ the threads list including this proc which share resource (mem\/file\/sem...)$/;"	m	struct:proc_struct	access:public
+proc_struct::tid	proc.h	/^  int tid;$/;"	m	struct:proc_struct	access:public
+proc_struct::time_slice	proc.h	/^  int time_slice;                             \/\/ time slice for occupying the CPU$/;"	m	struct:proc_struct	access:public
+proc_struct::wait_state	proc.h	/^  uint32_t wait_state;                        \/\/ Process waiting state: the reason of sleeping$/;"	m	struct:proc_struct	access:public
+proc_struct::yptr	proc.h	/^  struct proc_struct *cptr, *yptr, *optr;     \/\/ Process's children, yonger sibling, Old sibling$/;"	m	struct:proc_struct	typeref:struct:proc_struct::	access:public
+put_fs	proc.c	/^put_fs(struct proc_struct *proc) {$/;"	f	file:	signature:(struct proc_struct *proc)
+put_kargv	proc.c	/^put_kargv(int argc, char **kargv) {$/;"	f	file:	signature:(int argc, char **kargv)
+put_kstack	proc.c	/^put_kstack(struct proc_struct *proc) {$/;"	f	file:	signature:(struct proc_struct *proc)
+put_pgdir	proc.c	/^put_pgdir(struct mm_struct *mm) {$/;"	f	file:	signature:(struct mm_struct *mm)
+put_sem_queue	proc.c	/^put_sem_queue(struct proc_struct *proc) {$/;"	f	file:	signature:(struct proc_struct *proc)
+put_sighand	proc.c	/^static void put_sighand(struct proc_struct *proc) {$/;"	f	file:	signature:(struct proc_struct *proc)
+put_signal	proc.c	/^put_signal(struct proc_struct *proc) {$/;"	f	file:	signature:(struct proc_struct *proc)
+raise_signal	signal.c	/^raise_signal(struct proc_struct *proc, int sign, bool group) {$/;"	f	signature:(struct proc_struct *proc, int sign, bool group)
+raise_signal	signal.h	/^int raise_signal(struct proc_struct *proc, int sign, bool group);$/;"	p	signature:(struct proc_struct *proc, int sign, bool group)
+remove_from_queue	signal.c	/^remove_from_queue(int sign, struct sigpending *queue) {$/;"	f	file:	signature:(int sign, struct sigpending *queue)
+remove_links	proc.c	/^remove_links(struct proc_struct *proc) {$/;"	f	file:	signature:(struct proc_struct *proc)
+rlim_cur	resource.h	/^  linux_rlim_t rlim_cur;  \/* Soft limit *\/$/;"	m	struct:linux_rlimit	access:public
+rlim_max	resource.h	/^  linux_rlim_t rlim_max;  \/* Hard limit (ceiling for rlim_cur) *\/$/;"	m	struct:linux_rlimit	access:public
+rq	proc.h	/^  struct run_queue *rq;                       \/\/ running queue contains Process$/;"	m	struct:proc_struct	typeref:struct:proc_struct::run_queue	access:public
+rt_blocked	signal.h	/^	sigset_t rt_blocked;$/;"	m	struct:proc_signal	access:public
+run_link	proc.h	/^  list_entry_t run_link;                      \/\/ the entry linked in run queue$/;"	m	struct:proc_struct	access:public
+runs	proc.h	/^  int runs;                                   \/\/ the running times of Proces$/;"	m	struct:proc_struct	access:public
+sas_ss_size	signal.h	/^	size_t sas_ss_size;$/;"	m	struct:proc_signal	access:public
+sas_ss_sp	signal.h	/^	uintptr_t sas_ss_sp;$/;"	m	struct:proc_signal	access:public
+sem	signal.h	/^	semaphore_t *sem;$/;"	m	struct:sigqueue	access:public
+sem_queue	proc.h	/^  sem_queue_t *sem_queue;                     \/\/ the user semaphore queue which process waits$/;"	m	struct:proc_struct	access:public
+send_signal	signal.c	/^send_signal(int sign, struct siginfo_t *info, struct proc_struct *to, struct sigpending *pending) {$/;"	f	file:	signature:(int sign, struct siginfo_t *info, struct proc_struct *to, struct sigpending *pending)
+set_links	proc.c	/^set_links(struct proc_struct *proc) {$/;"	f	file:	signature:(struct proc_struct *proc)
+set_proc_name	proc.c	/^set_proc_name(struct proc_struct *proc, const char *name) {$/;"	f	signature:(struct proc_struct *proc, const char *name)
+set_proc_name	proc.h	/^char *set_proc_name(struct proc_struct *proc, const char *name);$/;"	p	signature:(struct proc_struct *proc, const char *name)
+set_sighand_count	signal.h	/^set_sighand_count(struct sighand_struct *sh, int val) {$/;"	f	signature:(struct sighand_struct *sh, int val)
+set_signal_count	signal.h	/^set_signal_count(struct signal_struct *sig, int val) {$/;"	f	signature:(struct signal_struct *sig, int val)
+setup_kstack	proc.c	/^setup_kstack(struct proc_struct *proc) {$/;"	f	file:	signature:(struct proc_struct *proc)
+setup_pgdir	proc.c	/^setup_pgdir(struct mm_struct *mm) {$/;"	f	file:	signature:(struct mm_struct *mm)
+shared_pending	signal.h	/^	struct sigpending shared_pending;$/;"	m	struct:signal_struct	typeref:struct:signal_struct::sigpending	access:public
+sig_recalc_pending	signal.c	/^sig_recalc_pending(struct proc_struct *proc) {$/;"	f	signature:(struct proc_struct *proc)
+sig_recalc_pending	signal.h	/^void sig_recalc_pending(struct proc_struct *proc);$/;"	p	signature:(struct proc_struct *proc)
+sig_sem	signal.h	/^	semaphore_t sig_sem;$/;"	m	struct:sighand_struct	access:public
+sighand	signal.h	/^	struct sighand_struct *sighand;$/;"	m	struct:proc_signal	typeref:struct:proc_signal::sighand_struct	access:public
+sighand_count	signal.h	/^sighand_count(struct sighand_struct *sh) {$/;"	f	signature:(struct sighand_struct *sh)
+sighand_count_dec	signal.h	/^sighand_count_dec(struct sighand_struct *sh) {$/;"	f	signature:(struct sighand_struct *sh)
+sighand_count_inc	signal.h	/^sighand_count_inc(struct sighand_struct *sh) {$/;"	f	signature:(struct sighand_struct *sh)
+sighand_create	signal.c	/^sighand_create(void) {$/;"	f	signature:(void)
+sighand_create	signal.h	/^struct sighand_struct *sighand_create(void);$/;"	p	signature:(void)
+sighand_destroy	signal.c	/^sighand_destroy(struct sighand_struct *sh) {$/;"	f	signature:(struct sighand_struct *sh)
+sighand_destroy	signal.h	/^void sighand_destroy(struct sighand_struct *sh);$/;"	p	signature:(struct sighand_struct *sh)
+sighand_struct	signal.h	/^struct sighand_struct {$/;"	s
+sighand_struct::action	signal.h	/^	struct sigaction action[64];$/;"	m	struct:sighand_struct	typeref:struct:sighand_struct::sigaction	access:public
+sighand_struct::count	signal.h	/^	atomic_t count;$/;"	m	struct:sighand_struct	access:public
+sighand_struct::sig_sem	signal.h	/^	semaphore_t sig_sem;$/;"	m	struct:sighand_struct	access:public
+sigismember	signal.h	26;"	d
+sigmask	signal.h	29;"	d
+signal	signal.h	/^	sigset_t signal;$/;"	m	struct:sigpending	access:public
+signal	signal.h	/^	struct signal_struct *signal;$/;"	m	struct:proc_signal	typeref:struct:proc_signal::signal_struct	access:public
+signal_count	signal.h	/^signal_count(struct signal_struct *sig) {$/;"	f	signature:(struct signal_struct *sig)
+signal_count_dec	signal.h	/^signal_count_dec(struct signal_struct *sig) {$/;"	f	signature:(struct signal_struct *sig)
+signal_count_inc	signal.h	/^signal_count_inc(struct signal_struct *sig) {$/;"	f	signature:(struct signal_struct *sig)
+signal_create	signal.c	/^signal_create(void) {$/;"	f	signature:(void)
+signal_create	signal.h	/^struct signal_struct *signal_create(void);$/;"	p	signature:(void)
+signal_destroy	signal.c	/^signal_destroy(struct signal_struct *sig) {$/;"	f	signature:(struct signal_struct *sig)
+signal_destroy	signal.h	/^void signal_destroy(struct signal_struct *sig);$/;"	p	signature:(struct signal_struct *sig)
+signal_info	proc.h	/^  struct proc_signal signal_info;$/;"	m	struct:proc_struct	typeref:struct:proc_struct::proc_signal	access:public
+signal_pending	signal.c	/^signal_pending(struct proc_struct *proc) {$/;"	f	file:	signature:(struct proc_struct *proc)
+signal_struct	signal.h	/^struct signal_struct {$/;"	s
+signal_struct::count	signal.h	/^	atomic_t count;$/;"	m	struct:signal_struct	access:public
+signal_struct::curr_target	signal.h	/^	struct proc_struct *curr_target;$/;"	m	struct:signal_struct	typeref:struct:signal_struct::proc_struct	access:public
+signal_struct::exit_code	signal.h	/^	int exit_code;$/;"	m	struct:signal_struct	access:public
+signal_struct::shared_pending	signal.h	/^	struct sigpending shared_pending;$/;"	m	struct:signal_struct	typeref:struct:signal_struct::sigpending	access:public
+signal_wakeup	signal.c	/^signal_wakeup(int sign, struct proc_struct *proc) {$/;"	f	file:	signature:(int sign, struct proc_struct *proc)
+sigpending	signal.h	/^struct sigpending {$/;"	s
+sigpending::list	signal.h	/^	list_entry_t list;$/;"	m	struct:sigpending	access:public
+sigpending::signal	signal.h	/^	sigset_t signal;$/;"	m	struct:sigpending	access:public
+sigqueue	signal.h	/^struct sigqueue {$/;"	s
+sigqueue::flags	signal.h	/^	uint32_t flags;$/;"	m	struct:sigqueue	access:public
+sigqueue::info	signal.h	/^	struct siginfo_t info;$/;"	m	struct:sigqueue	typeref:struct:sigqueue::siginfo_t	access:public
+sigqueue::list	signal.h	/^	list_entry_t list;$/;"	m	struct:sigqueue	access:public
+sigqueue::sem	signal.h	/^	semaphore_t *sem;$/;"	m	struct:sigqueue	access:public
+sigset_add	signal.h	14;"	d
+sigset_addmask	signal.h	20;"	d
+sigset_del	signal.h	17;"	d
+sigset_delmask	signal.h	23;"	d
+sigset_initwith	signal.h	11;"	d
+specific_send_sig_info	signal.c	/^specific_send_sig_info(int sign, struct siginfo_t *info, struct proc_struct *to) {$/;"	f	file:	signature:(int sign, struct siginfo_t *info, struct proc_struct *to)
+state	proc.h	/^  enum proc_state state;                      \/\/ Process state$/;"	m	struct:proc_struct	typeref:enum:proc_struct::proc_state	access:public
+switch_to	proc.h	/^void switch_to(struct context *from, struct context *to);$/;"	p	signature:(struct context *from, struct context *to)
+tf	proc.h	/^  struct trapframe *tf;                       \/\/ Trap frame for current interrupt$/;"	m	struct:proc_struct	typeref:struct:proc_struct::trapframe	access:public
+thread_group	proc.h	/^  list_entry_t thread_group;                  \/\/ the threads list including this proc which share resource (mem\/file\/sem...)$/;"	m	struct:proc_struct	access:public
+tid	proc.h	/^  int tid;$/;"	m	struct:proc_struct	access:public
+time_slice	proc.h	/^  int time_slice;                             \/\/ time slice for occupying the CPU$/;"	m	struct:proc_struct	access:public
+tv_nsec	proc.h	/^  long   tv_nsec;       \/* nanoseconds *\/$/;"	m	struct:linux_timespec	access:public
+tv_sec	proc.h	/^  long   tv_sec;        \/* seconds *\/$/;"	m	struct:linux_timespec	access:public
+ucore_kernel_thread	proc.h	/^int ucore_kernel_thread(int (*fn)(void *), void *arg, uint32_t clone_flags);$/;"	p	signature:(int (*fn)(void *), void *arg, uint32_t clone_flags)
+unhash_proc	proc.c	/^unhash_proc(struct proc_struct *proc) {$/;"	f	file:	signature:(struct proc_struct *proc)
+unlock_sig	signal.c	/^unlock_sig(struct sighand_struct *sh) {$/;"	f	signature:(struct sighand_struct *sh)
+unlock_sig	signal.h	/^void unlock_sig(struct sighand_struct *sh);$/;"	p	signature:(struct sighand_struct *sh)
+user_main	proc.c	/^user_main(void *arg) {$/;"	f	file:	signature:(void *arg)
+wait_state	proc.h	/^  uint32_t wait_state;                        \/\/ Process waiting state: the reason of sleeping$/;"	m	struct:proc_struct	access:public
+wants_signal	signal.c	/^wants_signal(int sign, struct proc_struct *proc) {$/;"	f	file:	signature:(int sign, struct proc_struct *proc)
+yptr	proc.h	/^  struct proc_struct *cptr, *yptr, *optr;     \/\/ Process's children, yonger sibling, Old sibling$/;"	m	struct:proc_struct	typeref:struct:proc_struct::	access:public

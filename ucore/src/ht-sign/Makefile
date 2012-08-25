@@ -1,0 +1,1 @@
+include ${ARCH}/sign.mk

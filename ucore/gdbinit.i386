@@ -1,0 +1,4 @@
+target remote :1234
+define hook-stop
+x/i $pc
+end

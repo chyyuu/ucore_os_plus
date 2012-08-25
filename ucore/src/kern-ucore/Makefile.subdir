@@ -1,0 +1,54 @@
+include $(TOPDIR)/$(KCONFIG_AUTOCONFIG)
+
+include Makefile
+
+DEPS := $(addprefix $(OBJPATH)/, $(obj-y:.o=.d))
+BUILTIN_O := $(OBJPATH)/builtin.o
+OBJ_Y := $(addprefix $(OBJPATH)/,$(obj-y))
+
+all: $(OBJPATH) $(BUILTIN_O) $(dirs-y) FORCE
+ifneq ($(obj-y),)
+	$(Q)echo $(BUILTIN_O) >> $(BUILTINLIST)
+endif
+
+ifneq ($(obj-y),)
+$(BUILTIN_O): $(OBJ_Y)
+	@echo LD $@
+	$(Q)$(TARGET_LD) -r -o $@ $(OBJ_Y)
+
+-include $(DEPS)
+
+else
+$(BUILTIN_O):
+	$(Q)touch $@
+endif
+
+
+$(OBJPATH)/%.o: %.c
+	@echo CC $<
+	$(Q)$(TARGET_CC) $(TARGET_CFLAGS) -c -o $@ $<
+
+$(OBJPATH)/%.o: %.S
+	@echo CC $<
+	$(Q)$(TARGET_CC) -D__ASSEMBLY__ $(TARGET_CFLAGS) -c -o $@ $<
+
+$(OBJPATH)/%.d: %.c
+	@echo DEP $<
+	@set -e; rm -f $@; \
+		$(TARGET_CC) -MM -MT "$(OBJPATH)/$*.o $@" $(TARGET_CFLAGS) $< > $@; 
+
+define make-subdir
+$1: FORCE
+	@echo Enter $(LOCALPATH)/$1
+	-$(Q)mkdir -p $(OBJPATH)/$1
+	+$(Q)$(MAKE) -f $(KTREE)/Makefile.subdir -C $(LOCALPATH)/$1 KTREE=$(KTREE) OBJPATH=$(OBJPATH)/$1 LOCALPATH=$(LOCALPATH)/$1 BUILTINLIST=$(BUILTINLIST)
+endef
+
+$(foreach bdir,$(dirs-y),$(eval $(call make-subdir,$(bdir))))
+
+PHONY +=FORCE
+FORCE:
+
+# Declare the contents of the .PHONY variable as phony.  We keep that
+# information in a variable so we can use it in if_changed and friends.
+.PHONY: $(PHONY)

@@ -1,0 +1,1 @@
+include ${ARCH}/mkram.mk

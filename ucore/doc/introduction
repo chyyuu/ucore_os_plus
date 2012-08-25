@@ -1,0 +1,7 @@
+UCORE-MP64 is a branch version of the 64-bit ucore (by Wang,
+Naizheng). The branch is mainly for running on the different
+multi-processor architecture.
+
+UCORE-MP64 is a snapshot style (contrary to the linear hierachy style
+of ucore) project, which the snapshot is deviant from the last
+sub-project(proj19) from the ucore repository.

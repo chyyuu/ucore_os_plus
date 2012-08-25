@@ -1,0 +1,5 @@
+There is a booting code in the supervisor module. The module boot a AP
+from realmode into long mode, then initialize the lapic. Before
+starting the universal startup algorithm, lapic and ioapic should be
+set in the BSP. The booting code is copied into 0x8000 and some data
+in set into the 0x7Fxx area.

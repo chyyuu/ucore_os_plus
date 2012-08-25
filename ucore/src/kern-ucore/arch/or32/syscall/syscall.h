@@ -1,0 +1,7 @@
+#ifndef __ARCH_TEMPLATE_INCLUDE_SYSCALL_H__
+#define __ARCH_TEMPLATE_INCLUDE_SYSCALL_H__
+
+void syscall(void);
+
+#endif /* !__ARCH_TEMPLATE_INCLUDE_SYSCALL_H__ */
+

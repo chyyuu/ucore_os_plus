@@ -1,0 +1,542 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.9~svn20110310	//
+ABORT	ff.c	132;"	d	file:
+AM_ARC	ff.h	307;"	d
+AM_DIR	ff.h	306;"	d
+AM_HID	ff.h	302;"	d
+AM_LFN	ff.h	305;"	d
+AM_MASK	ff.h	308;"	d
+AM_RDO	ff.h	301;"	d
+AM_SYS	ff.h	303;"	d
+AM_VOL	ff.h	304;"	d
+ATA_GET_MODEL	diskio.h	70;"	d
+ATA_GET_REV	diskio.h	69;"	d
+ATA_GET_SN	diskio.h	71;"	d
+BPB_BkBootSec	ff.c	422;"	d	file:
+BPB_BytsPerSec	ff.c	400;"	d	file:
+BPB_ExtFlags	ff.c	418;"	d	file:
+BPB_FATSz16	ff.c	407;"	d	file:
+BPB_FATSz32	ff.c	417;"	d	file:
+BPB_FSInfo	ff.c	421;"	d	file:
+BPB_FSVer	ff.c	419;"	d	file:
+BPB_HiddSec	ff.c	410;"	d	file:
+BPB_Media	ff.c	406;"	d	file:
+BPB_NumFATs	ff.c	403;"	d	file:
+BPB_NumHeads	ff.c	409;"	d	file:
+BPB_RootClus	ff.c	420;"	d	file:
+BPB_RootEntCnt	ff.c	404;"	d	file:
+BPB_RsvdSecCnt	ff.c	402;"	d	file:
+BPB_SecPerClus	ff.c	401;"	d	file:
+BPB_SecPerTrk	ff.c	408;"	d	file:
+BPB_TotSec16	ff.c	405;"	d	file:
+BPB_TotSec32	ff.c	411;"	d	file:
+BS_55AA	ff.c	434;"	d	file:
+BS_BootSig	ff.c	413;"	d	file:
+BS_BootSig32	ff.c	424;"	d	file:
+BS_DrvNum	ff.c	412;"	d	file:
+BS_DrvNum32	ff.c	423;"	d	file:
+BS_FilSysType	ff.c	416;"	d	file:
+BS_FilSysType32	ff.c	427;"	d	file:
+BS_OEMName	ff.c	399;"	d	file:
+BS_VolID	ff.c	414;"	d	file:
+BS_VolID32	ff.c	425;"	d	file:
+BS_VolLab	ff.c	415;"	d	file:
+BS_VolLab32	ff.c	426;"	d	file:
+BS_jmpBoot	ff.c	398;"	d	file:
+BYTE	integer.h	/^typedef unsigned char	BYTE;$/;"	t
+CHAR	integer.h	/^typedef char			CHAR;$/;"	t
+CREATE_LINKMAP	ff.h	312;"	d
+CTRL_EJECT	diskio.h	59;"	d
+CTRL_ERASE_SECTOR	diskio.h	54;"	d
+CTRL_LOCK	diskio.h	58;"	d
+CTRL_POWER	diskio.h	57;"	d
+CTRL_SYNC	diskio.h	50;"	d
+CurrVol	ff.c	/^BYTE CurrVol;			\/* Current drive *\/$/;"	v	file:
+DDE	ff.c	453;"	d	file:
+DEF_NAMEBUF	ff.c	481;"	d	file:
+DEF_NAMEBUF	ff.c	487;"	d	file:
+DEF_NAMEBUF	ff.c	492;"	d	file:
+DEF_NAMEBUF	ff.c	497;"	d	file:
+DIR	ff.h	/^typedef struct DIR {$/;"	s
+DIR	ff.h	/^} DIR;$/;"	t	typeref:struct:DIR
+DIR::clust	ff.h	/^	DWORD	clust;			\/* Current cluster *\/$/;"	m	struct:DIR	access:public
+DIR::dir	ff.h	/^	BYTE*	dir;			\/* Pointer to the current SFN entry in the win[] *\/$/;"	m	struct:DIR	access:public
+DIR::fn	ff.h	/^	BYTE*	fn;				\/* Pointer to the SFN (in\/out) {file[8],ext[3],status[1]} *\/$/;"	m	struct:DIR	access:public
+DIR::fs	ff.h	/^	FATFS*	fs;				\/* Pointer to the owner file system object *\/$/;"	m	struct:DIR	access:public
+DIR::id	ff.h	/^	WORD	id;				\/* Owner file system mount ID *\/$/;"	m	struct:DIR	access:public
+DIR::index	ff.h	/^	WORD	index;			\/* Current read\/write index number *\/$/;"	m	struct:DIR	access:public
+DIR::lfn	ff.h	/^	WCHAR*	lfn;			\/* Pointer to the LFN working buffer *\/$/;"	m	struct:DIR	access:public
+DIR::lfn_idx	ff.h	/^	WORD	lfn_idx;		\/* Last matched LFN index number (0xFFFF:No LFN) *\/$/;"	m	struct:DIR	access:public
+DIR::sclust	ff.h	/^	DWORD	sclust;			\/* Table start cluster (0:Root dir) *\/$/;"	m	struct:DIR	access:public
+DIR::sect	ff.h	/^	DWORD	sect;			\/* Current sector *\/$/;"	m	struct:DIR	access:public
+DIR_Attr	ff.c	437;"	d	file:
+DIR_CrtDate	ff.c	440;"	d	file:
+DIR_CrtTime	ff.c	439;"	d	file:
+DIR_FileSize	ff.c	445;"	d	file:
+DIR_FstClusHI	ff.c	441;"	d	file:
+DIR_FstClusLO	ff.c	444;"	d	file:
+DIR_NTres	ff.c	438;"	d	file:
+DIR_Name	ff.c	436;"	d	file:
+DIR_WrtDate	ff.c	443;"	d	file:
+DIR_WrtTime	ff.c	442;"	d	file:
+DRESULT	diskio.h	/^} DRESULT;$/;"	t	typeref:enum:__anon3
+DSTATUS	diskio.h	/^typedef BYTE	DSTATUS;$/;"	t
+DWORD	integer.h	/^typedef unsigned long	DWORD;$/;"	t
+ENTER_FF	ff.c	125;"	d	file:
+ENTER_FF	ff.c	128;"	d	file:
+EOF	ff.h	232;"	d
+FATFS	ff.h	/^typedef struct FATFS {$/;"	s
+FATFS	ff.h	/^} FATFS;$/;"	t	typeref:struct:FATFS
+FATFS::cdir	ff.h	/^	DWORD	cdir;			\/* Current directory start cluster (0:root) *\/$/;"	m	struct:FATFS	access:public
+FATFS::csize	ff.h	/^	BYTE	csize;			\/* Sectors per cluster (1,2,4...128) *\/$/;"	m	struct:FATFS	access:public
+FATFS::database	ff.h	/^	DWORD	database;		\/* Data start sector *\/$/;"	m	struct:FATFS	access:public
+FATFS::dirbase	ff.h	/^	DWORD	dirbase;		\/* Root directory start sector (FAT32:Cluster#) *\/$/;"	m	struct:FATFS	access:public
+FATFS::drv	ff.h	/^	BYTE	drv;			\/* Physical drive number *\/$/;"	m	struct:FATFS	access:public
+FATFS::fatbase	ff.h	/^	DWORD	fatbase;		\/* FAT start sector *\/$/;"	m	struct:FATFS	access:public
+FATFS::free_clust	ff.h	/^	DWORD	free_clust;		\/* Number of free clusters *\/$/;"	m	struct:FATFS	access:public
+FATFS::fs_type	ff.h	/^	BYTE	fs_type;		\/* FAT sub-type (0:Not mounted) *\/$/;"	m	struct:FATFS	access:public
+FATFS::fsi_flag	ff.h	/^	BYTE	fsi_flag;		\/* fsinfo dirty flag (1:must be written back) *\/$/;"	m	struct:FATFS	access:public
+FATFS::fsi_sector	ff.h	/^	DWORD	fsi_sector;		\/* fsinfo sector (FAT32) *\/$/;"	m	struct:FATFS	access:public
+FATFS::fsize	ff.h	/^	DWORD	fsize;			\/* Sectors per FAT *\/$/;"	m	struct:FATFS	access:public
+FATFS::id	ff.h	/^	WORD	id;				\/* File system mount ID *\/$/;"	m	struct:FATFS	access:public
+FATFS::last_clust	ff.h	/^	DWORD	last_clust;		\/* Last allocated cluster *\/$/;"	m	struct:FATFS	access:public
+FATFS::n_fatent	ff.h	/^	DWORD	n_fatent;		\/* Number of FAT entries (= number of clusters + 2) *\/$/;"	m	struct:FATFS	access:public
+FATFS::n_fats	ff.h	/^	BYTE	n_fats;			\/* Number of FAT copies (1,2) *\/$/;"	m	struct:FATFS	access:public
+FATFS::n_rootdir	ff.h	/^	WORD	n_rootdir;		\/* Number of root directory entries (FAT12\/16) *\/$/;"	m	struct:FATFS	access:public
+FATFS::sobj	ff.h	/^	_SYNC_t	sobj;			\/* Identifier of sync object *\/$/;"	m	struct:FATFS	access:public
+FATFS::ssize	ff.h	/^	WORD	ssize;			\/* Bytes per sector (512,1024,2048,4096) *\/$/;"	m	struct:FATFS	access:public
+FATFS::wflag	ff.h	/^	BYTE	wflag;			\/* win[] dirty flag (1:must be written back) *\/$/;"	m	struct:FATFS	access:public
+FATFS::win	ff.h	/^	BYTE	win[_MAX_SS];	\/* Disk access window for Directory, FAT (and Data on tiny cfg) *\/$/;"	m	struct:FATFS	access:public
+FATFS::winsect	ff.h	/^	DWORD	winsect;		\/* Current sector appearing in the win[] *\/$/;"	m	struct:FATFS	access:public
+FAT_PRINTF	ff.h	335;"	d
+FA_CREATE_ALWAYS	ff.h	285;"	d
+FA_CREATE_NEW	ff.h	284;"	d
+FA_OPEN_ALWAYS	ff.h	286;"	d
+FA_OPEN_EXISTING	ff.h	279;"	d
+FA_READ	ff.h	278;"	d
+FA_WRITE	ff.h	283;"	d
+FA__DIRTY	ff.h	288;"	d
+FA__ERROR	ff.h	280;"	d
+FA__WRITTEN	ff.h	287;"	d
+FIL	ff.h	/^typedef struct FIL {$/;"	s
+FIL	ff.h	/^} FIL;$/;"	t	typeref:struct:FIL
+FIL::buf	ff.h	/^	BYTE	buf[_MAX_SS];	\/* File data read\/write buffer *\/$/;"	m	struct:FIL	access:public
+FIL::cltbl	ff.h	/^	DWORD*	cltbl;			\/* Pointer to the cluster link map table (null on file open) *\/$/;"	m	struct:FIL	access:public
+FIL::clust	ff.h	/^	DWORD	clust;			\/* Current cluster *\/$/;"	m	struct:FIL	access:public
+FIL::dir_ptr	ff.h	/^	BYTE*	dir_ptr;		\/* Ponter to the directory entry in the window *\/$/;"	m	struct:FIL	access:public
+FIL::dir_sect	ff.h	/^	DWORD	dir_sect;		\/* Sector containing the directory entry *\/$/;"	m	struct:FIL	access:public
+FIL::dsect	ff.h	/^	DWORD	dsect;			\/* Current data sector *\/$/;"	m	struct:FIL	access:public
+FIL::flag	ff.h	/^	BYTE	flag;			\/* File status flags *\/$/;"	m	struct:FIL	access:public
+FIL::fptr	ff.h	/^	DWORD	fptr;			\/* File read\/write pointer (0 on file open) *\/$/;"	m	struct:FIL	access:public
+FIL::fs	ff.h	/^	FATFS*	fs;				\/* Pointer to the owner file system object *\/$/;"	m	struct:FIL	access:public
+FIL::fsize	ff.h	/^	DWORD	fsize;			\/* File size *\/$/;"	m	struct:FIL	access:public
+FIL::id	ff.h	/^	WORD	id;				\/* Owner file system mount ID *\/$/;"	m	struct:FIL	access:public
+FIL::lockid	ff.h	/^	UINT	lockid;			\/* File lock ID (index of file semaphore table) *\/$/;"	m	struct:FIL	access:public
+FIL::pad1	ff.h	/^	BYTE	pad1;$/;"	m	struct:FIL	access:public
+FIL::sclust	ff.h	/^	DWORD	sclust;			\/* File start cluster (0 when fsize==0) *\/$/;"	m	struct:FIL	access:public
+FILESEM	ff.c	/^} FILESEM;$/;"	t	typeref:struct:__anon4	file:
+FILINFO	ff.h	/^typedef struct FILINFO {$/;"	s
+FILINFO	ff.h	/^} FILINFO;$/;"	t	typeref:struct:FILINFO
+FILINFO::fattrib	ff.h	/^	BYTE	fattrib;		\/* Attribute *\/$/;"	m	struct:FILINFO	access:public
+FILINFO::fdate	ff.h	/^	WORD	fdate;			\/* Last modified date *\/$/;"	m	struct:FILINFO	access:public
+FILINFO::fname	ff.h	/^	TCHAR	fname[13];		\/* Short file name (8.3 format) *\/$/;"	m	struct:FILINFO	access:public
+FILINFO::fsize	ff.h	/^	DWORD	fsize;			\/* File size *\/$/;"	m	struct:FILINFO	access:public
+FILINFO::ftime	ff.h	/^	WORD	ftime;			\/* Last modified time *\/$/;"	m	struct:FILINFO	access:public
+FILINFO::lfname	ff.h	/^	TCHAR*	lfname;			\/* Pointer to the LFN buffer *\/$/;"	m	struct:FILINFO	access:public
+FILINFO::lfsize	ff.h	/^	UINT 	lfsize;			\/* Size of LFN buffer in TCHAR *\/$/;"	m	struct:FILINFO	access:public
+FREE_BUF	ff.c	483;"	d	file:
+FREE_BUF	ff.c	489;"	d	file:
+FREE_BUF	ff.c	494;"	d	file:
+FREE_BUF	ff.c	501;"	d	file:
+FRESULT	ff.h	/^} FRESULT;$/;"	t	typeref:enum:__anon2
+FR_DENIED	ff.h	/^	FR_DENIED,				\/* (7) Acces denied due to prohibited access or directory full *\/$/;"	e	enum:__anon2
+FR_DISK_ERR	ff.h	/^	FR_DISK_ERR,			\/* (1) A hard error occured in the low level disk I\/O layer *\/$/;"	e	enum:__anon2
+FR_EXIST	ff.h	/^	FR_EXIST,				\/* (8) Acces denied due to prohibited access *\/$/;"	e	enum:__anon2
+FR_INT_ERR	ff.h	/^	FR_INT_ERR,				\/* (2) Assertion failed *\/$/;"	e	enum:__anon2
+FR_INVALID_DRIVE	ff.h	/^	FR_INVALID_DRIVE,		\/* (11) The logical drive number is invalid *\/$/;"	e	enum:__anon2
+FR_INVALID_NAME	ff.h	/^	FR_INVALID_NAME,		\/* (6) The path name format is invalid *\/$/;"	e	enum:__anon2
+FR_INVALID_OBJECT	ff.h	/^	FR_INVALID_OBJECT,		\/* (9) The file\/directory object is invalid *\/$/;"	e	enum:__anon2
+FR_LOCKED	ff.h	/^	FR_LOCKED,				\/* (16) The operation is rejected according to the file shareing policy *\/$/;"	e	enum:__anon2
+FR_MKFS_ABORTED	ff.h	/^	FR_MKFS_ABORTED,		\/* (14) The f_mkfs() aborted due to any parameter error *\/$/;"	e	enum:__anon2
+FR_NOT_ENABLED	ff.h	/^	FR_NOT_ENABLED,			\/* (12) The volume has no work area *\/$/;"	e	enum:__anon2
+FR_NOT_ENOUGH_CORE	ff.h	/^	FR_NOT_ENOUGH_CORE,		\/* (17) LFN working buffer could not be allocated *\/$/;"	e	enum:__anon2
+FR_NOT_READY	ff.h	/^	FR_NOT_READY,			\/* (3) The physical drive cannot work *\/$/;"	e	enum:__anon2
+FR_NO_FILE	ff.h	/^	FR_NO_FILE,				\/* (4) Could not find the file *\/$/;"	e	enum:__anon2
+FR_NO_FILESYSTEM	ff.h	/^	FR_NO_FILESYSTEM,		\/* (13) There is no valid FAT volume on the physical drive *\/$/;"	e	enum:__anon2
+FR_NO_PATH	ff.h	/^	FR_NO_PATH,				\/* (5) Could not find the path *\/$/;"	e	enum:__anon2
+FR_OK	ff.h	/^	FR_OK = 0,				\/* (0) Succeeded *\/$/;"	e	enum:__anon2
+FR_TIMEOUT	ff.h	/^	FR_TIMEOUT,				\/* (15) Could not get a grant to access the volume within defined period *\/$/;"	e	enum:__anon2
+FR_TOO_MANY_OPEN_FILES	ff.h	/^	FR_TOO_MANY_OPEN_FILES	\/* (18) Number of open files > _FS_SHARE *\/$/;"	e	enum:__anon2
+FR_WRITE_PROTECTED	ff.h	/^	FR_WRITE_PROTECTED,		\/* (10) The physical drive is write protected *\/$/;"	e	enum:__anon2
+FSI_Free_Count	ff.c	430;"	d	file:
+FSI_LeadSig	ff.c	428;"	d	file:
+FSI_Nxt_Free	ff.c	431;"	d	file:
+FSI_StrucSig	ff.c	429;"	d	file:
+FS_FAT12	ff.h	294;"	d
+FS_FAT16	ff.h	295;"	d
+FS_FAT32	ff.h	296;"	d
+FatFs	ff.c	/^FATFS *FatFs[_VOLUMES];	\/* Pointer to the file system objects (logical drives) *\/$/;"	v	file:
+Files	ff.c	/^FILESEM	Files[_FS_SHARE];	\/* File lock semaphores *\/$/;"	v	file:
+Fsid	ff.c	/^WORD Fsid;				\/* File system mount ID *\/$/;"	v	file:
+GET_BLOCK_SIZE	diskio.h	53;"	d
+GET_SECTOR_COUNT	diskio.h	51;"	d
+GET_SECTOR_SIZE	diskio.h	52;"	d
+INIT_BUF	ff.c	482;"	d	file:
+INIT_BUF	ff.c	488;"	d	file:
+INIT_BUF	ff.c	493;"	d	file:
+INIT_BUF	ff.c	498;"	d	file:
+INT	integer.h	/^typedef int				INT;$/;"	t
+IsDBCS1	ff.c	359;"	d	file:
+IsDBCS1	ff.c	361;"	d	file:
+IsDBCS1	ff.c	372;"	d	file:
+IsDBCS2	ff.c	365;"	d	file:
+IsDBCS2	ff.c	367;"	d	file:
+IsDBCS2	ff.c	373;"	d	file:
+IsDigit	ff.c	354;"	d	file:
+IsLower	ff.c	353;"	d	file:
+IsUpper	ff.c	352;"	d	file:
+LD2PD	ff.h	36;"	d
+LD2PD	ff.h	45;"	d
+LD2PT	ff.h	37;"	d
+LD2PT	ff.h	46;"	d
+LDIR_Attr	ff.c	447;"	d	file:
+LDIR_Chksum	ff.c	449;"	d	file:
+LDIR_FstClusLO	ff.c	450;"	d	file:
+LDIR_Ord	ff.c	446;"	d	file:
+LDIR_Type	ff.c	448;"	d	file:
+LD_CLUST	ff.c	150;"	d	file:
+LD_DWORD	ff.h	321;"	d
+LD_DWORD	ff.h	326;"	d
+LD_WORD	ff.h	320;"	d
+LD_WORD	ff.h	325;"	d
+LEAVE_FF	ff.c	126;"	d	file:
+LEAVE_FF	ff.c	129;"	d	file:
+LLE	ff.c	452;"	d	file:
+LONG	integer.h	/^typedef long			LONG;$/;"	t
+LfnBuf	ff.c	/^static WCHAR LfnBuf[_MAX_LFN+1];$/;"	v	file:
+LfnOfs	ff.c	/^const BYTE LfnOfs[] = {1,3,5,7,9,14,16,18,20,22,24,28,30};	\/* Offset of LFN chars in the directory entry *\/$/;"	v	file:
+MBR_Table	ff.c	432;"	d	file:
+MIN_FAT16	ff.c	390;"	d	file:
+MIN_FAT32	ff.c	391;"	d	file:
+MMC_GET_CID	diskio.h	64;"	d
+MMC_GET_CSD	diskio.h	63;"	d
+MMC_GET_OCR	diskio.h	65;"	d
+MMC_GET_SDSTAT	diskio.h	66;"	d
+MMC_GET_TYPE	diskio.h	62;"	d
+NAND_FORMAT	diskio.h	74;"	d
+NDDE	ff.c	454;"	d	file:
+NS	ff.c	379;"	d	file:
+NS_BODY	ff.c	383;"	d	file:
+NS_DOT	ff.c	385;"	d	file:
+NS_EXT	ff.c	384;"	d	file:
+NS_LAST	ff.c	382;"	d	file:
+NS_LFN	ff.c	381;"	d	file:
+NS_LOSS	ff.c	380;"	d	file:
+N_FATS	ff.c	3561;"	d	file:
+N_ROOTDIR	ff.c	3560;"	d	file:
+PARTITION	ff.h	/^} PARTITION;$/;"	t	typeref:struct:__anon1
+RES_ERROR	diskio.h	/^	RES_ERROR,		\/* 1: R\/W Error *\/$/;"	e	enum:__anon3
+RES_NOTRDY	diskio.h	/^	RES_NOTRDY,		\/* 3: Not Ready *\/$/;"	e	enum:__anon3
+RES_OK	diskio.h	/^	RES_OK = 0,		\/* 0: Successful *\/$/;"	e	enum:__anon3
+RES_PARERR	diskio.h	/^	RES_PARERR		\/* 4: Invalid Parameter *\/$/;"	e	enum:__anon3
+RES_WRPRT	diskio.h	/^	RES_WRPRT,		\/* 2: Write Protected *\/$/;"	e	enum:__anon3
+SHORT	integer.h	/^typedef short			SHORT;$/;"	t
+SS	ff.c	114;"	d	file:
+SS	ff.c	116;"	d	file:
+STA_NODISK	diskio.h	43;"	d
+STA_NOINIT	diskio.h	42;"	d
+STA_PROTECT	diskio.h	44;"	d
+ST_CLUST	ff.c	151;"	d	file:
+ST_DWORD	ff.h	323;"	d
+ST_DWORD	ff.h	328;"	d
+ST_WORD	ff.h	322;"	d
+ST_WORD	ff.h	327;"	d
+SZ_DIR	ff.c	451;"	d	file:
+SZ_PTE	ff.c	433;"	d	file:
+TCHAR	ff.h	/^typedef WCHAR TCHAR;$/;"	t
+TCHAR	ff.h	/^typedef char TCHAR;$/;"	t
+UCHAR	integer.h	/^typedef unsigned char	UCHAR;$/;"	t
+UINT	integer.h	/^typedef unsigned int	UINT;$/;"	t
+ULONG	integer.h	/^typedef unsigned long	ULONG;$/;"	t
+USHORT	integer.h	/^typedef unsigned short	USHORT;$/;"	t
+WCHAR	integer.h	/^typedef unsigned short	WCHAR;$/;"	t
+WORD	integer.h	/^typedef unsigned short	WORD;$/;"	t
+_CODE_PAGE	ffconf.h	61;"	d
+_DF1E	ff.c	158;"	d	file:
+_DF1E	ff.c	168;"	d	file:
+_DF1E	ff.c	176;"	d	file:
+_DF1E	ff.c	186;"	d	file:
+_DF1S	ff.c	157;"	d	file:
+_DF1S	ff.c	167;"	d	file:
+_DF1S	ff.c	175;"	d	file:
+_DF1S	ff.c	185;"	d	file:
+_DF1S	ff.c	193;"	d	file:
+_DF1S	ff.c	200;"	d	file:
+_DF1S	ff.c	207;"	d	file:
+_DF1S	ff.c	214;"	d	file:
+_DF1S	ff.c	221;"	d	file:
+_DF1S	ff.c	228;"	d	file:
+_DF1S	ff.c	235;"	d	file:
+_DF1S	ff.c	242;"	d	file:
+_DF1S	ff.c	249;"	d	file:
+_DF1S	ff.c	256;"	d	file:
+_DF1S	ff.c	263;"	d	file:
+_DF1S	ff.c	270;"	d	file:
+_DF1S	ff.c	277;"	d	file:
+_DF1S	ff.c	284;"	d	file:
+_DF1S	ff.c	291;"	d	file:
+_DF1S	ff.c	298;"	d	file:
+_DF1S	ff.c	305;"	d	file:
+_DF1S	ff.c	312;"	d	file:
+_DF1S	ff.c	319;"	d	file:
+_DF1S	ff.c	326;"	d	file:
+_DF1S	ff.c	333;"	d	file:
+_DF1S	ff.c	343;"	d	file:
+_DF2E	ff.c	160;"	d	file:
+_DF2S	ff.c	159;"	d	file:
+_DISKIO	diskio.h	77;"	d
+_DS1E	ff.c	162;"	d	file:
+_DS1E	ff.c	170;"	d	file:
+_DS1E	ff.c	178;"	d	file:
+_DS1E	ff.c	188;"	d	file:
+_DS1S	ff.c	161;"	d	file:
+_DS1S	ff.c	169;"	d	file:
+_DS1S	ff.c	177;"	d	file:
+_DS1S	ff.c	187;"	d	file:
+_DS2E	ff.c	164;"	d	file:
+_DS2E	ff.c	172;"	d	file:
+_DS2E	ff.c	180;"	d	file:
+_DS2E	ff.c	190;"	d	file:
+_DS2S	ff.c	163;"	d	file:
+_DS2S	ff.c	171;"	d	file:
+_DS2S	ff.c	179;"	d	file:
+_DS2S	ff.c	189;"	d	file:
+_DS3E	ff.c	182;"	d	file:
+_DS3S	ff.c	181;"	d	file:
+_EXCVT	ff.c	194;"	d	file:
+_EXCVT	ff.c	201;"	d	file:
+_EXCVT	ff.c	208;"	d	file:
+_EXCVT	ff.c	215;"	d	file:
+_EXCVT	ff.c	222;"	d	file:
+_EXCVT	ff.c	229;"	d	file:
+_EXCVT	ff.c	236;"	d	file:
+_EXCVT	ff.c	243;"	d	file:
+_EXCVT	ff.c	250;"	d	file:
+_EXCVT	ff.c	257;"	d	file:
+_EXCVT	ff.c	264;"	d	file:
+_EXCVT	ff.c	271;"	d	file:
+_EXCVT	ff.c	278;"	d	file:
+_EXCVT	ff.c	285;"	d	file:
+_EXCVT	ff.c	292;"	d	file:
+_EXCVT	ff.c	299;"	d	file:
+_EXCVT	ff.c	306;"	d	file:
+_EXCVT	ff.c	313;"	d	file:
+_EXCVT	ff.c	320;"	d	file:
+_EXCVT	ff.c	327;"	d	file:
+_EXCVT	ff.c	334;"	d	file:
+_FATFS	ff.h	18;"	d
+_FFCONF	ffconf.h	10;"	d
+_FS_MINIMIZE	ffconf.h	29;"	d
+_FS_READONLY	ffconf.h	23;"	d
+_FS_REENTRANT	ffconf.h	174;"	d
+_FS_RPATH	ffconf.h	114;"	d
+_FS_SHARE	ffconf.h	186;"	d
+_FS_TIMEOUT	ffconf.h	175;"	d
+_FS_TINY	ffconf.h	17;"	d
+_INTEGER	integer.h	6;"	d
+_LFN_UNICODE	ffconf.h	109;"	d
+_MAX_LFN	ffconf.h	95;"	d
+_MAX_SS	ffconf.h	133;"	d
+_MULTI_PARTITION	ffconf.h	141;"	d
+_READONLY	diskio.h	7;"	d
+_SYNC_t	ffconf.h	176;"	d
+_T	ff.h	60;"	d
+_T	ff.h	67;"	d
+_TEXT	ff.h	61;"	d
+_TEXT	ff.h	68;"	d
+_USE_ERASE	ffconf.h	147;"	d
+_USE_FASTSEEK	ffconf.h	52;"	d
+_USE_FORWARD	ffconf.h	47;"	d
+_USE_IOCTL	diskio.h	8;"	d
+_USE_LFN	ffconf.h	94;"	d
+_USE_MKFS	ffconf.h	43;"	d
+_USE_STRFUNC	ffconf.h	39;"	d
+_VOLUMES	ffconf.h	129;"	d
+_WORD_ACCESS	ffconf.h	157;"	d
+__anon1::pd	ff.h	/^	BYTE pd;	\/* Physical drive# *\/$/;"	m	struct:__anon1	access:public
+__anon1::pt	ff.h	/^	BYTE pt;	\/* Partition # (0-3) *\/$/;"	m	struct:__anon1	access:public
+__anon4::clu	ff.c	/^	DWORD clu;				\/* File ID 2, directory *\/$/;"	m	struct:__anon4	file:	access:public
+__anon4::ctr	ff.c	/^	WORD ctr;				\/* File open counter, 0:none, 0x01..0xFF:read open count, 0x100:write mode *\/$/;"	m	struct:__anon4	file:	access:public
+__anon4::fs	ff.c	/^	FATFS *fs;				\/* File ID 1, volume (NULL:blank entry) *\/$/;"	m	struct:__anon4	file:	access:public
+__anon4::idx	ff.c	/^	WORD idx;				\/* File ID 3, directory index *\/$/;"	m	struct:__anon4	file:	access:public
+assign_drives	diskio.h	/^int assign_drives (int, int);$/;"	p	signature:(int, int)
+buf	ff.h	/^	BYTE	buf[_MAX_SS];	\/* File data read\/write buffer *\/$/;"	m	struct:FIL	access:public
+cdir	ff.h	/^	DWORD	cdir;			\/* Current directory start cluster (0:root) *\/$/;"	m	struct:FATFS	access:public
+check_fs	ff.c	/^BYTE check_fs (	\/* 0:The FAT BR, 1:Valid BR but not an FAT, 2:Not a BR, 3:Disk error *\/$/;"	f	file:	signature:( FATFS *fs, DWORD sect )
+chk_chr	ff.c	/^int chk_chr (const char* str, int chr) {$/;"	f	file:	signature:(const char* str, int chr)
+chk_lock	ff.c	/^FRESULT chk_lock (	\/* Check if the file can be accessed *\/$/;"	f	file:	signature:( DIR* dj, int acc )
+chk_mounted	ff.c	/^FRESULT chk_mounted (	\/* FR_OK(0): successful, !=0: any error occurred *\/$/;"	f	file:	signature:( const TCHAR **path, FATFS **rfs, BYTE chk_wp )
+clear_lock	ff.c	/^void clear_lock (	\/* Clear lock entries of the volume *\/$/;"	f	file:	signature:( FATFS *fs )
+clmt_clust	ff.c	/^DWORD clmt_clust (	\/* <2:Error, >=2:Cluster number *\/$/;"	f	file:	signature:( FIL* fp, DWORD ofs )
+cltbl	ff.h	/^	DWORD*	cltbl;			\/* Pointer to the cluster link map table (null on file open) *\/$/;"	m	struct:FIL	access:public
+clu	ff.c	/^	DWORD clu;				\/* File ID 2, directory *\/$/;"	m	struct:__anon4	file:	access:public
+clust	ff.h	/^	DWORD	clust;			\/* Current cluster *\/$/;"	m	struct:DIR	access:public
+clust	ff.h	/^	DWORD	clust;			\/* Current cluster *\/$/;"	m	struct:FIL	access:public
+clust2sect	ff.c	/^DWORD clust2sect (	\/* !=0: Sector number, 0: Failed - invalid cluster# *\/$/;"	f	signature:( FATFS *fs, DWORD clst )
+cmp_lfn	ff.c	/^int cmp_lfn (			\/* 1:Matched, 0:Not matched *\/$/;"	f	file:	signature:( WCHAR *lfnbuf, BYTE *dir )
+create_chain	ff.c	/^DWORD create_chain (	\/* 0:No free cluster, 1:Internal error, 0xFFFFFFFF:Disk error, >=2:New cluster# *\/$/;"	f	file:	signature:( FATFS *fs, DWORD clst )
+create_name	ff.c	/^FRESULT create_name ($/;"	f	file:	signature:( DIR *dj, const TCHAR **path )
+csize	ff.h	/^	BYTE	csize;			\/* Sectors per cluster (1,2,4...128) *\/$/;"	m	struct:FATFS	access:public
+ctr	ff.c	/^	WORD ctr;				\/* File open counter, 0:none, 0x01..0xFF:read open count, 0x100:write mode *\/$/;"	m	struct:__anon4	file:	access:public
+database	ff.h	/^	DWORD	database;		\/* Data start sector *\/$/;"	m	struct:FATFS	access:public
+dec_lock	ff.c	/^FRESULT dec_lock (	\/* Decrement file open counter *\/$/;"	f	file:	signature:( UINT i )
+dir	ff.h	/^	BYTE*	dir;			\/* Pointer to the current SFN entry in the win[] *\/$/;"	m	struct:DIR	access:public
+dir_find	ff.c	/^FRESULT dir_find ($/;"	f	file:	signature:( DIR *dj )
+dir_next	ff.c	/^FRESULT dir_next (	\/* FR_OK:Succeeded, FR_NO_FILE:End of table, FR_DENIED:EOT and could not stretch *\/$/;"	f	file:	signature:( DIR *dj, int stretch )
+dir_ptr	ff.h	/^	BYTE*	dir_ptr;		\/* Ponter to the directory entry in the window *\/$/;"	m	struct:FIL	access:public
+dir_read	ff.c	/^FRESULT dir_read ($/;"	f	file:	signature:( DIR *dj )
+dir_register	ff.c	/^FRESULT dir_register (	\/* FR_OK:Successful, FR_DENIED:No free entry or too many SFN collision, FR_DISK_ERR:Disk error *\/$/;"	f	file:	signature:( DIR *dj )
+dir_remove	ff.c	/^FRESULT dir_remove (	\/* FR_OK: Successful, FR_DISK_ERR: A disk error *\/$/;"	f	file:	signature:( DIR *dj )
+dir_sdi	ff.c	/^FRESULT dir_sdi ($/;"	f	file:	signature:( DIR *dj, WORD idx )
+dir_sect	ff.h	/^	DWORD	dir_sect;		\/* Sector containing the directory entry *\/$/;"	m	struct:FIL	access:public
+dirbase	ff.h	/^	DWORD	dirbase;		\/* Root directory start sector (FAT32:Cluster#) *\/$/;"	m	struct:FATFS	access:public
+disk_initialize	diskio.h	/^DSTATUS disk_initialize (BYTE);$/;"	p	signature:(BYTE)
+disk_ioctl	diskio.h	/^DRESULT disk_ioctl (BYTE, BYTE, void*);$/;"	p	signature:(BYTE, BYTE, void*)
+disk_read	diskio.h	/^DRESULT disk_read (BYTE, BYTE*, DWORD, BYTE);$/;"	p	signature:(BYTE, BYTE*, DWORD, BYTE)
+disk_status	diskio.h	/^DSTATUS disk_status (BYTE);$/;"	p	signature:(BYTE)
+disk_write	diskio.h	/^DRESULT disk_write (BYTE, const BYTE*, DWORD, BYTE);$/;"	p	signature:(BYTE, const BYTE*, DWORD, BYTE)
+drv	ff.h	/^	BYTE	drv;			\/* Physical drive number *\/$/;"	m	struct:FATFS	access:public
+dsect	ff.h	/^	DWORD	dsect;			\/* Current data sector *\/$/;"	m	struct:FIL	access:public
+enq_lock	ff.c	/^int enq_lock (	\/* Check if an entry is available for a new file *\/$/;"	f	file:	signature:( FATFS* fs )
+f_chdir	ff.c	/^FRESULT f_chdir ($/;"	f	signature:( const TCHAR *path )
+f_chdir	ff.h	/^FRESULT f_chdir (const TCHAR*);						\/* Change current directory *\/$/;"	p	signature:(const TCHAR*)
+f_chdrive	ff.c	/^FRESULT f_chdrive ($/;"	f	signature:( BYTE drv )
+f_chdrive	ff.h	/^FRESULT f_chdrive (BYTE);							\/* Change current drive *\/$/;"	p	signature:(BYTE)
+f_chmod	ff.c	/^FRESULT f_chmod ($/;"	f	signature:( const TCHAR *path, BYTE value, BYTE mask )
+f_chmod	ff.h	/^FRESULT f_chmod (const TCHAR*, BYTE, BYTE);			\/* Change attriburte of the file\/dir *\/$/;"	p	signature:(const TCHAR*, BYTE, BYTE)
+f_close	ff.c	/^FRESULT f_close ($/;"	f	signature:( FIL *fp )
+f_close	ff.h	/^FRESULT f_close (FIL*);								\/* Close an open file object *\/$/;"	p	signature:(FIL*)
+f_eof	ff.h	235;"	d
+f_error	ff.h	236;"	d
+f_forward	ff.c	/^FRESULT f_forward ($/;"	f	signature:( FIL *fp, UINT (*func)(const BYTE*,UINT), UINT btr, UINT *bf )
+f_forward	ff.h	/^FRESULT f_forward (FIL*, UINT(*)(const BYTE*,UINT), UINT, UINT*);	\/* Forward data to the stream *\/$/;"	p	signature:(FIL*, UINT(*)(const BYTE*,UINT), UINT, UINT*)
+f_getcwd	ff.c	/^FRESULT f_getcwd ($/;"	f	signature:( TCHAR *path, UINT sz_path )
+f_getcwd	ff.h	/^FRESULT f_getcwd (TCHAR*, UINT);					\/* Get current directory *\/$/;"	p	signature:(TCHAR*, UINT)
+f_getfree	ff.c	/^FRESULT f_getfree ($/;"	f	signature:( const TCHAR *path, DWORD *nclst, FATFS **fatfs )
+f_getfree	ff.h	/^FRESULT f_getfree (const TCHAR*, DWORD*, FATFS**);	\/* Get number of free clusters on the drive *\/$/;"	p	signature:(const TCHAR*, DWORD*, FATFS**)
+f_gets	ff.c	/^TCHAR* f_gets ($/;"	f	signature:( TCHAR* buff, int len, FIL* fil )
+f_gets	ff.h	/^TCHAR* f_gets (TCHAR*, int, FIL*);					\/* Get a string from the file *\/$/;"	p	signature:(TCHAR*, int, FIL*)
+f_lseek	ff.c	/^FRESULT f_lseek ($/;"	f	signature:( FIL *fp, DWORD ofs )
+f_lseek	ff.h	/^FRESULT f_lseek (FIL*, DWORD);						\/* Move file pointer of a file object *\/$/;"	p	signature:(FIL*, DWORD)
+f_mkdir	ff.c	/^FRESULT f_mkdir ($/;"	f	signature:( const TCHAR *path )
+f_mkdir	ff.h	/^FRESULT	f_mkdir (const TCHAR*);						\/* Create a new directory *\/$/;"	p	signature:(const TCHAR*)
+f_mkfs	ff.c	/^FRESULT f_mkfs ($/;"	f	signature:( BYTE drv, BYTE sfd, UINT au )
+f_mkfs	ff.h	/^FRESULT f_mkfs (BYTE, BYTE, UINT);					\/* Create a file system on the drive *\/$/;"	p	signature:(BYTE, BYTE, UINT)
+f_mount	ff.c	/^FRESULT f_mount ($/;"	f	signature:( BYTE vol, FATFS *fs )
+f_mount	ff.h	/^FRESULT f_mount (BYTE, FATFS*);						\/* Mount\/Unmount a logical drive *\/$/;"	p	signature:(BYTE, FATFS*)
+f_open	ff.c	/^FRESULT f_open ($/;"	f	signature:( FIL *fp, const TCHAR *path, BYTE mode )
+f_open	ff.h	/^FRESULT f_open (FIL*, const TCHAR*, BYTE);			\/* Open or create a file *\/$/;"	p	signature:(FIL*, const TCHAR*, BYTE)
+f_opendir	ff.c	/^FRESULT f_opendir ($/;"	f	signature:( DIR *dj, const TCHAR *path )
+f_opendir	ff.h	/^FRESULT f_opendir (DIR*, const TCHAR*);				\/* Open an existing directory *\/$/;"	p	signature:(DIR*, const TCHAR*)
+f_printf	ff.c	/^int f_printf ($/;"	f	signature:( FIL* fil, const TCHAR* str, ... )
+f_printf	ff.h	/^int f_printf (FIL*, const TCHAR*, ...);				\/* Put a formatted string to the file *\/$/;"	p	signature:(FIL*, const TCHAR*, ...)
+f_putc	ff.c	/^int f_putc ($/;"	f	signature:( TCHAR c, FIL* fil )
+f_putc	ff.h	/^int f_putc (TCHAR, FIL*);							\/* Put a character to the file *\/$/;"	p	signature:(TCHAR, FIL*)
+f_puts	ff.c	/^int f_puts ($/;"	f	signature:( const TCHAR* str, FIL* fil )
+f_puts	ff.h	/^int f_puts (const TCHAR*, FIL*);					\/* Put a string to the file *\/$/;"	p	signature:(const TCHAR*, FIL*)
+f_read	ff.c	/^FRESULT f_read ($/;"	f	signature:( FIL *fp, void *buff, UINT btr, UINT *br )
+f_read	ff.h	/^FRESULT f_read (FIL*, void*, UINT, UINT*);			\/* Read data from a file *\/$/;"	p	signature:(FIL*, void*, UINT, UINT*)
+f_readdir	ff.c	/^FRESULT f_readdir ($/;"	f	signature:( DIR *dj, FILINFO *fno )
+f_readdir	ff.h	/^FRESULT f_readdir (DIR*, FILINFO*);					\/* Read a directory item *\/$/;"	p	signature:(DIR*, FILINFO*)
+f_rename	ff.c	/^FRESULT f_rename ($/;"	f	signature:( const TCHAR *path_old, const TCHAR *path_new )
+f_rename	ff.h	/^FRESULT f_rename (const TCHAR*, const TCHAR*);		\/* Rename\/Move a file or directory *\/$/;"	p	signature:(const TCHAR*, const TCHAR*)
+f_size	ff.h	238;"	d
+f_stat	ff.c	/^FRESULT f_stat ($/;"	f	signature:( const TCHAR *path, FILINFO *fno )
+f_stat	ff.h	/^FRESULT f_stat (const TCHAR*, FILINFO*);			\/* Get file status *\/$/;"	p	signature:(const TCHAR*, FILINFO*)
+f_sync	ff.c	/^FRESULT f_sync ($/;"	f	signature:( FIL *fp )
+f_sync	ff.h	/^FRESULT f_sync (FIL*);								\/* Flush cached data of a writing file *\/$/;"	p	signature:(FIL*)
+f_tell	ff.h	237;"	d
+f_truncate	ff.c	/^FRESULT f_truncate ($/;"	f	signature:( FIL *fp )
+f_truncate	ff.h	/^FRESULT f_truncate (FIL*);							\/* Truncate file *\/$/;"	p	signature:(FIL*)
+f_unlink	ff.c	/^FRESULT f_unlink ($/;"	f	signature:( const TCHAR *path )
+f_unlink	ff.h	/^FRESULT f_unlink (const TCHAR*);					\/* Delete an existing file or directory *\/$/;"	p	signature:(const TCHAR*)
+f_utime	ff.c	/^FRESULT f_utime ($/;"	f	signature:( const TCHAR *path, const FILINFO *fno )
+f_utime	ff.h	/^FRESULT f_utime (const TCHAR*, const FILINFO*);		\/* Change timestamp of the file\/dir *\/$/;"	p	signature:(const TCHAR*, const FILINFO*)
+f_write	ff.c	/^FRESULT f_write ($/;"	f	signature:( FIL *fp, const void *buff, UINT btw, UINT *bw )
+f_write	ff.h	/^FRESULT f_write (FIL*, const void*, UINT, UINT*);	\/* Write data to a file *\/$/;"	p	signature:(FIL*, const void*, UINT, UINT*)
+fatbase	ff.h	/^	DWORD	fatbase;		\/* FAT start sector *\/$/;"	m	struct:FATFS	access:public
+fattrib	ff.h	/^	BYTE	fattrib;		\/* Attribute *\/$/;"	m	struct:FILINFO	access:public
+fdate	ff.h	/^	WORD	fdate;			\/* Last modified date *\/$/;"	m	struct:FILINFO	access:public
+ff_convert	ff.h	/^WCHAR ff_convert (WCHAR, UINT);		\/* OEM-Unicode bidirectional conversion *\/$/;"	p	signature:(WCHAR, UINT)
+ff_cre_syncobj	ff.h	/^int ff_cre_syncobj (BYTE, _SYNC_t*);\/* Create a sync object *\/$/;"	p	signature:(BYTE, _SYNC_t*)
+ff_del_syncobj	ff.h	/^int ff_del_syncobj (_SYNC_t);		\/* Delete a sync object *\/$/;"	p	signature:(_SYNC_t)
+ff_memalloc	ff.h	/^void* ff_memalloc (UINT);			\/* Allocate memory block *\/$/;"	p	signature:(UINT)
+ff_memfree	ff.h	/^void ff_memfree (void*);			\/* Free memory block *\/$/;"	p	signature:(void*)
+ff_rel_grant	ff.h	/^void ff_rel_grant (_SYNC_t);		\/* Unlock sync object *\/$/;"	p	signature:(_SYNC_t)
+ff_req_grant	ff.h	/^int ff_req_grant (_SYNC_t);			\/* Lock sync object *\/$/;"	p	signature:(_SYNC_t)
+ff_wtoupper	ff.h	/^WCHAR ff_wtoupper (WCHAR);			\/* Unicode upper-case conversion *\/$/;"	p	signature:(WCHAR)
+fit_lfn	ff.c	/^void fit_lfn ($/;"	f	file:	signature:( const WCHAR *lfnbuf, BYTE *dir, BYTE ord, BYTE sum )
+flag	ff.h	/^	BYTE	flag;			\/* File status flags *\/$/;"	m	struct:FIL	access:public
+fn	ff.h	/^	BYTE*	fn;				\/* Pointer to the SFN (in\/out) {file[8],ext[3],status[1]} *\/$/;"	m	struct:DIR	access:public
+fname	ff.h	/^	TCHAR	fname[13];		\/* Short file name (8.3 format) *\/$/;"	m	struct:FILINFO	access:public
+follow_path	ff.c	/^FRESULT follow_path (	\/* FR_OK(0): successful, !=0: error code *\/$/;"	f	file:	signature:( DIR *dj, const TCHAR *path )
+fptr	ff.h	/^	DWORD	fptr;			\/* File read\/write pointer (0 on file open) *\/$/;"	m	struct:FIL	access:public
+free_clust	ff.h	/^	DWORD	free_clust;		\/* Number of free clusters *\/$/;"	m	struct:FATFS	access:public
+fs	ff.c	/^	FATFS *fs;				\/* File ID 1, volume (NULL:blank entry) *\/$/;"	m	struct:__anon4	file:	access:public
+fs	ff.h	/^	FATFS*	fs;				\/* Pointer to the owner file system object *\/$/;"	m	struct:DIR	access:public
+fs	ff.h	/^	FATFS*	fs;				\/* Pointer to the owner file system object *\/$/;"	m	struct:FIL	access:public
+fs_type	ff.h	/^	BYTE	fs_type;		\/* FAT sub-type (0:Not mounted) *\/$/;"	m	struct:FATFS	access:public
+fsi_flag	ff.h	/^	BYTE	fsi_flag;		\/* fsinfo dirty flag (1:must be written back) *\/$/;"	m	struct:FATFS	access:public
+fsi_sector	ff.h	/^	DWORD	fsi_sector;		\/* fsinfo sector (FAT32) *\/$/;"	m	struct:FATFS	access:public
+fsize	ff.h	/^	DWORD	fsize;			\/* File size *\/$/;"	m	struct:FIL	access:public
+fsize	ff.h	/^	DWORD	fsize;			\/* File size *\/$/;"	m	struct:FILINFO	access:public
+fsize	ff.h	/^	DWORD	fsize;			\/* Sectors per FAT *\/$/;"	m	struct:FATFS	access:public
+ftime	ff.h	/^	WORD	ftime;			\/* Last modified time *\/$/;"	m	struct:FILINFO	access:public
+gen_numname	ff.c	/^void gen_numname ($/;"	f	signature:( BYTE *dst, const BYTE *src, const WCHAR *lfn, WORD seq )
+get_fat	ff.c	/^DWORD get_fat (	\/* 0xFFFFFFFF:Disk error, 1:Internal error, Else:Cluster status *\/$/;"	f	signature:( FATFS *fs, DWORD clst )
+get_fattime	diskio.h	/^DWORD get_fattime (void);$/;"	p	signature:(void)
+get_fattime	ff.h	/^DWORD get_fattime (void);$/;"	p	signature:(void)
+get_fileinfo	ff.c	/^void get_fileinfo (		\/* No return code *\/$/;"	f	file:	signature:( DIR *dj, FILINFO *fno )
+id	ff.h	/^	WORD	id;				\/* File system mount ID *\/$/;"	m	struct:FATFS	access:public
+id	ff.h	/^	WORD	id;				\/* Owner file system mount ID *\/$/;"	m	struct:DIR	access:public
+id	ff.h	/^	WORD	id;				\/* Owner file system mount ID *\/$/;"	m	struct:FIL	access:public
+idx	ff.c	/^	WORD idx;				\/* File ID 3, directory index *\/$/;"	m	struct:__anon4	file:	access:public
+inc_lock	ff.c	/^UINT inc_lock (	\/* Increment file open counter and returns its index (0:int error) *\/$/;"	f	file:	signature:( DIR* dj, int acc )
+index	ff.h	/^	WORD	index;			\/* Current read\/write index number *\/$/;"	m	struct:DIR	access:public
+last_clust	ff.h	/^	DWORD	last_clust;		\/* Last allocated cluster *\/$/;"	m	struct:FATFS	access:public
+lfn	ff.h	/^	WCHAR*	lfn;			\/* Pointer to the LFN working buffer *\/$/;"	m	struct:DIR	access:public
+lfn_idx	ff.h	/^	WORD	lfn_idx;		\/* Last matched LFN index number (0xFFFF:No LFN) *\/$/;"	m	struct:DIR	access:public
+lfname	ff.h	/^	TCHAR*	lfname;			\/* Pointer to the LFN buffer *\/$/;"	m	struct:FILINFO	access:public
+lfsize	ff.h	/^	UINT 	lfsize;			\/* Size of LFN buffer in TCHAR *\/$/;"	m	struct:FILINFO	access:public
+lock_fs	ff.c	/^int lock_fs ($/;"	f	file:	signature:( FATFS *fs )
+lockid	ff.h	/^	UINT	lockid;			\/* File lock ID (index of file semaphore table) *\/$/;"	m	struct:FIL	access:public
+mem_cmp	ff.c	/^int mem_cmp (const void* dst, const void* src, UINT cnt) {$/;"	f	file:	signature:(const void* dst, const void* src, UINT cnt)
+mem_cpy	ff.c	/^void mem_cpy (void* dst, const void* src, UINT cnt) {$/;"	f	file:	signature:(void* dst, const void* src, UINT cnt)
+mem_set	ff.c	/^void mem_set (void* dst, int val, UINT cnt) {$/;"	f	file:	signature:(void* dst, int val, UINT cnt)
+move_window	ff.c	/^FRESULT move_window ($/;"	f	file:	signature:( FATFS *fs, DWORD sector )
+n_fatent	ff.h	/^	DWORD	n_fatent;		\/* Number of FAT entries (= number of clusters + 2) *\/$/;"	m	struct:FATFS	access:public
+n_fats	ff.h	/^	BYTE	n_fats;			\/* Number of FAT copies (1,2) *\/$/;"	m	struct:FATFS	access:public
+n_rootdir	ff.h	/^	WORD	n_rootdir;		\/* Number of root directory entries (FAT12\/16) *\/$/;"	m	struct:FATFS	access:public
+obj-y	Makefile	/^obj-y := ff.o$/;"	m
+pad1	ff.h	/^	BYTE	pad1;$/;"	m	struct:FIL	access:public
+pd	ff.h	/^	BYTE pd;	\/* Physical drive# *\/$/;"	m	struct:__anon1	access:public
+pick_lfn	ff.c	/^int pick_lfn (			\/* 1:Succeeded, 0:Buffer overflow *\/$/;"	f	file:	signature:( WCHAR *lfnbuf, BYTE *dir )
+pt	ff.h	/^	BYTE pt;	\/* Partition # (0-3) *\/$/;"	m	struct:__anon1	access:public
+put_fat	ff.c	/^FRESULT put_fat ($/;"	f	signature:( FATFS *fs, DWORD clst, DWORD val )
+remove_chain	ff.c	/^FRESULT remove_chain ($/;"	f	file:	signature:( FATFS *fs, DWORD clst )
+sclust	ff.h	/^	DWORD	sclust;			\/* File start cluster (0 when fsize==0) *\/$/;"	m	struct:FIL	access:public
+sclust	ff.h	/^	DWORD	sclust;			\/* Table start cluster (0:Root dir) *\/$/;"	m	struct:DIR	access:public
+sect	ff.h	/^	DWORD	sect;			\/* Current sector *\/$/;"	m	struct:DIR	access:public
+sobj	ff.h	/^	_SYNC_t	sobj;			\/* Identifier of sync object *\/$/;"	m	struct:FATFS	access:public
+ssize	ff.h	/^	WORD	ssize;			\/* Bytes per sector (512,1024,2048,4096) *\/$/;"	m	struct:FATFS	access:public
+sum_sfn	ff.c	/^BYTE sum_sfn ($/;"	f	file:	signature:( const BYTE *dir )
+sync	ff.c	/^FRESULT sync (	\/* FR_OK: successful, FR_DISK_ERR: failed *\/$/;"	f	file:	signature:( FATFS *fs )
+unlock_fs	ff.c	/^void unlock_fs ($/;"	f	file:	signature:( FATFS *fs, FRESULT res )
+validate	ff.c	/^FRESULT validate (	\/* FR_OK(0): The object is valid, !=0: Invalid *\/$/;"	f	file:	signature:( FATFS *fs, WORD id )
+wflag	ff.h	/^	BYTE	wflag;			\/* win[] dirty flag (1:must be written back) *\/$/;"	m	struct:FATFS	access:public
+win	ff.h	/^	BYTE	win[_MAX_SS];	\/* Disk access window for Directory, FAT (and Data on tiny cfg) *\/$/;"	m	struct:FATFS	access:public
+winsect	ff.h	/^	DWORD	winsect;		\/* Current sector appearing in the win[] *\/$/;"	m	struct:FATFS	access:public

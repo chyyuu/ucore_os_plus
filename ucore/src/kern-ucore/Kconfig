@@ -1,0 +1,9 @@
+menu Misc
+
+config ADDITIONAL_CFLAGS
+  string "Additional CFLAGS"
+
+config ADDITIONAL_LDFLAGS
+  string "Additional LDFLAGS"
+
+endmenu

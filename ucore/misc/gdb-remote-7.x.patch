@@ -1,0 +1,38 @@
+--- remote-o.c	2010-03-07 11:39:54 -0300
++++ remote.c	2010-04-29 01:13:44 -0300
+@@ -5393,8 +5392,25 @@
+   buf_len = strlen (rs->buf);
+ 
+   /* Further sanity checks, with knowledge of the architecture.  */
+-  if (buf_len > 2 * rsa->sizeof_g_packet)
+-    error (_("Remote 'g' packet reply is too long: %s"), rs->buf);
++  //if (buf_len > 2 * rsa->sizeof_g_packet)
++  //  error (_("Remote 'g' packet reply is too long: %s"), rs->buf);
++  // Parche implementado para solucionar el problem de reply too long
++  // by Matias Vara 
++  if (buf_len > 2 * rsa->sizeof_g_packet) {
++
++       rsa->sizeof_g_packet = buf_len ;
++
++      for (i = 0; i < gdbarch_num_regs (gdbarch); i++)
++	{
++	  if (rsa->regs[i].pnum == -1)
++	    continue;
++
++	  if (rsa->regs[i].offset >= rsa->sizeof_g_packet)
++	    rsa->regs[i].in_g_packet = 0;
++	  else
++	    rsa->regs[i].in_g_packet = 1;
++	}
++  }
+ 
+   /* Save the size of the packet sent to us by the target.  It is used
+      as a heuristic when determining the max size of packets that the
+@@ -5406,6 +5422,7 @@
+      update our records.  A 'g' reply that doesn't include a register's
+      value implies either that the register is not available, or that
+      the 'p' packet must be used.  */
++  // Tenemos un serio problema aqui al entrar en real mode me cambia el tamaño de los registros 
+   if (buf_len < 2 * rsa->sizeof_g_packet)
+     {
+       rsa->sizeof_g_packet = buf_len / 2;
