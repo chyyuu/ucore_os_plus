@@ -775,7 +775,7 @@ do_pgfault(struct mm_struct *mm, machine_word_t error_code, uintptr_t addr) {
     bool cow = ((vma->vm_flags & (VM_SHARE | VM_WRITE)) == VM_WRITE), may_copy = 1;
 
 #if 1
-    if ( !((error_code & 2) && !ptep_u_write(ptep) && cow))
+    if (!(!ptep_present(ptep) || ((error_code & 2) && !ptep_u_write(ptep) && cow)))
     {
       //assert(PADDR(mm->pgdir) == rcr3());
       kprintf("%p %p %d %d %x\n", *ptep, addr, error_code, cow, vma->vm_flags);
