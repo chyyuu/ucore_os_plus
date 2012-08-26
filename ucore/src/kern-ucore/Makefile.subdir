@@ -14,7 +14,7 @@ endif
 ifneq ($(obj-y),)
 $(BUILTIN_O): $(OBJ_Y)
 	@echo LD $@
-	$(Q)$(TARGET_LD) -r -o $@ $(OBJ_Y)
+	$(Q)$(TARGET_LD) $(TARGET_LDFLAGS) -r -o $@ $(OBJ_Y)
 
 -include $(DEPS)
 

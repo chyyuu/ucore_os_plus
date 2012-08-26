@@ -11,6 +11,7 @@ include arch/$(ARCH)/include.mk
 obj-y += $(addprefix arch/$(ARCH)/, $(ARCH_OBJS))
 obj-initobj += $(addprefix arch/$(ARCH)/, $(ARCH_INITCODE_OBJ))
 TARGET_CFLAGS += $(ARCH_CFLAGS)
+TARGET_LDFLAGS += $(ARCH_LDFLAGS)
 
 all: $(obj-initobj) ulib.a
 

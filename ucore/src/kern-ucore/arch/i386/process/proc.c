@@ -70,6 +70,11 @@ kernel_thread(int (*fn)(void *), void *arg, uint32_t clone_flags) {
     return do_fork(clone_flags | CLONE_VM, 0, &tf);
 }
 
+int
+ucore_kernel_thread(int (*fn)(void *), void *arg, uint32_t clone_flags) {
+	kernel_thread(fn, arg, clone_flags);
+}
+
 void
 de_thread_arch_hook (struct proc_struct *proc) {}
 
@@ -91,7 +96,8 @@ copy_thread(uint32_t clone_flags, struct proc_struct *proc,
 }
 
 int
-init_new_context (struct proc_struct *proc, struct elfhdr *elf, int argc, char** kargv) {
+init_new_context (struct proc_struct *proc, struct elfhdr *elf,
+		  int argc, char** kargv, int envc, char **kenvp) {
 	uintptr_t stacktop = USTACKTOP - argc * PGSIZE;
     char **uargv = (char **)(stacktop - argc * sizeof(char *));
     int i;
@@ -121,15 +127,12 @@ do_execve_arch_hook (int argc, char** kargv) {
 
 // kernel_execve - do SYS_exec syscall to exec a user program called by user_main kernel_thread
 int
-kernel_execve(const char *name, const char **argv) {
-    int argc = 0, ret;
-	while (argv[argc] != NULL) {
-		argc ++;
-	}
+kernel_execve(const char *name, const char **argv, const char** kenvp) {
+    int ret;
     asm volatile (
         "int %1;"
         : "=a" (ret)
-        : "i" (T_SYSCALL), "0" (SYS_exec), "d" (name), "c" (argc), "b" (argv)
+        : "i" (T_SYSCALL), "0" (SYS_exec), "d" (name), "c" (argv), "b" (kenvp)
         : "memory");
     return ret;
 }

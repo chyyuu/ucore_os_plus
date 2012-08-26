@@ -16,6 +16,8 @@ USER_APP_BINS:= $(addprefix $(BIN)/, $(USER_APPLIST))
 
 include $(USER_LIB_SRCDIR)/arch/$(ARCH)/include.mk
 INITCODE_OBJ := $(USER_LIB_SRCDIR)/arch/$(ARCH)/$(ARCH_INITCODE_OBJ)
+TARGET_CFLAGS += $(ARCH_CFLAGS)
+TARGET_LDFLAGS += $(ARCH_LDFLAGS)
 
 all:  $(BIN) $(USER_LIB) $(USER_APP_BINS)
 
@@ -23,7 +25,7 @@ all:  $(BIN) $(USER_LIB) $(USER_APP_BINS)
 define make-user-app
 $(BIN)/$1: $(addsuffix .o,$1) $(INITCODE_OBJ) $(USER_LIB)
 	@echo LINK $$@
-	$(TARGET_LD)  -static -T $(USER_LIB_SRCDIR)/arch/$(ARCH)/user.ld  $(addsuffix .o,$1) $(INITCODE_OBJ) $(USER_LIB) -o $$@
+	$(TARGET_LD) $(TARGET_LDFLAGS) -static -T $(USER_LIB_SRCDIR)/arch/$(ARCH)/user.ld  $(addsuffix .o,$1) $(INITCODE_OBJ) $(USER_LIB) -o $$@
 endef
 
 $(foreach bdir,$(USER_APPLIST),$(eval $(call make-user-app,$(bdir))))

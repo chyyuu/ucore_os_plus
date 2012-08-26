@@ -231,6 +231,11 @@ sys_mkfifo(const char *name, uint32_t open_flags) {
     return syscall(SYS_mkfifo, name, open_flags);
 }
 
+int
+sys_ioctl(int d, int request, unsigned long data) {
+    return syscall(SYS_ioctl, d, request, data);
+}
+
 #else
 #warning ARM use different syscall method
 

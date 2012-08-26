@@ -1,0 +1,37 @@
+ifneq ($(MAKECMDGOALS),clean)
+include $(KCONFIG_AUTOCONFIG)
+endif
+
+BLTREE = $(TOPDIR)/src/bootloader
+
+KERNEL_IMG := $(OBJPATH_ROOT)/kernel.img
+KERNEL_ELF := $(KTREE_OBJ_ROOT)/kernel-$(ARCH).elf
+BOOTSECT   := $(OBJPATH_ROOT)/bootloader/bootsect
+LINK_FILE_IN	:= $(KTREE)/arch/${ARCH}/ucore.ld.in
+LINK_FILE     := $(KTREE_OBJ_ROOT)/arch/$(ARCH)/ucore.ld
+SEDFLAGS	= s/TEXT_START/$(UCONFIG_KERNEL_BASE)/
+
+$(KERNEL_IMG): $(BOOTSECT) $(KERNEL_ELF)
+	@echo Making $@
+	$(Q)dd if=/dev/zero of=$@ count=10000
+	$(Q)dd if=$(BOOTSECT) of=$@ conv=notrunc
+	$(Q)dd if=$(KERNEL_ELF) of=$@ seek=1 conv=notrunc
+
+$(KERNEL_ELF): $(LINK_FILE) $(KERNEL_BUILTIN) $(RAMDISK_OBJ)
+	@echo Linking uCore
+	$(Q)$(TARGET_LD) $(TARGET_LDFLAGS) -T $(LINK_FILE) $(KERNEL_BUILTIN) $(RAMDISK_OBJ) -o $@
+
+$(LINK_FILE): $(LINK_FILE_IN) $(KCONFIG_AUTOCONFIG)
+	@echo "creating linker script"
+	@sed  "$(SEDFLAGS)" < $< > $@
+
+$(BOOTSECT): $(OBJPATH_ROOT)
+	$(Q)$(MAKE) -C $(BLTREE) -f $(BLTREE)/Makefile all
+
+.PHONY: all clean FORCE
+all: $(KERNEL_IMG)
+
+FORCE:
+
+clean:
+	rm -f $(KERNEL_ELF) $(LINK_FILE)

@@ -238,3 +238,7 @@ trap(struct trapframe *tf) {
     }
 }
 
+int ucore_in_interrupt()
+{
+	return 0;
+}

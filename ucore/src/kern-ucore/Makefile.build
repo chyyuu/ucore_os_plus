@@ -9,6 +9,8 @@ TARGET_CFLAGS += -fno-builtin -nostdlib  -nostdinc
 TARGET_CFLAGS += -D__KERNEL__ -D__KERN__ 
 TARGET_CFLAGS += $(shell echo $(UCONFIG_ADDITIONAL_CFLAGS))
 
+TARGET_LDFLAGS += $(shell echo $(UCONFIG_ADDITIONAL_LDFLAGS))
+
 KTREE_OBJ_ROOT := $(OBJPATH_ROOT)/kernel
 
 export KTREE_OBJ_ROOT
@@ -30,10 +32,10 @@ include $(KTREE)/arch/$(ARCH)/include.mk
 endif
 TARGET_CFLAGS += $(addprefix -I$(KTREE)/arch/$(ARCH)/, $(ARCH_INLUCDES))
 TARGET_CFLAGS += $(ARCH_CFLAGS)
-
-TARGET_CFLAGS += $(shell echo $(UCONFIG_ADDITIONAL_CFLAGS))
+TARGET_LDFLAGS += $(ARCH_LDFLAGS)
 
 export TARGET_CFLAGS
+export TARGET_LDFLAGS
 
 KERNEL_BUILTIN_O := $(KTREE_OBJ_ROOT)/kernel-builtin.o
 
@@ -42,7 +44,7 @@ all: $(KTREE_OBJ_ROOT) $(KERNEL_BUILTIN_O)
 
 $(KERNEL_BUILTIN_O): subdir
 	@echo Building uCore Kernel for $(UCONFIG_ARCH)
-	$(Q)$(TARGET_LD) -r -o $@ $(shell xargs < .builtinlist.tmp)
+	$(Q)$(TARGET_LD) $(TARGET_LDFLAGS) -r -o $@ $(shell xargs < .builtinlist.tmp)
 
 $(KTREE_OBJ_ROOT):
 	mkdir -p $@
