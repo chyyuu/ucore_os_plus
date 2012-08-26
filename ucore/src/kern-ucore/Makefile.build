@@ -1,5 +1,5 @@
 ifneq ($(MAKECMDGOALS),clean)
-include $(TOPDIR)/$(KCONFIG_AUTOCONFIG)
+include $(KCONFIG_AUTOCONFIG)
 endif
 
 PHONY+=all subdir clean
@@ -23,7 +23,7 @@ endif
 
 TARGET_CFLAGS += $(addprefix -I$(KTREE)/, $(KERN_INCLUDES))
 
-TARGET_CFLAGS += -include $(TOPDIR)/$(KCONFIG_AUTOHEADER)
+TARGET_CFLAGS += -include $(KCONFIG_AUTOHEADER)
 
 ifneq ($(MAKECMDGOALS),clean)
 include $(KTREE)/arch/$(ARCH)/include.mk
@@ -52,7 +52,7 @@ clean:
 	$(Q)rm -rf $(KTREE_OBJ_ROOT)
 	$(Q)$(MAKE)  -C $(KTREE)/arch/$(ARCH) -f $(KTREE)/arch/$(ARCH)/Makefile.image clean
 
-subdir: $(KTREE_OBJ_ROOT) $(TOPDIR)/$(KCONFIG_AUTOHEADER) $(TOPDIR)/$(KCONFIG_AUTOCONFIG) FORCE
+subdir: $(KTREE_OBJ_ROOT) $(KCONFIG_AUTOHEADER) $(KCONFIG_AUTOCONFIG) FORCE
 	$(Q)rm -f .builtinlist.tmp
 	$(Q)touch .builtinlist.tmp
 	$(Q)$(MAKE) -f Makefile.subdir OBJPATH=$(KTREE_OBJ_ROOT) LOCALPATH=$(KTREE) BUILTINLIST=$(KTREE)/.builtinlist.tmp

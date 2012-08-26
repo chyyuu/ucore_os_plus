@@ -11,4 +11,4 @@ CFLAGS := -Wall -O2 -D_FILE_OFFSET_BITS=64
 all: mksfs
 
 mksfs: $(OBJS)
-	$(CC) -o $@ $+
+	$(CC) -o $(OBJPATH_ROOT)/$@ $+

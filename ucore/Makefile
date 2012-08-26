@@ -8,10 +8,16 @@ Q :=@
 
 
 KTREE = $(TOPDIR)/src/kern-ucore
+ifndef O
 OBJPATH_ROOT := $(TOPDIR)/obj
+else
+OBJPATH_ROOT := $(abspath $(O))
+endif
 export TOPDIR KTREE OBJPATH_ROOT
 
 CONFIG = package/config
+CONFIG_SCRIPT = $(OBJPATH_ROOT)/.config
+export KCONFIG_CONFIG=$(CONFIG_SCRIPT)
 
 CONFIG_SHELL:=$(shell if [ -x "$$BASH" ]; then echo $$BASH; \
 	else if [ -x /bin/bash ]; then echo /bin/bash; \
@@ -23,9 +29,9 @@ MAKEFLAGS += -rR --no-print-directory
 ARCH ?= arm
 CROSS_COMPILE ?= arm-linux-
 
-CONFIG_DIR := config
-KCONFIG_AUTOCONFIG=config/auto.conf
-KCONFIG_AUTOHEADER=config/autoconf.h
+CONFIG_DIR := $(OBJPATH_ROOT)/config
+KCONFIG_AUTOCONFIG=$(CONFIG_DIR)/auto.conf
+KCONFIG_AUTOHEADER=$(CONFIG_DIR)/autoconf.h
 CONFIG_CONFIG_IN = $(KTREE)/arch/$(ARCH)/Kconfig
 CONFIG_DEFCONFIG = .defconfig
 
@@ -82,16 +88,15 @@ all: kernel
 
 $(CONFIG)/mconf:
 	$(MAKE) CC="$(HOSTCC)" -C $(CONFIG) conf mconf
-	-@if [ ! -f .config ]; then \
-		cp $(CONFIG_DEFCONFIG) .config; \
+	-@if [ ! -f $(CONFIG_SCRIPT) ]; then \
+		cp $(CONFIG_DEFCONFIG) $(CONFIG_SCRIPT); \
 	fi
 
 menuconfig: $(CONFIG_DIR) $(CONFIG)/mconf
 	rm -f $(KCONFIG_AUTOCONFIG) $(KCONFIG_AUTOHEADER)
 	@if ! $(CONFIG)/mconf $(CONFIG_CONFIG_IN); then \
-		test -f .config.cmd || rm -f .config; \
+		test -f .config.cmd || rm -f $(CONFIG_SCRIPT); \
 	fi
-
 
 PHONY += kernel userlib userapp
 
@@ -110,36 +115,39 @@ userapp: $(OBJPATH_ROOT) $(KCONFIG_AUTOCONFIG)
 
 ifdef UCONFIG_HAVE_SFS
 TOOLS_MKSFS_DIR := $(TOPDIR)/src/ht-mksfs
-TOOLS_MKSFS := $(TOOLS_MKSFS_DIR)/mksfs
+TOOLS_MKSFS := $(OBJPATH_ROOT)/mksfs
 $(TOOLS_MKSFS): $(OBJPATH_ROOT)
 	$(Q)$(MAKE) CC=$(HOSTCC) -f $(TOOLS_MKSFS_DIR)/Makefile -C $(TOOLS_MKSFS_DIR) all
 
 ## image
-SFSIMG_FILE := sfs.img
+SFSIMG_FILE := $(OBJPATH_ROOT)/sfs.img
+TMPSFS := $(OBJPATH_ROOT)/.tmpsfs
 sfsimg: $(SFSIMG_FILE)
 
 $(SFSIMG_FILE): $(OBJPATH_ROOT) $(TOOLS_MKSFS) userlib userapp FORCE
 	@echo Making $@
-	mkdir .tmpsfs
-	cp -r $(TOPDIR)/src/user-ucore/bin .tmpsfs/
-	-cp -r $(TOPDIR)/src/user-ucore/_initial/* .tmpsfs/
+	mkdir -p $(TMPSFS)
+	cp -r $(TOPDIR)/src/user-ucore/bin $(TMPSFS)
+	-cp -r $(TOPDIR)/src/user-ucore/_initial/* $(TMPSFS)
 	rm -f $@
 	dd if=/dev/zero of=$@ bs=1M count=$(UCONFIG_SFS_IMAGE_SIZE)
-	$(TOOLS_MKSFS) $@ .tmpsfs
-	rm -rf .tmpsfs
+	$(TOOLS_MKSFS) $@ $(TMPSFS)
+	rm -rf $(TMPSFS)
+
+endif
 
 endif
 
 $(OBJPATH_ROOT):
-	-mkdir $@
+	-mkdir -p $@
 
 $(CONFIG_DIR):
-	-mkdir config
+	-mkdir -p $@
 
 #	$(Q)rm -f $(KCONFIG_AUTOCONFIG) $(KCONFIG_AUTOHEADER)
 clean:
 	@echo CLEAN ALL
-	$(Q)rm -f  .config.old .config.cmd .tmpconfig.h
+	$(Q)rm -f  $(CONFIG_SCRIPT).old 。config.cmd .tmpconfig.h
 	$(Q)rm -f $(SFSIMG_FILE)
 	$(Q)rm -rf $(OBJPATH_ROOT)
 	-$(Q)$(MAKE) -C $(CONFIG) clean

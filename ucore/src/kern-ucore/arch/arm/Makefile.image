@@ -1,5 +1,5 @@
 ifneq ($(MAKECMDGOALS),clean)
-include $(TOPDIR)/$(KCONFIG_AUTOCONFIG)
+include $(KCONFIG_AUTOCONFIG)
 endif
 
 ifdef UCONFIG_HAVE_RAMDISK
@@ -17,7 +17,7 @@ $(KERNEL_ELF) : $(LINK_FILE) $(KERNEL_BUILTIN) $(RAMDISK_OBJ)
 	@echo Linking uCore
 	$(Q)$(TARGET_LD) -L$(UCONFIG_LIBGCC_PATH) -T $(LINK_FILE) $(KERNEL_BUILTIN) $(RAMDISK_OBJ) -o $@ -lgcc
 
-$(LINK_FILE): $(LINK_FILE_IN) $(TOPDIR)/$(KCONFIG_AUTOCONFIG)
+$(LINK_FILE): $(LINK_FILE_IN) $(KCONFIG_AUTOCONFIG)
 	@echo "creating linker script"
 	@sed  "$(SEDFLAGS)" < $< > $@
 

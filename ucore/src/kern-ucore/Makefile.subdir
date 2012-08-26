@@ -1,4 +1,4 @@
-include $(TOPDIR)/$(KCONFIG_AUTOCONFIG)
+include $(KCONFIG_AUTOCONFIG)
 
 include Makefile
 
