@@ -1,4 +1,7 @@
-menu Misc
+menu "Toolchain setup"
+
+config CROSS_COMPILE
+  string "Cross-compiler tool prefix"
 
 config ADDITIONAL_CFLAGS
   string "Additional CFLAGS"
