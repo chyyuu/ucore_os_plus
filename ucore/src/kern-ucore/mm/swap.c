@@ -18,7 +18,7 @@
 #include <mp.h>
 #include <sched.h>
 
-#ifndef CONFIG_NO_SWAP
+#ifdef UCONFIG_SWAP
 
 /* ------------- swap in/out & page replacement mechanism design&implementation -------------
 Hardware Requrirement:
@@ -968,5 +968,5 @@ check_swap(void) {
 }
 
 
-#endif /* CONFIG_NO_SWAP */
+#endif /* UCONFIG_SWAP */
 

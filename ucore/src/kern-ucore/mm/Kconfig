@@ -1,0 +1,10 @@
+menu "Memory Management"
+
+config SWAP
+	bool "Support for paging of anonymous memory (swap)"
+	default y
+	help
+		Enable support for providing more virtual memory than actual RAM
+		present by using disk storage.
+
+endmenu

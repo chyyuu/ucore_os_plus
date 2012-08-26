@@ -136,6 +136,13 @@ $(SFSIMG_FILE): $(OBJPATH_ROOT) $(TOOLS_MKSFS) userlib userapp FORCE
 
 endif
 
+ifdef UCONFIG_SWAP
+SWAPFS_FILE := $(OBJPATH_ROOT)/swap.img
+swapimg: $(SWAPFS_FILE)
+
+$(SWAPFS_FILE): $(OBJPATH_ROOT)
+	@echo Making $@
+	$(Q)dd if=/dev/zero of=$@ bs=1M count=128
 endif
 
 $(OBJPATH_ROOT):

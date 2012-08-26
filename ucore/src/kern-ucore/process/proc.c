@@ -1577,7 +1577,7 @@ user_main(void *arg) {
 static int
 init_main(void *arg) {
     int pid;
-#ifndef CONFIG_NO_SWAP
+#ifdef UCONFIG_SWAP
     if ((pid = ucore_kernel_thread(kswapd_main, NULL, 0)) <= 0) {
         panic("kswapd init failed.\n");
     }
@@ -1609,7 +1609,7 @@ init_main(void *arg) {
         }
         schedule();
     }
-#ifndef CONFIG_NO_SWAP
+#ifdef UCONFIG_SWAP
     assert(kswapd != NULL);
     int i;
     for (i = 0; i < 10; i ++) {
@@ -1624,7 +1624,7 @@ init_main(void *arg) {
     fs_cleanup();
 
     kprintf("all user-mode processes have quit, no /bin/sh?.\n");
-#ifndef CONFIG_NO_SWAP
+#ifdef UCONFIG_SWAP
     assert(initproc->cptr == kswapd && initproc->yptr == NULL && initproc->optr == NULL);
     assert(kswapd->cptr == NULL && kswapd->yptr == NULL && kswapd->optr == NULL);
     assert(nr_process == 2 + pls_read(lcpu_count));

@@ -4,7 +4,7 @@
 #include <memlayout.h>
 #include <swap.h>
 
-#ifndef CONFIG_NO_SWAP
+#ifdef UCONFIG_SWAP
 void swapfs_init(void);
 int swapfs_read(swap_entry_t entry, struct Page *page);
 int swapfs_write(swap_entry_t entry, struct Page *page);

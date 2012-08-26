@@ -148,7 +148,7 @@ page_remove_pte(pgd_t *pgdir, uintptr_t la, pte_t *ptep) {
         mp_tlb_invalidate(pgdir, la);
     }
     else if (! ptep_invalid(ptep)) {
-#ifndef CONFIG_NO_SWAP
+#ifdef UCONFIG_SWAP
         swap_remove_entry(*ptep);
 #endif
         ptep_unmap(ptep);
@@ -426,7 +426,7 @@ copy_range(pgd_t *to, pgd_t *from, uintptr_t start, uintptr_t end, bool share) {
             }
 #endif /* ARCH_ARM */
             else {
-#ifdef CONFIG_NO_SWAP
+#ifndef UCONFIG_SWAP
               assert(0);
 #endif
               swap_entry_t entry;

@@ -6,7 +6,7 @@
 #include <pmm.h>
 #include <assert.h>
 
-#ifndef CONFIG_NO_SWAP
+#ifdef UCONFIG_SWAP
 void
 swapfs_init(void) {
     static_assert((PGSIZE % SECTSIZE) == 0);

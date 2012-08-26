@@ -4,7 +4,7 @@
 #include <types.h>
 #include <memlayout.h>
 
-#ifndef CONFIG_NO_SWAP
+#ifdef UCONFIG_SWAP
 /* *
  * swap_entry_t
  * --------------------------------------------
@@ -40,7 +40,7 @@ int swap_copy_entry(swap_entry_t entry, swap_entry_t *store);
 
 int kswapd_main(void *arg) __attribute__((noreturn));
 
-#endif /*  CONFIG_NO_SWAP  */
+#endif /*  UCONFIG_SWAP  */
 
 #endif /* !__KERN_MM_SWAP_H__ */
 

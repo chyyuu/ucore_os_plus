@@ -762,7 +762,7 @@ do_pgfault(struct mm_struct *mm, machine_word_t error_code, uintptr_t addr) {
         page_insert(mm->pgdir, pa2page(*sh_ptep), addr, perm);
       }
       else {
-#ifndef CONFIG_NO_SWAP
+#ifdef UCONFIG_SWAP
         swap_duplicate(*ptep);
         ptep_copy(ptep, sh_ptep);
 #else
@@ -790,7 +790,7 @@ do_pgfault(struct mm_struct *mm, machine_word_t error_code, uintptr_t addr) {
       page = pte2page(*ptep);
     }
     else {
-#ifndef CONFIG_NO_SWAP
+#ifdef UCONFIG_SWAP
       if ((ret = swap_in_page(*ptep, &page)) != 0) {
         if (newpage != NULL) {
           free_page(newpage);
@@ -812,7 +812,7 @@ do_pgfault(struct mm_struct *mm, machine_word_t error_code, uintptr_t addr) {
     }
 
     if (cow && may_copy) {
-#ifndef CONFIG_NO_SWAP
+#ifdef UCONFIG_SWAP
       if (page_ref(page) + swap_page_count(page) > 1) {
 #else
       if (page_ref(page) > 1){

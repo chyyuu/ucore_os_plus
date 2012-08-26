@@ -1,0 +1,1 @@
+obj-$(UCONFIG_SWAP) = swapfs.o

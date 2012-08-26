@@ -48,7 +48,7 @@ shmem_remove_entry_pte(pte_t *ptep) {
     assert(ptep != NULL);
     if (ptep_present(ptep)) {
         struct Page *page = pte2page(*ptep);
-#ifndef CONFIG_NO_SWAP
+#ifdef UCONFIG_SWAP
         if (!PageSwap(page)) {
             if (page_ref_dec(page) == 0) {
                 free_page(page);
@@ -64,11 +64,11 @@ shmem_remove_entry_pte(pte_t *ptep) {
         if (page_ref_dec(page) == 0) {
           free_page(page);
         }
-#endif /* CONFIG_NO_SWAP */
+#endif /* UCONFIG_SWAP */
         ptep_unmap(ptep);
     }
     else if (! ptep_invalid(ptep)) {
-#ifndef CONFIG_NO_SWAP
+#ifdef UCONFIG_SWAP
       swap_remove_entry(*ptep);
       ptep_unmap(ptep);
 #else
@@ -189,7 +189,7 @@ shmem_insert_entry(struct shmem_struct *shmem, uintptr_t addr, pte_t entry) {
         page_ref_inc(pte2page(entry));
     }
     else if (! ptep_invalid(&entry)) {
-#ifndef CONFIG_NO_SWAP
+#ifdef UCONFIG_SWAP
         swap_duplicate(entry);
 #else
         assert(0);
