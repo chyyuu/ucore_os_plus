@@ -1,0 +1,38 @@
+#!/bin/bash
+
+BUILD_DIR=obj
+
+while getopts "hd:" opt; do
+    case $opt in
+	d)
+	    BUILD_DIR=$OPTARG
+	    ;;
+	h)
+	    echo "Usage $0 [options]"
+	    echo "Options:"
+	    echo "  -d <directory>                 uCore build directory"
+	    echo "                                 default to obj/"
+	    echo ""
+	    echo "Supported architectures: i386"
+	    echo ""
+	    echo "Report bugs to https://github.com/chyyuu/ucore_plus/issues"
+	    exit 0
+	    ;;
+	?)
+	    exit 1
+	    ;;
+    esac
+done
+
+if [[ ! -d $BUILD_DIR ]]; then
+    echo $BUILD_DIR does not exist or is not a directory.
+    echo Use -d to specify your custom build directory.
+    exit 1
+fi
+
+qemu -m 512 \
+-hda $BUILD_DIR/kernel.img \
+-drive file=$BUILD_DIR/swap.img,media=disk,cache=writeback \
+-drive file=$BUILD_DIR/sfs.img,media=disk,cache=writeback \
+-s \
+-serial file:$BUILD_DIR/serial.log -monitor stdio
