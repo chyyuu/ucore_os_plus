@@ -1,0 +1,55 @@
+#
+# Toolchain setup
+#
+CROSS_COMPILE="arm-linux-"
+ADDITIONAL_CFLAGS="-g -ggdb"
+ADDITIONAL_LDFLAGS=""
+
+#
+# Ucore Kernel Configuration (ARM)
+#
+# ARM_CPU_V5 is not set
+ARM_CPU_V7=y
+ARM_BOARD_GOLDFISH=y
+# ARM_BOARD_VERSATILEPB is not set
+# ARM_BOARD_AT91 is not set
+# ARM_BOARD_PANDABOARD is not set
+HAVE_RAMDISK=y
+RAMDISK_FILE="/home/chenyh/os/ucore_plus/ucore/sfs.img"
+DRAM_START=0x0
+DRAM_SIZE=0x8000000
+KERNEL_BASE=0x10000
+# HAVE_BOOTLOADER is not set
+LIBGCC_PATH="/opt/FriendlyARM/toolschain/4.4.3/lib/gcc/arm-none-linux-gnueabi/4.4.3/"
+
+#
+# Memory Management
+#
+# SWAP is not set
+
+#
+# Schedule
+#
+# SCHEDULER_RR is not set
+SCHEDULER_MLFQ=y
+
+#
+# Filesystem
+#
+HAVE_SFS=y
+SFS_IMAGE_SIZE=48
+# HAVE_YAFFS2 is not set
+HAVE_FATFS=y
+
+#
+# Linux Device Driver Environment
+#
+HAVE_LINUX_DDE_BASE=y
+DDE_GOLDFISH_FB=y
+DDE_GOLDFISH_EVENT=y
+DDE_EXAMPLE_CHRDEV=y
+DDE_MMC_SUPPORT=y
+# DDE_MMC_HAVE_SDIO is not set
+DDE_GOLDFISH_MMC=y
+# DDE_MMC_TEST is not set
+DDE_MMC_UCORE_BLOCK=y

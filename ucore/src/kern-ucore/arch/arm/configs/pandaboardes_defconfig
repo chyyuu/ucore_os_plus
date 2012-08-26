@@ -1,7 +1,9 @@
 #
-# Automatically generated make config: don't edit
-# Fri Aug 10 20:03:01 2012
+# Toolchain setup
 #
+CROSS_COMPILE="arm-linux-"
+ADDITIONAL_CFLAGS="-g -ggdb"
+ADDITIONAL_LDFLAGS=""
 
 #
 # Ucore Kernel Configuration (ARM)
@@ -13,7 +15,7 @@ ARM_CPU_V7=y
 # ARM_BOARD_AT91 is not set
 ARM_BOARD_PANDABOARD=y
 HAVE_RAMDISK=y
-RAMDISK_FILE="/home/chenyh/os/ucore-arch-arm/ucore/sfs.img"
+RAMDISK_FILE="/home/chenyh/os/ucore_plus/ucore/sfs.img"
 DRAM_START=0x80000000
 DRAM_SIZE=0x20000000
 KERNEL_BASE=0x80001000
@@ -21,19 +23,9 @@ KERNEL_BASE=0x80001000
 LIBGCC_PATH="/opt/FriendlyARM/toolschain/4.4.3/lib/gcc/arm-none-linux-gnueabi/4.4.3/"
 
 #
-# Linux Device Driver Environment
+# Memory Management
 #
-HAVE_LINUX_DDE_BASE=y
-DDE_EXAMPLE_CHRDEV=y
-# DDE_MMC_SUPPORT is not set
-
-#
-# Filesystem
-#
-HAVE_SFS=y
-SFS_IMAGE_SIZE=4
-HAVE_YAFFS2=y
-HAVE_YAFFS2_RAMDISK=y
+# SWAP is not set
 
 #
 # Schedule
@@ -42,7 +34,17 @@ HAVE_YAFFS2_RAMDISK=y
 SCHEDULER_MLFQ=y
 
 #
-# Misc
+# Filesystem
 #
-ADDITIONAL_CFLAGS="-g -ggdb"
-ADDITIONAL_LDFLAGS=""
+HAVE_SFS=y
+SFS_IMAGE_SIZE=4
+HAVE_YAFFS2=y
+HAVE_YAFFS2_RAMDISK=y
+# HAVE_FATFS is not set
+
+#
+# Linux Device Driver Environment
+#
+HAVE_LINUX_DDE_BASE=y
+DDE_EXAMPLE_CHRDEV=y
+# DDE_MMC_SUPPORT is not set

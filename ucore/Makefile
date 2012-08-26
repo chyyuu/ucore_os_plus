@@ -18,6 +18,11 @@ export TOPDIR KTREE OBJPATH_ROOT
 CONFIG = package/config
 CONFIG_SCRIPT = $(OBJPATH_ROOT)/.config
 export KCONFIG_CONFIG=$(CONFIG_SCRIPT)
+CONFIG_DIR := $(OBJPATH_ROOT)/config
+KCONFIG_AUTOCONFIG=$(CONFIG_DIR)/auto.conf
+KCONFIG_AUTOHEADER=$(CONFIG_DIR)/autoconf.h
+CONFIG_CONFIG_IN = $(KTREE)/arch/$(ARCH)/Kconfig
+CONFIG_DEFCONFIG = $(KTREE)/arch/$(ARCH)/configs/$(BOARD)_defconfig
 
 CONFIG_SHELL:=$(shell if [ -x "$$BASH" ]; then echo $$BASH; \
 	else if [ -x /bin/bash ]; then echo /bin/bash; \
@@ -25,15 +30,12 @@ CONFIG_SHELL:=$(shell if [ -x "$$BASH" ]; then echo $$BASH; \
 
 MAKEFLAGS += -rR --no-print-directory
 
-#### CROSS COMPILE HERE ####
-ARCH ?= arm
-CROSS_COMPILE ?= arm-linux-
+-include $(KCONFIG_AUTOCONFIG)
 
-CONFIG_DIR := $(OBJPATH_ROOT)/config
-KCONFIG_AUTOCONFIG=$(CONFIG_DIR)/auto.conf
-KCONFIG_AUTOHEADER=$(CONFIG_DIR)/autoconf.h
-CONFIG_CONFIG_IN = $(KTREE)/arch/$(ARCH)/Kconfig
-CONFIG_DEFCONFIG = .defconfig
+#### CROSS COMPILE HERE ####
+ARCH ?= $(patsubst "%",%,$(UCONFIG_ARCH))
+BOARD ?= default
+CROSS_COMPILE ?= $(UCONFIG_CROSS_COMPILE)
 
 export CONFIG_SHELL quiet Q KBUILD_VERBOSE
 export ARCH CROSS_COMPILE
@@ -86,13 +88,18 @@ PHONY+=menuconfig clean all
 
 all: kernel
 
+$(CONFIG_SCRIPT):
+	@if [ -e $(CONFIG_DEFCONFIG) ]; then \
+		cp $(CONFIG_DEFCONFIG) $(CONFIG_SCRIPT); \
+	else \
+		echo No defconfig found for ARCH \"$(ARCH)\" and BOARD \"$(BOARD)\"!; \
+		exit 1; \
+	fi \
+
 $(CONFIG)/mconf:
 	$(MAKE) CC="$(HOSTCC)" -C $(CONFIG) conf mconf
-	-@if [ ! -f $(CONFIG_SCRIPT) ]; then \
-		cp $(CONFIG_DEFCONFIG) $(CONFIG_SCRIPT); \
-	fi
 
-menuconfig: $(CONFIG_DIR) $(CONFIG)/mconf
+menuconfig: $(CONFIG_DIR) $(CONFIG)/mconf $(CONFIG_SCRIPT)
 	rm -f $(KCONFIG_AUTOCONFIG) $(KCONFIG_AUTOHEADER)
 	@if ! $(CONFIG)/mconf $(CONFIG_CONFIG_IN); then \
 		test -f .config.cmd || rm -f $(CONFIG_SCRIPT); \
@@ -110,8 +117,6 @@ userapp: $(OBJPATH_ROOT) $(KCONFIG_AUTOCONFIG)
 	$(Q)$(MAKE) -f $(TOPDIR)/src/user-ucore/Makefile -C $(TOPDIR)/src/user-ucore  all
 
 ## TOOLS 
-
--include $(KCONFIG_AUTOCONFIG)
 
 ifdef UCONFIG_HAVE_SFS
 TOOLS_MKSFS_DIR := $(TOPDIR)/src/ht-mksfs
