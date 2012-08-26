@@ -1,0 +1,20 @@
+# normal rules
+.*
+
+# do NOT ignore this file
+!.gitignore
+
+# build directories
+obj
+build-*
+
+# cscope files
+cscope.*
+ncscope.*
+
+# conf binaries
+package/config/conf
+package/config/mconf
+
+# userspace binaries
+src/user-ucore/bin
