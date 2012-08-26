@@ -21,9 +21,10 @@ $(LINK_FILE): $(LINK_FILE_IN) $(KCONFIG_AUTOCONFIG)
 	@echo "creating linker script"
 	@sed  "$(SEDFLAGS)" < $< > $@
 
-INITRD_PIGGY_S:=$(KTREE)/arch/$(ARCH)/tools/initrd.S
+INITRD_PIGGY_S:=$(KTREE_OBJ_ROOT)/arch/$(ARCH)/tools/initrd.S
 $(RAMDISK_OBJ): $(RAMDISK_FILE)
 	@echo "Linking Initrd into kernel, using $(RAMDISK_FILE)"
+	@mkdir -p $(KTREE_OBJ_ROOT)/arch/$(ARCH)/tools
 	@sed "s#DATA_FILE#$(RAMDISK_FILE)#" < $(KTREE)/arch/$(ARCH)/tools/initrd.S.in > $(INITRD_PIGGY_S)
 	$(Q)$(TARGET_CC) -c $(INITRD_PIGGY_S) -o $@
 	$(Q)rm -f $(INITRD_PIGGY_S)
