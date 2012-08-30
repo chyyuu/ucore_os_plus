@@ -41,6 +41,11 @@ config HAVE_RAMDISK
 config RAMDISK_FILE
   depends HAVE_RAMDISK
   string "Ramdisk File"
+  default "sfs.img"
+  help
+    Path to the ramdisk which will be built into the kernel image. Both absolute
+    and relative paths are acceptable..Relative paths are considered to be from
+    the building directory.
 
 
 config DRAM_START
@@ -63,9 +68,6 @@ config BOOTLOADER_START_ADDR
   depends HAVE_BOOTLOADER
   hex "Bootloader start address"
   default 0x0
-
-config LIBGCC_PATH
-  string "libgcc Path"
 
 endmenu
 
