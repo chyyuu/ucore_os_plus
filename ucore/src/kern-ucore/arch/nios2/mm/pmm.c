@@ -5,11 +5,11 @@
 #include <memlayout.h>
 #include <pmm.h>
 #include <buddy_pmm.h>
-#include <default_pmm.h>
+//#include <default_pmm.h>
 #include <sync.h>
 #include <error.h>
 #include <vmm.h>
-#include <kmalloc.h>
+//#include <kmalloc.h>
 
 #include <system.h>
 #include <nios2.h>

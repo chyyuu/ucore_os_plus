@@ -1,7 +1,7 @@
 #include <types.h>
 #include <stdio.h>
 #include <trap.h>
-#include <picirq.h>
+//#include <picirq.h>
 #include <fs.h>
 #include <ide.h>
 #include <arch.h>
