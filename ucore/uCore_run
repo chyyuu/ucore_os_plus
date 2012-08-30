@@ -13,7 +13,7 @@ while getopts "hd:" opt; do
 	    echo "  -d <directory>                 uCore build directory"
 	    echo "                                 default to obj/"
 	    echo ""
-	    echo "Supported architectures: i386"
+	    echo "Supported architectures: i386, arm(goldfishv7)"
 	    echo ""
 	    echo "Report bugs to https://github.com/chyyuu/ucore_plus/issues"
 	    exit 0
@@ -30,9 +30,34 @@ if [[ ! -d $BUILD_DIR ]]; then
     exit 1
 fi
 
-qemu -m 512 \
--hda $BUILD_DIR/kernel.img \
--drive file=$BUILD_DIR/swap.img,media=disk,cache=writeback \
--drive file=$BUILD_DIR/sfs.img,media=disk,cache=writeback \
--s \
--serial file:$BUILD_DIR/serial.log -monitor stdio
+if [[ ! -e $BUILD_DIR/config/auto.conf ]]; then
+    echo Is $BUILD_DIR properly configured?
+    exit 1
+fi
+
+source $BUILD_DIR/config/auto.conf
+
+case $UCONFIG_ARCH in
+    arm)
+	if [[ $UCONFIG_ARM_BOARD_GOLDFISH = y ]]; then
+	    if [[ $AVD = "" ]]; then
+		echo Please export your avd for the emulator.
+		echo e.g. AVD=xxx $0 $*
+		exit 1
+	    fi
+	    emulator-arm -avd $AVD -kernel obj/kernel/kernel-arm.elf -no-window -qemu -serial stdio
+	else
+	    echo What kind of board for ARM is this?
+	    echo Consider supporting your board in uCore_run
+	    exit 1
+	fi
+	;;
+    i386)
+	qemu -m 512 \
+	    -hda $BUILD_DIR/kernel.img \
+	    -drive file=$BUILD_DIR/swap.img,media=disk,cache=writeback \
+	    -drive file=$BUILD_DIR/sfs.img,media=disk,cache=writeback \
+	    -s \
+	    -serial file:$BUILD_DIR/serial.log -monitor stdio
+	;;
+esac
