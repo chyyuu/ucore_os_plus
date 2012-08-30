@@ -1,5 +1,5 @@
 ARCH_CFLAGS := -g -EL -mhw-div -mhw-mul -mno-hw-mulx -DSYSTEM_BUS_WIDTH=32 \
-               -MP -MMD -pipe -DALT_NO_INSTRUCTION_EMULATION -Wno-traditional -G 0 \
+               -pipe -DALT_NO_INSTRUCTION_EMULATION -Wno-traditional -G 0 \
                -fomit-frame-pointer -Wall -O2
 ARCH_LDFLAGS := -m    nios2elf
 ARCH_OBJS := clone.o syscall.o libgcc.o
