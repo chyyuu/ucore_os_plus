@@ -19,7 +19,7 @@ SCHEDULER_MLFQ=y
 # Filesystem
 #
 HAVE_SFS=y
-SFS_IMAGE_SIZE=128
+SFS_IMAGE_SIZE=1
 # HAVE_YAFFS2 is not set
 # HAVE_FATFS is not set
 
