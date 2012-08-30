@@ -38,9 +38,9 @@ sys_wait(uint32_t arg[]) {
 static uint32_t
 sys_exec(uint32_t arg[]) {
     const char *name = (const char *)arg[0];
-    int argc = (int)arg[1];
-    const char **argv = (const char **)arg[2];//kprintf("sys_exec : name=%s argc=%d\n", name, argc);int d;for (d = 0; d < argc; ++d) kprintf("\t#%d: %s\n", d, argv[d]);
-    return do_execve(name, argc, argv);
+    const char **argv = (const char **)arg[1];//kprintf("sys_exec : name=%s argc=%d\n", name, argc);int d;for (d = 0; d < argc; ++d) kprintf("\t#%d: %s\n", d, argv[d]);
+    const char **envp = (const char **)arg[2];
+    return do_execve(name, argv, envp);
 }
 
 static uint32_t

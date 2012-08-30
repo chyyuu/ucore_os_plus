@@ -143,12 +143,11 @@ kernel_execve(const char *name, const char **argv, const char** kenvp) {
 	register uint32_t __res __asm__ ("r2");
 	register uint32_t __sc  __asm__ ("r4") = (uint32_t) SYS_exec;
 	register uint32_t __a   __asm__ ("r5") = (uint32_t) name;
-	register uint32_t __c   __asm__ ("r6") = (uint32_t) argc;
-	register uint32_t __d   __asm__ ("r7") = (uint32_t) argv;
-	register uint32_t __e   __asm__ ("r8") = (uint32_t) kenvp;
+	register uint32_t __d   __asm__ ("r6") = (uint32_t) argv;
+	register uint32_t __e   __asm__ ("r7") = (uint32_t) kenvp;
 	
 	__asm__ __volatile__ ("trap" : "=r" (__res)
-			: "0" (__sc), "r" (__a), "r" (__c), "r"(__d), "r" (__e)
+			: "0" (__sc), "r" (__a), "r"(__d), "r" (__e)
 			: "memory");
 
     return __res;

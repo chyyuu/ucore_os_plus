@@ -133,7 +133,7 @@ $(SFSIMG_FILE): $(OBJPATH_ROOT) $(TOOLS_MKSFS) userlib userapp FORCE
 	@echo Making $@
 	mkdir -p $(TMPSFS)
 	cp -r $(TOPDIR)/src/user-ucore/bin $(TMPSFS)
-	#-cp -r $(TOPDIR)/src/user-ucore/_initial/* $(TMPSFS)
+	-cp -r $(TOPDIR)/src/user-ucore/_initial/* $(TMPSFS)
 	rm -f $@
 	dd if=/dev/zero of=$@ bs=1M count=$(UCONFIG_SFS_IMAGE_SIZE)
 	$(TOOLS_MKSFS) $@ $(TMPSFS)
