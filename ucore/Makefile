@@ -132,9 +132,9 @@ sfsimg: $(SFSIMG_FILE)
 $(SFSIMG_FILE): $(OBJPATH_ROOT) $(TOOLS_MKSFS) userlib userapp FORCE
 	@echo Making $@
 	mkdir -p $(TMPSFS)
-	cp -r $(TOPDIR)/src/user-ucore/bin $(TMPSFS)
+	cp -r $(OBJPATH_ROOT)/user-ucore/bin $(TMPSFS)
 ifneq ($(UCORE_TEST),)
-	cp -r $(TOPDIR)/src/user-ucore/testbin $(TMPSFS)
+	cp -r $(OBJPATH_ROOT)/user-ucore/testbin $(TMPSFS)
 endif
 	-cp -r $(TOPDIR)/src/user-ucore/_initial/* $(TMPSFS)
 	rm -f $@

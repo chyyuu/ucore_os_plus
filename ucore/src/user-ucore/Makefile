@@ -6,10 +6,13 @@ TARGET_CFLAGS:= 	-I../libs-user-ucore/ -I../libs-user-ucore/common -I../libs-use
 
 #TARGET_CC_SYSTEM_LIB ?=  -L/opt/FriendlyARM/toolschain/4.4.3/lib/gcc/arm-none-linux-gnueabi/4.4.3/ 
 
-USER_LIB_SRCDIR:= ../libs-user-ucore
-USER_LIB := $(USER_LIB_SRCDIR)/ulib.a
-BIN := bin
-TESTBIN := testbin
+USER_OBJ_ROOT := $(OBJPATH_ROOT)/user-ucore
+
+USER_LIB_SRCDIR := ../libs-user-ucore
+USER_LIB_OBJDIR := $(OBJPATH_ROOT)/libs-user-ucore
+USER_LIB := $(USER_LIB_OBJDIR)/ulib.a
+BIN := $(USER_OBJ_ROOT)/bin
+TESTBIN := $(USER_OBJ_ROOT)/testbin
 
 USER_APPLIST:= pwd cat sh ls pgdir cp forktest #yield hello faultreadkernel faultread badarg waitkill pgdir exit sleep sigtest1
 ifneq ($(UCORE_TEST),)
@@ -20,7 +23,7 @@ USER_APP_BINS:= $(addprefix $(BIN)/, $(USER_APPLIST))
 USER_TEST_BINS := $(addprefix $(TESTBIN)/, $(notdir $(USER_TESTLIST)))
 
 include $(USER_LIB_SRCDIR)/arch/$(ARCH)/include.mk
-INITCODE_OBJ := $(USER_LIB_SRCDIR)/arch/$(ARCH)/$(ARCH_INITCODE_OBJ)
+INITCODE_OBJ := $(USER_LIB_OBJDIR)/arch/$(ARCH)/$(ARCH_INITCODE_OBJ)
 TARGET_CFLAGS += $(ARCH_CFLAGS)
 TARGET_LDFLAGS += $(ARCH_LDFLAGS)
 
@@ -28,22 +31,23 @@ all:  $(BIN) $(TESTBIN) $(USER_LIB) $(USER_APP_BINS) $(USER_TEST_BINS)
 
 #user applications
 define make-user-app
-$2/$(notdir $1): $(addsuffix .o,$1) $(INITCODE_OBJ) $(USER_LIB)
+$2/$(notdir $1): $(USER_OBJ_ROOT)/$(addsuffix .o,$1) $(INITCODE_OBJ) $(USER_LIB)
 	@echo LINK $$@
-	$(TARGET_LD) $(TARGET_LDFLAGS) -static -T $(USER_LIB_SRCDIR)/arch/$(ARCH)/user.ld  $(addsuffix .o,$1) $(INITCODE_OBJ) $(USER_LIB) -o $$@
+	$(TARGET_LD) $(TARGET_LDFLAGS) -static -T $(USER_LIB_SRCDIR)/arch/$(ARCH)/user.ld $(USER_OBJ_ROOT)/$(addsuffix .o,$1) $(INITCODE_OBJ) $(USER_LIB) -o $$@
 endef
 
 $(foreach bdir,$(USER_APPLIST),$(eval $(call make-user-app,$(bdir),$(BIN))))
 
 $(foreach bdir,$(USER_TESTLIST),$(eval $(call make-user-app,$(bdir),$(TESTBIN))))
 
-%.o: %.c
+$(USER_OBJ_ROOT)/%.o: %.c
 	$(TARGET_CC) $(TARGET_CFLAGS) -c -o $@ $<
 
 $(BIN):
 	-mkdir -p $(BIN)
 
 $(TESTBIN):
+	-mkdir -p $(USER_OBJ_ROOT)/tests
 	-mkdir -p $(TESTBIN)
 
 clean:
