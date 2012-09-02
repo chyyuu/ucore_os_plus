@@ -24,10 +24,10 @@ all: $(target-initobj) $(ULIB_A)
 $(ULIB_A): $(target-obj)
 	$(TARGET_AR) -cr $@ $+
 
-$(ULIB_OBJ_ROOT)/%.o: %.c $(ULIB_OBJ_ROOT)
+$(ULIB_OBJ_ROOT)/%.o: %.c | $(ULIB_OBJ_ROOT)
 	$(TARGET_CC) $(TARGET_CFLAGS) -c -o $@ $<
 
-$(ULIB_OBJ_ROOT)/%.o: %.S $(ULIB_OBJ_ROOT)
+$(ULIB_OBJ_ROOT)/%.o: %.S | $(ULIB_OBJ_ROOT)
 	$(TARGET_CC) -D__ASSEMBLY__ $(TARGET_CFLAGS) -c -o $@ $<
 
 $(ULIB_OBJ_ROOT):

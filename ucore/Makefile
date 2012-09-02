@@ -121,7 +121,7 @@ userapp: $(OBJPATH_ROOT) $(KCONFIG_AUTOCONFIG)
 ifdef UCONFIG_HAVE_SFS
 TOOLS_MKSFS_DIR := $(TOPDIR)/src/ht-mksfs
 TOOLS_MKSFS := $(OBJPATH_ROOT)/mksfs
-$(TOOLS_MKSFS): $(OBJPATH_ROOT)
+$(TOOLS_MKSFS): | $(OBJPATH_ROOT)
 	$(Q)$(MAKE) CC=$(HOSTCC) -f $(TOOLS_MKSFS_DIR)/Makefile -C $(TOOLS_MKSFS_DIR) all
 
 ## image
@@ -129,7 +129,7 @@ SFSIMG_FILE := $(OBJPATH_ROOT)/sfs.img
 TMPSFS := $(OBJPATH_ROOT)/.tmpsfs
 sfsimg: $(SFSIMG_FILE)
 
-$(SFSIMG_FILE): $(OBJPATH_ROOT) $(TOOLS_MKSFS) userlib userapp FORCE
+$(SFSIMG_FILE): $(TOOLS_MKSFS) userlib userapp FORCE | $(OBJPATH_ROOT)
 	@echo Making $@
 	mkdir -p $(TMPSFS)
 	cp -r $(OBJPATH_ROOT)/user-ucore/bin $(TMPSFS)
@@ -148,7 +148,7 @@ ifdef UCONFIG_SWAP
 SWAPFS_FILE := $(OBJPATH_ROOT)/swap.img
 swapimg: $(SWAPFS_FILE)
 
-$(SWAPFS_FILE): $(OBJPATH_ROOT)
+$(SWAPFS_FILE): | $(OBJPATH_ROOT)
 	@echo Making $@
 	$(Q)dd if=/dev/zero of=$@ bs=1M count=128
 endif
