@@ -47,9 +47,8 @@ case $UCONFIG_ARCH in
     arm)
 	if [[ $UCONFIG_ARM_BOARD_GOLDFISH = y ]]; then
 	    if [[ $AVD = "" ]]; then
-		echo Please export your avd for the emulator.
-		echo e.g. AVD=xxx $0 $*
-		exit 1
+		AVD=`android list avd | grep "Name" -m 1 | sed "s/[ \t]*Name:[ \t]*//"`
+		echo AVD not specified. Fetch the first avd from \"android list avd\" and get \"$AVD\"
 	    fi
 	    emulator-arm -avd $AVD -kernel $BUILD_DIR/kernel/kernel-arm.elf -no-window -qemu -serial stdio
 	else
