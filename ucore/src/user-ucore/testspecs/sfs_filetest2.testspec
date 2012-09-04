@@ -1,0 +1,7 @@
+@program        /testbin/sfs_filetest2
+
+    'kernel_execve: pid = 3, name = "sfs_filetest2".'
+    'sfs_filetest2 pass.'
+    'all user-mode processes have quit.'
+    'init check memory pass.'
+! - 'user panic at .*'
