@@ -1,8 +1,9 @@
 #!/bin/bash
 
 BUILD_DIR=obj
+TEST_MODE=
 
-while getopts "hd:" opt; do
+while getopts "hd:t" opt; do
     case $opt in
 	d)
 	    BUILD_DIR=$OPTARG
@@ -12,11 +13,16 @@ while getopts "hd:" opt; do
 	    echo "Options:"
 	    echo "  -d <directory>                 uCore build directory"
 	    echo "                                 default to obj/"
+	    echo "  -t                             run in background for test"
+	    echo "                                 i.e. do not use stdio or open SDL window"
 	    echo ""
 	    echo "Supported architectures: i386, arm(goldfishv7)"
 	    echo ""
 	    echo "Report bugs to https://github.com/chyyuu/ucore_plus/issues"
 	    exit 0
+	    ;;
+	t)
+	    TEST_MODE=y
 	    ;;
 	?)
 	    exit 1
@@ -45,7 +51,7 @@ case $UCONFIG_ARCH in
 		echo e.g. AVD=xxx $0 $*
 		exit 1
 	    fi
-	    emulator-arm -avd $AVD -kernel obj/kernel/kernel-arm.elf -no-window -qemu -serial stdio
+	    emulator-arm -avd $AVD -kernel $BUILD_DIR/kernel/kernel-arm.elf -no-window -qemu -serial stdio
 	else
 	    echo What kind of board for ARM is this?
 	    echo Consider supporting your board in uCore_run
@@ -53,11 +59,21 @@ case $UCONFIG_ARCH in
 	fi
 	;;
     i386)
-	qemu -m 512 \
+	QEMU=qemu
+	which qemu-system-i386 > /dev/null 2>&1
+	if [ $? -eq 0 ]; then
+	    QEMU=qemu-system-i386
+	fi
+	if [[ $TEST_MODE = y ]]; then
+	    EXTRA_OPT="-S -display none"
+	else
+	    EXTRA_OPT="-monitor stdio"
+	fi
+	$QEMU -m 512 \
 	    -hda $BUILD_DIR/kernel.img \
 	    -drive file=$BUILD_DIR/swap.img,media=disk,cache=writeback \
 	    -drive file=$BUILD_DIR/sfs.img,media=disk,cache=writeback \
-	    -s \
-	    -serial file:$BUILD_DIR/serial.log -monitor stdio
+	    -s -serial file:$BUILD_DIR/serial.log \
+	    $EXTRA_OPT
 	;;
 esac
