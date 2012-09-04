@@ -1550,7 +1550,7 @@ out_unlock:
             kernel_execve(path, argv, envp);                              \
         })
 
-#define KERNEL_EXECVE(x, ...)                   __KERNEL_EXECVE(#x, "bin/"#x, ##__VA_ARGS__)
+#define KERNEL_EXECVE(x, ...)                   __KERNEL_EXECVE(#x, #x, ##__VA_ARGS__)
 
 #define KERNEL_EXECVE2(x, ...)                  KERNEL_EXECVE(x, ##__VA_ARGS__)
 
@@ -1561,14 +1561,14 @@ out_unlock:
 // user_main - kernel thread used to exec a user program
 static int
 user_main(void *arg) {
-#ifdef TEST
+#ifdef UNITTEST
 #ifdef TESTSCRIPT
-    KERNEL_EXECVE3(TEST, TESTSCRIPT);
+    KERNEL_EXECVE3(UNITTEST, TESTSCRIPT);
 #else
-    KERNEL_EXECVE2(TEST);
+    KERNEL_EXECVE2(UNITTEST);
 #endif
 #else
-    KERNEL_EXECVE(sh);
+    KERNEL_EXECVE(/bin/sh);
 #endif
     kprintf("user_main execve failed, no /bin/sh?.\n");
 }
