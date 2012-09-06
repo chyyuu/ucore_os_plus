@@ -8,6 +8,7 @@ RECORD_MODE=
 NO_BUILD_SFSIMG=
 TEST_CASE=
 TIMEOUT=10
+WAIT_TIMEOUT=0
 
 TEST_SPEC_DIR=src/user-ucore/testspecs
 TEST_RESULT_DIR=
@@ -38,9 +39,9 @@ check_regexps() {
         else
             pattern=${i//\'/}
             if [ $reg -ne 0 ]; then
-                grep '-E' "^$pattern\$" $log > /dev/null
+                grep '-E' "^$pattern\$" $log > /dev/null 2>&1
             else
-                grep '-F' "$pattern" $log > /dev/null
+                grep '-F' "$pattern" $log > /dev/null 2>&1
             fi
             found=$(($? == 0))
             if [ $found -eq $not ]; then
@@ -105,7 +106,8 @@ run_test() {
         exec ./uCore_run -d $BUILD_DIR -t
     ) > /dev/null 2>&1 &
     pid=$!
-    gdb -batch -nx -x gdbinit.$UCONFIG_ARCH \
+    sleep $WAIT_TIMEOUT
+    "$UCONFIG_CROSS_COMPILE"gdb -batch -nx -x gdbinit.$UCONFIG_ARCH \
         -ex "file $BUILD_DIR/kernel/kernel-$UCONFIG_ARCH.elf"  \
         -ex "b $BRK_FUNC" \
         -ex "c" > /dev/null 2>&1
@@ -122,7 +124,7 @@ run_test() {
     return $TEST_RESULT
 }
 
-while getopts "d:f:hrst:" opt; do
+while getopts "d:f:hrst:w:" opt; do
     case $opt in
         d)
             BUILD_DIR=$OPTARG
@@ -141,6 +143,9 @@ while getopts "d:f:hrst:" opt; do
             echo "  -s                           Do not rebuild sfsimg                            "
             echo "  -t <timeout>                 How long each test instance can live in seconds  "
             echo "                               default to 10                                    "
+            echo "  -w <time>                    Wait for <time> seconds before starting gdb after"
+            echo "                               the emulator is started.                         "
+            echo "                               default to 0                                     "
             echo "                                                                                "
             echo "This script is platform-independent.                                            "
             echo "See './uCore_run -h' for supported platforms.                                   "
@@ -158,6 +163,12 @@ while getopts "d:f:hrst:" opt; do
             case $OPTARG in
                 ''|*[!0-9]*) echo "WARNING: Bad number: $OPTARG" ;;
                 *) TIMEOUT=$OPTARG ;;
+            esac
+            ;;
+        w)
+            case $OPTARG in
+                ''|*[!0-9]*) echo "WARNING: Bad number: $OPTARG" ;;
+                *) WAIT_TIMEOUT=$OPTARG ;;
             esac
             ;;
         ?)

@@ -50,7 +50,12 @@ case $UCONFIG_ARCH in
                 AVD=`android list avd | grep "Name" -m 1 | sed "s/[ \t]*Name:[ \t]*//"`
                 echo AVD not specified. Fetch the first avd from \"android list avd\" and get \"$AVD\"
             fi
-            emulator-arm -avd $AVD -kernel $BUILD_DIR/kernel/kernel-arm.elf -no-window -qemu -serial stdio
+            if [[ $TEST_MODE = y ]]; then
+                QEMU_OPT="-s -S -serial file:$BUILD_DIR/serial.log"
+            else
+                QEMU_OPT="-serial stdio"
+            fi
+            emulator-arm -avd $AVD -kernel $BUILD_DIR/kernel/kernel-arm.elf -no-window -qemu $QEMU_OPT
         else
             echo What kind of board for ARM is this?
             echo Consider supporting your board in uCore_run
