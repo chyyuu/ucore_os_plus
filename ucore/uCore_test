@@ -80,8 +80,15 @@ check_regexps() {
 run_test() {
     TEST_SPEC=$1
 
+    arch=
     grep "^@.*" $TEST_SPEC | sed "s/^@\([A-Za-z0-9_]*\)[ \t]*\([^ \t]*\)$/\1=\2/g" > $TEST_RESULT_DIR/$SPEC_TMP
     source $TEST_RESULT_DIR/$SPEC_TMP
+    if [ $arch ]; then
+        echo $arch | grep "\b$UCONFIG_ARCH\b" > /dev/null 2>&1
+        if [ $? -ne 0 ]; then
+            return 10
+        fi
+    fi
     name=`basename $TEST_SPEC .testspec`
 
     export UCORE_TEST=$program
@@ -196,11 +203,17 @@ fi
 while read spec; do
     TOTAL=$(( ++TOTAL ))
     run_test $spec
-    if [ $? -eq 0 ]; then
-	PASSED=$(( ++PASSED ))
-    else
-	FAILED=$(( ++FAILED ))
-    fi
+    case $? in
+        0)
+            PASSED=$(( ++PASSED ))
+            ;;
+        1)
+            FAILED=$(( ++FAILED ))
+            ;;
+        10)
+            TOTAL=$(( --TOTAL ))
+            ;;
+    esac
 done < $TEST_RESULT_DIR/$TEST_LIST
 
 echo >> $SUMMARY
