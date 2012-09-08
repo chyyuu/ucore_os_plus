@@ -1,0 +1,11 @@
+@program	/testbin/mboxmap
+
+    'kernel_execve: pid = 3, name = "mboxmap".'
+    'fork children ok.'
+    'wait children ok.'
+    'mboxmap pass.'
+!   'send data error!!'
+! - '^wrong: .*'
+    'all user-mode processes have quit.'
+    'init check memory pass.'
+! - 'user panic at .*'

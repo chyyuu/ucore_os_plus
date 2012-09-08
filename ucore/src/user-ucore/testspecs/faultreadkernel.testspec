@@ -1,0 +1,8 @@
+@program	/testbin/faultreadkernel
+
+    'kernel_execve: pid = 1, name = "faultreadkernel".'
+  - 'trapframe at 0xc.......'
+    'trap 0x0000000e Page Fault'
+    '  err  0x00000005'
+  - '  eip  0x008.....'
+! - 'user panic at .*'

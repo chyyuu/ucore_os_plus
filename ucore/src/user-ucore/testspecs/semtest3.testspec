@@ -1,0 +1,10 @@
+@program	/testbin/semtest3
+
+    'kernel_execve: pid = 3, name = "semtest3".'
+    'wait now...'
+    'wait timeout'
+    'child now sleep'
+    'semtest3 pass.'
+    'all user-mode processes have quit.'
+    'init check memory pass.'
+! - 'user panic at .*'

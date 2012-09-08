@@ -1,0 +1,10 @@
+@program	/testbin/divzero
+
+    'kernel_execve: pid = 1, name = "divzero".'
+  - 'trapframe at 0xc.......'
+    'trap 0x00000000 Divide error'
+  - '  eip  0x008.....'
+  - '  esp  0xaff.....'
+    '  cs   0x----001b'
+    '  ss   0x----0023'
+! - 'user panic at .*'

@@ -1,0 +1,11 @@
+@program	/testbin/fwrite_test
+
+    'kernel_execve: pid = 3, name = "fwrite_test".'
+    'Hello world!!.'
+    'I am process 3.'
+    'dup fd ok.'
+    'fork fd ok.'
+    'fwrite_test pass.'
+    'all user-mode processes have quit.'
+    'init check memory pass.'
+! - 'user panic at .*'

@@ -1,0 +1,7 @@
+@program	/testbin/threadfork
+
+    'kernel_execve: pid = 3, name = "threadfork".'
+    'threadfork pass.'
+    'all user-mode processes have quit.'
+    'init check memory pass.'
+! - 'user panic at .*'

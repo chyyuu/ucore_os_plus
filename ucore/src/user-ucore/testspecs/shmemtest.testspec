@@ -1,0 +1,7 @@
+@program	/testbin/shmemtest
+
+    'kernel_execve: pid = 3, name = "shmemtest".'
+    'shmemtest pass.'
+    'all user-mode processes have quit.'
+    'init check memory pass.'
+! - 'user panic at .*'

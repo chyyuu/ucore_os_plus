@@ -14,9 +14,10 @@ USER_LIB := $(USER_LIB_OBJDIR)/ulib.a
 BIN := $(USER_OBJ_ROOT)/bin
 TESTBIN := $(USER_OBJ_ROOT)/testbin
 
-USER_APPLIST:= pwd cat sh ls pgdir cp forktest #yield hello faultreadkernel faultread badarg waitkill pgdir exit sleep sigtest1
+USER_APPLIST:= pwd cat sh ls cp echo link mkdir rename unlink
 ifneq ($(UCORE_TEST),)
 USER_TESTLIST := $(basename $(wildcard tests/*.c))
+USER_TESTLIST += $(basename $(wildcard tests/arch/$(ARCH)/*.c))
 endif
 
 USER_APP_BINS:= $(addprefix $(BIN)/, $(USER_APPLIST))
@@ -48,6 +49,7 @@ $(BIN):
 
 $(TESTBIN):
 	-mkdir -p $(USER_OBJ_ROOT)/tests
+	-mkdir -p $(USER_OBJ_ROOT)/tests/arch/$(ARCH)
 	-mkdir -p $(TESTBIN)
 
 clean:

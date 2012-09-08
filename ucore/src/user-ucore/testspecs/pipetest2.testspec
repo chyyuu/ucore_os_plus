@@ -1,0 +1,18 @@
+@program	/testbin/pipetest2
+
+    'kernel_execve: pid = 3, name = "pipetest2".'
+    '0 reads 200000'
+    '1 reads 200000'
+    '2 reads 200000'
+    '3 reads 200000'
+    '4 reads 200000'
+    '5 reads 200000'
+    '6 reads 200000'
+    '7 reads 200000'
+    '8 reads 200000'
+    '9 reads 200000'
+    'pipetest2 pass.'
+    'all user-mode processes have quit.'
+    'init check memory pass.'
+!   'pipe is closed, too early.'
+! - 'user panic at .*'

@@ -1,0 +1,9 @@
+@program	/testbin/hello2
+
+    'kernel_execve: pid = 3, name = "hello2".'
+    'Hello world!!.'
+    'I am process 3.'
+    'hello2 pass.'
+    'all user-mode processes have quit.'
+    'init check memory pass.'
+! - 'user panic at .*'

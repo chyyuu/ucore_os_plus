@@ -1,0 +1,11 @@
+@program	/testbin/yield
+
+    'kernel_execve: pid = 2, name = "yield".'
+    'Hello, I am process 2.'
+    'Back in process 2, iteration 0.'
+    'Back in process 2, iteration 1.'
+    'Back in process 2, iteration 2.'
+    'Back in process 2, iteration 3.'
+    'Back in process 2, iteration 4.'
+    'All done in process 2.'
+    'yield pass.'

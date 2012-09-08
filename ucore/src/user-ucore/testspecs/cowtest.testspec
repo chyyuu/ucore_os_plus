@@ -1,0 +1,9 @@
+@program	/testbin/cowtest
+@timeout	240
+
+    'kernel_execve: pid = 3, name = "cowtest".'
+    'fork ok.'
+    'cowtest pass.'
+    'all user-mode processes have quit.'
+    'init check memory pass.'
+! - 'user panic at .*'

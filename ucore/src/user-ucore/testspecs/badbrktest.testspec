@@ -1,0 +1,16 @@
+@program	/testbin/badbrktest
+
+    'kernel_execve: pid = 2, name = "badbrktest".'
+    'I am child.'
+    'I am going to eat out all the mem, MU HA HA!!.'
+    'I ate 1000 slots.'
+    '  trap 0x0000000e Page Fault'
+    '  err  0x00000006'
+  - '  eip  0x008.....'
+  - '  esp  0xaff.....'
+    'killed by kernel.'
+    'child is killed by kernel, en.'
+    'badbrktest pass.'
+    'all user-mode processes have quit.'
+    'init check memory pass.'
+! - 'user panic at .*'

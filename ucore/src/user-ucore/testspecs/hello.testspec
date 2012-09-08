@@ -1,0 +1,6 @@
+@program	/testbin/hello
+
+    'kernel_execve: pid = 2, name = "hello".'
+    'Hello world!!.'
+    'I am process 2.'
+    'hello pass.'

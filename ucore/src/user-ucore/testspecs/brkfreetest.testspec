@@ -1,0 +1,13 @@
+@program	/testbin/brkfreetest
+
+    'kernel_execve: pid = 3, name = "brkfreetest".'
+    'page fault!!'
+    '  trap 0x0000000e Page Fault'
+    '  err  0x00000006'
+  - '  eip  0x008.....'
+  - '  esp  0xaff.....'
+    'killed by kernel.'
+    'brkfreetest pass.'
+    'all user-mode processes have quit.'
+    'init check memory pass.'
+! - 'user panic at .*'
