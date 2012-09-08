@@ -66,7 +66,7 @@ config HAVE_BOOTLOADER
 
 config BIONIC_LIBC
   bool "Support Bionic Libc"
-  default y
+  default n
 
 config BOOTLOADER_START_ADDR
   depends HAVE_BOOTLOADER
