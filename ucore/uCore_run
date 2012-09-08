@@ -73,7 +73,7 @@ case $UCONFIG_ARCH in
         else
             EXTRA_OPT="-monitor stdio"
         fi
-        exec $QEMU -m 512 \
+        exec $QEMU -m 128 \
             -hda $BUILD_DIR/kernel.img \
             -drive file=$BUILD_DIR/swap.img,media=disk,cache=writeback \
             -drive file=$BUILD_DIR/sfs.img,media=disk,cache=writeback \
