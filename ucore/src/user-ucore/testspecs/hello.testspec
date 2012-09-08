@@ -1,6 +1,9 @@
 @program	/testbin/hello
+@arch		i386
 
-    'kernel_execve: pid = 2, name = "hello".'
+  - 'kernel_execve: pid = [0-9]{1,2}, name = "/testbin/hello".'
     'Hello world!!.'
-    'I am process 2.'
+  - 'I am process [0-9]{1,2}.'
     'hello pass.'
+    'all user-mode processes have quit.'
+    'init check memory pass.'

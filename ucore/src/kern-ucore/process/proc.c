@@ -1624,7 +1624,7 @@ init_main(void *arg) {
     mbox_cleanup();
     fs_cleanup();
 
-    kprintf("all user-mode processes have quit, no /bin/sh?.\n");
+    kprintf("all user-mode processes have quit.\n");
 #ifdef UCONFIG_SWAP
     assert(initproc->cptr == kswapd && initproc->yptr == NULL && initproc->optr == NULL);
     assert(kswapd->cptr == NULL && kswapd->yptr == NULL && kswapd->optr == NULL);
