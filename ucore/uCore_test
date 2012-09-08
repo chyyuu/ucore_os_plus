@@ -20,6 +20,17 @@ TEST_LIST=testlist
 SPEC_TMP=.spec.tmp
 PATTERN_TMP=.pattern.tmp
 
+SFSIMG_CLEAN=0
+
+rebuild_sfsimg() {
+    UCORE_TEST=xx make O=$BUILD_DIR sfsimg > /dev/null 2>&1
+    BUILD_OK=$?
+    if [ $BUILD_OK -eq 0 ]; then
+	SFSIMG_CLEAN=1
+    fi
+    return $BUILD_OK
+}
+
 # usage: check_regexps <log file> <test spec file>
 check_regexps() {
     log=$1
@@ -82,6 +93,15 @@ check_regexps() {
 run_test() {
     TEST_SPEC=$1
 
+    grep "^@sfs_force_rebuild[ \t]*$" $TEST_SPEC > /dev/null 2>&1
+    found=$(($? == 0))
+    if [ $found -eq 1 ] && [ $SFSIMG_CLEAN -ne 1 ]; then
+	rebuild_sfsimg
+	if [ $? -ne 0 ]; then
+	    return 1
+	fi
+    fi
+
     arch=
     timeout=
     grep "^@.*" $TEST_SPEC | sed "s/^@\([A-Za-z0-9_]*\)[ \t]*\(.*\)$/\1=\"\2\"/g" > $TEST_RESULT_DIR/$SPEC_TMP
@@ -118,6 +138,7 @@ run_test() {
         -ex "c" > /dev/null 2>&1
 
     kill $pid > /dev/null 2>&1
+    SFSIMG_CLEAN=0
 
     check_regexps $BUILD_DIR/$QEMU_SERIAL_LOG $TEST_SPEC
     TEST_RESULT=$?
@@ -198,7 +219,7 @@ FAILED=0
 
 # Build tests into sfsimg
 if [[ $NO_BUILD_SFSIMG != "y" ]]; then
-    UCORE_TEST=xx make O=$BUILD_DIR sfsimg > /dev/null 2>&1
+    rebuild_sfsimg
     if [ $? -ne 0 ]; then
         echo "Cannot build sfsimg with unit tests!" > $stderr
         exit 1
@@ -213,7 +234,7 @@ if [[ $TEST_CASE != "" ]]; then
         exit 1
     fi
 else
-    find $TEST_SRC_DIR | grep "\.testspec$" > $TEST_RESULT_DIR/$TEST_LIST
+    find $TEST_SRC_DIR | grep "\.testspec$" | sort > $TEST_RESULT_DIR/$TEST_LIST
 fi
 
 while read spec; do

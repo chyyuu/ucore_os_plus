@@ -16,7 +16,7 @@ main(void) {
         if ((ret = dup2(fd[0], 0)) < 0) {
             exit(ret);
         }
-        ret = exec("bin/robot");
+        ret = exec("/testbin/robot");
         panic("child exec failed: %e\n", ret);
     }
     assert(pid > 0);

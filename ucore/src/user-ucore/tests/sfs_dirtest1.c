@@ -68,13 +68,13 @@ changedir(const char *path) {
 
 int
 main(void) {
-    changedir("/");
-    changedir("/./../././../../././.././../.././../testman/..");
+    changedir("/testdir");
+    changedir("/./../././../../././.././../.././../testdir/testman/..");
     changedir("home");
     changedir("../testman");
     changedir("coreutils");
-    changedir("../././.././../../testman");
-    changedir("/");
+    changedir("../././.././../../testdir/testman");
+    changedir("/testdir");
     printf("sfs_dirtest1 pass.\n");
     return 0;
 }

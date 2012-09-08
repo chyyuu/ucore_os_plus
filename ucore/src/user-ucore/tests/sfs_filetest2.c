@@ -46,7 +46,7 @@ static unsigned char buffer[4096];
 
 int
 main(void) {
-    int fd = safe_open("/test/testfile", O_RDWR | O_TRUNC);
+    int fd = safe_open("/testdir/test/testfile", O_RDWR | O_TRUNC);
     struct stat *stat = safe_fstat(fd);
     assert(stat->st_size == 0 && stat->st_blocks == 0);
 
@@ -66,7 +66,7 @@ main(void) {
         assert(buffer[i] == (unsigned char)i);
     }
 
-    fd = safe_open("/test/testfile", O_RDWR | O_TRUNC);
+    fd = safe_open("/testdir/test/testfile", O_RDWR | O_TRUNC);
     stat = safe_fstat(fd);
     assert(stat->st_size == 0 && stat->st_blocks == 0);
     printf("sfs_filetest2 pass.\n");

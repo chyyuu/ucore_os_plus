@@ -110,7 +110,7 @@ main(void) {
     int fd1, fd2;
     struct stat *stat;
 
-    changedir("/test");
+    changedir("/testdir/test");
     fd1 = safe_open("testfile", O_RDWR | O_TRUNC);
     stat = safe_fstat(fd1);
     assert(stat->st_size == 0 && stat->st_nlinks == 1);

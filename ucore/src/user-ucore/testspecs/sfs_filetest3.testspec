@@ -1,6 +1,7 @@
 @program        /testbin/sfs_filetest3
+@sfs_force_rebuild
 
-    'kernel_execve: pid = 3, name = "sfs_filetest3".'
+  - 'kernel_execve: pid = [0-9]{1,2}, name = "/testbin/sfs_filetest3".'
     '0: -   1      0          0  testfile'
     '1: -   2      1         14  testfile'
     '1: -   2      1         14  orz'

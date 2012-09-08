@@ -79,7 +79,7 @@ random_test(int fd, int pages) {
 
 int
 main(void) {
-    int fd1 = safe_open("/test/testfile", O_RDWR | O_TRUNC);
+    int fd1 = safe_open("/testdir/test/testfile", O_RDWR | O_TRUNC);
     struct stat *stat = safe_fstat(fd1);
     assert(stat->st_size == 0 && stat->st_blocks == 0);
 
@@ -94,7 +94,7 @@ main(void) {
     random_test(fd2, npages);
     printf("random_test ok.\n");
 
-    int fd3 = safe_open("/test/testfile", O_RDWR | O_TRUNC);
+    int fd3 = safe_open("/testdir/test/testfile", O_RDWR | O_TRUNC);
     stat = safe_fstat(fd3);
     assert(stat->st_size == 0 && stat->st_blocks == 0);
     safe_seek(fd3, sizeof(buffer), LSEEK_END);
@@ -112,7 +112,7 @@ main(void) {
     for (i = 0; i < sizeof(buffer) / sizeof(buffer[0]); i ++) {
         assert(buffer[i] == 0);
     }
-    int fd4 = safe_open("/test/testfile", O_WRONLY | O_TRUNC);
+    int fd4 = safe_open("/testdir/test/testfile", O_WRONLY | O_TRUNC);
     stat = safe_fstat(fd4);
     assert(stat->st_size == 0 && stat->st_blocks == 0);
     printf("sfs_filetest1 pass.\n");

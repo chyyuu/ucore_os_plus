@@ -1,6 +1,6 @@
 @program        /testbin/sfs_exectest2
 
-    'kernel_execve: pid = 3, name = "sfs_exectest2".'
+  - 'kernel_execve: pid = [0-9]{1,2}, name = "/testbin/sfs_exectest2".'
     '1-0: bin/sfs_exectest2'
     '2-0: bin/sfs_exectest2'
     '2-1: arg0'
