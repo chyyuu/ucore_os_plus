@@ -37,7 +37,8 @@ check_regexps() {
         elif [ "x$i" = "x-" ]; then
             reg=1
         else
-            pattern=${i//\'/}
+            i=${i#*\'}
+            pattern=${i%\'*}
             if [ $reg -ne 0 ]; then
                 grep '-E' "^$pattern\$" $log > /dev/null 2>&1
             else
