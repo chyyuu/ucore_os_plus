@@ -1,7 +1,7 @@
 @program	/testbin/primer2
 @timeout	500
 
-    'kernel_execve: pid = 3, name = "primer2".'
+  - 'kernel_execve: pid = [0-9]{1,2}, name = "/testbin/primer2".'
     'sharemem init ok.'
     '5 is a primer.'
     '71 is a primer.'

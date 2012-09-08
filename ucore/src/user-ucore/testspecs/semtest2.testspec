@@ -1,6 +1,6 @@
 @program	/testbin/semtest2
 
-    'kernel_execve: pid = 3, name = "semtest2".'
+  - 'kernel_execve: pid = [0-9]{1,2}, name = "/testbin/semtest2".'
     'semtest2 test1:'
     'child start 0.'
     'child end.'

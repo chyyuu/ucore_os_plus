@@ -1,6 +1,6 @@
 @program	/testbin/pipetest
 
-    'kernel_execve: pid = 3, name = "pipetest".'
+  - 'kernel_execve: pid = [0-9]{1,2}, name = "/testbin/pipetest".'
     'child write ok'
     'parent read ok'
     'pipetest step1 pass.'

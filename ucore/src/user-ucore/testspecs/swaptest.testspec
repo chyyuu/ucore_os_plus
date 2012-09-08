@@ -2,7 +2,7 @@
 @arch		i386 x86_64
 @timeout	240
 
-    'kernel_execve: pid = 3, name = "swaptest".'
+  - 'kernel_execve: pid = [0-9]{1,2}, name = "/testbin/swaptest".'
     'buffer size = 00500000'
     'parent init ok.'
   - 'child 0 fork ok, pid = [0-9]+.'

@@ -1,6 +1,6 @@
 @program	/testbin/threadtest
 
-    'kernel_execve: pid = 3, name = "threadtest".'
+  - 'kernel_execve: pid = [0-9]{1,2}, name = "/testbin/threadtest".'
     'thread ok.'
     'child ok.'
     'threadtest pass.'

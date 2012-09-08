@@ -1,7 +1,7 @@
 @program	/testbin/primer3
 @timeout	500
 
-    'kernel_execve: pid = 3, name = "primer3".'
+  - 'kernel_execve: pid = [0-9]{1,2}, name = "/testbin/primer3".'
     '5 is a primer.'
     '71 is a primer.'
     '223 is a primer.'

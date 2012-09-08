@@ -1,6 +1,6 @@
 @program	/testbin/waitkill
 
-    'kernel_execve: pid = 2, name = "waitkill".'
+  - 'kernel_execve: pid = [0-9]{1,2}, name = "/testbin/waitkill".'
     'wait child 1.'
     'child 2.'
     'child 1.'

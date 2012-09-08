@@ -1,6 +1,6 @@
 @program	/testbin/brktest
 
-    'kernel_execve: pid = 3, name = "brktest".'
+  - 'kernel_execve: pid = [0-9]{1,2}, name = "/testbin/brktest".'
     'I am going to eat out all the mem, MU HA HA!!.'
     'I ate 5000 slots.'
     'I ate 10000 slots.'

@@ -1,6 +1,6 @@
 @program	/testbin/pipetest2
 
-    'kernel_execve: pid = 3, name = "pipetest2".'
+  - 'kernel_execve: pid = [0-9]{1,2}, name = "/testbin/pipetest2".'
     '0 reads 200000'
     '1 reads 200000'
     '2 reads 200000'

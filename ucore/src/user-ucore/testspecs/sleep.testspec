@@ -1,7 +1,7 @@
 @program	/testbin/sleep
 @timeout	240
 
-    'kernel_execve: pid = 3, name = "sleep".'
+  - 'kernel_execve: pid = [0-9]{1,2}, name = "/testbin/sleep".'
     'I am child and I will eat out all the memory.'
     'I ate 1000 slots.'
     'I ate 5000 slots.'

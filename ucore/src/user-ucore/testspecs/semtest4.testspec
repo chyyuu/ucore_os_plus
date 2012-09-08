@@ -1,6 +1,6 @@
 @program	/testbin/semtest4
 
-    'kernel_execve: pid = 3, name = "semtest4".'
+  - 'kernel_execve: pid = [0-9]{1,2}, name = "/testbin/semtest4".'
     'child exit ok.'
     'semtest4 pass.'
     'all user-mode processes have quit.'

@@ -1,7 +1,7 @@
 @program	/testbin/spipetest2
 @timeout	240
 
-    'kernel_execve: pid = 3, name = "spipetest2".'
+  - 'kernel_execve: pid = [0-9]{1,2}, name = "/testbin/spipetest2".'
     '0 reads 200000'
     '1 reads 200000'
     '2 reads 200000'

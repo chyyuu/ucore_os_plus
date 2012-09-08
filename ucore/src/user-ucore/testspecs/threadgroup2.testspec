@@ -1,6 +1,6 @@
 @program	/testbin/threadgroup2
 
-    'kernel_execve: pid = 3, name = "threadgroup2".'
+  - 'kernel_execve: pid = [0-9]{1,2}, name = "/testbin/threadgroup2".'
     'thread ok.'
     'yield 0.'
     'yield 1.'

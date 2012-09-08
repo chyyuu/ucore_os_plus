@@ -1,6 +1,6 @@
 @program	/testbin/eventtest
 
-    'kernel_execve: pid = 3, name = "eventtest".'
+  - 'kernel_execve: pid = [0-9]{1,2}, name = "/testbin/eventtest".'
     'child1 receive 0000000a from 3'
     'child1 receive 00000009 from 3'
     'child1 receive 00000008 from 3'

@@ -1,6 +1,6 @@
 @program	/testbin/testbss
 
-    'kernel_execve: pid = 1, name = "testbss".'
+  - 'kernel_execve: pid = [0-9]{1,2}, name = "/testbin/testbss".'
     'Making sure bss works right...'
     'Yes, good.  Now doing a wild write off the end...'
     'testbss may pass.'

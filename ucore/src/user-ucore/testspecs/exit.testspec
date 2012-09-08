@@ -1,6 +1,6 @@
 @program	/testbin/exit
 
-    'kernel_execve: pid = 2, name = "exit".'
+  - 'kernel_execve: pid = [0-9]{1,2}, name = "/testbin/exit".'
     'I am the parent. Forking the child...'
     'I am the parent, waiting now..'
     'I am the child.'

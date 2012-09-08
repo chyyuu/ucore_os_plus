@@ -1,6 +1,6 @@
 @program	/testbin/badarg
 
-    'kernel_execve: pid = 2, name = "badarg".'
+  - 'kernel_execve: pid = [0-9]{1,2}, name = "/testbin/badarg".'
     'fork ok.'
     'badarg pass.'
     'all user-mode processes have quit.'

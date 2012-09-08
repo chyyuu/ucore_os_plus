@@ -1,7 +1,7 @@
-@program	/userbin/matrix
+@program	/testbin/matrix
 @timeout	500
 
-    'kernel_execve: pid = 3, name = "matrix".'
+  - 'kernel_execve: pid = [0-9]{1,2}, name = "/testbin/matrix".'
     'fork ok.'
     'pid 4 done!.'
     'pid 7 done!.'

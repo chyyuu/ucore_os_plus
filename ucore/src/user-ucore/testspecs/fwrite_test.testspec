@@ -1,8 +1,8 @@
 @program	/testbin/fwrite_test
 
-    'kernel_execve: pid = 3, name = "fwrite_test".'
+  - 'kernel_execve: pid = [0-9]{1,2}, name = "/testbin/fwrite_test".'
     'Hello world!!.'
-    'I am process 3.'
+  - 'I am process [0-9]{1,2}.'
     'dup fd ok.'
     'fork fd ok.'
     'fwrite_test pass.'

@@ -1,6 +1,6 @@
 @program	/testbin/semtest
 
-    'kernel_execve: pid = 3, name = "semtest".'
+  - 'kernel_execve: pid = [0-9]{1,2}, name = "/testbin/semtest".'
   - 'sem_id = 0x07......'
     'post ok.'
     'wait ok.'

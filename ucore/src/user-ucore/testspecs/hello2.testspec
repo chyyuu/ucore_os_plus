@@ -1,8 +1,8 @@
 @program	/testbin/hello2
 
-    'kernel_execve: pid = 3, name = "hello2".'
+  - 'kernel_execve: pid = [0-9]{1,2}, name = "/testbin/hello2".'
     'Hello world!!.'
-    'I am process 3.'
+  - 'I am process [0-9]{1,2}.'
     'hello2 pass.'
     'all user-mode processes have quit.'
     'init check memory pass.'
