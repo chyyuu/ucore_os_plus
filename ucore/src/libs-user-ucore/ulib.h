@@ -65,7 +65,7 @@ int mbox_info(int id, struct mboxinfo *info);
 int __exec(const char *name, const char **argv, const char **envp);
 
 #define __exec0(name, path, ...)                \
-    ({ const char *argv[] = {path, ##__VA_ARGS__, NULL}; __exec(name, argv); })
+    ({ const char *argv[] = {path, ##__VA_ARGS__, NULL}; __exec(name, argv, NULL); })
 
 #define exec(path, ...)                         __exec0(NULL, path, ##__VA_ARGS__)
 #define nexec(name, path, ...)                  __exec0(name, path, ##__VA_ARGS__)

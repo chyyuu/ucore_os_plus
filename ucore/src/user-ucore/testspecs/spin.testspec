@@ -1,0 +1,13 @@
+@program	/testbin/spin
+
+  - 'kernel_execve: pid = [0-9]{1,2}, name = "/testbin/spin".'
+    'I am the parent. Forking the child...'
+    'I am the parent. Running the child...'
+    'I am the child. spinning ...'
+    'I am the parent.  Killing the child...'
+    'kill returns 0'
+    'wait returns 0'
+    'spin may pass.'
+    'all user-mode processes have quit.'
+    'init check memory pass.'
+! - 'user panic at .*'

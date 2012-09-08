@@ -1,0 +1,8 @@
+@program	/testbin/badarg
+
+  - 'kernel_execve: pid = [0-9]{1,2}, name = "/testbin/badarg".'
+    'fork ok.'
+    'badarg pass.'
+    'all user-mode processes have quit.'
+    'init check memory pass.'
+! - 'user panic at .*'

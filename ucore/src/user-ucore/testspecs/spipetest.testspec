@@ -1,0 +1,9 @@
+@program	/testbin/spipetest
+
+  - 'kernel_execve: pid = [0-9]{1,2}, name = "/testbin/spipetest".'
+    'child write ok'
+    'parent read ok'
+    'spipetest pass'
+    'all user-mode processes have quit.'
+    'init check memory pass.'
+! - 'user panic at .*'

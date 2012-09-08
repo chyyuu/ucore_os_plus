@@ -1,0 +1,12 @@
+@program	/testbin/mmaptest
+
+  - 'kernel_execve: pid = [0-9]{1,2}, name = "/testbin/mmaptest".'
+    'mmap step1 ok.'
+    'munmap step1 ok.'
+    'mmap step2 ok.'
+    'mmap step3 ok.'
+    'mumap step2 ok.'
+    'mmaptest pass.'
+    'all user-mode processes have quit.'
+    'init check memory pass.'
+! - 'user panic at .*'

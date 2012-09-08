@@ -1,0 +1,9 @@
+@program        /testbin/sfs_filetest2
+@timeout	120
+@sfs_force_rebuild
+
+  - 'kernel_execve: pid = [0-9]{1,2}, name = "/testbin/sfs_filetest2".'
+    'sfs_filetest2 pass.'
+    'all user-mode processes have quit.'
+    'init check memory pass.'
+! - 'user panic at .*'

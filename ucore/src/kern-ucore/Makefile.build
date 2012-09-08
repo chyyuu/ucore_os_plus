@@ -26,6 +26,9 @@ endif
 TARGET_CFLAGS += $(addprefix -I$(KTREE)/, $(KERN_INCLUDES))
 
 TARGET_CFLAGS += -include $(KCONFIG_AUTOHEADER)
+ifneq ($(UCORE_TEST),)
+TARGET_CFLAGS += -DUNITTEST=$(UCORE_TEST)
+endif
 
 ifneq ($(MAKECMDGOALS),clean)
 include $(KTREE)/arch/$(ARCH)/include.mk
@@ -39,7 +42,11 @@ export TARGET_LDFLAGS
 
 KERNEL_BUILTIN_O := $(KTREE_OBJ_ROOT)/kernel-builtin.o
 
+# touch proc.c again to ensure that, if no UCORE_TEST given in the next build, /bin/sh will be used.
 all: $(KTREE_OBJ_ROOT) $(KERNEL_BUILTIN_O)
+ifneq ($(UCORE_TEST),)
+	$(Q)touch $(KTREE)/process/proc.c
+endif
 	$(Q)$(MAKE) KERNEL_BUILTIN=$(KERNEL_BUILTIN_O)  -C $(KTREE)/arch/$(ARCH) -f $(KTREE)/arch/$(ARCH)/Makefile.image all
 
 $(KERNEL_BUILTIN_O): subdir
@@ -57,6 +64,9 @@ clean:
 subdir: $(KTREE_OBJ_ROOT) $(KCONFIG_AUTOHEADER) $(KCONFIG_AUTOCONFIG) FORCE
 	$(Q)rm -f .builtinlist.tmp
 	$(Q)touch .builtinlist.tmp
+ifneq ($(UCORE_TEST),)
+	$(Q)touch $(KTREE)/process/proc.c
+endif
 	$(Q)$(MAKE) -f Makefile.subdir OBJPATH=$(KTREE_OBJ_ROOT) LOCALPATH=$(KTREE) BUILTINLIST=$(KTREE)/.builtinlist.tmp
 
 PHONY +=FORCE

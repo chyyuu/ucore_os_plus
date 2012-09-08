@@ -1,0 +1,14 @@
+@program        /testbin/forktest
+
+  - 'kernel_execve: pid = [0-9]{1,2}, name = "/testbin/forktest".'
+    'I am child 31'
+    'I am child 19'
+    'I am child 13'
+    'I am child 0'
+  - 'forktest pass [0-9]{1,2}\.'
+    'all user-mode processes have quit.'
+    'init check memory pass.'
+! - 'fork claimed to work [0-9]+ times!'
+!   'wait stopped early'
+!   'wait got too many'
+! - 'user panic at .*'

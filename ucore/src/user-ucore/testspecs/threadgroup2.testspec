@@ -1,0 +1,11 @@
+@program	/testbin/threadgroup2
+
+  - 'kernel_execve: pid = [0-9]{1,2}, name = "/testbin/threadgroup2".'
+    'thread ok.'
+    'yield 0.'
+    'yield 1.'
+    'yield 2.'
+    'exit thread group now.'
+    'all user-mode processes have quit.'
+    'init check memory pass.'
+! - 'user panic at .*'

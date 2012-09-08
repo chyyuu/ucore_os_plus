@@ -1,0 +1,8 @@
+@program	/testbin/buggy_wait2
+
+  - 'kernel_execve: pid = [0-9]{1,2}, name = "/testbin/buggy_wait2".'
+    'child fork ok.'
+    'buggy_wait2 pass.'
+    'all user-mode processes have quit.'
+    'init check memory pass.'
+! - 'user panic at .*'

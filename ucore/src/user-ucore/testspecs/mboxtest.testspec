@@ -1,0 +1,7 @@
+@program	/testbin/mboxtest
+
+  - 'kernel_execve: pid = [0-9]{1,2}, name = "/testbin/mboxtest".'
+    'mboxtest pass.'
+    'all user-mode processes have quit.'
+    'init check memory pass.'
+! - 'user panic at .*'

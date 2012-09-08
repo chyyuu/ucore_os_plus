@@ -5,7 +5,7 @@
 
 #define printf(...)                 fprintf(1, __VA_ARGS__)
 
-const char *cmd = "bin/sfs_exectest2";
+const char *cmd = "/testbin/sfs_exectest2";
 
 int
 main(int argc, char **argv) {

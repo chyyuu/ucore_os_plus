@@ -1,0 +1,12 @@
+@program	/testbin/badsegment
+@arch		i386
+
+  - 'kernel_execve: pid = [0-9]{1,2}, name = "/testbin/badsegment".'
+  - 'trapframe at 0xc.......'
+    'trap 0x0000000d General Protection'
+    '  err  0x00000028'
+  - '  eip  0x008.....'
+  - '  esp  0xaff.....'
+    '  cs   0x----001b'
+    '  ss   0x----0023'
+! - 'user panic at .*'

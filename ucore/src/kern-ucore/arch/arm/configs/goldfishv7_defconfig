@@ -15,12 +15,11 @@ ARM_BOARD_GOLDFISH=y
 # ARM_BOARD_AT91 is not set
 # ARM_BOARD_PANDABOARD is not set
 HAVE_RAMDISK=y
-RAMDISK_FILE="/home/chenyh/os/ucore_plus/ucore/sfs.img"
+RAMDISK_FILE="sfs.img"
 DRAM_START=0x0
 DRAM_SIZE=0x8000000
 KERNEL_BASE=0x10000
 # HAVE_BOOTLOADER is not set
-LIBGCC_PATH="/opt/FriendlyARM/toolschain/4.4.3/lib/gcc/arm-none-linux-gnueabi/4.4.3/"
 
 #
 # Memory Management

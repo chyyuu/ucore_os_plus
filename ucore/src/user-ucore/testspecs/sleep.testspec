@@ -1,0 +1,18 @@
+@program	/testbin/sleep
+@timeout	240
+
+  - 'kernel_execve: pid = [0-9]{1,2}, name = "/testbin/sleep".'
+    'I am child and I will eat out all the memory.'
+    'I ate 1000 slots.'
+    'I ate 5000 slots.'
+    'sleep 1 x 100 slices.'
+    'sleep 3 x 100 slices.'
+    'sleep 7 x 100 slices.'
+    'sleep 10 x 100 slices.'
+  - 'use 1... msecs.'
+    'sleep pass.'
+    'all user-mode processes have quit.'
+    'init check memory pass.'
+!   '  trap 0x0000000e Page Fault'
+!   'killed by kernel.'
+! - 'user panic at .*'

@@ -110,7 +110,7 @@ main(void) {
     int fd;
     struct stat *stat;
 
-    changedir("/test");
+    changedir("/testdir/test");
     safe_mkdir("dir0");
     safe_mkdir("dir0/dir1");
     fd = safe_open("dir0/file1", O_CREAT | O_RDWR | O_EXCL);
@@ -135,7 +135,7 @@ main(void) {
     assert(stat->st_size == len * 2);
 
     safe_rename("../dir1", "../../dir2");
-    changedir("/test");
+    changedir("/testdir/test");
 
     safe_unlink("dir2/file2");
     safe_unlink("dir0");

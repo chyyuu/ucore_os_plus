@@ -1,0 +1,10 @@
+@program	/testbin/badbrktest
+@timeout	60
+
+  - 'kernel_execve: pid = [0-9]{1,2}, name = "/testbin/badbrktest".'
+    'I am child.'
+    'I am going to eat out all the mem, MU HA HA!!.'
+    'I ate 1000 slots.'
+  - 'kernel warning at swap.c:[0-9]+:'
+    '    swap: try_alloc_swap_entry: failed too many times.'
+! - 'user panic at .*'

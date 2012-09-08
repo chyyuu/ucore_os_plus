@@ -1,0 +1,11 @@
+@program	/testbin/waitkill
+
+  - 'kernel_execve: pid = [0-9]{1,2}, name = "/testbin/waitkill".'
+    'wait child 1.'
+    'child 2.'
+    'child 1.'
+    'kill parent ok.'
+    'kill child1 ok.'
+    'all user-mode processes have quit.'
+    'init check memory pass.'
+! - 'user panic at .*'

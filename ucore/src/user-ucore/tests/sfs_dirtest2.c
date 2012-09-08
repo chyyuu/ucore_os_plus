@@ -104,8 +104,8 @@ main(void) {
     int fd1, fd2;
     struct stat *stat;
 
-    changedir("/test"); {
-        safe_mkdir("/test/dir0/");
+    changedir("/testdir/test"); {
+        safe_mkdir("/testdir/test/dir0/");
         assert(mkdir("testfile") != 0 && mkdir("../test/dir0/") != 0);
         assert(mkdir("dir0/dir1/dir2") != 0);
         safe_mkdir("dir0/dir1/");
@@ -131,19 +131,19 @@ main(void) {
     changedir("dir0/dir1"); {
         assert(unlink("dir0/dir1") != 0);
 
-        safe_unlink("/test/dir0/dir1/file2");
-        safe_unlink("/test/dir0/dir1");
+        safe_unlink("/testdir/test/dir0/dir1/file2");
+        safe_unlink("/testdir/test/dir0/dir1");
 
         stat = safe_fstat(fd1);
         assert(stat->st_nlinks == 1);
     }
 
-    changedir("/test/dir0"); {
+    changedir("/testdir/test/dir0"); {
         safe_unlink("../file1");
         safe_unlink("../dir0");
     }
 
-    changedir("/test");
+    changedir("/testdir/test");
     printf("sfs_dirtest2 pass.\n");
     return 0;
 }

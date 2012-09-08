@@ -1,0 +1,265 @@
+#!/bin/bash
+
+stdout=/dev/stdout
+stderr=/dev/stderr
+
+BUILD_DIR=obj
+RECORD_MODE=
+NO_BUILD_SFSIMG=
+TEST_CASE=
+TIMEOUT=10
+WAIT_TIMEOUT=0
+
+TEST_SPEC_DIR=src/user-ucore/testspecs
+TEST_RESULT_DIR=
+BRK_FUNC=readline
+QEMU_SERIAL_LOG=serial.log
+
+SUMMARY=$stdout
+TEST_LIST=testlist
+SPEC_TMP=.spec.tmp
+PATTERN_TMP=.pattern.tmp
+
+SFSIMG_CLEAN=0
+
+rebuild_sfsimg() {
+    UCORE_TEST=xx make O=$BUILD_DIR sfsimg > /dev/null 2>&1
+    BUILD_OK=$?
+    if [ $BUILD_OK -eq 0 ]; then
+	SFSIMG_CLEAN=1
+    fi
+    return $BUILD_OK
+}
+
+# usage: check_regexps <log file> <test spec file>
+check_regexps() {
+    log=$1
+    spec_file=$2
+
+    okay=yes
+    not=0
+    reg=0
+    error=
+
+    sed "/@.*$/d" $spec_file | sed "s/'/\n'/" | sed "s/^![ \t]*/!\n/" | sed "s/^-[ \t]*/-\n/" | sed "/^[[:space:]]*$/d" > $TEST_RESULT_DIR/$PATTERN_TMP
+    while read i; do
+        if [ "x$i" = "x!" ]; then
+            not=1
+        elif [ "x$i" = "x-" ]; then
+            reg=1
+        else
+            i=${i#*\'}
+            pattern=${i%\'*}
+            if [ $reg -ne 0 ]; then
+                grep '-E' "^$pattern\$" $log > /dev/null 2>&1
+            else
+                grep '-F' "$pattern" $log > /dev/null 2>&1
+            fi
+            found=$(($? == 0))
+            if [ $found -eq $not ]; then
+                if [ $found -eq 0 ]; then
+                    msg="!! error: missing '$pattern'"
+                else
+                    msg="!! error: got unexpected line '$pattern'"
+                fi
+                okay=no
+                if [ -z "$error" ]; then
+                    error="$msg"
+                else
+                    error="$error\n$msg"
+                fi
+            fi
+            not=0
+            reg=0
+        fi
+    done < $TEST_RESULT_DIR/$PATTERN_TMP
+
+    if [ "$okay" = "yes" ]; then
+        printf "%10s\n" "[  PASS  ]" >> $SUMMARY
+        return 0
+    else
+        printf "%10s\n" "[  FAIL  ]" >> $SUMMARY
+        if [[ $RECORD_MODE != "y" ]]; then
+            echo -e "$error" > $stderr
+        else
+            echo -e "$error" > $TEST_RESULT_DIR/$name.error
+            cp $log $TEST_RESULT_DIR/$name.log
+        fi
+        return 1
+    fi
+}
+
+# usage: run_test <testspec path>
+run_test() {
+    TEST_SPEC=$1
+
+    grep "^@sfs_force_rebuild[ \t]*$" $TEST_SPEC > /dev/null 2>&1
+    found=$(($? == 0))
+    if [ $found -eq 1 ] && [ $SFSIMG_CLEAN -ne 1 ]; then
+	rebuild_sfsimg
+	if [ $? -ne 0 ]; then
+	    return 1
+	fi
+    fi
+
+    arch=
+    timeout=
+    grep "^@.*" $TEST_SPEC | sed "s/^@\([A-Za-z0-9_]*\)[ \t]*\(.*\)$/\1=\"\2\"/g" > $TEST_RESULT_DIR/$SPEC_TMP
+    source $TEST_RESULT_DIR/$SPEC_TMP
+    if [ "$arch" ]; then
+        echo $arch | grep "\b$UCONFIG_ARCH\b" > /dev/null 2>&1
+        if [ $? -ne 0 ]; then
+            return 10
+        fi
+    fi
+    name=`basename $TEST_SPEC .testspec`
+    if [ -z "$timeout" ] || [ $timeout -gt 600 ]; then
+        timeout=$TIMEOUT
+    fi
+
+    export UCORE_TEST=$program
+    printf "%-70s" "TEST $name " >> $SUMMARY
+
+    make O=$BUILD_DIR > /dev/null 2>&1
+    if [ $? -ne 0 ]; then
+        printf "%10s\n" "[ BROKEN ]" >> $SUMMARY
+        exit 1
+    fi
+
+    (
+        ulimit -t $timeout
+        exec ./uCore_run -d $BUILD_DIR -t
+    ) > /dev/null 2>&1 &
+    pid=$!
+    sleep $WAIT_TIMEOUT
+    "$UCONFIG_CROSS_COMPILE"gdb -batch -nx -x gdbinit.$UCONFIG_ARCH \
+        -ex "file $BUILD_DIR/kernel/kernel-$UCONFIG_ARCH.elf"  \
+        -ex "b $BRK_FUNC" \
+        -ex "c" > /dev/null 2>&1
+
+    kill $pid > /dev/null 2>&1
+    SFSIMG_CLEAN=0
+
+    check_regexps $BUILD_DIR/$QEMU_SERIAL_LOG $TEST_SPEC
+    TEST_RESULT=$?
+
+    if [[ $RECORD_MODE = "y" ]]; then
+        tail -n 1 $SUMMARY
+    fi
+
+    return $TEST_RESULT
+}
+
+while getopts "d:f:hrst:w:" opt; do
+    case $opt in
+        d)
+            BUILD_DIR=$OPTARG
+            ;;
+        f)
+            TEST_CASE=$OPTARG
+            ;;
+        h)
+            echo "Usage $0 [options]"
+            echo "Options:"
+            echo "  -d <directory>               uCore build directory                            "
+            echo "                               default to obj/                                  "
+            echo "  -f <spec file>               Run the test given                               "
+            echo "  -r                           Record error messages in the build               "
+            echo "                               dir and do not print them on stderr              "
+            echo "  -s                           Do not rebuild sfsimg                            "
+            echo "  -t <timeout>                 How long each test instance can live in seconds  "
+            echo "                               default to 10                                    "
+            echo "  -w <time>                    Wait for <time> seconds before starting gdb after"
+            echo "                               the emulator is started.                         "
+            echo "                               default to 0                                     "
+            echo "                                                                                "
+            echo "This script is platform-independent.                                            "
+            echo "See './uCore_run -h' for supported platforms.                                   "
+            echo "                                                                                "
+            echo "Report bugs to https://github.com/chyyuu/ucore_plus/issues                      "
+            exit 0
+            ;;
+        r)
+            RECORD_MODE=y
+            ;;
+        s)
+            NO_BUILD_SFSIMG=y
+            ;;
+        t)
+            case $OPTARG in
+                ''|*[!0-9]*) echo "WARNING: Bad number: $OPTARG" ;;
+                *) TIMEOUT=$OPTARG ;;
+            esac
+            ;;
+        w)
+            case $OPTARG in
+                ''|*[!0-9]*) echo "WARNING: Bad number: $OPTARG" ;;
+                *) WAIT_TIMEOUT=$OPTARG ;;
+            esac
+            ;;
+        ?)
+            exit 1
+            ;;
+    esac
+done
+
+if [[ $RECORD_MODE = "y" ]]; then
+    TEST_RESULT_DIR=$BUILD_DIR/test-result.`date +%Y%m%d-%H%M%S`
+    SUMMARY=$TEST_RESULT_DIR/summary
+else
+    TEST_RESULT_DIR=/tmp/uCore_test
+fi
+mkdir -p $TEST_RESULT_DIR
+
+source $BUILD_DIR/config/auto.conf
+
+TOTAL=0
+PASSED=0
+FAILED=0
+
+# Build tests into sfsimg
+if [[ $NO_BUILD_SFSIMG != "y" ]]; then
+    rebuild_sfsimg
+    if [ $? -ne 0 ]; then
+        echo "Cannot build sfsimg with unit tests!" > $stderr
+        exit 1
+    fi
+fi
+
+if [[ $TEST_CASE != "" ]]; then
+    if [ -f $TEST_CASE ]; then
+        echo $TEST_CASE > $TEST_RESULT_DIR/$TEST_LIST
+    else
+        echo "Spec file $TEST_CASE does not exist!" > $stderr
+        exit 1
+    fi
+else
+    find $TEST_SRC_DIR | grep "\.testspec$" | sort > $TEST_RESULT_DIR/$TEST_LIST
+fi
+
+while read spec; do
+    TOTAL=$(( ++TOTAL ))
+    run_test $spec
+    case $? in
+        0)
+            PASSED=$(( ++PASSED ))
+            ;;
+        1)
+            FAILED=$(( ++FAILED ))
+            ;;
+        10)
+            TOTAL=$(( --TOTAL ))
+            ;;
+    esac
+done < $TEST_RESULT_DIR/$TEST_LIST
+
+echo >> $SUMMARY
+echo "==================== Test Summary ====================" >> $SUMMARY
+echo "  Total   $TOTAL" >> $SUMMARY
+echo "  Passed  $PASSED" >> $SUMMARY
+echo "  Failed  $FAILED" >> $SUMMARY
+echo "======================================================" >> $SUMMARY
+
+if [[ $RECORD_MODE = "y" ]]; then
+    tail -n 5 $SUMMARY
+fi

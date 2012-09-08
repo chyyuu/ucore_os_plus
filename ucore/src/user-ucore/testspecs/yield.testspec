@@ -1,0 +1,13 @@
+@program	/testbin/yield
+
+  - 'kernel_execve: pid = [0-9]{1,2}, name = "/testbin/yield".'
+  - 'Hello, I am process [0-9]{1,2}.'
+  - 'Back in process [0-9]{1,2}, iteration 0.'
+  - 'Back in process [0-9]{1,2}, iteration 1.'
+  - 'Back in process [0-9]{1,2}, iteration 2.'
+  - 'Back in process [0-9]{1,2}, iteration 3.'
+  - 'Back in process [0-9]{1,2}, iteration 4.'
+  - 'All done in process [0-9]{1,2}.'
+    'yield pass.'
+    'all user-mode processes have quit.'
+    'init check memory pass.'

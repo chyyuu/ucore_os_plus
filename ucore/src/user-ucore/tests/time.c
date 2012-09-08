@@ -16,7 +16,7 @@ main(int argc, char **argv)
 		if (pid < 0) {
 			printf ("Error: cannot fork process.\n");
 		} else if (pid == 0) {
-			__exec (NULL, argv + 1);
+			__exec (NULL, argv + 1, NULL);
 		}
 		waitpid (pid, NULL);
 	}

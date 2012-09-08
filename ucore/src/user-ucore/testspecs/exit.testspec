@@ -1,0 +1,11 @@
+@program	/testbin/exit
+
+  - 'kernel_execve: pid = [0-9]{1,2}, name = "/testbin/exit".'
+    'I am the parent. Forking the child...'
+    'I am the parent, waiting now..'
+    'I am the child.'
+  - 'waitpid [0-9]+ ok.'
+    'exit pass.'
+    'all user-mode processes have quit.'
+    'init check memory pass.'
+! - 'user panic at .*'

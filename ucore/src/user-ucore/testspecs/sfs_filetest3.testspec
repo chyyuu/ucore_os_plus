@@ -1,0 +1,16 @@
+@program        /testbin/sfs_filetest3
+@sfs_force_rebuild
+
+  - 'kernel_execve: pid = [0-9]{1,2}, name = "/testbin/sfs_filetest3".'
+    '0: -   1      0          0  testfile'
+    '1: -   2      1         14  testfile'
+    '1: -   2      1         14  orz'
+    'link test ok.'
+    '2: -   1      1         14  testfile'
+    'unlink test ok.'
+    '3: -   1      0          0  testfile'
+! - '2: .......................  orz'
+    'sfs_filetest3 pass.'
+    'all user-mode processes have quit.'
+    'init check memory pass.'
+! - 'user panic at .*'
