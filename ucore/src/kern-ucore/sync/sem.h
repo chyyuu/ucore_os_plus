@@ -10,6 +10,9 @@ typedef struct semaphore{
     bool valid;
     atomic_t count;
     wait_queue_t wait_queue;
+#ifdef UCONFIG_BIONIC_LIBC
+	uintptr_t addr;
+#endif //UCONFIG_BIONIC_LIBC
 } semaphore_t;
 
 // The sem_undo_t is used to permit semaphore manipulations that can be undone. If a process
@@ -25,6 +28,12 @@ typedef struct sem_undo {
 
 #define le2semu(le, member)             \
     to_struct((le), sem_undo_t, member)
+
+
+#ifdef UCONFIG_BIONIC_LIBC
+#define FUTEX_WAIT 0
+#define FUTEX_WAKE 1
+#endif //UCONFIG_BIONIC_LIBC
 
 typedef struct sem_queue {
     semaphore_t sem;
@@ -50,6 +59,11 @@ int ipc_sem_post(sem_t sem_id);
 int ipc_sem_wait(sem_t sem_id, unsigned int timeout);
 int ipc_sem_free(sem_t sem_id);
 int ipc_sem_get_value(sem_t sem_id, int *value_store);
+
+#ifdef UCONFIG_BIONIC_LIBC
+int do_futex(uintptr_t uaddr, int op, int val);
+#endif //UCONFIG_BIONIC_LIBC
+
 
 static inline int
 sem_count(semaphore_t *sem) {

@@ -10,7 +10,7 @@ USER_LIB_SRCDIR:= ../libs-user-ucore
 USER_LIB := $(USER_LIB_SRCDIR)/ulib.a
 BIN:=bin
 
-USER_APPLIST:= pwd cat sh ls pgdir cp forktest #yield hello faultreadkernel faultread badarg waitkill pgdir exit sleep sigtest1
+USER_APPLIST:= pwd cat sh ls pgdir cp forktest faultread #yield hello faultreadkernel faultread badarg waitkill pgdir exit sleep sigtest1
 
 USER_APP_BINS:= $(addprefix $(BIN)/, $(USER_APPLIST))
 

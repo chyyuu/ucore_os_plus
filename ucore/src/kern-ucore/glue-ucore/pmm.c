@@ -185,6 +185,23 @@ out:
   return 0;
 }
 
+#ifdef UCONFIG_BIONIC_LIBC
+void
+page_insert_pte(pgd_t *pgdir, struct Page *page, pte_t *ptep, uintptr_t la, pte_perm_t perm) {
+	page_ref_inc(page);
+	if(*ptep != 0) {
+		if(ptep_present(ptep) && pte2page(*ptep) == page) {
+			page_ref_dec(page);
+		} else {
+			page_remove_pte(pgdir, la, ptep);
+		}
+	}
+	ptep_map(ptep, page2pa(page));
+	ptep_set_perm(ptep, perm);
+	mp_tlb_update(pgdir, la);
+}
+#endif //UCONFIG_BIONIC_LIBC
+
 /**
  * page_remove - free an Page which is related linear address la and has an validated pte
  * @param pgdir page directory

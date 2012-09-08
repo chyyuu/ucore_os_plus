@@ -59,6 +59,8 @@ fs_destroy(struct fs_struct *fs_struct) {
         if (file->status == FD_OPENED) {
             filemap_close(file);
         }
+		if(file->status != FD_NONE)
+			kprintf("file->fd:%d\n", file->fd);
         assert(file->status == FD_NONE);
     }
     kfree(fs_struct);
@@ -90,7 +92,10 @@ dup_fs(struct fs_struct *to, struct fs_struct *from) {
             /* alloc_fd first */
             to_file->status = FD_INIT;
             filemap_dup(to_file, from_file);
-        }
+        } else if(from_file->status != FD_NONE) {
+			to_file->status = from_file->status;
+			filemap_dup_close(to_file, from_file);
+		}
     }
     return 0;
 }

@@ -18,6 +18,8 @@
 #include <syscall.h>
 #include <signal.h>
 
+#include <file.h>
+
 /* ------------- process/thread mechanism design&implementation -------------
 (an simplified Linux process/thread mechanism )
 introduction:
@@ -73,6 +75,10 @@ extern void forkrets(struct trapframe*tf);
 
 void switch_to(struct context *from, struct context *to);
 
+void tls_switch(struct proc_struct *proc) {
+		asm("mcr p15, 0, %0, c13, c0, 3"::"r"(proc->tls_pointer));
+}
+
 static void proc_signal_init(struct proc_signal* ps)
 {
 		sigset_initwith(ps->pending.signal, 0);
@@ -116,6 +122,8 @@ alloc_proc(void) {
         proc->tid = -1;
         proc->gid = -1;
         proc_signal_init(&proc->signal_info);
+
+		proc->tls_pointer = NULL;
     }
     return proc;
 }
@@ -249,6 +257,73 @@ init_new_context (struct proc_struct *proc, struct elfhdr *elf, int argc, char**
 
 	return 0;
 }
+
+
+#ifdef UCONFIG_BIONIC_LIBC
+int
+init_new_context_dynamic (struct proc_struct *proc, struct elfhdr *elf, int argc, char** kargv,
+      int envc, char ** kenvp, uint32_t is_dynamic, uint32_t real_entry, uint32_t load_address,
+	  uint32_t linker_base) 
+{
+  uintptr_t stacktop = USTACKTOP - (argc+envc) * PGSIZE;
+  uintptr_t argvbase = stacktop;
+  uintptr_t envbase = stacktop + argc*PGSIZE;
+#if 0
+  char **uargv = (char **)(stacktop - argc * sizeof(char *));
+  int i;
+  for (i = 0; i < argc; i ++) {
+    uargv[i] = (char*) strcpy((char *)(stacktop + i * PGSIZE), kargv[i]);
+  }
+  stacktop = (uintptr_t)uargv;
+#endif
+
+  if(is_dynamic) {
+	stacktop = stacktop - 10 * sizeof(int);
+  }
+
+  stacktop = stacktop - (argc+envc+3+1)*sizeof(char*);
+  char **esp = (char**)stacktop;
+  *esp++ = (char*)argc;
+  int i;
+  for(i=0;i<argc;i++)
+    *esp++ = strcpy((char *)(argvbase + i * PGSIZE), kargv[i]);
+  *esp++ = 0;
+  for(i=0;i<envc;i++)
+    *esp++ = strcpy((char *)(envbase + i * PGSIZE), kenvp[i]);
+  *esp++ = 0;
+
+  if(is_dynamic) {
+	uint32_t *aux = (uint32_t*)esp;
+	aux[0] = ELF_AT_BASE;
+	aux[1] = linker_base;
+	aux[2] = ELF_AT_PHDR;
+	aux[3] = load_address + elf->e_phoff;
+	aux[4] = ELF_AT_PHNUM;
+	aux[5] = elf->e_phnum;
+	aux[6] = ELF_AT_ENTRY;
+	aux[7] = elf->e_entry;
+	aux[8] = ELF_AT_NULL;
+	aux[9] = 0;
+  }
+
+  //*(int *)stacktop = argc;
+
+  struct trapframe *tf = proc->tf;
+  memset(tf, 0, sizeof(struct trapframe));
+  tf->tf_esp = stacktop;
+  tf->tf_epc = real_entry; //elf->e_entry;
+  tf->tf_sr = ARM_SR_F|ARM_SR_MODE_USR; //user mode, interrput
+	/* r3 = argc, r1 = argv 
+   * initcode in user mode should copy r3 to r0
+   */
+  /* return 0 for child */
+  tf->tf_regs.reg_r[0] = 0;
+
+	return 0;
+}
+
+#endif //UCONFIG_BIONIC_LIBC
+
 
 
 

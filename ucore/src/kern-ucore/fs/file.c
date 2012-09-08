@@ -12,6 +12,8 @@
 #include <error.h>
 #include <assert.h>
 
+#include <vmm.h>
+
 #define testfd(fd)                          ((fd) >= 0 && (fd) < FS_STRUCT_NENTRY)
 
 static struct file *
@@ -69,13 +71,13 @@ filemap_free(struct file *file) {
     file->status = FD_NONE;
 }
 
-static void
+void
 filemap_acquire(struct file *file) {
-    assert(file->status == FD_OPENED);
+    assert(file->status == FD_OPENED || file->status == FD_CLOSED);
     fopen_count_inc(file);
 }
 
-static void
+void
 filemap_release(struct file *file) {
     assert(file->status == FD_OPENED || file->status == FD_CLOSED);
     assert(fopen_count(file) > 0);
@@ -86,7 +88,7 @@ filemap_release(struct file *file) {
 
 void
 filemap_open(struct file *file) {
-    assert(file->status == FD_INIT && file->node != NULL);
+    assert((file->status == FD_INIT || file->status == FD_OPENED) && file->node != NULL);
     file->status = FD_OPENED;
     fopen_count_inc(file);
 }
@@ -113,6 +115,16 @@ filemap_dup(struct file *to, struct file *from) {
     filemap_open(to);
 }
 
+void filemap_dup_close(struct file *to, struct file *from) {
+	assert(to->status == FD_CLOSED && from ->status == FD_CLOSED);
+	to->pos = from->pos;
+	to->readable = from->readable;
+	to->writable = from->writable;
+	struct inode *node = from->node;
+	vop_ref_inc(node), vop_open_inc(node);
+	to->node = node;
+}
+
 static inline int
 fd2file(int fd, struct file **file_store) {
     if (testfd(fd)) {
@@ -124,6 +136,22 @@ fd2file(int fd, struct file **file_store) {
     }
     return -E_INVAL;
 }
+
+#ifdef UCONFIG_BIONIC_LIBC
+struct file*
+fd2file_onfs(int fd, struct fs_struct *fs_struct) {
+	if(testfd(fd)) {
+		assert(fs_struct != NULL && fs_count(fs_struct) > 0);
+		struct file *file = fs_struct->filemap + fd;
+		if((file->status == FD_OPENED || file->status == FD_CLOSED) && file->fd == fd) {
+			return file;
+		}
+	} else {
+		panic("testfd() failed");
+	}
+	return NULL;
+}
+#endif //UCONFIG_BIONIC_LIBC
 
 bool
 file_testfd(int fd, bool readable, bool writable) {
@@ -512,3 +540,87 @@ void *linux_devfile_mmap2(void *addr, size_t len, int prot, int flags, int fd, s
   return r;
 }
 
+#ifdef UCONFIG_BIONIC_LIBC
+void *linux_regfile_mmap2(void *addr, size_t len, int prot, int flags, int fd, size_t off)
+{
+	int subret = -E_INVAL;
+	struct mm_struct *mm = pls_read(current)->mm;
+	assert(mm != NULL);
+	if(len == 0) {
+		return -1;
+	}
+	lock_mm(mm);
+
+	uintptr_t start = ROUNDDOWN(addr, PGSIZE);
+	len = ROUNDUP(len, PGSIZE);
+
+	uint32_t vm_flags = VM_READ;
+	if(prot & PROT_WRITE) {
+		vm_flags |= VM_WRITE;
+	}
+	if(prot & PROT_EXEC) {
+		vm_flags |= VM_EXEC;
+	}
+	if(flags & MAP_STACK) {
+		vm_flags |= VM_STACK;
+	}
+	if(flags & MAP_ANONYMOUS) {
+		vm_flags |= VM_ANONYMOUS;
+	}
+
+	subret = -E_NO_MEM;
+	if(start == 0 && (start = get_unmapped_area(mm, len)) == 0) {
+		goto out_unlock;
+	}
+	uintptr_t end = start + len;
+	struct vma_struct *vma = find_vma(mm, start);
+	if(vma == NULL || vma->vm_start >= end) {
+		vma = NULL;
+	} else if(!(flags & MAP_FIXED)) {
+		start = get_unmapped_area(mm, len);
+		vma = NULL;
+	} else if(!(vma->vm_flags & VM_ANONYMOUS)) {
+		goto out_unlock;
+	} else if(vma->vm_start == start && end == vma->vm_end) {
+		vma->vm_flags = vm_flags;
+	} else {
+		assert(vma->vm_start <= start && end <= vma->vm_end);
+		if((subret = mm_unmap_keep_pages(mm, start, len)) != 0) {
+			goto out_unlock;
+		}
+		vma = NULL;
+	}
+	if(vma == NULL && (subret = mm_map(mm, start, len, vm_flags, &vma)) != 0) {
+		goto out_unlock;
+	}
+	if(!(flags & MAP_ANONYMOUS)) {
+		vma_mapfile(vma, fd, off << 12, NULL);
+	}
+	subret = 0;
+out_unlock:
+	unlock_mm(mm);
+	return subret == 0 ? start : -1;
+}
+
+
+int 
+filestruct_setpos(struct file *file, off_t pos) {
+	int ret = vop_tryseek(file->node, pos);
+	if(ret == 0) {
+		file->pos = pos;
+	}
+	return ret;
+}
+
+int
+filestruct_read(struct file *file, void *base, size_t len) {
+	struct iobuf __iob, *iob = iobuf_init(&__iob, base, len, file->pos);
+	vop_read(file->node, iob);
+	size_t copied = iobuf_used(iob);
+	if(file->status == FD_OPENED) {
+		file->pos += copied;
+	}
+	return copied;
+}
+
+#endif //UCONFIG_BIONIC_LIBC

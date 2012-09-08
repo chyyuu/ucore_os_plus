@@ -5,6 +5,14 @@ x/2i $pc
 end
 
 target remote 127.0.0.1:1234
+#add-symbol-file android_test/system/bin/linker 0x6fee6180
+#add-symbol-file android_test/system/lib/libc.so 0x6fe765e0
+#add-symbol-file android_test/ta 0x30800560
+#b bionic/linker/linker.cpp:1925
+#b call_array
+
+#b load_library
+
 #file obj/user-sfs/tt
 #file obj/user-sfs/bin/sigtest1
 #b main

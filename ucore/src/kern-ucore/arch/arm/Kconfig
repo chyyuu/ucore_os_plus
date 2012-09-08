@@ -59,6 +59,10 @@ config HAVE_BOOTLOADER
   bool "Use uCore bootloader"
   default n
 
+config BIONIC_LIBC
+  bool "Support Bionic Libc"
+  default y
+
 config BOOTLOADER_START_ADDR
   depends HAVE_BOOTLOADER
   hex "Bootloader start address"

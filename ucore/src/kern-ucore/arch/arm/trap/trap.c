@@ -138,8 +138,14 @@ pgfault_handler(struct trapframe *tf) {
   machine_word_t error_code = 0;
   if(tf->tf_err & (1<<11)) error_code |= 0x02;  //write
   if( (tf->tf_err & 0xC) != 0x04) error_code |= 0x01;
+  uint32_t badaddr = 0;
+  if(tf->tf_trapno == T_PABT){
+	 badaddr = tf->tf_epc;
+  }else{
+	 badaddr = far();
+  }
   //kprintf("rrr %08x   %08x\n", error_code, *(volatile uint32_t*)(VPT_BASE+4*0xe00));
-  return do_pgfault(mm, error_code, far());
+  return do_pgfault(mm, error_code, badaddr);
 }
 
 static void killed_by_kernel()
@@ -260,6 +266,7 @@ static int __is_irq(struct trapframe *tf){
  * */
 void
 trap(struct trapframe *tf) {
+  //print_trapframe(tf);
   if (pls_read(current) == NULL) {
     trap_dispatch(tf);
   }

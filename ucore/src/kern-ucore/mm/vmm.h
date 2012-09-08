@@ -15,6 +15,13 @@
 //pre define
 struct mm_struct;
 
+#ifdef UCONFIG_BIONIC_LIBC
+struct mapped_file_struct {
+	struct file *file;
+	off_t offset;
+};
+#endif //UCONFIG_BIONIC_LIBC
+
 // the virtual continuous memory area(vma)
 struct vma_struct {
     struct mm_struct *vm_mm; // the set of vma using the same PDT 
@@ -25,6 +32,9 @@ struct vma_struct {
     list_entry_t list_link;  // linear list link which sorted by start addr of vma
     struct shmem_struct *shmem;
     size_t shmem_off;
+#ifdef UCONFIG_BIONIC_LIBC
+	struct mapped_file_struct mfile;
+#endif //UCONFIG_BIONIC_LIBC
 };
 
 #define le2vma(le, member)                  \
@@ -38,6 +48,9 @@ struct vma_struct {
 #define VM_EXEC                 0x00000004
 #define VM_STACK                0x00000008
 #define VM_SHARE                0x00000010
+
+#define VM_ANONYMOUS			0x00000020
+
 /* must the same as Linux */
 #define VM_IO           0x00004000
 
@@ -47,6 +60,8 @@ struct vma_struct {
 #define MAP_TYPE        0x0f            /* Mask for type of mapping */
 #define MAP_FIXED       0x10            /* Interpret addr exactly */
 #define MAP_ANONYMOUS   0x20            /* don't use a file */
+
+#define MAP_STACK		0x20000
 
 #define PROT_READ       0x1             /* page can be read */
 #define PROT_WRITE      0x2             /* page can be written */

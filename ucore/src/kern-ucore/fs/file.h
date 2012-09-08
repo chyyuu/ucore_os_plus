@@ -31,6 +31,10 @@ void filemap_init(struct file *filemap);
 void filemap_open(struct file *file);
 void filemap_close(struct file *file);
 void filemap_dup(struct file *to, struct file *from);
+
+void filemap_acquire(struct file *file);
+void filemap_release(struct file *file);
+
 bool file_testfd(int fd, bool readable, bool writable);
 
 int file_open(char *path, uint32_t open_flags);

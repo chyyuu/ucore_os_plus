@@ -79,10 +79,22 @@ struct proghdr {
 /* values for Proghdr::p_type */
 #define ELF_PT_LOAD                     1
 
+#define ELF_PT_INTERP					3
+
 /* flag bits for Proghdr::p_flags */
 #define ELF_PF_X                        1
 #define ELF_PF_W                        2
 #define ELF_PF_R                        4
+
+/* values for elf's dynamic linker */
+#define ELF_AT_NULL						0
+#define ELF_AT_EXEFD					2
+#define	ELF_AT_PHDR						3
+#define ELF_AT_PHENT					4
+#define ELF_AT_PHNUM					5
+#define ELF_AT_BASE						7
+#define ELF_AT_ENTRY					9
+
 
 #endif /* !__LIBS_ELF_H__ */
 

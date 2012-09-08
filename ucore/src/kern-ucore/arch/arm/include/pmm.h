@@ -42,6 +42,10 @@ pmd_t *get_pmd(pgd_t *pgdir, uintptr_t la, bool create);
 pte_t *get_pte(pde_t *pgdir, uintptr_t la, bool create);
 struct Page *get_page(pde_t *pgdir, uintptr_t la, pte_t **ptep_store);
 void page_remove(pde_t *pgdir, uintptr_t la);
+
+#ifdef UCONFIG_BIONIC_LIBC
+void page_insert_pte(pde_t *pgdir, struct Page *page, pte_t *ptep, uintptr_t la, uint32_t perm);
+#endif //UCONFIG_BIONIC_LIBC
 int page_insert(pde_t *pgdir, struct Page *page, uintptr_t la, uint32_t perm);
 
 void tlb_invalidate(pde_t *pgdir, uintptr_t la);
@@ -173,6 +177,25 @@ static inline int
 page_ref_dec(struct Page *page) {
     return atomic_sub_return(&(page->ref), 1);
 }
+
+
+struct user_tls_desc {
+	uint32_t	entry_number;
+	uintptr_t	base_addr;
+	size_t		limit_t;
+	unsigned int	seg_32bit:1;
+	unsigned int	contents:2;
+	unsigned int	read_exec_only:1;
+	unsigned int	limit_in_pages:1;
+	unsigned int	seg_not_present:1;
+	unsigned int	useable:1;
+	unsigned int	empty:25;
+};
+
+
+uint32_t do_set_tls(struct user_tls_desc *tlsp);
+
+
 
 //TODO, FIX ME! 
 static inline pgd_t*

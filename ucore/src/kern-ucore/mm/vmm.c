@@ -13,6 +13,13 @@
 #include <sem.h>
 #include <kio.h>
 
+#include <file.h>
+#include <proc.h>
+#include <inode.h>
+
+
+#define false	(0)
+
 /* 
    vmm design include two parts: mm_struct (mm) & vma_struct (vma)
    mm is the memory manager for the set of continuous virtual memory  
@@ -110,6 +117,9 @@ vma_create(uintptr_t vm_start, uintptr_t vm_end, uint32_t vm_flags) {
     vma->vm_flags = vm_flags;
     vma->shmem = NULL;
     vma->shmem_off = 0;
+#ifdef UCONFIG_BIONIC_LIBC
+	vma->mfile.file = NULL;
+#endif //UCONFIG_BIONIC_LIBC
   }
   return vma;
 }
@@ -195,6 +205,52 @@ vma_compare(rb_node *node1, rb_node *node2) {
   uintptr_t start1 = vma1->vm_start, start2 = vma2->vm_start;
   return (start1 < start2) ? -1 : (start1 > start2) ? 1 : 0;
 }
+
+#ifdef UCONFIG_BIONIC_LIBC
+void
+vma_mapfile(struct vma_struct *vma, int fd, off_t off, struct fs_struct *fs_struct) {
+
+	if(fs_struct == NULL) {
+		fs_struct = pls_read(current)->fs_struct;
+	}
+
+	/*
+	kprintf("mapfile:0x%08x fs_struct:0x%08x\n", vma->mfile.file, fs_struct);
+	*/
+
+	vma->mfile.offset = off;
+	assert(vma != NULL);
+	assert((vma->mfile.file = fd2file_onfs(fd, fs_struct)) != NULL);
+	filemap_acquire(vma->mfile.file);
+}
+
+static void
+vma_unmapfile(struct vma_struct *vma) {
+	/*
+	kprintf("un_mapfile:0x%08x\n", vma->mfile.file);
+	*/
+
+	if(vma->mfile.file != NULL) {
+		filemap_release(vma->mfile.file);
+	}
+	vma->mfile.file = NULL;
+}
+
+static void
+vma_copymapfile(struct vma_struct *to, struct vma_struct *from) {
+	/*
+	kprintf("copy_mapfile:0x%08x\n", from->mfile.file);
+	*/
+
+	to->mfile = from->mfile;
+	if(to->mfile.file != NULL) {
+		to->mfile.offset += to->vm_start - from->vm_start;
+		filemap_acquire(to->mfile.file);
+	}
+}
+
+
+#endif //UCONFIG_BIONIC_LIBC
 
 // check_vma_overlap - check if vma1 overlaps vma2 ?
 static inline void
@@ -364,6 +420,13 @@ vma_resize(struct vma_struct *vma, uintptr_t start, uintptr_t end) {
   if (vma->vm_flags & VM_SHARE) {
     vma->shmem_off += start - vma->vm_start;
   }
+
+#ifdef UCONFIG_BIONIC_LIBC
+  if(vma->mfile.file != NULL) {
+	vma->mfile.offset += start - vma->vm_start;
+  }
+#endif //UCONFIG_BIONIC_LIBC
+
   vma->vm_start = start, vma->vm_end = end;
 }
 
@@ -386,6 +449,9 @@ mm_unmap(struct mm_struct *mm, uintptr_t addr, size_t len) {
     if ((nvma = vma_create(vma->vm_start, start, vma->vm_flags)) == NULL) {
       return -E_NO_MEM;
     }
+#ifdef UCONFIG_BIONIC_LIBC
+	vma_copymapfile(nvma, vma);
+#endif //UCONFIG_BIONIC_LIBC
     vma_resize(vma, end, vma->vm_end);
     insert_vma_struct(mm, nvma);
     unmap_range(mm->pgdir, start, end);
@@ -422,6 +488,9 @@ mm_unmap(struct mm_struct *mm, uintptr_t addr, size_t len) {
         insert_vma_struct(mm, vma);
       }
       else {
+#ifdef UCONFIG_BIONIC_LIBC
+		vma_unmapfile(vma);
+#endif //UCONFIG_BIONIC_LIBC
         vma_destroy(vma);
       }
     }
@@ -429,6 +498,71 @@ mm_unmap(struct mm_struct *mm, uintptr_t addr, size_t len) {
   }
   return 0;
 }
+
+#ifdef UCONFIG_BIONIC_LIBC
+int mm_unmap_keep_pages(struct mm_struct *mm, uintptr_t addr, size_t len) {
+	uintptr_t start = ROUNDDOWN(addr, PGSIZE), end = ROUNDUP(addr + len, PGSIZE);
+	if(!USER_ACCESS(start, end)) {
+		return -E_INVAL;
+	}
+
+	assert(mm != NULL);
+
+	struct vma_struct *vma;
+	if((vma = find_vma(mm, start)) == NULL || end <= vma->vm_start) {
+		return 0;
+	}
+
+	if(vma->vm_start < start && end < vma->vm_end) {
+		struct vma_struct *nvma;
+		if((nvma = vma_create(vma->vm_start, start, vma->vm_flags)) == NULL) {
+			return -E_NO_MEM;
+		}
+
+		vma_copymapfile(nvma, vma);
+		vma_resize(vma, end, vma->vm_end);
+		insert_vma_struct(mm, nvma);
+
+		return 0;
+	}
+
+	list_entry_t free_list, *le;
+	list_init(&free_list);
+	while(vma->vm_start < end) {
+		le = list_next(&(vma->list_link));
+		remove_vma_struct(mm, vma);
+		list_add(&free_list, &(vma->list_link));
+		if(le == &(mm->mmap_list)) {
+			break;
+		}
+		vma = le2vma(le, list_link);
+	}
+
+	le = list_next(&free_list);
+	while(le != &free_list) {
+		vma = le2vma(le, list_link);
+		le = list_next(le);
+		uintptr_t un_start, un_end;
+		if(vma->vm_start < start) {
+			un_start = start, un_end = vma->vm_end;
+			vma_resize(vma, vma->vm_start, un_start);
+			insert_vma_struct(mm, vma);
+		} else {
+			un_start = vma->vm_start, un_end = vma->vm_end;
+			if(end < un_end) {
+				un_end = end;
+				vma_resize(vma, un_end, vma->vm_end);
+				insert_vma_struct(mm, vma);
+			} else {
+				vma_unmapfile(vma);
+				vma_destroy(vma);
+			}
+		}
+		//unmap_range(mm->pgdir, un_start, un_end);
+	}
+	return 0;
+}
+#endif //UCONFIG_BIONIC_LIBC
 
 int
 dup_mmap(struct mm_struct *to, struct mm_struct *from) {
@@ -447,6 +581,9 @@ dup_mmap(struct mm_struct *to, struct mm_struct *from) {
         nvma->shmem_off = vma->shmem_off;
         shmem_ref_inc(vma->shmem);
       }
+#ifdef UCONFIG_BIONIC_LIBC
+	  nvma->mfile = vma->mfile;
+#endif //UCONFIG_BIONIC_LIBC
     }
     insert_vma_struct(to, nvma);
     bool share = (vma->vm_flags & VM_SHARE);
@@ -465,12 +602,36 @@ exit_mmap(struct mm_struct *mm) {
   while ((le = list_next(le)) != list) {
     struct vma_struct *vma = le2vma(le, list_link);
     unmap_range(pgdir, vma->vm_start, vma->vm_end);
+
+#ifdef UCONFIG_BIONIC_LIBC
+	vma_unmapfile(vma);
+#endif //UCONFIG_BIONIC_LIBC
   }
   while ((le = list_next(le)) != list) {
     struct vma_struct *vma = le2vma(le, list_link);
     exit_range(pgdir, vma->vm_start, vma->vm_end);
   }
 }
+
+#ifdef UCONFIG_BIONIC_LIBC
+int
+remapfile(struct mm_struct *mm, struct proc_struct *proc) {
+		//kprintf("remap!!\n");
+	assert(mm != NULL);
+	list_entry_t *list = &(mm->mmap_list), *le = list;
+	while((le = list_prev(le)) != list) {
+		struct vma_struct *vma = le2vma(le, list_link);
+		if(vma->mfile.file != NULL) {
+				/*
+				kprintf("remapfile:0x%08x fd:%d offset:0x%08x\n", vma->mfile.file, vma->mfile.file->fd,
+								vma->mfile.offset);
+				*/
+			vma_mapfile(vma, vma->mfile.file->fd, vma->mfile.offset, proc->fs_struct);
+		}
+	}
+	return 0;
+}
+#endif //UCONFIG_BIONIC_LIBC
 
 uintptr_t
 get_unmapped_area(struct mm_struct *mm, size_t len) {
@@ -665,6 +826,27 @@ check_pgfault(void) {
 #endif
 }
 
+#ifdef UCONFIG_BIONIC_LIBC
+static inline struct mapped_addr *
+find_maddr(struct file *file, off_t offset, struct Page *page) {
+	list_entry_t *list = &(file->node->mapped_addr_list);
+	list_entry_t *le = list;
+	while((le = list_next(le)) != list) {
+		struct mapped_addr *maddr = le2maddr(le);
+		if(maddr->offset = offset && (page == NULL || maddr->page == page)) {
+			return maddr;
+		}
+	}
+	return NULL;
+}
+#endif //UCONFIG_BIONIC_LIBC
+
+int 
+do_madvise(void *addr, size_t len, int advice) {
+	return 0;
+}
+
+
 int
 do_pgfault(struct mm_struct *mm, machine_word_t error_code, uintptr_t addr) {
   struct proc_struct *current = pls_read(current);
@@ -721,7 +903,7 @@ do_pgfault(struct mm_struct *mm, machine_word_t error_code, uintptr_t addr) {
       }
   }
 
-  pte_perm_t perm;
+  pte_perm_t perm, nperm;
 #ifdef ARCH_ARM
 #warning ARM9 software emulated PTE_xxx
   perm = PTE_P|PTE_U;
@@ -744,10 +926,69 @@ do_pgfault(struct mm_struct *mm, machine_word_t error_code, uintptr_t addr) {
     goto failed;
   }
   if (ptep_invalid(ptep)) {
-    if (!(vma->vm_flags & VM_SHARE)) {
+#ifdef UCONFIG_BIONIC_LIBC
+	if(vma->mfile.file != NULL) {
+		struct file *file = vma->mfile.file;
+		off_t old_pos = file->pos, new_pos = vma->mfile.offset + addr - vma->vm_start;
+#ifdef SHARE_MAPPED_FILE
+		struct mapped_addr *maddr = find_maddr(file, new_pos, NULL);
+		if(maddr == NULL) {
+#endif // SHARE_MAPPED_FILE
+			struct Page *page;
+			if((page = alloc_page()) == NULL) {
+				assert(false);
+				goto failed;
+			}
+			nperm = perm;
+#ifdef ARCH_ARM
+#warning ARM9 software emulated PTE_xxx
+			nperm &= ~PTE_W;
+#else
+			ptep_unset_s_write(&nperm);
+#endif
+			page_insert_pte(mm->pgdir, page, ptep, addr, nperm);
+
+			if((ret = filestruct_setpos(file, new_pos)) != 0) {
+				assert(false);
+				goto failed;
+			}
+			filestruct_read(file, page2kva(page), PGSIZE);
+			if((ret = filestruct_setpos(file, old_pos)) != 0) {
+				assert(false);
+				goto failed;
+			}
+#ifdef SHARE_MAPPED_FILE
+			if((maddr = (struct mapped_addr*)kmalloc(sizeof(struct mapped_addr))) != NULL) {
+				maddr->page = page;
+				maddr->offset = new_pos;
+				page->maddr = maddr;
+				list_add(&(file->node->mapped_addr_list), &(maddr->list));
+			} else {
+				assert(false);
+			}
+		} else {
+			nperm = perm;
+#ifdef ARCH_ARM
+#warning ARM9 software emulated PTE_xxx
+			nperm &= ~PTE_W;
+#else
+			ptep_unset_s_write(&nperm);
+#endif
+			page_insert_pte(mm->pgdir, maddr->page, ptep, addr, nperm);
+		}
+#endif //SHARE_MAPPED_FILE
+
+	} else
+#endif //UCONFIG_BIONIC_LIBC
+			if (!(vma->vm_flags & VM_SHARE)) {
       if (pgdir_alloc_page(mm->pgdir, addr, perm) == NULL) {
         goto failed;
       }
+#ifdef UCONFIG_BIONIC_LIBC
+	  if(vma->vm_flags & VM_ANONYMOUS) {
+		memset((void*)addr, 0, PGSIZE);
+	  }
+#endif //UCONFIG_BIONIC_LIBC
     }
     else { //shared mem
       lock_shmem(vma->shmem);
@@ -825,6 +1066,29 @@ do_pgfault(struct mm_struct *mm, machine_word_t error_code, uintptr_t addr) {
         page = newpage, newpage = NULL;
       }
     }
+#ifdef UCONFIG_BIONIC_LIBC
+	  else if(vma->mfile.file != NULL) {
+#ifdef UCONFIG_SWAP
+		assert(page_reg(page) + swap_page_count(page) == 1);
+#else
+		assert(page_ref(page) == 1);
+#endif
+
+#ifdef SHARE_MAPPED_FILE
+		off_t offset = vma->mfile.offset + addr - vma->vm_start;
+		struct mapped_addr *maddr = find_maddr(vma->mfile.file, offset, page);
+		if(maddr != NULL) {
+			list_del(&(maddr->list));
+			kfree(maddr);
+			page->maddr = NULL;
+			assert(find_maddr(vma->mfile.file, offset, page) == NULL);
+		} else {
+		}
+#endif //SHARE_MAPPED_FILE
+	}
+#endif //UCONFIG_BIONIC_LIBC
+	else {
+	}
     page_insert(mm->pgdir, page, addr, perm);
     if (newpage != NULL) {
       free_page(newpage);

@@ -16,6 +16,15 @@
 #include <glue_mp.h>
 #include <ramdisk.h>
 
+
+uint32_t
+do_set_tls(struct user_tls_desc *tlsp) {
+	void *tp = (void*)tlsp;
+	pls_read(current)->tls_pointer = tp;
+	asm("mcr p15, 0, %0, c13, c0, 3"::"r"(tp));
+	return 0;
+}
+
 /* machine dependent */
 inline static void flushCache926(void)
 {
@@ -306,7 +315,7 @@ pmm_init(void) {
   boot_map_segment(boot_pgdir, KIOBASE, KIOSIZE, KIOBASE, PTE_W|PTE_IOMEM); // fixed address
 
 
-  boot_map_segment(boot_pgdir, 0xFFFF0000, PGSIZE, SDRAM0_START, PTE_W|PTE_PWT); // high location of vector table
+  boot_map_segment(boot_pgdir, 0xFFFF0000, PGSIZE, SDRAM0_START, PTE_PWT); // high location of vector table
 #ifdef UCONFIG_HAVE_RAMDISK 
   if(CHECK_INITRD_EXIST()){
     boot_map_segment(boot_pgdir, DISK_FS_VBASE, ROUNDUP(initrd_end-initrd_begin, PGSIZE), (uintptr_t)initrd_begin,PTE_W);

@@ -67,6 +67,8 @@ struct proc_struct {
   struct fs_struct *fs_struct;                // the file related info(pwd, files_count, files_array, fs_semaphore) of process
 
   struct proc_signal signal_info;
+
+  void *tls_pointer;
 };
 
 struct linux_timespec {
@@ -135,11 +137,22 @@ int do_linux_waitpid(int pid, int *code_store);
 /* Implemented by archs */
 struct proc_struct * alloc_proc(void);
 void switch_to(struct context *from, struct context *to);
+
+/* For TLS(Thread Local Storage */
+void tls_switch(struct proc_struct *proc);
+
 void de_thread_arch_hook (struct proc_struct *proc);
 int copy_thread(uint32_t clone_flags, struct proc_struct *proc,
     uintptr_t user_stack, struct trapframe *tf);
 int init_new_context (struct proc_struct *proc, struct elfhdr *elf,
     int argc, char** kargv, int envc, char **kenvp);
+#ifdef UCONFIG_BIONIC_LIBC
+int init_new_context_dynamic(struct proc_struct *proc, struct elfhdr *elf,
+	int argc, char** kargv, int envc, char **kenvp, uint32_t is_dynamic,
+	uint32_t real_entry, uint32_t load_address, uint32_t linker_base);
+#endif //UCONFIG_BIONIC_LIBC
+
+
 int kernel_thread(int (*fn)(void *), void *arg, uint32_t clone_flags);
 int kernel_execve(const char *name, const char **argv, const char** kenvp);
 int do_execve_arch_hook (int argc, char **kargv);

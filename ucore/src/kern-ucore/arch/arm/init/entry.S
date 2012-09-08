@@ -52,7 +52,7 @@ kern_entry:
 relocated:
     ldr sp,=bootstacktop
 
-#if 0
+#if 1
     # enable the FPU
     mrc p15, 0, r0, c1, c0, 2
     orr r0, r0, #0x300000            /* single precision */

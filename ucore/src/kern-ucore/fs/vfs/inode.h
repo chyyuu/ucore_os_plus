@@ -58,6 +58,9 @@ struct inode {
     atomic_t open_count;
     struct fs *in_fs;
     const struct inode_ops *in_ops;
+#ifdef UCONFIG_BIONIC_LIBC
+	list_entry_t mapped_addr_list;
+#endif //UCONFIG_BIONIC_LIBC
 };
 
 #define __in_type(type)                                             inode_type_##type##_info

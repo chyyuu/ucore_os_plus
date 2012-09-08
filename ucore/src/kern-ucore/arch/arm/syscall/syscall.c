@@ -441,10 +441,19 @@ static uint32_t __sys_linux_mmap2(uint32_t arg[])
   int flags = (int)arg[3];
   int fd = (int)arg[4];
   size_t off = (size_t)arg[5];
+#ifndef UCONFIG_BIONIC_LIBC
   kprintf("TODO __sys_linux_mmap2 addr=%08x len=%08x prot=%08x flags=%08x fd=%d off=%08x\n",
       addr,len,prot,flags, fd, off);
+#endif //UCONFIG_BIONIC_LIBC
   if(fd == -1 || flags & MAP_ANONYMOUS){
   //print_trapframe(pls_read(current)->tf);
+#ifdef UCONFIG_BIONIC_LIBC
+	if(flags & MAP_FIXED) {
+		return linux_regfile_mmap2(addr, len, prot, flags, fd, off);
+	}
+#endif //UCONFIG_BIONIC_LIBC
+
+
     uint32_t ucoreflags = 0;
     if(prot & PROT_WRITE)
       ucoreflags |= MMAP_WRITE;
@@ -452,7 +461,7 @@ static uint32_t __sys_linux_mmap2(uint32_t arg[])
     //kprintf("@@@ ret=%d %e %08x\n", ret,ret, addr);
     if(ret)
       return MAP_FAILED;
-    kprintf("__sys_linux_mmap2 ret=%08x\n", addr);
+    //kprintf("__sys_linux_mmap2 ret=%08x\n", addr);
     return addr;
   }else{
     return (uint32_t)sysfile_linux_mmap2(addr, len, prot, flags,fd, off);
@@ -471,10 +480,25 @@ __sys_linux_fcntl(uint32_t arg[])
   return -E_INVAL;
 }
 
+#ifdef UCONFIG_BIONIC_LIBC
+static uint32_t
+__sys_linux_mprotect(uint32_t arg[])
+{
+	
+	void *addr = (void*)arg[0];
+	size_t len = arg[1];
+	int prot = arg[2];
+
+	//kprintf("mprotect addr=0x%08x len=%08x prot=%08x\n", addr, len, prot);
+
+	return do_mprotect(addr, len, prot);
+}
+#endif //UCONFIG_BIONIC_LIBC
+
 static uint32_t 
 __sys_linux_brk(uint32_t arg[]){
 	uintptr_t brk = (uintptr_t)arg[0];
-	return do_linux_brk(brk);
+	return do_brk(brk);
 }
 
 static uint32_t
@@ -506,7 +530,7 @@ __sys_linux_fstat(uint32_t args[])
 {
   int fd = (int)args[0];
   struct linux_stat *st = (struct linux_stat*)args[1];
-  kprintf("TODO __sys_linux_fstat, %d %d\n", fd, sizeof(struct linux_stat));
+  //kprintf("TODO __sys_linux_fstat, %d %d\n", fd, sizeof(struct linux_stat));
   return sysfile_linux_fstat(fd, st);
 }
 
@@ -641,10 +665,67 @@ __sys_linux_gettimeofday(uint32_t arg[])
   return ucore_gettimeofday(tv,tz);
 }
 
+#ifdef UCONFIG_BIONIC_LIBC
+static uint32_t
+__sys_linux_gettid(uint32_t arg[])
+{
+	return pls_read(current)->tid;
+}
 
+static uint32_t
+__sys_arm_linux_set_tls(uint32_t arg[])
+{
+	struct user_tls_desc *tlsp = (struct user_tls_desc*)arg[0];
+	return do_set_tls(tlsp);
+}
+
+static uint32_t
+__sys_linux_stat64(uint32_t arg[])
+{
+	char *path = (char*)arg[0];
+	struct linux_stat64 *filestat = arg[1];
+	return sysfile_linux_stat64(path, filestat);
+}
+
+static uint32_t
+__sys_linux_madvise(uint32_t arg[])
+{
+	void *addr = (void*)arg[0];
+	size_t len = arg[1];
+	int advice = arg[2];
+	return do_madvise(addr, len, advice);
+}
+
+static uint32_t
+__sys_linux_futex(uint32_t arg[])
+{
+	uintptr_t uaddr = (uintptr_t)arg[0];
+	int op = arg[1] & 127;
+	int val = arg[2];
+	return do_futex(uaddr, op, val);
+}
+
+static uint32_t
+__sys_linux_clock_gettime(uint32_t arg[])
+{
+	struct linux_timespec *time = (struct linux_timespec*)arg[1];
+	return do_clock_gettime(time);
+}
+
+static uint32_t
+__sys_linux_fstat64(uint32_t arg[])
+{
+	int fd = (int)arg[0];
+	struct linux_stat64 *st = (struct linux_stat64*)arg[1];
+	return sysfile_linux_fstat64(fd, st);
+}
+
+#endif //UCONFIG_BIONIC_LIBC
 
 #define __UCORE_SYSCALL(x) [__NR_##x]  sys_##x
 #define __LINUX_SYSCALL(x) [__NR_##x]  __sys_linux_##x
+
+#define __ARM_LINUX_SYSCALL(x) [__ARM_NR_##x] __sys_arm_linux_##x
 
 #define sys_dup2 sys_dup
 
@@ -723,6 +804,19 @@ static uint32_t (*_linux_syscalls[])(uint32_t arg[]) = {
   __LINUX_SYSCALL(getgid32),
   __LINUX_SYSCALL(getegid32),
   __LINUX_SYSCALL(gettimeofday),
+
+#ifdef UCONFIG_BIONIC_LIBC
+
+  __LINUX_SYSCALL(mprotect),
+  __LINUX_SYSCALL(gettid),
+
+  __ARM_LINUX_SYSCALL(set_tls),
+  __LINUX_SYSCALL(stat64),
+  __LINUX_SYSCALL(madvise),
+  __LINUX_SYSCALL(futex),
+  __LINUX_SYSCALL(clock_gettime),
+  __LINUX_SYSCALL(fstat64),
+#endif //UCONFIG_BIONIC_LIBC
 
 };
 
