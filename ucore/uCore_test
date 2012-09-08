@@ -82,6 +82,7 @@ run_test() {
     TEST_SPEC=$1
 
     arch=
+    timeout=
     grep "^@.*" $TEST_SPEC | sed "s/^@\([A-Za-z0-9_]*\)[ \t]*\([^ \t]*\)$/\1=\2/g" > $TEST_RESULT_DIR/$SPEC_TMP
     source $TEST_RESULT_DIR/$SPEC_TMP
     if [ $arch ]; then
@@ -91,6 +92,9 @@ run_test() {
         fi
     fi
     name=`basename $TEST_SPEC .testspec`
+    if [ -z "$timeout" ] || [ $timeout -gt 600 ]; then
+        timeout=$TIMEOUT
+    fi
 
     export UCORE_TEST=$program
     printf "%-70s" "TEST $name " >> $SUMMARY
@@ -102,7 +106,7 @@ run_test() {
     fi
 
     (
-        ulimit -t $TIMEOUT
+        ulimit -t $timeout
         exec ./uCore_run -d $BUILD_DIR -t
     ) > /dev/null 2>&1 &
     pid=$!
