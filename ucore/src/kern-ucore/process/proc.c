@@ -1048,6 +1048,7 @@ do_execve(const char *filename, const char **argv, const char **envp) {
 		goto execve_exit;
 	
     put_kargv(argc, kargv);
+    put_kargv(argc, kenvp);
     return 0;
 
 execve_exit:
