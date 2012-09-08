@@ -83,9 +83,9 @@ run_test() {
 
     arch=
     timeout=
-    grep "^@.*" $TEST_SPEC | sed "s/^@\([A-Za-z0-9_]*\)[ \t]*\([^ \t]*\)$/\1=\2/g" > $TEST_RESULT_DIR/$SPEC_TMP
+    grep "^@.*" $TEST_SPEC | sed "s/^@\([A-Za-z0-9_]*\)[ \t]*\(.*\)$/\1=\"\2\"/g" > $TEST_RESULT_DIR/$SPEC_TMP
     source $TEST_RESULT_DIR/$SPEC_TMP
-    if [ $arch ]; then
+    if [ "$arch" ]; then
         echo $arch | grep "\b$UCONFIG_ARCH\b" > /dev/null 2>&1
         if [ $? -ne 0 ]; then
             return 10
@@ -212,7 +212,7 @@ if [[ $TEST_CASE != "" ]]; then
         exit 1
     fi
 else
-    find $TEST_SRC_DIR -name "*.testspec" > $TEST_RESULT_DIR/$TEST_LIST
+    find $TEST_SRC_DIR | grep "\.testspec$" > $TEST_RESULT_DIR/$TEST_LIST
 fi
 
 while read spec; do
