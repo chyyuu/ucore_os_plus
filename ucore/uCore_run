@@ -55,7 +55,7 @@ case $UCONFIG_ARCH in
             else
                 QEMU_OPT="-serial stdio"
             fi
-            emulator-arm -avd $AVD -kernel $BUILD_DIR/kernel/kernel-arm.elf -no-window -qemu $QEMU_OPT
+            exec emulator-arm -avd $AVD -kernel $BUILD_DIR/kernel/kernel-arm.elf -no-window -qemu $QEMU_OPT
         else
             echo What kind of board for ARM is this?
             echo Consider supporting your board in uCore_run
