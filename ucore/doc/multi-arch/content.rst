@@ -4,14 +4,6 @@ Content Ucore
 
 This document describes what is discussed in other manuals.
 
-build
-=====
-
-* How to build multi-arch ucore for various platforms supported.
-* Makefiles in the source.
-* Variables for cross-building.
-* Common targets.
-
 codetree
 ========
 
