@@ -203,13 +203,17 @@ while getopts "d:f:hrst:w:" opt; do
     esac
 done
 
+TIMESTAMP=`date +%Y%m%d-%H%M%S`
 if [[ $RECORD_MODE = "y" ]]; then
-    TEST_RESULT_DIR=$BUILD_DIR/test-result.`date +%Y%m%d-%H%M%S`
+    TEST_RESULT_DIR=$BUILD_DIR/test-result.$TIMESTAMP
     SUMMARY=$TEST_RESULT_DIR/summary
 else
     TEST_RESULT_DIR=/tmp/uCore_test
 fi
 mkdir -p $TEST_RESULT_DIR
+if [[ $RECORD_MODE = "y" ]]; then
+    ln -fs test-result.$TIMESTAMP $BUILD_DIR/test-result.latest
+fi
 
 source $BUILD_DIR/config/auto.conf
 
@@ -253,12 +257,11 @@ while read spec; do
     esac
 done < $TEST_RESULT_DIR/$TEST_LIST
 
-echo >> $SUMMARY
-echo "==================== Test Summary ====================" >> $SUMMARY
+echo "========== Test Summary ==========" >> $SUMMARY
 echo "  Total   $TOTAL" >> $SUMMARY
 echo "  Passed  $PASSED" >> $SUMMARY
 echo "  Failed  $FAILED" >> $SUMMARY
-echo "======================================================" >> $SUMMARY
+echo "==================================" >> $SUMMARY
 
 if [[ $RECORD_MODE = "y" ]]; then
     tail -n 5 $SUMMARY
