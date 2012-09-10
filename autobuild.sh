@@ -4,6 +4,10 @@ pushd `dirname $0` > /dev/null
 source autotest.config
 cd ucore
 
+# Remove previous builds first
+rm -rf $BUILD_DIR_I386
+rm -rf $BUILD_DIR_ARM
+
 # Build uCore for i386
 make O=$BUILD_DIR_I386 ARCH=i386 defconfig
 make O=$BUILD_DIR_I386 kernel
