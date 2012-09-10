@@ -19,5 +19,4 @@ target remote 127.0.0.1:1234
 #c
 #b switch_to
 #b yaffs_vop_namefile
-#display yramsim_dev0.param.name
 
