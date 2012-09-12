@@ -1,5 +1,5 @@
 #file obj/kernel-initrd-versatilepb
-#file obj/kernel/kernel-arm.elf
+file obj/kernel/kernel-arm.elf
 define hook-stop
 x/2i $pc
 end
