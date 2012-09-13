@@ -498,7 +498,7 @@ __sys_linux_mprotect(uint32_t arg[])
 static uint32_t 
 __sys_linux_brk(uint32_t arg[]){
 	uintptr_t brk = (uintptr_t)arg[0];
-	return do_brk(brk);
+	return do_linux_brk(brk);
 }
 
 static uint32_t
