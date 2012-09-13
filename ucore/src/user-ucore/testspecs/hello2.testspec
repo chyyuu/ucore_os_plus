@@ -1,4 +1,5 @@
 @program	/testbin/hello2
+@arch		i386
 
   - 'kernel_execve: pid = [0-9]{1,2}, name = "/testbin/hello2".'
     'Hello world!!.'

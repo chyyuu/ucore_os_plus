@@ -1,7 +1,7 @@
 #
 # Toolchain setup
 #
-CROSS_COMPILE="arm-linux-"
+CROSS_COMPILE="arm-eabi-"
 ADDITIONAL_CFLAGS="-g -ggdb"
 ADDITIONAL_LDFLAGS=""
 

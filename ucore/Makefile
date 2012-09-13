@@ -17,6 +17,7 @@ export TOPDIR KTREE OBJPATH_ROOT
 
 CONFIG = package/config
 CONFIG_SCRIPT = $(OBJPATH_ROOT)/.config
+DEFCONFIG_SCRIPT = $(OBJPATH_ROOT)/.defconfig
 export KCONFIG_CONFIG=$(CONFIG_SCRIPT)
 CONFIG_DIR := $(OBJPATH_ROOT)/config
 KCONFIG_AUTOCONFIG=$(CONFIG_DIR)/auto.conf
@@ -84,20 +85,31 @@ export HOSTAR HOSTAS HOSTCC HOSTCXX HOSTLD
 HOSTCFLAGS=$(CFLAGS_FOR_BUILD)
 export HOSTCFLAGS
 
-PHONY+=menuconfig clean all
+PHONY+=defconfig menuconfig clean all
 
 all: kernel
 
-$(CONFIG_SCRIPT):
+$(CONFIG_SCRIPT): $(DEFCONFIG_SCRIPT) | $(CONFIG_DIR)
+	@cp $(CONFIG_DEFCONFIG) $(CONFIG_SCRIPT);
+
+$(DEFCONFIG_SCRIPT): | $(CONFIG_DIR)
 	@if [ -e $(CONFIG_DEFCONFIG) ]; then \
-		cp $(CONFIG_DEFCONFIG) $(CONFIG_SCRIPT); \
+		cp $(CONFIG_DEFCONFIG) $(DEFCONFIG_SCRIPT); \
 	else \
 		echo No defconfig found for ARCH \"$(ARCH)\" and BOARD \"$(BOARD)\"!; \
 		exit 1; \
-	fi \
+	fi
+
+defconfig: $(DEFCONFIG_SCRIPT) $(CONFIG)/conf | $(CONFIG_DIR)
+	@rm -f $(KCONFIG_AUTOCONFIG) $(KCONFIG_AUTOHEADER)
+	@cp $(DEFCONFIG_SCRIPT) $(CONFIG_SCRIPT)
+	@$(CONFIG)/conf -D $(CONFIG_SCRIPT) $(CONFIG_CONFIG_IN)
+
+$(CONFIG)/conf:
+	$(MAKE) CC="$(HOSTCC)" -C $(CONFIG) conf
 
 $(CONFIG)/mconf:
-	$(MAKE) CC="$(HOSTCC)" -C $(CONFIG) conf mconf
+	$(MAKE) CC="$(HOSTCC)" -C $(CONFIG) mconf
 
 menuconfig: $(CONFIG_DIR) $(CONFIG)/mconf $(CONFIG_SCRIPT)
 	rm -f $(KCONFIG_AUTOCONFIG) $(KCONFIG_AUTOHEADER)

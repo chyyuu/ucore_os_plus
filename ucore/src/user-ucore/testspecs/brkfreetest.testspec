@@ -1,4 +1,5 @@
 @program	/testbin/brkfreetest
+@arch		i386
 
   - 'kernel_execve: pid = [0-9]{1,2}, name = "/testbin/brkfreetest".'
     'page fault!!'
