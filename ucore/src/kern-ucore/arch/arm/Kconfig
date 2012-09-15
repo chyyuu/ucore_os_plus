@@ -64,7 +64,12 @@ config HAVE_BOOTLOADER
   bool "Use uCore bootloader"
   default n
 
+config FPU_ENABLE
+  bool "Enable FPU"
+  default n
+
 config BIONIC_LIBC
+  depends FPU_ENABLE
   bool "Support Bionic Libc"
   default n
 

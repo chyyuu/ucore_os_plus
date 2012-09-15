@@ -1473,7 +1473,8 @@ do_brk(uintptr_t *brk_store) {
         panic("kernel thread call sys_brk!!.\n");
     }
     if (brk_store == NULL) {
-        return -E_INVAL;
+   //     return -E_INVAL;
+		return mm->brk_start;
     }
 
     uintptr_t brk;
@@ -1512,7 +1513,53 @@ out_unlock:
     return 0;
 }
 
+
+/* poring from linux */
+int do_linux_brk(uintptr_t brk) {
+	uint32_t newbrk, oldbrk, retval;
+	struct mm_struct *mm = current->mm;
+	uint32_t min_brk;
+
+	if(!mm) {
+		panic("kernel thread call sys_brk!!.\n");
+	}
+
+	lock_mm(mm);
+
+	min_brk = mm->brk_start;
+	
+	if(brk < min_brk)
+		goto out_unlock;
+	
+	newbrk = ROUNDUP(brk, PGSIZE);
+	oldbrk = ROUNDUP(mm->brk, PGSIZE);
+
+	if(oldbrk == newbrk)
+		goto set_brk;
+
+	if(brk <= mm->brk) {
+		if(!mm_unmap(mm, newbrk, oldbrk - newbrk))
+			goto set_brk;
+		goto out_unlock;
+	}
+
+	if(find_vma_intersection(mm, oldbrk, newbrk + PGSIZE))
+		goto out_unlock;
+
+	/* set the brk */
+	if(mm_brk(mm, oldbrk, newbrk - oldbrk))
+		goto out_unlock;
+
+set_brk:
+	mm->brk = brk;
+out_unlock:
+	retval = mm->brk;
+	unlock_mm(mm);
+	return retval;
+}
+
 /* from x86 bionic porting */
+/*
 int
 do_linux_brk(uintptr_t brk) {
     struct mm_struct *mm = current->mm;
@@ -1551,6 +1598,7 @@ out_unlock:
     unlock_mm(mm);
     return newbrk;
 }
+*/
 
 // do_sleep - set current process state to sleep and add timer with "time"
 //          - then call scheduler. if process run again, delete timer first.
