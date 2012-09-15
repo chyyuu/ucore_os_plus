@@ -5,10 +5,10 @@ source autotest.config
 cd ucore
 
 # Run tests on i386 silently
-./uCore_test -d $BUILD_DIR_I386 -t 20 -r > /dev/null 2>&1
+./uCore_test -o -d $BUILD_DIR_I386 -t 20 -r > /dev/null 2>&1
 
 # Run tests on arm silently
-./uCore_test -t 45 -w 15 -d $BUILD_DIR_ARM -r > /dev/null 2>&1
+./uCore_test -o -t 45 -w 15 -d $BUILD_DIR_ARM -r > /dev/null 2>&1
 
 # Dump results to stdout
 echo "==================== i386 ===================="

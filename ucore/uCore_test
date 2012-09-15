@@ -78,7 +78,12 @@ check_regexps() {
         printf "%10s\n" "[  PASS  ]" >> $SUMMARY
         return 0
     else
-        printf "%10s\n" "[  FAIL  ]" >> $SUMMARY
+        if [[ $HTML_OUTPUT = "y" ]]; then
+            printf "<font color=red><a href=\"%s\">%10s\n</a></font>" build-$UCONFIG_ARCH/$name.error "[  FAIL  ]" >> $SUMMARY
+        else
+            printf "%10s\n" "[  FAIL  ]" >> $SUMMARY
+        fi
+
         if [[ $RECORD_MODE != "y" ]]; then
             echo -e "$error" > $stderr
         else
@@ -172,6 +177,7 @@ while getopts "d:f:hrst:w:" opt; do
             echo "  -w <time>                    Wait for <time> seconds before starting gdb after"
             echo "                               the emulator is started.                         "
             echo "                               default to 0                                     "
+            echo "  -o                           HTML output                                      "
             echo "                                                                                "
             echo "This script is platform-independent.                                            "
             echo "See './uCore_run -h' for supported platforms.                                   "
@@ -197,6 +203,8 @@ while getopts "d:f:hrst:w:" opt; do
                 *) WAIT_TIMEOUT=$OPTARG ;;
             esac
             ;;
+        o)
+            HTML_OUTPUT=y
         ?)
             exit 1
             ;;
