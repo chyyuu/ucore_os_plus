@@ -8,6 +8,7 @@ cd ucore
 ./uCore_test -d $BUILD_DIR_I386 -t 20 -r > /dev/null 2>&1
 
 # Run tests on arm silently
+export BIONIC_LIBC_TEST_DIR=../ucore_lib_bioliclibc/
 ./uCore_test -t 45 -w 15 -d $BUILD_DIR_ARM -r > /dev/null 2>&1
 
 # Dump results to stdout

@@ -137,22 +137,26 @@ $(TOOLS_MKSFS): | $(OBJPATH_ROOT)
 	$(Q)$(MAKE) CC=$(HOSTCC) -f $(TOOLS_MKSFS_DIR)/Makefile -C $(TOOLS_MKSFS_DIR) all
 
 ## image
-SFSIMG_FILE := $(OBJPATH_ROOT)/sfs.img
+SFSIMG_LINK := $(OBJPATH_ROOT)/sfs.img
+SFSIMG_FILE := $(OBJPATH_ROOT)/sfs-orig.img
 TMPSFS := $(OBJPATH_ROOT)/.tmpsfs
-sfsimg: $(SFSIMG_FILE)
+sfsimg: $(SFSIMG_LINK)
+
+$(SFSIMG_LINK): $(SFSIMG_FILE)
+	@ln -s sfs-orig.img $@
 
 $(SFSIMG_FILE): $(TOOLS_MKSFS) userlib userapp FORCE | $(OBJPATH_ROOT)
 	@echo Making $@
-	mkdir -p $(TMPSFS)
-	cp -r $(OBJPATH_ROOT)/user-ucore/bin $(TMPSFS)
+	@mkdir -p $(TMPSFS)
+	@cp -r $(OBJPATH_ROOT)/user-ucore/bin $(TMPSFS)
 ifneq ($(UCORE_TEST),)
-	cp -r $(OBJPATH_ROOT)/user-ucore/testbin $(TMPSFS)
+	@cp -r $(OBJPATH_ROOT)/user-ucore/testbin $(TMPSFS)
 endif
 	-cp -r $(TOPDIR)/src/user-ucore/_initial/* $(TMPSFS)
-	rm -f $@
-	dd if=/dev/zero of=$@ bs=1M count=$(UCONFIG_SFS_IMAGE_SIZE)
-	$(TOOLS_MKSFS) $@ $(TMPSFS)
-	rm -rf $(TMPSFS)
+	@rm -f $@
+	@dd if=/dev/zero of=$@ bs=1M count=$(UCONFIG_SFS_IMAGE_SIZE)
+	@$(TOOLS_MKSFS) $@ $(TMPSFS)
+	@rm -rf $(TMPSFS)
 
 endif
 
