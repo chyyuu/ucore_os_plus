@@ -40,7 +40,6 @@ int
 sysfile_open(const char *__path, uint32_t open_flags) {
     int ret;
     char *path;
-	kprintf("path:%s\n", __path);
     if ((ret = copy_path(&path, __path)) != 0) {
         return ret;
     }
