@@ -10,10 +10,11 @@ TEST_CASE=
 TIMEOUT=10
 WAIT_TIMEOUT=0
 
-TEST_SPEC_DIR=src/user-ucore/testspecs
+UCORE_TESTSPEC_DIR=src/user-ucore/testspecs
 TEST_RESULT_DIR=
 BRK_FUNC=readline
 QEMU_SERIAL_LOG=serial.log
+TEST_SUITE_NAME=
 
 SUMMARY=$stdout
 TEST_LIST=testlist
@@ -26,9 +27,20 @@ rebuild_sfsimg() {
     UCORE_TEST=xx make O=$BUILD_DIR sfsimg > /dev/null 2>&1
     BUILD_OK=$?
     if [ $BUILD_OK -eq 0 ]; then
-	SFSIMG_CLEAN=1
+        SFSIMG_CLEAN=1
     fi
     return $BUILD_OK
+}
+
+# usage: rebuild_testimg <dir> <output path>
+rebuild_testimg() {
+    make -C $1 > /dev/null 2>&1
+    if [ $? -ne 0 ]; then
+        return 1;
+    fi
+    dd if=/dev/zero of=$2 bs=1M count=$UCONFIG_SFS_IMAGE_SIZE > /dev/null 2>&1
+    $BUILD_DIR/mksfs $2 $1 > /dev/null 2>&1
+    return $?
 }
 
 # usage: check_regexps <log file> <test spec file>
@@ -83,7 +95,7 @@ check_regexps() {
             echo -e "$error" > $stderr
         else
             echo -e "$error" > $TEST_RESULT_DIR/$name.error
-            cp $log $TEST_RESULT_DIR/$name.log
+            cat $log >> $TEST_RESULT_DIR/$name.error
         fi
         return 1
     fi
@@ -96,16 +108,20 @@ run_test() {
     grep "^@sfs_force_rebuild[ \t]*$" $TEST_SPEC > /dev/null 2>&1
     found=$(($? == 0))
     if [ $found -eq 1 ] && [ $SFSIMG_CLEAN -ne 1 ]; then
-	rebuild_sfsimg
-	if [ $? -ne 0 ]; then
-	    return 1
-	fi
+        rebuild_sfsimg
+        if [ $? -ne 0 ]; then
+            return 1
+        fi
     fi
 
     arch=
     timeout=
+    program=
     grep "^@.*" $TEST_SPEC | sed "s/^@\([A-Za-z0-9_]*\)[ \t]*\(.*\)$/\1=\"\2\"/g" > $TEST_RESULT_DIR/$SPEC_TMP
     source $TEST_RESULT_DIR/$SPEC_TMP
+    if [ -z $program ]; then
+        return 10
+    fi
     if [ "$arch" ]; then
         echo $arch | grep "\b$UCONFIG_ARCH\b" > /dev/null 2>&1
         if [ $? -ne 0 ]; then
@@ -118,7 +134,7 @@ run_test() {
     fi
 
     export UCORE_TEST=$program
-    printf "%-70s" "TEST $name " >> $SUMMARY
+    printf "%-70s" "TEST <$TEST_SUITE_NAME> $name " >> $SUMMARY
 
     make O=$BUILD_DIR > /dev/null 2>&1
     if [ $? -ne 0 ]; then
@@ -148,6 +164,31 @@ run_test() {
     fi
 
     return $TEST_RESULT
+}
+
+# usage: run_test_suite <name> <dir>
+run_test_suite() {
+    if [ -z $2 ]; then
+        return 1
+    fi
+
+    TEST_SUITE_NAME=$1
+    find $2 | grep "\.testspec$" | sort > $TEST_RESULT_DIR/$TEST_LIST
+    while read spec; do
+        TOTAL=$(( ++TOTAL ))
+        run_test $spec
+        case $? in
+            0)
+                PASSED=$(( ++PASSED ))
+                ;;
+            1)
+                FAILED=$(( ++FAILED ))
+                ;;
+            10)
+                TOTAL=$(( --TOTAL ))
+                ;;
+        esac
+    done < $TEST_RESULT_DIR/$TEST_LIST
 }
 
 while getopts "d:f:hrst:w:" opt; do
@@ -221,7 +262,17 @@ TOTAL=0
 PASSED=0
 FAILED=0
 
-# Build tests into sfsimg
+if [[ $TEST_CASE != "" ]]; then
+    if [ -f $TEST_CASE ]; then
+        run_test $TEST_CASE
+    else
+        echo "Spec file $TEST_CASE does not exist!" > $stderr
+        exit 1
+    fi
+    exit 0
+fi
+
+# uCore builtin test suite
 if [[ $NO_BUILD_SFSIMG != "y" ]]; then
     rebuild_sfsimg
     if [ $? -ne 0 ]; then
@@ -229,33 +280,27 @@ if [[ $NO_BUILD_SFSIMG != "y" ]]; then
         exit 1
     fi
 fi
+run_test_suite ucore $UCORE_TESTSPEC_DIR
 
-if [[ $TEST_CASE != "" ]]; then
-    if [ -f $TEST_CASE ]; then
-        echo $TEST_CASE > $TEST_RESULT_DIR/$TEST_LIST
-    else
-        echo "Spec file $TEST_CASE does not exist!" > $stderr
-        exit 1
+# bionic libc
+if [ ! -z $BIONIC_LIBC_TEST_DIR ]; then
+    rebuild_testimg $BIONIC_LIBC_TEST_DIR $BUILD_DIR/sfs-bionic.img
+    if [ $? -eq 0 ]; then
+        rm -rf $BUILD_DIR/sfs.img
+        ln -s sfs-bionic.img $BUILD_DIR/sfs.img
+        run_test_suite "bionic libc" $BIONIC_LIBC_TEST_DIR/testspecs
     fi
-else
-    find $TEST_SRC_DIR | grep "\.testspec$" | sort > $TEST_RESULT_DIR/$TEST_LIST
 fi
 
-while read spec; do
-    TOTAL=$(( ++TOTAL ))
-    run_test $spec
-    case $? in
-        0)
-            PASSED=$(( ++PASSED ))
-            ;;
-        1)
-            FAILED=$(( ++FAILED ))
-            ;;
-        10)
-            TOTAL=$(( --TOTAL ))
-            ;;
-    esac
-done < $TEST_RESULT_DIR/$TEST_LIST
+# uclibc
+if [ ! -z $UCLIBC_TEST_DIR ]; then
+    rebuild_testimg $UCLIBC_TEST_DIR $BUILD_DIR/sfs-uclibc.img
+    if [ $? -eq 0 ]; then
+        rm -rf $BUILD_DIR/sfs.img
+        ln -s sfs-uclibc.img $BUILD_DIR/sfs.img
+        run_test_suite "uclibc" $UCLIBC_TEST_DIR/testspecs
+    fi
+fi
 
 echo "========== Test Summary ==========" >> $SUMMARY
 echo "  Total   $TOTAL" >> $SUMMARY
