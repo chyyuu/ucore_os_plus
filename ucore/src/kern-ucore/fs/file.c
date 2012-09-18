@@ -541,6 +541,14 @@ void *linux_devfile_mmap2(void *addr, size_t len, int prot, int flags, int fd, s
 }
 
 #ifdef UCONFIG_BIONIC_LIBC
+
+
+int linux_access(char *path, int amode) {
+	/* do nothing but return 0 */
+	return 0;
+}
+
+
 void *linux_regfile_mmap2(void *addr, size_t len, int prot, int flags, int fd, size_t off)
 {
 	int subret = -E_INVAL;
