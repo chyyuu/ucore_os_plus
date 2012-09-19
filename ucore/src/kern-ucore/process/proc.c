@@ -758,7 +758,7 @@ load_icode_read(int fd, void *buf, size_t len, off_t offset) {
 
 //#ifdef UCONFIG_BIONIC_LIBC
 static int
-map_ph(int fd, struct proghdr *ph, struct mm_struct *mm, uint32_t *pbias) {
+map_ph(int fd, struct proghdr *ph, struct mm_struct *mm, uint32_t *pbias, uint32_t linker) {
 	int ret = 0;
 	struct Page *page;
 	uint32_t vm_flags = 0;
@@ -786,7 +786,7 @@ map_ph(int fd, struct proghdr *ph, struct mm_struct *mm, uint32_t *pbias) {
 		goto bad_cleanup_mmap;
 	}
 
-	if(mm->brk_start < ph->p_va + bias + ph->p_memsz) {
+	if(!linker && mm->brk_start < ph->p_va + bias + ph->p_memsz) {
 		mm->brk_start = ph->p_va + bias + ph->p_memsz;
 	}
 
@@ -920,7 +920,7 @@ load_icode(int fd, int argc, char **kargv, int envc, char **kenvp) {
 		bias = 0x30800000;
 	  }
 
-	  if((ret = map_ph(fd, ph, mm, &bias)) != 0) {
+	  if((ret = map_ph(fd, ph, mm, &bias, 0)) != 0) {
 		kprintf("load address: 0x%08x size: %d\n", ph->p_va, ph->p_memsz);
 		goto bad_cleanup_mmap;
 	  }
@@ -1051,7 +1051,7 @@ load_icode(int fd, int argc, char **kargv, int envc, char **kenvp) {
 			if(interp_ph->p_type != ELF_PT_LOAD) {
 				continue;
 			}
-			assert((ret = map_ph(interp_fd, interp_ph, mm, &bias)) == 0);
+			assert((ret = map_ph(interp_fd, interp_ph, mm, &bias, 1)) == 0);
 		}
 
 		real_entry = interp_elf->e_entry + bias;
