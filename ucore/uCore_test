@@ -5,12 +5,18 @@ stderr=/dev/stderr
 
 BUILD_DIR=obj
 RECORD_MODE=
-NO_BUILD_SFSIMG=
 TEST_CASE=
 TIMEOUT=10
 WAIT_TIMEOUT=0
 
-UCORE_TESTSPEC_DIR=src/user-ucore/testspecs
+DEFAULT_TEST=y
+UCORE_TEST_DIR=src/user-ucore
+UCORE_TEST_ENABLED=
+: ${BIONIC_LIBC_TEST_DIR=../../ucore_lib_bioliclibc}
+BIONIC_LIBC_TEST_ENABLED=
+: ${UCLIBC_TEST_DIR=../../ucore_lib_uclibc}
+UCLIBC_ENABLED=
+
 TEST_RESULT_DIR=
 BRK_FUNC=readline
 QEMU_SERIAL_LOG=serial.log
@@ -23,24 +29,25 @@ PATTERN_TMP=.pattern.tmp
 
 SFSIMG_CLEAN=0
 
-rebuild_sfsimg() {
-    UCORE_TEST=xx make O=$BUILD_DIR sfsimg > /dev/null 2>&1
-    BUILD_OK=$?
+# usage: rebuild_testimg <dir> <output path>
+rebuild_testimg() {
+    BUILD_OK=1
+    if [ $TEST_SUITE_NAME = "ucore" ]; then
+        UCORE_TEST=xx make O=$BUILD_DIR sfsimg > /dev/null 2>&1
+        BUILD_OK=$?
+    else
+        make -C $1 > /dev/null 2>&1
+        if [ $? -eq 0 ]; then
+            dd if=/dev/zero of=$2 bs=1M count=$UCONFIG_SFS_IMAGE_SIZE > /dev/null 2>&1
+            $BUILD_DIR/mksfs $2 $1 > /dev/null 2>&1
+            BUILD_OK=$?
+        fi
+    fi
+
     if [ $BUILD_OK -eq 0 ]; then
         SFSIMG_CLEAN=1
     fi
     return $BUILD_OK
-}
-
-# usage: rebuild_testimg <dir> <output path>
-rebuild_testimg() {
-    make -C $1 > /dev/null 2>&1
-    if [ $? -ne 0 ]; then
-        return 1;
-    fi
-    dd if=/dev/zero of=$2 bs=1M count=$UCONFIG_SFS_IMAGE_SIZE > /dev/null 2>&1
-    $BUILD_DIR/mksfs $2 $1 > /dev/null 2>&1
-    return $?
 }
 
 # usage: check_regexps <log file> <test spec file>
@@ -166,14 +173,26 @@ run_test() {
     return $TEST_RESULT
 }
 
-# usage: run_test_suite <name> <dir>
+# usage: run_test_suite <name> <src dir> <output file name>
 run_test_suite() {
-    if [ -z $2 ]; then
+    if [ -z $3 ]; then
         return 1
     fi
-
     TEST_SUITE_NAME=$1
-    find $2 | grep "\.testspec$" | sort > $TEST_RESULT_DIR/$TEST_LIST
+    rebuild_testimg $2 $BUILD_DIR/$3
+    if [ $? -ne 0 ]; then
+        return 1;
+    fi
+    ln -snf $3 $BUILD_DIR/sfs.img
+
+    if [ ! -z $TEST_CASE ]; then
+        if [ ! -f $TEST_CASE ]; then
+            return 1
+        fi
+        echo $TEST_CASE > $TEST_RESULT_DIR/$TEST_LIST
+    else
+        find $2/testspecs | grep "\.testspec$" | sort > $TEST_RESULT_DIR/$TEST_LIST
+    fi
     while read spec; do
         TOTAL=$(( ++TOTAL ))
         run_test $spec
@@ -191,7 +210,7 @@ run_test_suite() {
     done < $TEST_RESULT_DIR/$TEST_LIST
 }
 
-while getopts "d:f:hrst:w:" opt; do
+while getopts "d:f:hrs:t:w:" opt; do
     case $opt in
         d)
             BUILD_DIR=$OPTARG
@@ -207,7 +226,8 @@ while getopts "d:f:hrst:w:" opt; do
             echo "  -f <spec file>               Run the test given                               "
             echo "  -r                           Record error messages in the build               "
             echo "                               dir and do not print them on stderr              "
-            echo "  -s                           Do not rebuild sfsimg                            "
+            echo "  -s <testsuite name>          Name of the testsuite to be run                  "
+            echo "                               Can be used multiple times                       "
             echo "  -t <timeout>                 How long each test instance can live in seconds  "
             echo "                               default to 10                                    "
             echo "  -w <time>                    Wait for <time> seconds before starting gdb after"
@@ -217,6 +237,8 @@ while getopts "d:f:hrst:w:" opt; do
             echo "This script is platform-independent.                                            "
             echo "See './uCore_run -h' for supported platforms.                                   "
             echo "                                                                                "
+            echo "Supported test suites: ucore, bionic                                            "
+            echo "                                                                                "
             echo "Report bugs to https://github.com/chyyuu/ucore_plus/issues                      "
             exit 0
             ;;
@@ -224,7 +246,16 @@ while getopts "d:f:hrst:w:" opt; do
             RECORD_MODE=y
             ;;
         s)
-            NO_BUILD_SFSIMG=y
+            DEFAULT_TEST=
+            case $OPTARG in
+                ucore)  UCORE_TEST_ENABLED=y ;;
+                bionic) BIONIC_LIBC_TEST_ENABLED=y ;;
+                all)
+                    UCORE_TEST_ENABLED=y
+                    BIONIC_LIBC_TEST_ENABLED=y
+                    ;;
+                *) echo Unknown test suite $OPTARG! ;;
+            esac
             ;;
         t)
             case $OPTARG in
@@ -244,6 +275,10 @@ while getopts "d:f:hrst:w:" opt; do
     esac
 done
 
+if [[ $DEFAULT_TEST = "y" ]]; then
+    UCORE_TEST_ENABLED=y
+fi
+
 TIMESTAMP=`date +%Y%m%d-%H%M%S`
 if [[ $RECORD_MODE = "y" ]]; then
     TEST_RESULT_DIR=$BUILD_DIR/test-result.$TIMESTAMP
@@ -253,7 +288,7 @@ else
 fi
 mkdir -p $TEST_RESULT_DIR
 if [[ $RECORD_MODE = "y" ]]; then
-    ln -fs test-result.$TIMESTAMP $BUILD_DIR/test-result.latest
+    ln -fns test-result.$TIMESTAMP $BUILD_DIR/test-result.latest
 fi
 
 source $BUILD_DIR/config/auto.conf
@@ -262,44 +297,19 @@ TOTAL=0
 PASSED=0
 FAILED=0
 
-if [[ $TEST_CASE != "" ]]; then
-    if [ -f $TEST_CASE ]; then
-        run_test $TEST_CASE
-    else
-        echo "Spec file $TEST_CASE does not exist!" > $stderr
-        exit 1
-    fi
-    exit 0
-fi
-
 # uCore builtin test suite
-if [[ $NO_BUILD_SFSIMG != "y" ]]; then
-    rebuild_sfsimg
-    if [ $? -ne 0 ]; then
-        echo "Cannot build sfsimg with unit tests!" > $stderr
-        exit 1
-    fi
+if [ $UCORE_TEST_ENABLED = "y" ] && [ -e $UCORE_TEST_DIR ]; then
+    run_test_suite "ucore" $UCORE_TEST_DIR sfs-orig.img
 fi
-run_test_suite ucore $UCORE_TESTSPEC_DIR
 
 # bionic libc
-if [ ! -z $BIONIC_LIBC_TEST_DIR ]; then
-    rebuild_testimg $BIONIC_LIBC_TEST_DIR $BUILD_DIR/sfs-bionic.img
-    if [ $? -eq 0 ]; then
-        rm -rf $BUILD_DIR/sfs.img
-        ln -s sfs-bionic.img $BUILD_DIR/sfs.img
-        run_test_suite "bionic libc" $BIONIC_LIBC_TEST_DIR/testspecs
-    fi
+if [ $BIONIC_LIBC_TEST_ENABLED = "y" ] && [ -e $BIONIC_LIBC_TEST_DIR ]; then
+    run_test_suite "bionic libc" $BIONIC_LIBC_TEST_DIR sfs-bionic.img
 fi
 
 # uclibc
-if [ ! -z $UCLIBC_TEST_DIR ]; then
-    rebuild_testimg $UCLIBC_TEST_DIR $BUILD_DIR/sfs-uclibc.img
-    if [ $? -eq 0 ]; then
-        rm -rf $BUILD_DIR/sfs.img
-        ln -s sfs-uclibc.img $BUILD_DIR/sfs.img
-        run_test_suite "uclibc" $UCLIBC_TEST_DIR/testspecs
-    fi
+if [ $UCLIBC_TEST_ENABLED = "y" ] && [ -e $UCLIBC_TEST_DIR ]; then
+    run_test_suite "uclibc" $BIONIC_LIBC_TEST_DIR sfs-uclibc.img
 fi
 
 echo "========== Test Summary ==========" >> $SUMMARY
