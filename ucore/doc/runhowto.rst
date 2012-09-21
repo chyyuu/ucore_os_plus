@@ -1,6 +1,6 @@
-===========
-Build uCore
-===========
+===================
+Build and Run uCore
+===================
 
 :Author: Mao Junjie <eternal.n08@gmail.com>
 :Version: $Revision: 2 $
@@ -8,17 +8,6 @@ Build uCore
 This document discusses how to build ucore for different architectures and the usage of scripts for running and testing the system.
 
 .. contents::
-
-Environment Requirement
-=======================
-uCore for i386
-  * binutils and gcc for x86
-  * gdb
-  * Qemu for i386
-
-uCore for arm
-  * binutils and gcc for arm-eabi
-  * emulator-arm from Android SDK
 
 Building uCore
 ==============
@@ -93,5 +82,8 @@ The uCore_test script is used to automatically carry out a series of tests. Here
 bash uCore_test -d <dir>
   Running all tests from ucore/src/user-ucore/testspecs, using the uCore build in <dir>, and print the results on the terminal.
 
-bash uCore_test -d <dir> -f <testspec>
-  Running the test given by <testspec> using the uCore build in <dir>.
+bash uCore_test -d <dir> -s <testsuite>
+  Running all testsuites listed. The "-s" option can be used multiple times. Use "bash uCore_test -h" for supported testsuites.
+
+bash uCore_test -d <dir> -f <testspec> -s <testsuite>
+  Running the test given by <testspec> in <testsuite> using the uCore build in <dir>.
