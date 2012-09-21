@@ -143,7 +143,7 @@ TMPSFS := $(OBJPATH_ROOT)/.tmpsfs
 sfsimg: $(SFSIMG_LINK)
 
 $(SFSIMG_LINK): $(SFSIMG_FILE)
-	@ln -s sfs-orig.img $@
+	@ln -sf sfs-orig.img $@
 
 $(SFSIMG_FILE): $(TOOLS_MKSFS) userlib userapp FORCE | $(OBJPATH_ROOT)
 	@echo Making $@

@@ -1896,6 +1896,9 @@ out_unlock:
 // user_main - kernel thread used to exec a user program
 static int
 user_main(void *arg) {
+    sysfile_open("stdin:", O_RDONLY);
+    sysfile_open("stdout:", O_WRONLY);
+    sysfile_open("stdout:", O_WRONLY);
 #ifdef UNITTEST
 #ifdef TESTSCRIPT
     KERNEL_EXECVE3(UNITTEST, TESTSCRIPT);

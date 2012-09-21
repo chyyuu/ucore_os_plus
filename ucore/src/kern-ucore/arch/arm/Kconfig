@@ -66,12 +66,12 @@ config HAVE_BOOTLOADER
 
 config FPU_ENABLE
   bool "Enable FPU"
-  default n
+  default y
 
 config BIONIC_LIBC
   depends FPU_ENABLE
   bool "Support Bionic Libc"
-  default n
+  default y
 
 config BOOTLOADER_START_ADDR
   depends HAVE_BOOTLOADER
