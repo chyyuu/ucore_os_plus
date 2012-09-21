@@ -1,0 +1,2 @@
+On the bottom of the picture is the supervisor, which set the kernel
+environment and start the kernrel.
