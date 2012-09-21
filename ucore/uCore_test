@@ -32,14 +32,17 @@ SFSIMG_CLEAN=0
 # usage: rebuild_testimg <dir> <output path>
 rebuild_testimg() {
     BUILD_OK=1
-    if [ $TEST_SUITE_NAME = "ucore" ]; then
+    if [ "$TEST_SUITE_NAME" = "ucore" ]; then
         UCORE_TEST=xx make O=$BUILD_DIR sfsimg > /dev/null 2>&1
         BUILD_OK=$?
     else
         make -C $1 > /dev/null 2>&1
+        if [ ! -e $1/rootfs ]; then
+            return 1
+        fi
         if [ $? -eq 0 ]; then
             dd if=/dev/zero of=$2 bs=1M count=$UCONFIG_SFS_IMAGE_SIZE > /dev/null 2>&1
-            $BUILD_DIR/mksfs $2 $1 > /dev/null 2>&1
+            $BUILD_DIR/mksfs $2 $1/rootfs > /dev/null 2>&1
             BUILD_OK=$?
         fi
     fi
@@ -298,17 +301,17 @@ PASSED=0
 FAILED=0
 
 # uCore builtin test suite
-if [ $UCORE_TEST_ENABLED = "y" ] && [ -e $UCORE_TEST_DIR ]; then
+if [[ $UCORE_TEST_ENABLED = "y" ]] && [ -e $UCORE_TEST_DIR ]; then
     run_test_suite "ucore" $UCORE_TEST_DIR sfs-orig.img
 fi
 
 # bionic libc
-if [ $BIONIC_LIBC_TEST_ENABLED = "y" ] && [ -e $BIONIC_LIBC_TEST_DIR ]; then
+if [[ $BIONIC_LIBC_TEST_ENABLED = "y" ]] && [ -e $BIONIC_LIBC_TEST_DIR ]; then
     run_test_suite "bionic libc" $BIONIC_LIBC_TEST_DIR sfs-bionic.img
 fi
 
 # uclibc
-if [ $UCLIBC_TEST_ENABLED = "y" ] && [ -e $UCLIBC_TEST_DIR ]; then
+if [[ $UCLIBC_TEST_ENABLED = "y" ]] && [ -e $UCLIBC_TEST_DIR ]; then
     run_test_suite "uclibc" $BIONIC_LIBC_TEST_DIR sfs-uclibc.img
 fi
 
