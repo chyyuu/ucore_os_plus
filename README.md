@@ -38,3 +38,7 @@ In arch/xxx, add Makefile.image and include.mk
 
 ***Makefile: recursively add Makefile in your arch directory.
 
+More Document
+========
+See ucore/doc
+
