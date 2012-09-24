@@ -15,6 +15,7 @@
 #include <error.h>
 #include <syscall.h>
 #include <resource.h>
+#include <iobuf.h>
 
 
 static uint32_t
@@ -720,6 +721,33 @@ __sys_linux_fstat64(uint32_t arg[])
 	return sysfile_linux_fstat64(fd, st);
 }
 
+static uint32_t 
+__sys_linux_fcntl64(uint32_t arg[])
+{
+	int fd = (int)arg[0];
+	int cmd = (int)arg[1];
+	int ctl_arg = (int)arg[2];
+
+	return sysfile_linux_fcntl64(fd, cmd, ctl_arg);
+}
+
+static uint32_t 
+__sys_linux_access(uint32_t arg[])
+{
+	char *path = (char*)arg[0];
+	int amode = (int)arg[1];
+	return linux_access(path, amode);
+}
+
+static uint32_t 
+__sys_linux_writev(uint32_t arg[])
+{
+	int fd = (int)arg[0];
+	struct iovec *iov = (struct iovec*)arg[1];
+	int iovcnt = (int)arg[2];
+	return sysfile_writev(fd, iov, iovcnt);
+}
+
 #endif //UCONFIG_BIONIC_LIBC
 
 #define __UCORE_SYSCALL(x) [__NR_##x]  sys_##x
@@ -816,6 +844,12 @@ static uint32_t (*_linux_syscalls[])(uint32_t arg[]) = {
   __LINUX_SYSCALL(futex),
   __LINUX_SYSCALL(clock_gettime),
   __LINUX_SYSCALL(fstat64),
+  
+
+  __LINUX_SYSCALL(fcntl64),
+  __LINUX_SYSCALL(access),
+  __LINUX_SYSCALL(writev),
+
 #endif //UCONFIG_BIONIC_LIBC
 
 };

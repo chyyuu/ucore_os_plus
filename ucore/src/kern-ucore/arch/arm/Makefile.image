@@ -3,7 +3,8 @@ include $(KCONFIG_AUTOCONFIG)
 endif
 
 ifdef UCONFIG_HAVE_RAMDISK
-ifeq ($(shell if [[ $(UCONFIG_RAMDISK_FILE) = /* ]]; then echo 1; fi), 1)
+__CMD := case $(UCONFIG_RAMDISK_FILE) in /*) echo 1;; esac
+ifeq ($(shell $(__CMD)), 1)
 RAMDISK_FILE := $(shell echo $(UCONFIG_RAMDISK_FILE))
 else
 RAMDISK_FILE := $(OBJPATH_ROOT)/$(shell echo $(UCONFIG_RAMDISK_FILE))

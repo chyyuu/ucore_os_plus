@@ -16,6 +16,11 @@ struct iobuf {
     size_t io_resid;  /* Remaining amt of data to xfer */
 };
 
+struct iovec {
+	char *iov_base;
+	size_t iov_len;
+};
+
 /*
  * Copy data from a kernel buffer to a data region defined by a iobuf struct,
  * updating the iobuf struct's offset and resid fields.

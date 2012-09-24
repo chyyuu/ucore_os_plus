@@ -167,6 +167,14 @@ out:
     return ret;
 }
 
+
+int 
+sysfile_writev(int fd, struct iovec __user *iov, int iovcnt) {
+	/* do nothing but return 0 */
+	kprintf("writev: fd=%08x iov=%08x iovcnt=%d\n", fd, iov, iovcnt);
+	return 0;
+}
+
 int
 sysfile_seek(int fd, off_t pos, int whence) {
     return file_seek(fd, pos, whence);
@@ -257,6 +265,11 @@ sysfile_linux_fstat64(int fd, struct linux_stat64 __user *buf)
   unlock_mm(mm);
   kfree(kls);
   return ret;
+}
+
+int sysfile_linux_fcntl64(int fd, int cmd, int arg) {
+	kprintf("sysfile_linux_fcntl64:fd=%08x cmd=%08x arg=%08x\n", fd, cmd, arg);
+	return 0;
 }
 
 

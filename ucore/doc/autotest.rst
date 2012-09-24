@@ -49,6 +49,10 @@ The lines which doesn't match the pattern of settings lines are considered const
 ! - 'abcd[efg]'
   This constraint requires that no line should equal to "abcde" or "abcdf" or "abcdg".
 
+How to Use AutoBuild System
+=========
+See https://github.com/chyh1990/autobuild_tester/blob/master/README.md.
+
 Known Bugs
 ==========
 The parser of testspecs is ultra simple and doesn't have error-checking. Thus its behavior with illegal inputs is uncertain.
