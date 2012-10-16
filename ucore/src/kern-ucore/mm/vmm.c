@@ -52,8 +52,8 @@
 
 #ifndef UCONFIG_HEAP_SLOB
 #define __CHECK_MEMORY_LEAK() do{ \
-  assert(nr_used_pages_store == nr_used_pages());
-  assert(slab_allocated_store == slab_allocated());
+  assert(nr_used_pages_store == nr_used_pages());   \
+  assert(slab_allocated_store == slab_allocated()); \
   }while(0);
 
 #else
