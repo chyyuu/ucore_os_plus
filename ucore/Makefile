@@ -36,7 +36,7 @@ MAKEFLAGS += -rR --no-print-directory
 #### CROSS COMPILE HERE ####
 ARCH ?= $(patsubst "%",%,$(UCONFIG_ARCH))
 BOARD ?= default
-CROSS_COMPILE ?= $(UCONFIG_CROSS_COMPILE)
+CROSS_COMPILE ?= $(shell echo $(UCONFIG_CROSS_COMPILE))
 
 export CONFIG_SHELL quiet Q KBUILD_VERBOSE
 export ARCH CROSS_COMPILE

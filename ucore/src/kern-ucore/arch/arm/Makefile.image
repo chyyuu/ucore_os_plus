@@ -19,9 +19,12 @@ SEDFLAGS	= s/TEXT_START/$(UCONFIG_KERNEL_BASE)/
 
 LIBGCC := $(shell $(TARGET_CC) --print-file-name=libgcc.a)
 
+#FIXME
+NEWDDE_PATH:= /home/chenyh/os/kernel-symbol-analyzer
+
 $(KERNEL_ELF) : $(LINK_FILE) $(KERNEL_BUILTIN) $(RAMDISK_OBJ)
 	@echo Linking uCore
-	$(Q)$(TARGET_LD) -T $(LINK_FILE) $(KERNEL_BUILTIN) $(RAMDISK_OBJ) $(LIBGCC) -o $@
+	$(Q)$(TARGET_LD) -T $(LINK_FILE) $(KERNEL_BUILTIN) $(NEWDDE_PATH)/_drivers.o -L$(NEWDDE_PATH)/mod_ddelib -L$(NEWDDE_PATH)/mod_base -L$(NEWDDE_PATH)/mod_linux -lddelinux -lbase -lddelib $(NEWDDE_PATH)/__dummy.o $(RAMDISK_OBJ) $(LIBGCC) -o $@
 
 $(LINK_FILE): $(LINK_FILE_IN) $(KCONFIG_AUTOCONFIG)
 	@echo "creating linker script"

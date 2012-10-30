@@ -23,6 +23,7 @@
 #include <ramdisk.h>
 #include <kgdb-stub.h>
 #include <module.h>
+#include <dde_kit/dde_kit.h>
 
 #ifdef UCONFIG_HAVE_YAFFS2
 #include <yaffs2_direct/yaffsfs.h>
@@ -162,6 +163,9 @@ kern_init(void) {
   calibrate_delay();
   dde_init();
 #endif
+#ifdef UCONFIG_HAVE_LINUX_DDE36_BASE
+  dde_kit_init();
+#endif
 
 
 #ifdef UCONFIG_HAVE_YAFFS2
@@ -189,8 +193,6 @@ kern_init(void) {
    ucore_vfs_add_device("event0", 13, 64);
    ucore_vfs_add_device("hzfchar", 222, 0);
 #endif
-
-
 
   enable_timer_list();
   cpu_idle();                 // run idle process
