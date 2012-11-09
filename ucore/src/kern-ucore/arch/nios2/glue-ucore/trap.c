@@ -17,6 +17,7 @@
 #include <altera_avalon_timer_regs.h>
 #include <proc.h>
 #include <console.h>
+#include <nios2_timer.h>
 
 #define current (pls_read(current))
 
@@ -93,14 +94,7 @@ irq_dispatch(struct trapframe *tf) {
             ++irq_count;
             switch (i) {
             case TIMER_IRQ:
-            /*
-                while ((c = cons_getc()) != 0) {
-			        extern void dev_stdin_write(char c);
-                    dev_stdin_write(c);
-                }
-                */
-
-                IOWR_ALTERA_AVALON_TIMER_STATUS((TIMER_BASE + 0xE0000000), 0);
+                IOWR_ALTERA_AVALON_TIMER_STATUS(na_timer, 0);
                 ticks++;
                                 
 //                if (ticks % 1000 == 0)
