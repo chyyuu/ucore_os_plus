@@ -14,7 +14,7 @@ USER_LIB := $(USER_LIB_OBJDIR)/ulib.a
 BIN := $(USER_OBJ_ROOT)/bin
 TESTBIN := $(USER_OBJ_ROOT)/testbin
 
-USER_APPLIST:= cat sh ls mkdir
+USER_APPLIST:= cat sh ls mkdir wireless
 ifneq ($(UCORE_TEST),)
 USER_TESTLIST := $(basename $(wildcard tests/*.c))
 USER_TESTLIST += $(basename $(wildcard tests/arch/$(ARCH)/*.c))

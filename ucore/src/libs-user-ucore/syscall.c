@@ -236,6 +236,11 @@ sys_ioctl(int d, int request, unsigned long data) {
     return syscall(SYS_ioctl, d, request, data);
 }
 
+int
+sys_rf212_send(uint8_t len, uint8_t* data) {
+    return syscall(SYS_rf212, 1, len, data);
+}
+
 #else
 #warning ARM use different syscall method
 

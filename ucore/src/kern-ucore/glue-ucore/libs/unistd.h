@@ -65,6 +65,10 @@
 #define SYS_linux_sigsuspend   148
 #define SYS_linux_sigreturn    149
 
+/* liucong 20121109 */
+#define SYS_rf212           199
+
+
 /* SYS_fork flags */
 #define CLONE_VM             0x00000100
 #define CLONE_FS             0x00000200

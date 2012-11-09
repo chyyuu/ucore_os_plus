@@ -18,6 +18,7 @@
 #include <proc.h>
 #include <console.h>
 #include <nios2_timer.h>
+#include <rf212.h>
 
 #define current (pls_read(current))
 
@@ -110,7 +111,9 @@ irq_dispatch(struct trapframe *tf) {
                     dev_stdin_write(c);
                 }
                 break;
-
+			case RF212_IRQ_IRQ:
+				rf212_int_handler();
+				break;
             default:
                 panic("unknown irq %d\n", i);
                 break;
