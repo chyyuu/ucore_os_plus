@@ -194,6 +194,10 @@ kern_init(void) {
    ucore_vfs_add_device("hzfchar", 222, 0);
 #endif
 
+#ifdef UCONFIG_HAVE_LINUX_DDE36_BASE
+   //ucore_vfs_add_device("hzfchar", 222, 0);
+#endif
+
   enable_timer_list();
   cpu_idle();                 // run idle process
 }
