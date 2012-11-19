@@ -111,7 +111,7 @@ irq_dispatch(struct trapframe *tf) {
                     dev_stdin_write(c);
                 }
                 break;
-			case RF212_IRQ_IRQ:
+			case RF212_0_IRQ:
 				rf212_int_handler();
 				break;
             default:

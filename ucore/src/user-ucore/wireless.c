@@ -1,28 +1,3 @@
-/*
-int main()
-{
-	printf("Hello from Nios II!\n");
-	rf212_init();
-	int num;
-	while (1) {
-		scanf("%d", &num);
-		//printf("Send %d packets!\n", num);
-		uint8_t data[256];
-		uint8_t len = 125;
-		int i;
-		for (i = 0; i < len; ++i)
-			data[i] = i + 1;
-		for (i = 0; i < num; ++i) {
-			rf212_send(data, len);
-			++data[0];
-			usleep(10000);
-		}
-		printf("send over\n");
-	}
-	while (1);
-	return 0;
-}
-*/
 #include <rf212.h>
 #include <ulib.h>
 #include <stdio.h>
@@ -64,8 +39,8 @@ int main(int argc, char **argv)
     uint16_t received=0,count=0, resend=0, missing=0;
     {
     	int i;
-    	for (i = 5; i < 130; ++i)
-    		p[i] = p[i-1] + 1;
+    	for (i = 0; i < 130; ++i)
+    		p[i] = i + 1;
     }
     uint32_t* number = (uint32_t*)p;
     
@@ -76,7 +51,7 @@ int main(int argc, char **argv)
     }
     //p[2] = 0;
     *number = 0x12345678;
-    int len = 116;
+    int len = 125;
     int acc = 0;
     int total = 0;
     
@@ -84,20 +59,13 @@ int main(int argc, char **argv)
         
         //*number = count;
         if (sender == 1) {
-        	p[len - 1] = 0;
-		    uint8_t checksum = 0;
-		    for (i = 0; i < len; ++i)
-		    	checksum += p[i];
-			p[len - 1] = checksum;
 	        rf212_send(len, p);
-
-		    cprintf("#%d: %d bytes sent, number=0x%08x checksum=%x\n", count, len, *number, checksum);
+		    //cprintf("#%d: %d bytes sent, number=0x%08x\n", count, len, *number);
 
 		    if (waitms)
 			    sleep(waitms);
         } else {            
-//        	sleep(waitms / 2);
-            //byte_num = JF24C_CODE_RX(data);
+//            byte_num = JF24C_CODE_RX(data);
             
             if (byte_num == 0) {
             	if (timeout == 0)
