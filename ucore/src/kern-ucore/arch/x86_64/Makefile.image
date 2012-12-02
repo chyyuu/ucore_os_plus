@@ -17,11 +17,12 @@ LINK_FILE_IN	:= $(KTREE)/arch/${ARCH}/ucore.ld.in
 LINK_FILE     := $(KTREE_OBJ_ROOT)/arch/$(ARCH)/ucore.ld
 SEDFLAGS	= s/TEXT_START/$(UCONFIG_KERNEL_BASE)/
 
-$(KERNEL_IMG): $(BOOTSECT) $(KERNEL_BIN)
+$(KERNEL_IMG): $(BOOTSECT) $(KERNEL_BIN) $(SV_ELF)
 	@echo Making $@
 	$(Q)dd if=/dev/zero of=$@ count=10000
 	$(Q)dd if=$(BOOTSECT) of=$@ conv=notrunc
 	$(Q)dd if=$(KERNEL_ELF) of=$@ seek=1 conv=notrunc
+	${Q}dd if=${SV_ELF} of=$@ seek=$(shell echo $(shell cat ${OBJPATH_ROOT}/bootloader/kern-sect_size) + 1 | bc) conv=notrunc
 
 $(KERNEL_BIN): $(KERNEL_ELF)
 	@echo OBJCOPY $@
