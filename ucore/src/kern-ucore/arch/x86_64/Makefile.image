@@ -24,7 +24,7 @@ $(KERNEL_IMG): $(BOOTSECT) $(KERNEL_BIN) $(SV_ELF)
 	$(Q)dd if=/dev/zero of=$@ count=10000
 	$(Q)dd if=$(BOOTSECT) of=$@ conv=notrunc
 	$(Q)dd if=$(KERNEL_BIN) of=$@ seek=1 conv=notrunc
-	${Q}dd if=${SV_ELF} of=$@ seek=$(shell echo $(shell cat ${OBJPATH_ROOT}/bootloader/kern-sect_size) + 1 | bc) conv=notrunc
+	${Q}dd if=${SV_ELF} of=$@ seek=$(shell echo $(shell cat ${OBJPATH_ROOT}/kern-sect_size) + 1 | bc) conv=notrunc
 
 $(KERNEL_BIN): $(KERNEL_ELF)
 	@echo OBJCOPY $@

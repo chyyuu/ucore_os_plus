@@ -11,6 +11,4 @@ else
 fi
 
 kern_sect_size=$(echo "(( $size + 511 ) / 512)" | bc)
-mkdir -p ${T_OBJ}/bootloader/*
-rm -f ${T_OBJ}/bootloader/*
-echo $kern_sect_size > ${T_OBJ}/bootloader/kern-sect_size
+echo $kern_sect_size > ${T_OBJ}/kern-sect_size

@@ -1,5 +1,5 @@
 SRCFILES	+= $(filter %.c %.S, $(wildcard arch/${ARCH}/*))
-T_CC_ALL_FLAGS	+= -m32 -Iarch/${ARCH} -DKERN_START_SECT=$(shell echo $(shell cat ${T_OBJ}/kern-sect_size) + 1 | bc)  -D__ARCH_X86_64__
+T_CC_ALL_FLAGS	+= -m32 -Iarch/${ARCH} -DKERN_START_SECT=$(shell echo $(shell cat ${OBJPATH_ROOT}/kern-sect_size) + 1 | bc)  -D__ARCH_X86_64__
 
 include ${T_BASE}/mk/compbl.mk
 include ${T_BASE}/mk/template.mk
