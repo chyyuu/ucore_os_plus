@@ -13,6 +13,8 @@ SV_ELF     := $(OBJPATH_ROOT)/supervisor/supervisor
 SV_SVSYM   := $(KTREE_OBJ_ROOT)/svsym.o
 SV_SVSYM_S := $(KTREE_OBJ_ROOT)/kern-svsym.S
 SV_SVSYM_O := $(KTREE_OBJ_ROOT)/kern-svsym.S.o
+BOOTINFO_O := $(OBJPATH_ROOT)/bootinfo.o
+BOOTINFO_S := $(TOPDIR)/src/glue-kern/arch/x86_64/bootinfo.S
 LINK_FILE_IN	:= $(KTREE)/arch/${ARCH}/ucore.ld.in
 LINK_FILE     := $(KTREE_OBJ_ROOT)/arch/$(ARCH)/ucore.ld
 SEDFLAGS	= s/TEXT_START/$(UCONFIG_KERNEL_BASE)/
@@ -21,7 +23,7 @@ $(KERNEL_IMG): $(BOOTSECT) $(KERNEL_BIN) $(SV_ELF)
 	@echo Making $@
 	$(Q)dd if=/dev/zero of=$@ count=10000
 	$(Q)dd if=$(BOOTSECT) of=$@ conv=notrunc
-	$(Q)dd if=$(KERNEL_ELF) of=$@ seek=1 conv=notrunc
+	$(Q)dd if=$(KERNEL_BIN) of=$@ seek=1 conv=notrunc
 	${Q}dd if=${SV_ELF} of=$@ seek=$(shell echo $(shell cat ${OBJPATH_ROOT}/bootloader/kern-sect_size) + 1 | bc) conv=notrunc
 
 $(KERNEL_BIN): $(KERNEL_ELF)
@@ -29,9 +31,9 @@ $(KERNEL_BIN): $(KERNEL_ELF)
 	$(Q)$(TARGET_OBJCOPY) -S -O binary $^ $@
 	@T_OBJ=$(OBJPATH_ROOT) sh $(TOPDIR)/misc/kerninfo.sh
 
-$(KERNEL_ELF): $(LINK_FILE) $(KERNEL_BUILTIN) $(SV_SVSYM_O) $(RAMDISK_OBJ)
+$(KERNEL_ELF): $(LINK_FILE) $(KERNEL_BUILTIN) $(SV_SVSYM_O) $(BOOTINFO_O) $(RAMDISK_OBJ)
 	@echo Linking uCore
-	$(Q)$(TARGET_LD) $(TARGET_LDFLAGS) -T $(LINK_FILE) $(KERNEL_BUILTIN) $(SV_SVSYM_O) $(RAMDISK_OBJ) -o $@
+	$(Q)$(TARGET_LD) $(TARGET_LDFLAGS) -T $(LINK_FILE) $(KERNEL_BUILTIN) $(SV_SVSYM_O) $(BOOTINFO_O) $(RAMDISK_OBJ) -o $@
 
 $(LINK_FILE): $(LINK_FILE_IN) $(KCONFIG_AUTOCONFIG)
 	@echo "creating linker script"
@@ -57,8 +59,12 @@ $(SV_SVSYM): $(SV_ELF)
 	$(Q)$(TARGET_OBJCOPY) --extract-symbol $< $@
 	$(Q)$(TARGET_STRIP) -x $@
 
-$(SV_ELF):
+$(SV_ELF): FORCE
 	$(Q)$(MAKE) -C $(SVTREE) -f $(SVTREE)/Makefile all
+
+$(BOOTINFO_O): $(BOOTINFO_S)
+	@echo CC $@
+	$(Q)$(TARGET_CC) $(TARGET_CFLAGS) $< -c -o $@
 
 .PHONY: all clean FORCE
 all: $(KERNEL_IMG)
