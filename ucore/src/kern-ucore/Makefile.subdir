@@ -35,7 +35,12 @@ $(OBJPATH)/%.o: %.S
 $(OBJPATH)/%.d: %.c
 	@echo DEP $<
 	@set -e; rm -f $@; \
-		$(TARGET_CC) -MM -MT "$(OBJPATH)/$*.o $@" $(TARGET_CFLAGS) $< > $@; 
+		$(TARGET_CC) -MM -MT "$(OBJPATH)/$*.o $@" $(TARGET_CFLAGS) $< > $@;
+
+$(OBJPATH)/%.d: %.S
+	@echo DEP $<
+	@set -e; rm -f $@; \
+		$(TARGET_CC) -MM -MT "$(OBJPATH)/$*.o $@" $(TARGET_CFLAGS) $< > $@;
 
 define make-subdir
 $1: FORCE
