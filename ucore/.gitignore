@@ -16,8 +16,9 @@ ncscope.*
 package/config/conf
 package/config/mconf
 
-# userspace binaries
+# userspace binaries & initial directory
 src/user-ucore/bin
+src/user-ucore/_initial
 
 # generated manuals
 *.man

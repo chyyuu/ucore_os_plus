@@ -9,6 +9,14 @@ config SFS_IMAGE_SIZE
   int  "SFS Image size"
   default 4
 
+config SFS_MINIMAL_CONTENT
+  depends HAVE_SFS
+  bool "Minimize contents"
+  default n
+  help
+    When selected, this option will exclude most useless files in the
+    sfs img to make it fit for embedded systems.
+
 config HAVE_YAFFS2
   bool "Enable YAFFS2"
   default n

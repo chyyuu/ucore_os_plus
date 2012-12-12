@@ -13,6 +13,7 @@ USER_LIB_OBJDIR := $(OBJPATH_ROOT)/libs-user-ucore
 USER_LIB := $(USER_LIB_OBJDIR)/ulib.a
 BIN := $(USER_OBJ_ROOT)/bin
 TESTBIN := $(USER_OBJ_ROOT)/testbin
+INITIAL_DIR := _initial
 
 USER_APPLIST:= pwd cat sh ls cp echo link mkdir rename unlink
 ifneq ($(UCORE_TEST),)
@@ -52,6 +53,14 @@ $(TESTBIN):
 	-mkdir -p $(USER_OBJ_ROOT)/tests/arch/$(ARCH)
 	-mkdir -p $(TESTBIN)
 
+initial_dir:
+	@if [[ "$(UCONFIG_SFS_MINIMAL_CONTENT)" = y ]]; then \
+		ln -snf _initial.small $(INITIAL_DIR); \
+	else \
+		ln -snf _initial.big $(INITIAL_DIR); \
+	fi
+
 clean:
 	find . -name \*.o -exec rm -f {} \;
 	rm -rf $(BIN) $(TESTBIN)
+	rm -f $(INITIAL_DIR)
