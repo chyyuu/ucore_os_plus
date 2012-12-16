@@ -53,12 +53,13 @@ $(TESTBIN):
 	-mkdir -p $(USER_OBJ_ROOT)/tests/arch/$(ARCH)
 	-mkdir -p $(TESTBIN)
 
+ifeq ($(UCONFIG_SFS_MINIMAL_CONTENT),y)
 initial_dir:
-	@if [[ "$(UCONFIG_SFS_MINIMAL_CONTENT)" = y ]]; then \
-		ln -snf _initial.small $(INITIAL_DIR); \
-	else \
-		ln -snf _initial.big $(INITIAL_DIR); \
-	fi
+	ln -snf _initial.small $(INITIAL_DIR)
+else
+initial_dir:
+	ln -snf _initial.big $(INITIAL_DIR)
+endif
 
 clean:
 	find . -name \*.o -exec rm -f {} \;
