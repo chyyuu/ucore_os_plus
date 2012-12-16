@@ -32,6 +32,11 @@ static void uart_putc(int c)
 #ifdef PLATFORM_GOLDFISH
 	*UART0_TX = c;
 #endif
+
+#ifdef PLATFORM_RASPBERRYPI
+	while (!((*UART0_CSR) & RASPI_US_TXRDY)) ;
+	*UART0_TX = c;
+#endif
 }
 
 

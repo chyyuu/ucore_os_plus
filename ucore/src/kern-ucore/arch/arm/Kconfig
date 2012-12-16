@@ -35,6 +35,9 @@ config ARM_BOARD_AT91
 config ARM_BOARD_PANDABOARD
   bool "Pandaboard ES rev2"
 
+config ARM_BOARD_RASPBERRYPI
+  bool "Raspberry Pi"
+
 endchoice
 
 config HAVE_RAMDISK

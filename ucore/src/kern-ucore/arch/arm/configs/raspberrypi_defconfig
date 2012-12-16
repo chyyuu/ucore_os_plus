@@ -1,0 +1,57 @@
+#
+# Automatically generated make config: don't edit
+# Sun Dec 16 15:29:58 2012
+#
+
+#
+# Toolchain setup
+#
+CROSS_COMPILE="arm-none-eabi-"
+ADDITIONAL_CFLAGS="-g -ggdb"
+ADDITIONAL_LDFLAGS=""
+
+#
+# Ucore Kernel Configuration (ARM)
+#
+# ARM_CPU_V5 is not set
+ARM_CPU_V6=y
+# ARM_CPU_V7 is not set
+# ARM_BOARD_GOLDFISH is not set
+# ARM_BOARD_VERSATILEPB is not set
+# ARM_BOARD_AT91 is not set
+# ARM_BOARD_PANDABOARD is not set
+ARM_BOARD_RASPBERRYPI=y
+HAVE_RAMDISK=y
+RAMDISK_FILE="sfs.img"
+DRAM_START=0x0
+DRAM_SIZE=0x8000000
+KERNEL_BASE=0x1000000
+# HAVE_BOOTLOADER is not set
+# FPU_ENABLE is not set
+
+#
+# Memory Management
+#
+# SWAP is not set
+HEAP_SLAB=y
+# HEAP_SLOB is not set
+
+#
+# Schedule
+#
+# SCHEDULER_RR is not set
+SCHEDULER_MLFQ=y
+
+#
+# Filesystem
+#
+HAVE_SFS=y
+SFS_IMAGE_SIZE=4
+SFS_MINIMAL_CONTENT=y
+# HAVE_YAFFS2 is not set
+HAVE_FATFS=y
+
+#
+# Linux Device Driver Environment
+#
+# HAVE_LINUX_DDE_BASE is not set

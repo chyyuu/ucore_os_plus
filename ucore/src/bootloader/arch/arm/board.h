@@ -24,6 +24,8 @@
 #include "../../../kern-ucore/arch/arm/mach-versatilepb/board.h"
 #elif PLATFORM_AT91
 #include "../../../kern-ucore/arch/arm/mach-at91/board.h"
+#elif PLATFORM_RASPBERRYPI
+#include "../../../kern-ucore/arch/arm/mach-raspberrypi/board.h"
 #elif PLATFORM_GOLDFISH
 #include "../../../kern-ucore/arch/arm/mach-goldfish/board.h"
 #else
