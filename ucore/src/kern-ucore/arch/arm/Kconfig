@@ -11,6 +11,9 @@ choice
 config ARM_CPU_V5
 	bool "ARMv5"
 
+config ARM_CPU_V6
+	bool "ARMv6"
+
 config ARM_CPU_V7
 	bool "ARMv7"
 

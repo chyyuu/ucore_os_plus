@@ -139,6 +139,12 @@
 #define PTEX_W   0x550       // Supervisor/Write
 #define PTEX_U   0xAA0       // Supervisor/Write _ User/Read Only
 #define PTEX_UW  0xFF0       // Supervisor/Write _ User/Write
+#elif defined __MACH_ARM_ARMV6
+// see section 5.5.2 and 5.11.2 in ARM11_MPCore_Processor_r2_p0.pdf
+#define PTEX_R   0x210       // supervisor ro, user no_access
+#define PTEX_W   0x010       // supervisor rw, user no_access
+#define PTEX_U   0x020       // supervisor rw, user ro
+#define PTEX_UW  0x030       // supervisor rw, user rw
 #elif defined __MACH_ARM_ARMV7
 #define PTEX_R   0x210       // Supervisor/Readonly
 #define PTEX_W   0x010       // Supervisor/Write
