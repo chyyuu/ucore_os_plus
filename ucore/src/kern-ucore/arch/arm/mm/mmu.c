@@ -116,6 +116,10 @@ mmu_init(void) {
 	/* Part 5 Enable MMU, caches and write buffer */
 	enable = ENABLEMMU | ENABLEICACHE | ENABLEDCACHE | ENABLEHIGHEVT;
 	change = CHANGEMMU | CHANGEICACHE | CHANGEDCACHE | CHANGEHIGHEVT;
+#ifdef __MACH_ARM_ARMV6
+  enable |= ENABLENEWPT;
+  change |= CHANGENEWPT;
+#endif
 	
 	/* enable cache and MMU */
 	controlSet(enable, change); 
