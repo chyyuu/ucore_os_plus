@@ -9,6 +9,7 @@
 #include <picirq.h>
 #include <kio.h>
 #include <barrier.h>
+#include <framebuffer.h>
 
 #define UART1_BASE 0x20215000
 #define AUX_MU_IO_REG (UART1_BASE+0x40)
@@ -34,6 +35,8 @@ serial_init_early() {
     return ;
   kprintf("Serial init skipped: already initialized in bootloader\n");
   serial_exists = 1;
+
+  fb_init();
 }
 
 void
@@ -45,6 +48,9 @@ serial_init_mmu() {
   // init interrupt
   register_irq(UART1_IRQ, serial_int_handler, NULL);
   pic_enable(UART1_IRQ);
+
+  // init framebuffer (mmu)
+  fb_init_mmu();
 }
 
 static void
@@ -53,6 +59,8 @@ serial_putc_sub(int c) {
   while(!(inb(AUX_MU_LSR_REG)&AUX_MU_LSR_REG_TX_EMPTY)) ;
   dmb();
   outb(AUX_MU_IO_REG, c);
+  dmb();
+  fb_write(c);
   dmb();
 }
 
