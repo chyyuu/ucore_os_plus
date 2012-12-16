@@ -665,24 +665,39 @@ void print_pgdir(int (*printf)(const char *fmt, ...)){
   while ((perm = get_pgtable_items(0, NPDEENTRY, right, boot_pgdir, &left, &right, 0x3FF)) != 0) {
     printf("PDE(%03x) %08x-%08x %08x %s\n", right - left,
         left * PTSIZE, right * PTSIZE, (right - left) * PTSIZE, perm2str(perm));
-    size_t l, r = 0;
 
-    size_t perm_ref = get_pgtable_items(0, NPTEENTRY, r, (pte_t *) PDE_ADDR(boot_pgdir[left]), &l, &r, PTEX_UW);
-    size_t count, count_ref = 0;
-    size_t count_ref_l = 0;
-    for (count=0; count<right-left; count++) {
-      l = r = 0;
-      while ((perm = get_pgtable_items(0, NPTEENTRY, r, (pte_t *) PDE_ADDR(boot_pgdir[left+count]), &l, &r, PTEX_UW)) != 0) {
-        if (perm != perm_ref || count == right-left-1) {
-          size_t total_entries = (count-count_ref-1)*NPTEENTRY + (r - l) + (NPTEENTRY - count_ref_l);
-          printf("  |-- PTE(%05x) %08x-%08x %08x %s\n", total_entries, 
-              (left+count_ref) * PTSIZE + count_ref_l * PGSIZE, (left+count) * PTSIZE + r * PGSIZE,
-              total_entries * PGSIZE, perm2str(perm_ref));
-          perm_ref = perm;
-          count_ref = count;
-          count_ref_l = r;
+    bool ref_valid = 0;
+    size_t ref_l, ref_r, ref_perm;
+
+    size_t curr_pt_id;
+    for (curr_pt_id = left; curr_pt_id < right; curr_pt_id++) {
+      pte_t *curr_pt = (pte_t *)PDE_ADDR(boot_pgdir[curr_pt_id]);
+      size_t range_perm;
+      size_t l, r = 0;
+      while ((range_perm = get_pgtable_items(0, NPTEENTRY, r, curr_pt, &l, &r, PTEX_UW)) != 0) {
+        size_t range_l = curr_pt_id * PTSIZE + l * PGSIZE;
+        size_t range_r = curr_pt_id * PTSIZE + r * PGSIZE;
+        if (!ref_valid) {
+          ref_valid = 1;
+          ref_l = range_l;
+          ref_r = range_r;
+          ref_perm = range_perm;
+        } else if (range_l == ref_r && range_perm == ref_perm) {
+          ref_r = range_r;
+        } else {
+          int ref_dist = ref_r - ref_l;
+          printf("  |-- PTE(%05x) %08x-%08x %08x %s\n",
+              ref_dist / PGSIZE, ref_l, ref_r, ref_dist, perm2str(ref_perm));
+          ref_l = range_l;
+          ref_r = range_r;
+          ref_perm = range_perm;
         }
       }
+    }
+    if (ref_valid) {
+      int ref_dist = ref_r - ref_l;
+      printf("  |-- PTE(%05x) %08x-%08x %08x %s\n",
+          ref_dist / PGSIZE, ref_l, ref_r, ref_dist, perm2str(ref_perm));
     }
   }
   printf("--------------------- END ---------------------\n");
