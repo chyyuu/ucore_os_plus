@@ -5,6 +5,9 @@
 #define __io_address(x) (x)
 #endif
 
+//IRQ
+#define TIMER0_IRQ 0
+
 #define SDRAM0_START UCONFIG_DRAM_START
 #define SDRAM0_SIZE  UCONFIG_DRAM_SIZE
 
