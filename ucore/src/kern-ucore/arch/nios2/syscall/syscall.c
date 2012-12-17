@@ -14,6 +14,7 @@
 #include <dirent.h>
 #include <sysfile.h>
 #include <kio.h>
+#include <rf212.h>
 
 static uint32_t
 sys_exit(uint32_t arg[]) {
@@ -329,6 +330,23 @@ sys_mkfifo(uint32_t arg[]) {
     return sysfile_mkfifo(name, open_flags);
 }
 
+static uint32_t
+sys_rf212(uint32_t arg[]) {
+    switch (arg[0]) {
+    case 0://RESET : reset the wireless device
+        rf212_reset();
+        return 0;
+    case 1://TX : send packet
+        rf212_send((uint8_t)arg[1], (uint8_t*)arg[2]);
+        return 0;
+    case 2://REG : write register
+    	rf212_reg((uint8_t)arg[1], (uint8_t)arg[2]);
+    	return 0;
+    default:
+        return -1;
+    }
+}
+
 static uint32_t (*syscalls[])(uint32_t arg[]) = {
     [SYS_exit]              sys_exit,
     [SYS_fork]              sys_fork,
@@ -376,6 +394,7 @@ static uint32_t (*syscalls[])(uint32_t arg[]) = {
     [SYS_dup]               sys_dup,
     [SYS_pipe]              sys_pipe,
     [SYS_mkfifo]            sys_mkfifo,
+    [SYS_rf212]             sys_rf212,
 };
 
 #define NUM_SYSCALLS        ((sizeof(syscalls)) / (sizeof(syscalls[0])))

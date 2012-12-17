@@ -12,6 +12,7 @@
 #include <kio.h>
 #include <pmm.h>
 #include <vmm.h>
+#include <rf212.h>
 
 int main (void) __attribute__ ((weak, alias ("alt_main")));
 
@@ -43,6 +44,8 @@ int alt_main(void)
     fs_init();                  // init fs
 
     irq_init();                 // enable irq interrupt
+    
+    rf212_init();				// enable rf212 wireless driver
     
     cons_init();                // init the console, should be after irq_int()!
     
