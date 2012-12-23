@@ -1,1 +1,0 @@
-obj-y := mp.o trap.o

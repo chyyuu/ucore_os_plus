@@ -1,1 +1,0 @@
-dirs-y := debug driver init mm process libs syscall glue_ucore trap
