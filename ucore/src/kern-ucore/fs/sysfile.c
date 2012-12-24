@@ -172,7 +172,25 @@ int
 sysfile_writev(int fd, struct iovec __user *iov, int iovcnt) {
 	/* do nothing but return 0 */
 	kprintf("writev: fd=%08x iov=%08x iovcnt=%d\n", fd, iov, iovcnt);
-	return 0;
+	struct iovec *tv;
+	int rcode = 0, count = 0, i;
+    struct mm_struct *mm = pls_read(current)->mm;
+	for (i = 0; i < iovcnt; ++i) {
+		char *pbase;
+		size_t plen;
+
+		copy_from_user(mm, &pbase, &(iov[i].iov_base), sizeof(char*), 0);
+		copy_from_user(mm, &plen, &(iov[i].iov_len), sizeof(size_t), 0);
+
+		rcode = sysfile_write(fd, pbase, plen);
+		if (rcode < 0)
+			break;
+		count += rcode;
+	}
+	if (count == 0)
+		return (rcode);
+	else
+		return (count);
 }
 
 int
