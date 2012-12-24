@@ -314,8 +314,10 @@ pmm_init(void) {
 
   boot_map_segment(boot_pgdir, KIOBASE, KIOSIZE, KIOBASE, PTE_W|PTE_IOMEM); // fixed address
 
+  //Add PTE_W|PTE_U by whn09
+  //PTE_W should be aborted later
+  boot_map_segment(boot_pgdir, 0xFFFF0000, PGSIZE, SDRAM0_START, PTE_PWT|PTE_W|PTE_U); // high location of vector table
 
-  boot_map_segment(boot_pgdir, 0xFFFF0000, PGSIZE, SDRAM0_START, PTE_PWT); // high location of vector table
 #ifdef UCONFIG_HAVE_RAMDISK 
   if(CHECK_INITRD_EXIST()){
     boot_map_segment(boot_pgdir, DISK_FS_VBASE, ROUNDUP(initrd_end-initrd_begin, PGSIZE), (uintptr_t)initrd_begin,PTE_W);
@@ -383,6 +385,26 @@ pmm_init(void) {
   slab_init();
 
   kprintf("slab_init() done\n");
+
+  /*
+   * Add by whn09, map 0xffff0fa0!
+   */
+  unsigned long vectors = 0xffff0000; //CONFIG_VECTORS_BASE = 0xffff0000
+  extern char __kuser_helper_start[], __kuser_helper_end[];
+  //kprintf("## whn09 start %08x %08x\n", __kuser_helper_start, __kuser_helper_end);
+  int kuser_sz = __kuser_helper_end - __kuser_helper_start;
+  memcpy((void*)vectors + 0x1000 - kuser_sz, __kuser_helper_start, kuser_sz);
+  //kprintf("## whn09 end %08x %08x\n", __kuser_helper_start, __kuser_helper_end);
+  pte_t *ptep = get_pte(boot_pgdir, 0XFFFF0000, 1);
+  assert(ptep != NULL);
+  //Fix me
+  //the page 0xffff0000's permission should be 'PTE_P | ~PTE_W | PTE_PWT | PTE_U',
+  //but the code didn't work even though the permission of that page is set as mentioned above.
+  ptep_set_perm(ptep, PTE_P | ~PTE_W | PTE_PWT | PTE_U);
+  //memcpy((void*)vectors + 0x1000 - kuser_sz, __kuser_helper_start, kuser_sz);
+  /*
+   * Add end
+   */
 }
 
 // invalidate both TLB 
