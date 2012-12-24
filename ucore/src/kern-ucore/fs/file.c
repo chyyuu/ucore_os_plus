@@ -16,7 +16,7 @@
 
 #define testfd(fd)                          ((fd) >= 0 && (fd) < FS_STRUCT_NENTRY)
 
-static struct file *
+static struct file **
 get_filemap(void) {
     struct fs_struct *fs_struct = pls_read(current)->fs_struct;
     assert(fs_struct != NULL && fs_count(fs_struct) > 0);
@@ -24,21 +24,25 @@ get_filemap(void) {
 }
 
 void
-filemap_init(struct file *filemap) {
+filemap_init(struct file **filemap) {
     int fd;
-    struct file *file = filemap;
+    struct file **file = filemap;
     for (fd = 0; fd < FS_STRUCT_NENTRY; fd ++, file ++) {
-        atomic_set(&(file->open_count), 0);
-        file->status = FD_NONE, file->fd = fd;
+        if (((*file) = kmalloc(sizeof(struct file))) != NULL) {
+			atomic_set(&((*file)->open_count), 0);
+			(*file)->status = FD_NONE, (*file)->fd = fd;
+		} else {
+            kprintf("kmalloc struct file failed!!!\n");
+		}
     }
 }
 
 static int
 filemap_alloc(int fd, struct file **file_store) {
-    struct file *file = get_filemap();
+    struct file **file = get_filemap();
     if (fd == NO_FD) {
         for (fd = 0; fd < FS_STRUCT_NENTRY; fd ++, file ++) {
-            if (file->status == FD_NONE) {
+            if ((*file)->status == FD_NONE) {
                 goto found;
             }
         }
@@ -47,7 +51,7 @@ filemap_alloc(int fd, struct file **file_store) {
     else {
         if (testfd(fd)) {
             file += fd;
-            if (file->status == FD_NONE) {
+            if ((*file)->status == FD_NONE) {
                 goto found;
             }
             return -E_BUSY;
@@ -55,9 +59,9 @@ filemap_alloc(int fd, struct file **file_store) {
         return -E_INVAL;
     }
 found:
-    assert(fopen_count(file) == 0);
-    file->status = FD_INIT, file->node = NULL;
-    *file_store = file;
+    assert(fopen_count(*file) == 0);
+    (*file)->status = FD_INIT, (*file)->node = NULL;
+    *file_store = *file;
     return 0;
 }
 
@@ -69,6 +73,9 @@ filemap_free(struct file *file) {
         vfs_close(file->node);
     }
     file->status = FD_NONE;
+    //delete from openfilelist
+    list_del(&(file->open_file_link));
+    //TODO we should better kfree(file) here?
 }
 
 void
@@ -91,6 +98,8 @@ filemap_open(struct file *file) {
     assert((file->status == FD_INIT || file->status == FD_OPENED) && file->node != NULL);
     file->status = FD_OPENED;
     fopen_count_inc(file);
+    //Insert to open_file_list here
+    list_add(&open_file_list, &(file->open_file_link));
 }
 
 void
@@ -128,15 +137,17 @@ void filemap_dup_close(struct file *to, struct file *from) {
 static inline int
 fd2file(int fd, struct file **file_store) {
     if (testfd(fd)) {
-        struct file *file = get_filemap() + fd;
-        if (file->status == FD_OPENED && file->fd == fd) {
-            *file_store = file;
+        struct file **file = get_filemap() + fd;
+        if ((*file)->status == FD_OPENED && (*file)->fd == fd) {
+			*file_store = *file;
             return 0;
         }
     }
     return -E_INVAL;
 }
 
+// deprecated
+/*
 #ifdef UCONFIG_BIONIC_LIBC
 struct file*
 fd2file_onfs(int fd, struct fs_struct *fs_struct) {
@@ -152,6 +163,8 @@ fd2file_onfs(int fd, struct fs_struct *fs_struct) {
 	return NULL;
 }
 #endif //UCONFIG_BIONIC_LIBC
+*/
+
 
 bool
 file_testfd(int fd, bool readable, bool writable) {
@@ -602,7 +615,9 @@ void *linux_regfile_mmap2(void *addr, size_t len, int prot, int flags, int fd, s
 		goto out_unlock;
 	}
 	if(!(flags & MAP_ANONYMOUS)) {
-		vma_mapfile(vma, fd, off << 12, NULL);
+		struct file *fp = NULL;
+		fd2file(fd, &fp);
+		vma_mapfile(vma, fp, off << 12);
 	}
 	subret = 0;
 out_unlock:

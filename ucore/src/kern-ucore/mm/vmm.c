@@ -219,11 +219,13 @@ vma_compare(rb_node *node1, rb_node *node2) {
 
 #ifdef UCONFIG_BIONIC_LIBC
 void
-vma_mapfile(struct vma_struct *vma, int fd, off_t off, struct fs_struct *fs_struct) {
+vma_mapfile(struct vma_struct *vma, struct file *fp, off_t off) {
 
+	/*
 	if(fs_struct == NULL) {
 		fs_struct = pls_read(current)->fs_struct;
 	}
+	*/
 
 	/*
 	kprintf("mapfile:0x%08x fs_struct:0x%08x\n", vma->mfile.file, fs_struct);
@@ -231,7 +233,11 @@ vma_mapfile(struct vma_struct *vma, int fd, off_t off, struct fs_struct *fs_stru
 
 	vma->mfile.offset = off;
 	assert(vma != NULL);
+	assert(fp != NULL);
+	vma->mfile.file = fp;
+	/*
 	assert((vma->mfile.file = fd2file_onfs(fd, fs_struct)) != NULL);
+	*/
 	filemap_acquire(vma->mfile.file);
 }
 
@@ -637,7 +643,7 @@ remapfile(struct mm_struct *mm, struct proc_struct *proc) {
 				kprintf("remapfile:0x%08x fd:%d offset:0x%08x\n", vma->mfile.file, vma->mfile.file->fd,
 								vma->mfile.offset);
 				*/
-			vma_mapfile(vma, vma->mfile.file->fd, vma->mfile.offset, proc->fs_struct);
+			vma_mapfile(vma, vma->mfile.file, vma->mfile.offset);
 		}
 	}
 	return 0;
