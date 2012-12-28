@@ -1,4 +1,3 @@
 #!/bin/sh
 
-/home/gnocuil/qemu-1.0.1/mipsel-softmmu/qemu-system-mipsel -M mipssim -m 32M -serial stdio -bios obj/bootloader/loader.bin -kernel obj/kernel/ucore-kernel-initrd
-#qemu-system-mipsel -M mipssim -m 32M -serial stdio -bios obj/bootloader/loader.bin -kernel obj/kernel/ucore-kernel-initrd
+qemu-system-mipsel -M mipssim -m 32M -serial stdio -bios obj/bootloader/loader.bin -kernel obj/kernel/ucore-kernel-initrd

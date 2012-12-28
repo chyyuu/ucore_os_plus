@@ -1,1 +1,1 @@
-obj-y := mips_io.o #printfmt.o
+obj-y := mips_io.o udivmodsi4.o udivmod.o divmod.o
