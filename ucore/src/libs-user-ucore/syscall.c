@@ -236,6 +236,31 @@ sys_ioctl(int d, int request, unsigned long data) {
     return syscall(SYS_ioctl, d, request, data);
 }
 
+int 
+sys_init_module(void __user *umod, unsigned long len, const char __user *uargs) {
+    return syscall(SYS_init_module, umod, len, uargs);
+}
+
+int 
+sys_cleanup_module(const char __user *name) {
+    return syscall(SYS_cleanup_module, name);
+}
+
+int 
+sys_list_module() {
+    return syscall(SYS_list_module);
+}
+
+int 
+sys_mount(const char *source, const char *target, const char* filesystemtype, const void *data) {
+    return syscall(SYS_mount, source, target, filesystemtype, data);
+}
+
+int 
+sys_umount(const char *target) {
+    return syscall(SYS_umount, target);
+}
+
 #else
 #warning ARM use different syscall method
 
@@ -374,7 +399,11 @@ _syscall2(int, linux_kill, int ,pid, int,sign);
 _syscall3(int, linux_sigprocmask,int,how, const sigset_t*, set, sigset_t*, old);
 _syscall1(int, linux_sigsuspend, unsigned int, mask);
 _syscall3(int, linux_sigaction, int, sign, struct sigaction* ,act,struct sigaction *, old);
-
+_syscall0(int, list_module);
+_syscall3(int, init_module, void*, umod, unsigned long, len, const char *, uargs);
+_syscall1(int, cleanup_module, const char *, name);
+_syscall4(int, mount, const char *, source, const char *, target, const char *, filesystemtype, const void *, data);
+_syscall1(int, umount, const char *, target);
 
 int
 sys_send_event(int pid, int event, unsigned int timeout) {

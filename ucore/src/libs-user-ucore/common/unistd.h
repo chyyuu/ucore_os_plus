@@ -62,6 +62,13 @@
 #define SYS_linux_sigprocmask   147
 #define SYS_linux_sigsuspend   148
 
+/* changlan */
+#define SYS_init_module     150
+#define SYS_cleanup_module  151
+#define SYS_list_module     152
+#define SYS_mount           153
+#define SYS_umount			154
+
 
 /* SYS_fork flags */
 #define CLONE_VM             0x00000100
