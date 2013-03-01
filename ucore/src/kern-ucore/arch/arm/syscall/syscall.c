@@ -345,6 +345,41 @@ sys_ioctl(uint32_t arg[])
 }
 
 static uint32_t
+sys_init_module(uint32_t arg[]) {
+    void __user *umod = (void __user *)arg[0];
+  unsigned long len = (unsigned long)arg[1];
+  const char *urgs = (const char *)arg[2];
+    return do_init_module(umod, len, urgs);
+}
+
+static uint32_t
+sys_cleanup_module(uint32_t arg[]) {
+    const char __user *name = (const char __user *)arg[0];
+    return do_cleanup_module(name);
+}
+
+static uint32_t
+sys_list_module(uint32_t arg[]) {
+    print_modules();
+    return 0;
+}
+
+static uint32_t
+sys_mount(uint32_t arg[]) {
+    const char *source = (const char *)arg[0];
+    const char *target = (const char *)arg[1];
+    const char *filesystemtype = (const char *)arg[2];
+    const void *data = (const void *)arg[3];
+    return do_mount(source, filesystemtype);
+}
+
+static uint32_t
+sys_umount(uint32_t arg[]) {
+    const char *target = (const char *)arg[0];
+    return do_umount(target);
+}
+
+static uint32_t
 sys_linux_mmap(uint32_t arg[])
 {
   void *addr = (void*)arg[0];
@@ -936,6 +971,11 @@ static uint32_t (*syscalls[])(uint32_t arg[]) = {
     [SYS_linux_sigprocmask]       sys_linux_sigprocmask,
     [SYS_linux_sigsuspend]       sys_linux_sigsuspend,
     [SYS_linux_sigreturn]        sys_linux_sigreturn,
+    [SYS_init_module]       sys_init_module,
+    [SYS_cleanup_module]    sys_cleanup_module,
+    [SYS_list_module]       sys_list_module,
+    [SYS_mount]             sys_mount,
+    [SYS_umount]            sys_umount
 };
 
 
