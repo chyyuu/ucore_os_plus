@@ -180,13 +180,17 @@ $(CONFIG_DIR):
 #	$(Q)rm -f $(KCONFIG_AUTOCONFIG) $(KCONFIG_AUTOHEADER)
 clean:
 	@echo CLEAN ALL
-	$(Q)rm -f  $(CONFIG_SCRIPT).old 。config.cmd .tmpconfig.h
+	$(Q)rm -f  $(CONFIG_SCRIPT).old config.cmd .tmpconfig.h
 	$(Q)rm -f $(SFSIMG_FILE)
 	$(Q)rm -rf $(OBJPATH_ROOT)
 	-$(Q)$(MAKE) -C $(CONFIG) clean
 	$(Q)$(MAKE) -C $(KTREE) -f Makefile.build clean
 	$(Q)$(MAKE) -f $(TOPDIR)/src/libs-user-ucore/Makefile -C $(TOPDIR)/src/libs-user-ucore  clean
 	$(Q)$(MAKE) -f $(TOPDIR)/src/user-ucore/Makefile -C $(TOPDIR)/src/user-ucore  clean
+
+indent:
+	$(Q)find $(TOPDIR)/src -name *.c -or -name *.h | grep -vf $(TOPDIR)/misc/indent-whitelist | xargs $(TOPDIR)/misc/Lindent
+	$(Q)rm -rf `find $(TOPDIR)/src -name *~`
 
 FORCE:
 

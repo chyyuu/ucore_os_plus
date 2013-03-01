@@ -1,0 +1,6 @@
+src/kern-ucore/arch/mips/glue-ucore/asm/mipsregs.h
+src/kern-ucore/fs/fatfs/fatfs/
+src/kern-ucore/fs/yaffs2_direct/
+src/kern-ucore/module/include/asm-arm/assembler.h
+src/kern-ucore/module/include/mach-goldfish/include/mach/lib/bitops.h
+src/libs-user-ucore/arch/mips/asm/mipsregs.h
