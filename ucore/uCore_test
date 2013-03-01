@@ -280,6 +280,7 @@ while getopts "d:f:hrs:t:w:" opt; do
             ;;
         o)
             HTML_OUTPUT=y
+	    ;;
         ?)
             exit 1
             ;;
