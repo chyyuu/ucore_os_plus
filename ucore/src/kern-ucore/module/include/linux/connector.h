@@ -124,7 +124,7 @@ struct cn_callback_id {
 struct cn_callback_data {
 	void (*destruct_data) (void *);
 	void *ddata;
-	
+
 	void *callback_priv;
 	void (*callback) (void *);
 
@@ -152,7 +152,7 @@ struct cn_dev {
 
 	u32 seq, groups;
 	struct sock *nls;
-	void (*input) (struct sk_buff *skb);
+	void (*input) (struct sk_buff * skb);
 
 	struct cn_queue_dev *cbdev;
 };
@@ -161,7 +161,8 @@ int cn_add_callback(struct cb_id *, char *, void (*callback) (void *));
 void cn_del_callback(struct cb_id *);
 int cn_netlink_send(struct cn_msg *, u32, gfp_t);
 
-int cn_queue_add_callback(struct cn_queue_dev *dev, char *name, struct cb_id *id, void (*callback)(void *));
+int cn_queue_add_callback(struct cn_queue_dev *dev, char *name,
+			  struct cb_id *id, void (*callback) (void *));
 void cn_queue_del_callback(struct cn_queue_dev *dev, struct cb_id *id);
 
 struct cn_queue_dev *cn_queue_alloc_dev(char *name, struct sock *);
@@ -171,5 +172,5 @@ int cn_cb_equal(struct cb_id *, struct cb_id *);
 
 void cn_queue_wrapper(struct work_struct *work);
 
-#endif				/* __KERNEL__ */
-#endif				/* __CONNECTOR_H */
+#endif /* __KERNEL__ */
+#endif /* __CONNECTOR_H */

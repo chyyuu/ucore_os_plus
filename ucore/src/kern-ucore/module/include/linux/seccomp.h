@@ -1,13 +1,14 @@
 #ifndef _LINUX_SECCOMP_H
 #define _LINUX_SECCOMP_H
 
-
 #ifdef CONFIG_SECCOMP
 
 #include <linux/thread_info.h>
 #include <asm/seccomp.h>
 
-typedef struct { int mode; } seccomp_t;
+typedef struct {
+	int mode;
+} seccomp_t;
 
 extern void __secure_computing(int);
 static inline void secure_computing(int this_syscall)
@@ -21,7 +22,8 @@ extern long prctl_set_seccomp(unsigned long);
 
 #else /* CONFIG_SECCOMP */
 
-typedef struct { } seccomp_t;
+typedef struct {
+} seccomp_t;
 
 #define secure_computing(x) do { } while (0)
 

@@ -85,36 +85,36 @@
 
 #define MAX_ECARDS	9
 
-struct ecard_id {			/* Card ID structure		*/
-	unsigned short	manufacturer;
-	unsigned short	product;
-	void		*data;
+struct ecard_id {		/* Card ID structure            */
+	unsigned short manufacturer;
+	unsigned short product;
+	void *data;
 };
 
-struct in_ecid {			/* Packed card ID information	*/
-	unsigned short	product;	/* Product code			*/
-	unsigned short	manufacturer;	/* Manufacturer code		*/
-	unsigned char	id:4;		/* Simple ID			*/
-	unsigned char	cd:1;		/* Chunk dir present		*/
-	unsigned char	is:1;		/* Interrupt status pointers	*/
-	unsigned char	w:2;		/* Width			*/
-	unsigned char	country;	/* Country			*/
-	unsigned char	irqmask;	/* IRQ mask			*/
-	unsigned char	fiqmask;	/* FIQ mask			*/
-	unsigned long	irqoff;		/* IRQ offset			*/
-	unsigned long	fiqoff;		/* FIQ offset			*/
+struct in_ecid {		/* Packed card ID information   */
+	unsigned short product;	/* Product code                 */
+	unsigned short manufacturer;	/* Manufacturer code            */
+	unsigned char id:4;	/* Simple ID                    */
+	unsigned char cd:1;	/* Chunk dir present            */
+	unsigned char is:1;	/* Interrupt status pointers    */
+	unsigned char w:2;	/* Width                        */
+	unsigned char country;	/* Country                      */
+	unsigned char irqmask;	/* IRQ mask                     */
+	unsigned char fiqmask;	/* FIQ mask                     */
+	unsigned long irqoff;	/* IRQ offset                   */
+	unsigned long fiqoff;	/* FIQ offset                   */
 };
 
 typedef struct expansion_card ecard_t;
 typedef unsigned long *loader_t;
 
-typedef struct expansion_card_ops {	/* Card handler routines	*/
-	void (*irqenable)(ecard_t *ec, int irqnr);
-	void (*irqdisable)(ecard_t *ec, int irqnr);
-	int  (*irqpending)(ecard_t *ec);
-	void (*fiqenable)(ecard_t *ec, int fiqnr);
-	void (*fiqdisable)(ecard_t *ec, int fiqnr);
-	int  (*fiqpending)(ecard_t *ec);
+typedef struct expansion_card_ops {	/* Card handler routines        */
+	void (*irqenable) (ecard_t * ec, int irqnr);
+	void (*irqdisable) (ecard_t * ec, int irqnr);
+	int (*irqpending) (ecard_t * ec);
+	void (*fiqenable) (ecard_t * ec, int fiqnr);
+	void (*fiqdisable) (ecard_t * ec, int fiqnr);
+	int (*fiqpending) (ecard_t * ec);
 } expansioncard_ops_t;
 
 #define ECARD_NUM_RESOURCES	(6)
@@ -136,37 +136,38 @@ typedef struct expansion_card_ops {	/* Card handler routines	*/
  * This contains all the info needed on an expansion card
  */
 struct expansion_card {
-	struct expansion_card  *next;
+	struct expansion_card *next;
 
-	struct device		dev;
-	struct resource		resource[ECARD_NUM_RESOURCES];
+	struct device dev;
+	struct resource resource[ECARD_NUM_RESOURCES];
 
 	/* Public data */
-	void __iomem		*irqaddr;	/* address of IRQ register	*/
-	void __iomem		*fiqaddr;	/* address of FIQ register	*/
-	unsigned char		irqmask;	/* IRQ mask			*/
-	unsigned char		fiqmask;	/* FIQ mask			*/
-	unsigned char  		claimed;	/* Card claimed?		*/
-	unsigned char		easi;		/* EASI card			*/
+	void __iomem *irqaddr;	/* address of IRQ register      */
+	void __iomem *fiqaddr;	/* address of FIQ register      */
+	unsigned char irqmask;	/* IRQ mask                     */
+	unsigned char fiqmask;	/* FIQ mask                     */
+	unsigned char claimed;	/* Card claimed?                */
+	unsigned char easi;	/* EASI card                    */
 
-	void			*irq_data;	/* Data for use for IRQ by card	*/
-	void			*fiq_data;	/* Data for use for FIQ by card	*/
-	const expansioncard_ops_t *ops;		/* Enable/Disable Ops for card	*/
+	void *irq_data;		/* Data for use for IRQ by card */
+	void *fiq_data;		/* Data for use for FIQ by card */
+	const expansioncard_ops_t *ops;	/* Enable/Disable Ops for card  */
 
-	CONST unsigned int	slot_no;	/* Slot number			*/
-	CONST unsigned int	dma;		/* DMA number (for request_dma)	*/
-	CONST unsigned int	irq;		/* IRQ number (for request_irq)	*/
-	CONST unsigned int	fiq;		/* FIQ number (for request_irq)	*/
-	CONST struct in_ecid	cid;		/* Card Identification		*/
+	CONST unsigned int slot_no;	/* Slot number                  */
+	CONST unsigned int dma;	/* DMA number (for request_dma) */
+	CONST unsigned int irq;	/* IRQ number (for request_irq) */
+	CONST unsigned int fiq;	/* FIQ number (for request_irq) */
+	CONST struct in_ecid cid;	/* Card Identification          */
 
 	/* Private internal data */
-	const char		*card_desc;	/* Card description		*/
-	CONST unsigned int	podaddr;	/* Base Linux address for card	*/
-	CONST loader_t		loader;		/* loader program */
-	u64			dma_mask;
+	const char *card_desc;	/* Card description             */
+	CONST unsigned int podaddr;	/* Base Linux address for card  */
+	CONST loader_t loader;	/* loader program */
+	u64 dma_mask;
 };
 
-void ecard_setirq(struct expansion_card *ec, const struct expansion_card_ops *ops, void *irq_data);
+void ecard_setirq(struct expansion_card *ec,
+		  const struct expansion_card_ops *ops, void *irq_data);
 
 struct in_chunk_dir {
 	unsigned int start_offset;
@@ -183,7 +184,8 @@ struct in_chunk_dir {
  * id : id number to find
  * num: (n+1)'th id to find.
  */
-extern int ecard_readchunk (struct in_chunk_dir *cd, struct expansion_card *ec, int id, int num);
+extern int ecard_readchunk(struct in_chunk_dir *cd, struct expansion_card *ec,
+			   int id, int num);
 
 /*
  * Request and release ecard resources
@@ -200,12 +202,12 @@ extern struct bus_type ecard_bus_type;
 #define ECARD_DEV(_d)	container_of((_d), struct expansion_card, dev)
 
 struct ecard_driver {
-	int			(*probe)(struct expansion_card *, const struct ecard_id *id);
-	void			(*remove)(struct expansion_card *);
-	void			(*shutdown)(struct expansion_card *);
-	const struct ecard_id	*id_table;
-	unsigned int		id;
-	struct device_driver	drv;
+	int (*probe) (struct expansion_card *, const struct ecard_id * id);
+	void (*remove) (struct expansion_card *);
+	void (*shutdown) (struct expansion_card *);
+	const struct ecard_id *id_table;
+	unsigned int id;
+	struct device_driver drv;
 };
 
 #define ECARD_DRV(_d)	container_of((_d), struct ecard_driver, drv)

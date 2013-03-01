@@ -21,7 +21,7 @@
 #include <linux/types.h>
 
 typedef struct {
-    __u8 c[6];
+	__u8 c[6];
 } MetricomAddress;
 
 #endif

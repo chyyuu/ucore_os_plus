@@ -75,32 +75,32 @@ struct hayes_esp_config {
 #define ESP_XMIT_SIZE		4096
 
 struct esp_struct {
-	int			magic;
-	struct tty_port		port;
-	spinlock_t		lock;
-	int			io_port;
-	int			irq;
-	int			read_status_mask;
-	int			ignore_status_mask;
-	int			timeout;
-	int			stat_flags;
-	int			custom_divisor;
-	int			close_delay;
-	unsigned short		closing_wait;
-	unsigned short		closing_wait2;
-	int			IER; 	/* Interrupt Enable Register */
-	int			MCR; 	/* Modem control register */
-	unsigned long		last_active;
-	int			line;
-	unsigned char 		*xmit_buf;
-	int			xmit_head;
-	int			xmit_tail;
-	int			xmit_cnt;
-	wait_queue_head_t	delta_msr_wait;
-	wait_queue_head_t	break_wait;
-	struct async_icount	icount;	/* kernel counters for the 4 input interrupts */
-	struct hayes_esp_config config; /* port configuration */
-	struct esp_struct	*next_port; /* For the linked list */
+	int magic;
+	struct tty_port port;
+	spinlock_t lock;
+	int io_port;
+	int irq;
+	int read_status_mask;
+	int ignore_status_mask;
+	int timeout;
+	int stat_flags;
+	int custom_divisor;
+	int close_delay;
+	unsigned short closing_wait;
+	unsigned short closing_wait2;
+	int IER;		/* Interrupt Enable Register */
+	int MCR;		/* Modem control register */
+	unsigned long last_active;
+	int line;
+	unsigned char *xmit_buf;
+	int xmit_head;
+	int xmit_tail;
+	int xmit_cnt;
+	wait_queue_head_t delta_msr_wait;
+	wait_queue_head_t break_wait;
+	struct async_icount icount;	/* kernel counters for the 4 input interrupts */
+	struct hayes_esp_config config;	/* port configuration */
+	struct esp_struct *next_port;	/* For the linked list */
 };
 
 struct esp_pio_buffer {
@@ -110,6 +110,4 @@ struct esp_pio_buffer {
 
 #endif /* __KERNEL__ */
 
-
 #endif /* ESP_H */
-

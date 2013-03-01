@@ -32,8 +32,8 @@
 #define __page_to_pfn(page)	((unsigned long)((page) - mem_map) + \
 				 ARCH_PFN_OFFSET)
 #else
-extern void* __pfn_to_page(size_t pfn);
-extern size_t __page_to_pfn(struct page* pg);
+extern void *__pfn_to_page(size_t pfn);
+extern size_t __page_to_pfn(struct page *pg);
 #endif
 #elif defined(CONFIG_DISCONTIGMEM)
 

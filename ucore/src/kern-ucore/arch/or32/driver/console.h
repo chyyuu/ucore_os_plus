@@ -8,4 +8,3 @@ void serial_intr(void);
 void kbd_intr(void);
 
 #endif /* !__KERN_DRIVER_CONSOLE_H__ */
-

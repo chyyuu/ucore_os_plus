@@ -24,14 +24,14 @@ struct vm_area_struct;		/* vma defining user mapping in mm_types.h */
 #endif
 
 struct vm_struct {
-	struct vm_struct	*next;
-	void			*addr;
-	unsigned long		size;
-	unsigned long		flags;
-	struct page		**pages;
-	unsigned int		nr_pages;
-	unsigned long		phys_addr;
-	void			*caller;
+	struct vm_struct *next;
+	void *addr;
+	unsigned long size;
+	unsigned long flags;
+	struct page **pages;
+	unsigned int nr_pages;
+	unsigned long phys_addr;
+	void *caller;
 };
 
 /*
@@ -39,7 +39,7 @@ struct vm_struct {
  */
 extern void vm_unmap_ram(const void *mem, unsigned int count);
 extern void *vm_map_ram(struct page **pages, unsigned int count,
-				int node, pgprot_t prot);
+			int node, pgprot_t prot);
 extern void vm_unmap_aliases(void);
 
 #ifdef CONFIG_MMU
@@ -58,17 +58,17 @@ extern void *vmalloc_32(unsigned long size);
 extern void *vmalloc_32_user(unsigned long size);
 extern void *__vmalloc(unsigned long size, gfp_t gfp_mask, pgprot_t prot);
 extern void *__vmalloc_area(struct vm_struct *area, gfp_t gfp_mask,
-				pgprot_t prot);
+			    pgprot_t prot);
 extern void vfree(const void *addr);
 
 extern void *vmap(struct page **pages, unsigned int count,
-			unsigned long flags, pgprot_t prot);
+		  unsigned long flags, pgprot_t prot);
 extern void vunmap(const void *addr);
 
 extern int remap_vmalloc_range(struct vm_area_struct *vma, void *addr,
-							unsigned long pgoff);
+			       unsigned long pgoff);
 void vmalloc_sync_all(void);
- 
+
 /*
  *	Lowlevel-APIs (not for driver use!)
  */
@@ -81,20 +81,20 @@ static inline size_t get_vm_area_size(const struct vm_struct *area)
 
 extern struct vm_struct *get_vm_area(unsigned long size, unsigned long flags);
 extern struct vm_struct *get_vm_area_caller(unsigned long size,
-					unsigned long flags, void *caller);
+					    unsigned long flags, void *caller);
 extern struct vm_struct *__get_vm_area(unsigned long size, unsigned long flags,
-					unsigned long start, unsigned long end);
+				       unsigned long start, unsigned long end);
 extern struct vm_struct *__get_vm_area_caller(unsigned long size,
-					unsigned long flags,
-					unsigned long start, unsigned long end,
-					void *caller);
+					      unsigned long flags,
+					      unsigned long start,
+					      unsigned long end, void *caller);
 extern struct vm_struct *get_vm_area_node(unsigned long size,
 					  unsigned long flags, int node,
 					  gfp_t gfp_mask);
 extern struct vm_struct *remove_vm_area(const void *addr);
 
 extern int map_vm_area(struct vm_struct *area, pgprot_t prot,
-			struct page ***pages);
+		       struct page ***pages);
 extern void unmap_kernel_range(unsigned long addr, unsigned long size);
 
 /* Allocate/destroy a 'vmalloc' VM area. */

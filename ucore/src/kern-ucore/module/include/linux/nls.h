@@ -11,7 +11,7 @@ struct nls_table {
 	const char *alias;
 	int (*uni2char) (wchar_t uni, unsigned char *out, int boundlen);
 	int (*char2uni) (const unsigned char *rawstring, int boundlen,
-			 wchar_t *uni);
+			 wchar_t * uni);
 	const unsigned char *charset2lower;
 	const unsigned char *charset2upper;
 	struct module *owner;
@@ -19,7 +19,7 @@ struct nls_table {
 };
 
 /* this value hold the maximum octet of charset */
-#define NLS_MAX_CHARSET_SIZE 6 /* for UTF-8 */
+#define NLS_MAX_CHARSET_SIZE 6	/* for UTF-8 */
 
 /* nls.c */
 extern int register_nls(struct nls_table *);
@@ -48,7 +48,7 @@ static inline unsigned char nls_toupper(struct nls_table *t, unsigned char c)
 }
 
 static inline int nls_strnicmp(struct nls_table *t, const unsigned char *s1,
-		const unsigned char *s2, int len)
+			       const unsigned char *s2, int len)
 {
 	while (len--) {
 		if (nls_tolower(t, *s1++) != nls_tolower(t, *s2++))
@@ -61,4 +61,3 @@ static inline int nls_strnicmp(struct nls_table *t, const unsigned char *s1,
 #define MODULE_ALIAS_NLS(name)	MODULE_ALIAS("nls_" __stringify(name))
 
 #endif /* _LINUX_NLS_H */
-

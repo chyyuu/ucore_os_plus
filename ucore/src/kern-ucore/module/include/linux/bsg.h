@@ -22,7 +22,7 @@ struct sg_io_v4 {
 	__u32 max_response_len;	/* [i] in bytes */
 	__u64 response;		/* [i], [*o] {SCSI: (auto)sense data} */
 
-        /* "dout_": data out (to device); "din_": data in (from device) */
+	/* "dout_": data out (to device); "din_": data in (from device) */
 	__u32 dout_iovec_count;	/* [i] 0 -> "flat" dout transfer else
 				   dout_xfer points to array of iovec */
 	__u32 dout_xfer_len;	/* [i] bytes to be transferred to device */
@@ -60,20 +60,21 @@ struct bsg_class_device {
 	int minor;
 	struct request_queue *queue;
 	struct kref ref;
-	void (*release)(struct device *);
+	void (*release) (struct device *);
 };
 
 extern int bsg_register_queue(struct request_queue *q,
 			      struct device *parent, const char *name,
-			      void (*release)(struct device *));
+			      void (*release) (struct device *));
 extern void bsg_unregister_queue(struct request_queue *);
 #else
 static inline int bsg_register_queue(struct request_queue *q,
 				     struct device *parent, const char *name,
-				     void (*release)(struct device *))
+				     void (*release) (struct device *))
 {
 	return 0;
 }
+
 static inline void bsg_unregister_queue(struct request_queue *q)
 {
 }

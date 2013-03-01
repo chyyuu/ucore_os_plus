@@ -80,7 +80,6 @@
  * means "IP packet".
  */
 
-
 #include <linux/ip.h>
 #include <linux/tcp.h>
 
@@ -91,7 +90,7 @@
 #define SL_TYPE_ERROR 0x00
 
 /* Bits in first octet of compressed packet */
-#define NEW_C	0x40	/* flag bits for what changed in a packet */
+#define NEW_C	0x40		/* flag bits for what changed in a packet */
 #define NEW_I	0x20
 #define NEW_S	0x08
 #define NEW_A	0x04
@@ -99,7 +98,7 @@
 #define NEW_U	0x01
 
 /* reserved, special-case values of above */
-#define SPECIAL_I (NEW_S|NEW_W|NEW_U)		/* echoed interactive traffic */
+#define SPECIAL_I (NEW_S|NEW_W|NEW_U)	/* echoed interactive traffic */
 #define SPECIAL_D (NEW_S|NEW_A|NEW_W|NEW_U)	/* unidirectional data */
 #define SPECIALS_MASK (NEW_S|NEW_A|NEW_W|NEW_U)
 
@@ -126,7 +125,7 @@ typedef __u32 int32;
  * the transmit & receive ends of the line use to locate saved header.
  */
 struct cstate {
-	byte_t	cs_this;	/* connection id number (xmit) */
+	byte_t cs_this;		/* connection id number (xmit) */
 	struct cstate *next;	/* next in ring (xmit) */
 	struct iphdr cs_ip;	/* ip/tcp hdr from most recent packet */
 	struct tcphdr cs_tcp;
@@ -140,11 +139,11 @@ struct cstate {
  * all the state data for one serial line (we need one of these per line).
  */
 struct slcompress {
-	struct cstate *tstate;	/* transmit connection states (array)*/
-	struct cstate *rstate;	/* receive connection states (array)*/
+	struct cstate *tstate;	/* transmit connection states (array) */
+	struct cstate *rstate;	/* receive connection states (array) */
 
-	byte_t tslot_limit;	/* highest transmit slot id (0-l)*/
-	byte_t rslot_limit;	/* highest receive slot id (0-l)*/
+	byte_t tslot_limit;	/* highest transmit slot id (0-l) */
+	byte_t rslot_limit;	/* highest receive slot id (0-l) */
 
 	byte_t xmit_oldest;	/* oldest xmit in ring */
 	byte_t xmit_current;	/* most recent xmit id */
@@ -180,4 +179,4 @@ int slhc_uncompress(struct slcompress *comp, unsigned char *icp, int isize);
 int slhc_remember(struct slcompress *comp, unsigned char *icp, int isize);
 int slhc_toss(struct slcompress *comp);
 
-#endif	/* _SLHC_H */
+#endif /* _SLHC_H */

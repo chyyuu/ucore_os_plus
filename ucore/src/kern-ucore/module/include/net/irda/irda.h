@@ -26,9 +26,9 @@
 #ifndef NET_IRDA_H
 #define NET_IRDA_H
 
-#include <linux/skbuff.h>		/* struct sk_buff */
+#include <linux/skbuff.h>	/* struct sk_buff */
 #include <linux/kernel.h>
-#include <linux/if.h>			/* sa_family_t in <linux/irda.h> */
+#include <linux/if.h>		/* sa_family_t in <linux/irda.h> */
 #include <linux/irda.h>
 
 typedef __u32 magic_t;
@@ -37,7 +37,7 @@ typedef __u32 magic_t;
 #define TRUE 1
 #endif
 
-#ifndef FALSE 
+#ifndef FALSE
 #define FALSE 0
 #endif
 
@@ -46,17 +46,16 @@ typedef __u32 magic_t;
 #define SMALL 5
 #endif
 
-#ifndef IRDA_MIN /* Lets not mix this MIN with other header files */
+#ifndef IRDA_MIN		/* Lets not mix this MIN with other header files */
 #define IRDA_MIN(a, b) (((a) < (b)) ? (a) : (b))
 #endif
 
 #ifndef IRDA_ALIGN
-#  define IRDA_ALIGN __attribute__((aligned))
+#define IRDA_ALIGN __attribute__((aligned))
 #endif
 #ifndef IRDA_PACK
-#  define IRDA_PACK __attribute__((packed))
+#define IRDA_PACK __attribute__((packed))
 #endif
-
 
 #ifdef CONFIG_IRDA_DEBUG
 
@@ -106,7 +105,7 @@ do { if(!(expr)) { \
 #define IAS_ATTRIB_MAGIC   0x45232
 #define IRDA_TASK_MAGIC    0x38423
 
-#define IAS_DEVICE_ID 0x0000 /* Defined by IrDA, IrLMP section 4.1 (page 68) */
+#define IAS_DEVICE_ID 0x0000	/* Defined by IrDA, IrLMP section 4.1 (page 68) */
 #define IAS_PNP_ID    0xd342
 #define IAS_OBEX_ID   0x34323
 #define IAS_IRLAN_ID  0x34234

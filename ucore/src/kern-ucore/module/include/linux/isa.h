@@ -9,12 +9,12 @@
 #include <linux/kernel.h>
 
 struct isa_driver {
-	int (*match)(struct device *, unsigned int);
-	int (*probe)(struct device *, unsigned int);
-	int (*remove)(struct device *, unsigned int);
-	void (*shutdown)(struct device *, unsigned int);
-	int (*suspend)(struct device *, unsigned int, pm_message_t);
-	int (*resume)(struct device *, unsigned int);
+	int (*match) (struct device *, unsigned int);
+	int (*probe) (struct device *, unsigned int);
+	int (*remove) (struct device *, unsigned int);
+	void (*shutdown) (struct device *, unsigned int);
+	int (*suspend) (struct device *, unsigned int, pm_message_t);
+	int (*resume) (struct device *, unsigned int);
 
 	struct device_driver driver;
 	struct device *devices;

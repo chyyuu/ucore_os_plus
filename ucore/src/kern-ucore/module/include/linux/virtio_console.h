@@ -16,11 +16,10 @@ struct virtio_console_config {
 	__u16 cols;
 	/* rows of the screens */
 	__u16 rows;
-} __attribute__((packed));
-
+} __attribute__ ((packed));
 
 #ifdef __KERNEL__
-int __init virtio_cons_early_init(int (*put_chars)(u32, const char *, int));
+int __init virtio_cons_early_init(int (*put_chars) (u32, const char *, int));
 #endif /* __KERNEL__ */
 
 #endif /* _LINUX_VIRTIO_CONSOLE_H */

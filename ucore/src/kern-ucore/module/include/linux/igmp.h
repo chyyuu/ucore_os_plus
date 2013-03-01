@@ -27,8 +27,7 @@
  *	Header in on cable format
  */
 
-struct igmphdr
-{
+struct igmphdr {
 	__u8 type;
 	__u8 code;		/* For newer IGMP */
 	__sum16 csum;
@@ -44,11 +43,11 @@ struct igmphdr
 #define IGMPV3_BLOCK_OLD_SOURCES	6
 
 struct igmpv3_grec {
-	__u8	grec_type;
-	__u8	grec_auxwords;
-	__be16	grec_nsrcs;
-	__be32	grec_mca;
-	__be32	grec_src[0];
+	__u8 grec_type;
+	__u8 grec_auxwords;
+	__be16 grec_nsrcs;
+	__be32 grec_mca;
+	__be32 grec_src[0];
 };
 
 struct igmpv3_report {
@@ -66,13 +65,9 @@ struct igmpv3_query {
 	__be16 csum;
 	__be32 group;
 #if defined(__LITTLE_ENDIAN_BITFIELD)
-	__u8 qrv:3,
-	     suppress:1,
-	     resv:4;
+	__u8 qrv:3, suppress:1, resv:4;
 #elif defined(__BIG_ENDIAN_BITFIELD)
-	__u8 resv:4,
-	     suppress:1,
-	     qrv:3;
+	__u8 resv:4, suppress:1, qrv:3;
 #else
 #error "Please fix <asm/byteorder.h>"
 #endif
@@ -93,7 +88,6 @@ struct igmpv3_query {
 #define IGMP_MTRACE_RESP		0x1e
 #define IGMP_MTRACE			0x1f
 
-
 /*
  *	Use the BSD names for these for compatibility
  */
@@ -107,14 +101,14 @@ struct igmpv3_query {
 #define IGMP_MINLEN			8
 
 #define IGMP_MAX_HOST_REPORT_DELAY	10	/* max delay for response to */
-						/* query (in seconds)	*/
+						/* query (in seconds)   */
 
 #define IGMP_TIMER_SCALE		10	/* denotes that the igmphdr->timer field */
-						/* specifies time in 10th of seconds	 */
+						/* specifies time in 10th of seconds     */
 
-#define IGMP_AGE_THRESHOLD		400	/* If this host don't hear any IGMP V1	*/
-						/* message in this period of time,	*/
-						/* revert to IGMP v2 router.		*/
+#define IGMP_AGE_THRESHOLD		400	/* If this host don't hear any IGMP V1  */
+						/* message in this period of time,      */
+						/* revert to IGMP v2 router.            */
 
 #define IGMP_ALL_HOSTS		htonl(0xE0000001L)
 #define IGMP_ALL_ROUTER 	htonl(0xE0000002L)
@@ -136,14 +130,12 @@ static inline struct igmphdr *igmp_hdr(const struct sk_buff *skb)
 	return (struct igmphdr *)skb_transport_header(skb);
 }
 
-static inline struct igmpv3_report *
-			igmpv3_report_hdr(const struct sk_buff *skb)
+static inline struct igmpv3_report *igmpv3_report_hdr(const struct sk_buff *skb)
 {
 	return (struct igmpv3_report *)skb_transport_header(skb);
 }
 
-static inline struct igmpv3_query *
-			igmpv3_query_hdr(const struct sk_buff *skb)
+static inline struct igmpv3_query *igmpv3_query_hdr(const struct sk_buff *skb)
 {
 	return (struct igmpv3_query *)skb_transport_header(skb);
 }
@@ -151,11 +143,10 @@ static inline struct igmpv3_query *
 extern int sysctl_igmp_max_memberships;
 extern int sysctl_igmp_max_msf;
 
-struct ip_sf_socklist
-{
-	unsigned int		sl_max;
-	unsigned int		sl_count;
-	__be32			sl_addr[0];
+struct ip_sf_socklist {
+	unsigned int sl_max;
+	unsigned int sl_count;
+	__be32 sl_addr[0];
 };
 
 #define IP_SFLSIZE(count)	(sizeof(struct ip_sf_socklist) + \
@@ -167,43 +158,40 @@ struct ip_sf_socklist
    this list never used in fast path code
  */
 
-struct ip_mc_socklist
-{
-	struct ip_mc_socklist	*next;
-	struct ip_mreqn		multi;
-	unsigned int		sfmode;		/* MCAST_{INCLUDE,EXCLUDE} */
-	struct ip_sf_socklist	*sflist;
+struct ip_mc_socklist {
+	struct ip_mc_socklist *next;
+	struct ip_mreqn multi;
+	unsigned int sfmode;	/* MCAST_{INCLUDE,EXCLUDE} */
+	struct ip_sf_socklist *sflist;
 };
 
-struct ip_sf_list
-{
-	struct ip_sf_list	*sf_next;
-	__be32			sf_inaddr;
-	unsigned long		sf_count[2];	/* include/exclude counts */
-	unsigned char		sf_gsresp;	/* include in g & s response? */
-	unsigned char		sf_oldin;	/* change state */
-	unsigned char		sf_crcount;	/* retrans. left to send */
+struct ip_sf_list {
+	struct ip_sf_list *sf_next;
+	__be32 sf_inaddr;
+	unsigned long sf_count[2];	/* include/exclude counts */
+	unsigned char sf_gsresp;	/* include in g & s response? */
+	unsigned char sf_oldin;	/* change state */
+	unsigned char sf_crcount;	/* retrans. left to send */
 };
 
-struct ip_mc_list
-{
-	struct in_device	*interface;
-	__be32			multiaddr;
-	struct ip_sf_list	*sources;
-	struct ip_sf_list	*tomb;
-	unsigned int		sfmode;
-	unsigned long		sfcount[2];
-	struct ip_mc_list	*next;
-	struct timer_list	timer;
-	int			users;
-	atomic_t		refcnt;
-	spinlock_t		lock;
-	char			tm_running;
-	char			reporter;
-	char			unsolicit_count;
-	char			loaded;
-	unsigned char		gsquery;	/* check source marks? */
-	unsigned char		crcount;
+struct ip_mc_list {
+	struct in_device *interface;
+	__be32 multiaddr;
+	struct ip_sf_list *sources;
+	struct ip_sf_list *tomb;
+	unsigned int sfmode;
+	unsigned long sfcount[2];
+	struct ip_mc_list *next;
+	struct timer_list timer;
+	int users;
+	atomic_t refcnt;
+	spinlock_t lock;
+	char tm_running;
+	char reporter;
+	char unsolicit_count;
+	char loaded;
+	unsigned char gsquery;	/* check source marks? */
+	unsigned char crcount;
 };
 
 /* V3 exponential field decoding */
@@ -216,18 +204,22 @@ struct ip_mc_list
 #define IGMPV3_QQIC(value) IGMPV3_EXP(0x80, 4, 3, value)
 #define IGMPV3_MRC(value) IGMPV3_EXP(0x80, 4, 3, value)
 
-extern int ip_check_mc(struct in_device *dev, __be32 mc_addr, __be32 src_addr, u16 proto);
+extern int ip_check_mc(struct in_device *dev, __be32 mc_addr, __be32 src_addr,
+		       u16 proto);
 extern int igmp_rcv(struct sk_buff *);
 extern int ip_mc_join_group(struct sock *sk, struct ip_mreqn *imr);
 extern int ip_mc_leave_group(struct sock *sk, struct ip_mreqn *imr);
 extern void ip_mc_drop_socket(struct sock *sk);
 extern int ip_mc_source(int add, int omode, struct sock *sk,
-		struct ip_mreq_source *mreqs, int ifindex);
-extern int ip_mc_msfilter(struct sock *sk, struct ip_msfilter *msf,int ifindex);
+			struct ip_mreq_source *mreqs, int ifindex);
+extern int ip_mc_msfilter(struct sock *sk, struct ip_msfilter *msf,
+			  int ifindex);
 extern int ip_mc_msfget(struct sock *sk, struct ip_msfilter *msf,
-		struct ip_msfilter __user *optval, int __user *optlen);
+			struct ip_msfilter __user * optval,
+			int __user * optlen);
 extern int ip_mc_gsfget(struct sock *sk, struct group_filter *gsf,
-		struct group_filter __user *optval, int __user *optlen);
+			struct group_filter __user * optval,
+			int __user * optlen);
 extern int ip_mc_sf_allow(struct sock *sk, __be32 local, __be32 rmt, int dif);
 extern void ip_mc_init_dev(struct in_device *);
 extern void ip_mc_destroy_dev(struct in_device *);

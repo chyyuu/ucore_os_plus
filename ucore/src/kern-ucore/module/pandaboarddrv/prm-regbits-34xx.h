@@ -13,7 +13,6 @@
 #ifndef __ARCH_ARM_MACH_OMAP2_PRM_REGBITS_34XX_H
 #define __ARCH_ARM_MACH_OMAP2_PRM_REGBITS_34XX_H
 
-
 #include "prm2xxx_3xxx.h"
 
 /* Shared register bits */

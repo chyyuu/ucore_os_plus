@@ -93,13 +93,13 @@ typedef int __bitwise suspend_state_t;
  *	which require special recovery actions in that situation.
  */
 struct platform_suspend_ops {
-	int (*valid)(suspend_state_t state);
-	int (*begin)(suspend_state_t state);
-	int (*prepare)(void);
-	int (*enter)(suspend_state_t state);
-	void (*finish)(void);
-	void (*end)(void);
-	void (*recover)(void);
+	int (*valid) (suspend_state_t state);
+	int (*begin) (suspend_state_t state);
+	int (*prepare) (void);
+	int (*enter) (suspend_state_t state);
+	void (*finish) (void);
+	void (*end) (void);
+	void (*recover) (void);
 };
 
 #ifdef CONFIG_SUSPEND
@@ -132,8 +132,14 @@ extern int pm_suspend(suspend_state_t state);
 #else /* !CONFIG_SUSPEND */
 #define suspend_valid_only_mem	NULL
 
-static inline void suspend_set_ops(struct platform_suspend_ops *ops) {}
-static inline int pm_suspend(suspend_state_t state) { return -ENOSYS; }
+static inline void suspend_set_ops(struct platform_suspend_ops *ops)
+{
+}
+
+static inline int pm_suspend(suspend_state_t state)
+{
+	return -ENOSYS;
+}
 #endif /* !CONFIG_SUSPEND */
 
 /* struct pbe is used for creating lists of pages that should be restored
@@ -202,29 +208,33 @@ extern void mark_free_pages(struct zone *zone);
  *	platforms which require special recovery actions in that situation.
  */
 struct platform_hibernation_ops {
-	int (*begin)(void);
-	void (*end)(void);
-	int (*pre_snapshot)(void);
-	void (*finish)(void);
-	int (*prepare)(void);
-	int (*enter)(void);
-	void (*leave)(void);
-	int (*pre_restore)(void);
-	void (*restore_cleanup)(void);
-	void (*recover)(void);
+	int (*begin) (void);
+	void (*end) (void);
+	int (*pre_snapshot) (void);
+	void (*finish) (void);
+	int (*prepare) (void);
+	int (*enter) (void);
+	void (*leave) (void);
+	int (*pre_restore) (void);
+	void (*restore_cleanup) (void);
+	void (*recover) (void);
 };
 
 #ifdef CONFIG_HIBERNATION
 /* kernel/power/snapshot.c */
 extern void __register_nosave_region(unsigned long b, unsigned long e, int km);
-static inline void __init register_nosave_region(unsigned long b, unsigned long e)
+static inline void __init register_nosave_region(unsigned long b,
+						 unsigned long e)
 {
 	__register_nosave_region(b, e, 0);
 }
-static inline void __init register_nosave_region_late(unsigned long b, unsigned long e)
+
+static inline void __init register_nosave_region_late(unsigned long b,
+						      unsigned long e)
 {
 	__register_nosave_region(b, e, 1);
 }
+
 extern int swsusp_page_is_forbidden(struct page *);
 extern void swsusp_set_page_free(struct page *);
 extern void swsusp_unset_page_free(struct page *);
@@ -239,21 +249,54 @@ extern void hibernate_nvs_save(void);
 extern void hibernate_nvs_restore(void);
 extern bool system_entering_hibernation(void);
 #else /* CONFIG_HIBERNATION */
-static inline int swsusp_page_is_forbidden(struct page *p) { return 0; }
-static inline void swsusp_set_page_free(struct page *p) {}
-static inline void swsusp_unset_page_free(struct page *p) {}
+static inline int swsusp_page_is_forbidden(struct page *p)
+{
+	return 0;
+}
 
-static inline void hibernation_set_ops(struct platform_hibernation_ops *ops) {}
-static inline int hibernate(void) { return -ENOSYS; }
+static inline void swsusp_set_page_free(struct page *p)
+{
+}
+
+static inline void swsusp_unset_page_free(struct page *p)
+{
+}
+
+static inline void hibernation_set_ops(struct platform_hibernation_ops *ops)
+{
+}
+
+static inline int hibernate(void)
+{
+	return -ENOSYS;
+}
+
 static inline int hibernate_nvs_register(unsigned long a, unsigned long b)
 {
 	return 0;
 }
-static inline int hibernate_nvs_alloc(void) { return 0; }
-static inline void hibernate_nvs_free(void) {}
-static inline void hibernate_nvs_save(void) {}
-static inline void hibernate_nvs_restore(void) {}
-static inline bool system_entering_hibernation(void) { return false; }
+
+static inline int hibernate_nvs_alloc(void)
+{
+	return 0;
+}
+
+static inline void hibernate_nvs_free(void)
+{
+}
+
+static inline void hibernate_nvs_save(void)
+{
+}
+
+static inline void hibernate_nvs_restore(void)
+{
+}
+
+static inline bool system_entering_hibernation(void)
+{
+	return false;
+}
 #endif /* CONFIG_HIBERNATION */
 
 #ifdef CONFIG_PM_SLEEP
@@ -288,6 +331,7 @@ static inline int unregister_pm_notifier(struct notifier_block *nb)
 static inline void register_nosave_region(unsigned long b, unsigned long e)
 {
 }
+
 static inline void register_nosave_region_late(unsigned long b, unsigned long e)
 {
 }

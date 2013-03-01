@@ -30,33 +30,36 @@ volatile int tx_level, rx_level;
 void uart_init(void)
 {
 	int devisor;
- 
+
 	/* Reset receiver and transmiter */
-	REG8(UART_BASE + UART_FCR) = UART_FCR_ENABLE_FIFO | UART_FCR_CLEAR_RCVR | UART_FCR_CLEAR_XMIT | UART_FCR_TRIGGER_1;
- 
+	REG8(UART_BASE + UART_FCR) =
+	    UART_FCR_ENABLE_FIFO | UART_FCR_CLEAR_RCVR | UART_FCR_CLEAR_XMIT |
+	    UART_FCR_TRIGGER_1;
+
 	/* Disable all interrupts */
 	REG8(UART_BASE + UART_IER) = UART_IER_RDI;
-	
+
 	/* Set 8 bit char, 1 stop bit, no parity */
-	REG8(UART_BASE + UART_LCR) = UART_LCR_WLEN8 & ~(UART_LCR_STOP | UART_LCR_PARITY);
- 
+	REG8(UART_BASE + UART_LCR) =
+	    UART_LCR_WLEN8 & ~(UART_LCR_STOP | UART_LCR_PARITY);
+
 	/* Set baud rate */
-	devisor = IN_CLK/(16 * UART_BAUD_RATE);
+	devisor = IN_CLK / (16 * UART_BAUD_RATE);
 	REG8(UART_BASE + UART_LCR) |= UART_LCR_DLAB;
 	REG8(UART_BASE + UART_DLL) = devisor & 0x000000ff;
 	REG8(UART_BASE + UART_DLM) = (devisor >> 8) & 0x000000ff;
 	REG8(UART_BASE + UART_LCR) &= ~(UART_LCR_DLAB);
- 
+
 	return;
 }
 
 void uart_putc(char c)
 {
 	unsigned char lsr;
-  
+
 	WAIT_FOR_THRE;
 	REG8(UART_BASE + UART_TX) = c;
-	if(c == '\n') {
+	if (c == '\n') {
 		WAIT_FOR_THRE;
 		REG8(UART_BASE + UART_TX) = '\r';
 	}
@@ -67,10 +70,10 @@ char uart_getc()
 {
 	unsigned char lsr;
 	char c;
-  
+
 	WAIT_FOR_CHAR;
-  
+
 	c = REG8(UART_BASE + UART_RX);
-  
+
 	return c;
 }

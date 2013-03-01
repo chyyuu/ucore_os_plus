@@ -14,20 +14,20 @@
 #define HD_IRQ		14
 
 /* Hd controller regs. Ref: IBM AT Bios-listing */
-#define HD_DATA		0x1f0		/* _CTL when writing */
-#define HD_ERROR	0x1f1		/* see err-bits */
-#define HD_NSECTOR	0x1f2		/* nr of sectors to read/write */
-#define HD_SECTOR	0x1f3		/* starting sector */
-#define HD_LCYL		0x1f4		/* starting cylinder */
-#define HD_HCYL		0x1f5		/* high byte of starting cyl */
-#define HD_CURRENT	0x1f6		/* 101dhhhh , d=drive, hhhh=head */
-#define HD_STATUS	0x1f7		/* see status-bits */
+#define HD_DATA		0x1f0	/* _CTL when writing */
+#define HD_ERROR	0x1f1	/* see err-bits */
+#define HD_NSECTOR	0x1f2	/* nr of sectors to read/write */
+#define HD_SECTOR	0x1f3	/* starting sector */
+#define HD_LCYL		0x1f4	/* starting cylinder */
+#define HD_HCYL		0x1f5	/* high byte of starting cyl */
+#define HD_CURRENT	0x1f6	/* 101dhhhh , d=drive, hhhh=head */
+#define HD_STATUS	0x1f7	/* see status-bits */
 #define HD_FEATURE	HD_ERROR	/* same io address, read=error, write=feature */
 #define HD_PRECOMP	HD_FEATURE	/* obsolete use of this port - predates IDE */
 #define HD_COMMAND	HD_STATUS	/* same io address, read=status, write=cmd */
 
-#define HD_CMD		0x3f6		/* used for resets */
-#define HD_ALTSTATUS	0x3f6		/* same as HD_STATUS but doesn't clear irq */
+#define HD_CMD		0x3f6	/* used for resets */
+#define HD_ALTSTATUS	0x3f6	/* same as HD_STATUS but doesn't clear irq */
 
 /* remainder is shared between hd.c, ide.c, ide-cd.c, and the hdparm utility */
 
@@ -96,43 +96,43 @@ typedef unsigned long sata_ioreg_t;
 #endif
 
 typedef union ide_reg_valid_s {
-	unsigned all				: 16;
+	unsigned all:16;
 	struct {
-		unsigned data			: 1;
-		unsigned error_feature		: 1;
-		unsigned sector			: 1;
-		unsigned nsector		: 1;
-		unsigned lcyl			: 1;
-		unsigned hcyl			: 1;
-		unsigned select			: 1;
-		unsigned status_command		: 1;
+		unsigned data:1;
+		unsigned error_feature:1;
+		unsigned sector:1;
+		unsigned nsector:1;
+		unsigned lcyl:1;
+		unsigned hcyl:1;
+		unsigned select:1;
+		unsigned status_command:1;
 
-		unsigned data_hob		: 1;
-		unsigned error_feature_hob	: 1;
-		unsigned sector_hob		: 1;
-		unsigned nsector_hob		: 1;
-		unsigned lcyl_hob		: 1;
-		unsigned hcyl_hob		: 1;
-		unsigned select_hob		: 1;
-		unsigned control_hob		: 1;
+		unsigned data_hob:1;
+		unsigned error_feature_hob:1;
+		unsigned sector_hob:1;
+		unsigned nsector_hob:1;
+		unsigned lcyl_hob:1;
+		unsigned hcyl_hob:1;
+		unsigned select_hob:1;
+		unsigned control_hob:1;
 	} b;
 } ide_reg_valid_t;
 
 typedef struct ide_task_request_s {
-	__u8		io_ports[8];
-	__u8		hob_ports[8]; /* bytes 6 and 7 are unused */
-	ide_reg_valid_t	out_flags;
-	ide_reg_valid_t	in_flags;
-	int		data_phase;
-	int		req_cmd;
-	unsigned long	out_size;
-	unsigned long	in_size;
+	__u8 io_ports[8];
+	__u8 hob_ports[8];	/* bytes 6 and 7 are unused */
+	ide_reg_valid_t out_flags;
+	ide_reg_valid_t in_flags;
+	int data_phase;
+	int req_cmd;
+	unsigned long out_size;
+	unsigned long in_size;
 } ide_task_request_t;
 
 typedef struct ide_ioctl_request_s {
-	ide_task_request_t	*task_request;
-	unsigned char		*out_buffer;
-	unsigned char		*in_buffer;
+	ide_task_request_t *task_request;
+	unsigned char *out_buffer;
+	unsigned char *in_buffer;
 } ide_ioctl_request_t;
 
 struct hd_drive_cmd_hdr {
@@ -196,11 +196,11 @@ typedef struct hd_drive_hob_hdr {
 /*
  *	0x01->0x02 Reserved
  */
-#define CFA_REQ_EXT_ERROR_CODE		0x03 /* CFA Request Extended Error Code */
+#define CFA_REQ_EXT_ERROR_CODE		0x03	/* CFA Request Extended Error Code */
 /*
  *	0x04->0x07 Reserved
  */
-#define WIN_SRST			0x08 /* ATAPI soft reset command */
+#define WIN_SRST			0x08	/* ATAPI soft reset command */
 #define WIN_DEVICE_RESET		0x08
 /*
  *	0x09->0x0F Reserved
@@ -210,41 +210,41 @@ typedef struct hd_drive_hob_hdr {
 /*
  *	0x10->0x1F Reserved
  */
-#define WIN_READ			0x20 /* 28-Bit */
-#define WIN_READ_ONCE			0x21 /* 28-Bit without retries */
-#define WIN_READ_LONG			0x22 /* 28-Bit */
-#define WIN_READ_LONG_ONCE		0x23 /* 28-Bit without retries */
-#define WIN_READ_EXT			0x24 /* 48-Bit */
-#define WIN_READDMA_EXT			0x25 /* 48-Bit */
-#define WIN_READDMA_QUEUED_EXT		0x26 /* 48-Bit */
-#define WIN_READ_NATIVE_MAX_EXT		0x27 /* 48-Bit */
+#define WIN_READ			0x20	/* 28-Bit */
+#define WIN_READ_ONCE			0x21	/* 28-Bit without retries */
+#define WIN_READ_LONG			0x22	/* 28-Bit */
+#define WIN_READ_LONG_ONCE		0x23	/* 28-Bit without retries */
+#define WIN_READ_EXT			0x24	/* 48-Bit */
+#define WIN_READDMA_EXT			0x25	/* 48-Bit */
+#define WIN_READDMA_QUEUED_EXT		0x26	/* 48-Bit */
+#define WIN_READ_NATIVE_MAX_EXT		0x27	/* 48-Bit */
 /*
  *	0x28
  */
-#define WIN_MULTREAD_EXT		0x29 /* 48-Bit */
+#define WIN_MULTREAD_EXT		0x29	/* 48-Bit */
 /*
  *	0x2A->0x2F Reserved
  */
-#define WIN_WRITE			0x30 /* 28-Bit */
-#define WIN_WRITE_ONCE			0x31 /* 28-Bit without retries */
-#define WIN_WRITE_LONG			0x32 /* 28-Bit */
-#define WIN_WRITE_LONG_ONCE		0x33 /* 28-Bit without retries */
-#define WIN_WRITE_EXT			0x34 /* 48-Bit */
-#define WIN_WRITEDMA_EXT		0x35 /* 48-Bit */
-#define WIN_WRITEDMA_QUEUED_EXT		0x36 /* 48-Bit */
-#define WIN_SET_MAX_EXT			0x37 /* 48-Bit */
-#define CFA_WRITE_SECT_WO_ERASE		0x38 /* CFA Write Sectors without erase */
-#define WIN_MULTWRITE_EXT		0x39 /* 48-Bit */
+#define WIN_WRITE			0x30	/* 28-Bit */
+#define WIN_WRITE_ONCE			0x31	/* 28-Bit without retries */
+#define WIN_WRITE_LONG			0x32	/* 28-Bit */
+#define WIN_WRITE_LONG_ONCE		0x33	/* 28-Bit without retries */
+#define WIN_WRITE_EXT			0x34	/* 48-Bit */
+#define WIN_WRITEDMA_EXT		0x35	/* 48-Bit */
+#define WIN_WRITEDMA_QUEUED_EXT		0x36	/* 48-Bit */
+#define WIN_SET_MAX_EXT			0x37	/* 48-Bit */
+#define CFA_WRITE_SECT_WO_ERASE		0x38	/* CFA Write Sectors without erase */
+#define WIN_MULTWRITE_EXT		0x39	/* 48-Bit */
 /*
  *	0x3A->0x3B Reserved
  */
-#define WIN_WRITE_VERIFY		0x3C /* 28-Bit */
+#define WIN_WRITE_VERIFY		0x3C	/* 28-Bit */
 /*
  *	0x3D->0x3F Reserved
  */
-#define WIN_VERIFY			0x40 /* 28-Bit - Read Verify Sectors */
-#define WIN_VERIFY_ONCE			0x41 /* 28-Bit - without retries */
-#define WIN_VERIFY_EXT			0x42 /* 48-Bit */
+#define WIN_VERIFY			0x40	/* 28-Bit - Read Verify Sectors */
+#define WIN_VERIFY_ONCE			0x41	/* 28-Bit - without retries */
+#define WIN_VERIFY_EXT			0x42	/* 48-Bit */
 /*
  *	0x43->0x4F Reserved
  */
@@ -256,11 +256,11 @@ typedef struct hd_drive_hob_hdr {
 /*
  *	0x61->0x5F Reserved
  */
-#define WIN_SEEK			0x70 /* 0x70-0x7F Reserved */
+#define WIN_SEEK			0x70	/* 0x70-0x7F Reserved */
 
-#define CFA_TRANSLATE_SECTOR		0x87 /* CFA Translate Sector */
+#define CFA_TRANSLATE_SECTOR		0x87	/* CFA Translate Sector */
 #define WIN_DIAGNOSE			0x90
-#define WIN_SPECIFY			0x91 /* set drive geometry translation */
+#define WIN_SPECIFY			0x91	/* set drive geometry translation */
 #define WIN_DOWNLOAD_MICROCODE		0x92
 #define WIN_STANDBYNOW2			0x94
 #define WIN_STANDBY2			0x96
@@ -270,43 +270,43 @@ typedef struct hd_drive_hob_hdr {
 /*
  *	0x9A VENDOR
  */
-#define WIN_PACKETCMD			0xA0 /* Send a packet command. */
-#define WIN_PIDENTIFY			0xA1 /* identify ATAPI device	*/
+#define WIN_PACKETCMD			0xA0	/* Send a packet command. */
+#define WIN_PIDENTIFY			0xA1	/* identify ATAPI device   */
 #define WIN_QUEUED_SERVICE		0xA2
-#define WIN_SMART			0xB0 /* self-monitoring and reporting */
+#define WIN_SMART			0xB0	/* self-monitoring and reporting */
 #define CFA_ERASE_SECTORS		0xC0
-#define WIN_MULTREAD			0xC4 /* read sectors using multiple mode*/
-#define WIN_MULTWRITE			0xC5 /* write sectors using multiple mode */
-#define WIN_SETMULT			0xC6 /* enable/disable multiple mode */
-#define WIN_READDMA_QUEUED		0xC7 /* read sectors using Queued DMA transfers */
-#define WIN_READDMA			0xC8 /* read sectors using DMA transfers */
-#define WIN_READDMA_ONCE		0xC9 /* 28-Bit - without retries */
-#define WIN_WRITEDMA			0xCA /* write sectors using DMA transfers */
-#define WIN_WRITEDMA_ONCE		0xCB /* 28-Bit - without retries */
-#define WIN_WRITEDMA_QUEUED		0xCC /* write sectors using Queued DMA transfers */
-#define CFA_WRITE_MULTI_WO_ERASE	0xCD /* CFA Write multiple without erase */
+#define WIN_MULTREAD			0xC4	/* read sectors using multiple mode */
+#define WIN_MULTWRITE			0xC5	/* write sectors using multiple mode */
+#define WIN_SETMULT			0xC6	/* enable/disable multiple mode */
+#define WIN_READDMA_QUEUED		0xC7	/* read sectors using Queued DMA transfers */
+#define WIN_READDMA			0xC8	/* read sectors using DMA transfers */
+#define WIN_READDMA_ONCE		0xC9	/* 28-Bit - without retries */
+#define WIN_WRITEDMA			0xCA	/* write sectors using DMA transfers */
+#define WIN_WRITEDMA_ONCE		0xCB	/* 28-Bit - without retries */
+#define WIN_WRITEDMA_QUEUED		0xCC	/* write sectors using Queued DMA transfers */
+#define CFA_WRITE_MULTI_WO_ERASE	0xCD	/* CFA Write multiple without erase */
 #define WIN_GETMEDIASTATUS		0xDA
-#define WIN_ACKMEDIACHANGE		0xDB /* ATA-1, ATA-2 vendor */
+#define WIN_ACKMEDIACHANGE		0xDB	/* ATA-1, ATA-2 vendor */
 #define WIN_POSTBOOT			0xDC
 #define WIN_PREBOOT 			0xDD
-#define WIN_DOORLOCK			0xDE /* lock door on removable drives */
-#define WIN_DOORUNLOCK			0xDF /* unlock door on removable drives */
+#define WIN_DOORLOCK			0xDE	/* lock door on removable drives */
+#define WIN_DOORUNLOCK			0xDF	/* unlock door on removable drives */
 #define WIN_STANDBYNOW1			0xE0
-#define WIN_IDLEIMMEDIATE		0xE1 /* force drive to become "ready" */
-#define WIN_STANDBY			0xE2 /* Set device in Standby Mode */
+#define WIN_IDLEIMMEDIATE		0xE1	/* force drive to become "ready" */
+#define WIN_STANDBY			0xE2	/* Set device in Standby Mode */
 #define WIN_SETIDLE1			0xE3
-#define WIN_READ_BUFFER			0xE4 /* force read only 1 sector */
+#define WIN_READ_BUFFER			0xE4	/* force read only 1 sector */
 #define WIN_CHECKPOWERMODE1		0xE5
 #define WIN_SLEEPNOW1			0xE6
 #define WIN_FLUSH_CACHE			0xE7
-#define WIN_WRITE_BUFFER		0xE8 /* force write only 1 sector */
-#define WIN_WRITE_SAME			0xE9 /* read ata-2 to use */
+#define WIN_WRITE_BUFFER		0xE8	/* force write only 1 sector */
+#define WIN_WRITE_SAME			0xE9	/* read ata-2 to use */
 	/* SET_FEATURES 0x22 or 0xDD */
-#define WIN_FLUSH_CACHE_EXT		0xEA /* 48-Bit */
-#define WIN_IDENTIFY			0xEC /* ask drive to identify itself	*/
+#define WIN_FLUSH_CACHE_EXT		0xEA	/* 48-Bit */
+#define WIN_IDENTIFY			0xEC	/* ask drive to identify itself    */
 #define WIN_MEDIAEJECT			0xED
-#define WIN_IDENTIFY_DMA		0xEE /* same as WIN_IDENTIFY, but DMA */
-#define WIN_SETFEATURES			0xEF /* set special drive features */
+#define WIN_IDENTIFY_DMA		0xEE	/* same as WIN_IDENTIFY, but DMA */
+#define WIN_SETFEATURES			0xEF	/* set special drive features */
 #define EXABYTE_ENABLE_NEST		0xF0
 #define WIN_SECURITY_SET_PASS		0xF1
 #define WIN_SECURITY_UNLOCK		0xF2
@@ -314,7 +314,7 @@ typedef struct hd_drive_hob_hdr {
 #define WIN_SECURITY_ERASE_UNIT		0xF4
 #define WIN_SECURITY_FREEZE_LOCK	0xF5
 #define WIN_SECURITY_DISABLE		0xF6
-#define WIN_READ_NATIVE_MAX		0xF8 /* return the native maximum address */
+#define WIN_READ_NATIVE_MAX		0xF8	/* return the native maximum address */
 #define WIN_SET_MAX			0xF9
 #define DISABLE_SEAGATE			0xFB
 
@@ -381,10 +381,10 @@ typedef struct hd_drive_hob_hdr {
 #define SECURITY_DISABLE_PASSWORD	0xBF
 
 struct hd_geometry {
-      unsigned char heads;
-      unsigned char sectors;
-      unsigned short cylinders;
-      unsigned long start;
+	unsigned char heads;
+	unsigned char sectors;
+	unsigned short cylinders;
+	unsigned long start;
 };
 
 /* hd/ide ctl's that pass (arg) ptrs to user space are numbered 0x030n/0x031n */
@@ -393,7 +393,7 @@ struct hd_geometry {
 #define HDIO_GET_MULTCOUNT	0x0304	/* get current IDE blockmode setting */
 #define HDIO_GET_QDMA		0x0305	/* get use-qdma flag */
 
-#define HDIO_SET_XFER		0x0306  /* set transfer rate via proc */
+#define HDIO_SET_XFER		0x0306	/* set transfer rate via proc */
 
 #define HDIO_OBSOLETE_IDENTITY	0x0307	/* OBSOLETE, DO NOT USE: returns 142 bytes */
 #define HDIO_GET_KEEPSETTINGS	0x0308	/* get keep-settings-on-reset flag */
@@ -424,7 +424,7 @@ struct hd_geometry {
 #define HDIO_SET_PIO_MODE	0x0327	/* reconfig interface to new speed */
 #ifndef __KERNEL__
 #define HDIO_SCAN_HWIF		0x0328	/* register and (re)scan interface */
-#define HDIO_UNREGISTER_HWIF	0x032a  /* unregister interface */
+#define HDIO_UNREGISTER_HWIF	0x032a	/* unregister interface */
 #endif
 #define HDIO_SET_NICE		0x0329	/* set nice flags */
 #define HDIO_SET_WCACHE		0x032b	/* change write cache enable-disable */
@@ -455,178 +455,178 @@ enum {
  * ide/probe.c.
  */
 struct hd_driveid {
-	unsigned short	config;		/* lots of obsolete bit flags */
-	unsigned short	cyls;		/* Obsolete, "physical" cyls */
-	unsigned short	reserved2;	/* reserved (word 2) */
-	unsigned short	heads;		/* Obsolete, "physical" heads */
-	unsigned short	track_bytes;	/* unformatted bytes per track */
-	unsigned short	sector_bytes;	/* unformatted bytes per sector */
-	unsigned short	sectors;	/* Obsolete, "physical" sectors per track */
-	unsigned short	vendor0;	/* vendor unique */
-	unsigned short	vendor1;	/* vendor unique */
-	unsigned short	vendor2;	/* Retired vendor unique */
-	unsigned char	serial_no[20];	/* 0 = not_specified */
-	unsigned short	buf_type;	/* Retired */
-	unsigned short	buf_size;	/* Retired, 512 byte increments
+	unsigned short config;	/* lots of obsolete bit flags */
+	unsigned short cyls;	/* Obsolete, "physical" cyls */
+	unsigned short reserved2;	/* reserved (word 2) */
+	unsigned short heads;	/* Obsolete, "physical" heads */
+	unsigned short track_bytes;	/* unformatted bytes per track */
+	unsigned short sector_bytes;	/* unformatted bytes per sector */
+	unsigned short sectors;	/* Obsolete, "physical" sectors per track */
+	unsigned short vendor0;	/* vendor unique */
+	unsigned short vendor1;	/* vendor unique */
+	unsigned short vendor2;	/* Retired vendor unique */
+	unsigned char serial_no[20];	/* 0 = not_specified */
+	unsigned short buf_type;	/* Retired */
+	unsigned short buf_size;	/* Retired, 512 byte increments
 					 * 0 = not_specified
 					 */
-	unsigned short	ecc_bytes;	/* for r/w long cmds; 0 = not_specified */
-	unsigned char	fw_rev[8];	/* 0 = not_specified */
-	unsigned char	model[40];	/* 0 = not_specified */
-	unsigned char	max_multsect;	/* 0=not_implemented */
-	unsigned char	vendor3;	/* vendor unique */
-	unsigned short	dword_io;	/* 0=not_implemented; 1=implemented */
-	unsigned char	vendor4;	/* vendor unique */
-	unsigned char	capability;	/* (upper byte of word 49)
-					 *  3:	IORDYsup
-					 *  2:	IORDYsw
-					 *  1:	LBA
-					 *  0:	DMA
+	unsigned short ecc_bytes;	/* for r/w long cmds; 0 = not_specified */
+	unsigned char fw_rev[8];	/* 0 = not_specified */
+	unsigned char model[40];	/* 0 = not_specified */
+	unsigned char max_multsect;	/* 0=not_implemented */
+	unsigned char vendor3;	/* vendor unique */
+	unsigned short dword_io;	/* 0=not_implemented; 1=implemented */
+	unsigned char vendor4;	/* vendor unique */
+	unsigned char capability;	/* (upper byte of word 49)
+					 *  3:  IORDYsup
+					 *  2:  IORDYsw
+					 *  1:  LBA
+					 *  0:  DMA
 					 */
-	unsigned short	reserved50;	/* reserved (word 50) */
-	unsigned char	vendor5;	/* Obsolete, vendor unique */
-	unsigned char	tPIO;		/* Obsolete, 0=slow, 1=medium, 2=fast */
-	unsigned char	vendor6;	/* Obsolete, vendor unique */
-	unsigned char	tDMA;		/* Obsolete, 0=slow, 1=medium, 2=fast */
-	unsigned short	field_valid;	/* (word 53)
-					 *  2:	ultra_ok	word  88
-					 *  1:	eide_ok		words 64-70
-					 *  0:	cur_ok		words 54-58
+	unsigned short reserved50;	/* reserved (word 50) */
+	unsigned char vendor5;	/* Obsolete, vendor unique */
+	unsigned char tPIO;	/* Obsolete, 0=slow, 1=medium, 2=fast */
+	unsigned char vendor6;	/* Obsolete, vendor unique */
+	unsigned char tDMA;	/* Obsolete, 0=slow, 1=medium, 2=fast */
+	unsigned short field_valid;	/* (word 53)
+					 *  2:  ultra_ok        word  88
+					 *  1:  eide_ok         words 64-70
+					 *  0:  cur_ok          words 54-58
 					 */
-	unsigned short	cur_cyls;	/* Obsolete, logical cylinders */
-	unsigned short	cur_heads;	/* Obsolete, l heads */
-	unsigned short	cur_sectors;	/* Obsolete, l sectors per track */
-	unsigned short	cur_capacity0;	/* Obsolete, l total sectors on drive */
-	unsigned short	cur_capacity1;	/* Obsolete, (2 words, misaligned int)     */
-	unsigned char	multsect;	/* current multiple sector count */
-	unsigned char	multsect_valid;	/* when (bit0==1) multsect is ok */
-	unsigned int	lba_capacity;	/* Obsolete, total number of sectors */
-	unsigned short	dma_1word;	/* Obsolete, single-word dma info */
-	unsigned short	dma_mword;	/* multiple-word dma info */
-	unsigned short  eide_pio_modes; /* bits 0:mode3 1:mode4 */
-	unsigned short  eide_dma_min;	/* min mword dma cycle time (ns) */
-	unsigned short  eide_dma_time;	/* recommended mword dma cycle time (ns) */
-	unsigned short  eide_pio;       /* min cycle time (ns), no IORDY  */
-	unsigned short  eide_pio_iordy; /* min cycle time (ns), with IORDY */
-	unsigned short	words69_70[2];	/* reserved words 69-70
+	unsigned short cur_cyls;	/* Obsolete, logical cylinders */
+	unsigned short cur_heads;	/* Obsolete, l heads */
+	unsigned short cur_sectors;	/* Obsolete, l sectors per track */
+	unsigned short cur_capacity0;	/* Obsolete, l total sectors on drive */
+	unsigned short cur_capacity1;	/* Obsolete, (2 words, misaligned int)     */
+	unsigned char multsect;	/* current multiple sector count */
+	unsigned char multsect_valid;	/* when (bit0==1) multsect is ok */
+	unsigned int lba_capacity;	/* Obsolete, total number of sectors */
+	unsigned short dma_1word;	/* Obsolete, single-word dma info */
+	unsigned short dma_mword;	/* multiple-word dma info */
+	unsigned short eide_pio_modes;	/* bits 0:mode3 1:mode4 */
+	unsigned short eide_dma_min;	/* min mword dma cycle time (ns) */
+	unsigned short eide_dma_time;	/* recommended mword dma cycle time (ns) */
+	unsigned short eide_pio;	/* min cycle time (ns), no IORDY  */
+	unsigned short eide_pio_iordy;	/* min cycle time (ns), with IORDY */
+	unsigned short words69_70[2];	/* reserved words 69-70
 					 * future command overlap and queuing
 					 */
-	unsigned short	words71_74[4];	/* reserved words 71-74
+	unsigned short words71_74[4];	/* reserved words 71-74
 					 * for IDENTIFY PACKET DEVICE command
 					 */
-	unsigned short  queue_depth;	/* (word 75)
-					 * 15:5	reserved
-					 *  4:0	Maximum queue depth -1
+	unsigned short queue_depth;	/* (word 75)
+					 * 15:5 reserved
+					 *  4:0 Maximum queue depth -1
 					 */
-	unsigned short  words76_79[4];	/* reserved words 76-79 */
-	unsigned short  major_rev_num;	/* (word 80) */
-	unsigned short  minor_rev_num;	/* (word 81) */
-	unsigned short  command_set_1;	/* (word 82) supported
-					 * 15:	Obsolete
-					 * 14:	NOP command
-					 * 13:	READ_BUFFER
-					 * 12:	WRITE_BUFFER
-					 * 11:	Obsolete
-					 * 10:	Host Protected Area
-					 *  9:	DEVICE Reset
-					 *  8:	SERVICE Interrupt
-					 *  7:	Release Interrupt
-					 *  6:	look-ahead
-					 *  5:	write cache
-					 *  4:	PACKET Command
-					 *  3:	Power Management Feature Set
-					 *  2:	Removable Feature Set
-					 *  1:	Security Feature Set
-					 *  0:	SMART Feature Set
+	unsigned short words76_79[4];	/* reserved words 76-79 */
+	unsigned short major_rev_num;	/* (word 80) */
+	unsigned short minor_rev_num;	/* (word 81) */
+	unsigned short command_set_1;	/* (word 82) supported
+					 * 15:  Obsolete
+					 * 14:  NOP command
+					 * 13:  READ_BUFFER
+					 * 12:  WRITE_BUFFER
+					 * 11:  Obsolete
+					 * 10:  Host Protected Area
+					 *  9:  DEVICE Reset
+					 *  8:  SERVICE Interrupt
+					 *  7:  Release Interrupt
+					 *  6:  look-ahead
+					 *  5:  write cache
+					 *  4:  PACKET Command
+					 *  3:  Power Management Feature Set
+					 *  2:  Removable Feature Set
+					 *  1:  Security Feature Set
+					 *  0:  SMART Feature Set
 					 */
-	unsigned short  command_set_2;	/* (word 83)
-					 * 15:	Shall be ZERO
-					 * 14:	Shall be ONE
-					 * 13:	FLUSH CACHE EXT
-					 * 12:	FLUSH CACHE
-					 * 11:	Device Configuration Overlay
-					 * 10:	48-bit Address Feature Set
-					 *  9:	Automatic Acoustic Management
-					 *  8:	SET MAX security
-					 *  7:	reserved 1407DT PARTIES
-					 *  6:	SetF sub-command Power-Up
-					 *  5:	Power-Up in Standby Feature Set
-					 *  4:	Removable Media Notification
-					 *  3:	APM Feature Set
-					 *  2:	CFA Feature Set
-					 *  1:	READ/WRITE DMA QUEUED
-					 *  0:	Download MicroCode
+	unsigned short command_set_2;	/* (word 83)
+					 * 15:  Shall be ZERO
+					 * 14:  Shall be ONE
+					 * 13:  FLUSH CACHE EXT
+					 * 12:  FLUSH CACHE
+					 * 11:  Device Configuration Overlay
+					 * 10:  48-bit Address Feature Set
+					 *  9:  Automatic Acoustic Management
+					 *  8:  SET MAX security
+					 *  7:  reserved 1407DT PARTIES
+					 *  6:  SetF sub-command Power-Up
+					 *  5:  Power-Up in Standby Feature Set
+					 *  4:  Removable Media Notification
+					 *  3:  APM Feature Set
+					 *  2:  CFA Feature Set
+					 *  1:  READ/WRITE DMA QUEUED
+					 *  0:  Download MicroCode
 					 */
-	unsigned short  cfsse;		/* (word 84)
-					 * cmd set-feature supported extensions
-					 * 15:	Shall be ZERO
-					 * 14:	Shall be ONE
-					 * 13:6	reserved
-					 *  5:	General Purpose Logging
-					 *  4:	Streaming Feature Set
-					 *  3:	Media Card Pass Through
-					 *  2:	Media Serial Number Valid
-					 *  1:	SMART selt-test supported
-					 *  0:	SMART error logging
-					 */
-	unsigned short  cfs_enable_1;	/* (word 85)
+	unsigned short cfsse;	/* (word 84)
+				 * cmd set-feature supported extensions
+				 * 15:  Shall be ZERO
+				 * 14:  Shall be ONE
+				 * 13:6 reserved
+				 *  5:  General Purpose Logging
+				 *  4:  Streaming Feature Set
+				 *  3:  Media Card Pass Through
+				 *  2:  Media Serial Number Valid
+				 *  1:  SMART selt-test supported
+				 *  0:  SMART error logging
+				 */
+	unsigned short cfs_enable_1;	/* (word 85)
 					 * command set-feature enabled
-					 * 15:	Obsolete
-					 * 14:	NOP command
-					 * 13:	READ_BUFFER
-					 * 12:	WRITE_BUFFER
-					 * 11:	Obsolete
-					 * 10:	Host Protected Area
-					 *  9:	DEVICE Reset
-					 *  8:	SERVICE Interrupt
-					 *  7:	Release Interrupt
-					 *  6:	look-ahead
-					 *  5:	write cache
-					 *  4:	PACKET Command
-					 *  3:	Power Management Feature Set
-					 *  2:	Removable Feature Set
-					 *  1:	Security Feature Set
-					 *  0:	SMART Feature Set
+					 * 15:  Obsolete
+					 * 14:  NOP command
+					 * 13:  READ_BUFFER
+					 * 12:  WRITE_BUFFER
+					 * 11:  Obsolete
+					 * 10:  Host Protected Area
+					 *  9:  DEVICE Reset
+					 *  8:  SERVICE Interrupt
+					 *  7:  Release Interrupt
+					 *  6:  look-ahead
+					 *  5:  write cache
+					 *  4:  PACKET Command
+					 *  3:  Power Management Feature Set
+					 *  2:  Removable Feature Set
+					 *  1:  Security Feature Set
+					 *  0:  SMART Feature Set
 					 */
-	unsigned short  cfs_enable_2;	/* (word 86)
+	unsigned short cfs_enable_2;	/* (word 86)
 					 * command set-feature enabled
-					 * 15:	Shall be ZERO
-					 * 14:	Shall be ONE
-					 * 13:	FLUSH CACHE EXT
-					 * 12:	FLUSH CACHE
-					 * 11:	Device Configuration Overlay
-					 * 10:	48-bit Address Feature Set
-					 *  9:	Automatic Acoustic Management
-					 *  8:	SET MAX security
-					 *  7:	reserved 1407DT PARTIES
-					 *  6:	SetF sub-command Power-Up
-					 *  5:	Power-Up in Standby Feature Set
-					 *  4:	Removable Media Notification
-					 *  3:	APM Feature Set
-					 *  2:	CFA Feature Set
-					 *  1:	READ/WRITE DMA QUEUED
-					 *  0:	Download MicroCode
+					 * 15:  Shall be ZERO
+					 * 14:  Shall be ONE
+					 * 13:  FLUSH CACHE EXT
+					 * 12:  FLUSH CACHE
+					 * 11:  Device Configuration Overlay
+					 * 10:  48-bit Address Feature Set
+					 *  9:  Automatic Acoustic Management
+					 *  8:  SET MAX security
+					 *  7:  reserved 1407DT PARTIES
+					 *  6:  SetF sub-command Power-Up
+					 *  5:  Power-Up in Standby Feature Set
+					 *  4:  Removable Media Notification
+					 *  3:  APM Feature Set
+					 *  2:  CFA Feature Set
+					 *  1:  READ/WRITE DMA QUEUED
+					 *  0:  Download MicroCode
 					 */
-	unsigned short  csf_default;	/* (word 87)
+	unsigned short csf_default;	/* (word 87)
 					 * command set-feature default
-					 * 15:	Shall be ZERO
-					 * 14:	Shall be ONE
-					 * 13:6	reserved
-					 *  5:	General Purpose Logging enabled
-					 *  4:	Valid CONFIGURE STREAM executed
-					 *  3:	Media Card Pass Through enabled
-					 *  2:	Media Serial Number Valid
-					 *  1:	SMART selt-test supported
-					 *  0:	SMART error logging
+					 * 15:  Shall be ZERO
+					 * 14:  Shall be ONE
+					 * 13:6 reserved
+					 *  5:  General Purpose Logging enabled
+					 *  4:  Valid CONFIGURE STREAM executed
+					 *  3:  Media Card Pass Through enabled
+					 *  2:  Media Serial Number Valid
+					 *  1:  SMART selt-test supported
+					 *  0:  SMART error logging
 					 */
-	unsigned short  dma_ultra;	/* (word 88) */
-	unsigned short	trseuc;		/* time required for security erase */
-	unsigned short	trsEuc;		/* time required for enhanced erase */
-	unsigned short	CurAPMvalues;	/* current APM values */
-	unsigned short	mprc;		/* master password revision code */
-	unsigned short	hw_config;	/* hardware config (word 93)
-					 * 15:	Shall be ZERO
-					 * 14:	Shall be ONE
+	unsigned short dma_ultra;	/* (word 88) */
+	unsigned short trseuc;	/* time required for security erase */
+	unsigned short trsEuc;	/* time required for enhanced erase */
+	unsigned short CurAPMvalues;	/* current APM values */
+	unsigned short mprc;	/* master password revision code */
+	unsigned short hw_config;	/* hardware config (word 93)
+					 * 15:  Shall be ZERO
+					 * 14:  Shall be ONE
 					 * 13:
 					 * 12:
 					 * 11:
@@ -640,61 +640,61 @@ struct hd_driveid {
 					 *  3:
 					 *  2:
 					 *  1:
-					 *  0:	Shall be ONE
+					 *  0:  Shall be ONE
 					 */
-	unsigned short	acoustic;	/* (word 94)
-					 * 15:8	Vendor's recommended value
-					 *  7:0	current value
+	unsigned short acoustic;	/* (word 94)
+					 * 15:8 Vendor's recommended value
+					 *  7:0 current value
 					 */
-	unsigned short	msrqs;		/* min stream request size */
-	unsigned short	sxfert;		/* stream transfer time */
-	unsigned short	sal;		/* stream access latency */
-	unsigned int	spg;		/* stream performance granularity */
-	unsigned long long lba_capacity_2;/* 48-bit total number of sectors */
-	unsigned short	words104_125[22];/* reserved words 104-125 */
-	unsigned short	last_lun;	/* (word 126) */
-	unsigned short	word127;	/* (word 127) Feature Set
-					 * Removable Media Notification
-					 * 15:2	reserved
-					 *  1:0	00 = not supported
-					 *	01 = supported
-					 *	10 = reserved
-					 *	11 = reserved
-					 */
-	unsigned short	dlf;		/* (word 128)
-					 * device lock function
-					 * 15:9	reserved
-					 *  8	security level 1:max 0:high
-					 *  7:6	reserved
-					 *  5	enhanced erase
-					 *  4	expire
-					 *  3	frozen
-					 *  2	locked
-					 *  1	en/disabled
-					 *  0	capability
-					 */
-	unsigned short  csfo;		/*  (word 129)
-					 * current set features options
-					 * 15:4	reserved
-					 *  3:	auto reassign
-					 *  2:	reverting
-					 *  1:	read-look-ahead
-					 *  0:	write cache
-					 */
-	unsigned short	words130_155[26];/* reserved vendor words 130-155 */
-	unsigned short	word156;	/* reserved vendor word 156 */
-	unsigned short	words157_159[3];/* reserved vendor words 157-159 */
-	unsigned short	cfa_power;	/* (word 160) CFA Power Mode
+	unsigned short msrqs;	/* min stream request size */
+	unsigned short sxfert;	/* stream transfer time */
+	unsigned short sal;	/* stream access latency */
+	unsigned int spg;	/* stream performance granularity */
+	unsigned long long lba_capacity_2;	/* 48-bit total number of sectors */
+	unsigned short words104_125[22];	/* reserved words 104-125 */
+	unsigned short last_lun;	/* (word 126) */
+	unsigned short word127;	/* (word 127) Feature Set
+				 * Removable Media Notification
+				 * 15:2 reserved
+				 *  1:0 00 = not supported
+				 *      01 = supported
+				 *      10 = reserved
+				 *      11 = reserved
+				 */
+	unsigned short dlf;	/* (word 128)
+				 * device lock function
+				 * 15:9 reserved
+				 *  8   security level 1:max 0:high
+				 *  7:6 reserved
+				 *  5   enhanced erase
+				 *  4   expire
+				 *  3   frozen
+				 *  2   locked
+				 *  1   en/disabled
+				 *  0   capability
+				 */
+	unsigned short csfo;	/*  (word 129)
+				 * current set features options
+				 * 15:4 reserved
+				 *  3:  auto reassign
+				 *  2:  reverting
+				 *  1:  read-look-ahead
+				 *  0:  write cache
+				 */
+	unsigned short words130_155[26];	/* reserved vendor words 130-155 */
+	unsigned short word156;	/* reserved vendor word 156 */
+	unsigned short words157_159[3];	/* reserved vendor words 157-159 */
+	unsigned short cfa_power;	/* (word 160) CFA Power Mode
 					 * 15 word 160 supported
 					 * 14 reserved
 					 * 13
 					 * 12
 					 * 11:0
 					 */
-	unsigned short	words161_175[15];/* Reserved for CFA */
-	unsigned short	words176_205[30];/* Current Media Serial Number */
-	unsigned short	words206_254[49];/* reserved words 206-254 */
-	unsigned short	integrity_word;	/* (word 255)
+	unsigned short words161_175[15];	/* Reserved for CFA */
+	unsigned short words176_205[30];	/* Current Media Serial Number */
+	unsigned short words206_254[49];	/* reserved words 206-254 */
+	unsigned short integrity_word;	/* (word 255)
 					 * 15:8 Checksum
 					 *  7:0 Signature
 					 */
@@ -713,4 +713,4 @@ struct hd_driveid {
 #define IDE_NICE_2		(4)	/* when we know it's on our expense */
 #endif
 
-#endif	/* _LINUX_HDREG_H */
+#endif /* _LINUX_HDREG_H */

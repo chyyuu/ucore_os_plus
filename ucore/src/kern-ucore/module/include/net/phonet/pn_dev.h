@@ -33,7 +33,7 @@ extern struct phonet_device_list pndevs;
 struct phonet_device {
 	struct list_head list;
 	struct net_device *netdev;
-	DECLARE_BITMAP(addrs, 64);
+	 DECLARE_BITMAP(addrs, 64);
 };
 
 void phonet_device_init(void);

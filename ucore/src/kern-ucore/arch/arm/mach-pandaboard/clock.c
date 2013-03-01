@@ -36,26 +36,24 @@
 
 static uint32_t timer_base = 0;
 
-void clock_clear(void){
-  outw(timer_base + TIMER_ISR, 0x01);
-}
-
-
-static int clock_int_handler(int irq, void * data)
+void clock_clear(void)
 {
-  __common_timer_int_handler();
-  clock_clear();
-  return 0;
+	outw(timer_base + TIMER_ISR, 0x01);
 }
 
-void
-clock_init_arm(uint32_t base, int irq) {
-  //TODO
-  timer_base = base;
-  outw(timer_base+TIMER_LOAD, LOAD_VALUE);
-  outw(timer_base+TIMER_CONTROL, TIMER_CONTROL_VAL);
-  register_irq(irq, clock_int_handler, 0);
-  pic_enable(irq);
+static int clock_int_handler(int irq, void *data)
+{
+	__common_timer_int_handler();
+	clock_clear();
+	return 0;
 }
 
-
+void clock_init_arm(uint32_t base, int irq)
+{
+	//TODO
+	timer_base = base;
+	outw(timer_base + TIMER_LOAD, LOAD_VALUE);
+	outw(timer_base + TIMER_CONTROL, TIMER_CONTROL_VAL);
+	register_irq(irq, clock_int_handler, 0);
+	pic_enable(irq);
+}

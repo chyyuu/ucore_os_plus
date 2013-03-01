@@ -26,10 +26,10 @@ struct mod_debug {
 	int type;
 	int hash;
 	int hash2;
-} __attribute__((aligned(8)));
+} __attribute__ ((aligned(8)));
 
 int register_dynamic_debug_module(char *mod_name, int type, char *share_name,
-					char *flags, int hash, int hash2);
+				  char *flags, int hash, int hash2);
 
 #if defined(CONFIG_DYNAMIC_PRINTK_DEBUG)
 extern int unregister_dynamic_debug_module(char *mod_name);
@@ -79,8 +79,9 @@ static inline int unregister_dynamic_debug_module(const char *mod_name)
 {
 	return 0;
 }
+
 static inline int __dynamic_dbg_enabled_helper(char *modname, int type,
-						int value, int hash)
+					       int value, int hash)
 {
 	return 0;
 }

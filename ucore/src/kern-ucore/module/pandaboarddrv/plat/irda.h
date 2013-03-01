@@ -19,8 +19,8 @@
 
 struct omap_irda_config {
 	int transceiver_cap;
-	int (*transceiver_mode)(struct device *dev, int mode);
-	int (*select_irda)(struct device *dev, int state);
+	int (*transceiver_mode) (struct device * dev, int mode);
+	int (*select_irda) (struct device * dev, int state);
 	int rx_channel;
 	int tx_channel;
 	unsigned long dest_start;

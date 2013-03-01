@@ -14,13 +14,12 @@
 /*G:032 The second method of communicating with the Host is to via "struct
  * lguest_data".  Once the Guest's initialization hypercall tells the Host where
  * this is, the Guest and Host both publish information in it. :*/
-struct lguest_data
-{
+struct lguest_data {
 	/* 512 == enabled (same as eflags in normal hardware).  The Guest
 	 * changes interrupts so often that a hypercall is too slow. */
 	unsigned int irq_enabled;
 	/* Fine-grained interrupt disabling by the Guest */
-	DECLARE_BITMAP(blocked_interrupts, LGUEST_IRQS);
+	 DECLARE_BITMAP(blocked_interrupts, LGUEST_IRQS);
 
 	/* The Host writes the virtual address of the last page fault here,
 	 * which saves the Guest a hypercall.  CR2 is the native register where
@@ -57,4 +56,4 @@ struct lguest_data
 };
 extern struct lguest_data lguest_data;
 #endif /* __ASSEMBLY__ */
-#endif	/* _LINUX_LGUEST_H */
+#endif /* _LINUX_LGUEST_H */

@@ -83,37 +83,37 @@
 				} while (0)
 
 struct dchannel {
-	struct mISDNdevice	dev;
-	u_long			Flags;
-	struct work_struct	workq;
-	void			(*phfunc) (struct dchannel *);
-	u_int			state;
-	void			*l1;
+	struct mISDNdevice dev;
+	u_long Flags;
+	struct work_struct workq;
+	void (*phfunc) (struct dchannel *);
+	u_int state;
+	void *l1;
 	/* HW access */
-	u_char			(*read_reg) (void *, u_char);
-	void			(*write_reg) (void *, u_char, u_char);
-	void			(*read_fifo) (void *, u_char *, int);
-	void			(*write_fifo) (void *, u_char *, int);
-	void			*hw;
-	int			slot;	/* multiport card channel slot */
-	struct timer_list	timer;
+	 u_char(*read_reg) (void *, u_char);
+	void (*write_reg) (void *, u_char, u_char);
+	void (*read_fifo) (void *, u_char *, int);
+	void (*write_fifo) (void *, u_char *, int);
+	void *hw;
+	int slot;		/* multiport card channel slot */
+	struct timer_list timer;
 	/* receive data */
-	struct sk_buff		*rx_skb;
-	int			maxlen;
+	struct sk_buff *rx_skb;
+	int maxlen;
 	/* send data */
-	struct sk_buff_head	squeue;
-	struct sk_buff_head	rqueue;
-	struct sk_buff		*tx_skb;
-	int			tx_idx;
-	int			debug;
+	struct sk_buff_head squeue;
+	struct sk_buff_head rqueue;
+	struct sk_buff *tx_skb;
+	int tx_idx;
+	int debug;
 	/* statistics */
-	int			err_crc;
-	int			err_tx;
-	int			err_rx;
+	int err_crc;
+	int err_tx;
+	int err_rx;
 };
 
-typedef int	(dchannel_l1callback)(struct dchannel *, u_int);
-extern int	create_l1(struct dchannel *, dchannel_l1callback *);
+typedef int (dchannel_l1callback) (struct dchannel *, u_int);
+extern int create_l1(struct dchannel *, dchannel_l1callback *);
 
 /* private L1 commands */
 #define INFO0		0x8002
@@ -142,54 +142,52 @@ extern int	create_l1(struct dchannel *, dchannel_l1callback *);
 #define HW_TESTRX_OFF	0x9802
 
 struct layer1;
-extern int	l1_event(struct layer1 *, u_int);
-
+extern int l1_event(struct layer1 *, u_int);
 
 struct bchannel {
-	struct mISDNchannel	ch;
-	int			nr;
-	u_long			Flags;
-	struct work_struct	workq;
-	u_int			state;
+	struct mISDNchannel ch;
+	int nr;
+	u_long Flags;
+	struct work_struct workq;
+	u_int state;
 	/* HW access */
-	u_char			(*read_reg) (void *, u_char);
-	void			(*write_reg) (void *, u_char, u_char);
-	void			(*read_fifo) (void *, u_char *, int);
-	void			(*write_fifo) (void *, u_char *, int);
-	void			*hw;
-	int			slot;	/* multiport card channel slot */
-	struct timer_list	timer;
+	 u_char(*read_reg) (void *, u_char);
+	void (*write_reg) (void *, u_char, u_char);
+	void (*read_fifo) (void *, u_char *, int);
+	void (*write_fifo) (void *, u_char *, int);
+	void *hw;
+	int slot;		/* multiport card channel slot */
+	struct timer_list timer;
 	/* receive data */
-	struct sk_buff		*rx_skb;
-	int			maxlen;
+	struct sk_buff *rx_skb;
+	int maxlen;
 	/* send data */
-	struct sk_buff		*next_skb;
-	struct sk_buff		*tx_skb;
-	struct sk_buff_head	rqueue;
-	int			rcount;
-	int			tx_idx;
-	int			debug;
+	struct sk_buff *next_skb;
+	struct sk_buff *tx_skb;
+	struct sk_buff_head rqueue;
+	int rcount;
+	int tx_idx;
+	int debug;
 	/* statistics */
-	int			err_crc;
-	int			err_tx;
-	int			err_rx;
+	int err_crc;
+	int err_tx;
+	int err_rx;
 };
 
-extern int	mISDN_initdchannel(struct dchannel *, int, void *);
-extern int	mISDN_initbchannel(struct bchannel *, int);
-extern int	mISDN_freedchannel(struct dchannel *);
-extern int	mISDN_freebchannel(struct bchannel *);
-extern void	queue_ch_frame(struct mISDNchannel *, u_int,
-			int, struct sk_buff *);
-extern int	dchannel_senddata(struct dchannel *, struct sk_buff *);
-extern int	bchannel_senddata(struct bchannel *, struct sk_buff *);
-extern void	recv_Dchannel(struct dchannel *);
-extern void	recv_Echannel(struct dchannel *, struct dchannel *);
-extern void	recv_Bchannel(struct bchannel *);
-extern void	recv_Dchannel_skb(struct dchannel *, struct sk_buff *);
-extern void	recv_Bchannel_skb(struct bchannel *, struct sk_buff *);
-extern void	confirm_Bsend(struct bchannel *bch);
-extern int	get_next_bframe(struct bchannel *);
-extern int	get_next_dframe(struct dchannel *);
+extern int mISDN_initdchannel(struct dchannel *, int, void *);
+extern int mISDN_initbchannel(struct bchannel *, int);
+extern int mISDN_freedchannel(struct dchannel *);
+extern int mISDN_freebchannel(struct bchannel *);
+extern void queue_ch_frame(struct mISDNchannel *, u_int, int, struct sk_buff *);
+extern int dchannel_senddata(struct dchannel *, struct sk_buff *);
+extern int bchannel_senddata(struct bchannel *, struct sk_buff *);
+extern void recv_Dchannel(struct dchannel *);
+extern void recv_Echannel(struct dchannel *, struct dchannel *);
+extern void recv_Bchannel(struct bchannel *);
+extern void recv_Dchannel_skb(struct dchannel *, struct sk_buff *);
+extern void recv_Bchannel_skb(struct bchannel *, struct sk_buff *);
+extern void confirm_Bsend(struct bchannel *bch);
+extern int get_next_bframe(struct bchannel *);
+extern int get_next_dframe(struct dchannel *);
 
 #endif

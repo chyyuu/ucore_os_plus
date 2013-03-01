@@ -7,11 +7,10 @@
 
 volatile size_t ticks = 0;
 
-void
-clock_init (void)
+void clock_init(void)
 {
-	kprintf ("++ setup timer interrupts\n");
-	
-	mtspr (SPR_TTMR, TIMER_FREQ | SPR_TTMR_IE | SPR_TTMR_RT);
-	mtspr (SPR_TTCR, 0);
+	kprintf("++ setup timer interrupts\n");
+
+	mtspr(SPR_TTMR, TIMER_FREQ | SPR_TTMR_IE | SPR_TTMR_RT);
+	mtspr(SPR_TTCR, 0);
 }

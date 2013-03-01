@@ -4,34 +4,34 @@
 #ifndef __ASSEMBLY__
 
 #ifdef __CHECKER__
-# define __user		__attribute__((noderef, address_space(1)))
-# define __kernel	/* default address space */
-# define __safe		__attribute__((safe))
-# define __force	__attribute__((force))
-# define __nocast	__attribute__((nocast))
-# define __iomem	__attribute__((noderef, address_space(2)))
-# define __acquires(x)	__attribute__((context(x,0,1)))
-# define __releases(x)	__attribute__((context(x,1,0)))
-# define __acquire(x)	__context__(x,1)
-# define __release(x)	__context__(x,-1)
-# define __cond_lock(x,c)	((c) ? ({ __acquire(x); 1; }) : 0)
+#define __user		__attribute__((noderef, address_space(1)))
+#define __kernel		/* default address space */
+#define __safe		__attribute__((safe))
+#define __force	__attribute__((force))
+#define __nocast	__attribute__((nocast))
+#define __iomem	__attribute__((noderef, address_space(2)))
+#define __acquires(x)	__attribute__((context(x,0,1)))
+#define __releases(x)	__attribute__((context(x,1,0)))
+#define __acquire(x)	__context__(x,1)
+#define __release(x)	__context__(x,-1)
+#define __cond_lock(x,c)	((c) ? ({ __acquire(x); 1; }) : 0)
 extern void __chk_user_ptr(const volatile void __user *);
 extern void __chk_io_ptr(const volatile void __iomem *);
 #else
-# define __user
-# define __kernel
-# define __safe
-# define __force
-# define __nocast
-# define __iomem
-# define __chk_user_ptr(x) (void)0
-# define __chk_io_ptr(x) (void)0
-# define __builtin_warning(x, y...) (1)
-# define __acquires(x)
-# define __releases(x)
-# define __acquire(x) (void)0
-# define __release(x) (void)0
-# define __cond_lock(x,c) (c)
+#define __user
+#define __kernel
+#define __safe
+#define __force
+#define __nocast
+#define __iomem
+#define __chk_user_ptr(x) (void)0
+#define __chk_io_ptr(x) (void)0
+#define __builtin_warning(x, y...) (1)
+#define __acquires(x)
+#define __releases(x)
+#define __acquire(x) (void)0
+#define __release(x) (void)0
+#define __cond_lock(x,c) (c)
 #endif
 
 #ifdef __KERNEL__
@@ -46,7 +46,7 @@ extern void __chk_io_ptr(const volatile void __iomem *);
  * coming from above header files here
  */
 #ifdef __INTEL_COMPILER
-# include <linux/compiler-intel.h>
+#include <linux/compiler-intel.h>
 #endif
 
 /*
@@ -101,12 +101,12 @@ void ftrace_likely_update(struct ftrace_branch_data *f, int val, int expect);
  * value is always the same.  This idea is taken from a similar patch
  * written by Daniel Walker.
  */
-# ifndef likely
-#  define likely(x)	(__builtin_constant_p(x) ? !!(x) : __branch_check__(x, 1))
-# endif
-# ifndef unlikely
-#  define unlikely(x)	(__builtin_constant_p(x) ? !!(x) : __branch_check__(x, 0))
-# endif
+#ifndef likely
+#define likely(x)	(__builtin_constant_p(x) ? !!(x) : __branch_check__(x, 1))
+#endif
+#ifndef unlikely
+#define unlikely(x)	(__builtin_constant_p(x) ? !!(x) : __branch_check__(x, 0))
+#endif
 
 #ifdef CONFIG_PROFILE_ALL_BRANCHES
 /*
@@ -134,17 +134,17 @@ void ftrace_likely_update(struct ftrace_branch_data *f, int val, int expect);
 #endif /* CONFIG_PROFILE_ALL_BRANCHES */
 
 #else
-# define likely(x)	__builtin_expect(!!(x), 1)
-# define unlikely(x)	__builtin_expect(!!(x), 0)
+#define likely(x)	__builtin_expect(!!(x), 1)
+#define unlikely(x)	__builtin_expect(!!(x), 0)
 #endif
 
 /* Optimization barrier */
 #ifndef barrier
-# define barrier() __memory_barrier()
+#define barrier() __memory_barrier()
 #endif
 
 #ifndef RELOC_HIDE
-# define RELOC_HIDE(ptr, off)					\
+#define RELOC_HIDE(ptr, off)					\
   ({ unsigned long __ptr;					\
      __ptr = (unsigned long) (ptr);				\
     (typeof(ptr)) (__ptr + (off)); })
@@ -162,7 +162,7 @@ void ftrace_likely_update(struct ftrace_branch_data *f, int val, int expect);
  * 		int __deprecated foo(void)
  */
 #ifndef __deprecated
-# define __deprecated		/* unimplemented */
+#define __deprecated		/* unimplemented */
 #endif
 
 #ifdef MODULE
@@ -205,11 +205,11 @@ void ftrace_likely_update(struct ftrace_branch_data *f, int val, int expect);
  * the code is emitted even though it appears to be unreferenced.
  */
 #ifndef __used
-# define __used			/* unimplemented */
+#define __used			/* unimplemented */
 #endif
 
 #ifndef __maybe_unused
-# define __maybe_unused		/* unimplemented */
+#define __maybe_unused		/* unimplemented */
 #endif
 
 #ifndef noinline
@@ -243,7 +243,7 @@ void ftrace_likely_update(struct ftrace_branch_data *f, int val, int expect);
  * `void'.
  */
 #ifndef __attribute_const__
-# define __attribute_const__	/* unimplemented */
+#define __attribute_const__	/* unimplemented */
 #endif
 
 /*
@@ -257,7 +257,7 @@ void ftrace_likely_update(struct ftrace_branch_data *f, int val, int expect);
 
 /* Simple shorthand for a section definition */
 #ifndef __section
-# define __section(S) __attribute__ ((__section__(#S)))
+#define __section(S) __attribute__ ((__section__(#S)))
 #endif
 
 /*

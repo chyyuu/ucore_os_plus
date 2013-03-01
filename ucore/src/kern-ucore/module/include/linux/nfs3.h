@@ -48,20 +48,20 @@ enum nfs3_createmode {
 #define NFS3_FSF_READONLY	0x0008
 
 enum nfs3_ftype {
-	NF3NON  = 0,
-	NF3REG  = 1,
-	NF3DIR  = 2,
-	NF3BLK  = 3,
-	NF3CHR  = 4,
-	NF3LNK  = 5,
+	NF3NON = 0,
+	NF3REG = 1,
+	NF3DIR = 2,
+	NF3BLK = 3,
+	NF3CHR = 4,
+	NF3LNK = 5,
 	NF3SOCK = 6,
-	NF3FIFO = 7,	/* changed from NFSv2 (was 8) */
-	NF3BAD  = 8
+	NF3FIFO = 7,		/* changed from NFSv2 (was 8) */
+	NF3BAD = 8
 };
 
 struct nfs3_fh {
 	unsigned short size;
-	unsigned char  data[NFS3_FHSIZE];
+	unsigned char data[NFS3_FHSIZE];
 };
 
 #define NFS3_VERSION		3
@@ -94,7 +94,6 @@ struct nfs3_fh {
 #define MOUNTPROC3_MNT		1
 #define MOUNTPROC3_UMNT		3
 #define MOUNTPROC3_UMNTALL	4
- 
 
 #if defined(__KERNEL__)
 

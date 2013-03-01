@@ -101,8 +101,7 @@ struct thermal_zone_device {
 #endif
 };
 
-struct thermal_zone_device *thermal_zone_device_register(char *, int, void *,
-							 struct
+struct thermal_zone_device *thermal_zone_device_register(char *, int, void *, struct
 							 thermal_zone_device_ops
 							 *);
 void thermal_zone_device_unregister(struct thermal_zone_device *);
@@ -111,8 +110,7 @@ int thermal_zone_bind_cooling_device(struct thermal_zone_device *, int,
 				     struct thermal_cooling_device *);
 int thermal_zone_unbind_cooling_device(struct thermal_zone_device *, int,
 				       struct thermal_cooling_device *);
-struct thermal_cooling_device *thermal_cooling_device_register(char *, void *,
-							       struct
+struct thermal_cooling_device *thermal_cooling_device_register(char *, void *, struct
 							       thermal_cooling_device_ops
 							       *);
 void thermal_cooling_device_unregister(struct thermal_cooling_device *);

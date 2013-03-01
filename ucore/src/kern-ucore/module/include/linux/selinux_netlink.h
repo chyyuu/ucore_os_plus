@@ -38,11 +38,11 @@ enum selinux_nlgroups {
 
 /* Message structures */
 struct selnl_msg_setenforce {
-	int32_t		val;
+	int32_t val;
 };
 
 struct selnl_msg_policyload {
-	u_int32_t	seqno;
+	u_int32_t seqno;
 };
 
 #endif /* _LINUX_SELINUX_NETLINK_H */

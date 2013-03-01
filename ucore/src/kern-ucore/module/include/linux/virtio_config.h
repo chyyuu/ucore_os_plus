@@ -66,21 +66,20 @@
  *	This gives the final feature bits for the device: it can change
  *	the dev->feature bits if it wants.
  */
-struct virtio_config_ops
-{
-	void (*get)(struct virtio_device *vdev, unsigned offset,
-		    void *buf, unsigned len);
-	void (*set)(struct virtio_device *vdev, unsigned offset,
-		    const void *buf, unsigned len);
-	u8 (*get_status)(struct virtio_device *vdev);
-	void (*set_status)(struct virtio_device *vdev, u8 status);
-	void (*reset)(struct virtio_device *vdev);
-	struct virtqueue *(*find_vq)(struct virtio_device *vdev,
-				     unsigned index,
-				     void (*callback)(struct virtqueue *));
-	void (*del_vq)(struct virtqueue *vq);
-	u32 (*get_features)(struct virtio_device *vdev);
-	void (*finalize_features)(struct virtio_device *vdev);
+struct virtio_config_ops {
+	void (*get) (struct virtio_device * vdev, unsigned offset,
+		     void *buf, unsigned len);
+	void (*set) (struct virtio_device * vdev, unsigned offset,
+		     const void *buf, unsigned len);
+	 u8(*get_status) (struct virtio_device * vdev);
+	void (*set_status) (struct virtio_device * vdev, u8 status);
+	void (*reset) (struct virtio_device * vdev);
+	struct virtqueue *(*find_vq) (struct virtio_device * vdev,
+				      unsigned index,
+				      void (*callback) (struct virtqueue *));
+	void (*del_vq) (struct virtqueue * vq);
+	 u32(*get_features) (struct virtio_device * vdev);
+	void (*finalize_features) (struct virtio_device * vdev);
 };
 
 /* If driver didn't advertise the feature, it will never appear. */

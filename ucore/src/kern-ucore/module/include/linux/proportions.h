@@ -37,7 +37,7 @@ struct prop_global {
 struct prop_descriptor {
 	int index;
 	struct prop_global pg[2];
-	struct mutex mutex;		/* serialize the prop_global switch */
+	struct mutex mutex;	/* serialize the prop_global switch */
 };
 
 int prop_descriptor_init(struct prop_descriptor *pd, int shift);
@@ -58,17 +58,20 @@ struct prop_local_percpu {
 	 */
 	int shift;
 	unsigned long period;
-	spinlock_t lock;		/* protect the snapshot state */
+	spinlock_t lock;	/* protect the snapshot state */
 };
 
 int prop_local_init_percpu(struct prop_local_percpu *pl);
 void prop_local_destroy_percpu(struct prop_local_percpu *pl);
-void __prop_inc_percpu(struct prop_descriptor *pd, struct prop_local_percpu *pl);
-void prop_fraction_percpu(struct prop_descriptor *pd, struct prop_local_percpu *pl,
-		long *numerator, long *denominator);
+void __prop_inc_percpu(struct prop_descriptor *pd,
+		       struct prop_local_percpu *pl);
+void prop_fraction_percpu(struct prop_descriptor *pd,
+			  struct prop_local_percpu *pl, long *numerator,
+			  long *denominator);
 
 static inline
-void prop_inc_percpu(struct prop_descriptor *pd, struct prop_local_percpu *pl)
+    void prop_inc_percpu(struct prop_descriptor *pd,
+			 struct prop_local_percpu *pl)
 {
 	unsigned long flags;
 
@@ -89,7 +92,6 @@ void prop_inc_percpu(struct prop_descriptor *pd, struct prop_local_percpu *pl)
 void __prop_inc_percpu_max(struct prop_descriptor *pd,
 			   struct prop_local_percpu *pl, long frac);
 
-
 /*
  * ----- SINGLE ------
  */
@@ -106,7 +108,7 @@ struct prop_local_single {
 	 */
 	unsigned long period;
 	int shift;
-	spinlock_t lock;		/* protect the snapshot state */
+	spinlock_t lock;	/* protect the snapshot state */
 };
 
 #define INIT_PROP_LOCAL_SINGLE(name)			\
@@ -115,12 +117,15 @@ struct prop_local_single {
 
 int prop_local_init_single(struct prop_local_single *pl);
 void prop_local_destroy_single(struct prop_local_single *pl);
-void __prop_inc_single(struct prop_descriptor *pd, struct prop_local_single *pl);
-void prop_fraction_single(struct prop_descriptor *pd, struct prop_local_single *pl,
-		long *numerator, long *denominator);
+void __prop_inc_single(struct prop_descriptor *pd,
+		       struct prop_local_single *pl);
+void prop_fraction_single(struct prop_descriptor *pd,
+			  struct prop_local_single *pl, long *numerator,
+			  long *denominator);
 
 static inline
-void prop_inc_single(struct prop_descriptor *pd, struct prop_local_single *pl)
+    void prop_inc_single(struct prop_descriptor *pd,
+			 struct prop_local_single *pl)
 {
 	unsigned long flags;
 

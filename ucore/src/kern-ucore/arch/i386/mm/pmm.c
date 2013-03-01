@@ -32,7 +32,7 @@
  * mode, the x86 CPU will look in the TSS for SS0 and ESP0 and load their value
  * into SS and ESP respectively.
  * */
-static struct taskstate ts = {0};
+static struct taskstate ts = { 0 };
 
 // physical address of boot-time page directory
 uintptr_t boot_cr3;
@@ -50,8 +50,8 @@ uintptr_t boot_cr3;
  * always available at virtual address PGADDR(PDX(VPT), PDX(VPT), 0), to which
  * vpd is set bellow.
  * */
-pte_t * const vpt = (pte_t *)VPT;
-pde_t * const vpd = (pde_t *)PGADDR(PDX(VPT), PDX(VPT), 0);
+pte_t *const vpt = (pte_t *) VPT;
+pde_t *const vpd = (pde_t *) PGADDR(PDX(VPT), PDX(VPT), 0);
 
 /* *
  * Global Descriptor Table:
@@ -67,32 +67,32 @@ pde_t * const vpd = (pde_t *)PGADDR(PDX(VPT), PDX(VPT), 0);
  *   - 0x28:  defined for tss, initialized in gdt_init
  * */
 static struct segdesc gdt[] = {
-    SEG_NULL,
-    [SEG_KTEXT] = SEG(STA_X | STA_R, 0x0, 0xFFFFFFFF, DPL_KERNEL),
-    [SEG_KDATA] = SEG(STA_W, 0x0, 0xFFFFFFFF, DPL_KERNEL),
-    [SEG_UTEXT] = SEG(STA_X | STA_R, 0x0, 0xFFFFFFFF, DPL_USER),
-    [SEG_UDATA] = SEG(STA_W, 0x0, 0xFFFFFFFF, DPL_USER),
-    [SEG_TSS]   = SEG_NULL,
+	SEG_NULL,
+	[SEG_KTEXT] = SEG(STA_X | STA_R, 0x0, 0xFFFFFFFF, DPL_KERNEL),
+	[SEG_KDATA] = SEG(STA_W, 0x0, 0xFFFFFFFF, DPL_KERNEL),
+	[SEG_UTEXT] = SEG(STA_X | STA_R, 0x0, 0xFFFFFFFF, DPL_USER),
+	[SEG_UDATA] = SEG(STA_W, 0x0, 0xFFFFFFFF, DPL_USER),
+	[SEG_TSS] = SEG_NULL,
 };
 
 static struct pseudodesc gdt_pd = {
-    sizeof(gdt) - 1, (uintptr_t)gdt
+	sizeof(gdt) - 1, (uintptr_t) gdt
 };
 
 /* *
  * lgdt - load the global descriptor table register and reset the
  * data/code segement registers for kernel.
  * */
-static inline void
-lgdt(struct pseudodesc *pd) {
-    asm volatile ("lgdt (%0)" :: "r" (pd));
-    asm volatile ("movw %%ax, %%gs" :: "a" (USER_DS));
-    asm volatile ("movw %%ax, %%fs" :: "a" (USER_DS));
-    asm volatile ("movw %%ax, %%es" :: "a" (KERNEL_DS));
-    asm volatile ("movw %%ax, %%ds" :: "a" (KERNEL_DS));
-    asm volatile ("movw %%ax, %%ss" :: "a" (KERNEL_DS));
-    // reload cs
-    asm volatile ("ljmp %0, $1f\n 1:\n" :: "i" (KERNEL_CS));
+static inline void lgdt(struct pseudodesc *pd)
+{
+	asm volatile ("lgdt (%0)"::"r" (pd));
+	asm volatile ("movw %%ax, %%gs"::"a" (USER_DS));
+	asm volatile ("movw %%ax, %%fs"::"a" (USER_DS));
+	asm volatile ("movw %%ax, %%es"::"a" (KERNEL_DS));
+	asm volatile ("movw %%ax, %%ds"::"a" (KERNEL_DS));
+	asm volatile ("movw %%ax, %%ss"::"a" (KERNEL_DS));
+	// reload cs
+	asm volatile ("ljmp %0, $1f\n 1:\n"::"i" (KERNEL_CS));
 }
 
 /**************************************************
@@ -103,23 +103,23 @@ lgdt(struct pseudodesc *pd) {
  * Initialize mm tragedy.
  *     Just put it here to make it be static still.
  */
-static void
-init_pmm_manager(void) {
+static void init_pmm_manager(void)
+{
 	pmm_manager = &buddy_pmm_manager;
 	kprintf("memory managment: %s\n", pmm_manager->name);
 	pmm_manager->init();
 }
 
 //init_memmap - call pmm->init_memmap to build Page struct for free memory  
-static void
-init_memmap(struct Page *base, size_t n) {
-    pmm_manager->init_memmap(base, n);
+static void init_memmap(struct Page *base, size_t n)
+{
+	pmm_manager->init_memmap(base, n);
 }
 
-static void
-check_alloc_page(void) {
-    pmm_manager->check();
-    kprintf("check_alloc_page() succeeded!\n");
+static void check_alloc_page(void)
+{
+	pmm_manager->check();
+	kprintf("check_alloc_page() succeeded!\n");
 }
 
 /* *
@@ -127,238 +127,246 @@ check_alloc_page(void) {
  * so that we can use different kernel stack when we trap frame
  * user to kernel.
  * */
-void
-load_rsp0(uintptr_t rsp0) {
-    ts.ts_esp0 = rsp0;
+void load_rsp0(uintptr_t rsp0)
+{
+	ts.ts_esp0 = rsp0;
 }
 
 /**
  * set_pgdir - save the physical address of the current pgdir
  */
-void
-set_pgdir (struct proc_struct *proc, pde_t *pgdir) {
-	assert (proc != NULL);
+void set_pgdir(struct proc_struct *proc, pde_t * pgdir)
+{
+	assert(proc != NULL);
 	proc->cr3 = PADDR(pgdir);
 }
 
 /**
  * load_pgdir - use the page table specified in @proc by @cr3
  */
-void
-load_pgdir (struct proc_struct *proc) {
+void load_pgdir(struct proc_struct *proc)
+{
 	if (proc != NULL)
 		lcr3(proc->cr3);
 	else
-		lcr3 (boot_cr3);
+		lcr3(boot_cr3);
 }
 
 /**
  * map_pgdir - map the current pgdir @pgdir to its own address space
  */
-void
-map_pgdir (pde_t *pgdir) {
+void map_pgdir(pde_t * pgdir)
+{
 	pgdir[PDX(VPT)] = PADDR(pgdir) | PTE_P | PTE_W;
 }
 
 /* gdt_init - initialize the default GDT and TSS */
-static void
-gdt_init(void) {
-    // set boot kernel stack and default SS0
-    load_rsp0((uintptr_t)bootstacktop);
-    ts.ts_ss0 = KERNEL_DS;
+static void gdt_init(void)
+{
+	// set boot kernel stack and default SS0
+	load_rsp0((uintptr_t) bootstacktop);
+	ts.ts_ss0 = KERNEL_DS;
 
-    // initialize the TSS filed of the gdt
-    gdt[SEG_TSS] = SEGTSS(STS_T32A, (uintptr_t)&ts, sizeof(ts), DPL_KERNEL);
+	// initialize the TSS filed of the gdt
+	gdt[SEG_TSS] =
+	    SEGTSS(STS_T32A, (uintptr_t) & ts, sizeof(ts), DPL_KERNEL);
 
-    // reload all segment registers
-    lgdt(&gdt_pd);
+	// reload all segment registers
+	lgdt(&gdt_pd);
 
-    // load the TSS
-    ltr(GD_TSS);
+	// load the TSS
+	ltr(GD_TSS);
 }
 
 /* pmm_init - initialize the physical memory management */
-static void
-page_init(void) {
-    struct e820map *memmap = (struct e820map *)(0x8000 + KERNBASE);
-    uint64_t maxpa = 0;
+static void page_init(void)
+{
+	struct e820map *memmap = (struct e820map *)(0x8000 + KERNBASE);
+	uint64_t maxpa = 0;
 
-    kprintf("e820map:\n");
-    int i;
-    for (i = 0; i < memmap->nr_map; i ++) {
-        uint64_t begin = memmap->map[i].addr, end = begin + memmap->map[i].size;
-        kprintf("  memory: %08llx, [%08llx, %08llx], type = %d.\n",
-                memmap->map[i].size, begin, end - 1, memmap->map[i].type);
-        if (memmap->map[i].type == E820_ARM) {
-            if (maxpa < end && begin < KMEMSIZE) {
-                maxpa = end;
-            }
-        }
-    }
-    if (maxpa > KMEMSIZE) {
-        maxpa = KMEMSIZE;
-    }
+	kprintf("e820map:\n");
+	int i;
+	for (i = 0; i < memmap->nr_map; i++) {
+		uint64_t begin = memmap->map[i].addr, end =
+		    begin + memmap->map[i].size;
+		kprintf("  memory: %08llx, [%08llx, %08llx], type = %d.\n",
+			memmap->map[i].size, begin, end - 1,
+			memmap->map[i].type);
+		if (memmap->map[i].type == E820_ARM) {
+			if (maxpa < end && begin < KMEMSIZE) {
+				maxpa = end;
+			}
+		}
+	}
+	if (maxpa > KMEMSIZE) {
+		maxpa = KMEMSIZE;
+	}
 
-    extern char end[];
+	extern char end[];
 
-    npage = maxpa / PGSIZE;
-    pages = (struct Page *)ROUNDUP((void *)end, PGSIZE);
+	npage = maxpa / PGSIZE;
+	pages = (struct Page *)ROUNDUP((void *)end, PGSIZE);
 
-    for (i = 0; i < npage; i ++) {
-        SetPageReserved(pages + i);
-    }
+	for (i = 0; i < npage; i++) {
+		SetPageReserved(pages + i);
+	}
 
-    uintptr_t freemem = PADDR((uintptr_t)pages + sizeof(struct Page) * npage);
+	uintptr_t freemem =
+	    PADDR((uintptr_t) pages + sizeof(struct Page) * npage);
 
-    for (i = 0; i < memmap->nr_map; i ++) {
-        uint64_t begin = memmap->map[i].addr, end = begin + memmap->map[i].size;
-        if (memmap->map[i].type == E820_ARM) {
-            if (begin < freemem) {
-                begin = freemem;
-            }
-            if (end > KMEMSIZE) {
-                end = KMEMSIZE;
-            }
-            if (begin < end) {
-                begin = ROUNDUP(begin, PGSIZE);
-                end = ROUNDDOWN(end, PGSIZE);
-                if (begin < end) {
-                    init_memmap(pa2page(begin), (end - begin) / PGSIZE);
-                }
-            }
-        }
-    }
+	for (i = 0; i < memmap->nr_map; i++) {
+		uint64_t begin = memmap->map[i].addr, end =
+		    begin + memmap->map[i].size;
+		if (memmap->map[i].type == E820_ARM) {
+			if (begin < freemem) {
+				begin = freemem;
+			}
+			if (end > KMEMSIZE) {
+				end = KMEMSIZE;
+			}
+			if (begin < end) {
+				begin = ROUNDUP(begin, PGSIZE);
+				end = ROUNDDOWN(end, PGSIZE);
+				if (begin < end) {
+					init_memmap(pa2page(begin),
+						    (end - begin) / PGSIZE);
+				}
+			}
+		}
+	}
 }
 
-static void
-enable_paging(void) {
-    lcr3(boot_cr3);
+static void enable_paging(void)
+{
+	lcr3(boot_cr3);
 
-    // turn on paging
-    uint32_t cr0 = rcr0();
-    cr0 |= CR0_PE | CR0_PG | CR0_AM | CR0_WP | CR0_NE | CR0_TS | CR0_EM | CR0_MP;
-    cr0 &= ~(CR0_TS | CR0_EM);
-    lcr0(cr0);
+	// turn on paging
+	uint32_t cr0 = rcr0();
+	cr0 |=
+	    CR0_PE | CR0_PG | CR0_AM | CR0_WP | CR0_NE | CR0_TS | CR0_EM |
+	    CR0_MP;
+	cr0 &= ~(CR0_TS | CR0_EM);
+	lcr0(cr0);
 }
 
 //pmm_init - setup a pmm to manage physical memory, build PDT&PT to setup paging mechanism 
 //         - check the correctness of pmm & paging mechanism, print PDT&PT
-void
-pmm_init(void) {
-    //We need to alloc/free the physical memory (granularity is 4KB or other size). 
-    //So a framework of physical memory manager (struct pmm_manager)is defined in pmm.h
-    //First we should init a physical memory manager(pmm) based on the framework.
-    //Then pmm can alloc/free the physical memory. 
-    //Now the first_fit/best_fit/worst_fit/buddy_system pmm are available.
-    init_pmm_manager();
+void pmm_init(void)
+{
+	//We need to alloc/free the physical memory (granularity is 4KB or other size). 
+	//So a framework of physical memory manager (struct pmm_manager)is defined in pmm.h
+	//First we should init a physical memory manager(pmm) based on the framework.
+	//Then pmm can alloc/free the physical memory. 
+	//Now the first_fit/best_fit/worst_fit/buddy_system pmm are available.
+	init_pmm_manager();
 
-    // detect physical memory space, reserve already used memory,
-    // then use pmm->init_memmap to create free page list
-    page_init();
+	// detect physical memory space, reserve already used memory,
+	// then use pmm->init_memmap to create free page list
+	page_init();
 
-    //use pmm->check to verify the correctness of the alloc/free function in a pmm
-    check_alloc_page();
+	//use pmm->check to verify the correctness of the alloc/free function in a pmm
+	check_alloc_page();
 
-    // create boot_pgdir, an initial page directory(Page Directory Table, PDT)
-    boot_pgdir = boot_alloc_page();
-    memset(boot_pgdir, 0, PGSIZE);
-    boot_cr3 = PADDR(boot_pgdir);
+	// create boot_pgdir, an initial page directory(Page Directory Table, PDT)
+	boot_pgdir = boot_alloc_page();
+	memset(boot_pgdir, 0, PGSIZE);
+	boot_cr3 = PADDR(boot_pgdir);
 
-    check_pgdir();
+	check_pgdir();
 
-    static_assert(KERNBASE % PTSIZE == 0 && KERNTOP % PTSIZE == 0);
+	static_assert(KERNBASE % PTSIZE == 0 && KERNTOP % PTSIZE == 0);
 
-    // recursively insert boot_pgdir in itself
-    // to form a virtual page table at virtual address VPT
-    boot_pgdir[PDX(VPT)] = PADDR(boot_pgdir) | PTE_P | PTE_W;
+	// recursively insert boot_pgdir in itself
+	// to form a virtual page table at virtual address VPT
+	boot_pgdir[PDX(VPT)] = PADDR(boot_pgdir) | PTE_P | PTE_W;
 
-    // map all physical memory to linear memory with base linear addr KERNBASE
-    //linear_addr KERNBASE~KERNBASE+KMEMSIZE = phy_addr 0~KMEMSIZE
-    //But shouldn't use this map until enable_paging() & gdt_init() finished.
-    boot_map_segment(boot_pgdir, KERNBASE, KMEMSIZE, 0, PTE_W);
+	// map all physical memory to linear memory with base linear addr KERNBASE
+	//linear_addr KERNBASE~KERNBASE+KMEMSIZE = phy_addr 0~KMEMSIZE
+	//But shouldn't use this map until enable_paging() & gdt_init() finished.
+	boot_map_segment(boot_pgdir, KERNBASE, KMEMSIZE, 0, PTE_W);
 
-    //temporary map: 
-    //virtual_addr 3G~3G+4M = linear_addr 0~4M = linear_addr 3G~3G+4M = phy_addr 0~4M 	
-    boot_pgdir[0] = boot_pgdir[PDX(KERNBASE)];
-    boot_pgdir[1] = boot_pgdir[PDX(KERNBASE) + 1];
+	//temporary map: 
+	//virtual_addr 3G~3G+4M = linear_addr 0~4M = linear_addr 3G~3G+4M = phy_addr 0~4M   
+	boot_pgdir[0] = boot_pgdir[PDX(KERNBASE)];
+	boot_pgdir[1] = boot_pgdir[PDX(KERNBASE) + 1];
 
-    enable_paging();
+	enable_paging();
 
-    //reload gdt(third time,the last time) to map all physical memory
-    //virtual_addr 0~4G=liear_addr 0~4G
-    //then set kernel stack(ss:esp) in TSS, setup TSS in gdt, load TSS
-    gdt_init();
+	//reload gdt(third time,the last time) to map all physical memory
+	//virtual_addr 0~4G=liear_addr 0~4G
+	//then set kernel stack(ss:esp) in TSS, setup TSS in gdt, load TSS
+	gdt_init();
 
 	//disable the map of virtual_addr 0~4M
-    boot_pgdir[0] = boot_pgdir[1] = 0;
+	boot_pgdir[0] = boot_pgdir[1] = 0;
 
-    //now the basic virtual memory map(see memalyout.h) is established.
-    //check the correctness of the basic virtual memory map.
-    check_boot_pgdir();
+	//now the basic virtual memory map(see memalyout.h) is established.
+	//check the correctness of the basic virtual memory map.
+	check_boot_pgdir();
 
-    print_pgdir(kprintf);
-	
-    slab_init();
+	print_pgdir(kprintf);
+
+	slab_init();
 }
-
 
 // invalidate a TLB entry, but only if the page tables being
 // edited are the ones currently in use by the processor.
-void
-tlb_update (pde_t *pgdir, uintptr_t la) {
-	tlb_invalidate (pgdir, la);
+void tlb_update(pde_t * pgdir, uintptr_t la)
+{
+	tlb_invalidate(pgdir, la);
 }
 
-void
-tlb_invalidate(pde_t *pgdir, uintptr_t la) {
-    if (rcr3() == PADDR(pgdir)) {
-        invlpg((void *)la);
-    }
+void tlb_invalidate(pde_t * pgdir, uintptr_t la)
+{
+	if (rcr3() == PADDR(pgdir)) {
+		invlpg((void *)la);
+	}
 }
 
-void
-check_boot_pgdir(void) {
-    pte_t *ptep;
-    int i;
-    for (i = 0; i < npage; i += PGSIZE) {
-        assert((ptep = get_pte(boot_pgdir, (uintptr_t)KADDR(i), 0)) != NULL);
-        assert(PTE_ADDR(*ptep) == i);
-    }
+void check_boot_pgdir(void)
+{
+	pte_t *ptep;
+	int i;
+	for (i = 0; i < npage; i += PGSIZE) {
+		assert((ptep =
+			get_pte(boot_pgdir, (uintptr_t) KADDR(i), 0)) != NULL);
+		assert(PTE_ADDR(*ptep) == i);
+	}
 
-    assert(PDE_ADDR(boot_pgdir[PDX(VPT)]) == PADDR(boot_pgdir));
+	assert(PDE_ADDR(boot_pgdir[PDX(VPT)]) == PADDR(boot_pgdir));
 
-    assert(boot_pgdir[0] == 0);
+	assert(boot_pgdir[0] == 0);
 
-    struct Page *p;
-    p = alloc_page();
-    assert(page_insert(boot_pgdir, p, 0x100, PTE_W) == 0);
-    assert(page_ref(p) == 1);
-    assert(page_insert(boot_pgdir, p, 0x100 + PGSIZE, PTE_W) == 0);
-    assert(page_ref(p) == 2);
+	struct Page *p;
+	p = alloc_page();
+	assert(page_insert(boot_pgdir, p, 0x100, PTE_W) == 0);
+	assert(page_ref(p) == 1);
+	assert(page_insert(boot_pgdir, p, 0x100 + PGSIZE, PTE_W) == 0);
+	assert(page_ref(p) == 2);
 
-    const char *str = "ucore: Hello world!!";
-    strcpy((void *)0x100, str);
-    assert(strcmp((void *)0x100, (void *)(0x100 + PGSIZE)) == 0);
+	const char *str = "ucore: Hello world!!";
+	strcpy((void *)0x100, str);
+	assert(strcmp((void *)0x100, (void *)(0x100 + PGSIZE)) == 0);
 
-    *(char *)(page2kva(p) + 0x100) = '\0';
-    assert(strlen((const char *)0x100) == 0);
+	*(char *)(page2kva(p) + 0x100) = '\0';
+	assert(strlen((const char *)0x100) == 0);
 
-    free_page(p);
-    free_page(pa2page(PDE_ADDR(boot_pgdir[0])));
-    boot_pgdir[0] = 0;
+	free_page(p);
+	free_page(pa2page(PDE_ADDR(boot_pgdir[0])));
+	boot_pgdir[0] = 0;
 
-    kprintf("check_boot_pgdir() succeeded!\n");
+	kprintf("check_boot_pgdir() succeeded!\n");
 }
 
 //perm2str - use string 'u,r,w,-' to present the permission
-static const char *
-perm2str(int perm) {
-    static char str[4];
-    str[0] = (perm & PTE_U) ? 'u' : '-';
-    str[1] = 'r';
-    str[2] = (perm & PTE_W) ? 'w' : '-';
-    str[3] = '\0';
-    return str;
+static const char *perm2str(int perm)
+{
+	static char str[4];
+	str[0] = (perm & PTE_U) ? 'u' : '-';
+	str[1] = 'r';
+	str[2] = (perm & PTE_W) ? 'w' : '-';
+	str[3] = '\0';
+	return str;
 }
 
 //get_pgtable_items - In [left, right] range of PDT or PT, find a continuing linear addr space
@@ -373,42 +381,50 @@ perm2str(int perm) {
 //  right_store: the pointer of the low side of table's next range
 // return value: 0 - not a invalid item range, perm - a valid item range with perm permission 
 static int
-get_pgtable_items(size_t left, size_t right, size_t start, uintptr_t *table, size_t *left_store, size_t *right_store) {
-    if (start >= right) {
-        return 0;
-    }
-    while (start < right && !(table[start] & PTE_P)) {
-        start ++;
-    }
-    if (start < right) {
-        if (left_store != NULL) {
-            *left_store = start;
-        }
-        int perm = (table[start ++] & PTE_USER);
-        while (start < right && (table[start] & PTE_USER) == perm) {
-            start ++;
-        }
-        if (right_store != NULL) {
-            *right_store = start;
-        }
-        return perm;
-    }
-    return 0;
+get_pgtable_items(size_t left, size_t right, size_t start, uintptr_t * table,
+		  size_t * left_store, size_t * right_store)
+{
+	if (start >= right) {
+		return 0;
+	}
+	while (start < right && !(table[start] & PTE_P)) {
+		start++;
+	}
+	if (start < right) {
+		if (left_store != NULL) {
+			*left_store = start;
+		}
+		int perm = (table[start++] & PTE_USER);
+		while (start < right && (table[start] & PTE_USER) == perm) {
+			start++;
+		}
+		if (right_store != NULL) {
+			*right_store = start;
+		}
+		return perm;
+	}
+	return 0;
 }
 
 //print_pgdir - print the PDT&PT
-void
-print_pgdir(int (*printf)(const char *fmt, ...)) {
-    printf("-------------------- BEGIN --------------------\n");
-    size_t left, right = 0, perm;
-    while ((perm = get_pgtable_items(0, NPDEENTRY, right, vpd, &left, &right)) != 0) {
-        printf("PDE(%03x) %08x-%08x %08x %s\n", right - left,
-                left * PTSIZE, right * PTSIZE, (right - left) * PTSIZE, perm2str(perm));
-        size_t l, r = left * NPTEENTRY;
-        while ((perm = get_pgtable_items(left * NPTEENTRY, right * NPTEENTRY, r, vpt, &l, &r)) != 0) {
-            printf("  |-- PTE(%05x) %08x-%08x %08x %s\n", r - l,
-                    l * PGSIZE, r * PGSIZE, (r - l) * PGSIZE, perm2str(perm));
-        }
-    }
-    printf("--------------------- END ---------------------\n");
+void print_pgdir(int (*printf) (const char *fmt, ...))
+{
+	printf("-------------------- BEGIN --------------------\n");
+	size_t left, right = 0, perm;
+	while ((perm =
+		get_pgtable_items(0, NPDEENTRY, right, vpd, &left,
+				  &right)) != 0) {
+		printf("PDE(%03x) %08x-%08x %08x %s\n", right - left,
+		       left * PTSIZE, right * PTSIZE, (right - left) * PTSIZE,
+		       perm2str(perm));
+		size_t l, r = left * NPTEENTRY;
+		while ((perm =
+			get_pgtable_items(left * NPTEENTRY, right * NPTEENTRY,
+					  r, vpt, &l, &r)) != 0) {
+			printf("  |-- PTE(%05x) %08x-%08x %08x %s\n", r - l,
+			       l * PGSIZE, r * PGSIZE, (r - l) * PGSIZE,
+			       perm2str(perm));
+		}
+	}
+	printf("--------------------- END ---------------------\n");
 }

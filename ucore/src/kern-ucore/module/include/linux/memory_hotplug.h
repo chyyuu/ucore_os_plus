@@ -24,20 +24,22 @@ struct mem_section;
  * pgdat resizing functions
  */
 static inline
-void pgdat_resize_lock(struct pglist_data *pgdat, unsigned long *flags)
+    void pgdat_resize_lock(struct pglist_data *pgdat, unsigned long *flags)
 {
 	spin_lock_irqsave(&pgdat->node_size_lock, *flags);
 }
+
 static inline
-void pgdat_resize_unlock(struct pglist_data *pgdat, unsigned long *flags)
+    void pgdat_resize_unlock(struct pglist_data *pgdat, unsigned long *flags)
 {
 	spin_unlock_irqrestore(&pgdat->node_size_lock, *flags);
 }
-static inline
-void pgdat_resize_init(struct pglist_data *pgdat)
+
+static inline void pgdat_resize_init(struct pglist_data *pgdat)
 {
 	spin_lock_init(&pgdat->node_size_lock);
 }
+
 /*
  * Zone resizing functions
  */
@@ -45,22 +47,27 @@ static inline unsigned zone_span_seqbegin(struct zone *zone)
 {
 	return read_seqbegin(&zone->span_seqlock);
 }
+
 static inline int zone_span_seqretry(struct zone *zone, unsigned iv)
 {
 	return read_seqretry(&zone->span_seqlock, iv);
 }
+
 static inline void zone_span_writelock(struct zone *zone)
 {
 	write_seqlock(&zone->span_seqlock);
 }
+
 static inline void zone_span_writeunlock(struct zone *zone)
 {
 	write_sequnlock(&zone->span_seqlock);
 }
+
 static inline void zone_seqlock_init(struct zone *zone)
 {
 	seqlock_init(&zone->span_seqlock);
 }
+
 extern int zone_grow_free_lists(struct zone *zone, unsigned long new_nr_pages);
 extern int zone_grow_waitqueues(struct zone *zone, unsigned long nr_pages);
 extern int add_one_highpage(struct page *page, int pfn, int bad_ppro);
@@ -73,9 +80,9 @@ extern int offline_pages(unsigned long, unsigned long, unsigned long);
 
 /* reasonably generic interface to expand the physical pages in a zone  */
 extern int __add_pages(int nid, struct zone *zone, unsigned long start_pfn,
-	unsigned long nr_pages);
+		       unsigned long nr_pages);
 extern int __remove_pages(struct zone *zone, unsigned long start_pfn,
-	unsigned long nr_pages);
+			  unsigned long nr_pages);
 
 #ifdef CONFIG_NUMA
 extern int memory_add_physaddr_to_nid(u64 start);
@@ -98,8 +105,8 @@ static inline int memory_add_physaddr_to_nid(u64 start)
  *
  */
 extern pg_data_t *arch_alloc_nodedata(int nid);
-extern void arch_free_nodedata(pg_data_t *pgdat);
-extern void arch_refresh_nodedata(int nid, pg_data_t *pgdat);
+extern void arch_free_nodedata(pg_data_t * pgdat);
+extern void arch_refresh_nodedata(int nid, pg_data_t * pgdat);
 
 #else /* CONFIG_HAVE_ARCH_NODEDATA_EXTENSION */
 
@@ -124,7 +131,7 @@ extern void arch_refresh_nodedata(int nid, pg_data_t *pgdat);
 #define generic_free_nodedata(pgdat)	kfree(pgdat)
 
 extern pg_data_t *node_data[];
-static inline void arch_refresh_nodedata(int nid, pg_data_t *pgdat)
+static inline void arch_refresh_nodedata(int nid, pg_data_t * pgdat)
 {
 	node_data[nid] = pgdat;
 }
@@ -137,10 +144,12 @@ static inline pg_data_t *generic_alloc_nodedata(int nid)
 	BUG();
 	return NULL;
 }
-static inline void generic_free_nodedata(pg_data_t *pgdat)
+
+static inline void generic_free_nodedata(pg_data_t * pgdat)
 {
 }
-static inline void arch_refresh_nodedata(int nid, pg_data_t *pgdat)
+
+static inline void arch_refresh_nodedata(int nid, pg_data_t * pgdat)
 {
 }
 #endif /* CONFIG_NUMA */
@@ -150,6 +159,7 @@ static inline void arch_refresh_nodedata(int nid, pg_data_t *pgdat)
 static inline void register_page_bootmem_info_node(struct pglist_data *pgdat)
 {
 }
+
 static inline void put_page_bootmem(struct page *page)
 {
 }
@@ -162,25 +172,44 @@ extern void put_page_bootmem(struct page *page);
 /*
  * Stub functions for when hotplug is off
  */
-static inline void pgdat_resize_lock(struct pglist_data *p, unsigned long *f) {}
-static inline void pgdat_resize_unlock(struct pglist_data *p, unsigned long *f) {}
-static inline void pgdat_resize_init(struct pglist_data *pgdat) {}
+static inline void pgdat_resize_lock(struct pglist_data *p, unsigned long *f)
+{
+}
+
+static inline void pgdat_resize_unlock(struct pglist_data *p, unsigned long *f)
+{
+}
+
+static inline void pgdat_resize_init(struct pglist_data *pgdat)
+{
+}
 
 static inline unsigned zone_span_seqbegin(struct zone *zone)
 {
 	return 0;
 }
+
 static inline int zone_span_seqretry(struct zone *zone, unsigned iv)
 {
 	return 0;
 }
-static inline void zone_span_writelock(struct zone *zone) {}
-static inline void zone_span_writeunlock(struct zone *zone) {}
-static inline void zone_seqlock_init(struct zone *zone) {}
+
+static inline void zone_span_writelock(struct zone *zone)
+{
+}
+
+static inline void zone_span_writeunlock(struct zone *zone)
+{
+}
+
+static inline void zone_seqlock_init(struct zone *zone)
+{
+}
 
 static inline int mhp_notimplemented(const char *func)
 {
-	printk(KERN_WARNING "%s() called, with CONFIG_MEMORY_HOTPLUG disabled\n", func);
+	printk(KERN_WARNING
+	       "%s() called, with CONFIG_MEMORY_HOTPLUG disabled\n", func);
 	dump_stack();
 	return -ENOSYS;
 }
@@ -196,8 +225,9 @@ static inline void register_page_bootmem_info_node(struct pglist_data *pgdat)
  * arg is (start_pfn, nr_pages, private_arg_pointer)
  */
 extern int walk_memory_resource(unsigned long start_pfn,
-			unsigned long nr_pages, void *arg,
-			int (*func)(unsigned long, unsigned long, void *));
+				unsigned long nr_pages, void *arg,
+				int (*func) (unsigned long, unsigned long,
+					     void *));
 
 #ifdef CONFIG_MEMORY_HOTREMOVE
 
@@ -205,7 +235,7 @@ extern int is_mem_section_removable(unsigned long pfn, unsigned long nr_pages);
 
 #else
 static inline int is_mem_section_removable(unsigned long pfn,
-					unsigned long nr_pages)
+					   unsigned long nr_pages)
 {
 	return 0;
 }
@@ -215,8 +245,9 @@ extern int add_memory(int nid, u64 start, u64 size);
 extern int arch_add_memory(int nid, u64 start, u64 size);
 extern int remove_memory(u64 start, u64 size);
 extern int sparse_add_one_section(struct zone *zone, unsigned long start_pfn,
-								int nr_pages);
-extern void sparse_remove_one_section(struct zone *zone, struct mem_section *ms);
+				  int nr_pages);
+extern void sparse_remove_one_section(struct zone *zone,
+				      struct mem_section *ms);
 extern struct page *sparse_decode_mem_map(unsigned long coded_mem_map,
 					  unsigned long pnum);
 

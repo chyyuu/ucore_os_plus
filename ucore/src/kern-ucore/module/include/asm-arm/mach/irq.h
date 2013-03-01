@@ -17,7 +17,7 @@ struct seq_file;
 /*
  * This is internal.  Do not use it.
  */
-extern void (*init_arch_irq)(void);
+extern void (*init_arch_irq) (void);
 extern void init_FIQ(void);
 extern int show_fiq_list(struct seq_file *, void *);
 

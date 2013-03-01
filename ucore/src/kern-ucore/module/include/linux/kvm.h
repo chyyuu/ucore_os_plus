@@ -16,8 +16,8 @@
 
 /* for KVM_TRACE_ENABLE */
 struct kvm_user_trace_setup {
-	__u32 buf_size; /* sub_buffer size of each per-cpu */
-	__u32 buf_nr; /* the number of sub_buffers of each per-cpu */
+	__u32 buf_size;		/* sub_buffer size of each per-cpu */
+	__u32 buf_nr;		/* the number of sub_buffers of each per-cpu */
 };
 
 /* for KVM_CREATE_MEMORY_REGION */
@@ -25,7 +25,7 @@ struct kvm_memory_region {
 	__u32 slot;
 	__u32 flags;
 	__u64 guest_phys_addr;
-	__u64 memory_size; /* bytes */
+	__u64 memory_size;	/* bytes */
 };
 
 /* for KVM_SET_USER_MEMORY_REGION */
@@ -33,13 +33,12 @@ struct kvm_userspace_memory_region {
 	__u32 slot;
 	__u32 flags;
 	__u64 guest_phys_addr;
-	__u64 memory_size; /* bytes */
-	__u64 userspace_addr; /* start of the userspace allocated memory */
+	__u64 memory_size;	/* bytes */
+	__u64 userspace_addr;	/* start of the userspace allocated memory */
 };
 
 /* for kvm_memory_region::flags */
 #define KVM_MEM_LOG_DIRTY_PAGES  1UL
-
 
 /* for KVM_IRQ_LINE */
 struct kvm_irq_level {
@@ -52,12 +51,11 @@ struct kvm_irq_level {
 	__u32 level;
 };
 
-
 struct kvm_irqchip {
 	__u32 chip_id;
 	__u32 pad;
-        union {
-		char dummy[512];  /* reserving space */
+	union {
+		char dummy[512];	/* reserving space */
 #ifdef __KVM_HAVE_PIT
 		struct kvm_pic_state pic;
 #endif
@@ -120,19 +118,19 @@ struct kvm_run {
 #define KVM_EXIT_IO_IN  0
 #define KVM_EXIT_IO_OUT 1
 			__u8 direction;
-			__u8 size; /* bytes */
+			__u8 size;	/* bytes */
 			__u16 port;
 			__u32 count;
-			__u64 data_offset; /* relative to kvm_run start */
+			__u64 data_offset;	/* relative to kvm_run start */
 		} io;
 		struct {
 		} debug;
 		/* KVM_EXIT_MMIO */
 		struct {
 			__u64 phys_addr;
-			__u8  data[8];
+			__u8 data[8];
 			__u32 len;
-			__u8  is_write;
+			__u8 is_write;
 		} mmio;
 		/* KVM_EXIT_HYPERCALL */
 		struct {
@@ -151,8 +149,8 @@ struct kvm_run {
 		/* KVM_EXIT_S390_SIEIC */
 		struct {
 			__u8 icptcode;
-			__u64 mask; /* psw upper half */
-			__u64 addr; /* psw lower half */
+			__u64 mask;	/* psw upper half */
+			__u64 addr;	/* psw lower half */
 			__u16 ipa;
 			__u32 ipb;
 		} s390_sieic;
@@ -167,7 +165,7 @@ struct kvm_run {
 		struct {
 			__u32 dcrn;
 			__u32 data;
-			__u8  is_write;
+			__u8 is_write;
 		} dcr;
 		/* Fix the size of the union. */
 		char padding[256];
@@ -186,7 +184,7 @@ struct kvm_coalesced_mmio {
 	__u64 phys_addr;
 	__u32 len;
 	__u32 pad;
-	__u8  data[8];
+	__u8 data[8];
 };
 
 struct kvm_coalesced_mmio_ring {
@@ -205,10 +203,10 @@ struct kvm_translation {
 
 	/* out */
 	__u64 physical_address;
-	__u8  valid;
-	__u8  writeable;
-	__u8  usermode;
-	__u8  pad[5];
+	__u8 valid;
+	__u8 writeable;
+	__u8 usermode;
+	__u8 pad[5];
 };
 
 /* for KVM_INTERRUPT */
@@ -237,7 +235,7 @@ struct kvm_dirty_log {
 	__u32 slot;
 	__u32 padding;
 	union {
-		void __user *dirty_bitmap; /* one bit per page */
+		void __user *dirty_bitmap;	/* one bit per page */
 		__u64 padding;
 	};
 };
@@ -245,7 +243,7 @@ struct kvm_dirty_log {
 /* for KVM_SET_SIGNAL_MASK */
 struct kvm_signal_mask {
 	__u32 len;
-	__u8  sigset[0];
+	__u8 sigset[0];
 };
 
 /* for KVM_TPR_ACCESS_REPORTING */
@@ -297,7 +295,7 @@ struct kvm_s390_interrupt {
  * kvm trace categories
  */
 #define KVM_TRC_ENTRYEXIT       (1 << KVM_TRC_SHIFT)
-#define KVM_TRC_HANDLER         (1 << (KVM_TRC_SHIFT + 1)) /* only 12 bits */
+#define KVM_TRC_HANDLER         (1 << (KVM_TRC_SHIFT + 1))	/* only 12 bits */
 
 /*
  * kvm trace action
@@ -325,7 +323,7 @@ struct kvm_trace_rec {
 		struct {
 			__u64 timestamp;
 			__u32 extra_u32[KVM_TRC_EXTRA_MAX];
-		} __attribute__((packed)) timestamp;
+		} __attribute__ ((packed)) timestamp;
 		struct {
 			__u32 extra_u32[KVM_TRC_EXTRA_MAX];
 		} notimestamp;
@@ -345,7 +343,7 @@ struct kvm_trace_rec {
  * ioctls for /dev/kvm fds:
  */
 #define KVM_GET_API_VERSION       _IO(KVMIO,   0x00)
-#define KVM_CREATE_VM             _IO(KVMIO,   0x01) /* returns a VM fd */
+#define KVM_CREATE_VM             _IO(KVMIO,   0x01)	/* returns a VM fd */
 #define KVM_GET_MSR_INDEX_LIST    _IOWR(KVMIO, 0x02, struct kvm_msr_list)
 
 #define KVM_S390_ENABLE_SIE       _IO(KVMIO,   0x06)
@@ -357,7 +355,7 @@ struct kvm_trace_rec {
 /*
  * Get size for mmap(vcpu_fd)
  */
-#define KVM_GET_VCPU_MMAP_SIZE    _IO(KVMIO,   0x04) /* in bytes */
+#define KVM_GET_VCPU_MMAP_SIZE    _IO(KVMIO,   0x04)	/* in bytes */
 #define KVM_GET_SUPPORTED_CPUID   _IOWR(KVMIO, 0x05, struct kvm_cpuid2)
 /*
  * ioctls for kvm trace
@@ -376,14 +374,14 @@ struct kvm_trace_rec {
 #define KVM_CAP_VAPIC 6
 #define KVM_CAP_EXT_CPUID 7
 #define KVM_CAP_CLOCKSOURCE 8
-#define KVM_CAP_NR_VCPUS 9       /* returns max vcpus per vm */
-#define KVM_CAP_NR_MEMSLOTS 10   /* returns max memory slots per vm */
+#define KVM_CAP_NR_VCPUS 9	/* returns max vcpus per vm */
+#define KVM_CAP_NR_MEMSLOTS 10	/* returns max memory slots per vm */
 #define KVM_CAP_PIT 11
 #define KVM_CAP_NOP_IO_DELAY 12
 #define KVM_CAP_PV_MMU 13
 #define KVM_CAP_MP_STATE 14
 #define KVM_CAP_COALESCED_MMIO 15
-#define KVM_CAP_SYNC_MMU 16  /* Changes to host mmap are reflected in guest */
+#define KVM_CAP_SYNC_MMU 16	/* Changes to host mmap are reflected in guest */
 #ifdef __KVM_HAVE_DEVICE_ASSIGNMENT
 #define KVM_CAP_DEVICE_ASSIGNMENT 17
 #endif

@@ -26,9 +26,9 @@
 /*
  * Callbacks for platform drivers to implement.
  */
-extern void (*pm_idle)(void);
-extern void (*pm_power_off)(void);
-extern void (*pm_power_off_prepare)(void);
+extern void (*pm_idle) (void);
+extern void (*pm_power_off) (void);
+extern void (*pm_power_off_prepare) (void);
 
 /*
  * Device power management
@@ -168,20 +168,20 @@ typedef struct pm_message {
  */
 
 struct dev_pm_ops {
-	int (*prepare)(struct device *dev);
-	void (*complete)(struct device *dev);
-	int (*suspend)(struct device *dev);
-	int (*resume)(struct device *dev);
-	int (*freeze)(struct device *dev);
-	int (*thaw)(struct device *dev);
-	int (*poweroff)(struct device *dev);
-	int (*restore)(struct device *dev);
-	int (*suspend_noirq)(struct device *dev);
-	int (*resume_noirq)(struct device *dev);
-	int (*freeze_noirq)(struct device *dev);
-	int (*thaw_noirq)(struct device *dev);
-	int (*poweroff_noirq)(struct device *dev);
-	int (*restore_noirq)(struct device *dev);
+	int (*prepare) (struct device * dev);
+	void (*complete) (struct device * dev);
+	int (*suspend) (struct device * dev);
+	int (*resume) (struct device * dev);
+	int (*freeze) (struct device * dev);
+	int (*thaw) (struct device * dev);
+	int (*poweroff) (struct device * dev);
+	int (*restore) (struct device * dev);
+	int (*suspend_noirq) (struct device * dev);
+	int (*resume_noirq) (struct device * dev);
+	int (*freeze_noirq) (struct device * dev);
+	int (*thaw_noirq) (struct device * dev);
+	int (*poweroff_noirq) (struct device * dev);
+	int (*restore_noirq) (struct device * dev);
 };
 
 /**
@@ -316,12 +316,12 @@ enum dpm_state {
 };
 
 struct dev_pm_info {
-	pm_message_t		power_state;
-	unsigned		can_wakeup:1;
-	unsigned		should_wakeup:1;
-	enum dpm_state		status;		/* Owned by the PM core */
+	pm_message_t power_state;
+	unsigned can_wakeup:1;
+	unsigned should_wakeup:1;
+	enum dpm_state status;	/* Owned by the PM core */
 #ifdef	CONFIG_PM_SLEEP
-	struct list_head	entry;
+	struct list_head entry;
 #endif
 };
 
@@ -413,7 +413,7 @@ static inline int device_suspend(pm_message_t state)
  * Global Power Management flags
  * Used to keep APM and ACPI from both being active
  */
-extern unsigned int	pm_flags;
+extern unsigned int pm_flags;
 
 #define PM_APM	1
 #define PM_ACPI	2

@@ -13,7 +13,6 @@
  * for more info.
  */
 
-
 /*
  *	Private events for Gravis Ultrasound (GUS)
  *

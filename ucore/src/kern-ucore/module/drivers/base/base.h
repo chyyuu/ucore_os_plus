@@ -36,7 +36,6 @@ struct driver_private {
 };
 #define to_driver(obj) container_of(obj, struct driver_private, kobj)
 
-
 /**
  * struct class_private - structure to hold the private to the driver core portions of the class structure.
  *
@@ -71,7 +70,10 @@ extern int firmware_init(void);
 #ifdef CONFIG_SYS_HYPERVISOR
 extern int hypervisor_init(void);
 #else
-static inline int hypervisor_init(void) { return 0; }
+static inline int hypervisor_init(void)
+{
+	return 0;
+}
 #endif
 extern int platform_bus_init(void);
 extern int system_bus_init(void);
@@ -100,6 +102,11 @@ extern void module_add_driver(struct module *mod, struct device_driver *drv);
 extern void module_remove_driver(struct device_driver *drv);
 #else
 static inline void module_add_driver(struct module *mod,
-				     struct device_driver *drv) { }
-static inline void module_remove_driver(struct device_driver *drv) { }
+				     struct device_driver *drv)
+{
+}
+
+static inline void module_remove_driver(struct device_driver *drv)
+{
+}
 #endif

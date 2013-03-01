@@ -43,7 +43,6 @@
 #include <asm/acpi.h>
 #include <linux/dmi.h>
 
-
 enum acpi_irq_model_id {
 	ACPI_IRQ_MODEL_PIC = 0,
 	ACPI_IRQ_MODEL_IOAPIC,
@@ -52,10 +51,10 @@ enum acpi_irq_model_id {
 	ACPI_IRQ_MODEL_COUNT
 };
 
-extern enum acpi_irq_model_id	acpi_irq_model;
+extern enum acpi_irq_model_id acpi_irq_model;
 
 enum acpi_interrupt_id {
-	ACPI_INTERRUPT_PMI	= 1,
+	ACPI_INTERRUPT_PMI = 1,
 	ACPI_INTERRUPT_INIT,
 	ACPI_INTERRUPT_CPEI,
 	ACPI_INTERRUPT_COUNT
@@ -67,36 +66,40 @@ enum acpi_address_range_id {
 	ACPI_ADDRESS_RANGE_MEMORY = 1,
 	ACPI_ADDRESS_RANGE_RESERVED = 2,
 	ACPI_ADDRESS_RANGE_ACPI = 3,
-	ACPI_ADDRESS_RANGE_NVS	= 4,
+	ACPI_ADDRESS_RANGE_NVS = 4,
 	ACPI_ADDRESS_RANGE_COUNT
 };
 
-
 /* Table Handlers */
 
-typedef int (*acpi_table_handler) (struct acpi_table_header *table);
+typedef int (*acpi_table_handler) (struct acpi_table_header * table);
 
-typedef int (*acpi_table_entry_handler) (struct acpi_subtable_header *header, const unsigned long end);
+typedef int (*acpi_table_entry_handler) (struct acpi_subtable_header * header,
+					 const unsigned long end);
 
-char * __acpi_map_table (unsigned long phys_addr, unsigned long size);
+char *__acpi_map_table(unsigned long phys_addr, unsigned long size);
 int early_acpi_boot_init(void);
-int acpi_boot_init (void);
-int acpi_boot_table_init (void);
-int acpi_mps_check (void);
-int acpi_numa_init (void);
+int acpi_boot_init(void);
+int acpi_boot_table_init(void);
+int acpi_mps_check(void);
+int acpi_numa_init(void);
 
-int acpi_table_init (void);
-int acpi_table_parse (char *id, acpi_table_handler handler);
+int acpi_table_init(void);
+int acpi_table_parse(char *id, acpi_table_handler handler);
 int __init acpi_table_parse_entries(char *id, unsigned long table_size,
-	int entry_id, acpi_table_entry_handler handler, unsigned int max_entries);
-int acpi_table_parse_madt (enum acpi_madt_type id, acpi_table_entry_handler handler, unsigned int max_entries);
-int acpi_parse_mcfg (struct acpi_table_header *header);
-void acpi_table_print_madt_entry (struct acpi_subtable_header *madt);
+				    int entry_id,
+				    acpi_table_entry_handler handler,
+				    unsigned int max_entries);
+int acpi_table_parse_madt(enum acpi_madt_type id,
+			  acpi_table_entry_handler handler,
+			  unsigned int max_entries);
+int acpi_parse_mcfg(struct acpi_table_header *header);
+void acpi_table_print_madt_entry(struct acpi_subtable_header *madt);
 
 /* the following four functions are architecture-dependent */
-void acpi_numa_slit_init (struct acpi_table_slit *slit);
-void acpi_numa_processor_affinity_init (struct acpi_srat_cpu_affinity *pa);
-void acpi_numa_memory_affinity_init (struct acpi_srat_mem_affinity *ma);
+void acpi_numa_slit_init(struct acpi_table_slit *slit);
+void acpi_numa_processor_affinity_init(struct acpi_srat_cpu_affinity *pa);
+void acpi_numa_memory_affinity_init(struct acpi_srat_mem_affinity *ma);
 void acpi_numa_arch_fixup(void);
 
 #ifdef CONFIG_ACPI_HOTPLUG_CPU
@@ -116,8 +119,8 @@ extern int pci_mmcfg_config_num;
 extern int sbf_port;
 extern unsigned long acpi_realmode_flags;
 
-int acpi_register_gsi (u32 gsi, int triggering, int polarity);
-int acpi_gsi_to_irq (u32 gsi, unsigned int *irq);
+int acpi_register_gsi(u32 gsi, int triggering, int polarity);
+int acpi_gsi_to_irq(u32 gsi, unsigned int *irq);
 
 #ifdef CONFIG_X86_IO_APIC
 extern int acpi_get_override_irq(int bus_irq, int *trigger, int *polarity);
@@ -129,50 +132,50 @@ extern int acpi_get_override_irq(int bus_irq, int *trigger, int *polarity);
  * If this matches the last registration, any IRQ resources for gsi
  * are freed.
  */
-void acpi_unregister_gsi (u32 gsi);
+void acpi_unregister_gsi(u32 gsi);
 
 struct pci_dev;
 
-int acpi_pci_irq_enable (struct pci_dev *dev);
+int acpi_pci_irq_enable(struct pci_dev *dev);
 void acpi_penalize_isa_irq(int irq, int active);
 
-void acpi_pci_irq_disable (struct pci_dev *dev);
+void acpi_pci_irq_disable(struct pci_dev *dev);
 
 struct acpi_pci_driver {
 	struct acpi_pci_driver *next;
-	int (*add)(acpi_handle handle);
-	void (*remove)(acpi_handle handle);
+	int (*add) (acpi_handle handle);
+	void (*remove) (acpi_handle handle);
 };
 
 int acpi_pci_register_driver(struct acpi_pci_driver *driver);
 void acpi_pci_unregister_driver(struct acpi_pci_driver *driver);
 
-extern int ec_read(u8 addr, u8 *val);
+extern int ec_read(u8 addr, u8 * val);
 extern int ec_write(u8 addr, u8 val);
 extern int ec_transaction(u8 command,
-                          const u8 *wdata, unsigned wdata_len,
-                          u8 *rdata, unsigned rdata_len,
-			  int force_poll);
+			  const u8 * wdata, unsigned wdata_len,
+			  u8 * rdata, unsigned rdata_len, int force_poll);
 
 #if defined(CONFIG_ACPI_WMI) || defined(CONFIG_ACPI_WMI_MODULE)
 
 typedef void (*wmi_notify_handler) (u32 value, void *context);
 
 extern acpi_status wmi_evaluate_method(const char *guid, u8 instance,
-					u32 method_id,
-					const struct acpi_buffer *in,
-					struct acpi_buffer *out);
+				       u32 method_id,
+				       const struct acpi_buffer *in,
+				       struct acpi_buffer *out);
 extern acpi_status wmi_query_block(const char *guid, u8 instance,
-					struct acpi_buffer *out);
+				   struct acpi_buffer *out);
 extern acpi_status wmi_set_block(const char *guid, u8 instance,
-					const struct acpi_buffer *in);
+				 const struct acpi_buffer *in);
 extern acpi_status wmi_install_notify_handler(const char *guid,
-					wmi_notify_handler handler, void *data);
+					      wmi_notify_handler handler,
+					      void *data);
 extern acpi_status wmi_remove_notify_handler(const char *guid);
 extern acpi_status wmi_get_event_data(u32 event, struct acpi_buffer *out);
 extern bool wmi_has_guid(const char *guid);
 
-#endif	/* CONFIG_ACPI_WMI */
+#endif /* CONFIG_ACPI_WMI */
 
 #define ACPI_VIDEO_OUTPUT_SWITCHING			0x0001
 #define ACPI_VIDEO_DEVICE_POSTING			0x0002
@@ -226,13 +229,14 @@ extern int acpi_osi_setup(char *str);
 
 #ifdef CONFIG_ACPI_NUMA
 int acpi_get_pxm(acpi_handle handle);
-int acpi_get_node(acpi_handle *handle);
+int acpi_get_node(acpi_handle * handle);
 #else
 static inline int acpi_get_pxm(acpi_handle handle)
 {
 	return 0;
 }
-static inline int acpi_get_node(acpi_handle *handle)
+
+static inline int acpi_get_node(acpi_handle * handle)
 {
 	return 0;
 }
@@ -249,19 +253,20 @@ int acpi_check_resource_conflict(struct resource *res);
 int acpi_check_region(resource_size_t start, resource_size_t n,
 		      const char *name);
 int acpi_check_mem_region(resource_size_t start, resource_size_t n,
-		      const char *name);
+			  const char *name);
 
 #ifdef CONFIG_PM_SLEEP
 void __init acpi_no_s4_hw_signature(void);
 void __init acpi_old_suspend_ordering(void);
 void __init acpi_s4_no_nvs(void);
 #endif /* CONFIG_PM_SLEEP */
-#else	/* CONFIG_ACPI */
+#else /* CONFIG_ACPI */
 
 static inline int early_acpi_boot_init(void)
 {
 	return 0;
 }
+
 static inline int acpi_boot_init(void)
 {
 	return 0;
@@ -294,5 +299,5 @@ static inline int acpi_check_mem_region(resource_size_t start,
 	return 0;
 }
 
-#endif	/* !CONFIG_ACPI */
+#endif /* !CONFIG_ACPI */
 #endif	/*_LINUX_ACPI_H*/

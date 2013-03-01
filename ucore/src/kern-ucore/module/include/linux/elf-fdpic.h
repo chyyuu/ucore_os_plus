@@ -18,14 +18,14 @@
 
 /* segment mappings for ELF FDPIC libraries/executables/interpreters */
 struct elf32_fdpic_loadseg {
-	Elf32_Addr	addr;		/* core address to which mapped */
-	Elf32_Addr	p_vaddr;	/* VMA recorded in file */
-	Elf32_Word	p_memsz;	/* allocation size recorded in file */
+	Elf32_Addr addr;	/* core address to which mapped */
+	Elf32_Addr p_vaddr;	/* VMA recorded in file */
+	Elf32_Word p_memsz;	/* allocation size recorded in file */
 };
 
 struct elf32_fdpic_loadmap {
-	Elf32_Half	version;	/* version of these structures, just in case... */
-	Elf32_Half	nsegs;		/* number of segments */
+	Elf32_Half version;	/* version of these structures, just in case... */
+	Elf32_Half nsegs;	/* number of segments */
 	struct elf32_fdpic_loadseg segs[];
 };
 
@@ -35,17 +35,17 @@ struct elf32_fdpic_loadmap {
  * binfmt binary parameters structure
  */
 struct elf_fdpic_params {
-	struct elfhdr			hdr;		/* ref copy of ELF header */
-	struct elf_phdr			*phdrs;		/* ref copy of PT_PHDR table */
-	struct elf32_fdpic_loadmap	*loadmap;	/* loadmap to be passed to userspace */
-	unsigned long			elfhdr_addr;	/* mapped ELF header user address */
-	unsigned long			ph_addr;	/* mapped PT_PHDR user address */
-	unsigned long			map_addr;	/* mapped loadmap user address */
-	unsigned long			entry_addr;	/* mapped entry user address */
-	unsigned long			stack_size;	/* stack size requested (PT_GNU_STACK) */
-	unsigned long			dynamic_addr;	/* mapped PT_DYNAMIC user address */
-	unsigned long			load_addr;	/* user address at which to map binary */
-	unsigned long			flags;
+	struct elfhdr hdr;	/* ref copy of ELF header */
+	struct elf_phdr *phdrs;	/* ref copy of PT_PHDR table */
+	struct elf32_fdpic_loadmap *loadmap;	/* loadmap to be passed to userspace */
+	unsigned long elfhdr_addr;	/* mapped ELF header user address */
+	unsigned long ph_addr;	/* mapped PT_PHDR user address */
+	unsigned long map_addr;	/* mapped loadmap user address */
+	unsigned long entry_addr;	/* mapped entry user address */
+	unsigned long stack_size;	/* stack size requested (PT_GNU_STACK) */
+	unsigned long dynamic_addr;	/* mapped PT_DYNAMIC user address */
+	unsigned long load_addr;	/* user address at which to map binary */
+	unsigned long flags;
 #define ELF_FDPIC_FLAG_ARRANGEMENT	0x0000000f	/* PT_LOAD arrangement flags */
 #define ELF_FDPIC_FLAG_INDEPENDENT	0x00000000	/* PT_LOADs can be put anywhere */
 #define ELF_FDPIC_FLAG_HONOURVADDR	0x00000001	/* PT_LOAD.vaddr must be honoured */

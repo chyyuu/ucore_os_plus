@@ -13,16 +13,15 @@
  *		2 of the License, or (at your option) any later version.
  */
 
-struct iovec
-{
+struct iovec {
 	void __user *iov_base;	/* BSD uses caddr_t (1003.1g requires void *) */
-	__kernel_size_t iov_len; /* Must be size_t (1003.1g) */
+	__kernel_size_t iov_len;	/* Must be size_t (1003.1g) */
 };
 
 #ifdef __KERNEL__
 
 struct kvec {
-	void *iov_base; /* and that should *never* hold a userland pointer */
+	void *iov_base;		/* and that should *never* hold a userland pointer */
 	size_t iov_len;
 };
 
@@ -31,7 +30,7 @@ struct kvec {
 /*
  *	UIO_MAXIOV shall be at least 16 1003.1g (5.4.1.1)
  */
- 
+
 #define UIO_FASTIOV	8
 #define UIO_MAXIOV	1024
 

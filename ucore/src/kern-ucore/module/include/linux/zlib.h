@@ -21,7 +21,6 @@
   Jean-loup Gailly        Mark Adler
   jloup@gzip.org          madler@alumni.caltech.edu
 
-
   The data format used by the zlib library is described by RFCs (Request for
   Comments) 1950 to 1952 in the files http://www.ietf.org/rfc/rfc1950.txt
   (zlib format), rfc1951.txt (deflate format) and rfc1952.txt (gzip format).
@@ -82,22 +81,22 @@
 struct internal_state;
 
 typedef struct z_stream_s {
-    const Byte *next_in;   /* next input byte */
-    uInt     avail_in;  /* number of bytes available at next_in */
-    uLong    total_in;  /* total nb of input bytes read so far */
+	const Byte *next_in;	/* next input byte */
+	uInt avail_in;		/* number of bytes available at next_in */
+	uLong total_in;		/* total nb of input bytes read so far */
 
-    Byte    *next_out;  /* next output byte should be put there */
-    uInt     avail_out; /* remaining free space at next_out */
-    uLong    total_out; /* total nb of bytes output so far */
+	Byte *next_out;		/* next output byte should be put there */
+	uInt avail_out;		/* remaining free space at next_out */
+	uLong total_out;	/* total nb of bytes output so far */
 
-    char     *msg;      /* last error message, NULL if no error */
-    struct internal_state *state; /* not visible by applications */
+	char *msg;		/* last error message, NULL if no error */
+	struct internal_state *state;	/* not visible by applications */
 
-    void     *workspace; /* memory allocated for this stream */
+	void *workspace;	/* memory allocated for this stream */
 
-    int     data_type;  /* best guess about the data type: ascii or binary */
-    uLong   adler;      /* adler32 value of the uncompressed data */
-    uLong   reserved;   /* reserved for future use */
+	int data_type;		/* best guess about the data type: ascii or binary */
+	uLong adler;		/* adler32 value of the uncompressed data */
+	uLong reserved;		/* reserved for future use */
 } z_stream;
 
 typedef z_stream *z_streamp;
@@ -134,15 +133,15 @@ typedef z_stream *z_streamp;
    a single step).
 */
 
-                        /* constants */
+			/* constants */
 
 #define Z_NO_FLUSH      0
-#define Z_PARTIAL_FLUSH 1 /* will be removed, use Z_SYNC_FLUSH instead */
+#define Z_PARTIAL_FLUSH 1	/* will be removed, use Z_SYNC_FLUSH instead */
 #define Z_PACKET_FLUSH  2
 #define Z_SYNC_FLUSH    3
 #define Z_FULL_FLUSH    4
 #define Z_FINISH        5
-#define Z_BLOCK         6 /* Only for inflate at present */
+#define Z_BLOCK         6	/* Only for inflate at present */
 /* Allowed flush values; see deflate() and inflate() below for details */
 
 #define Z_OK            0
@@ -177,9 +176,9 @@ typedef z_stream *z_streamp;
 #define Z_DEFLATED   8
 /* The deflate compression method (the only one supported in this version) */
 
-                        /* basic functions */
+			/* basic functions */
 
-extern int zlib_deflate_workspacesize (void);
+extern int zlib_deflate_workspacesize(void);
 /*
    Returns the number of bytes that needs to be allocated for a per-
    stream workspace.  A pointer to this number of bytes should be
@@ -208,8 +207,7 @@ extern int deflateInit (z_streamp strm, int level);
    perform any compression: this will be done by deflate().
 */
 
-
-extern int zlib_deflate (z_streamp strm, int flush);
+extern int zlib_deflate(z_streamp strm, int flush);
 /*
     deflate compresses as much data as possible, and stops when the input
   buffer becomes empty or the output buffer becomes full. It may introduce some
@@ -286,8 +284,7 @@ extern int zlib_deflate (z_streamp strm, int flush);
   (for example avail_in or avail_out was zero).
 */
 
-
-extern int zlib_deflateEnd (z_streamp strm);
+extern int zlib_deflateEnd(z_streamp strm);
 /*
      All dynamically allocated data structures for this stream are freed.
    This function discards any unprocessed input and does not flush any
@@ -300,8 +297,7 @@ extern int zlib_deflateEnd (z_streamp strm);
    deallocated).
 */
 
-
-extern int zlib_inflate_workspacesize (void);
+extern int zlib_inflate_workspacesize(void);
 /*
    Returns the number of bytes that needs to be allocated for a per-
    stream workspace.  A pointer to this number of bytes should be
@@ -328,8 +324,7 @@ extern int zlib_inflateInit (z_streamp strm);
    avail_in may be modified, but next_out and avail_out are unchanged.)
 */
 
-
-extern int zlib_inflate (z_streamp strm, int flush);
+extern int zlib_inflate(z_streamp strm, int flush);
 /*
     inflate decompresses as much data as possible, and stops when the input
   buffer becomes empty or the output buffer becomes full. It may introduce
@@ -427,8 +422,7 @@ extern int zlib_inflate (z_streamp strm, int flush);
   of the data is desired.
 */
 
-
-extern int zlib_inflateEnd (z_streamp strm);
+extern int zlib_inflateEnd(z_streamp strm);
 /*
      All dynamically allocated data structures for this stream are freed.
    This function discards any unprocessed input and does not flush any
@@ -439,7 +433,7 @@ extern int zlib_inflateEnd (z_streamp strm);
    static string (which must not be deallocated).
 */
 
-                        /* Advanced functions */
+			/* Advanced functions */
 
 /*
     The following functions are needed only in some special applications.
@@ -488,11 +482,10 @@ extern int deflateInit2 (z_streamp strm,
    method). msg is set to null if there is no error message.  deflateInit2 does
    not perform any compression: this will be done by deflate().
 */
-                            
+
 #if 0
-extern int zlib_deflateSetDictionary (z_streamp strm,
-						     const Byte *dictionary,
-						     uInt  dictLength);
+extern int zlib_deflateSetDictionary(z_streamp strm,
+				     const Byte * dictionary, uInt dictLength);
 #endif
 /*
      Initializes the compression dictionary from the given byte sequence
@@ -528,7 +521,7 @@ extern int zlib_deflateSetDictionary (z_streamp strm,
 */
 
 #if 0
-extern int zlib_deflateCopy (z_streamp dest, z_streamp source);
+extern int zlib_deflateCopy(z_streamp dest, z_streamp source);
 #endif
 
 /*
@@ -547,7 +540,7 @@ extern int zlib_deflateCopy (z_streamp dest, z_streamp source);
    destination.
 */
 
-extern int zlib_deflateReset (z_streamp strm);
+extern int zlib_deflateReset(z_streamp strm);
 /*
      This function is equivalent to deflateEnd followed by deflateInit,
    but does not free and reallocate all the internal compression state.
@@ -564,7 +557,7 @@ static inline unsigned long deflateBound(unsigned long s)
 }
 
 #if 0
-extern int zlib_deflateParams (z_streamp strm, int level, int strategy);
+extern int zlib_deflateParams(z_streamp strm, int level, int strategy);
 #endif
 /*
      Dynamically update the compression level and compression strategy.  The
@@ -626,9 +619,8 @@ extern int inflateInit2 (z_streamp strm, int  windowBits);
    and avail_out are unchanged.)
 */
 
-extern int zlib_inflateSetDictionary (z_streamp strm,
-						     const Byte *dictionary,
-						     uInt  dictLength);
+extern int zlib_inflateSetDictionary(z_streamp strm,
+				     const Byte * dictionary, uInt dictLength);
 /*
      Initializes the decompression dictionary from the given uncompressed byte
    sequence. This function must be called immediately after a call of inflate,
@@ -649,7 +641,7 @@ extern int zlib_inflateSetDictionary (z_streamp strm,
 */
 
 #if 0
-extern int zlib_inflateSync (z_streamp strm);
+extern int zlib_inflateSync(z_streamp strm);
 #endif
 /* 
     Skips invalid compressed data until a full flush point (see above the
@@ -665,7 +657,7 @@ extern int zlib_inflateSync (z_streamp strm);
   until success or end of the input data.
 */
 
-extern int zlib_inflateReset (z_streamp strm);
+extern int zlib_inflateReset(z_streamp strm);
 /*
      This function is equivalent to inflateEnd followed by inflateInit,
    but does not free and reallocate all the internal decompression state.
@@ -675,7 +667,7 @@ extern int zlib_inflateReset (z_streamp strm);
    stream state was inconsistent (such as zalloc or state being NULL).
 */
 
-extern int zlib_inflateIncomp (z_stream *strm);
+extern int zlib_inflateIncomp(z_stream * strm);
 /*
      This function adds the data at next_in (avail_in bytes) to the output
    history without performing any output.  There must be no pending output,
@@ -690,17 +682,19 @@ extern int zlib_inflateIncomp (z_stream *strm);
 #define zlib_inflateInit(strm) \
 	zlib_inflateInit2((strm), DEF_WBITS)
 
-extern int zlib_deflateInit2(z_streamp strm, int  level, int  method,
-                                      int windowBits, int memLevel,
-                                      int strategy);
-extern int zlib_inflateInit2(z_streamp strm, int  windowBits);
+extern int zlib_deflateInit2(z_streamp strm, int level, int method,
+			     int windowBits, int memLevel, int strategy);
+extern int zlib_inflateInit2(z_streamp strm, int windowBits);
 
 #if !defined(_Z_UTIL_H) && !defined(NO_DUMMY_DECL)
-    struct internal_state {int dummy;}; /* hack for buggy compilers */
+struct internal_state {
+	int dummy;
+};				/* hack for buggy compilers */
 #endif
 
 /* Utility function: initialize zlib, unpack binary blob, clean up zlib,
  * return len or negative error code. */
-extern int zlib_inflate_blob(void *dst, unsigned dst_sz, const void *src, unsigned src_sz);
+extern int zlib_inflate_blob(void *dst, unsigned dst_sz, const void *src,
+			     unsigned src_sz);
 
 #endif /* _ZLIB_H */

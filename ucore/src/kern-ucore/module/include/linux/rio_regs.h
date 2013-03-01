@@ -91,7 +91,7 @@
 #define  RIO_OPS_ATOMIC_CLR		0x00000010	/* [I] Atomic clr op */
 #define  RIO_OPS_PORT_WRITE		0x00000004	/* [I] Port-write op */
 
-					/* 0x20-0x3c *//* Reserved */
+								      /* 0x20-0x3c *//* Reserved */
 
 #define RIO_MBOX_CSR		0x40	/* [II] Mailbox CSR */
 #define  RIO_MBOX0_AVAIL		0x80000000	/* [II] Mbox 0 avail */
@@ -134,28 +134,28 @@
 #define  RIO_WRITE_PORT_FAILED		0x00000008	/* [I] Write Port Failed */
 #define  RIO_WRITE_PORT_ERROR		0x00000004	/* [I] Write Port Error */
 
-					/* 0x48 *//* Reserved */
+							    /* 0x48 *//* Reserved */
 
 #define RIO_PELL_CTRL_CSR	0x4c	/* [I] PE Logical Layer Control CSR */
 #define   RIO_PELL_ADDR_66		0x00000004	/* [I] 66-bit addr */
 #define   RIO_PELL_ADDR_50		0x00000002	/* [I] 50-bit addr */
 #define   RIO_PELL_ADDR_34		0x00000001	/* [I] 34-bit addr */
 
-					/* 0x50-0x54 *//* Reserved */
+								      /* 0x50-0x54 *//* Reserved */
 
 #define RIO_LCSH_BA		0x58	/* [I] LCS High Base Address */
 #define RIO_LCSL_BA		0x5c	/* [I] LCS Base Address */
 
 #define RIO_DID_CSR		0x60	/* [III] Base Device ID CSR */
 
-					/* 0x64 *//* Reserved */
+							    /* 0x64 *//* Reserved */
 
 #define RIO_HOST_DID_LOCK_CSR	0x68	/* [III] Host Base Device ID Lock CSR */
 #define RIO_COMPONENT_TAG_CSR	0x6c	/* [III] Component Tag CSR */
 
-					/* 0x70-0xf8 *//* Reserved */
-					/* 0x100-0xfff8 *//* [I] Extended Features Space */
-					/* 0x10000-0xfffff8 *//* [I] Implementation-defined Space */
+								      /* 0x70-0xf8 *//* Reserved */
+									    /* 0x100-0xfff8 *//* [I] Extended Features Space */
+										    /* 0x10000-0xfffff8 *//* [I] Implementation-defined Space */
 
 /*
  * Extended Features Space is a configuration space area where
@@ -212,4 +212,4 @@
 #define PORT_N_ERR_STS_PORT_OK	0x00000002
 #define RIO_PORT_N_CTL_CSR(x)		(0x5c + x*0x20)
 
-#endif				/* LINUX_RIO_REGS_H */
+#endif /* LINUX_RIO_REGS_H */

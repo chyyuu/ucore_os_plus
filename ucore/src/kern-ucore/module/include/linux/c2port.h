@@ -26,7 +26,7 @@ struct c2port_device {
 	int id;
 	char name[C2PORT_NAME_LEN];
 	struct c2port_ops *ops;
-	struct mutex mutex;		/* prevent races during read/write */
+	struct mutex mutex;	/* prevent races during read/write */
 
 	struct device *dev;
 
@@ -40,17 +40,17 @@ struct c2port_ops {
 	unsigned short blocks_num;	/* flash blocks number */
 
 	/* Enable or disable the access to C2 port */
-	void (*access)(struct c2port_device *dev, int status);
+	void (*access) (struct c2port_device * dev, int status);
 
 	/* Set C2D data line as input/output */
-	void (*c2d_dir)(struct c2port_device *dev, int dir);
+	void (*c2d_dir) (struct c2port_device * dev, int dir);
 
 	/* Read/write C2D data line */
-	int (*c2d_get)(struct c2port_device *dev);
-	void (*c2d_set)(struct c2port_device *dev, int status);
+	int (*c2d_get) (struct c2port_device * dev);
+	void (*c2d_set) (struct c2port_device * dev, int status);
 
 	/* Write C2CK clock line */
-	void (*c2ck_set)(struct c2port_device *dev, int status);
+	void (*c2ck_set) (struct c2port_device * dev, int status);
 };
 
 /*
@@ -61,5 +61,6 @@ struct c2port_ops {
 #define to_c2port_device(obj) container_of((obj), struct c2port_device, class)
 
 extern struct c2port_device *c2port_device_register(char *name,
-					struct c2port_ops *ops, void *devdata);
+						    struct c2port_ops *ops,
+						    void *devdata);
 extern void c2port_device_unregister(struct c2port_device *dev);

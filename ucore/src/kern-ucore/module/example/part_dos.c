@@ -41,51 +41,47 @@
  */
 static inline int le32_to_int(unsigned char *le32)
 {
-    return ((le32[3] << 24) +
-	    (le32[2] << 16) +
-	    (le32[1] << 8) +
-	     le32[0]
-	   );
+	return ((le32[3] << 24) + (le32[2] << 16) + (le32[1] << 8) + le32[0]
+	    );
 }
 
 static inline int is_extended(int part_type)
 {
-    return (part_type == 0x5 ||
-	    part_type == 0xf ||
-	    part_type == 0x85);
+	return (part_type == 0x5 || part_type == 0xf || part_type == 0x85);
 }
 
-static void print_one_part (dos_partition_t *p, int ext_part_sector, int part_num)
+static void print_one_part(dos_partition_t * p, int ext_part_sector,
+			   int part_num)
 {
-	int lba_start = ext_part_sector + le32_to_int (p->start4);
-	int lba_size  = le32_to_int (p->size4);
+	int lba_start = ext_part_sector + le32_to_int(p->start4);
+	int lba_size = le32_to_int(p->size4);
 
-	printk ("%5d\t\t%10d\t%10d\t%2x%s\n",
-		part_num, lba_start, lba_size, p->sys_ind,
-		(is_extended (p->sys_ind) ? " Extd" : ""));
+	printk("%5d\t\t%10d\t%10d\t%2x%s\n",
+	       part_num, lba_start, lba_size, p->sys_ind,
+	       (is_extended(p->sys_ind) ? " Extd" : ""));
 }
 
 static int test_block_type(unsigned char *buffer)
 {
-	if((buffer[DOS_PART_MAGIC_OFFSET + 0] != 0x55) ||
-	    (buffer[DOS_PART_MAGIC_OFFSET + 1] != 0xaa) ) {
+	if ((buffer[DOS_PART_MAGIC_OFFSET + 0] != 0x55) ||
+	    (buffer[DOS_PART_MAGIC_OFFSET + 1] != 0xaa)) {
 		return (-1);
-	} /* no DOS Signature at all */
-	if (strncmp((char *)&buffer[DOS_PBR_FSTYPE_OFFSET],"FAT",3)==0 ||
-	    strncmp((char *)&buffer[DOS_PBR32_FSTYPE_OFFSET],"FAT32",5)==0) {
-		return DOS_PBR; /* is PBR */
+	}			/* no DOS Signature at all */
+	if (strncmp((char *)&buffer[DOS_PBR_FSTYPE_OFFSET], "FAT", 3) == 0 ||
+	    strncmp((char *)&buffer[DOS_PBR32_FSTYPE_OFFSET], "FAT32",
+		    5) == 0) {
+		return DOS_PBR;	/* is PBR */
 	}
-	return DOS_MBR;	    /* Is MBR */
+	return DOS_MBR;		/* Is MBR */
 }
 
-
-int test_part_dos (struct ide_device *dev_desc)
+int test_part_dos(struct ide_device *dev_desc)
 {
 	unsigned char buffer[dev_desc->blksz];
 
-	if ((dev_desc->read_secs(dev_desc, 0, (unsigned long *) buffer, 1) != 0) ||
-	    (buffer[DOS_PART_MAGIC_OFFSET + 0] != 0x55) ||
-	    (buffer[DOS_PART_MAGIC_OFFSET + 1] != 0xaa) ) {
+	if ((dev_desc->read_secs(dev_desc, 0, (unsigned long *)buffer, 1) != 0)
+	    || (buffer[DOS_PART_MAGIC_OFFSET + 0] != 0x55)
+	    || (buffer[DOS_PART_MAGIC_OFFSET + 1] != 0xaa)) {
 		return (-1);
 	}
 	return test_block_type(buffer);
@@ -93,28 +89,30 @@ int test_part_dos (struct ide_device *dev_desc)
 
 /*  Print a partition that is relative to its Extended partition table
  */
-static void print_partition_extended (struct ide_device *dev_desc, int ext_part_sector, int relative,
-							   int part_num)
+static void print_partition_extended(struct ide_device *dev_desc,
+				     int ext_part_sector, int relative,
+				     int part_num)
 {
 	unsigned char buffer[dev_desc->blksz];
 	dos_partition_t *pt;
 	int i;
 
-	if (dev_desc->read_secs(dev_desc, ext_part_sector,  (unsigned long *) buffer, 1) != 0) {
-		printk ("** Can't read partition table on %d:%d **\n",
-			dev_desc->dev, ext_part_sector);
+	if (dev_desc->read_secs
+	    (dev_desc, ext_part_sector, (unsigned long *)buffer, 1) != 0) {
+		printk("** Can't read partition table on %d:%d **\n",
+		       dev_desc->dev, ext_part_sector);
 		return;
 	}
-	i=test_block_type(buffer);
-	if(i==-1) {
-		printk ("bad MBR sector signature 0x%02x%02x\n",
-			buffer[DOS_PART_MAGIC_OFFSET],
-			buffer[DOS_PART_MAGIC_OFFSET + 1]);
+	i = test_block_type(buffer);
+	if (i == -1) {
+		printk("bad MBR sector signature 0x%02x%02x\n",
+		       buffer[DOS_PART_MAGIC_OFFSET],
+		       buffer[DOS_PART_MAGIC_OFFSET + 1]);
 		return;
 	}
-	if(i==DOS_PBR) {
-		printk ("    1\t\t         0\t%10ld\t%2x\n",
-			dev_desc->lba, buffer[DOS_PBR_MEDIA_TYPE_OFFSET]);
+	if (i == DOS_PBR) {
+		printk("    1\t\t         0\t%10ld\t%2x\n",
+		       dev_desc->lba, buffer[DOS_PBR_MEDIA_TYPE_OFFSET]);
 		return;
 	}
 	/* Print all primary/logical partitions */
@@ -126,13 +124,13 @@ static void print_partition_extended (struct ide_device *dev_desc, int ext_part_
 		 */
 
 		if ((pt->sys_ind != 0) &&
-		    (ext_part_sector == 0 || !is_extended (pt->sys_ind)) ) {
-			print_one_part (pt, ext_part_sector, part_num);
+		    (ext_part_sector == 0 || !is_extended(pt->sys_ind))) {
+			print_one_part(pt, ext_part_sector, part_num);
 		}
 
 		/* Reverse engr the fdisk part# assignment rule! */
 		if ((ext_part_sector == 0) ||
-		    (pt->sys_ind != 0 && !is_extended (pt->sys_ind)) ) {
+		    (pt->sys_ind != 0 && !is_extended(pt->sys_ind))) {
 			part_num++;
 		}
 	}
@@ -140,40 +138,41 @@ static void print_partition_extended (struct ide_device *dev_desc, int ext_part_
 	/* Follows the extended partitions */
 	pt = (dos_partition_t *) (buffer + DOS_PART_TBL_OFFSET);
 	for (i = 0; i < 4; i++, pt++) {
-		if (is_extended (pt->sys_ind)) {
-			int lba_start = le32_to_int (pt->start4) + relative;
+		if (is_extended(pt->sys_ind)) {
+			int lba_start = le32_to_int(pt->start4) + relative;
 
-			print_partition_extended (dev_desc, lba_start,
-						  ext_part_sector == 0  ? lba_start
-									: relative,
-						  part_num);
+			print_partition_extended(dev_desc, lba_start,
+						 ext_part_sector ==
+						 0 ? lba_start : relative,
+						 part_num);
 		}
 	}
 
 	return;
 }
 
-
 /*  Print a partition that is relative to its Extended partition table
  */
-static int get_partition_info_extended (struct ide_device *dev_desc, int ext_part_sector,
-				 int relative, int part_num,
-				 int which_part, ucore_disk_partition_t *info)
+static int get_partition_info_extended(struct ide_device *dev_desc,
+				       int ext_part_sector, int relative,
+				       int part_num, int which_part,
+				       ucore_disk_partition_t * info)
 {
 	unsigned char buffer[dev_desc->blksz];
 	dos_partition_t *pt;
 	int i;
 
-	if (dev_desc->read_secs(dev_desc, ext_part_sector, (unsigned long *) buffer, 1) != 0) {
-		printk ("** Can't read partition table on %d:%d **\n",
-			dev_desc->dev, ext_part_sector);
+	if (dev_desc->read_secs
+	    (dev_desc, ext_part_sector, (unsigned long *)buffer, 1) != 0) {
+		printk("** Can't read partition table on %d:%d **\n",
+		       dev_desc->dev, ext_part_sector);
 		return -1;
 	}
 	if (buffer[DOS_PART_MAGIC_OFFSET] != 0x55 ||
-		buffer[DOS_PART_MAGIC_OFFSET + 1] != 0xaa) {
-		printk ("bad MBR sector signature 0x%02x%02x\n",
-			buffer[DOS_PART_MAGIC_OFFSET],
-			buffer[DOS_PART_MAGIC_OFFSET + 1]);
+	    buffer[DOS_PART_MAGIC_OFFSET + 1] != 0xaa) {
+		printk("bad MBR sector signature 0x%02x%02x\n",
+		       buffer[DOS_PART_MAGIC_OFFSET],
+		       buffer[DOS_PART_MAGIC_OFFSET + 1]);
 		return -1;
 	}
 
@@ -189,40 +188,40 @@ static int get_partition_info_extended (struct ide_device *dev_desc, int ext_par
 		    (part_num == which_part) &&
 		    (is_extended(pt->sys_ind) == 0)) {
 			info->blksz = 512;
-			info->start = ext_part_sector + le32_to_int (pt->start4);
-			info->size  = le32_to_int (pt->size4);
-			switch(dev_desc->if_type) {
-				case IF_TYPE_IDE:
-				case IF_TYPE_SATA:
-				case IF_TYPE_ATAPI:
-					sprintf ((char *)info->name, "hd%c%d",
-						'a' + dev_desc->dev, part_num);
-					break;
-				case IF_TYPE_SCSI:
-					sprintf ((char *)info->name, "sd%c%d",
-						'a' + dev_desc->dev, part_num);
-					break;
-				case IF_TYPE_USB:
-					sprintf ((char *)info->name, "usbd%c%d",
-						'a' + dev_desc->dev, part_num);
-					break;
-				case IF_TYPE_DOC:
-					sprintf ((char *)info->name, "docd%c%d",
-						'a' + dev_desc->dev, part_num);
-					break;
-				default:
-					sprintf ((char *)info->name, "xx%c%d",
-						'a' + dev_desc->dev, part_num);
-					break;
+			info->start = ext_part_sector + le32_to_int(pt->start4);
+			info->size = le32_to_int(pt->size4);
+			switch (dev_desc->if_type) {
+			case IF_TYPE_IDE:
+			case IF_TYPE_SATA:
+			case IF_TYPE_ATAPI:
+				sprintf((char *)info->name, "hd%c%d",
+					'a' + dev_desc->dev, part_num);
+				break;
+			case IF_TYPE_SCSI:
+				sprintf((char *)info->name, "sd%c%d",
+					'a' + dev_desc->dev, part_num);
+				break;
+			case IF_TYPE_USB:
+				sprintf((char *)info->name, "usbd%c%d",
+					'a' + dev_desc->dev, part_num);
+				break;
+			case IF_TYPE_DOC:
+				sprintf((char *)info->name, "docd%c%d",
+					'a' + dev_desc->dev, part_num);
+				break;
+			default:
+				sprintf((char *)info->name, "xx%c%d",
+					'a' + dev_desc->dev, part_num);
+				break;
 			}
 			/* sprintf(info->type, "%d, pt->sys_ind); */
-			sprintf ((char *)info->type, "U-Boot");
+			sprintf((char *)info->type, "U-Boot");
 			return 0;
 		}
 
 		/* Reverse engr the fdisk part# assignment rule! */
 		if ((ext_part_sector == 0) ||
-		    (pt->sys_ind != 0 && !is_extended (pt->sys_ind)) ) {
+		    (pt->sys_ind != 0 && !is_extended(pt->sys_ind))) {
 			part_num++;
 		}
 	}
@@ -230,26 +229,27 @@ static int get_partition_info_extended (struct ide_device *dev_desc, int ext_par
 	/* Follows the extended partitions */
 	pt = (dos_partition_t *) (buffer + DOS_PART_TBL_OFFSET);
 	for (i = 0; i < 4; i++, pt++) {
-		if (is_extended (pt->sys_ind)) {
-			int lba_start = le32_to_int (pt->start4) + relative;
+		if (is_extended(pt->sys_ind)) {
+			int lba_start = le32_to_int(pt->start4) + relative;
 
-			return get_partition_info_extended (dev_desc, lba_start,
-				 ext_part_sector == 0 ? lba_start : relative,
-				 part_num, which_part, info);
+			return get_partition_info_extended(dev_desc, lba_start,
+							   ext_part_sector ==
+							   0 ? lba_start :
+							   relative, part_num,
+							   which_part, info);
 		}
 	}
 	return -1;
 }
 
-void print_part_dos (struct ide_device *dev_desc)
+void print_part_dos(struct ide_device *dev_desc)
 {
-	printk ("Partition     Start Sector     Num Sectors     Type\n");
-	print_partition_extended (dev_desc, 0, 0, 1);
+	printk("Partition     Start Sector     Num Sectors     Type\n");
+	print_partition_extended(dev_desc, 0, 0, 1);
 }
 
-int get_partition_info_dos (struct ide_device *dev_desc, int part, ucore_disk_partition_t * info)
+int get_partition_info_dos(struct ide_device *dev_desc, int part,
+			   ucore_disk_partition_t * info)
 {
-	return get_partition_info_extended (dev_desc, 0, 0, 1, part, info);
+	return get_partition_info_extended(dev_desc, 0, 0, 1, part, info);
 }
-
-

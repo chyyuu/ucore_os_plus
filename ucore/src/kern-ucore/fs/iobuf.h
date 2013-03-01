@@ -10,10 +10,10 @@
  */
 
 struct iobuf {
-    void *io_base;    /* The base addr of object       */
-    off_t io_offset;  /* Desired offset into object    */
-    size_t io_len;    /* The lenght of Data            */
-    size_t io_resid;  /* Remaining amt of data to xfer */
+	void *io_base;		/* The base addr of object       */
+	off_t io_offset;	/* Desired offset into object    */
+	size_t io_len;		/* The lenght of Data            */
+	size_t io_resid;	/* Remaining amt of data to xfer */
 };
 
 struct iovec {
@@ -48,13 +48,14 @@ struct iovec {
 
 #define iobuf_used(iob)                         ((size_t)((iob)->io_len - (iob)->io_resid))
 
-struct iobuf *iobuf_init(struct iobuf *iob, void *base, size_t len, off_t offset);
-int iobuf_move(struct iobuf *iob, void *data, size_t len, bool m2b, size_t *copiedp);
+struct iobuf *iobuf_init(struct iobuf *iob, void *base, size_t len,
+			 off_t offset);
+int iobuf_move(struct iobuf *iob, void *data, size_t len, bool m2b,
+	       size_t * copiedp);
 /*
  * Like uiomove, but sends zeros.
  */
-int iobuf_move_zeros(struct iobuf *iob, size_t len, size_t *copiedp);
+int iobuf_move_zeros(struct iobuf *iob, size_t len, size_t * copiedp);
 void iobuf_skip(struct iobuf *iob, size_t n);
 
 #endif /* !__KERN_FS_IOBUF_H__ */
-

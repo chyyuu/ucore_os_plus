@@ -13,9 +13,9 @@
  * Managed DMA API
  */
 struct dma_devres {
-	size_t		size;
-	void		*vaddr;
-	dma_addr_t	dma_handle;
+	size_t size;
+	void *vaddr;
+	dma_addr_t dma_handle;
 };
 
 static void dmam_coherent_release(struct device *dev, void *res)
@@ -57,8 +57,8 @@ static int dmam_match(struct device *dev, void *res, void *match_data)
  * RETURNS:
  * Pointer to allocated memory on success, NULL on failure.
  */
-void * dmam_alloc_coherent(struct device *dev, size_t size,
-			   dma_addr_t *dma_handle, gfp_t gfp)
+void *dmam_alloc_coherent(struct device *dev, size_t size,
+			  dma_addr_t * dma_handle, gfp_t gfp)
 {
 	struct dma_devres *dr;
 	void *vaddr;
@@ -81,6 +81,7 @@ void * dmam_alloc_coherent(struct device *dev, size_t size,
 
 	return vaddr;
 }
+
 EXPORT_SYMBOL(dmam_alloc_coherent);
 
 /**
@@ -101,6 +102,7 @@ void dmam_free_coherent(struct device *dev, size_t size, void *vaddr,
 	WARN_ON(devres_destroy(dev, dmam_coherent_release, dmam_match,
 			       &match_data));
 }
+
 EXPORT_SYMBOL(dmam_free_coherent);
 
 /**
@@ -117,7 +119,7 @@ EXPORT_SYMBOL(dmam_free_coherent);
  * Pointer to allocated memory on success, NULL on failure.
  */
 void *dmam_alloc_noncoherent(struct device *dev, size_t size,
-			     dma_addr_t *dma_handle, gfp_t gfp)
+			     dma_addr_t * dma_handle, gfp_t gfp)
 {
 	struct dma_devres *dr;
 	void *vaddr;
@@ -140,6 +142,7 @@ void *dmam_alloc_noncoherent(struct device *dev, size_t size,
 
 	return vaddr;
 }
+
 EXPORT_SYMBOL(dmam_alloc_noncoherent);
 
 /**
@@ -160,6 +163,7 @@ void dmam_free_noncoherent(struct device *dev, size_t size, void *vaddr,
 	WARN_ON(!devres_destroy(dev, dmam_noncoherent_release, dmam_match,
 				&match_data));
 }
+
 EXPORT_SYMBOL(dmam_free_noncoherent);
 
 #ifdef ARCH_HAS_DMA_DECLARE_COHERENT_MEMORY
@@ -201,6 +205,7 @@ int dmam_declare_coherent_memory(struct device *dev, dma_addr_t bus_addr,
 
 	return rc;
 }
+
 EXPORT_SYMBOL(dmam_declare_coherent_memory);
 
 /**
@@ -213,6 +218,7 @@ void dmam_release_declared_memory(struct device *dev)
 {
 	WARN_ON(devres_destroy(dev, dmam_coherent_decl_release, NULL, NULL));
 }
+
 EXPORT_SYMBOL(dmam_release_declared_memory);
 
 #endif

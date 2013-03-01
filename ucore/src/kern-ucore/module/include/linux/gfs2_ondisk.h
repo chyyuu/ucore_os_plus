@@ -108,23 +108,23 @@ struct gfs2_sb {
 
 	__be32 sb_fs_format;
 	__be32 sb_multihost_format;
-	__u32  __pad0;	/* Was superblock flags in gfs1 */
+	__u32 __pad0;		/* Was superblock flags in gfs1 */
 
 	__be32 sb_bsize;
 	__be32 sb_bsize_shift;
-	__u32 __pad1;	/* Was journal segment size in gfs1 */
+	__u32 __pad1;		/* Was journal segment size in gfs1 */
 
-	struct gfs2_inum sb_master_dir; /* Was jindex dinode in gfs1 */
-	struct gfs2_inum __pad2; /* Was rindex dinode in gfs1 */
+	struct gfs2_inum sb_master_dir;	/* Was jindex dinode in gfs1 */
+	struct gfs2_inum __pad2;	/* Was rindex dinode in gfs1 */
 	struct gfs2_inum sb_root_dir;
 
 	char sb_lockproto[GFS2_LOCKNAME_LEN];
 	char sb_locktable[GFS2_LOCKNAME_LEN];
 
-	struct gfs2_inum __pad3; /* Was quota inode in gfs1 */
-	struct gfs2_inum __pad4; /* Was licence inode in gfs1 */
+	struct gfs2_inum __pad3;	/* Was quota inode in gfs1 */
+	struct gfs2_inum __pad4;	/* Was licence inode in gfs1 */
 #define GFS2_HAS_UUID 1
-	__u8 sb_uuid[16]; /* The UUID, maybe 0 for backwards compat */
+	__u8 sb_uuid[16];	/* The UUID, maybe 0 for backwards compat */
 };
 
 /*
@@ -132,12 +132,12 @@ struct gfs2_sb {
  */
 
 struct gfs2_rindex {
-	__be64 ri_addr;	/* grp block disk address */
+	__be64 ri_addr;		/* grp block disk address */
 	__be32 ri_length;	/* length of rgrp header in fs blocks */
 	__u32 __pad;
 
 	__be64 ri_data0;	/* first data location */
-	__be32 ri_data;	/* num of data blocks in rgrp */
+	__be32 ri_data;		/* num of data blocks in rgrp */
 
 	__be32 ri_bitbytes;	/* number of bytes in data bitmaps */
 
@@ -172,7 +172,7 @@ struct gfs2_rgrp {
 	__be32 __pad;
 	__be64 rg_igeneration;
 
-	__u8 rg_reserved[80]; /* Several fields from gfs1 now reserved */
+	__u8 rg_reserved[80];	/* Several fields from gfs1 now reserved */
 };
 
 /*
@@ -188,7 +188,6 @@ offset = uid * sizeof(struct gfs2_quota);
 
 for group quotas, given gid,
 offset = (gid * sizeof(struct gfs2_quota)) + sizeof(struct gfs2_quota);
-
 
   uid:0   gid:0       uid:12   gid:12      uid:17   gid:17     uid:5142 gid:5142
 +-------+-------+    +-------+-------+    +-------+- - - -+    +- - - -+-------+
@@ -210,7 +209,7 @@ struct gfs2_quota {
 	__be64 qu_limit;
 	__be64 qu_warn;
 	__be64 qu_value;
-	__be32 qu_ll_next; /* location of next quota in list */
+	__be32 qu_ll_next;	/* location of next quota in list */
 	__u8 qu_reserved[60];
 };
 
@@ -225,33 +224,33 @@ struct gfs2_quota {
 #define IF2DT(sif) (((sif) & S_IFMT) >> 12)
 
 enum {
-	gfs2fl_Jdata		= 0,
-	gfs2fl_ExHash		= 1,
-	gfs2fl_Unused		= 2,
-	gfs2fl_EaIndirect	= 3,
-	gfs2fl_Directio		= 4,
-	gfs2fl_Immutable	= 5,
-	gfs2fl_AppendOnly	= 6,
-	gfs2fl_NoAtime		= 7,
-	gfs2fl_Sync		= 8,
-	gfs2fl_System		= 9,
-	gfs2fl_TruncInProg	= 29,
-	gfs2fl_InheritDirectio	= 30,
-	gfs2fl_InheritJdata	= 31,
+	gfs2fl_Jdata = 0,
+	gfs2fl_ExHash = 1,
+	gfs2fl_Unused = 2,
+	gfs2fl_EaIndirect = 3,
+	gfs2fl_Directio = 4,
+	gfs2fl_Immutable = 5,
+	gfs2fl_AppendOnly = 6,
+	gfs2fl_NoAtime = 7,
+	gfs2fl_Sync = 8,
+	gfs2fl_System = 9,
+	gfs2fl_TruncInProg = 29,
+	gfs2fl_InheritDirectio = 30,
+	gfs2fl_InheritJdata = 31,
 };
 
 /* Dinode flags */
 #define GFS2_DIF_JDATA			0x00000001
 #define GFS2_DIF_EXHASH			0x00000002
-#define GFS2_DIF_UNUSED			0x00000004  /* only in gfs1 */
+#define GFS2_DIF_UNUSED			0x00000004	/* only in gfs1 */
 #define GFS2_DIF_EA_INDIRECT		0x00000008
 #define GFS2_DIF_DIRECTIO		0x00000010
 #define GFS2_DIF_IMMUTABLE		0x00000020
 #define GFS2_DIF_APPENDONLY		0x00000040
 #define GFS2_DIF_NOATIME		0x00000080
 #define GFS2_DIF_SYNC			0x00000100
-#define GFS2_DIF_SYSTEM			0x00000200 /* New in gfs2 */
-#define GFS2_DIF_TRUNC_IN_PROG		0x20000000 /* New in gfs2 */
+#define GFS2_DIF_SYSTEM			0x00000200	/* New in gfs2 */
+#define GFS2_DIF_TRUNC_IN_PROG		0x20000000	/* New in gfs2 */
 #define GFS2_DIF_INHERIT_DIRECTIO	0x40000000
 #define GFS2_DIF_INHERIT_JDATA		0x80000000
 
@@ -260,11 +259,11 @@ struct gfs2_dinode {
 
 	struct gfs2_inum di_num;
 
-	__be32 di_mode;	/* mode of file */
-	__be32 di_uid;	/* owner's user id */
-	__be32 di_gid;	/* owner's group id */
+	__be32 di_mode;		/* mode of file */
+	__be32 di_uid;		/* owner's user id */
+	__be32 di_gid;		/* owner's group id */
 	__be32 di_nlink;	/* number of links to this file */
-	__be64 di_size;	/* number of bytes in file */
+	__be64 di_size;		/* number of bytes in file */
 	__be64 di_blocks;	/* number of blocks in file */
 	__be64 di_atime;	/* time last accessed */
 	__be64 di_mtime;	/* time last modified */
@@ -273,29 +272,29 @@ struct gfs2_dinode {
 	__be32 di_minor;	/* device minor number */
 
 	/* This section varies from gfs1. Padding added to align with
-         * remainder of dinode
+	 * remainder of dinode
 	 */
 	__be64 di_goal_meta;	/* rgrp to alloc from next */
 	__be64 di_goal_data;	/* data block goal */
 	__be64 di_generation;	/* generation number for NFS */
 
 	__be32 di_flags;	/* GFS2_DIF_... */
-	__be32 di_payload_format;  /* GFS2_FORMAT_... */
-	__u16 __pad1;	/* Was ditype in gfs1 */
+	__be32 di_payload_format;	/* GFS2_FORMAT_... */
+	__u16 __pad1;		/* Was ditype in gfs1 */
 	__be16 di_height;	/* height of metadata */
-	__u32 __pad2;	/* Unused incarnation number from gfs1 */
+	__u32 __pad2;		/* Unused incarnation number from gfs1 */
 
 	/* These only apply to directories  */
-	__u16 __pad3;	/* Padding */
+	__u16 __pad3;		/* Padding */
 	__be16 di_depth;	/* Number of bits in the table */
 	__be32 di_entries;	/* The number of entries in the directory */
 
-	struct gfs2_inum __pad4; /* Unused even in current gfs1 */
+	struct gfs2_inum __pad4;	/* Unused even in current gfs1 */
 
 	__be64 di_eattr;	/* extended attribute block number */
-	__be32 di_atime_nsec;   /* nsec portion of atime */
-	__be32 di_mtime_nsec;   /* nsec portion of mtime */
-	__be32 di_ctime_nsec;   /* nsec portion of ctime */
+	__be32 di_atime_nsec;	/* nsec portion of atime */
+	__be32 di_mtime_nsec;	/* nsec portion of mtime */
+	__be32 di_ctime_nsec;	/* nsec portion of ctime */
 
 	__u8 di_reserved[44];
 };
@@ -323,10 +322,10 @@ struct gfs2_dirent {
 struct gfs2_leaf {
 	struct gfs2_meta_header lf_header;
 
-	__be16 lf_depth;		/* Depth of leaf */
-	__be16 lf_entries;		/* Number of dirents in leaf */
+	__be16 lf_depth;	/* Depth of leaf */
+	__be16 lf_entries;	/* Number of dirents in leaf */
 	__be32 lf_dirent_format;	/* Format of the dirents */
-	__be64 lf_next;			/* Next leaf, if overflow */
+	__be64 lf_next;		/* Next leaf, if overflow */
 
 	__u8 lf_reserved[64];
 };
@@ -441,11 +440,11 @@ struct gfs2_quota_change {
 };
 
 struct gfs2_quota_lvb {
-        __be32 qb_magic;
-        __u32 __pad;
-        __be64 qb_limit;      /* Hard limit of # blocks to alloc */
-        __be64 qb_warn;       /* Warn user when alloc is above this # */
-        __be64 qb_value;       /* Current # blocks allocated */
+	__be32 qb_magic;
+	__u32 __pad;
+	__be64 qb_limit;	/* Hard limit of # blocks to alloc */
+	__be64 qb_warn;		/* Warn user when alloc is above this # */
+	__be64 qb_value;	/* Current # blocks allocated */
 };
 
 #endif /* __GFS2_ONDISK_DOT_H__ */

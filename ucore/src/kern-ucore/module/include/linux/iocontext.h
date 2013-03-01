@@ -10,12 +10,12 @@
 struct as_io_context {
 	spinlock_t lock;
 
-	void (*dtor)(struct as_io_context *aic); /* destructor */
-	void (*exit)(struct as_io_context *aic); /* called on task exit */
+	void (*dtor) (struct as_io_context * aic);	/* destructor */
+	void (*exit) (struct as_io_context * aic);	/* called on task exit */
 
 	unsigned long state;
-	atomic_t nr_queued; /* queued reads & sync writes */
-	atomic_t nr_dispatched; /* number of requests gone to the drivers */
+	atomic_t nr_queued;	/* queued reads & sync writes */
+	atomic_t nr_dispatched;	/* number of requests gone to the drivers */
 
 	/* IO History tracking */
 	/* Thinktime */
@@ -53,8 +53,8 @@ struct cfq_io_context {
 	struct list_head queue_list;
 	struct hlist_node cic_list;
 
-	void (*dtor)(struct io_context *); /* destructor */
-	void (*exit)(struct io_context *); /* called on task exit */
+	void (*dtor) (struct io_context *);	/* destructor */
+	void (*exit) (struct io_context *);	/* called on task exit */
 
 	struct rcu_head rcu_head;
 };
@@ -76,8 +76,8 @@ struct io_context {
 	/*
 	 * For request batching
 	 */
-	unsigned long last_waited; /* Time last woken after wait for request */
-	int nr_batch_requests;     /* Number of requests left in the batch */
+	unsigned long last_waited;	/* Time last woken after wait for request */
+	int nr_batch_requests;	/* Number of requests left in the batch */
 
 	struct as_io_context *aic;
 	struct radix_tree_root radix_root;

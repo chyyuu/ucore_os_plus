@@ -26,7 +26,7 @@
 #ifndef IRLAN_H
 #define IRLAN_H
 
-#include <asm/param.h>  /* for HZ */
+#include <asm/param.h>		/* for HZ */
 
 #include <linux/kernel.h>
 #include <linux/types.h>
@@ -36,7 +36,7 @@
 #include <net/irda/irttp.h>
 
 #define IRLAN_MTU        1518
-#define IRLAN_TIMEOUT    10*HZ /* 10 seconds */
+#define IRLAN_TIMEOUT    10*HZ	/* 10 seconds */
 
 /* Command packet types */
 #define CMD_GET_PROVIDER_INFO   0
@@ -118,12 +118,12 @@ struct irlan_client_cb {
 
 	struct tsap_cb *tsap_ctrl;
 	__u32 max_sdu_size;
-	__u8  max_header_size;
-	
-	int access_type;         /* Access type of provider */
+	__u8 max_header_size;
+
+	int access_type;	/* Access type of provider */
 	__u8 reconnect_key[255];
 	__u8 key_len;
-	
+
 	__u16 recv_arb_val;
 	__u16 max_frame;
 	int filter_type;
@@ -132,7 +132,7 @@ struct irlan_client_cb {
 	int broadcast_open;
 
 	int tx_busy;
-	struct sk_buff_head txq; /* Transmit control queue */
+	struct sk_buff_head txq;	/* Transmit control queue */
 
 	struct iriap_cb *iriap;
 
@@ -144,10 +144,10 @@ struct irlan_client_cb {
  */
 struct irlan_provider_cb {
 	int state;
-	
+
 	struct tsap_cb *tsap_ctrl;
 	__u32 max_sdu_size;
-	__u8  max_header_size;
+	__u8 max_header_size;
 
 	/*
 	 *  Store some values here which are used by the provider to parse
@@ -158,42 +158,42 @@ struct irlan_provider_cb {
 	int filter_mode;
 	int filter_operation;
 	int filter_entry;
-	int access_type;     /* Access type */
+	int access_type;	/* Access type */
 	__u16 send_arb_val;
 
-	__u8 mac_address[6]; /* Generated MAC address for peer device */
+	__u8 mac_address[6];	/* Generated MAC address for peer device */
 };
 
 /*
  *  IrLAN control block
  */
 struct irlan_cb {
-	int    magic;
-	struct list_head  dev_list;
-	struct net_device *dev;        /* Ethernet device structure*/
+	int magic;
+	struct list_head dev_list;
+	struct net_device *dev;	/* Ethernet device structure */
 	struct net_device_stats stats;
 
-	__u32 saddr;               /* Source device address */
-	__u32 daddr;               /* Destination device address */
-	int disconnect_reason;     /* Why we got disconnected */
-	
-	int media;                 /* Media type */
-	__u8 version[2];           /* IrLAN version */
-	
-	struct tsap_cb *tsap_data; /* Data TSAP */
+	__u32 saddr;		/* Source device address */
+	__u32 daddr;		/* Destination device address */
+	int disconnect_reason;	/* Why we got disconnected */
 
-	int  use_udata;            /* Use Unit Data transfers */
+	int media;		/* Media type */
+	__u8 version[2];	/* IrLAN version */
 
-	__u8 stsap_sel_data;       /* Source data TSAP selector */
-	__u8 dtsap_sel_data;       /* Destination data TSAP selector */
-	__u8 dtsap_sel_ctrl;       /* Destination ctrl TSAP selector */
+	struct tsap_cb *tsap_data;	/* Data TSAP */
 
-	struct irlan_client_cb   client;   /* Client specific fields */
-	struct irlan_provider_cb provider; /* Provider specific fields */
+	int use_udata;		/* Use Unit Data transfers */
+
+	__u8 stsap_sel_data;	/* Source data TSAP selector */
+	__u8 dtsap_sel_data;	/* Destination data TSAP selector */
+	__u8 dtsap_sel_ctrl;	/* Destination ctrl TSAP selector */
+
+	struct irlan_client_cb client;	/* Client specific fields */
+	struct irlan_provider_cb provider;	/* Provider specific fields */
 
 	__u32 max_sdu_size;
-	__u8  max_header_size;
-	
+	__u8 max_header_size;
+
 	wait_queue_head_t open_wait;
 	struct timer_list watchdog_timer;
 };
@@ -201,7 +201,7 @@ struct irlan_cb {
 void irlan_close(struct irlan_cb *self);
 void irlan_close_tsaps(struct irlan_cb *self);
 
-int  irlan_register_netdev(struct irlan_cb *self);
+int irlan_register_netdev(struct irlan_cb *self);
 void irlan_ias_register(struct irlan_cb *self, __u8 tsap_sel);
 void irlan_start_watchdog_timer(struct irlan_cb *self, int timeout);
 
@@ -220,11 +220,9 @@ void irlan_set_broadcast_filter(struct irlan_cb *self, int status);
 int irlan_insert_byte_param(struct sk_buff *skb, char *param, __u8 value);
 int irlan_insert_short_param(struct sk_buff *skb, char *param, __u16 value);
 int irlan_insert_string_param(struct sk_buff *skb, char *param, char *value);
-int irlan_insert_array_param(struct sk_buff *skb, char *name, __u8 *value, 
+int irlan_insert_array_param(struct sk_buff *skb, char *name, __u8 * value,
 			     __u16 value_len);
 
-int irlan_extract_param(__u8 *buf, char *name, char *value, __u16 *len);
+int irlan_extract_param(__u8 * buf, char *name, char *value, __u16 * len);
 
 #endif
-
-

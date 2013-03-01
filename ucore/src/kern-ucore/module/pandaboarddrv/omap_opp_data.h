@@ -81,8 +81,7 @@ struct omap_opp_def {
 
 /* Use this to initialize the default table */
 extern int __init omap_init_opp_table(struct omap_opp_def *opp_def,
-		u32 opp_def_size);
-
+				      u32 opp_def_size);
 
 extern struct omap_volt_data omap34xx_vddmpu_volt_data[];
 extern struct omap_volt_data omap34xx_vddcore_volt_data[];
@@ -93,4 +92,4 @@ extern struct omap_volt_data omap44xx_vdd_mpu_volt_data[];
 extern struct omap_volt_data omap44xx_vdd_iva_volt_data[];
 extern struct omap_volt_data omap44xx_vdd_core_volt_data[];
 
-#endif		/* __ARCH_ARM_MACH_OMAP2_OMAP_OPP_DATA_H */
+#endif /* __ARCH_ARM_MACH_OMAP2_OMAP_OPP_DATA_H */

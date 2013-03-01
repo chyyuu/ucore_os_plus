@@ -28,7 +28,7 @@
 #ifdef __KERNEL__
 
 struct hippi_cb {
-	__u32	ifield;
+	__u32 ifield;
 };
 
 extern __be16 hippi_type_trans(struct sk_buff *skb, struct net_device *dev);
@@ -38,4 +38,4 @@ extern int hippi_neigh_setup_dev(struct net_device *dev, struct neigh_parms *p);
 extern struct net_device *alloc_hippi_dev(int sizeof_priv);
 #endif
 
-#endif	/* _LINUX_HIPPIDEVICE_H */
+#endif /* _LINUX_HIPPIDEVICE_H */

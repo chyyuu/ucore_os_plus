@@ -67,43 +67,35 @@ struct module;
  * is calculated by subtracting @base from the gpio number.
  */
 struct gpio_chip {
-	const char		*label;
-	struct device		*dev;
-	struct module		*owner;
+	const char *label;
+	struct device *dev;
+	struct module *owner;
 
-	int			(*request)(struct gpio_chip *chip,
-						unsigned offset);
-	void			(*free)(struct gpio_chip *chip,
-						unsigned offset);
+	int (*request) (struct gpio_chip * chip, unsigned offset);
+	void (*free) (struct gpio_chip * chip, unsigned offset);
 
-	int			(*direction_input)(struct gpio_chip *chip,
-						unsigned offset);
-	int			(*get)(struct gpio_chip *chip,
-						unsigned offset);
-	int			(*direction_output)(struct gpio_chip *chip,
-						unsigned offset, int value);
-	void			(*set)(struct gpio_chip *chip,
-						unsigned offset, int value);
+	int (*direction_input) (struct gpio_chip * chip, unsigned offset);
+	int (*get) (struct gpio_chip * chip, unsigned offset);
+	int (*direction_output) (struct gpio_chip * chip,
+				 unsigned offset, int value);
+	void (*set) (struct gpio_chip * chip, unsigned offset, int value);
 
-	int			(*to_irq)(struct gpio_chip *chip,
-						unsigned offset);
+	int (*to_irq) (struct gpio_chip * chip, unsigned offset);
 
-	void			(*dbg_show)(struct seq_file *s,
-						struct gpio_chip *chip);
-	int			base;
-	u16			ngpio;
-	unsigned		can_sleep:1;
-	unsigned		exported:1;
+	void (*dbg_show) (struct seq_file * s, struct gpio_chip * chip);
+	int base;
+	u16 ngpio;
+	unsigned can_sleep:1;
+	unsigned exported:1;
 };
 
 extern const char *gpiochip_is_requested(struct gpio_chip *chip,
-			unsigned offset);
+					 unsigned offset);
 extern int __must_check gpiochip_reserve(int start, int ngpio);
 
 /* add/remove chips */
 extern int gpiochip_add(struct gpio_chip *chip);
 extern int __must_check gpiochip_remove(struct gpio_chip *chip);
-
 
 /* Always use the library code for GPIO management calls,
  * or when sleeping may be involved.
@@ -116,7 +108,6 @@ extern int gpio_direction_output(unsigned gpio, int value);
 
 extern int gpio_get_value_cansleep(unsigned gpio);
 extern void gpio_set_value_cansleep(unsigned gpio, int value);
-
 
 /* A platform's <asm/gpio.h> code may want to inline the I/O calls when
  * the GPIO is constant and refers to some always-present controller,
@@ -138,9 +129,9 @@ extern int __gpio_to_irq(unsigned gpio);
 extern int gpio_export(unsigned gpio, bool direction_may_change);
 extern void gpio_unexport(unsigned gpio);
 
-#endif	/* CONFIG_GPIO_SYSFS */
+#endif /* CONFIG_GPIO_SYSFS */
 
-#else	/* !CONFIG_HAVE_GPIO_LIB */
+#else /* !CONFIG_HAVE_GPIO_LIB */
 
 static inline int gpio_is_valid(int number)
 {
@@ -183,6 +174,6 @@ static inline int gpio_export(unsigned gpio, bool direction_may_change)
 static inline void gpio_unexport(unsigned gpio)
 {
 }
-#endif	/* CONFIG_GPIO_SYSFS */
+#endif /* CONFIG_GPIO_SYSFS */
 
 #endif /* _ASM_GENERIC_GPIO_H */

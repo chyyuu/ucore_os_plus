@@ -18,19 +18,19 @@
 
 #include <linux/types.h>
 
-typedef unsigned short	apm_event_t;
-typedef unsigned short	apm_eventinfo_t;
+typedef unsigned short apm_event_t;
+typedef unsigned short apm_eventinfo_t;
 
 struct apm_bios_info {
-	__u16	version;
-	__u16	cseg;
-	__u32	offset;
-	__u16	cseg_16;
-	__u16	dseg;
-	__u16	flags;
-	__u16	cseg_len;
-	__u16	cseg_16_len;
-	__u16	dseg_len;
+	__u16 version;
+	__u16 cseg;
+	__u32 offset;
+	__u16 cseg_16;
+	__u16 dseg;
+	__u16 flags;
+	__u16 cseg_len;
+	__u16 cseg_16_len;
+	__u16 dseg_len;
 };
 
 #ifdef __KERNEL__
@@ -50,14 +50,14 @@ struct apm_bios_info {
  * Data for APM that is persistent across module unload/load
  */
 struct apm_info {
-	struct apm_bios_info	bios;
-	unsigned short		connection_version;
-	int			get_power_status_broken;
-	int			get_power_status_swabinminutes;
-	int			allow_ints;
-	int			forbid_idle;
-	int			realmode_power_off;
-	int			disabled;
+	struct apm_bios_info bios;
+	unsigned short connection_version;
+	int get_power_status_broken;
+	int get_power_status_swabinminutes;
+	int allow_ints;
+	int forbid_idle;
+	int realmode_power_off;
+	int disabled;
 };
 
 /*
@@ -108,9 +108,9 @@ struct apm_info {
 /*
  * in arch/i386/kernel/setup.c
  */
-extern struct apm_info	apm_info;
+extern struct apm_info apm_info;
 
-#endif	/* __KERNEL__ */
+#endif /* __KERNEL__ */
 
 /*
  * Power states
@@ -202,12 +202,12 @@ extern struct apm_info	apm_info;
  */
 #define APM_CAP_GLOBAL_STANDBY		0x0001
 #define APM_CAP_GLOBAL_SUSPEND		0x0002
-#define APM_CAP_RESUME_STANDBY_TIMER	0x0004 /* Timer resume from standby */
-#define APM_CAP_RESUME_SUSPEND_TIMER	0x0008 /* Timer resume from suspend */
-#define APM_CAP_RESUME_STANDBY_RING	0x0010 /* Resume on Ring fr standby */
-#define APM_CAP_RESUME_SUSPEND_RING	0x0020 /* Resume on Ring fr suspend */
-#define APM_CAP_RESUME_STANDBY_PCMCIA	0x0040 /* Resume on PCMCIA Ring	*/
-#define APM_CAP_RESUME_SUSPEND_PCMCIA	0x0080 /* Resume on PCMCIA Ring	*/
+#define APM_CAP_RESUME_STANDBY_TIMER	0x0004	/* Timer resume from standby */
+#define APM_CAP_RESUME_SUSPEND_TIMER	0x0008	/* Timer resume from suspend */
+#define APM_CAP_RESUME_STANDBY_RING	0x0010	/* Resume on Ring fr standby */
+#define APM_CAP_RESUME_SUSPEND_RING	0x0020	/* Resume on Ring fr suspend */
+#define APM_CAP_RESUME_STANDBY_PCMCIA	0x0040	/* Resume on PCMCIA Ring */
+#define APM_CAP_RESUME_SUSPEND_PCMCIA	0x0080	/* Resume on PCMCIA Ring */
 
 /*
  * ioctl operations
@@ -217,4 +217,4 @@ extern struct apm_info	apm_info;
 #define APM_IOC_STANDBY		_IO('A', 1)
 #define APM_IOC_SUSPEND		_IO('A', 2)
 
-#endif	/* LINUX_APM_H */
+#endif /* LINUX_APM_H */

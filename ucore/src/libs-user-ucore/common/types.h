@@ -93,4 +93,3 @@ typedef uintptr_t sem_t;
     ((type *)((char *)(ptr) - offsetof(type, member)))
 
 #endif /* !__LIBS_TYPES_H__ */
-

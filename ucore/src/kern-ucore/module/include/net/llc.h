@@ -43,25 +43,24 @@ struct llc_addr {
  * @sk_list - LLC sockets this one manages
  */
 struct llc_sap {
-	unsigned char	 state;
-	unsigned char	 p_bit;
-	unsigned char	 f_bit;
-	atomic_t         refcnt;
-	int		 (*rcv_func)(struct sk_buff *skb,
-				     struct net_device *dev,
-				     struct packet_type *pt,
-				     struct net_device *orig_dev);
-	struct llc_addr	 laddr;
+	unsigned char state;
+	unsigned char p_bit;
+	unsigned char f_bit;
+	atomic_t refcnt;
+	int (*rcv_func) (struct sk_buff * skb,
+			 struct net_device * dev,
+			 struct packet_type * pt, struct net_device * orig_dev);
+	struct llc_addr laddr;
 	struct list_head node;
 	struct {
-		rwlock_t	  lock;
+		rwlock_t lock;
 		struct hlist_head list;
 	} sk_list;
 };
 
-#define LLC_DEST_INVALID         0      /* Invalid LLC PDU type */
-#define LLC_DEST_SAP             1      /* Type 1 goes here */
-#define LLC_DEST_CONN            2      /* Type 2 goes here */
+#define LLC_DEST_INVALID         0	/* Invalid LLC PDU type */
+#define LLC_DEST_SAP             1	/* Type 1 goes here */
+#define LLC_DEST_CONN            2	/* Type 2 goes here */
 
 extern struct list_head llc_sap_list;
 extern rwlock_t llc_sap_list_lock;
@@ -72,17 +71,17 @@ extern int llc_rcv(struct sk_buff *skb, struct net_device *dev,
 extern int llc_mac_hdr_init(struct sk_buff *skb,
 			    const unsigned char *sa, const unsigned char *da);
 
-extern void llc_add_pack(int type, void (*handler)(struct llc_sap *sap,
-						   struct sk_buff *skb));
+extern void llc_add_pack(int type, void (*handler) (struct llc_sap * sap,
+						    struct sk_buff * skb));
 extern void llc_remove_pack(int type);
 
-extern void llc_set_station_handler(void (*handler)(struct sk_buff *skb));
+extern void llc_set_station_handler(void (*handler) (struct sk_buff * skb));
 
 extern struct llc_sap *llc_sap_open(unsigned char lsap,
-				    int (*rcv)(struct sk_buff *skb,
-					       struct net_device *dev,
-					       struct packet_type *pt,
-					       struct net_device *orig_dev));
+				    int (*rcv) (struct sk_buff * skb,
+						struct net_device * dev,
+						struct packet_type * pt,
+						struct net_device * orig_dev));
 static inline void llc_sap_hold(struct llc_sap *sap)
 {
 	atomic_inc(&sap->refcnt);

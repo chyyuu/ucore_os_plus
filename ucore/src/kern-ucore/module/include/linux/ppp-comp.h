@@ -61,51 +61,51 @@ struct module;
  */
 
 struct compressor {
-	int	compress_proto;	/* CCP compression protocol number */
+	int compress_proto;	/* CCP compression protocol number */
 
 	/* Allocate space for a compressor (transmit side) */
-	void	*(*comp_alloc) (unsigned char *options, int opt_len);
+	void *(*comp_alloc) (unsigned char *options, int opt_len);
 
 	/* Free space used by a compressor */
-	void	(*comp_free) (void *state);
+	void (*comp_free) (void *state);
 
 	/* Initialize a compressor */
-	int	(*comp_init) (void *state, unsigned char *options,
-			      int opt_len, int unit, int opthdr, int debug);
+	int (*comp_init) (void *state, unsigned char *options,
+			  int opt_len, int unit, int opthdr, int debug);
 
 	/* Reset a compressor */
-	void	(*comp_reset) (void *state);
+	void (*comp_reset) (void *state);
 
 	/* Compress a packet */
-	int     (*compress) (void *state, unsigned char *rptr,
-			      unsigned char *obuf, int isize, int osize);
+	int (*compress) (void *state, unsigned char *rptr,
+			 unsigned char *obuf, int isize, int osize);
 
 	/* Return compression statistics */
-	void	(*comp_stat) (void *state, struct compstat *stats);
+	void (*comp_stat) (void *state, struct compstat * stats);
 
 	/* Allocate space for a decompressor (receive side) */
-	void	*(*decomp_alloc) (unsigned char *options, int opt_len);
+	void *(*decomp_alloc) (unsigned char *options, int opt_len);
 
 	/* Free space used by a decompressor */
-	void	(*decomp_free) (void *state);
+	void (*decomp_free) (void *state);
 
 	/* Initialize a decompressor */
-	int	(*decomp_init) (void *state, unsigned char *options,
-				int opt_len, int unit, int opthdr, int mru,
-				int debug);
+	int (*decomp_init) (void *state, unsigned char *options,
+			    int opt_len, int unit, int opthdr, int mru,
+			    int debug);
 
 	/* Reset a decompressor */
-	void	(*decomp_reset) (void *state);
+	void (*decomp_reset) (void *state);
 
 	/* Decompress a packet. */
-	int	(*decompress) (void *state, unsigned char *ibuf, int isize,
-				unsigned char *obuf, int osize);
+	int (*decompress) (void *state, unsigned char *ibuf, int isize,
+			   unsigned char *obuf, int osize);
 
 	/* Update state for an incompressible packet received */
-	void	(*incomp) (void *state, unsigned char *ibuf, int icnt);
+	void (*incomp) (void *state, unsigned char *ibuf, int icnt);
 
 	/* Return decompression statistics */
-	void	(*decomp_stat) (void *state, struct compstat *stats);
+	void (*decomp_stat) (void *state, struct compstat * stats);
 
 	/* Used in locking compressor modules */
 	struct module *owner;
@@ -168,7 +168,7 @@ struct compressor {
 /* Macros for handling the 3rd byte of the BSD-Compress config option. */
 #define BSD_NBITS(x)		((x) & 0x1F)	/* number of bits requested */
 #define BSD_VERSION(x)		((x) >> 5)	/* version of option format */
-#define BSD_CURRENT_VERSION	1		/* current version number */
+#define BSD_CURRENT_VERSION	1	/* current version number */
 #define BSD_MAKE_OPT(v, n)	(((v) << 5) | (n))
 
 #define BSD_MIN_BITS		9	/* smallest code size supported */
@@ -194,8 +194,8 @@ struct compressor {
  * Definitions for MPPE.
  */
 
-#define CI_MPPE                18      /* config option for MPPE */
-#define CILEN_MPPE              6      /* length of config option */
+#define CI_MPPE                18	/* config option for MPPE */
+#define CILEN_MPPE              6	/* length of config option */
 
 /*
  * Definitions for other, as yet unsupported, compression methods.

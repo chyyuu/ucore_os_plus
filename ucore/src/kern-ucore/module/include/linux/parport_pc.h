@@ -42,8 +42,7 @@ struct parport_pc_private {
 	struct parport *port;
 };
 
-struct parport_pc_via_data
-{
+struct parport_pc_via_data {
 	/* ISA PnP IRQ routing register 1 */
 	u8 via_pci_parport_irq_reg;
 	/* ISA PnP DMA request routing register */
@@ -62,98 +61,114 @@ struct parport_pc_via_data
 static __inline__ void parport_pc_write_data(struct parport *p, unsigned char d)
 {
 #ifdef DEBUG_PARPORT
-	printk (KERN_DEBUG "parport_pc_write_data(%p,0x%02x)\n", p, d);
+	printk(KERN_DEBUG "parport_pc_write_data(%p,0x%02x)\n", p, d);
 #endif
 	outb(d, DATA(p));
 }
 
 static __inline__ unsigned char parport_pc_read_data(struct parport *p)
 {
-	unsigned char val = inb (DATA (p));
+	unsigned char val = inb(DATA(p));
 #ifdef DEBUG_PARPORT
-	printk (KERN_DEBUG "parport_pc_read_data(%p) = 0x%02x\n",
-		p, val);
+	printk(KERN_DEBUG "parport_pc_read_data(%p) = 0x%02x\n", p, val);
 #endif
 	return val;
 }
 
 #ifdef DEBUG_PARPORT
-static inline void dump_parport_state (char *str, struct parport *p)
+static inline void dump_parport_state(char *str, struct parport *p)
 {
 	/* here's hoping that reading these ports won't side-effect anything underneath */
-	unsigned char ecr = inb (ECONTROL (p));
-	unsigned char dcr = inb (CONTROL (p));
-	unsigned char dsr = inb (STATUS (p));
-	static const char *const ecr_modes[] = {"SPP", "PS2", "PPFIFO", "ECP", "xXx", "yYy", "TST", "CFG"};
+	unsigned char ecr = inb(ECONTROL(p));
+	unsigned char dcr = inb(CONTROL(p));
+	unsigned char dsr = inb(STATUS(p));
+	static const char *const ecr_modes[] =
+	    { "SPP", "PS2", "PPFIFO", "ECP", "xXx", "yYy", "TST", "CFG" };
 	const struct parport_pc_private *priv = p->physport->private_data;
 	int i;
 
-	printk (KERN_DEBUG "*** parport state (%s): ecr=[%s", str, ecr_modes[(ecr & 0xe0) >> 5]);
-	if (ecr & 0x10) printk (",nErrIntrEn");
-	if (ecr & 0x08) printk (",dmaEn");
-	if (ecr & 0x04) printk (",serviceIntr");
-	if (ecr & 0x02) printk (",f_full");
-	if (ecr & 0x01) printk (",f_empty");
-	for (i=0; i<2; i++) {
-		printk ("]  dcr(%s)=[", i ? "soft" : "hard");
-		dcr = i ? priv->ctr : inb (CONTROL (p));
-	
+	printk(KERN_DEBUG "*** parport state (%s): ecr=[%s", str,
+	       ecr_modes[(ecr & 0xe0) >> 5]);
+	if (ecr & 0x10)
+		printk(",nErrIntrEn");
+	if (ecr & 0x08)
+		printk(",dmaEn");
+	if (ecr & 0x04)
+		printk(",serviceIntr");
+	if (ecr & 0x02)
+		printk(",f_full");
+	if (ecr & 0x01)
+		printk(",f_empty");
+	for (i = 0; i < 2; i++) {
+		printk("]  dcr(%s)=[", i ? "soft" : "hard");
+		dcr = i ? priv->ctr : inb(CONTROL(p));
+
 		if (dcr & 0x20) {
-			printk ("rev");
+			printk("rev");
 		} else {
-			printk ("fwd");
+			printk("fwd");
 		}
-		if (dcr & 0x10) printk (",ackIntEn");
-		if (!(dcr & 0x08)) printk (",N-SELECT-IN");
-		if (dcr & 0x04) printk (",N-INIT");
-		if (!(dcr & 0x02)) printk (",N-AUTOFD");
-		if (!(dcr & 0x01)) printk (",N-STROBE");
+		if (dcr & 0x10)
+			printk(",ackIntEn");
+		if (!(dcr & 0x08))
+			printk(",N-SELECT-IN");
+		if (dcr & 0x04)
+			printk(",N-INIT");
+		if (!(dcr & 0x02))
+			printk(",N-AUTOFD");
+		if (!(dcr & 0x01))
+			printk(",N-STROBE");
 	}
-	printk ("]  dsr=[");
-	if (!(dsr & 0x80)) printk ("BUSY");
-	if (dsr & 0x40) printk (",N-ACK");
-	if (dsr & 0x20) printk (",PERROR");
-	if (dsr & 0x10) printk (",SELECT");
-	if (dsr & 0x08) printk (",N-FAULT");
-	printk ("]\n");
+	printk("]  dsr=[");
+	if (!(dsr & 0x80))
+		printk("BUSY");
+	if (dsr & 0x40)
+		printk(",N-ACK");
+	if (dsr & 0x20)
+		printk(",PERROR");
+	if (dsr & 0x10)
+		printk(",SELECT");
+	if (dsr & 0x08)
+		printk(",N-FAULT");
+	printk("]\n");
 	return;
 }
-#else	/* !DEBUG_PARPORT */
+#else /* !DEBUG_PARPORT */
 #define dump_parport_state(args...)
-#endif	/* !DEBUG_PARPORT */
+#endif /* !DEBUG_PARPORT */
 
 /* __parport_pc_frob_control differs from parport_pc_frob_control in that
  * it doesn't do any extra masking. */
-static __inline__ unsigned char __parport_pc_frob_control (struct parport *p,
-							   unsigned char mask,
-							   unsigned char val)
+static __inline__ unsigned char __parport_pc_frob_control(struct parport *p,
+							  unsigned char mask,
+							  unsigned char val)
 {
 	struct parport_pc_private *priv = p->physport->private_data;
 	unsigned char ctr = priv->ctr;
 #ifdef DEBUG_PARPORT
-	printk (KERN_DEBUG
-		"__parport_pc_frob_control(%02x,%02x): %02x -> %02x\n",
-		mask, val, ctr, ((ctr & ~mask) ^ val) & priv->ctr_writable);
+	printk(KERN_DEBUG
+	       "__parport_pc_frob_control(%02x,%02x): %02x -> %02x\n",
+	       mask, val, ctr, ((ctr & ~mask) ^ val) & priv->ctr_writable);
 #endif
 	ctr = (ctr & ~mask) ^ val;
-	ctr &= priv->ctr_writable; /* only write writable bits. */
-	outb (ctr, CONTROL (p));
+	ctr &= priv->ctr_writable;	/* only write writable bits. */
+	outb(ctr, CONTROL(p));
 	priv->ctr = ctr;	/* Update soft copy */
 	return ctr;
 }
 
-static __inline__ void parport_pc_data_reverse (struct parport *p)
+static __inline__ void parport_pc_data_reverse(struct parport *p)
 {
-	__parport_pc_frob_control (p, 0x20, 0x20);
+	__parport_pc_frob_control(p, 0x20, 0x20);
 }
 
-static __inline__ void parport_pc_data_forward (struct parport *p)
+static __inline__ void parport_pc_data_forward(struct parport *p)
 {
-	__parport_pc_frob_control (p, 0x20, 0x00);
+	__parport_pc_frob_control(p, 0x20, 0x00);
 }
 
-static __inline__ void parport_pc_write_control (struct parport *p,
-						 unsigned char d)
+static __inline__ void parport_pc_write_control(struct parport *p,
+						unsigned char d)
 {
 	const unsigned char wm = (PARPORT_CONTROL_STROBE |
 				  PARPORT_CONTROL_AUTOFD |
@@ -162,12 +177,12 @@ static __inline__ void parport_pc_write_control (struct parport *p,
 
 	/* Take this out when drivers have adapted to newer interface. */
 	if (d & 0x20) {
-		printk (KERN_DEBUG "%s (%s): use data_reverse for this!\n",
-			p->name, p->cad->name);
-		parport_pc_data_reverse (p);
+		printk(KERN_DEBUG "%s (%s): use data_reverse for this!\n",
+		       p->name, p->cad->name);
+		parport_pc_data_reverse(p);
 	}
 
-	__parport_pc_frob_control (p, wm, d & wm);
+	__parport_pc_frob_control(p, wm, d & wm);
 }
 
 static __inline__ unsigned char parport_pc_read_control(struct parport *p)
@@ -177,12 +192,12 @@ static __inline__ unsigned char parport_pc_read_control(struct parport *p)
 				  PARPORT_CONTROL_INIT |
 				  PARPORT_CONTROL_SELECT);
 	const struct parport_pc_private *priv = p->physport->private_data;
-	return priv->ctr & rm; /* Use soft copy */
+	return priv->ctr & rm;	/* Use soft copy */
 }
 
-static __inline__ unsigned char parport_pc_frob_control (struct parport *p,
-							 unsigned char mask,
-							 unsigned char val)
+static __inline__ unsigned char parport_pc_frob_control(struct parport *p,
+							unsigned char mask,
+							unsigned char val)
 {
 	const unsigned char wm = (PARPORT_CONTROL_STROBE |
 				  PARPORT_CONTROL_AUTOFD |
@@ -191,20 +206,20 @@ static __inline__ unsigned char parport_pc_frob_control (struct parport *p,
 
 	/* Take this out when drivers have adapted to newer interface. */
 	if (mask & 0x20) {
-		printk (KERN_DEBUG "%s (%s): use data_%s for this!\n",
-			p->name, p->cad->name,
-			(val & 0x20) ? "reverse" : "forward");
+		printk(KERN_DEBUG "%s (%s): use data_%s for this!\n",
+		       p->name, p->cad->name,
+		       (val & 0x20) ? "reverse" : "forward");
 		if (val & 0x20)
-			parport_pc_data_reverse (p);
+			parport_pc_data_reverse(p);
 		else
-			parport_pc_data_forward (p);
+			parport_pc_data_forward(p);
 	}
 
 	/* Restrict mask and val to control lines. */
 	mask &= wm;
 	val &= wm;
 
-	return __parport_pc_frob_control (p, mask, val);
+	return __parport_pc_frob_control(p, mask, val);
 }
 
 static __inline__ unsigned char parport_pc_read_status(struct parport *p)
@@ -212,15 +227,14 @@ static __inline__ unsigned char parport_pc_read_status(struct parport *p)
 	return inb(STATUS(p));
 }
 
-
 static __inline__ void parport_pc_disable_irq(struct parport *p)
 {
-	__parport_pc_frob_control (p, 0x10, 0x00);
+	__parport_pc_frob_control(p, 0x10, 0x00);
 }
 
 static __inline__ void parport_pc_enable_irq(struct parport *p)
 {
-	__parport_pc_frob_control (p, 0x10, 0x10);
+	__parport_pc_frob_control(p, 0x10, 0x10);
 }
 
 extern void parport_pc_release_resources(struct parport *p);
@@ -228,10 +242,10 @@ extern void parport_pc_release_resources(struct parport *p);
 extern int parport_pc_claim_resources(struct parport *p);
 
 /* PCMCIA code will want to get us to look at a port.  Provide a mechanism. */
-extern struct parport *parport_pc_probe_port (unsigned long base,
-					      unsigned long base_hi,
-					      int irq, int dma,
-					      struct device *dev);
-extern void parport_pc_unregister_port (struct parport *p);
+extern struct parport *parport_pc_probe_port(unsigned long base,
+					     unsigned long base_hi,
+					     int irq, int dma,
+					     struct device *dev);
+extern void parport_pc_unregister_port(struct parport *p);
 
 #endif

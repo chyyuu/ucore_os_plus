@@ -25,8 +25,7 @@
 #define VRING_AVAIL_F_NO_INTERRUPT	1
 
 /* Virtio ring descriptors: 16 bytes.  These can chain together via "next". */
-struct vring_desc
-{
+struct vring_desc {
 	/* Address (guest-physical). */
 	__u64 addr;
 	/* Length. */
@@ -37,24 +36,21 @@ struct vring_desc
 	__u16 next;
 };
 
-struct vring_avail
-{
+struct vring_avail {
 	__u16 flags;
 	__u16 idx;
 	__u16 ring[];
 };
 
 /* u32 is used here for ids for padding reasons. */
-struct vring_used_elem
-{
+struct vring_used_elem {
 	/* Index of start of used descriptor chain. */
 	__u32 id;
 	/* Total length of the descriptor chain which was used (written to) */
 	__u32 len;
 };
 
-struct vring_used
-{
+struct vring_used {
 	__u16 flags;
 	__u16 idx;
 	struct vring_used_elem ring[];
@@ -97,8 +93,8 @@ static inline void vring_init(struct vring *vr, unsigned int num, void *p,
 {
 	vr->num = num;
 	vr->desc = p;
-	vr->avail = p + num*sizeof(struct vring_desc);
-	vr->used = (void *)(((unsigned long)&vr->avail->ring[num] + align-1)
+	vr->avail = p + num * sizeof(struct vring_desc);
+	vr->used = (void *)(((unsigned long)&vr->avail->ring[num] + align - 1)
 			    & ~(align - 1));
 }
 
@@ -106,7 +102,7 @@ static inline unsigned vring_size(unsigned int num, unsigned long align)
 {
 	return ((sizeof(struct vring_desc) * num + sizeof(__u16) * (2 + num)
 		 + align - 1) & ~(align - 1))
-		+ sizeof(__u16) * 2 + sizeof(struct vring_used_elem) * num;
+	    + sizeof(__u16) * 2 + sizeof(struct vring_used_elem) * num;
 }
 
 #ifdef __KERNEL__
@@ -118,8 +114,8 @@ struct virtqueue *vring_new_virtqueue(unsigned int num,
 				      unsigned int vring_align,
 				      struct virtio_device *vdev,
 				      void *pages,
-				      void (*notify)(struct virtqueue *vq),
-				      void (*callback)(struct virtqueue *vq));
+				      void (*notify) (struct virtqueue * vq),
+				      void (*callback) (struct virtqueue * vq));
 void vring_del_virtqueue(struct virtqueue *vq);
 /* Filter out transport-specific feature bits. */
 void vring_transport_features(struct virtio_device *vdev);

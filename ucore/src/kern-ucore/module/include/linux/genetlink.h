@@ -10,9 +10,9 @@
 #define GENL_MAX_ID	1023
 
 struct genlmsghdr {
-	__u8	cmd;
-	__u8	version;
-	__u16	reserved;
+	__u8 cmd;
+	__u8 version;
+	__u16 reserved;
 };
 
 #define GENL_HDRLEN	NLMSG_ALIGN(sizeof(struct genlmsghdr))
@@ -42,7 +42,7 @@ enum {
 	CTRL_CMD_GETOPS,
 	CTRL_CMD_NEWMCAST_GRP,
 	CTRL_CMD_DELMCAST_GRP,
-	CTRL_CMD_GETMCAST_GRP, /* unused */
+	CTRL_CMD_GETMCAST_GRP,	/* unused */
 	__CTRL_CMD_MAX,
 };
 
@@ -80,4 +80,4 @@ enum {
 
 #define CTRL_ATTR_MCAST_GRP_MAX (__CTRL_ATTR_MCAST_GRP_MAX - 1)
 
-#endif	/* __LINUX_GENERIC_NETLINK_H */
+#endif /* __LINUX_GENERIC_NETLINK_H */

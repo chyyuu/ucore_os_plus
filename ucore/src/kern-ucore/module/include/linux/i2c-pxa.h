@@ -9,9 +9,9 @@ typedef enum i2c_slave_event_e {
 
 struct i2c_slave_client {
 	void *data;
-	void (*event)(void *ptr, i2c_slave_event_t event);
-	int  (*read) (void *ptr);
-	void (*write)(void *ptr, unsigned int val);
+	void (*event) (void *ptr, i2c_slave_event_t event);
+	int (*read) (void *ptr);
+	void (*write) (void *ptr, unsigned int val);
 };
 
 #endif /* _LINUX_I2C_ALGO_PXA_H */

@@ -90,7 +90,7 @@ static inline unsigned int dma_set_max_seg_size(struct device *dev,
 static inline unsigned long dma_get_seg_boundary(struct device *dev)
 {
 	return dev->dma_parms ?
-		dev->dma_parms->segment_boundary_mask : 0xffffffff;
+	    dev->dma_parms->segment_boundary_mask : 0xffffffff;
 }
 
 static inline int dma_set_seg_boundary(struct device *dev, unsigned long mask)
@@ -116,14 +116,13 @@ dma_declare_coherent_memory(struct device *dev, dma_addr_t bus_addr,
 	return 0;
 }
 
-static inline void
-dma_release_declared_memory(struct device *dev)
+static inline void dma_release_declared_memory(struct device *dev)
 {
 }
 
-static inline void *
-dma_mark_declared_memory_occupied(struct device *dev,
-				  dma_addr_t device_addr, size_t size)
+static inline void *dma_mark_declared_memory_occupied(struct device *dev,
+						      dma_addr_t device_addr,
+						      size_t size)
 {
 	return ERR_PTR(-EBUSY);
 }
@@ -133,11 +132,11 @@ dma_mark_declared_memory_occupied(struct device *dev,
  * Managed DMA API
  */
 extern void *dmam_alloc_coherent(struct device *dev, size_t size,
-				 dma_addr_t *dma_handle, gfp_t gfp);
+				 dma_addr_t * dma_handle, gfp_t gfp);
 extern void dmam_free_coherent(struct device *dev, size_t size, void *vaddr,
 			       dma_addr_t dma_handle);
 extern void *dmam_alloc_noncoherent(struct device *dev, size_t size,
-				    dma_addr_t *dma_handle, gfp_t gfp);
+				    dma_addr_t * dma_handle, gfp_t gfp);
 extern void dmam_free_noncoherent(struct device *dev, size_t size, void *vaddr,
 				  dma_addr_t dma_handle);
 #ifdef ARCH_HAS_DMA_DECLARE_COHERENT_MEMORY
@@ -147,8 +146,9 @@ extern int dmam_declare_coherent_memory(struct device *dev, dma_addr_t bus_addr,
 extern void dmam_release_declared_memory(struct device *dev);
 #else /* ARCH_HAS_DMA_DECLARE_COHERENT_MEMORY */
 static inline int dmam_declare_coherent_memory(struct device *dev,
-				dma_addr_t bus_addr, dma_addr_t device_addr,
-				size_t size, gfp_t gfp)
+					       dma_addr_t bus_addr,
+					       dma_addr_t device_addr,
+					       size_t size, gfp_t gfp)
 {
 	return 0;
 }

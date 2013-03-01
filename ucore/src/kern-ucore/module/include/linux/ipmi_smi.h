@@ -63,18 +63,18 @@ typedef struct ipmi_smi *ipmi_smi_t;
 struct ipmi_smi_msg {
 	struct list_head link;
 
-	long    msgid;
-	void    *user_data;
+	long msgid;
+	void *user_data;
 
-	int           data_size;
+	int data_size;
 	unsigned char data[IPMI_MAX_MSG_LENGTH];
 
-	int           rsp_size;
+	int rsp_size;
 	unsigned char rsp[IPMI_MAX_MSG_LENGTH];
 
 	/* Will be called when the system is done with the message
 	   (presumably to free it). */
-	void (*done)(struct ipmi_smi_msg *msg);
+	void (*done) (struct ipmi_smi_msg * msg);
 };
 
 struct ipmi_smi_handlers {
@@ -84,8 +84,7 @@ struct ipmi_smi_handlers {
 	   the upper layer until this function is called.  This may
 	   not be NULL, the lower layer must take the interface from
 	   this call. */
-	int (*start_processing)(void       *send_info,
-				ipmi_smi_t new_intf);
+	int (*start_processing) (void *send_info, ipmi_smi_t new_intf);
 
 	/* Called to enqueue an SMI message to be sent.  This
 	   operation is not allowed to fail.  If an error occurs, it
@@ -94,38 +93,37 @@ struct ipmi_smi_handlers {
 	   are held when this is run.  If the priority is > 0, the
 	   message will go into a high-priority queue and be sent
 	   first.  Otherwise, it goes into a normal-priority queue. */
-	void (*sender)(void                *send_info,
-		       struct ipmi_smi_msg *msg,
-		       int                 priority);
+	void (*sender) (void *send_info,
+			struct ipmi_smi_msg * msg, int priority);
 
 	/* Called by the upper layer to request that we try to get
 	   events from the BMC we are attached to. */
-	void (*request_events)(void *send_info);
+	void (*request_events) (void *send_info);
 
 	/* Called when the interface should go into "run to
 	   completion" mode.  If this call sets the value to true, the
 	   interface should make sure that all messages are flushed
 	   out and that none are pending, and any new requests are run
 	   to completion immediately. */
-	void (*set_run_to_completion)(void *send_info, int run_to_completion);
+	void (*set_run_to_completion) (void *send_info, int run_to_completion);
 
 	/* Called to poll for work to do.  This is so upper layers can
 	   poll for operations during things like crash dumps. */
-	void (*poll)(void *send_info);
+	void (*poll) (void *send_info);
 
 	/* Enable/disable firmware maintenance mode.  Note that this
 	   is *not* the modes defined, this is simply an on/off
 	   setting.  The message handler does the mode handling.  Note
 	   that this is called from interrupt context, so it cannot
 	   block. */
-	void (*set_maintenance_mode)(void *send_info, int enable);
+	void (*set_maintenance_mode) (void *send_info, int enable);
 
 	/* Tell the handler that we are using it/not using it.  The
 	   message handler get the modules that this handler belongs
 	   to; this function lets the SMI claim any modules that it
 	   uses.  These may be NULL if this is not required. */
-	int (*inc_usecount)(void *send_info);
-	void (*dec_usecount)(void *send_info);
+	int (*inc_usecount) (void *send_info);
+	void (*dec_usecount) (void *send_info);
 };
 
 struct ipmi_device_id {
@@ -135,10 +133,10 @@ struct ipmi_device_id {
 	unsigned char firmware_revision_2;
 	unsigned char ipmi_version;
 	unsigned char additional_device_support;
-	unsigned int  manufacturer_id;
-	unsigned int  product_id;
+	unsigned int manufacturer_id;
+	unsigned int product_id;
 	unsigned char aux_firmware_revision[4];
-	unsigned int  aux_firmware_revision_set : 1;
+	unsigned int aux_firmware_revision_set:1;
 };
 
 #define ipmi_version_major(v) ((v)->ipmi_version & 0xf)
@@ -180,7 +178,7 @@ static inline int ipmi_demangle_device_id(const unsigned char *data,
 		id->product_id = 0;
 	}
 	if (data_len >= 15) {
-		memcpy(id->aux_firmware_revision, data+11, 4);
+		memcpy(id->aux_firmware_revision, data + 11, 4);
 		id->aux_firmware_revision_set = 1;
 	} else
 		id->aux_firmware_revision_set = 0;
@@ -195,11 +193,10 @@ static inline int ipmi_demangle_device_id(const unsigned char *data,
    is called, and the lower layer must get the interface from that
    call. */
 int ipmi_register_smi(struct ipmi_smi_handlers *handlers,
-		      void                     *send_info,
-		      struct ipmi_device_id    *device_id,
-		      struct device            *dev,
-		      const char               *sysfs_name,
-		      unsigned char            slave_addr);
+		      void *send_info,
+		      struct ipmi_device_id *device_id,
+		      struct device *dev,
+		      const char *sysfs_name, unsigned char slave_addr);
 
 /*
  * Remove a low-level interface from the IPMI driver.  This will
@@ -213,8 +210,7 @@ int ipmi_unregister_smi(ipmi_smi_t intf);
  * the lower layer gets an error sending a message, it should format
  * an error response in the message response.
  */
-void ipmi_smi_msg_received(ipmi_smi_t          intf,
-			   struct ipmi_smi_msg *msg);
+void ipmi_smi_msg_received(ipmi_smi_t intf, struct ipmi_smi_msg *msg);
 
 /* The lower layer received a watchdog pre-timeout on interface. */
 void ipmi_smi_watchdog_pretimeout(ipmi_smi_t intf);
@@ -229,7 +225,7 @@ static inline void ipmi_free_smi_msg(struct ipmi_smi_msg *msg)
    directory for this interface.  Note that the entry will
    automatically be dstroyed when the interface is destroyed. */
 int ipmi_smi_add_proc_entry(ipmi_smi_t smi, char *name,
-			    read_proc_t *read_proc,
+			    read_proc_t * read_proc,
 			    void *data, struct module *owner);
 
 #endif /* __LINUX_IPMI_SMI_H */

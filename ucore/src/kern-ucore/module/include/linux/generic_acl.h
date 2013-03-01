@@ -19,8 +19,8 @@
  * operations.
  */
 struct generic_acl_operations {
-	struct posix_acl *(*getacl)(struct inode *, int);
-	void (*setacl)(struct inode *, int, struct posix_acl *);
+	struct posix_acl *(*getacl) (struct inode *, int);
+	void (*setacl) (struct inode *, int, struct posix_acl *);
 };
 
 size_t generic_acl_list(struct inode *, struct generic_acl_operations *, int,

@@ -9,7 +9,7 @@
 struct resume_swap_area {
 	loff_t offset;
 	u_int32_t dev;
-} __attribute__((packed));
+} __attribute__ ((packed));
 
 #define SNAPSHOT_IOC_MAGIC	'3'
 #define SNAPSHOT_FREEZE			_IO(SNAPSHOT_IOC_MAGIC, 1)

@@ -26,8 +26,8 @@
 #define __exit_call     __used __section(.exitcall.exit)
 #define __exit          __section(.exit.text)
 
-typedef int (*initcall_t)(void);
-typedef void (*exitcall_t)(void);
+typedef int (*initcall_t) (void);
+typedef void (*exitcall_t) (void);
 
 #define __section(S) __attribute__((__section__(#S)))
 
@@ -41,7 +41,6 @@ typedef void (*exitcall_t)(void);
 #define module_init(x) __initcall(x)
 #define module_exit(x) __exitcall(x)
 
-
 #ifndef MODULE_SYMBOL_PREFIX
 #define MODULE_SYMBOL_PREFIX ""
 #endif
@@ -52,26 +51,21 @@ typedef void (*exitcall_t)(void);
 #define MAX_PARAM_PREFIX_LEN (64 - sizeof(unsigned long))
 #define MODULE_NAME_LEN MAX_PARAM_PREFIX_LEN
 
-typedef int (*func_add_t)(int a, int b, int *c);
-typedef int (*func_mul_t)(int a, int b, int *c);
+typedef int (*func_add_t) (int a, int b, int *c);
+typedef int (*func_mul_t) (int a, int b, int *c);
 
-struct kernel_symbol
-{
+struct kernel_symbol {
 	unsigned long value;
 	const char *name;
 };
 
-struct modversion_info
-{
+struct modversion_info {
 	unsigned long crc;
 	char name[MODULE_NAME_LEN];
 };
 
-struct mod_arch_specific
-{
+struct mod_arch_specific {
 };
-
-
 
 /*
  * We don't need these. They are obsolete.
@@ -92,17 +86,15 @@ extern void cleanup_module(void);
 
 #define EXPORT_SYMBOL(sym) __EXPORT_SYMBOL(sym, "")
 
-enum module_state
-{
+enum module_state {
 	MODULE_STATE_LIVE,
 	MODULE_STATE_COMING,
 	MODULE_STATE_GOING,
 };
 
-struct module
-{
+struct module {
 	enum module_state state;
-	
+
 	// members of list of modules
 	list_entry_t list;
 
@@ -115,7 +107,7 @@ struct module
 	unsigned int num_syms;
 
 	// startup function
-	int (*init)(void);
+	int (*init) (void);
 
 	// if non-NULL, free after init() returns
 	void *module_init;
@@ -147,13 +139,10 @@ struct module
 	struct proc_struct *waiter;
 
 	// destruction function
-	void (*exit)(void);
+	void (*exit) (void);
 
-	
 	atomic_t ref;
 };
-
-
 
 #define le2mod(le, member)                          \
     to_struct((le), struct module, member)
@@ -181,64 +170,66 @@ bool is_module_text_address(unsigned long addr);
 static inline int within_module_core(unsigned long addr, struct module *mod)
 {
 	return (unsigned long)mod->module_core <= addr &&
-		addr < (unsigned long)mod->module_core + mod->core_size;
+	    addr < (unsigned long)mod->module_core + mod->core_size;
 }
 
 static inline int within_module_init(unsigned long addr, struct module *mod)
 {
 	return (unsigned long)mod->module_init <= addr &&
-		addr < (unsigned long)mod->module_init + mod->core_size;
+	    addr < (unsigned long)mod->module_init + mod->core_size;
 }
 
 // TODO: hold module_mutex_sem before search
 struct module *find_module(const char *name);
 
-struct symsearch
-{
+struct symsearch {
 	const struct kernel_symbol *start, *stop;
 	const unsigned long *crcs;
 	bool unused;
 };
 
 // search for an exported symbol by name
-const struct kernel_symbol *find_symbol(const char *name, struct module **owner, const unsigned long **crc, bool warn);
+const struct kernel_symbol *find_symbol(const char *name, struct module **owner,
+					const unsigned long **crc, bool warn);
 
 // walk the exported symbol table
-bool each_symbol(bool (*fn)(const struct symsearch *arr, struct module *owner, unsigned int symnum, void *data), void *data);
+bool each_symbol(bool(*fn)
+		  (const struct symsearch * arr, struct module * owner,
+		   unsigned int symnum, void *data), void *data);
 
 int module_get_kallsym(unsigned int symnum, unsigned long *value, char *type,
-	char *name, char *module_name, int *exported);
+		       char *name, char *module_name, int *exported);
 
 unsigned long module_kallsyms_lookup_name(const char *name);
 
-int module_kallsyms_on_each_symbol(int (*fn)(void *, const char *, struct module *, unsigned long), void *data);
+int module_kallsyms_on_each_symbol(int (*fn)
+				    (void *, const char *, struct module *,
+				     unsigned long), void *data);
 
 // TODO: SMP?
-extern void __module_put_and_exit(struct module * mod,long code)
-	__attribute__((noreturn));
+extern void __module_put_and_exit(struct module *mod, long code)
+    __attribute__ ((noreturn));
 #define module_put_and_exit(code) __module_put_and_exit(THIS_MODULE, code)
-
 
 // TODO: UNLOAD
 // START
 unsigned int module_refcount(struct module *mod);
 
-static inline atomic_t *__module_ref_addr(struct module *mod, int cpu) {
+static inline atomic_t *__module_ref_addr(struct module *mod, int cpu)
+{
 	return &mod->ref;
 }
-
-
 
 static inline int try_module_get(struct module *module)
 {
 	return !module || module_is_live(module);
 }
 
-static inline void module_put(struct module * module)
+static inline void module_put(struct module *module)
 {
 }
 
-static inline void __module_get(struct module * module)
+static inline void __module_get(struct module *module)
 {
 	if (module) {
 		atomic_inc(__module_ref_addr(module, 0));
@@ -260,13 +251,14 @@ int use_module(struct module *a, struct module *b);
 
 // TODO:
 const char *module_address_lookup_(unsigned long addr,
-				unsigned long *symbolsize,
-				unsigned long *offset,
-				char **modname,
-				char *namebuf);
+				   unsigned long *symbolsize,
+				   unsigned long *offset,
+				   char **modname, char *namebuf);
 
 int lookup_module_symbol_name_(unsigned long addr, char *symname);
-int lookup_module_symbol_attrs_(unsigned long addr,unsigned long * size,unsigned long * offset,char * modname,char * name);
+int lookup_module_symbol_attrs_(unsigned long addr, unsigned long *size,
+				unsigned long *offset, char *modname,
+				char *name);
 
 const struct exception_table_entry *search_module_extables_(unsigned long addr);
 
@@ -274,8 +266,8 @@ extern void print_modules(void);
 
 void mod_init();
 
-int do_init_module(void __user *umod, unsigned long len, const char __user *uargs);
-int do_cleanup_module(const char __user *name_user);
+int do_init_module(void __user * umod, unsigned long len,
+		   const char __user * uargs);
+int do_cleanup_module(const char __user * name_user);
 
 #endif
-

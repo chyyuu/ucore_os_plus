@@ -24,7 +24,7 @@ typedef struct {
  * on a single CPU:
  */
 #if (1 << HARDIRQ_BITS) < NR_IRQS
-# error HARDIRQ_BITS is too low!
+#error HARDIRQ_BITS is too low!
 #endif
 
 #define __ARCH_IRQ_EXIT_IRQS_DISABLED	1

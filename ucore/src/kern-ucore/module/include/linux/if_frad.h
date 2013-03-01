@@ -28,10 +28,9 @@
 
 /* Structures and constants associated with the DLCI device driver */
 
-struct dlci_add
-{
-   char  devname[IFNAMSIZ];
-   short dlci;
+struct dlci_add {
+	char devname[IFNAMSIZ];
+	short dlci;
 };
 
 #define DLCI_GET_CONF	(SIOCDEVPRIVATE + 2)
@@ -43,19 +42,19 @@ struct dlci_add
  * structure.  Change at your own peril.
  */
 struct dlci_conf {
-   short flags;
-   short CIR_fwd;
-   short Bc_fwd;
-   short Be_fwd;
-   short CIR_bwd;
-   short Bc_bwd;
-   short Be_bwd; 
+	short flags;
+	short CIR_fwd;
+	short Bc_fwd;
+	short Be_fwd;
+	short CIR_bwd;
+	short Bc_bwd;
+	short Be_bwd;
 
 /* these are part of the status read */
-   short Tc_fwd;
-   short Tc_bwd;
-   short Tf_max;
-   short Tb_max;
+	short Tc_fwd;
+	short Tc_bwd;
+	short Tf_max;
+	short Tb_max;
 
 /* add any new fields here above is a mirror of sdla_dlci_conf */
 };
@@ -85,24 +84,23 @@ struct dlci_conf {
  * necessary to this structure, a routine will need to be 
  * added to that module to copy fields.
  */
-struct frad_conf 
-{
-   short station;
-   short flags;
-   short kbaud;
-   short clocking;
-   short mtu;
-   short T391;
-   short T392;
-   short N391;
-   short N392;
-   short N393;
-   short CIR_fwd;
-   short Bc_fwd;
-   short Be_fwd;
-   short CIR_bwd;
-   short Bc_bwd;
-   short Be_bwd;
+struct frad_conf {
+	short station;
+	short flags;
+	short kbaud;
+	short clocking;
+	short mtu;
+	short T391;
+	short T392;
+	short N391;
+	short N392;
+	short N393;
+	short CIR_fwd;
+	short Bc_fwd;
+	short Be_fwd;
+	short CIR_bwd;
+	short Bc_bwd;
+	short Be_bwd;
 
 /* Add new fields here, above is a mirror of the sdla_conf */
 
@@ -128,19 +126,18 @@ struct frad_conf
 #if defined(CONFIG_DLCI) || defined(CONFIG_DLCI_MODULE)
 
 /* these are the fields of an RFC 1490 header */
-struct frhdr
-{
-   unsigned char  control;
+struct frhdr {
+	unsigned char control;
 
-   /* for IP packets, this can be the NLPID */
-   unsigned char  pad;
+	/* for IP packets, this can be the NLPID */
+	unsigned char pad;
 
-   unsigned char  NLPID;
-   unsigned char  OUI[3];
-   __be16 PID;
+	unsigned char NLPID;
+	unsigned char OUI[3];
+	__be16 PID;
 
-#define IP_NLPID pad 
-} __attribute__((packed));
+#define IP_NLPID pad
+} __attribute__ ((packed));
 
 /* see RFC 1490 for the definition of the following */
 #define FRAD_I_UI		0x03
@@ -151,48 +148,46 @@ struct frhdr
 #define FRAD_P_CLNP		0x81
 #define FRAD_P_IP		0xCC
 
-struct dlci_local
-{
-   struct net_device_stats stats;
-   struct net_device      *master;
-   struct net_device      *slave;
-   struct dlci_conf       config;
-   int                    configured;
-   struct list_head	  list;
+struct dlci_local {
+	struct net_device_stats stats;
+	struct net_device *master;
+	struct net_device *slave;
+	struct dlci_conf config;
+	int configured;
+	struct list_head list;
 
-   /* callback function */
-   void              (*receive)(struct sk_buff *skb, struct net_device *);
+	/* callback function */
+	void (*receive) (struct sk_buff * skb, struct net_device *);
 };
 
-struct frad_local
-{
-   struct net_device_stats stats;
+struct frad_local {
+	struct net_device_stats stats;
 
-   /* devices which this FRAD is slaved to */
-   struct net_device     *master[CONFIG_DLCI_MAX];
-   short             dlci[CONFIG_DLCI_MAX];
+	/* devices which this FRAD is slaved to */
+	struct net_device *master[CONFIG_DLCI_MAX];
+	short dlci[CONFIG_DLCI_MAX];
 
-   struct frad_conf  config;
-   int               configured;	/* has this device been configured */
-   int               initialized;	/* mem_start, port, irq set ? */
+	struct frad_conf config;
+	int configured;		/* has this device been configured */
+	int initialized;	/* mem_start, port, irq set ? */
 
-   /* callback functions */
-   int               (*activate)(struct net_device *, struct net_device *);
-   int               (*deactivate)(struct net_device *, struct net_device *);
-   int               (*assoc)(struct net_device *, struct net_device *);
-   int               (*deassoc)(struct net_device *, struct net_device *);
-   int               (*dlci_conf)(struct net_device *, struct net_device *, int get);
+	/* callback functions */
+	int (*activate) (struct net_device *, struct net_device *);
+	int (*deactivate) (struct net_device *, struct net_device *);
+	int (*assoc) (struct net_device *, struct net_device *);
+	int (*deassoc) (struct net_device *, struct net_device *);
+	int (*dlci_conf) (struct net_device *, struct net_device *, int get);
 
-   /* fields that are used by the Sangoma SDLA cards */
-   struct timer_list timer;
-   int               type;		/* adapter type */
-   int               state;		/* state of the S502/8 control latch */
-   int               buffer;		/* current buffer for S508 firmware */
+	/* fields that are used by the Sangoma SDLA cards */
+	struct timer_list timer;
+	int type;		/* adapter type */
+	int state;		/* state of the S502/8 control latch */
+	int buffer;		/* current buffer for S508 firmware */
 };
 
 #endif /* CONFIG_DLCI || CONFIG_DLCI_MODULE */
 
-extern void dlci_ioctl_set(int (*hook)(unsigned int, void __user *));
+extern void dlci_ioctl_set(int (*hook) (unsigned int, void __user *));
 
 #endif /* __KERNEL__ */
 

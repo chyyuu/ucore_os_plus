@@ -46,58 +46,57 @@
 #include <asm/hardware.h>
 #endif
 
-
 /* No 4X status reads take longer than this (in usec).
  */
 #define HP_SDC_MAX_REG_DELAY 20000
 
-typedef void (hp_sdc_irqhook) (int irq, void *dev_id, 
+typedef void (hp_sdc_irqhook) (int irq, void *dev_id,
 			       uint8_t status, uint8_t data);
 
-int hp_sdc_request_timer_irq(hp_sdc_irqhook *callback);
-int hp_sdc_request_hil_irq(hp_sdc_irqhook *callback);
-int hp_sdc_request_cooked_irq(hp_sdc_irqhook *callback);
-int hp_sdc_release_timer_irq(hp_sdc_irqhook *callback);
-int hp_sdc_release_hil_irq(hp_sdc_irqhook *callback);
-int hp_sdc_release_cooked_irq(hp_sdc_irqhook *callback);
+int hp_sdc_request_timer_irq(hp_sdc_irqhook * callback);
+int hp_sdc_request_hil_irq(hp_sdc_irqhook * callback);
+int hp_sdc_request_cooked_irq(hp_sdc_irqhook * callback);
+int hp_sdc_release_timer_irq(hp_sdc_irqhook * callback);
+int hp_sdc_release_hil_irq(hp_sdc_irqhook * callback);
+int hp_sdc_release_cooked_irq(hp_sdc_irqhook * callback);
 
 typedef struct {
-	int actidx;	/* Start of act.  Acts are atomic WRT I/O to SDC */
-	int idx;	/* Index within the act */
-	int endidx;	/* transaction is over and done if idx == endidx */
-	uint8_t *seq;	/* commands/data for the transaction */
+	int actidx;		/* Start of act.  Acts are atomic WRT I/O to SDC */
+	int idx;		/* Index within the act */
+	int endidx;		/* transaction is over and done if idx == endidx */
+	uint8_t *seq;		/* commands/data for the transaction */
 	union {
-	  hp_sdc_irqhook   *irqhook;	/* Callback, isr or tasklet context */
-	  struct semaphore *semaphore;	/* Semaphore to sleep on. */
+		hp_sdc_irqhook *irqhook;	/* Callback, isr or tasklet context */
+		struct semaphore *semaphore;	/* Semaphore to sleep on. */
 	} act;
 } hp_sdc_transaction;
-int __hp_sdc_enqueue_transaction(hp_sdc_transaction *this);
-int hp_sdc_enqueue_transaction(hp_sdc_transaction *this);
-int hp_sdc_dequeue_transaction(hp_sdc_transaction *this);
+int __hp_sdc_enqueue_transaction(hp_sdc_transaction * this);
+int hp_sdc_enqueue_transaction(hp_sdc_transaction * this);
+int hp_sdc_dequeue_transaction(hp_sdc_transaction * this);
 
 /* The HP_SDC_ACT* values are peculiar to this driver.
  * Nuance: never HP_SDC_ACT_DATAIN | HP_SDC_ACT_DEALLOC, use another
  * act to perform the dealloc.
  */
-#define HP_SDC_ACT_PRECMD	0x01		/* Send a command first */
-#define HP_SDC_ACT_DATAREG	0x02		/* Set data registers */
-#define HP_SDC_ACT_DATAOUT	0x04		/* Send data bytes */
-#define HP_SDC_ACT_POSTCMD      0x08            /* Send command after */
-#define HP_SDC_ACT_DATAIN	0x10		/* Collect data after */
+#define HP_SDC_ACT_PRECMD	0x01	/* Send a command first */
+#define HP_SDC_ACT_DATAREG	0x02	/* Set data registers */
+#define HP_SDC_ACT_DATAOUT	0x04	/* Send data bytes */
+#define HP_SDC_ACT_POSTCMD      0x08	/* Send command after */
+#define HP_SDC_ACT_DATAIN	0x10	/* Collect data after */
 #define HP_SDC_ACT_DURING	0x1f
-#define HP_SDC_ACT_SEMAPHORE    0x20            /* Raise semaphore after */
-#define HP_SDC_ACT_CALLBACK	0x40		/* Pass data to IRQ handler */
-#define HP_SDC_ACT_DEALLOC	0x80		/* Destroy transaction after */
+#define HP_SDC_ACT_SEMAPHORE    0x20	/* Raise semaphore after */
+#define HP_SDC_ACT_CALLBACK	0x40	/* Pass data to IRQ handler */
+#define HP_SDC_ACT_DEALLOC	0x80	/* Destroy transaction after */
 #define HP_SDC_ACT_AFTER	0xe0
-#define HP_SDC_ACT_DEAD		0x60		/* Act timed out. */
+#define HP_SDC_ACT_DEAD		0x60	/* Act timed out. */
 
 /* Rest of the flags are straightforward representation of the SDC interface */
 #define HP_SDC_STATUS_IBF	0x02	/* Input buffer full */
 
 #define HP_SDC_STATUS_IRQMASK	0xf0	/* Bits containing "level 1" irq */
-#define HP_SDC_STATUS_PERIODIC  0x10    /* Periodic 10ms timer */
-#define HP_SDC_STATUS_USERTIMER 0x20    /* "Special purpose" timer */
-#define HP_SDC_STATUS_TIMER     0x30    /* Both PERIODIC and USERTIMER */
+#define HP_SDC_STATUS_PERIODIC  0x10	/* Periodic 10ms timer */
+#define HP_SDC_STATUS_USERTIMER 0x20	/* "Special purpose" timer */
+#define HP_SDC_STATUS_TIMER     0x30	/* Both PERIODIC and USERTIMER */
 #define HP_SDC_STATUS_REG	0x40	/* Data from an i8042 register */
 #define HP_SDC_STATUS_HILCMD    0x50	/* Command from HIL MLC */
 #define HP_SDC_STATUS_HILDATA   0x60	/* Data from HIL MLC */
@@ -129,14 +128,14 @@ int hp_sdc_dequeue_transaction(hp_sdc_transaction *this);
 #define HP_SDC_LPS		0x7a	/* i8042's view of HIL status */
 #define HP_SDC_LPC		0x7b	/* i8042's view of HIL "control" */
 #define HP_SDC_RSV  		0x7c	/* Reserved "for testing" */
-#define HP_SDC_LPR		0x7d    /* i8042 count of HIL reconfigs */
-#define HP_SDC_XTD		0x7e    /* "Extended Configuration" register */
-#define HP_SDC_STR		0x7f    /* i8042 self-test result */
+#define HP_SDC_LPR		0x7d	/* i8042 count of HIL reconfigs */
+#define HP_SDC_XTD		0x7e	/* "Extended Configuration" register */
+#define HP_SDC_STR		0x7f	/* i8042 self-test result */
 
 /* Bitfields for above registers */
 #define HP_SDC_USE_LOOP		0x04	/* Command is currently on the loop. */
 
-#define HP_SDC_IM_MASK          0x1f    /* these bits not part of cmd/status */
+#define HP_SDC_IM_MASK          0x1f	/* these bits not part of cmd/status */
 #define HP_SDC_IM_FH		0x10	/* Mask the fast handshake irq */
 #define HP_SDC_IM_PT		0x08	/* Mask the periodic timer irq */
 #define HP_SDC_IM_TIMERS	0x04	/* Mask the MT/DT/CT irq */
@@ -157,7 +156,7 @@ int hp_sdc_dequeue_transaction(hp_sdc_transaction *this);
 
 #define HP_SDC_LPC_APE_IPF	0x01	/* HIL MLC APE/IPF (autopoll) set */
 #define HP_SDC_LPC_ARCONERR	0x02	/* i8042 autoreconfigs loop on err */
-#define HP_SDC_LPC_ARCQUIET	0x03	/* i8042 doesn't report autoreconfigs*/
+#define HP_SDC_LPC_ARCQUIET	0x03	/* i8042 doesn't report autoreconfigs */
 #define HP_SDC_LPC_COOK		0x10	/* i8042 cooks devices in _KBN */
 #define HP_SDC_LPC_RC		0x80	/* causes autoreconfig */
 
@@ -178,7 +177,7 @@ switch (val) {						\
 #define HP_SDC_CMD_LOAD_DT	0x3B	/* Load the delay timer */
 #define HP_SDC_CMD_LOAD_CT	0x3E	/* Load the cycle timer */
 
-#define HP_SDC_CMD_SET_IM	0x40    /* 010xxxxx == set irq mask */
+#define HP_SDC_CMD_SET_IM	0x40	/* 010xxxxx == set irq mask */
 
 /* The documents provided do not explicitly state that all registers betweem 
  * 0x01 and 0x1f inclusive can be read by sending their register index as a 
@@ -249,7 +248,7 @@ switch (val) {						\
 #define HP_SDC_DATA		0x40	/* Data from an 8042 register */
 #define HP_SDC_HIL_CMD		0x50	/* Data from HIL MLC R1/8042 */
 #define HP_SDC_HIL_R1MASK	0x0f	/* Contents of HIL MLC R1 0:3 */
-#define HP_SDC_HIL_AUTO		0x10	/* Set if POL results from i8042 */   
+#define HP_SDC_HIL_AUTO		0x10	/* Set if POL results from i8042 */
 #define HP_SDC_HIL_ISERR	0x80	/* Has meaning as in next 4 values */
 #define HP_SDC_HIL_RC_DONE	0x80	/* i8042 auto-configured loop */
 #define HP_SDC_HIL_ERR		0x81	/* HIL MLC R2 had a bit set */
@@ -257,44 +256,43 @@ switch (val) {						\
 #define HP_SDC_HIL_RC		0x84	/* i8042 is auto-configuring loop */
 #define HP_SDC_HIL_DAT		0x60	/* Data from HIL MLC R0 */
 
-
 typedef struct {
-	rwlock_t	ibf_lock;
-	rwlock_t	lock;		/* user/tasklet lock */
-	rwlock_t	rtq_lock;	/* isr/tasklet lock */
-	rwlock_t	hook_lock;	/* isr/user lock for handler add/del */
+	rwlock_t ibf_lock;
+	rwlock_t lock;		/* user/tasklet lock */
+	rwlock_t rtq_lock;	/* isr/tasklet lock */
+	rwlock_t hook_lock;	/* isr/user lock for handler add/del */
 
-	unsigned int	irq, nmi;	/* Our IRQ lines */
-	unsigned long	base_io, status_io, data_io; /* Our IO ports */
+	unsigned int irq, nmi;	/* Our IRQ lines */
+	unsigned long base_io, status_io, data_io;	/* Our IO ports */
 
-	uint8_t		im;		/* Interrupt mask */
-	int		set_im; 	/* Interrupt mask needs to be set. */
+	uint8_t im;		/* Interrupt mask */
+	int set_im;		/* Interrupt mask needs to be set. */
 
-	int		ibf;		/* Last known status of IBF flag */
-	uint8_t		wi;		/* current i8042 write index */
-	uint8_t		r7[4];          /* current i8042[0x70 - 0x74] values */
-	uint8_t		r11, r7e;	/* Values from version/revision regs */
+	int ibf;		/* Last known status of IBF flag */
+	uint8_t wi;		/* current i8042 write index */
+	uint8_t r7[4];		/* current i8042[0x70 - 0x74] values */
+	uint8_t r11, r7e;	/* Values from version/revision regs */
 
-	hp_sdc_irqhook	*timer, *reg, *hil, *pup, *cooked;
+	hp_sdc_irqhook *timer, *reg, *hil, *pup, *cooked;
 
 #define HP_SDC_QUEUE_LEN 16
-	hp_sdc_transaction *tq[HP_SDC_QUEUE_LEN]; /* All pending read/writes */
+	hp_sdc_transaction *tq[HP_SDC_QUEUE_LEN];	/* All pending read/writes */
 
-	int		rcurr, rqty;	/* Current read transact in process */
-	struct timeval	rtv;		/* Time when current read started */
-	int		wcurr;		/* Current write transact in process */
+	int rcurr, rqty;	/* Current read transact in process */
+	struct timeval rtv;	/* Time when current read started */
+	int wcurr;		/* Current write transact in process */
 
-	int		dev_err;	/* carries status from registration */
+	int dev_err;		/* carries status from registration */
 #if defined(__hppa__)
-	struct parisc_device	*dev;
+	struct parisc_device *dev;
 #elif defined(__mc68000__)
-	void		*dev;
+	void *dev;
 #else
 #error No support for device registration on this arch yet.
 #endif
 
 	struct timer_list kicker;	/* Keeps below task alive */
-	struct tasklet_struct	task;
+	struct tasklet_struct task;
 
 } hp_i8042_sdc;
 

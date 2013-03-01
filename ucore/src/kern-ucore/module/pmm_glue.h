@@ -21,6 +21,6 @@
 
 #define UCORE_KAP_IO 0x00000001
 
-extern void* ucore_kva_alloc_pages(size_t n, unsigned int flags);
+extern void *ucore_kva_alloc_pages(size_t n, unsigned int flags);
 
 #endif

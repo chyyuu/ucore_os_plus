@@ -6,10 +6,10 @@
 struct xt_entry_target;
 
 struct tcf_ipt {
-	struct tcf_common	common;
-	u32			tcfi_hook;
-	char			*tcfi_tname;
-	struct xt_entry_target	*tcfi_t;
+	struct tcf_common common;
+	u32 tcfi_hook;
+	char *tcfi_tname;
+	struct xt_entry_target *tcfi_t;
 };
 #define to_ipt(pc) \
 	container_of(pc, struct tcf_ipt, common)

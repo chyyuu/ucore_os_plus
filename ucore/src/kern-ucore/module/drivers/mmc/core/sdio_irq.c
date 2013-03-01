@@ -45,14 +45,15 @@ static int process_sdio_pending_irqs(struct mmc_card *card)
 			struct sdio_func *func = card->sdio_func[i - 1];
 			if (!func) {
 				printk(KERN_WARNING "%s: pending IRQ for "
-					"non-existant function\n",
-					mmc_card_id(card));
+				       "non-existant function\n",
+				       mmc_card_id(card));
 				ret = -EINVAL;
 			} else if (func->irq_handler) {
 				func->irq_handler(func);
 				count++;
 			} else {
-				printk(KERN_WARNING "%s: pending IRQ with no handler\n",
+				printk(KERN_WARNING
+				       "%s: pending IRQ with no handler\n",
 				       sdio_func_id(func));
 				ret = -EINVAL;
 			}
@@ -68,7 +69,7 @@ static int process_sdio_pending_irqs(struct mmc_card *card)
 static int sdio_irq_thread(void *_host)
 {
 	struct mmc_host *host = _host;
-	struct sched_param param = { .sched_priority = 1 };
+	struct sched_param param = {.sched_priority = 1 };
 	unsigned long period, idle_period;
 	int ret;
 
@@ -82,7 +83,7 @@ static int sdio_irq_thread(void *_host)
 	 */
 	idle_period = msecs_to_jiffies(10);
 	period = (host->caps & MMC_CAP_SDIO_IRQ) ?
-		MAX_SCHEDULE_TIMEOUT : idle_period;
+	    MAX_SCHEDULE_TIMEOUT : idle_period;
 
 	pr_debug("%s: IRQ thread started (poll period = %lu jiffies)\n",
 		 mmc_hostname(host), period);
@@ -159,7 +160,7 @@ static int sdio_card_irq_get(struct mmc_card *card)
 	if (!host->sdio_irqs++) {
 		atomic_set(&host->sdio_irq_thread_abort, 0);
 		host->sdio_irq_thread =
-			kthread_run(sdio_irq_thread, host, "ksdioirqd/%s",
+		    kthread_run(sdio_irq_thread, host, "ksdioirqd/%s",
 				mmc_hostname(host));
 		if (IS_ERR(host->sdio_irq_thread)) {
 			int err = PTR_ERR(host->sdio_irq_thread);
@@ -196,7 +197,7 @@ static int sdio_card_irq_put(struct mmc_card *card)
  *	claimed already when the handler is called so the handler must not
  *	call sdio_claim_host() nor sdio_release_host().
  */
-int sdio_claim_irq(struct sdio_func *func, sdio_irq_handler_t *handler)
+int sdio_claim_irq(struct sdio_func *func, sdio_irq_handler_t * handler)
 {
 	int ret;
 	unsigned char reg;
@@ -207,7 +208,8 @@ int sdio_claim_irq(struct sdio_func *func, sdio_irq_handler_t *handler)
 	pr_debug("SDIO: Enabling IRQ for %s...\n", sdio_func_id(func));
 
 	if (func->irq_handler) {
-		pr_debug("SDIO: IRQ for %s already in use.\n", sdio_func_id(func));
+		pr_debug("SDIO: IRQ for %s already in use.\n",
+			 sdio_func_id(func));
 		return -EBUSY;
 	}
 
@@ -217,7 +219,7 @@ int sdio_claim_irq(struct sdio_func *func, sdio_irq_handler_t *handler)
 
 	reg |= 1 << func->num;
 
-	reg |= 1; /* Master interrupt enable */
+	reg |= 1;		/* Master interrupt enable */
 
 	ret = mmc_io_rw_direct(func->card, 1, 0, SDIO_CCCR_IENx, reg, NULL);
 	if (ret)
@@ -230,6 +232,7 @@ int sdio_claim_irq(struct sdio_func *func, sdio_irq_handler_t *handler)
 
 	return ret;
 }
+
 EXPORT_SYMBOL_GPL(sdio_claim_irq);
 
 /**
@@ -269,5 +272,5 @@ int sdio_release_irq(struct sdio_func *func)
 
 	return 0;
 }
-EXPORT_SYMBOL_GPL(sdio_release_irq);
 
+EXPORT_SYMBOL_GPL(sdio_release_irq);

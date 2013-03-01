@@ -96,7 +96,6 @@
 	PU_PD_REG(pu_pd_reg, pu_pd_status)		\
 },
 
-
 /*
  * OMAP730/850 has a slightly different config for the pin mux.
  * - config regs are the OMAP7XX_IO_CONF_x regs (see omap7xx.h) regs and
@@ -115,9 +114,9 @@
 },
 
 struct pin_config {
-	char 			*name;
-	const unsigned int 	mux_reg;
-	unsigned char		debug;
+	char *name;
+	const unsigned int mux_reg;
+	unsigned char debug;
 
 	const unsigned char mask_offset;
 	const unsigned char mask;
@@ -180,11 +179,11 @@ enum omap7xx_index {
 };
 
 enum omap1xxx_index {
-	/* UART1 (BT_UART_GATING)*/
+	/* UART1 (BT_UART_GATING) */
 	UART1_TX = 0,
 	UART1_RTS,
 
-	/* UART2 (COM_UART_GATING)*/
+	/* UART2 (COM_UART_GATING) */
 	UART2_TX,
 	UART2_RX,
 	UART2_CTS,
@@ -196,7 +195,7 @@ enum omap1xxx_index {
 	UART3_CTS,
 	UART3_RTS,
 	UART3_CLKREQ,
-	UART3_BCLK,	/* 12MHz clock out */
+	UART3_BCLK,		/* 12MHz clock out */
 	Y15_1610_UART3_RTS,
 
 	/* PWT & PWL */
@@ -433,9 +432,9 @@ enum omap1xxx_index {
 };
 
 struct omap_mux_cfg {
-	struct pin_config	*pins;
-	unsigned long		size;
-	int			(*cfg_reg)(const struct pin_config *cfg);
+	struct pin_config *pins;
+	unsigned long size;
+	int (*cfg_reg) (const struct pin_config * cfg);
 };
 
 #ifdef	CONFIG_OMAP_MUX
@@ -445,8 +444,15 @@ extern int omap_mux_register(struct omap_mux_cfg *);
 extern int omap_cfg_reg(unsigned long reg_cfg);
 #else
 /* boot loader does it all (no warnings from CONFIG_OMAP_MUX_WARNINGS) */
-static inline int omap1_mux_init(void) { return 0; }
-static inline int omap_cfg_reg(unsigned long reg_cfg) { return 0; }
+static inline int omap1_mux_init(void)
+{
+	return 0;
+}
+
+static inline int omap_cfg_reg(unsigned long reg_cfg)
+{
+	return 0;
+}
 #endif
 
 extern int omap2_mux_init(void);

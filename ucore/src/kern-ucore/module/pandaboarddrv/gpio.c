@@ -129,12 +129,11 @@ static int __init omap2_gpio_dev_init(struct omap_hwmod *oh, void *unused)
 	pdata->loses_context = pwrdm_can_ever_lose_context(pwrdm);
 
 	pdev = omap_device_build(name, id - 1, oh, pdata,
-				sizeof(*pdata),	NULL, 0, false);
+				 sizeof(*pdata), NULL, 0, false);
 	kfree(pdata);
 
 	if (IS_ERR(pdev)) {
-		WARN(1, "Can't build omap_device for %s:%s.\n",
-					name, oh->name);
+		WARN(1, "Can't build omap_device for %s:%s.\n", name, oh->name);
 		return PTR_ERR(pdev);
 	}
 
@@ -154,4 +153,5 @@ static int __init omap2_gpio_init(void)
 
 	return omap_hwmod_for_each_by_class("gpio", omap2_gpio_dev_init, NULL);
 }
+
 postcore_initcall(omap2_gpio_init);

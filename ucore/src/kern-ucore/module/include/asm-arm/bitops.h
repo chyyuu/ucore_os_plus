@@ -34,7 +34,8 @@
  *
  * First, the atomic bitops. These use native endian.
  */
-static inline void ____atomic_set_bit(unsigned int bit, volatile unsigned long *p)
+static inline void ____atomic_set_bit(unsigned int bit,
+				      volatile unsigned long *p)
 {
 	unsigned long flags;
 	unsigned long mask = 1UL << (bit & 31);
@@ -46,7 +47,8 @@ static inline void ____atomic_set_bit(unsigned int bit, volatile unsigned long *
 	raw_local_irq_restore(flags);
 }
 
-static inline void ____atomic_clear_bit(unsigned int bit, volatile unsigned long *p)
+static inline void ____atomic_clear_bit(unsigned int bit,
+					volatile unsigned long *p)
 {
 	unsigned long flags;
 	unsigned long mask = 1UL << (bit & 31);
@@ -58,7 +60,8 @@ static inline void ____atomic_clear_bit(unsigned int bit, volatile unsigned long
 	raw_local_irq_restore(flags);
 }
 
-static inline void ____atomic_change_bit(unsigned int bit, volatile unsigned long *p)
+static inline void ____atomic_change_bit(unsigned int bit,
+					 volatile unsigned long *p)
 {
 	unsigned long flags;
 	unsigned long mask = 1UL << (bit & 31);
@@ -151,28 +154,28 @@ ____atomic_test_and_change_bit(unsigned int bit, volatile unsigned long *p)
 /*
  * Little endian assembly bitops.  nr = 0 -> byte 0 bit 0.
  */
-extern void _set_bit_le(int nr, volatile unsigned long * p);
-extern void _clear_bit_le(int nr, volatile unsigned long * p);
-extern void _change_bit_le(int nr, volatile unsigned long * p);
-extern int _test_and_set_bit_le(int nr, volatile unsigned long * p);
-extern int _test_and_clear_bit_le(int nr, volatile unsigned long * p);
-extern int _test_and_change_bit_le(int nr, volatile unsigned long * p);
-extern int _find_first_zero_bit_le(const void * p, unsigned size);
-extern int _find_next_zero_bit_le(const void * p, int size, int offset);
+extern void _set_bit_le(int nr, volatile unsigned long *p);
+extern void _clear_bit_le(int nr, volatile unsigned long *p);
+extern void _change_bit_le(int nr, volatile unsigned long *p);
+extern int _test_and_set_bit_le(int nr, volatile unsigned long *p);
+extern int _test_and_clear_bit_le(int nr, volatile unsigned long *p);
+extern int _test_and_change_bit_le(int nr, volatile unsigned long *p);
+extern int _find_first_zero_bit_le(const void *p, unsigned size);
+extern int _find_next_zero_bit_le(const void *p, int size, int offset);
 extern int _find_first_bit_le(const unsigned long *p, unsigned size);
 extern int _find_next_bit_le(const unsigned long *p, int size, int offset);
 
 /*
  * Big endian assembly bitops.  nr = 0 -> byte 3 bit 0.
  */
-extern void _set_bit_be(int nr, volatile unsigned long * p);
-extern void _clear_bit_be(int nr, volatile unsigned long * p);
-extern void _change_bit_be(int nr, volatile unsigned long * p);
-extern int _test_and_set_bit_be(int nr, volatile unsigned long * p);
-extern int _test_and_clear_bit_be(int nr, volatile unsigned long * p);
-extern int _test_and_change_bit_be(int nr, volatile unsigned long * p);
-extern int _find_first_zero_bit_be(const void * p, unsigned size);
-extern int _find_next_zero_bit_be(const void * p, int size, int offset);
+extern void _set_bit_be(int nr, volatile unsigned long *p);
+extern void _clear_bit_be(int nr, volatile unsigned long *p);
+extern void _change_bit_be(int nr, volatile unsigned long *p);
+extern int _test_and_set_bit_be(int nr, volatile unsigned long *p);
+extern int _test_and_clear_bit_be(int nr, volatile unsigned long *p);
+extern int _test_and_change_bit_be(int nr, volatile unsigned long *p);
+extern int _find_first_zero_bit_be(const void *p, unsigned size);
+extern int _find_next_zero_bit_be(const void *p, int size, int offset);
 extern int _find_first_bit_be(const unsigned long *p, unsigned size);
 extern int _find_next_bit_be(const unsigned long *p, int size, int offset);
 
@@ -283,10 +286,10 @@ static inline int fls(int x)
 	int ret;
 
 	if (__builtin_constant_p(x))
-	       return constant_fls(x);
+		return constant_fls(x);
 
-	asm("clz\t%0, %1" : "=r" (ret) : "r" (x) : "cc");
-       	ret = 32 - ret;
+asm("clz\t%0, %1": "=r"(ret): "r"(x):"cc");
+	ret = 32 - ret;
 	return ret;
 }
 

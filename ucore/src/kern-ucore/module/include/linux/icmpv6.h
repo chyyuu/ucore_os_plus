@@ -6,58 +6,45 @@
 
 struct icmp6hdr {
 
-	__u8		icmp6_type;
-	__u8		icmp6_code;
-	__sum16		icmp6_cksum;
-
+	__u8 icmp6_type;
+	__u8 icmp6_code;
+	__sum16 icmp6_cksum;
 
 	union {
-		__be32			un_data32[1];
-		__be16			un_data16[2];
-		__u8			un_data8[4];
+		__be32 un_data32[1];
+		__be16 un_data16[2];
+		__u8 un_data8[4];
 
 		struct icmpv6_echo {
-			__be16		identifier;
-			__be16		sequence;
+			__be16 identifier;
+			__be16 sequence;
 		} u_echo;
 
-                struct icmpv6_nd_advt {
+		struct icmpv6_nd_advt {
 #if defined(__LITTLE_ENDIAN_BITFIELD)
-                        __u32		reserved:5,
-                        		override:1,
-                        		solicited:1,
-                        		router:1,
-					reserved2:24;
+			__u32 reserved:5,
+			    override:1, solicited:1, router:1, reserved2:24;
 #elif defined(__BIG_ENDIAN_BITFIELD)
-                        __u32		router:1,
-					solicited:1,
-                        		override:1,
-                        		reserved:29;
-#else
-#error	"Please fix <asm/byteorder.h>"
-#endif						
-                } u_nd_advt;
-
-                struct icmpv6_nd_ra {
-			__u8		hop_limit;
-#if defined(__LITTLE_ENDIAN_BITFIELD)
-			__u8		reserved:3,
-					router_pref:2,
-					home_agent:1,
-					other:1,
-					managed:1;
-
-#elif defined(__BIG_ENDIAN_BITFIELD)
-			__u8		managed:1,
-					other:1,
-					home_agent:1,
-					router_pref:2,
-					reserved:3;
+			__u32 router:1, solicited:1, override:1, reserved:29;
 #else
 #error	"Please fix <asm/byteorder.h>"
 #endif
-			__be16		rt_lifetime;
-                } u_nd_ra;
+		} u_nd_advt;
+
+		struct icmpv6_nd_ra {
+			__u8 hop_limit;
+#if defined(__LITTLE_ENDIAN_BITFIELD)
+			__u8 reserved:3,
+			    router_pref:2, home_agent:1, other:1, managed:1;
+
+#elif defined(__BIG_ENDIAN_BITFIELD)
+			__u8 managed:1,
+			    other:1, home_agent:1, router_pref:2, reserved:3;
+#else
+#error	"Please fix <asm/byteorder.h>"
+#endif
+			__be16 rt_lifetime;
+		} u_nd_ra;
 
 	} icmp6_dataun;
 
@@ -153,7 +140,7 @@ static inline struct icmp6hdr *icmp6_hdr(const struct sk_buff *skb)
 #define ICMPV6_FILTER_PASSONLY		4
 
 struct icmp6_filter {
-	__u32		data[8];
+	__u32 data[8];
 };
 
 /*
@@ -173,27 +160,21 @@ struct icmp6_filter {
 #include <linux/netdevice.h>
 #include <linux/skbuff.h>
 
+extern void icmpv6_send(struct sk_buff *skb,
+			int type, int code, __u32 info, struct net_device *dev);
 
-extern void				icmpv6_send(struct sk_buff *skb,
-						    int type, int code,
-						    __u32 info, 
-						    struct net_device *dev);
-
-extern int				icmpv6_init(void);
-extern int				icmpv6_err_convert(int type, int code,
-							   int *err);
-extern void				icmpv6_cleanup(void);
-extern void				icmpv6_param_prob(struct sk_buff *skb,
-							  int code, int pos);
+extern int icmpv6_init(void);
+extern int icmpv6_err_convert(int type, int code, int *err);
+extern void icmpv6_cleanup(void);
+extern void icmpv6_param_prob(struct sk_buff *skb, int code, int pos);
 
 struct flowi;
 struct in6_addr;
-extern void				icmpv6_flow_init(struct sock *sk,
-							 struct flowi *fl,
-							 u8 type,
-							 const struct in6_addr *saddr,
-							 const struct in6_addr *daddr,
-							 int oif);
+extern void icmpv6_flow_init(struct sock *sk,
+			     struct flowi *fl,
+			     u8 type,
+			     const struct in6_addr *saddr,
+			     const struct in6_addr *daddr, int oif);
 #endif
 
 #endif

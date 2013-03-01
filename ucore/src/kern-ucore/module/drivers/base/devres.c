@@ -13,24 +13,24 @@
 #include "base.h"
 
 struct devres_node {
-	struct list_head		entry;
-	dr_release_t			release;
+	struct list_head entry;
+	dr_release_t release;
 #ifdef CONFIG_DEBUG_DEVRES
-	const char			*name;
-	size_t				size;
+	const char *name;
+	size_t size;
 #endif
 };
 
 struct devres {
-	struct devres_node		node;
+	struct devres_node node;
 	/* -- 3 pointers */
-	unsigned long long		data[];	/* guarantee ull alignment */
+	unsigned long long data[];	/* guarantee ull alignment */
 };
 
 struct devres_group {
-	struct devres_node		node[2];
-	void				*id;
-	int				color;
+	struct devres_node node[2];
+	void *id;
+	int color;
 	/* -- 8 pointers */
 };
 
@@ -71,7 +71,7 @@ static void group_close_release(struct device *dev, void *res)
 	/* noop */
 }
 
-static struct devres_group * node_to_group(struct devres_node *node)
+static struct devres_group *node_to_group(struct devres_node *node)
 {
 	if (node->release == &group_open_release)
 		return container_of(node, struct devres_group, node[0]);
@@ -80,8 +80,8 @@ static struct devres_group * node_to_group(struct devres_node *node)
 	return NULL;
 }
 
-static __always_inline struct devres * alloc_dr(dr_release_t release,
-						size_t size, gfp_t gfp)
+static __always_inline struct devres *alloc_dr(dr_release_t release,
+					       size_t size, gfp_t gfp)
 {
 	size_t tot_size = sizeof(struct devres) + size;
 	struct devres *dr;
@@ -104,8 +104,8 @@ static void add_dr(struct device *dev, struct devres_node *node)
 }
 
 #ifdef CONFIG_DEBUG_DEVRES
-void * __devres_alloc(dr_release_t release, size_t size, gfp_t gfp,
-		      const char *name)
+void *__devres_alloc(dr_release_t release, size_t size, gfp_t gfp,
+		     const char *name)
 {
 	struct devres *dr;
 
@@ -115,6 +115,7 @@ void * __devres_alloc(dr_release_t release, size_t size, gfp_t gfp,
 	set_node_dbginfo(&dr->node, name, size);
 	return dr->data;
 }
+
 EXPORT_SYMBOL_GPL(__devres_alloc);
 #else
 /**
@@ -130,7 +131,7 @@ EXPORT_SYMBOL_GPL(__devres_alloc);
  * RETURNS:
  * Pointer to allocated devres on success, NULL on failure.
  */
-void * devres_alloc(dr_release_t release, size_t size, gfp_t gfp)
+void *devres_alloc(dr_release_t release, size_t size, gfp_t gfp)
 {
 	struct devres *dr;
 
@@ -139,6 +140,7 @@ void * devres_alloc(dr_release_t release, size_t size, gfp_t gfp)
 		return NULL;
 	return dr->data;
 }
+
 EXPORT_SYMBOL_GPL(devres_alloc);
 #endif
 
@@ -157,6 +159,7 @@ void devres_free(void *res)
 		kfree(dr);
 	}
 }
+
 EXPORT_SYMBOL_GPL(devres_free);
 
 /**
@@ -177,6 +180,7 @@ void devres_add(struct device *dev, void *res)
 	add_dr(dev, &dr->node);
 	spin_unlock_irqrestore(&dev->devres_lock, flags);
 }
+
 EXPORT_SYMBOL_GPL(devres_add);
 
 static struct devres *find_dr(struct device *dev, dr_release_t release,
@@ -211,8 +215,8 @@ static struct devres *find_dr(struct device *dev, dr_release_t release,
  * RETURNS:
  * Pointer to found devres, NULL if not found.
  */
-void * devres_find(struct device *dev, dr_release_t release,
-		   dr_match_t match, void *match_data)
+void *devres_find(struct device *dev, dr_release_t release,
+		  dr_match_t match, void *match_data)
 {
 	struct devres *dr;
 	unsigned long flags;
@@ -225,6 +229,7 @@ void * devres_find(struct device *dev, dr_release_t release,
 		return dr->data;
 	return NULL;
 }
+
 EXPORT_SYMBOL_GPL(devres_find);
 
 /**
@@ -241,8 +246,8 @@ EXPORT_SYMBOL_GPL(devres_find);
  * RETURNS:
  * Pointer to found or added devres.
  */
-void * devres_get(struct device *dev, void *new_res,
-		  dr_match_t match, void *match_data)
+void *devres_get(struct device *dev, void *new_res,
+		 dr_match_t match, void *match_data)
 {
 	struct devres *new_dr = container_of(new_res, struct devres, data);
 	struct devres *dr;
@@ -260,6 +265,7 @@ void * devres_get(struct device *dev, void *new_res,
 
 	return dr->data;
 }
+
 EXPORT_SYMBOL_GPL(devres_get);
 
 /**
@@ -277,8 +283,8 @@ EXPORT_SYMBOL_GPL(devres_get);
  * RETURNS:
  * Pointer to removed devres on success, NULL if not found.
  */
-void * devres_remove(struct device *dev, dr_release_t release,
-		     dr_match_t match, void *match_data)
+void *devres_remove(struct device *dev, dr_release_t release,
+		    dr_match_t match, void *match_data)
 {
 	struct devres *dr;
 	unsigned long flags;
@@ -295,6 +301,7 @@ void * devres_remove(struct device *dev, dr_release_t release,
 		return dr->data;
 	return NULL;
 }
+
 EXPORT_SYMBOL_GPL(devres_remove);
 
 /**
@@ -323,6 +330,7 @@ int devres_destroy(struct device *dev, dr_release_t release,
 	devres_free(res);
 	return 0;
 }
+
 EXPORT_SYMBOL_GPL(devres_destroy);
 
 static int remove_nodes(struct device *dev,
@@ -446,7 +454,7 @@ int devres_release_all(struct device *dev)
  * RETURNS:
  * ID of the new group, NULL on failure.
  */
-void * devres_open_group(struct device *dev, void *id, gfp_t gfp)
+void *devres_open_group(struct device *dev, void *id, gfp_t gfp)
 {
 	struct devres_group *grp;
 	unsigned long flags;
@@ -470,10 +478,11 @@ void * devres_open_group(struct device *dev, void *id, gfp_t gfp)
 	spin_unlock_irqrestore(&dev->devres_lock, flags);
 	return grp->id;
 }
+
 EXPORT_SYMBOL_GPL(devres_open_group);
 
 /* Find devres group with ID @id.  If @id is NULL, look for the latest. */
-static struct devres_group * find_group(struct device *dev, void *id)
+static struct devres_group *find_group(struct device *dev, void *id)
 {
 	struct devres_node *node;
 
@@ -518,6 +527,7 @@ void devres_close_group(struct device *dev, void *id)
 
 	spin_unlock_irqrestore(&dev->devres_lock, flags);
 }
+
 EXPORT_SYMBOL_GPL(devres_close_group);
 
 /**
@@ -548,6 +558,7 @@ void devres_remove_group(struct device *dev, void *id)
 
 	kfree(grp);
 }
+
 EXPORT_SYMBOL_GPL(devres_remove_group);
 
 /**
@@ -586,6 +597,7 @@ int devres_release_group(struct device *dev, void *id)
 
 	return cnt;
 }
+
 EXPORT_SYMBOL_GPL(devres_release_group);
 
 /*
@@ -614,7 +626,7 @@ static int devm_kzalloc_match(struct device *dev, void *res, void *data)
  * RETURNS:
  * Pointer to allocated memory on success, NULL on failure.
  */
-void * devm_kzalloc(struct device *dev, size_t size, gfp_t gfp)
+void *devm_kzalloc(struct device *dev, size_t size, gfp_t gfp)
 {
 	struct devres *dr;
 
@@ -627,6 +639,7 @@ void * devm_kzalloc(struct device *dev, size_t size, gfp_t gfp)
 	devres_add(dev, dr->data);
 	return dr->data;
 }
+
 EXPORT_SYMBOL_GPL(devm_kzalloc);
 
 /**
@@ -643,4 +656,5 @@ void devm_kfree(struct device *dev, void *p)
 	rc = devres_destroy(dev, devm_kzalloc_release, devm_kzalloc_match, p);
 	WARN_ON(rc);
 }
+
 EXPORT_SYMBOL_GPL(devm_kfree);

@@ -42,12 +42,13 @@ sdio_config_attr(class, "0x%02x\n");
 sdio_config_attr(vendor, "0x%04x\n");
 sdio_config_attr(device, "0x%04x\n");
 
-static ssize_t modalias_show(struct device *dev, struct device_attribute *attr, char *buf)
+static ssize_t modalias_show(struct device *dev, struct device_attribute *attr,
+			     char *buf)
 {
-	struct sdio_func *func = dev_to_sdio_func (dev);
+	struct sdio_func *func = dev_to_sdio_func(dev);
 
 	return sprintf(buf, "sdio:c%02Xv%04Xd%04X\n",
-			func->class, func->vendor, func->device);
+		       func->class, func->vendor, func->device);
 }
 
 static struct device_attribute sdio_dev_attrs[] = {
@@ -58,20 +59,20 @@ static struct device_attribute sdio_dev_attrs[] = {
 	__ATTR_NULL,
 };
 
-static const struct sdio_device_id *sdio_match_one(struct sdio_func *func,
-	const struct sdio_device_id *id)
+static const struct sdio_device_id *sdio_match_one(struct sdio_func *func, const struct sdio_device_id
+						   *id)
 {
-	if (id->class != (__u8)SDIO_ANY_ID && id->class != func->class)
+	if (id->class != (__u8) SDIO_ANY_ID && id->class != func->class)
 		return NULL;
-	if (id->vendor != (__u16)SDIO_ANY_ID && id->vendor != func->vendor)
+	if (id->vendor != (__u16) SDIO_ANY_ID && id->vendor != func->vendor)
 		return NULL;
-	if (id->device != (__u16)SDIO_ANY_ID && id->device != func->device)
+	if (id->device != (__u16) SDIO_ANY_ID && id->device != func->device)
 		return NULL;
 	return id;
 }
 
 static const struct sdio_device_id *sdio_match_device(struct sdio_func *func,
-	struct sdio_driver *sdrv)
+						      struct sdio_driver *sdrv)
 {
 	const struct sdio_device_id *ids;
 
@@ -99,22 +100,20 @@ static int sdio_bus_match(struct device *dev, struct device_driver *drv)
 	return 0;
 }
 
-static int
-sdio_bus_uevent(struct device *dev, struct kobj_uevent_env *env)
+static int sdio_bus_uevent(struct device *dev, struct kobj_uevent_env *env)
 {
 	struct sdio_func *func = dev_to_sdio_func(dev);
 
-	if (add_uevent_var(env,
-			"SDIO_CLASS=%02X", func->class))
-		return -ENOMEM;
-
-	if (add_uevent_var(env, 
-			"SDIO_ID=%04X:%04X", func->vendor, func->device))
+	if (add_uevent_var(env, "SDIO_CLASS=%02X", func->class))
 		return -ENOMEM;
 
 	if (add_uevent_var(env,
-			"MODALIAS=sdio:c%02Xv%04Xd%04X",
-			func->class, func->vendor, func->device))
+			   "SDIO_ID=%04X:%04X", func->vendor, func->device))
+		return -ENOMEM;
+
+	if (add_uevent_var(env,
+			   "MODALIAS=sdio:c%02Xv%04Xd%04X",
+			   func->class, func->vendor, func->device))
 		return -ENOMEM;
 
 	return 0;
@@ -151,7 +150,7 @@ static int sdio_bus_remove(struct device *dev)
 
 	if (func->irq_handler) {
 		printk(KERN_WARNING "WARNING: driver %s did not remove "
-			"its interrupt handler!\n", drv->name);
+		       "its interrupt handler!\n", drv->name);
 		sdio_claim_host(func);
 		sdio_release_irq(func);
 		sdio_release_host(func);
@@ -161,12 +160,12 @@ static int sdio_bus_remove(struct device *dev)
 }
 
 static struct bus_type sdio_bus_type = {
-	.name		= "sdio",
-	.dev_attrs	= sdio_dev_attrs,
-	.match		= sdio_bus_match,
-	.uevent		= sdio_bus_uevent,
-	.probe		= sdio_bus_probe,
-	.remove		= sdio_bus_remove,
+	.name = "sdio",
+	.dev_attrs = sdio_dev_attrs,
+	.match = sdio_bus_match,
+	.uevent = sdio_bus_uevent,
+	.probe = sdio_bus_probe,
+	.remove = sdio_bus_remove,
 };
 
 int sdio_register_bus(void)
@@ -189,6 +188,7 @@ int sdio_register_driver(struct sdio_driver *drv)
 	drv->drv.bus = &sdio_bus_type;
 	return driver_register(&drv->drv);
 }
+
 EXPORT_SYMBOL_GPL(sdio_register_driver);
 
 /**
@@ -200,6 +200,7 @@ void sdio_unregister_driver(struct sdio_driver *drv)
 	drv->drv.bus = &sdio_bus_type;
 	driver_unregister(&drv->drv);
 }
+
 EXPORT_SYMBOL_GPL(sdio_unregister_driver);
 
 static void sdio_release_func(struct device *dev)
@@ -270,4 +271,3 @@ void sdio_remove_func(struct sdio_func *func)
 
 	put_device(&func->dev);
 }
-

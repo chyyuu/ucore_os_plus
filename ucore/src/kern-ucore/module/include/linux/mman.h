@@ -56,6 +56,7 @@ static inline int arch_validate_prot(unsigned long prot)
 {
 	return (prot & ~(PROT_READ | PROT_WRITE | PROT_EXEC | PROT_SEM)) == 0;
 }
+
 #define arch_validate_prot arch_validate_prot
 #endif
 
@@ -72,25 +73,23 @@ static inline int arch_validate_prot(unsigned long prot)
 /*
  * Combine the mmap "prot" argument into "vm_flags" used internally.
  */
-static inline unsigned long
-calc_vm_prot_bits(unsigned long prot)
+static inline unsigned long calc_vm_prot_bits(unsigned long prot)
 {
-	return _calc_vm_trans(prot, PROT_READ,  VM_READ ) |
-	       _calc_vm_trans(prot, PROT_WRITE, VM_WRITE) |
-	       _calc_vm_trans(prot, PROT_EXEC,  VM_EXEC) |
-	       arch_calc_vm_prot_bits(prot);
+	return _calc_vm_trans(prot, PROT_READ, VM_READ) |
+	    _calc_vm_trans(prot, PROT_WRITE, VM_WRITE) |
+	    _calc_vm_trans(prot, PROT_EXEC, VM_EXEC) |
+	    arch_calc_vm_prot_bits(prot);
 }
 
 /*
  * Combine the mmap "flags" argument into "vm_flags" used internally.
  */
-static inline unsigned long
-calc_vm_flag_bits(unsigned long flags)
+static inline unsigned long calc_vm_flag_bits(unsigned long flags)
 {
-	return _calc_vm_trans(flags, MAP_GROWSDOWN,  VM_GROWSDOWN ) |
-	       _calc_vm_trans(flags, MAP_DENYWRITE,  VM_DENYWRITE ) |
-	       _calc_vm_trans(flags, MAP_EXECUTABLE, VM_EXECUTABLE) |
-	       _calc_vm_trans(flags, MAP_LOCKED,     VM_LOCKED    );
+	return _calc_vm_trans(flags, MAP_GROWSDOWN, VM_GROWSDOWN) |
+	    _calc_vm_trans(flags, MAP_DENYWRITE, VM_DENYWRITE) |
+	    _calc_vm_trans(flags, MAP_EXECUTABLE, VM_EXECUTABLE) |
+	    _calc_vm_trans(flags, MAP_LOCKED, VM_LOCKED);
 }
 #endif /* __KERNEL__ */
 #endif /* _LINUX_MMAN_H */

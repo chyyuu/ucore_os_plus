@@ -9,17 +9,16 @@
  * The MS-DOS filesystem constants/structures
  */
 
-#define SECTOR_SIZE	512		/* sector size (bytes) */
-#define SECTOR_BITS	9		/* log2(SECTOR_SIZE) */
+#define SECTOR_SIZE	512	/* sector size (bytes) */
+#define SECTOR_BITS	9	/* log2(SECTOR_SIZE) */
 #define MSDOS_DPB	(MSDOS_DPS)	/* dir entries per block */
-#define MSDOS_DPB_BITS	4		/* log2(MSDOS_DPB) */
+#define MSDOS_DPB_BITS	4	/* log2(MSDOS_DPB) */
 #define MSDOS_DPS	(SECTOR_SIZE / sizeof(struct msdos_dir_entry))
-#define MSDOS_DPS_BITS	4		/* log2(MSDOS_DPS) */
+#define MSDOS_DPS_BITS	4	/* log2(MSDOS_DPS) */
 #define CF_LE_W(v)	le16_to_cpu(v)
 #define CF_LE_L(v)	le32_to_cpu(v)
 #define CT_LE_W(v)	cpu_to_le16(v)
 #define CT_LE_L(v)	cpu_to_le32(v)
-
 
 #define MSDOS_ROOT_INO	1	/* == MINIX_ROOT_INO */
 #define MSDOS_DIR_BITS	5	/* log2(sizeof(struct msdos_dir_entry)) */
@@ -86,10 +85,10 @@
 			 && le32_to_cpu((x)->signature2) == FAT_FSINFO_SIG2)
 
 struct __fat_dirent {
-	long		d_ino;
-	__kernel_off_t	d_off;
-	unsigned short	d_reclen;
-	char		d_name[256]; /* We must not include limits.h! */
+	long d_ino;
+	__kernel_off_t d_off;
+	unsigned short d_reclen;
+	char d_name[256];	/* We must not include limits.h! */
 };
 
 /*
@@ -103,75 +102,75 @@ struct __fat_dirent {
 #define VFAT_IOCTL_GET_VOLUME_ID	_IOR('r', 0x12, __u32)
 
 struct fat_boot_sector {
-	__u8	ignored[3];	/* Boot strap short or near jump */
-	__u8	system_id[8];	/* Name - can be used to special case
+	__u8 ignored[3];	/* Boot strap short or near jump */
+	__u8 system_id[8];	/* Name - can be used to special case
 				   partition manager volumes */
-	__u8	sector_size[2];	/* bytes per logical sector */
-	__u8	sec_per_clus;	/* sectors/cluster */
-	__le16	reserved;	/* reserved sectors */
-	__u8	fats;		/* number of FATs */
-	__u8	dir_entries[2];	/* root directory entries */
-	__u8	sectors[2];	/* number of sectors */
-	__u8	media;		/* media code */
-	__le16	fat_length;	/* sectors/FAT */
-	__le16	secs_track;	/* sectors per track */
-	__le16	heads;		/* number of heads */
-	__le32	hidden;		/* hidden sectors (unused) */
-	__le32	total_sect;	/* number of sectors (if sectors == 0) */
+	__u8 sector_size[2];	/* bytes per logical sector */
+	__u8 sec_per_clus;	/* sectors/cluster */
+	__le16 reserved;	/* reserved sectors */
+	__u8 fats;		/* number of FATs */
+	__u8 dir_entries[2];	/* root directory entries */
+	__u8 sectors[2];	/* number of sectors */
+	__u8 media;		/* media code */
+	__le16 fat_length;	/* sectors/FAT */
+	__le16 secs_track;	/* sectors per track */
+	__le16 heads;		/* number of heads */
+	__le32 hidden;		/* hidden sectors (unused) */
+	__le32 total_sect;	/* number of sectors (if sectors == 0) */
 
 	/* The following fields are only used by FAT32 */
-	__le32	fat32_length;	/* sectors/FAT */
-	__le16	flags;		/* bit 8: fat mirroring, low 4: active fat */
-	__u8	version[2];	/* major, minor filesystem version */
-	__le32	root_cluster;	/* first cluster in root directory */
-	__le16	info_sector;	/* filesystem info sector */
-	__le16	backup_boot;	/* backup boot sector */
-	__le16	reserved2[6];	/* Unused */
+	__le32 fat32_length;	/* sectors/FAT */
+	__le16 flags;		/* bit 8: fat mirroring, low 4: active fat */
+	__u8 version[2];	/* major, minor filesystem version */
+	__le32 root_cluster;	/* first cluster in root directory */
+	__le16 info_sector;	/* filesystem info sector */
+	__le16 backup_boot;	/* backup boot sector */
+	__le16 reserved2[6];	/* Unused */
 };
 
 struct fat_boot_fsinfo {
-	__le32   signature1;	/* 0x41615252L */
-	__le32   reserved1[120];	/* Nothing as far as I can tell */
-	__le32   signature2;	/* 0x61417272L */
-	__le32   free_clusters;	/* Free cluster count.  -1 if unknown */
-	__le32   next_cluster;	/* Most recently allocated cluster */
-	__le32   reserved2[4];
+	__le32 signature1;	/* 0x41615252L */
+	__le32 reserved1[120];	/* Nothing as far as I can tell */
+	__le32 signature2;	/* 0x61417272L */
+	__le32 free_clusters;	/* Free cluster count.  -1 if unknown */
+	__le32 next_cluster;	/* Most recently allocated cluster */
+	__le32 reserved2[4];
 };
 
 struct fat_boot_bsx {
-	__u8     drive;		    /* drive number */
-	__u8     reserved1;
-	__u8     signature;	    /* extended boot signature */
-	__u8     vol_id[4];     /* volume ID */
-	__u8     vol_label[11]; /* volume label */
-	__u8     type[8];       /* file system type */
+	__u8 drive;		/* drive number */
+	__u8 reserved1;
+	__u8 signature;		/* extended boot signature */
+	__u8 vol_id[4];		/* volume ID */
+	__u8 vol_label[11];	/* volume label */
+	__u8 type[8];		/* file system type */
 };
-#define FAT16_BSX_OFFSET	36 /* offset of fat_boot_bsx in FAT12 and FAT16 */
-#define FAT32_BSX_OFFSET	64 /* offset of fat_boot_bsx in FAT32 */
+#define FAT16_BSX_OFFSET	36	/* offset of fat_boot_bsx in FAT12 and FAT16 */
+#define FAT32_BSX_OFFSET	64	/* offset of fat_boot_bsx in FAT32 */
 
 struct msdos_dir_entry {
-	__u8	name[MSDOS_NAME];/* name and extension */
-	__u8	attr;		/* attribute bits */
-	__u8    lcase;		/* Case for base and extension */
-	__u8	ctime_cs;	/* Creation time, centiseconds (0-199) */
-	__le16	ctime;		/* Creation time */
-	__le16	cdate;		/* Creation date */
-	__le16	adate;		/* Last access date */
-	__le16	starthi;	/* High 16 bits of cluster in FAT32 */
-	__le16	time,date,start;/* time, date and first cluster */
-	__le32	size;		/* file size (in bytes) */
+	__u8 name[MSDOS_NAME];	/* name and extension */
+	__u8 attr;		/* attribute bits */
+	__u8 lcase;		/* Case for base and extension */
+	__u8 ctime_cs;		/* Creation time, centiseconds (0-199) */
+	__le16 ctime;		/* Creation time */
+	__le16 cdate;		/* Creation date */
+	__le16 adate;		/* Last access date */
+	__le16 starthi;		/* High 16 bits of cluster in FAT32 */
+	__le16 time, date, start;	/* time, date and first cluster */
+	__le32 size;		/* file size (in bytes) */
 };
 
 /* Up to 13 characters of the name */
 struct msdos_dir_slot {
-	__u8    id;		/* sequence number for slot */
-	__u8    name0_4[10];	/* first 5 characters in name */
-	__u8    attr;		/* attribute byte */
-	__u8    reserved;	/* always 0 */
-	__u8    alias_checksum;	/* checksum for 8.3 alias */
-	__u8    name5_10[12];	/* 6 more characters in name */
-	__le16   start;		/* starting cluster number, 0 in long slots */
-	__u8    name11_12[4];	/* last 2 characters in name */
+	__u8 id;		/* sequence number for slot */
+	__u8 name0_4[10];	/* first 5 characters in name */
+	__u8 attr;		/* attribute byte */
+	__u8 reserved;		/* always 0 */
+	__u8 alias_checksum;	/* checksum for 8.3 alias */
+	__u8 name5_10[12];	/* 6 more characters in name */
+	__le16 start;		/* starting cluster number, 0 in long slots */
+	__u8 name11_12[4];	/* last 2 characters in name */
 };
 
 #ifdef __KERNEL__

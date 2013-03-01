@@ -63,7 +63,6 @@
 #define OMAP24XX_POWERSTATEST_SHIFT			0
 #define OMAP24XX_POWERSTATEST_MASK			(0x3 << 0)
 
-
 /* Bits specific to each register */
 
 /* PRCM_REVISION */

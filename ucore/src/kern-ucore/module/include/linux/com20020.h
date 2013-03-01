@@ -35,11 +35,10 @@ int com20020_found(struct net_device *dev, int shared);
 
 /* various register addresses */
 #ifdef CONFIG_SA1100_CT6001
-#define BUS_ALIGN  2  /* 8 bit device on a 16 bit bus - needs padding */
+#define BUS_ALIGN  2		/* 8 bit device on a 16 bit bus - needs padding */
 #else
 #define BUS_ALIGN  1
 #endif
-
 
 #define _INTMASK  (ioaddr+BUS_ALIGN*0)	/* writable */
 #define _STATUS   (ioaddr+BUS_ALIGN*0)	/* readable */
@@ -51,7 +50,7 @@ int com20020_found(struct net_device *dev, int shared);
 #define _SUBADR   (ioaddr+BUS_ALIGN*5)	/* the extended port _XREG refers to */
 #define _CONFIG   (ioaddr+BUS_ALIGN*6)	/* configuration register */
 #define _XREG     (ioaddr+BUS_ALIGN*7)	/* extra registers (indexed by _CONFIG
-  					or _SUBADR) */
+					   or _SUBADR) */
 
 /* in the ADDR_HI register */
 #define RDDATAflag	0x80	/* next access is a read (not a write) */
@@ -65,8 +64,8 @@ int com20020_found(struct net_device *dev, int shared);
 
 /* in SETUP register */
 #define PROMISCset	0x10	/* enable RCV_ALL */
-#define P1MODE		0x80    /* enable P1-MODE for Backplane */
-#define SLOWARB		0x01    /* enable Slow Arbitration for >=5Mbps */
+#define P1MODE		0x80	/* enable P1-MODE for Backplane */
+#define SLOWARB		0x01	/* enable Slow Arbitration for >=5Mbps */
 
 /* COM2002x */
 #define SUB_TENTATIVE	0	/* tentative node ID */

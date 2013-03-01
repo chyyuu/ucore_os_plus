@@ -25,34 +25,32 @@
 #define GRE_FLAGS	__constant_htons(0x00F8)
 #define GRE_VERSION	__constant_htons(0x0007)
 
-struct ip_tunnel_parm
-{
-	char			name[IFNAMSIZ];
-	int			link;
-	__be16			i_flags;
-	__be16			o_flags;
-	__be32			i_key;
-	__be32			o_key;
-	struct iphdr		iph;
+struct ip_tunnel_parm {
+	char name[IFNAMSIZ];
+	int link;
+	__be16 i_flags;
+	__be16 o_flags;
+	__be32 i_key;
+	__be32 o_key;
+	struct iphdr iph;
 };
 
 /* SIT-mode i_flags */
 #define	SIT_ISATAP	0x0001
 
 struct ip_tunnel_prl {
-	__be32			addr;
-	__u16			flags;
-	__u16			__reserved;
-	__u32			datalen;
-	__u32			__reserved2;
+	__be32 addr;
+	__u16 flags;
+	__u16 __reserved;
+	__u32 datalen;
+	__u32 __reserved2;
 	/* data follows */
 };
 
 /* PRL flags */
 #define	PRL_DEFAULT		0x0001
 
-enum
-{
+enum {
 	IFLA_GRE_UNSPEC,
 	IFLA_GRE_LINK,
 	IFLA_GRE_IFLAGS,

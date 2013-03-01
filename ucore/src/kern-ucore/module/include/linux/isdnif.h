@@ -14,34 +14,33 @@
 #ifndef __ISDNIF_H__
 #define __ISDNIF_H__
 
-
 /*
  * Values for general protocol-selection
  */
-#define ISDN_PTYPE_UNKNOWN   0   /* Protocol undefined   */
-#define ISDN_PTYPE_1TR6      1   /* german 1TR6-protocol */
-#define ISDN_PTYPE_EURO      2   /* EDSS1-protocol       */
-#define ISDN_PTYPE_LEASED    3   /* for leased lines     */
-#define ISDN_PTYPE_NI1       4   /* US NI-1 protocol     */
-#define ISDN_PTYPE_MAX       7   /* Max. 8 Protocols     */
+#define ISDN_PTYPE_UNKNOWN   0	/* Protocol undefined   */
+#define ISDN_PTYPE_1TR6      1	/* german 1TR6-protocol */
+#define ISDN_PTYPE_EURO      2	/* EDSS1-protocol       */
+#define ISDN_PTYPE_LEASED    3	/* for leased lines     */
+#define ISDN_PTYPE_NI1       4	/* US NI-1 protocol     */
+#define ISDN_PTYPE_MAX       7	/* Max. 8 Protocols     */
 
 /*
  * Values for Layer-2-protocol-selection
  */
-#define ISDN_PROTO_L2_X75I   0   /* X75/LAPB with I-Frames            */
-#define ISDN_PROTO_L2_X75UI  1   /* X75/LAPB with UI-Frames           */
-#define ISDN_PROTO_L2_X75BUI 2   /* X75/LAPB with UI-Frames           */
-#define ISDN_PROTO_L2_HDLC   3   /* HDLC                              */
-#define ISDN_PROTO_L2_TRANS  4   /* Transparent (Voice)               */
-#define ISDN_PROTO_L2_X25DTE 5   /* X25/LAPB DTE mode                 */
-#define ISDN_PROTO_L2_X25DCE 6   /* X25/LAPB DCE mode                 */
-#define ISDN_PROTO_L2_V11096 7   /* V.110 bitrate adaption 9600 Baud  */
-#define ISDN_PROTO_L2_V11019 8   /* V.110 bitrate adaption 19200 Baud */
-#define ISDN_PROTO_L2_V11038 9   /* V.110 bitrate adaption 38400 Baud */
-#define ISDN_PROTO_L2_MODEM  10  /* Analog Modem on Board */
-#define ISDN_PROTO_L2_FAX    11  /* Fax Group 2/3         */
-#define ISDN_PROTO_L2_HDLC_56K 12   /* HDLC 56k                          */
-#define ISDN_PROTO_L2_MAX    15  /* Max. 16 Protocols                 */
+#define ISDN_PROTO_L2_X75I   0	/* X75/LAPB with I-Frames            */
+#define ISDN_PROTO_L2_X75UI  1	/* X75/LAPB with UI-Frames           */
+#define ISDN_PROTO_L2_X75BUI 2	/* X75/LAPB with UI-Frames           */
+#define ISDN_PROTO_L2_HDLC   3	/* HDLC                              */
+#define ISDN_PROTO_L2_TRANS  4	/* Transparent (Voice)               */
+#define ISDN_PROTO_L2_X25DTE 5	/* X25/LAPB DTE mode                 */
+#define ISDN_PROTO_L2_X25DCE 6	/* X25/LAPB DCE mode                 */
+#define ISDN_PROTO_L2_V11096 7	/* V.110 bitrate adaption 9600 Baud  */
+#define ISDN_PROTO_L2_V11019 8	/* V.110 bitrate adaption 19200 Baud */
+#define ISDN_PROTO_L2_V11038 9	/* V.110 bitrate adaption 38400 Baud */
+#define ISDN_PROTO_L2_MODEM  10	/* Analog Modem on Board */
+#define ISDN_PROTO_L2_FAX    11	/* Fax Group 2/3         */
+#define ISDN_PROTO_L2_HDLC_56K 12	/* HDLC 56k                          */
+#define ISDN_PROTO_L2_MAX    15	/* Max. 16 Protocols                 */
 
 /*
  * Values for Layer-3-protocol-selection
@@ -58,40 +57,39 @@
 
 /***************************************************************************/
 /* Extensions made by Werner Cornelius (werner@ikt.de)                     */
-/*                                                                         */ 
+/*                                                                         */
 /* The proceed command holds a incoming call in a state to leave processes */
 /* enough time to check whether ist should be accepted.                    */
 /* The PROT_IO Command extends the interface to make protocol dependent    */
 /* features available (call diversion, call waiting...).                   */
-/*                                                                         */ 
+/*                                                                         */
 /* The PROT_IO Command is executed with the desired driver id and the arg  */
 /* parameter coded as follows:                                             */
 /* The lower 8 bits of arg contain the desired protocol from ISDN_PTYPE    */
 /* definitions. The upper 24 bits represent the protocol specific cmd/stat.*/
 /* Any additional data is protocol and command specific.                   */
-/* This mechanism also applies to the statcallb callback STAT_PROT.        */    
+/* This mechanism also applies to the statcallb callback STAT_PROT.        */
 /*                                                                         */
 /* This suggested extension permits an easy expansion of protocol specific */
 /* handling. Extensions may be added at any time without changing the HL   */
 /* driver code and not getting conflicts without certifications.           */
 /* The well known CAPI 2.0 interface handles such extensions in a similar  */
 /* way. Perhaps a protocol specific module may be added and separately     */
-/* loaded and linked to the basic isdn module for handling.                */                    
+/* loaded and linked to the basic isdn module for handling.                */
 /***************************************************************************/
 
 /*****************/
-/* DSS1 commands */ 
+/* DSS1 commands */
 /*****************/
-#define DSS1_CMD_INVOKE       ((0x00 << 8) | ISDN_PTYPE_EURO)   /* invoke a supplementary service */
-#define DSS1_CMD_INVOKE_ABORT ((0x01 << 8) | ISDN_PTYPE_EURO)   /* abort a invoke cmd */
+#define DSS1_CMD_INVOKE       ((0x00 << 8) | ISDN_PTYPE_EURO)	/* invoke a supplementary service */
+#define DSS1_CMD_INVOKE_ABORT ((0x01 << 8) | ISDN_PTYPE_EURO)	/* abort a invoke cmd */
 
 /*******************************/
 /* DSS1 Status callback values */
 /*******************************/
-#define DSS1_STAT_INVOKE_RES  ((0x80 << 8) | ISDN_PTYPE_EURO)   /* Result for invocation */
-#define DSS1_STAT_INVOKE_ERR  ((0x81 << 8) | ISDN_PTYPE_EURO)   /* Error Return for invocation */
-#define DSS1_STAT_INVOKE_BRD  ((0x82 << 8) | ISDN_PTYPE_EURO)   /* Deliver invoke broadcast info */
-
+#define DSS1_STAT_INVOKE_RES  ((0x80 << 8) | ISDN_PTYPE_EURO)	/* Result for invocation */
+#define DSS1_STAT_INVOKE_ERR  ((0x81 << 8) | ISDN_PTYPE_EURO)	/* Error Return for invocation */
+#define DSS1_STAT_INVOKE_BRD  ((0x82 << 8) | ISDN_PTYPE_EURO)	/* Deliver invoke broadcast info */
 
 /*********************************************************************/
 /* structures for DSS1 commands and callback                         */
@@ -121,97 +119,97 @@
 /*                                                                   */
 /* Broadcast invoke frames from the network are reported via the     */
 /* STAT_INVOKE_BRD callback. The ll_id is set to 0, the other fields */
-/* are supplied by the network and not by the HL.                    */   
+/* are supplied by the network and not by the HL.                    */
 /*********************************************************************/
 
 /*****************/
-/* NI1 commands */ 
+/* NI1 commands */
 /*****************/
-#define NI1_CMD_INVOKE       ((0x00 << 8) | ISDN_PTYPE_NI1)   /* invoke a supplementary service */
-#define NI1_CMD_INVOKE_ABORT ((0x01 << 8) | ISDN_PTYPE_NI1)   /* abort a invoke cmd */
+#define NI1_CMD_INVOKE       ((0x00 << 8) | ISDN_PTYPE_NI1)	/* invoke a supplementary service */
+#define NI1_CMD_INVOKE_ABORT ((0x01 << 8) | ISDN_PTYPE_NI1)	/* abort a invoke cmd */
 
 /*******************************/
 /* NI1 Status callback values */
 /*******************************/
-#define NI1_STAT_INVOKE_RES  ((0x80 << 8) | ISDN_PTYPE_NI1)   /* Result for invocation */
-#define NI1_STAT_INVOKE_ERR  ((0x81 << 8) | ISDN_PTYPE_NI1)   /* Error Return for invocation */
-#define NI1_STAT_INVOKE_BRD  ((0x82 << 8) | ISDN_PTYPE_NI1)   /* Deliver invoke broadcast info */
+#define NI1_STAT_INVOKE_RES  ((0x80 << 8) | ISDN_PTYPE_NI1)	/* Result for invocation */
+#define NI1_STAT_INVOKE_ERR  ((0x81 << 8) | ISDN_PTYPE_NI1)	/* Error Return for invocation */
+#define NI1_STAT_INVOKE_BRD  ((0x82 << 8) | ISDN_PTYPE_NI1)	/* Deliver invoke broadcast info */
 
-typedef struct
-  { ulong ll_id; /* ID supplied by LL when executing    */
-		 /* a command and returned by HL for    */
-                 /* INVOKE_RES and INVOKE_ERR           */
-    int hl_id;   /* ID supplied by HL when called       */
-                 /* for executing a cmd and delivered   */
-                 /* for results and errors              */
-                 /* must be supplied by LL when aborting*/  
-    int proc;    /* invoke procedure used by CMD_INVOKE */
-                 /* returned by callback and broadcast  */ 
-    int timeout; /* timeout for INVOKE CMD in ms        */
-                 /* -1  in stat callback when timed out */
-                 /* error value when error callback     */
-    int datalen; /* length of cmd or stat data          */
-    u_char *data;/* pointer to data delivered or send   */
-  } isdn_cmd_stat;
+typedef struct {
+	ulong ll_id;		/* ID supplied by LL when executing    */
+	/* a command and returned by HL for    */
+	/* INVOKE_RES and INVOKE_ERR           */
+	int hl_id;		/* ID supplied by HL when called       */
+	/* for executing a cmd and delivered   */
+	/* for results and errors              */
+	/* must be supplied by LL when aborting */
+	int proc;		/* invoke procedure used by CMD_INVOKE */
+	/* returned by callback and broadcast  */
+	int timeout;		/* timeout for INVOKE CMD in ms        */
+	/* -1  in stat callback when timed out */
+	/* error value when error callback     */
+	int datalen;		/* length of cmd or stat data          */
+	u_char *data;		/* pointer to data delivered or send   */
+} isdn_cmd_stat;
 
 /*
  * Commands from linklevel to lowlevel
  *
  */
-#define ISDN_CMD_IOCTL    0       /* Perform ioctl                         */
-#define ISDN_CMD_DIAL     1       /* Dial out                              */
-#define ISDN_CMD_ACCEPTD  2       /* Accept an incoming call on D-Chan.    */
-#define ISDN_CMD_ACCEPTB  3       /* Request B-Channel connect.            */
-#define ISDN_CMD_HANGUP   4       /* Hangup                                */
-#define ISDN_CMD_CLREAZ   5       /* Clear EAZ(s) of channel               */
-#define ISDN_CMD_SETEAZ   6       /* Set EAZ(s) of channel                 */
-#define ISDN_CMD_GETEAZ   7       /* Get EAZ(s) of channel                 */
-#define ISDN_CMD_SETSIL   8       /* Set Service-Indicator-List of channel */
-#define ISDN_CMD_GETSIL   9       /* Get Service-Indicator-List of channel */
-#define ISDN_CMD_SETL2   10       /* Set B-Chan. Layer2-Parameter          */
-#define ISDN_CMD_GETL2   11       /* Get B-Chan. Layer2-Parameter          */
-#define ISDN_CMD_SETL3   12       /* Set B-Chan. Layer3-Parameter          */
-#define ISDN_CMD_GETL3   13       /* Get B-Chan. Layer3-Parameter          */
+#define ISDN_CMD_IOCTL    0	/* Perform ioctl                         */
+#define ISDN_CMD_DIAL     1	/* Dial out                              */
+#define ISDN_CMD_ACCEPTD  2	/* Accept an incoming call on D-Chan.    */
+#define ISDN_CMD_ACCEPTB  3	/* Request B-Channel connect.            */
+#define ISDN_CMD_HANGUP   4	/* Hangup                                */
+#define ISDN_CMD_CLREAZ   5	/* Clear EAZ(s) of channel               */
+#define ISDN_CMD_SETEAZ   6	/* Set EAZ(s) of channel                 */
+#define ISDN_CMD_GETEAZ   7	/* Get EAZ(s) of channel                 */
+#define ISDN_CMD_SETSIL   8	/* Set Service-Indicator-List of channel */
+#define ISDN_CMD_GETSIL   9	/* Get Service-Indicator-List of channel */
+#define ISDN_CMD_SETL2   10	/* Set B-Chan. Layer2-Parameter          */
+#define ISDN_CMD_GETL2   11	/* Get B-Chan. Layer2-Parameter          */
+#define ISDN_CMD_SETL3   12	/* Set B-Chan. Layer3-Parameter          */
+#define ISDN_CMD_GETL3   13	/* Get B-Chan. Layer3-Parameter          */
 // #define ISDN_CMD_LOCK    14       /* Signal usage by upper levels          */
 // #define ISDN_CMD_UNLOCK  15       /* Release usage-lock                    */
-#define ISDN_CMD_SUSPEND 16       /* Suspend connection                    */
-#define ISDN_CMD_RESUME  17       /* Resume connection                     */
-#define ISDN_CMD_PROCEED 18       /* Proceed with call establishment       */
-#define ISDN_CMD_ALERT   19       /* Alert after Proceeding                */
-#define ISDN_CMD_REDIR   20       /* Redir a incoming call                 */
-#define ISDN_CMD_PROT_IO 21       /* Protocol specific commands            */
-#define CAPI_PUT_MESSAGE 22       /* CAPI message send down or up          */
-#define ISDN_CMD_FAXCMD  23       /* FAX commands to HL-driver             */
-#define ISDN_CMD_AUDIO   24       /* DSP, DTMF, ... settings               */
+#define ISDN_CMD_SUSPEND 16	/* Suspend connection                    */
+#define ISDN_CMD_RESUME  17	/* Resume connection                     */
+#define ISDN_CMD_PROCEED 18	/* Proceed with call establishment       */
+#define ISDN_CMD_ALERT   19	/* Alert after Proceeding                */
+#define ISDN_CMD_REDIR   20	/* Redir a incoming call                 */
+#define ISDN_CMD_PROT_IO 21	/* Protocol specific commands            */
+#define CAPI_PUT_MESSAGE 22	/* CAPI message send down or up          */
+#define ISDN_CMD_FAXCMD  23	/* FAX commands to HL-driver             */
+#define ISDN_CMD_AUDIO   24	/* DSP, DTMF, ... settings               */
 
 /*
  * Status-Values delivered from lowlevel to linklevel via
  * statcallb().
  *
  */
-#define ISDN_STAT_STAVAIL 256    /* Raw status-data available             */
-#define ISDN_STAT_ICALL   257    /* Incoming call detected                */
-#define ISDN_STAT_RUN     258    /* Signal protocol-code is running       */
-#define ISDN_STAT_STOP    259    /* Signal halt of protocol-code          */
-#define ISDN_STAT_DCONN   260    /* Signal D-Channel connect              */
-#define ISDN_STAT_BCONN   261    /* Signal B-Channel connect              */
-#define ISDN_STAT_DHUP    262    /* Signal D-Channel disconnect           */
-#define ISDN_STAT_BHUP    263    /* Signal B-Channel disconnect           */
-#define ISDN_STAT_CINF    264    /* Charge-Info                           */
-#define ISDN_STAT_LOAD    265    /* Signal new lowlevel-driver is loaded  */
-#define ISDN_STAT_UNLOAD  266    /* Signal unload of lowlevel-driver      */
-#define ISDN_STAT_BSENT   267    /* Signal packet sent                    */
-#define ISDN_STAT_NODCH   268    /* Signal no D-Channel                   */
-#define ISDN_STAT_ADDCH   269    /* Add more Channels                     */
-#define ISDN_STAT_CAUSE   270    /* Cause-Message                         */
-#define ISDN_STAT_ICALLW  271    /* Incoming call without B-chan waiting  */
-#define ISDN_STAT_REDIR   272    /* Redir result                          */
-#define ISDN_STAT_PROT    273    /* protocol IO specific callback         */
-#define ISDN_STAT_DISPLAY 274    /* deliver a received display message    */
-#define ISDN_STAT_L1ERR   275    /* Signal Layer-1 Error                  */
-#define ISDN_STAT_FAXIND  276    /* FAX indications from HL-driver        */
-#define ISDN_STAT_AUDIO   277    /* DTMF, DSP indications                 */
-#define ISDN_STAT_DISCH   278    /* Disable/Enable channel usage          */
+#define ISDN_STAT_STAVAIL 256	/* Raw status-data available             */
+#define ISDN_STAT_ICALL   257	/* Incoming call detected                */
+#define ISDN_STAT_RUN     258	/* Signal protocol-code is running       */
+#define ISDN_STAT_STOP    259	/* Signal halt of protocol-code          */
+#define ISDN_STAT_DCONN   260	/* Signal D-Channel connect              */
+#define ISDN_STAT_BCONN   261	/* Signal B-Channel connect              */
+#define ISDN_STAT_DHUP    262	/* Signal D-Channel disconnect           */
+#define ISDN_STAT_BHUP    263	/* Signal B-Channel disconnect           */
+#define ISDN_STAT_CINF    264	/* Charge-Info                           */
+#define ISDN_STAT_LOAD    265	/* Signal new lowlevel-driver is loaded  */
+#define ISDN_STAT_UNLOAD  266	/* Signal unload of lowlevel-driver      */
+#define ISDN_STAT_BSENT   267	/* Signal packet sent                    */
+#define ISDN_STAT_NODCH   268	/* Signal no D-Channel                   */
+#define ISDN_STAT_ADDCH   269	/* Add more Channels                     */
+#define ISDN_STAT_CAUSE   270	/* Cause-Message                         */
+#define ISDN_STAT_ICALLW  271	/* Incoming call without B-chan waiting  */
+#define ISDN_STAT_REDIR   272	/* Redir result                          */
+#define ISDN_STAT_PROT    273	/* protocol IO specific callback         */
+#define ISDN_STAT_DISPLAY 274	/* deliver a received display message    */
+#define ISDN_STAT_L1ERR   275	/* Signal Layer-1 Error                  */
+#define ISDN_STAT_FAXIND  276	/* FAX indications from HL-driver        */
+#define ISDN_STAT_AUDIO   277	/* DTMF, DSP indications                 */
+#define ISDN_STAT_DISCH   278	/* Disable/Enable channel usage          */
 
 /*
  * Audio commands
@@ -243,7 +241,7 @@ typedef struct
 #define ISDN_FEATURE_L2_FAX	(0x0001 << ISDN_PROTO_L2_FAX)
 #define ISDN_FEATURE_L2_HDLC_56K (0x0001 << ISDN_PROTO_L2_HDLC_56K)
 
-#define ISDN_FEATURE_L2_MASK    (0x0FFFF) /* Max. 16 protocols */
+#define ISDN_FEATURE_L2_MASK    (0x0FFFF)	/* Max. 16 protocols */
 #define ISDN_FEATURE_L2_SHIFT   (0)
 
 /* Layer 3 */
@@ -252,7 +250,7 @@ typedef struct
 #define ISDN_FEATURE_L3_FCLASS2	(0x10000 << ISDN_PROTO_L3_FCLASS2)
 #define ISDN_FEATURE_L3_FCLASS1	(0x10000 << ISDN_PROTO_L3_FCLASS1)
 
-#define ISDN_FEATURE_L3_MASK    (0x0FF0000) /* Max. 8 Protocols */
+#define ISDN_FEATURE_L3_MASK    (0x0FF0000)	/* Max. 8 Protocols */
 #define ISDN_FEATURE_L3_SHIFT   (16)
 
 /* Signaling */
@@ -261,18 +259,17 @@ typedef struct
 #define ISDN_FEATURE_P_EURO     (0x1000000 << ISDN_PTYPE_EURO)
 #define ISDN_FEATURE_P_NI1      (0x1000000 << ISDN_PTYPE_NI1)
 
-#define ISDN_FEATURE_P_MASK     (0x0FF000000) /* Max. 8 Protocols */
+#define ISDN_FEATURE_P_MASK     (0x0FF000000)	/* Max. 8 Protocols */
 #define ISDN_FEATURE_P_SHIFT    (24)
 
 typedef struct setup_parm {
-    unsigned char phone[32];	/* Remote Phone-Number */
-    unsigned char eazmsn[32];	/* Local EAZ or MSN    */
-    unsigned char si1;      /* Service Indicator 1 */
-    unsigned char si2;      /* Service Indicator 2 */
-    unsigned char plan;     /* Numbering plan      */
-    unsigned char screen;   /* Screening info      */
+	unsigned char phone[32];	/* Remote Phone-Number */
+	unsigned char eazmsn[32];	/* Local EAZ or MSN    */
+	unsigned char si1;	/* Service Indicator 1 */
+	unsigned char si2;	/* Service Indicator 2 */
+	unsigned char plan;	/* Numbering plan      */
+	unsigned char screen;	/* Screening info      */
 } setup_parm;
-
 
 #ifdef CONFIG_ISDN_TTY_FAX
 /* T.30 Fax G3 */
@@ -317,7 +314,7 @@ typedef struct T30_s {
 	__u8 r_scantime;
 	__u8 r_id[FAXIDLEN];
 	__u8 r_code;
-} __attribute__((packed)) T30_s;
+} __attribute__ ((packed)) T30_s;
 
 #define ISDN_TTY_FAX_CONN_IN	0
 #define ISDN_TTY_FAX_CONN_OUT	1
@@ -368,9 +365,9 @@ typedef struct T30_s {
 #define ISDN_FAX_CLASS1_QUERY	5
 
 typedef struct {
-	__u8	cmd;
-	__u8	subcmd;
-	__u8	para[50];
+	__u8 cmd;
+	__u8 subcmd;
+	__u8 para[50];
 } aux_s;
 
 #define AT_COMMAND	0
@@ -405,20 +402,20 @@ typedef struct {
  *
  */
 typedef struct {
-	int   driver;		/* Lowlevel-Driver-ID            */
-	int   command;		/* Command or Status (see above) */
+	int driver;		/* Lowlevel-Driver-ID            */
+	int command;		/* Command or Status (see above) */
 	ulong arg;		/* Additional Data               */
 	union {
-		ulong errcode;	/* Type of error with STAT_L1ERR	*/
-		int length;	/* Amount of bytes sent with STAT_BSENT	*/
-		u_char num[50];	/* Additional Data			*/
-		setup_parm setup;/* For SETUP msg			*/
-		capi_msg cmsg;	/* For CAPI like messages		*/
-		char display[85];/* display message data		*/ 
-		isdn_cmd_stat isdn_io; /* ISDN IO-parameter/result	*/
-		aux_s aux;	/* for modem commands/indications	*/
+		ulong errcode;	/* Type of error with STAT_L1ERR        */
+		int length;	/* Amount of bytes sent with STAT_BSENT */
+		u_char num[50];	/* Additional Data                      */
+		setup_parm setup;	/* For SETUP msg                       */
+		capi_msg cmsg;	/* For CAPI like messages               */
+		char display[85];	/* display message data                */
+		isdn_cmd_stat isdn_io;	/* ISDN IO-parameter/result      */
+		aux_s aux;	/* for modem commands/indications       */
 #ifdef CONFIG_ISDN_TTY_FAX
-		T30_s	*fax;	/* Pointer to ttys fax struct		*/
+		T30_s *fax;	/* Pointer to ttys fax struct           */
 #endif
 		ulong userdata;	/* User Data */
 	} parm;
@@ -435,86 +432,86 @@ typedef struct {
  *
  */
 typedef struct {
-  struct module *owner;
+	struct module *owner;
 
-  /* Number of channels supported by this driver
-   */
-  int channels;
+	/* Number of channels supported by this driver
+	 */
+	int channels;
 
-  /* 
-   * Maximum Size of transmit/receive-buffer this driver supports.
-   */
-  int maxbufsize;
+	/* 
+	 * Maximum Size of transmit/receive-buffer this driver supports.
+	 */
+	int maxbufsize;
 
-  /* Feature-Flags for this driver.
-   * See defines ISDN_FEATURE_... for Values
-   */
-  unsigned long features;
+	/* Feature-Flags for this driver.
+	 * See defines ISDN_FEATURE_... for Values
+	 */
+	unsigned long features;
 
-  /*
-   * Needed for calculating
-   * dev->hard_header_len = linklayer header + hl_hdrlen;
-   * Drivers, not supporting sk_buff's should set this to 0.
-   */
-  unsigned short hl_hdrlen;
+	/*
+	 * Needed for calculating
+	 * dev->hard_header_len = linklayer header + hl_hdrlen;
+	 * Drivers, not supporting sk_buff's should set this to 0.
+	 */
+	unsigned short hl_hdrlen;
 
-  /*
-   * Receive-Callback using sk_buff's
-   * Parameters:
-   *             int                    Driver-ID
-   *             int                    local channel-number (0 ...)
-   *             struct sk_buff *skb    received Data
-   */
-  void (*rcvcallb_skb)(int, int, struct sk_buff *);
+	/*
+	 * Receive-Callback using sk_buff's
+	 * Parameters:
+	 *             int                    Driver-ID
+	 *             int                    local channel-number (0 ...)
+	 *             struct sk_buff *skb    received Data
+	 */
+	void (*rcvcallb_skb) (int, int, struct sk_buff *);
 
-  /* Status-Callback
-   * Parameters:
-   *             isdn_ctrl*
-   *                   driver  = Driver ID.
-   *                   command = One of above ISDN_STAT_... constants.
-   *                   arg     = depending on status-type.
-   *                   num     = depending on status-type.
-   */
-  int (*statcallb)(isdn_ctrl*);
+	/* Status-Callback
+	 * Parameters:
+	 *             isdn_ctrl*
+	 *                   driver  = Driver ID.
+	 *                   command = One of above ISDN_STAT_... constants.
+	 *                   arg     = depending on status-type.
+	 *                   num     = depending on status-type.
+	 */
+	int (*statcallb) (isdn_ctrl *);
 
-  /* Send command
-   * Parameters:
-   *             isdn_ctrl*
-   *                   driver  = Driver ID.
-   *                   command = One of above ISDN_CMD_... constants.
-   *                   arg     = depending on command.
-   *                   num     = depending on command.
-   */
-  int (*command)(isdn_ctrl*);
+	/* Send command
+	 * Parameters:
+	 *             isdn_ctrl*
+	 *                   driver  = Driver ID.
+	 *                   command = One of above ISDN_CMD_... constants.
+	 *                   arg     = depending on command.
+	 *                   num     = depending on command.
+	 */
+	int (*command) (isdn_ctrl *);
 
-  /*
-   * Send data using sk_buff's
-   * Parameters:
-   *             int                    driverId
-   *             int                    local channel-number (0...)
-   *             int                    Flag: Need ACK for this packet.
-   *             struct sk_buff *skb    Data to send
-   */
-  int (*writebuf_skb) (int, int, int, struct sk_buff *);
+	/*
+	 * Send data using sk_buff's
+	 * Parameters:
+	 *             int                    driverId
+	 *             int                    local channel-number (0...)
+	 *             int                    Flag: Need ACK for this packet.
+	 *             struct sk_buff *skb    Data to send
+	 */
+	int (*writebuf_skb) (int, int, int, struct sk_buff *);
 
-  /* Send raw D-Channel-Commands
-   * Parameters:
-   *             u_char pointer data
-   *             int    length of data
-   *             int    driverId
-   *             int    local channel-number (0 ...)
-   */
-  int (*writecmd)(const u_char __user *, int, int, int);
+	/* Send raw D-Channel-Commands
+	 * Parameters:
+	 *             u_char pointer data
+	 *             int    length of data
+	 *             int    driverId
+	 *             int    local channel-number (0 ...)
+	 */
+	int (*writecmd) (const u_char __user *, int, int, int);
 
-  /* Read raw Status replies
-   *             u_char pointer data (volatile)
-   *             int    length of buffer
-   *             int    driverId
-   *             int    local channel-number (0 ...)
-   */
-  int (*readstat)(u_char __user *, int, int, int);
+	/* Read raw Status replies
+	 *             u_char pointer data (volatile)
+	 *             int    length of buffer
+	 *             int    driverId
+	 *             int    local channel-number (0 ...)
+	 */
+	int (*readstat) (u_char __user *, int, int, int);
 
-  char id[20];
+	char id[20];
 } isdn_if;
 
 /*
@@ -538,7 +535,7 @@ typedef struct {
  * statcallb        "    "     "    for status-changes.
  *
  */
-extern int register_isdn(isdn_if*);
+extern int register_isdn(isdn_if *);
 #include <asm/uaccess.h>
 
 #endif /* __KERNEL__ */

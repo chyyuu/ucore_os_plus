@@ -8,10 +8,9 @@ volatile size_t ticks;
  * register virtual timer handler and initialize virtual timer with default interval
  * @return 0 on success, -1 on error when set interval, -2 on error when register timer handler
  */
-int
-umclock_init (void) 
+int umclock_init(void)
 {
-	return umclock_set_interval (DEFAULT_TV_SEC, DEFAULT_TV_USEC);
+	return umclock_set_interval(DEFAULT_TV_SEC, DEFAULT_TV_USEC);
 }
 
 /**
@@ -20,10 +19,9 @@ umclock_init (void)
  * @param usec interval in microseconds
  * @return 0 on success
  */
-int
-umclock_set_interval (long sec, long usec) 
+int umclock_set_interval(long sec, long usec)
 {
-	struct itimerval interval = ((struct itimerval) {{sec, usec}, {sec, usec}});
-	return syscall3 (__NR_setitimer, ITIMER_VIRTUAL, (long)&interval, 0);
+	struct itimerval interval =
+	    ((struct itimerval){ {sec, usec}, {sec, usec} });
+	return syscall3(__NR_setitimer, ITIMER_VIRTUAL, (long)&interval, 0);
 }
-

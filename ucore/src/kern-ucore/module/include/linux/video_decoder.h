@@ -5,15 +5,15 @@
 
 #define HAVE_VIDEO_DECODER 1
 
-struct video_decoder_capability { /* this name is too long */
-	__u32	flags;
+struct video_decoder_capability {	/* this name is too long */
+	__u32 flags;
 #define	VIDEO_DECODER_PAL	1	/* can decode PAL signal */
 #define	VIDEO_DECODER_NTSC	2	/* can decode NTSC */
 #define	VIDEO_DECODER_SECAM	4	/* can decode SECAM */
 #define	VIDEO_DECODER_AUTO	8	/* can autosense norm */
 #define	VIDEO_DECODER_CCIR	16	/* CCIR-601 pixel rate (720 pixels per line) instead of square pixel rate */
-	int	inputs;			/* number of inputs */
-	int	outputs;		/* number of outputs */
+	int inputs;		/* number of inputs */
+	int outputs;		/* number of outputs */
 };
 
 /*
@@ -42,7 +42,6 @@ struct video_decoder_init {
 #define	DECODER_INIT		_IOW('d', 9, struct video_decoder_init)	/* init internal registers at once */
 #define	DECODER_SET_VBI_BYPASS	_IOW('d', 10, int)	/* switch vbi bypass */
 
-#define	DECODER_DUMP		_IO('d', 192)		/* debug hook */
-
+#define	DECODER_DUMP		_IO('d', 192)	/* debug hook */
 
 #endif

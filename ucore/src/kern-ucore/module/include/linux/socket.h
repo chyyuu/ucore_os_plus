@@ -9,40 +9,40 @@
 				/* Implementation specific desired alignment */
 
 struct __kernel_sockaddr_storage {
-	unsigned short	ss_family;		/* address family */
+	unsigned short ss_family;	/* address family */
 	/* Following field(s) are implementation specific */
-	char		__data[_K_SS_MAXSIZE - sizeof(unsigned short)];
-				/* space to achieve desired size, */
-				/* _SS_MAXSIZE value minus size of ss_family */
+	char __data[_K_SS_MAXSIZE - sizeof(unsigned short)];
+	/* space to achieve desired size, */
+	/* _SS_MAXSIZE value minus size of ss_family */
 } __attribute__ ((aligned(_K_SS_ALIGNSIZE)));	/* force desired alignment */
 
 #if defined(__KERNEL__) || !defined(__GLIBC__) || (__GLIBC__ < 2)
 
-#include <asm/socket.h>			/* arch-dependent defines	*/
-#include <linux/sockios.h>		/* the SIOCxxx I/O controls	*/
-#include <linux/uio.h>			/* iovec support		*/
-#include <linux/types.h>		/* pid_t			*/
-#include <linux/compiler.h>		/* __user			*/
+#include <asm/socket.h>		/* arch-dependent defines       */
+#include <linux/sockios.h>	/* the SIOCxxx I/O controls     */
+#include <linux/uio.h>		/* iovec support                */
+#include <linux/types.h>	/* pid_t                        */
+#include <linux/compiler.h>	/* __user                       */
 
 #ifdef CONFIG_PROC_FS
 struct seq_file;
 extern void socket_seq_show(struct seq_file *seq);
 #endif
 
-typedef unsigned short	sa_family_t;
+typedef unsigned short sa_family_t;
 
 /*
  *	1003.1g requires sa_family_t and that sa_data is char.
  */
- 
+
 struct sockaddr {
-	sa_family_t	sa_family;	/* address family, AF_xxx	*/
-	char		sa_data[14];	/* 14 bytes of protocol address	*/
+	sa_family_t sa_family;	/* address family, AF_xxx       */
+	char sa_data[14];	/* 14 bytes of protocol address */
 };
 
 struct linger {
-	int		l_onoff;	/* Linger active		*/
-	int		l_linger;	/* How long to linger for	*/
+	int l_onoff;		/* Linger active                */
+	int l_linger;		/* How long to linger for       */
 };
 
 #define sockaddr_storage __kernel_sockaddr_storage
@@ -52,15 +52,15 @@ struct linger {
  *	system, not 4.3. Thus msg_accrights(len) are now missing. They
  *	belong in an obscure libc emulation or the bin.
  */
- 
+
 struct msghdr {
-	void	*	msg_name;	/* Socket name			*/
-	int		msg_namelen;	/* Length of name		*/
-	struct iovec *	msg_iov;	/* Data blocks			*/
-	__kernel_size_t	msg_iovlen;	/* Number of blocks		*/
-	void 	*	msg_control;	/* Per protocol magic (eg BSD file descriptor passing) */
-	__kernel_size_t	msg_controllen;	/* Length of cmsg list */
-	unsigned	msg_flags;
+	void *msg_name;		/* Socket name                  */
+	int msg_namelen;	/* Length of name               */
+	struct iovec *msg_iov;	/* Data blocks                  */
+	__kernel_size_t msg_iovlen;	/* Number of blocks             */
+	void *msg_control;	/* Per protocol magic (eg BSD file descriptor passing) */
+	__kernel_size_t msg_controllen;	/* Length of cmsg list */
+	unsigned msg_flags;
 };
 
 /*
@@ -70,9 +70,9 @@ struct msghdr {
  */
 
 struct cmsghdr {
-	__kernel_size_t	cmsg_len;	/* data byte count, including hdr */
-        int		cmsg_level;	/* originating protocol */
-        int		cmsg_type;	/* protocol-specific type */
+	__kernel_size_t cmsg_len;	/* data byte count, including hdr */
+	int cmsg_level;		/* originating protocol */
+	int cmsg_type;		/* protocol-specific type */
 };
 
 /*
@@ -101,17 +101,16 @@ struct cmsghdr {
 /*
  *	This mess will go away with glibc
  */
- 
+
 #ifdef __KERNEL__
 #define __KINLINE static inline
-#elif  defined(__GNUC__) 
+#elif  defined(__GNUC__)
 #define __KINLINE static __inline__
 #elif defined(__cplusplus)
 #define __KINLINE static inline
 #else
 #define __KINLINE static
 #endif
-
 
 /*
  *	Get the next cmsg header
@@ -125,72 +124,75 @@ struct cmsghdr {
  *	inside range, given by msg->msg_controllen before using
  *	ancillary object DATA.				--ANK (980731)
  */
- 
-__KINLINE struct cmsghdr * __cmsg_nxthdr(void *__ctl, __kernel_size_t __size,
-					       struct cmsghdr *__cmsg)
-{
-	struct cmsghdr * __ptr;
 
-	__ptr = (struct cmsghdr*)(((unsigned char *) __cmsg) +  CMSG_ALIGN(__cmsg->cmsg_len));
-	if ((unsigned long)((char*)(__ptr+1) - (char *) __ctl) > __size)
+__KINLINE struct cmsghdr *__cmsg_nxthdr(void *__ctl, __kernel_size_t __size,
+					struct cmsghdr *__cmsg)
+{
+	struct cmsghdr *__ptr;
+
+	__ptr =
+	    (struct cmsghdr *)(((unsigned char *)__cmsg) +
+			       CMSG_ALIGN(__cmsg->cmsg_len));
+	if ((unsigned long)((char *)(__ptr + 1) - (char *)__ctl) > __size)
 		return (struct cmsghdr *)0;
 
 	return __ptr;
 }
 
-__KINLINE struct cmsghdr * cmsg_nxthdr (struct msghdr *__msg, struct cmsghdr *__cmsg)
+__KINLINE struct cmsghdr *cmsg_nxthdr(struct msghdr *__msg,
+				      struct cmsghdr *__cmsg)
 {
 	return __cmsg_nxthdr(__msg->msg_control, __msg->msg_controllen, __cmsg);
 }
 
 /* "Socket"-level control message types: */
 
-#define	SCM_RIGHTS	0x01		/* rw: access rights (array of int) */
-#define SCM_CREDENTIALS 0x02		/* rw: struct ucred		*/
-#define SCM_SECURITY	0x03		/* rw: security label		*/
+#define	SCM_RIGHTS	0x01	/* rw: access rights (array of int) */
+#define SCM_CREDENTIALS 0x02	/* rw: struct ucred             */
+#define SCM_SECURITY	0x03	/* rw: security label           */
 
 struct ucred {
-	__u32	pid;
-	__u32	uid;
-	__u32	gid;
+	__u32 pid;
+	__u32 uid;
+	__u32 gid;
 };
 
 /* Supported address families. */
 #define AF_UNSPEC	0
-#define AF_UNIX		1	/* Unix domain sockets 		*/
-#define AF_LOCAL	1	/* POSIX name for AF_UNIX	*/
-#define AF_INET		2	/* Internet IP Protocol 	*/
-#define AF_AX25		3	/* Amateur Radio AX.25 		*/
-#define AF_IPX		4	/* Novell IPX 			*/
-#define AF_APPLETALK	5	/* AppleTalk DDP 		*/
-#define AF_NETROM	6	/* Amateur Radio NET/ROM 	*/
-#define AF_BRIDGE	7	/* Multiprotocol bridge 	*/
-#define AF_ATMPVC	8	/* ATM PVCs			*/
-#define AF_X25		9	/* Reserved for X.25 project 	*/
-#define AF_INET6	10	/* IP version 6			*/
-#define AF_ROSE		11	/* Amateur Radio X.25 PLP	*/
-#define AF_DECnet	12	/* Reserved for DECnet project	*/
-#define AF_NETBEUI	13	/* Reserved for 802.2LLC project*/
+#define AF_UNIX		1	/* Unix domain sockets          */
+#define AF_LOCAL	1	/* POSIX name for AF_UNIX       */
+#define AF_INET		2	/* Internet IP Protocol         */
+#define AF_AX25		3	/* Amateur Radio AX.25          */
+#define AF_IPX		4	/* Novell IPX                   */
+#define AF_APPLETALK	5	/* AppleTalk DDP                */
+#define AF_NETROM	6	/* Amateur Radio NET/ROM        */
+#define AF_BRIDGE	7	/* Multiprotocol bridge         */
+#define AF_ATMPVC	8	/* ATM PVCs                     */
+#define AF_X25		9	/* Reserved for X.25 project    */
+#define AF_INET6	10	/* IP version 6                 */
+#define AF_ROSE		11	/* Amateur Radio X.25 PLP       */
+#define AF_DECnet	12	/* Reserved for DECnet project  */
+#define AF_NETBEUI	13	/* Reserved for 802.2LLC project */
 #define AF_SECURITY	14	/* Security callback pseudo AF */
-#define AF_KEY		15      /* PF_KEY key management API */
+#define AF_KEY		15	/* PF_KEY key management API */
 #define AF_NETLINK	16
-#define AF_ROUTE	AF_NETLINK /* Alias to emulate 4.4BSD */
-#define AF_PACKET	17	/* Packet family		*/
-#define AF_ASH		18	/* Ash				*/
-#define AF_ECONET	19	/* Acorn Econet			*/
-#define AF_ATMSVC	20	/* ATM SVCs			*/
+#define AF_ROUTE	AF_NETLINK	/* Alias to emulate 4.4BSD */
+#define AF_PACKET	17	/* Packet family                */
+#define AF_ASH		18	/* Ash                          */
+#define AF_ECONET	19	/* Acorn Econet                 */
+#define AF_ATMSVC	20	/* ATM SVCs                     */
 #define AF_SNA		22	/* Linux SNA Project (nutters!) */
-#define AF_IRDA		23	/* IRDA sockets			*/
-#define AF_PPPOX	24	/* PPPoX sockets		*/
+#define AF_IRDA		23	/* IRDA sockets                 */
+#define AF_PPPOX	24	/* PPPoX sockets                */
 #define AF_WANPIPE	25	/* Wanpipe API Sockets */
-#define AF_LLC		26	/* Linux LLC			*/
+#define AF_LLC		26	/* Linux LLC                    */
 #define AF_CAN		29	/* Controller Area Network      */
-#define AF_TIPC		30	/* TIPC sockets			*/
-#define AF_BLUETOOTH	31	/* Bluetooth sockets 		*/
-#define AF_IUCV		32	/* IUCV sockets			*/
-#define AF_RXRPC	33	/* RxRPC sockets 		*/
-#define AF_ISDN		34	/* mISDN sockets 		*/
-#define AF_PHONET	35	/* Phonet sockets		*/
+#define AF_TIPC		30	/* TIPC sockets                 */
+#define AF_BLUETOOTH	31	/* Bluetooth sockets            */
+#define AF_IUCV		32	/* IUCV sockets                 */
+#define AF_RXRPC	33	/* RxRPC sockets                */
+#define AF_ISDN		34	/* mISDN sockets                */
+#define AF_PHONET	35	/* Phonet sockets               */
 #define AF_MAX		36	/* For now.. */
 
 /* Protocol families, same as address families. */
@@ -237,15 +239,15 @@ struct ucred {
 /* Flags we can use with send/ and recv. 
    Added those for 1003.1g not all are supported yet
  */
- 
+
 #define MSG_OOB		1
 #define MSG_PEEK	2
 #define MSG_DONTROUTE	4
-#define MSG_TRYHARD     4       /* Synonym for MSG_DONTROUTE for DECnet */
+#define MSG_TRYHARD     4	/* Synonym for MSG_DONTROUTE for DECnet */
 #define MSG_CTRUNC	8
 #define MSG_PROBE	0x10	/* Do not send. Only probe path f.e. for MTU */
 #define MSG_TRUNC	0x20
-#define MSG_DONTWAIT	0x40	/* Nonblocking io		 */
+#define MSG_DONTWAIT	0x40	/* Nonblocking io                */
 #define MSG_EOR         0x80	/* End of record */
 #define MSG_WAITALL	0x100	/* Wait for a full request */
 #define MSG_FIN         0x200
@@ -264,9 +266,8 @@ struct ucred {
 #if defined(CONFIG_COMPAT)
 #define MSG_CMSG_COMPAT	0x80000000	/* This message needs 32 bit fixups */
 #else
-#define MSG_CMSG_COMPAT	0		/* We never have 32 bit fixups */
+#define MSG_CMSG_COMPAT	0	/* We never have 32 bit fixups */
 #endif
-
 
 /* Setsockoptions(2) level. Thanks to BSD these must match IPPROTO_xxx */
 #define SOL_IP		0
@@ -276,7 +277,7 @@ struct ucred {
 #define SOL_IPV6	41
 #define SOL_ICMPV6	58
 #define SOL_SCTP	132
-#define SOL_UDPLITE	136     /* UDP-Lite (RFC 3828) */
+#define SOL_UDPLITE	136	/* UDP-Lite (RFC 3828) */
 #define SOL_RAW		255
 #define SOL_IPX		256
 #define SOL_AX25	257
@@ -304,18 +305,21 @@ struct ucred {
 
 #ifdef __KERNEL__
 extern int memcpy_fromiovec(unsigned char *kdata, struct iovec *iov, int len);
-extern int memcpy_fromiovecend(unsigned char *kdata, struct iovec *iov, 
-				int offset, int len);
-extern int csum_partial_copy_fromiovecend(unsigned char *kdata, 
-					  struct iovec *iov, 
-					  int offset, 
-					  unsigned int len, __wsum *csump);
+extern int memcpy_fromiovecend(unsigned char *kdata, struct iovec *iov,
+			       int offset, int len);
+extern int csum_partial_copy_fromiovecend(unsigned char *kdata,
+					  struct iovec *iov,
+					  int offset,
+					  unsigned int len, __wsum * csump);
 
-extern int verify_iovec(struct msghdr *m, struct iovec *iov, struct sockaddr *address, int mode);
+extern int verify_iovec(struct msghdr *m, struct iovec *iov,
+			struct sockaddr *address, int mode);
 extern int memcpy_toiovec(struct iovec *v, unsigned char *kdata, int len);
-extern int move_addr_to_user(struct sockaddr *kaddr, int klen, void __user *uaddr, int __user *ulen);
-extern int move_addr_to_kernel(void __user *uaddr, int ulen, struct sockaddr *kaddr);
-extern int put_cmsg(struct msghdr*, int level, int type, int len, void *data);
+extern int move_addr_to_user(struct sockaddr *kaddr, int klen,
+			     void __user * uaddr, int __user * ulen);
+extern int move_addr_to_kernel(void __user * uaddr, int ulen,
+			       struct sockaddr *kaddr);
+extern int put_cmsg(struct msghdr *, int level, int type, int len, void *data);
 
 #endif
 #endif /* not kernel and not glibc */

@@ -14,12 +14,11 @@
 #define PIM_NULL_REGISTER	__constant_htonl(0x40000000)
 
 /* PIMv2 register message header layout (ietf-draft-idmr-pimvsm-v2-00.ps */
-struct pimreghdr
-{
-	__u8	type;
-	__u8	reserved;
-	__be16	csum;
-	__be32	flags;
+struct pimreghdr {
+	__u8 type;
+	__u8 reserved;
+	__be16 csum;
+	__be32 flags;
 };
 
 struct sk_buff;

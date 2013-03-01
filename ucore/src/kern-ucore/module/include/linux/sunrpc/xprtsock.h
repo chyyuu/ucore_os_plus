@@ -9,8 +9,8 @@
 
 #ifdef __KERNEL__
 
-int		init_socket_xprt(void);
-void		cleanup_socket_xprt(void);
+int init_socket_xprt(void);
+void cleanup_socket_xprt(void);
 
 /*
  * RPC transport identifiers for UDP, TCP

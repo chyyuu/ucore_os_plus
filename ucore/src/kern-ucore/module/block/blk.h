@@ -12,7 +12,7 @@ extern struct kobj_type blk_queue_ktype;
 
 void init_request_from_bio(struct request *req, struct bio *bio);
 void blk_rq_bio_prep(struct request_queue *q, struct request *rq,
-			struct bio *bio);
+		     struct bio *bio);
 void __blk_queue_free_tags(struct request_queue *q);
 
 void blk_unplug_work(struct work_struct *work);
@@ -47,7 +47,7 @@ static inline void blk_clear_rq_complete(struct request *rq)
 int blk_should_fake_timeout(struct request_queue *);
 ssize_t part_timeout_show(struct device *, struct device_attribute *, char *);
 ssize_t part_timeout_store(struct device *, struct device_attribute *,
-				const char *, size_t);
+			   const char *, size_t);
 #else
 static inline int blk_should_fake_timeout(struct request_queue *q)
 {
@@ -59,7 +59,7 @@ struct io_context *current_io_context(gfp_t gfp_flags, int node);
 
 int ll_back_merge_fn(struct request_queue *q, struct request *req,
 		     struct bio *bio);
-int ll_front_merge_fn(struct request_queue *q, struct request *req, 
+int ll_front_merge_fn(struct request_queue *q, struct request *req,
 		      struct bio *bio);
 int attempt_back_merge(struct request_queue *q, struct request *rq);
 int attempt_front_merge(struct request_queue *q, struct request *rq);

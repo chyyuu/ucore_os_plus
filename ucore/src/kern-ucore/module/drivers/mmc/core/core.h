@@ -16,10 +16,10 @@
 #define MMC_CMD_RETRIES        3
 
 struct mmc_bus_ops {
-	void (*remove)(struct mmc_host *);
-	void (*detect)(struct mmc_host *);
-	void (*suspend)(struct mmc_host *);
-	void (*resume)(struct mmc_host *);
+	void (*remove) (struct mmc_host *);
+	void (*detect) (struct mmc_host *);
+	void (*suspend) (struct mmc_host *);
+	void (*resume) (struct mmc_host *);
 };
 
 void mmc_attach_bus(struct mmc_host *host, const struct mmc_bus_ops *ops);
@@ -60,4 +60,3 @@ void mmc_add_card_debugfs(struct mmc_card *card);
 void mmc_remove_card_debugfs(struct mmc_card *card);
 
 #endif
-

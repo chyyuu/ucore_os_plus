@@ -13,7 +13,6 @@
 #ifndef ASM_ARM_LEDS_H
 #define ASM_ARM_LEDS_H
 
-
 typedef enum {
 	led_idle_start,
 	led_idle_end,
@@ -42,7 +41,7 @@ typedef enum {
 /* Use this routine to handle LEDs */
 
 #ifdef CONFIG_LEDS
-extern void (*leds_event)(led_event_t);
+extern void (*leds_event) (led_event_t);
 #else
 #define leds_event(e)
 #endif

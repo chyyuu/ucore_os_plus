@@ -16,4 +16,3 @@ int mon_delete_dr(int argc, char **argv, struct trapframe *tf);
 int mon_list_dr(int argc, char **argv, struct trapframe *tf);
 
 #endif /* !__KERN_DEBUG_MONITOR_H__ */
-

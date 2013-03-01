@@ -11,28 +11,28 @@
 #include <asm/atomic.h>
 
 struct flowi {
-	int	oif;
-	int	iif;
-	__u32	mark;
+	int oif;
+	int iif;
+	__u32 mark;
 
 	union {
 		struct {
-			__be32			daddr;
-			__be32			saddr;
-			__u8			tos;
-			__u8			scope;
+			__be32 daddr;
+			__be32 saddr;
+			__u8 tos;
+			__u8 scope;
 		} ip4_u;
-		
+
 		struct {
-			struct in6_addr		daddr;
-			struct in6_addr		saddr;
-			__be32			flowlabel;
+			struct in6_addr daddr;
+			struct in6_addr saddr;
+			__be32 flowlabel;
 		} ip6_u;
 
 		struct {
-			__le16			daddr;
-			__le16			saddr;
-			__u8			scope;
+			__le16 daddr;
+			__le16 saddr;
+			__u8 scope;
 		} dn_u;
 	} nl_u;
 #define fld_dst		nl_u.dn_u.daddr
@@ -46,29 +46,29 @@ struct flowi {
 #define fl4_tos		nl_u.ip4_u.tos
 #define fl4_scope	nl_u.ip4_u.scope
 
-	__u8	proto;
-	__u8	flags;
+	__u8 proto;
+	__u8 flags;
 #define FLOWI_FLAG_ANYSRC 0x01
 	union {
 		struct {
-			__be16	sport;
-			__be16	dport;
+			__be16 sport;
+			__be16 dport;
 		} ports;
 
 		struct {
-			__u8	type;
-			__u8	code;
+			__u8 type;
+			__u8 code;
 		} icmpt;
 
 		struct {
-			__le16	sport;
-			__le16	dport;
+			__le16 sport;
+			__le16 dport;
 		} dnports;
 
-		__be32		spi;
+		__be32 spi;
 
 		struct {
-			__u8	type;
+			__u8 type;
 		} mht;
 	} uli_u;
 #define fl_ip_sport	uli_u.ports.sport
@@ -77,8 +77,8 @@ struct flowi {
 #define fl_icmp_code	uli_u.icmpt.code
 #define fl_ipsec_spi	uli_u.spi
 #define fl_mh_type	uli_u.mht.type
-	__u32           secid;	/* used by xfrm; see secid.txt */
-} __attribute__((__aligned__(BITS_PER_LONG/8)));
+	__u32 secid;		/* used by xfrm; see secid.txt */
+} __attribute__ ((__aligned__(BITS_PER_LONG / 8)));
 
 #define FLOW_DIR_IN	0
 #define FLOW_DIR_OUT	1
@@ -86,8 +86,8 @@ struct flowi {
 
 struct net;
 struct sock;
-typedef int (*flow_resolve_t)(struct net *net, struct flowi *key, u16 family,
-			      u8 dir, void **objp, atomic_t **obj_refp);
+typedef int (*flow_resolve_t) (struct net * net, struct flowi * key, u16 family,
+			       u8 dir, void **objp, atomic_t ** obj_refp);
 
 extern void *flow_cache_lookup(struct net *net, struct flowi *key, u16 family,
 			       u8 dir, flow_resolve_t resolver);

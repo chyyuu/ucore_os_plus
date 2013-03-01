@@ -48,13 +48,16 @@ extern void iowrite32be(u32, void __iomem *);
  * memory across multiple ports, use "memcpy_toio()"
  * and friends.
  */
-extern void ioread8_rep(void __iomem *port, void *buf, unsigned long count);
-extern void ioread16_rep(void __iomem *port, void *buf, unsigned long count);
-extern void ioread32_rep(void __iomem *port, void *buf, unsigned long count);
+extern void ioread8_rep(void __iomem * port, void *buf, unsigned long count);
+extern void ioread16_rep(void __iomem * port, void *buf, unsigned long count);
+extern void ioread32_rep(void __iomem * port, void *buf, unsigned long count);
 
-extern void iowrite8_rep(void __iomem *port, const void *buf, unsigned long count);
-extern void iowrite16_rep(void __iomem *port, const void *buf, unsigned long count);
-extern void iowrite32_rep(void __iomem *port, const void *buf, unsigned long count);
+extern void iowrite8_rep(void __iomem * port, const void *buf,
+			 unsigned long count);
+extern void iowrite16_rep(void __iomem * port, const void *buf,
+			  unsigned long count);
+extern void iowrite32_rep(void __iomem * port, const void *buf,
+			  unsigned long count);
 
 /* Create a virtual mapping cookie for an IO port range */
 extern void __iomem *ioport_map(unsigned long port, unsigned int nr);

@@ -26,15 +26,15 @@ extern int debug_locks_off(void);
 })
 
 #ifdef CONFIG_SMP
-# define SMP_DEBUG_LOCKS_WARN_ON(c)			DEBUG_LOCKS_WARN_ON(c)
+#define SMP_DEBUG_LOCKS_WARN_ON(c)			DEBUG_LOCKS_WARN_ON(c)
 #else
-# define SMP_DEBUG_LOCKS_WARN_ON(c)			do { } while (0)
+#define SMP_DEBUG_LOCKS_WARN_ON(c)			do { } while (0)
 #endif
 
 #ifdef CONFIG_DEBUG_LOCKING_API_SELFTESTS
-  extern void locking_selftest(void);
+extern void locking_selftest(void);
 #else
-# define locking_selftest()	do { } while (0)
+#define locking_selftest()	do { } while (0)
 #endif
 
 struct task_struct;
@@ -63,8 +63,7 @@ debug_check_no_locks_freed(const void *from, unsigned long len)
 {
 }
 
-static inline void
-debug_check_no_locks_held(struct task_struct *task)
+static inline void debug_check_no_locks_held(struct task_struct *task)
 {
 }
 #endif

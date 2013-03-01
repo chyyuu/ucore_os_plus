@@ -28,7 +28,7 @@ struct embedded_fd_set {
 
 struct fdtable {
 	unsigned int max_fds;
-	struct file ** fd;      /* current fd array */
+	struct file **fd;	/* current fd array */
 	fd_set *close_on_exec;
 	fd_set *open_fds;
 	struct rcu_head rcu;
@@ -39,20 +39,20 @@ struct fdtable {
  * Open file table structure
  */
 struct files_struct {
-  /*
-   * read mostly part
-   */
+	/*
+	 * read mostly part
+	 */
 	atomic_t count;
 	struct fdtable *fdt;
 	struct fdtable fdtab;
-  /*
-   * written part on a separate cache line in SMP
-   */
+	/*
+	 * written part on a separate cache line in SMP
+	 */
 	spinlock_t file_lock ____cacheline_aligned_in_smp;
 	int next_fd;
 	struct embedded_fd_set close_on_exec_init;
 	struct embedded_fd_set open_fds_init;
-	struct file * fd_array[NR_OPEN_DEFAULT];
+	struct file *fd_array[NR_OPEN_DEFAULT];
 };
 
 #define files_fdtable(files) (rcu_dereference((files)->fdt))
@@ -70,9 +70,10 @@ static inline void free_fdtable(struct fdtable *fdt)
 	call_rcu(&fdt->rcu, free_fdtable_rcu);
 }
 
-static inline struct file * fcheck_files(struct files_struct *files, unsigned int fd)
+static inline struct file *fcheck_files(struct files_struct *files,
+					unsigned int fd)
 {
-	struct file * file = NULL;
+	struct file *file = NULL;
 	struct fdtable *fdt = files_fdtable(files);
 
 	if (fd < fdt->max_fds)

@@ -21,4 +21,4 @@
 	(void)__tmp; \
 })
 
-#endif		/* TYPECHECK_H_INCLUDED */
+#endif /* TYPECHECK_H_INCLUDED */

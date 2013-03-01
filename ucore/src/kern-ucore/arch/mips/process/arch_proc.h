@@ -6,7 +6,6 @@
 #include <trap.h>
 #include <memlayout.h>
 
-
 struct context {
 	uint32_t sf_s0;
 	uint32_t sf_s1;
@@ -19,11 +18,9 @@ struct context {
 	uint32_t sf_s8;
 	uint32_t sf_gp;
 	uint32_t sf_ra;
-  uint32_t sf_sp;
+	uint32_t sf_sp;
 };
 struct arch_proc_struct {
 };
 
-
 #endif /* !__KERN_ARCH_PROCESS_PROC_H__ */
-

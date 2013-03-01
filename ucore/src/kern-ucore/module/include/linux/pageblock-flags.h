@@ -29,7 +29,7 @@
 enum pageblock_bits {
 	PB_migrate,
 	PB_migrate_end = PB_migrate + 3 - 1,
-			/* 3 bits required for migrate types */
+	/* 3 bits required for migrate types */
 	NR_PAGEBLOCK_BITS
 };
 
@@ -63,11 +63,11 @@ struct page;
 unsigned long get_pageblock_flags_group(struct page *page,
 					int start_bitidx, int end_bitidx);
 void set_pageblock_flags_group(struct page *page, unsigned long flags,
-					int start_bitidx, int end_bitidx);
+			       int start_bitidx, int end_bitidx);
 
 #define get_pageblock_flags(page) \
 			get_pageblock_flags_group(page, 0, NR_PAGEBLOCK_BITS-1)
 #define set_pageblock_flags(page) \
 			set_pageblock_flags_group(page, 0, NR_PAGEBLOCK_BITS-1)
 
-#endif	/* PAGEBLOCK_FLAGS_H */
+#endif /* PAGEBLOCK_FLAGS_H */

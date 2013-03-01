@@ -9,7 +9,6 @@
  * Keith Owens <kaos@ocs.com.au> July 2000.
  */
 
-
 /*
  * Simple wrappers reducing source bloat.  Define all irq_stat fields
  * here, even ones that are arch dependent.  That way we get common
@@ -17,7 +16,7 @@
  */
 
 #ifndef __ARCH_IRQ_STAT
-extern irq_cpustat_t irq_stat[];		/* defined in asm/hardirq.h */
+extern irq_cpustat_t irq_stat[];	/* defined in asm/hardirq.h */
 #define __IRQ_STAT(cpu, member)	(irq_stat[cpu].member)
 #endif
 
@@ -28,4 +27,4 @@ extern irq_cpustat_t irq_stat[];		/* defined in asm/hardirq.h */
   /* arch dependent irq_stat fields */
 #define nmi_count(cpu)		__IRQ_STAT((cpu), __nmi_count)	/* i386 */
 
-#endif	/* __irq_cpustat_h */
+#endif /* __irq_cpustat_h */

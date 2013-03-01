@@ -96,7 +96,7 @@ int mmc_go_idle(struct mmc_host *host)
 	return err;
 }
 
-int mmc_send_op_cond(struct mmc_host *host, u32 ocr, u32 *rocr)
+int mmc_send_op_cond(struct mmc_host *host, u32 ocr, u32 * rocr)
 {
 	struct mmc_command cmd;
 	int i, err = 0;
@@ -138,7 +138,7 @@ int mmc_send_op_cond(struct mmc_host *host, u32 ocr, u32 *rocr)
 	return err;
 }
 
-int mmc_all_send_cid(struct mmc_host *host, u32 *cid)
+int mmc_all_send_cid(struct mmc_host *host, u32 * cid)
 {
 	int err;
 	struct mmc_command cmd;
@@ -183,7 +183,7 @@ int mmc_set_relative_addr(struct mmc_card *card)
 }
 
 static int
-mmc_send_cxd_native(struct mmc_host *host, u32 arg, u32 *cxd, int opcode)
+mmc_send_cxd_native(struct mmc_host *host, u32 arg, u32 * cxd, int opcode)
 {
 	int err;
 	struct mmc_command cmd;
@@ -208,7 +208,7 @@ mmc_send_cxd_native(struct mmc_host *host, u32 arg, u32 *cxd, int opcode)
 
 static int
 mmc_send_cxd_data(struct mmc_card *card, struct mmc_host *host,
-		u32 opcode, void *buf, unsigned len)
+		  u32 opcode, void *buf, unsigned len)
 {
 	struct mmc_request mrq;
 	struct mmc_command cmd;
@@ -271,25 +271,25 @@ mmc_send_cxd_data(struct mmc_card *card, struct mmc_host *host,
 	return 0;
 }
 
-int mmc_send_csd(struct mmc_card *card, u32 *csd)
+int mmc_send_csd(struct mmc_card *card, u32 * csd)
 {
 	int ret, i;
 
 	if (!mmc_host_is_spi(card->host))
 		return mmc_send_cxd_native(card->host, card->rca << 16,
-				csd, MMC_SEND_CSD);
+					   csd, MMC_SEND_CSD);
 
 	ret = mmc_send_cxd_data(card, card->host, MMC_SEND_CSD, csd, 16);
 	if (ret)
 		return ret;
 
-	for (i = 0;i < 4;i++)
+	for (i = 0; i < 4; i++)
 		csd[i] = be32_to_cpu(csd[i]);
 
 	return 0;
 }
 
-int mmc_send_cid(struct mmc_host *host, u32 *cid)
+int mmc_send_cid(struct mmc_host *host, u32 * cid)
 {
 	int ret, i;
 
@@ -297,26 +297,26 @@ int mmc_send_cid(struct mmc_host *host, u32 *cid)
 		if (!host->card)
 			return -EINVAL;
 		return mmc_send_cxd_native(host, host->card->rca << 16,
-				cid, MMC_SEND_CID);
+					   cid, MMC_SEND_CID);
 	}
 
 	ret = mmc_send_cxd_data(NULL, host, MMC_SEND_CID, cid, 16);
 	if (ret)
 		return ret;
 
-	for (i = 0;i < 4;i++)
+	for (i = 0; i < 4; i++)
 		cid[i] = be32_to_cpu(cid[i]);
 
 	return 0;
 }
 
-int mmc_send_ext_csd(struct mmc_card *card, u8 *ext_csd)
+int mmc_send_ext_csd(struct mmc_card *card, u8 * ext_csd)
 {
 	return mmc_send_cxd_data(card, card->host, MMC_SEND_EXT_CSD,
-			ext_csd, 512);
+				 ext_csd, 512);
 }
 
-int mmc_spi_read_ocr(struct mmc_host *host, int highcap, u32 *ocrp)
+int mmc_spi_read_ocr(struct mmc_host *host, int highcap, u32 * ocrp)
 {
 	struct mmc_command cmd;
 	int err;
@@ -362,9 +362,7 @@ int mmc_switch(struct mmc_card *card, u8 set, u8 index, u8 value)
 
 	cmd.opcode = MMC_SWITCH;
 	cmd.arg = (MMC_SWITCH_MODE_WRITE_BYTE << 24) |
-		  (index << 16) |
-		  (value << 8) |
-		  set;
+	    (index << 16) | (value << 8) | set;
 	cmd.flags = MMC_RSP_SPI_R1B | MMC_RSP_R1B | MMC_CMD_AC;
 
 	err = mmc_wait_for_cmd(card->host, &cmd, MMC_CMD_RETRIES);
@@ -374,7 +372,7 @@ int mmc_switch(struct mmc_card *card, u8 set, u8 index, u8 value)
 	return 0;
 }
 
-int mmc_send_status(struct mmc_card *card, u32 *status)
+int mmc_send_status(struct mmc_card *card, u32 * status)
 {
 	int err;
 	struct mmc_command cmd;
@@ -401,4 +399,3 @@ int mmc_send_status(struct mmc_card *card, u32 *status)
 
 	return 0;
 }
-

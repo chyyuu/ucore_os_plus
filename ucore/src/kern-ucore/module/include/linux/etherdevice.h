@@ -30,7 +30,7 @@
 #include <asm/unaligned.h>
 
 #ifdef __KERNEL__
-extern __be16		eth_type_trans(struct sk_buff *skb, struct net_device *dev);
+extern __be16 eth_type_trans(struct sk_buff *skb, struct net_device *dev);
 extern const struct header_ops eth_header_ops;
 
 extern int eth_header(struct sk_buff *skb, struct net_device *dev,
@@ -46,9 +46,8 @@ extern int eth_mac_addr(struct net_device *dev, void *p);
 extern int eth_change_mtu(struct net_device *dev, int new_mtu);
 extern int eth_validate_addr(struct net_device *dev);
 
-
-
-extern struct net_device *alloc_etherdev_mq(int sizeof_priv, unsigned int queue_count);
+extern struct net_device *alloc_etherdev_mq(int sizeof_priv,
+					    unsigned int queue_count);
 #define alloc_etherdev(sizeof_priv) alloc_etherdev_mq(sizeof_priv, 1)
 
 /**
@@ -57,7 +56,7 @@ extern struct net_device *alloc_etherdev_mq(int sizeof_priv, unsigned int queue_
  *
  * Return true if the address is all zeroes.
  */
-static inline int is_zero_ether_addr(const u8 *addr)
+static inline int is_zero_ether_addr(const u8 * addr)
 {
 	return !(addr[0] | addr[1] | addr[2] | addr[3] | addr[4] | addr[5]);
 }
@@ -69,7 +68,7 @@ static inline int is_zero_ether_addr(const u8 *addr)
  * Return true if the address is a multicast address.
  * By definition the broadcast address is also a multicast address.
  */
-static inline int is_multicast_ether_addr(const u8 *addr)
+static inline int is_multicast_ether_addr(const u8 * addr)
 {
 	return (0x01 & addr[0]);
 }
@@ -80,7 +79,7 @@ static inline int is_multicast_ether_addr(const u8 *addr)
  *
  * Return true if the address is a local address.
  */
-static inline int is_local_ether_addr(const u8 *addr)
+static inline int is_local_ether_addr(const u8 * addr)
 {
 	return (0x02 & addr[0]);
 }
@@ -91,9 +90,10 @@ static inline int is_local_ether_addr(const u8 *addr)
  *
  * Return true if the address is the broadcast address.
  */
-static inline int is_broadcast_ether_addr(const u8 *addr)
+static inline int is_broadcast_ether_addr(const u8 * addr)
 {
-	return (addr[0] & addr[1] & addr[2] & addr[3] & addr[4] & addr[5]) == 0xff;
+	return (addr[0] & addr[1] & addr[2] & addr[3] & addr[4] & addr[5]) ==
+	    0xff;
 }
 
 /**
@@ -105,7 +105,7 @@ static inline int is_broadcast_ether_addr(const u8 *addr)
  *
  * Return true if the address is valid.
  */
-static inline int is_valid_ether_addr(const u8 *addr)
+static inline int is_valid_ether_addr(const u8 * addr)
 {
 	/* FF:FF:FF:FF:FF:FF is a multicast address so we don't need to
 	 * explicitly check for it here. */
@@ -119,11 +119,11 @@ static inline int is_valid_ether_addr(const u8 *addr)
  * Generate a random Ethernet address (MAC) that is not multicast
  * and has the local assigned bit set.
  */
-static inline void random_ether_addr(u8 *addr)
+static inline void random_ether_addr(u8 * addr)
 {
-	get_random_bytes (addr, ETH_ALEN);
-	addr [0] &= 0xfe;	/* clear multicast bit */
-	addr [0] |= 0x02;	/* set local assignment bit (IEEE802) */
+	get_random_bytes(addr, ETH_ALEN);
+	addr[0] &= 0xfe;	/* clear multicast bit */
+	addr[0] |= 0x02;	/* set local assignment bit (IEEE802) */
 }
 
 /**
@@ -133,10 +133,10 @@ static inline void random_ether_addr(u8 *addr)
  *
  * Compare two ethernet addresses, returns 0 if equal
  */
-static inline unsigned compare_ether_addr(const u8 *addr1, const u8 *addr2)
+static inline unsigned compare_ether_addr(const u8 * addr1, const u8 * addr2)
 {
-	const u16 *a = (const u16 *) addr1;
-	const u16 *b = (const u16 *) addr2;
+	const u16 *a = (const u16 *)addr1;
+	const u16 *b = (const u16 *)addr2;
 
 	BUILD_BUG_ON(ETH_ALEN != 6);
 	return ((a[0] ^ b[0]) | (a[1] ^ b[1]) | (a[2] ^ b[2])) != 0;
@@ -165,8 +165,8 @@ static inline unsigned long zap_last_2bytes(unsigned long value)
  * Please note that alignment of addr1 & addr2 is only guaranted to be 16 bits.
  */
 
-static inline unsigned compare_ether_addr_64bits(const u8 addr1[6+2],
-						 const u8 addr2[6+2])
+static inline unsigned compare_ether_addr_64bits(const u8 addr1[6 + 2],
+						 const u8 addr2[6 + 2])
 {
 #ifdef CONFIG_HAVE_EFFICIENT_UNALIGNED_ACCESS
 	unsigned long fold = ((*(unsigned long *)addr1) ^
@@ -182,6 +182,6 @@ static inline unsigned compare_ether_addr_64bits(const u8 addr1[6+2],
 	return compare_ether_addr(addr1, addr2);
 #endif
 }
-#endif	/* __KERNEL__ */
+#endif /* __KERNEL__ */
 
-#endif	/* _LINUX_ETHERDEVICE_H */
+#endif /* _LINUX_ETHERDEVICE_H */

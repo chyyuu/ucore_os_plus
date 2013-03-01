@@ -24,14 +24,14 @@
 /* One of these per IOC3 */
 struct ioc3_driver_data {
 	struct list_head list;
-	int id;				/* IOC3 sequence number */
+	int id;			/* IOC3 sequence number */
 	/* PCI mapping */
-	unsigned long pma;		/* physical address */
+	unsigned long pma;	/* physical address */
 	struct ioc3 __iomem *vma;	/* pointer to registers */
-	struct pci_dev *pdev;		/* PCI device */
+	struct pci_dev *pdev;	/* PCI device */
 	/* IRQ stuff */
-	int dual_irq;			/* set if separate IRQs are used */
-	int irq_io, irq_eth;		/* IRQ numbers */
+	int dual_irq;		/* set if separate IRQs are used */
+	int irq_io, irq_eth;	/* IRQ numbers */
 	/* GPIO magic */
 	spinlock_t gpio_lock;
 	unsigned int gpdr_shadow;
@@ -63,7 +63,8 @@ struct ioc3_submodule {
 	/* IRQ stuff */
 	unsigned int irq_mask;	/* IOC3 IRQ mask, leave clear for Ethernet */
 	int reset_mask;		/* non-zero if you want the ioc3.c module to reset interrupts */
-	int (*intr) (struct ioc3_submodule *, struct ioc3_driver_data *, unsigned int);
+	int (*intr) (struct ioc3_submodule *, struct ioc3_driver_data *,
+		     unsigned int);
 	/* private submodule data */
 	void *data;		/* assigned by submodule */
 };
@@ -80,14 +81,18 @@ extern int ioc3_register_submodule(struct ioc3_submodule *);
 /* unregisters a submodule */
 extern void ioc3_unregister_submodule(struct ioc3_submodule *);
 /* enables IRQs indicated by irq_mask for a specified IOC3 chip */
-extern void ioc3_enable(struct ioc3_submodule *, struct ioc3_driver_data *, unsigned int);
+extern void ioc3_enable(struct ioc3_submodule *, struct ioc3_driver_data *,
+			unsigned int);
 /* ackowledges specified IRQs */
-extern void ioc3_ack(struct ioc3_submodule *, struct ioc3_driver_data *, unsigned int);
+extern void ioc3_ack(struct ioc3_submodule *, struct ioc3_driver_data *,
+		     unsigned int);
 /* disables IRQs indicated by irq_mask for a specified IOC3 chip */
-extern void ioc3_disable(struct ioc3_submodule *, struct ioc3_driver_data *, unsigned int);
+extern void ioc3_disable(struct ioc3_submodule *, struct ioc3_driver_data *,
+			 unsigned int);
 /* atomically sets GPCR bits */
 extern void ioc3_gpcr_set(struct ioc3_driver_data *, unsigned int);
 /* general ireg writer */
-extern void ioc3_write_ireg(struct ioc3_driver_data *idd, uint32_t value, int reg);
+extern void ioc3_write_ireg(struct ioc3_driver_data *idd, uint32_t value,
+			    int reg);
 
 #endif

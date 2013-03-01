@@ -37,64 +37,66 @@ struct mmap_arg_struct {
 	unsigned long offset;
 };
 
-static inline long syscall0(long syscall) __attribute__((always_inline));
-static inline long syscall1(long syscall, long arg1) __attribute__((always_inline));
-static inline long syscall2(long syscall, long arg1, long arg2) __attribute__((always_inline));
-static inline long syscall3(long syscall, long arg1, long arg2,
-								 long arg3) __attribute__((always_inline));
-static inline long syscall4(long syscall, long arg1, long arg2,
-								 long arg3, long arg4) __attribute__((always_inline));
-static inline long syscall5(long syscall, long arg1, long arg2,
-								 long arg3, long arg4, long arg5) __attribute__((always_inline));
-static inline void trap_myself(void) __attribute__((always_inline));
-
+static inline long syscall0(long syscall) __attribute__ ((always_inline));
+static inline long syscall1(long syscall, long arg1)
+    __attribute__ ((always_inline));
+static inline long syscall2(long syscall, long arg1, long arg2)
+    __attribute__ ((always_inline));
+static inline long syscall3(long syscall, long arg1, long arg2, long arg3)
+    __attribute__ ((always_inline));
+static inline long syscall4(long syscall, long arg1, long arg2, long arg3,
+			    long arg4) __attribute__ ((always_inline));
+static inline long syscall5(long syscall, long arg1, long arg2, long arg3,
+			    long arg4, long arg5)
+    __attribute__ ((always_inline));
+static inline void trap_myself(void) __attribute__ ((always_inline));
 
 /* syscall wrappers. copied from arch/um/sys-i386/shared/sysdep/stub.h */
 static inline long syscall0(long syscall)
 {
 	long ret;
-	__asm__ volatile ("int $0x80" : "=a" (ret) : "0" (syscall));
+	__asm__ volatile ("int $0x80":"=a" (ret):"0"(syscall));
 	return ret;
 }
 
 static inline long syscall1(long syscall, long arg1)
 {
 	long ret;
-	__asm__ volatile ("int $0x80" : "=a" (ret) : "0" (syscall), "b" (arg1));
+	__asm__ volatile ("int $0x80":"=a" (ret):"0"(syscall), "b"(arg1));
 	return ret;
 }
 
 static inline long syscall2(long syscall, long arg1, long arg2)
 {
 	long ret;
-	__asm__ volatile ("int $0x80" : "=a" (ret) : "0" (syscall), "b" (arg1),
-			"c" (arg2));
+	__asm__ volatile ("int $0x80":"=a" (ret):"0"(syscall), "b"(arg1),
+			  "c"(arg2));
 	return ret;
 }
 
 static inline long syscall3(long syscall, long arg1, long arg2, long arg3)
 {
 	long ret;
-	__asm__ volatile ("int $0x80" : "=a" (ret) : "0" (syscall), "b" (arg1),
-			"c" (arg2), "d" (arg3));
+	__asm__ volatile ("int $0x80":"=a" (ret):"0"(syscall), "b"(arg1),
+			  "c"(arg2), "d"(arg3));
 	return ret;
 }
 
 static inline long syscall4(long syscall, long arg1, long arg2, long arg3,
-				 long arg4)
+			    long arg4)
 {
 	long ret;
-	__asm__ volatile ("int $0x80" : "=a" (ret) : "0" (syscall), "b" (arg1),
-			"c" (arg2), "d" (arg3), "S" (arg4));
+	__asm__ volatile ("int $0x80":"=a" (ret):"0"(syscall), "b"(arg1),
+			  "c"(arg2), "d"(arg3), "S"(arg4));
 	return ret;
 }
 
 static inline long syscall5(long syscall, long arg1, long arg2, long arg3,
-				 long arg4, long arg5)
+			    long arg4, long arg5)
 {
 	long ret;
-	__asm__ volatile ("int $0x80" : "=a" (ret) : "0" (syscall), "b" (arg1),
-			"c" (arg2), "d" (arg3), "S" (arg4), "D" (arg5));
+	__asm__ volatile ("int $0x80":"=a" (ret):"0"(syscall), "b"(arg1),
+			  "c"(arg2), "d"(arg3), "S"(arg4), "D"(arg5));
 	return ret;
 }
 
@@ -103,11 +105,11 @@ static inline void trap_myself(void)
 	__asm("int3");
 }
 
-static inline void pause (void)
+static inline void pause(void)
 {
-	asm ("movl $29, %eax; int $0x80;");
+	asm("movl $29, %eax; int $0x80;");
 }
 
-#endif  /* !__ASSEMBLER__ */
+#endif /* !__ASSEMBLER__ */
 
-#endif  /* !__ARCH_UM_INCLUDE_LINUX_SYSCALL_H__ */
+#endif /* !__ARCH_UM_INCLUDE_LINUX_SYSCALL_H__ */

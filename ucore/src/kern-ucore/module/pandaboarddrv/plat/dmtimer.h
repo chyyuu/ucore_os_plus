@@ -91,7 +91,7 @@ struct timer_regs {
 
 struct dmtimer_platform_data {
 	/* set_timer_src - Only used for OMAP1 devices */
-	int (*set_timer_src)(struct platform_device *pdev, int source);
+	int (*set_timer_src) (struct platform_device * pdev, int source);
 	u32 timer_capability;
 };
 
@@ -112,18 +112,24 @@ int omap_dm_timer_start(struct omap_dm_timer *timer);
 int omap_dm_timer_stop(struct omap_dm_timer *timer);
 
 int omap_dm_timer_set_source(struct omap_dm_timer *timer, int source);
-int omap_dm_timer_set_load(struct omap_dm_timer *timer, int autoreload, unsigned int value);
-int omap_dm_timer_set_load_start(struct omap_dm_timer *timer, int autoreload, unsigned int value);
-int omap_dm_timer_set_match(struct omap_dm_timer *timer, int enable, unsigned int match);
-int omap_dm_timer_set_pwm(struct omap_dm_timer *timer, int def_on, int toggle, int trigger);
+int omap_dm_timer_set_load(struct omap_dm_timer *timer, int autoreload,
+			   unsigned int value);
+int omap_dm_timer_set_load_start(struct omap_dm_timer *timer, int autoreload,
+				 unsigned int value);
+int omap_dm_timer_set_match(struct omap_dm_timer *timer, int enable,
+			    unsigned int match);
+int omap_dm_timer_set_pwm(struct omap_dm_timer *timer, int def_on, int toggle,
+			  int trigger);
 int omap_dm_timer_set_prescaler(struct omap_dm_timer *timer, int prescaler);
 
-int omap_dm_timer_set_int_enable(struct omap_dm_timer *timer, unsigned int value);
+int omap_dm_timer_set_int_enable(struct omap_dm_timer *timer,
+				 unsigned int value);
 
 unsigned int omap_dm_timer_read_status(struct omap_dm_timer *timer);
 int omap_dm_timer_write_status(struct omap_dm_timer *timer, unsigned int value);
 unsigned int omap_dm_timer_read_counter(struct omap_dm_timer *timer);
-int omap_dm_timer_write_counter(struct omap_dm_timer *timer, unsigned int value);
+int omap_dm_timer_write_counter(struct omap_dm_timer *timer,
+				unsigned int value);
 
 int omap_dm_timers_active(void);
 
@@ -165,12 +171,12 @@ int omap_dm_timers_active(void);
 #define		OMAP_TIMER_CTRL_TCM_HIGHTOLOW	(0x2 << 8)
 #define		OMAP_TIMER_CTRL_TCM_BOTHEDGES	(0x3 << 8)
 #define		OMAP_TIMER_CTRL_SCPWM		(1 << 7)
-#define		OMAP_TIMER_CTRL_CE		(1 << 6) /* compare enable */
-#define		OMAP_TIMER_CTRL_PRE		(1 << 5) /* prescaler enable */
-#define		OMAP_TIMER_CTRL_PTV_SHIFT	2 /* prescaler value shift */
+#define		OMAP_TIMER_CTRL_CE		(1 << 6)	/* compare enable */
+#define		OMAP_TIMER_CTRL_PRE		(1 << 5)	/* prescaler enable */
+#define		OMAP_TIMER_CTRL_PTV_SHIFT	2	/* prescaler value shift */
 #define		OMAP_TIMER_CTRL_POSTED		(1 << 2)
-#define		OMAP_TIMER_CTRL_AR		(1 << 1) /* auto-reload enable */
-#define		OMAP_TIMER_CTRL_ST		(1 << 0) /* start timer */
+#define		OMAP_TIMER_CTRL_AR		(1 << 1)	/* auto-reload enable */
+#define		OMAP_TIMER_CTRL_ST		(1 << 0)	/* start timer */
 #define _OMAP_TIMER_COUNTER_OFFSET	0x28
 #define _OMAP_TIMER_LOAD_OFFSET		0x2c
 #define _OMAP_TIMER_TRIGGER_OFFSET	0x30
@@ -250,13 +256,13 @@ struct omap_dm_timer {
 	int irq;
 	struct clk *fclk;
 
-	void __iomem	*io_base;
-	void __iomem	*sys_stat;	/* TISTAT timer status */
-	void __iomem	*irq_stat;	/* TISR/IRQSTATUS interrupt status */
-	void __iomem	*irq_ena;	/* irq enable */
-	void __iomem	*irq_dis;	/* irq disable, only on v2 ip */
-	void __iomem	*pend;		/* write pending */
-	void __iomem	*func_base;	/* function register base */
+	void __iomem *io_base;
+	void __iomem *sys_stat;	/* TISTAT timer status */
+	void __iomem *irq_stat;	/* TISR/IRQSTATUS interrupt status */
+	void __iomem *irq_ena;	/* irq enable */
+	void __iomem *irq_dis;	/* irq disable, only on v2 ip */
+	void __iomem *pend;	/* write pending */
+	void __iomem *func_base;	/* function register base */
 
 	unsigned long rate;
 	unsigned reserved:1;
@@ -272,7 +278,7 @@ struct omap_dm_timer {
 int omap_dm_timer_prepare(struct omap_dm_timer *timer);
 
 static inline u32 __omap_dm_timer_read(struct omap_dm_timer *timer, u32 reg,
-						int posted)
+				       int posted)
 {
 	if (posted)
 		while (__raw_readl(timer->pend) & (reg >> WPSHIFT))
@@ -282,7 +288,7 @@ static inline u32 __omap_dm_timer_read(struct omap_dm_timer *timer, u32 reg,
 }
 
 static inline void __omap_dm_timer_write(struct omap_dm_timer *timer,
-					u32 reg, u32 val, int posted)
+					 u32 reg, u32 val, int posted)
 {
 	if (posted)
 		while (__raw_readl(timer->pend) & (reg >> WPSHIFT))
@@ -300,7 +306,7 @@ static inline void __omap_dm_timer_init_regs(struct omap_dm_timer *timer)
 	if (!(tidr >> 16)) {
 		timer->revision = 1;
 		timer->sys_stat = timer->io_base +
-				OMAP_TIMER_V1_SYS_STAT_OFFSET;
+		    OMAP_TIMER_V1_SYS_STAT_OFFSET;
 		timer->irq_stat = timer->io_base + OMAP_TIMER_V1_STAT_OFFSET;
 		timer->irq_ena = timer->io_base + OMAP_TIMER_V1_INT_EN_OFFSET;
 		timer->irq_dis = NULL;
@@ -313,21 +319,20 @@ static inline void __omap_dm_timer_init_regs(struct omap_dm_timer *timer)
 		timer->irq_ena = timer->io_base + OMAP_TIMER_V2_IRQENABLE_SET;
 		timer->irq_dis = timer->io_base + OMAP_TIMER_V2_IRQENABLE_CLR;
 		timer->pend = timer->io_base +
-			_OMAP_TIMER_WRITE_PEND_OFFSET +
-				OMAP_TIMER_V2_FUNC_OFFSET;
+		    _OMAP_TIMER_WRITE_PEND_OFFSET + OMAP_TIMER_V2_FUNC_OFFSET;
 		timer->func_base = timer->io_base + OMAP_TIMER_V2_FUNC_OFFSET;
 	}
 }
 
 /* Assumes the source clock has been set by caller */
 static inline void __omap_dm_timer_reset(struct omap_dm_timer *timer,
-					int autoidle, int wakeup)
+					 int autoidle, int wakeup)
 {
 	u32 l;
 
 	l = __raw_readl(timer->io_base + OMAP_TIMER_OCP_CFG_OFFSET);
-	l |= 0x02 << 3;  /* Set to smart-idle mode */
-	l |= 0x2 << 8;   /* Set clock activity to perserve f-clock on idle */
+	l |= 0x02 << 3;		/* Set to smart-idle mode */
+	l |= 0x2 << 8;		/* Set clock activity to perserve f-clock on idle */
 
 	if (autoidle)
 		l |= 0x1 << 0;
@@ -339,11 +344,11 @@ static inline void __omap_dm_timer_reset(struct omap_dm_timer *timer,
 
 	/* Match hardware reset default of posted mode */
 	__omap_dm_timer_write(timer, OMAP_TIMER_IF_CTRL_REG,
-					OMAP_TIMER_CTRL_POSTED, 0);
+			      OMAP_TIMER_CTRL_POSTED, 0);
 }
 
 static inline int __omap_dm_timer_set_source(struct clk *timer_fck,
-						struct clk *parent)
+					     struct clk *parent)
 {
 	int ret;
 
@@ -385,15 +390,15 @@ static inline void __omap_dm_timer_stop(struct omap_dm_timer *timer,
 }
 
 static inline void __omap_dm_timer_load_start(struct omap_dm_timer *timer,
-						u32 ctrl, unsigned int load,
-						int posted)
+					      u32 ctrl, unsigned int load,
+					      int posted)
 {
 	__omap_dm_timer_write(timer, OMAP_TIMER_COUNTER_REG, load, posted);
 	__omap_dm_timer_write(timer, OMAP_TIMER_CTRL_REG, ctrl, posted);
 }
 
 static inline void __omap_dm_timer_int_enable(struct omap_dm_timer *timer,
-						unsigned int value)
+					      unsigned int value)
 {
 	__raw_writel(value, timer->irq_ena);
 	__omap_dm_timer_write(timer, OMAP_TIMER_WAKEUP_EN_REG, value, 0);

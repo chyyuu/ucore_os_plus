@@ -18,15 +18,15 @@
 #include <pmm.h>
 #include <proc.h>
 
-int __ucore_kernel_thread(int (*fn)(void *), const char* name, void *arg, unsigned int clone_flags)
+int __ucore_kernel_thread(int (*fn) (void *), const char *name, void *arg,
+			  unsigned int clone_flags)
 {
-  int pid = ucore_kernel_thread(fn, arg, clone_flags);
-  if(pid <= 0)
-    return pid;
-  struct proc_struct *proc = find_proc(pid);
-  if(!proc)
-    return -1;
-  set_proc_name(proc, name);
-  return pid;
+	int pid = ucore_kernel_thread(fn, arg, clone_flags);
+	if (pid <= 0)
+		return pid;
+	struct proc_struct *proc = find_proc(pid);
+	if (!proc)
+		return -1;
+	set_proc_name(proc, name);
+	return pid;
 }
-

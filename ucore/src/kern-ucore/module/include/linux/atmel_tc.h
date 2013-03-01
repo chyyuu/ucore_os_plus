@@ -51,12 +51,12 @@ struct clk;
  * in @irq are actually the same IRQ.
  */
 struct atmel_tc {
-	struct platform_device	*pdev;
-	struct resource		*iomem;
-	void __iomem		*regs;
-	int			irq[3];
-	struct clk		*clk[3];
-	struct list_head	node;
+	struct platform_device *pdev;
+	struct resource *iomem;
+	void __iomem *regs;
+	int irq[3];
+	struct clk *clk[3];
+	struct list_head node;
 };
 
 extern struct atmel_tc *atmel_tc_alloc(unsigned block, const char *name);
@@ -64,7 +64,6 @@ extern void atmel_tc_free(struct atmel_tc *tc);
 
 /* platform-specific ATMEL_TC_TIMER_CLOCKx divisors (0 means 32KiHz) */
 extern const u8 atmel_tc_divisors[5];
-
 
 /*
  * Two registers have block-wide controls.  These are: configuring the three
@@ -76,10 +75,10 @@ extern const u8 atmel_tc_divisors[5];
  * one of the other two timers that's being run in waveform mode.
  */
 
-#define ATMEL_TC_BCR	0xc0		/* TC Block Control Register */
+#define ATMEL_TC_BCR	0xc0	/* TC Block Control Register */
 #define     ATMEL_TC_SYNC	(1 << 0)	/* synchronize timers */
 
-#define ATMEL_TC_BMR	0xc4		/* TC Block Mode Register */
+#define ATMEL_TC_BMR	0xc4	/* TC Block Mode Register */
 #define     ATMEL_TC_TC0XC0S	(3 << 0)	/* external clock 0 source */
 #define        ATMEL_TC_TC0XC0S_TCLK0	(0 << 0)
 #define        ATMEL_TC_TC0XC0S_NONE	(1 << 0)
@@ -95,7 +94,6 @@ extern const u8 atmel_tc_divisors[5];
 #define        ATMEL_TC_TC2XC2S_NONE	(1 << 4)
 #define        ATMEL_TC_TC2XC2S_TIOA0	(2 << 4)
 #define        ATMEL_TC_TC2XC2S_TIOA1	(3 << 4)
-
 
 /*
  * Each TC block has three "channels", each with one counter and controls.
@@ -118,12 +116,12 @@ extern const u8 atmel_tc_divisors[5];
 #define ATMEL_TC_CHAN(idx)	((idx)*0x40)
 #define ATMEL_TC_REG(idx, reg)	(ATMEL_TC_CHAN(idx) + ATMEL_TC_ ## reg)
 
-#define ATMEL_TC_CCR	0x00		/* Channel Control Register */
+#define ATMEL_TC_CCR	0x00	/* Channel Control Register */
 #define     ATMEL_TC_CLKEN	(1 << 0)	/* clock enable */
 #define     ATMEL_TC_CLKDIS	(1 << 1)	/* clock disable */
 #define     ATMEL_TC_SWTRG	(1 << 2)	/* software trigger */
 
-#define ATMEL_TC_CMR	0x04		/* Channel Mode Register */
+#define ATMEL_TC_CMR	0x04	/* Channel Mode Register */
 
 /* Both modes share some CMR bits */
 #define     ATMEL_TC_TCCLKS	(7 << 0)	/* clock source */
@@ -224,20 +222,20 @@ extern const u8 atmel_tc_divisors[5];
 #define        ATMEL_TC_BSWTRG_CLEAR	(2 << 30)
 #define        ATMEL_TC_BSWTRG_TOGGLE	(3 << 30)
 
-#define ATMEL_TC_CV	0x10		/* counter Value */
-#define ATMEL_TC_RA	0x14		/* register A */
-#define ATMEL_TC_RB	0x18		/* register B */
-#define ATMEL_TC_RC	0x1c		/* register C */
+#define ATMEL_TC_CV	0x10	/* counter Value */
+#define ATMEL_TC_RA	0x14	/* register A */
+#define ATMEL_TC_RB	0x18	/* register B */
+#define ATMEL_TC_RC	0x1c	/* register C */
 
-#define ATMEL_TC_SR	0x20		/* status (read-only) */
+#define ATMEL_TC_SR	0x20	/* status (read-only) */
 /* Status-only flags */
 #define     ATMEL_TC_CLKSTA	(1 << 16)	/* clock enabled */
 #define     ATMEL_TC_MTIOA	(1 << 17)	/* TIOA mirror */
 #define     ATMEL_TC_MTIOB	(1 << 18)	/* TIOB mirror */
 
-#define ATMEL_TC_IER	0x24		/* interrupt enable (write-only) */
-#define ATMEL_TC_IDR	0x28		/* interrupt disable (write-only) */
-#define ATMEL_TC_IMR	0x2c		/* interrupt mask (read-only) */
+#define ATMEL_TC_IER	0x24	/* interrupt enable (write-only) */
+#define ATMEL_TC_IDR	0x28	/* interrupt disable (write-only) */
+#define ATMEL_TC_IMR	0x2c	/* interrupt mask (read-only) */
 
 /* Status and IRQ flags */
 #define     ATMEL_TC_COVFS	(1 <<  0)	/* counter overflow */

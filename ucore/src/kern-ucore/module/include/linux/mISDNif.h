@@ -211,7 +211,6 @@
 #define IS_ISDN_P_E1(p) ((p == ISDN_P_TE_E1) || (p == ISDN_P_NT_E1))
 #define IS_ISDN_P_UP0(p) ((p == ISDN_P_TE_UP0) || (p == ISDN_P_NT_UP0))
 
-
 #define ISDN_P_LAPD_TE		0x10
 #define	ISDN_P_LAPD_NT		0x11
 
@@ -234,9 +233,9 @@
 #define MISDN_MAX_IDLEN		20
 
 struct mISDNhead {
-	unsigned int	prim;
-	unsigned int	id;
-}  __attribute__((packed));
+	unsigned int prim;
+	unsigned int id;
+} __attribute__ ((packed));
 
 #define MISDN_HEADER_LEN	sizeof(struct mISDNhead)
 #define MAX_DATA_SIZE		2048
@@ -261,49 +260,49 @@ struct mISDNhead {
 #define SOL_MISDN	0
 
 struct sockaddr_mISDN {
-	sa_family_t    family;
-	unsigned char	dev;
-	unsigned char	channel;
-	unsigned char	sapi;
-	unsigned char	tei;
+	sa_family_t family;
+	unsigned char dev;
+	unsigned char channel;
+	unsigned char sapi;
+	unsigned char tei;
 };
 
 struct mISDNversion {
-	unsigned char	major;
-	unsigned char	minor;
-	unsigned short	release;
+	unsigned char major;
+	unsigned char minor;
+	unsigned short release;
 };
 
 struct mISDN_devinfo {
-	u_int			id;
-	u_int			Dprotocols;
-	u_int			Bprotocols;
-	u_int			protocol;
-	u_char			channelmap[MISDN_CHMAP_SIZE];
-	u_int			nrbchan;
-	char			name[MISDN_MAX_IDLEN];
+	u_int id;
+	u_int Dprotocols;
+	u_int Bprotocols;
+	u_int protocol;
+	u_char channelmap[MISDN_CHMAP_SIZE];
+	u_int nrbchan;
+	char name[MISDN_MAX_IDLEN];
 };
 
 struct mISDN_devrename {
-	u_int			id;
-	char			name[MISDN_MAX_IDLEN]; /* new name */
+	u_int id;
+	char name[MISDN_MAX_IDLEN];	/* new name */
 };
 
 /* MPH_INFORMATION_REQ payload */
 struct ph_info_ch {
-        __u32 protocol;
-        __u64 Flags;
+	__u32 protocol;
+	__u64 Flags;
 };
 
 struct ph_info_dch {
-        struct ph_info_ch ch;
-        __u16 state;
-        __u16 num_bch;
+	struct ph_info_ch ch;
+	__u16 state;
+	__u16 num_bch;
 };
 
 struct ph_info {
-        struct ph_info_dch dch;
-        struct ph_info_ch  bch[];
+	struct ph_info_dch dch;
+	struct ph_info_ch bch[];
 };
 
 /* timer device ioctl */
@@ -318,8 +317,7 @@ struct ph_info {
 #define IMCLEAR_L2	_IOR('I', 70, int)
 #define IMSETDEVNAME	_IOR('I', 71, struct mISDN_devrename)
 
-static inline int
-test_channelmap(u_int nr, u_char *map)
+static inline int test_channelmap(u_int nr, u_char * map)
 {
 	if (nr <= MISDN_MAX_CHANNEL)
 		return map[nr >> 3] & (1 << (nr & 7));
@@ -327,14 +325,12 @@ test_channelmap(u_int nr, u_char *map)
 		return 0;
 }
 
-static inline void
-set_channelmap(u_int nr, u_char *map)
+static inline void set_channelmap(u_int nr, u_char * map)
 {
 	map[nr >> 3] |= (1 << (nr & 7));
 }
 
-static inline void
-clear_channelmap(u_int nr, u_char *map)
+static inline void clear_channelmap(u_int nr, u_char * map)
 {
 	map[nr >> 3] &= ~(1 << (nr & 7));
 }
@@ -363,15 +359,14 @@ clear_channelmap(u_int nr, u_char *map)
 #define MISDN_CTRL_HFC_ECHOCAN_ON 	0x4007
 #define MISDN_CTRL_HFC_ECHOCAN_OFF 	0x4008
 
-
 /* socket options */
 #define MISDN_TIME_STAMP		0x0001
 
 struct mISDN_ctrl_req {
-	int		op;
-	int		channel;
-	int		p1;
-	int		p2;
+	int op;
+	int channel;
+	int p1;
+	int p2;
 };
 
 /* muxer options */
@@ -418,96 +413,93 @@ struct mISDNstack;
 struct mISDNclock;
 
 struct channel_req {
-	u_int			protocol;
-	struct sockaddr_mISDN	adr;
-	struct mISDNchannel	*ch;
+	u_int protocol;
+	struct sockaddr_mISDN adr;
+	struct mISDNchannel *ch;
 };
 
-typedef	int	(ctrl_func_t)(struct mISDNchannel *, u_int, void *);
-typedef	int	(send_func_t)(struct mISDNchannel *, struct sk_buff *);
-typedef int	(create_func_t)(struct channel_req *);
+typedef int (ctrl_func_t) (struct mISDNchannel *, u_int, void *);
+typedef int (send_func_t) (struct mISDNchannel *, struct sk_buff *);
+typedef int (create_func_t) (struct channel_req *);
 
 struct Bprotocol {
-	struct list_head	list;
-	char			*name;
-	u_int			Bprotocols;
-	create_func_t		*create;
+	struct list_head list;
+	char *name;
+	u_int Bprotocols;
+	create_func_t *create;
 };
 
 struct mISDNchannel {
-	struct list_head	list;
-	u_int			protocol;
-	u_int			nr;
-	u_long			opt;
-	u_int			addr;
-	struct mISDNstack	*st;
-	struct mISDNchannel	*peer;
-	send_func_t		*send;
-	send_func_t		*recv;
-	ctrl_func_t		*ctrl;
+	struct list_head list;
+	u_int protocol;
+	u_int nr;
+	u_long opt;
+	u_int addr;
+	struct mISDNstack *st;
+	struct mISDNchannel *peer;
+	send_func_t *send;
+	send_func_t *recv;
+	ctrl_func_t *ctrl;
 };
 
 struct mISDN_sock_list {
-	struct hlist_head	head;
-	rwlock_t		lock;
+	struct hlist_head head;
+	rwlock_t lock;
 };
 
 struct mISDN_sock {
-	struct sock		sk;
-	struct mISDNchannel	ch;
-	u_int			cmask;
-	struct mISDNdevice	*dev;
+	struct sock sk;
+	struct mISDNchannel ch;
+	u_int cmask;
+	struct mISDNdevice *dev;
 };
 
-
-
 struct mISDNdevice {
-	struct mISDNchannel	D;
-	u_int			id;
-	u_int			Dprotocols;
-	u_int			Bprotocols;
-	u_int			nrbchan;
-	u_char			channelmap[MISDN_CHMAP_SIZE];
-	struct list_head	bchannels;
-	struct mISDNchannel	*teimgr;
-	struct device		dev;
+	struct mISDNchannel D;
+	u_int id;
+	u_int Dprotocols;
+	u_int Bprotocols;
+	u_int nrbchan;
+	u_char channelmap[MISDN_CHMAP_SIZE];
+	struct list_head bchannels;
+	struct mISDNchannel *teimgr;
+	struct device dev;
 };
 
 struct mISDNstack {
-	u_long			status;
-	struct mISDNdevice	*dev;
-	struct task_struct	*thread;
-	struct completion	*notify;
-	wait_queue_head_t	workq;
-	struct sk_buff_head	msgq;
-	struct list_head	layer2;
-	struct mISDNchannel	*layer1;
-	struct mISDNchannel	own;
-	struct mutex		lmutex; /* protect lists */
-	struct mISDN_sock_list	l1sock;
+	u_long status;
+	struct mISDNdevice *dev;
+	struct task_struct *thread;
+	struct completion *notify;
+	wait_queue_head_t workq;
+	struct sk_buff_head msgq;
+	struct list_head layer2;
+	struct mISDNchannel *layer1;
+	struct mISDNchannel own;
+	struct mutex lmutex;	/* protect lists */
+	struct mISDN_sock_list l1sock;
 #ifdef MISDN_MSG_STATS
-	u_int			msg_cnt;
-	u_int			sleep_cnt;
-	u_int			stopped_cnt;
+	u_int msg_cnt;
+	u_int sleep_cnt;
+	u_int stopped_cnt;
 #endif
 };
 
-typedef	int	(clockctl_func_t)(void *, int);
+typedef int (clockctl_func_t) (void *, int);
 
-struct	mISDNclock {
-	struct list_head	list;
-	char			name[64];
-	int			pri;
-	clockctl_func_t		*ctl;
-	void			*priv;
+struct mISDNclock {
+	struct list_head list;
+	char name[64];
+	int pri;
+	clockctl_func_t *ctl;
+	void *priv;
 };
 
 /* global alloc/queue functions */
 
-static inline struct sk_buff *
-mI_alloc_skb(unsigned int len, gfp_t gfp_mask)
+static inline struct sk_buff *mI_alloc_skb(unsigned int len, gfp_t gfp_mask)
 {
-	struct sk_buff	*skb;
+	struct sk_buff *skb;
 
 	skb = alloc_skb(len + MISDN_HEADER_LEN, gfp_mask);
 	if (likely(skb))
@@ -515,10 +507,10 @@ mI_alloc_skb(unsigned int len, gfp_t gfp_mask)
 	return skb;
 }
 
-static inline struct sk_buff *
-_alloc_mISDN_skb(u_int prim, u_int id, u_int len, void *dp, gfp_t gfp_mask)
+static inline struct sk_buff *_alloc_mISDN_skb(u_int prim, u_int id, u_int len,
+					       void *dp, gfp_t gfp_mask)
 {
-	struct sk_buff	*skb = mI_alloc_skb(len, gfp_mask);
+	struct sk_buff *skb = mI_alloc_skb(len, gfp_mask);
 	struct mISDNhead *hh;
 
 	if (!skb)
@@ -533,9 +525,9 @@ _alloc_mISDN_skb(u_int prim, u_int id, u_int len, void *dp, gfp_t gfp_mask)
 
 static inline void
 _queue_data(struct mISDNchannel *ch, u_int prim,
-    u_int id, u_int len, void *dp, gfp_t gfp_mask)
+	    u_int id, u_int len, void *dp, gfp_t gfp_mask)
 {
-	struct sk_buff		*skb;
+	struct sk_buff *skb;
 
 	if (!ch->peer)
 		return;
@@ -548,14 +540,14 @@ _queue_data(struct mISDNchannel *ch, u_int prim,
 
 /* global register/unregister functions */
 
-extern int	mISDN_register_device(struct mISDNdevice *,
-					struct device *parent, char *name);
-extern void	mISDN_unregister_device(struct mISDNdevice *);
-extern int	mISDN_register_Bprotocol(struct Bprotocol *);
-extern void	mISDN_unregister_Bprotocol(struct Bprotocol *);
+extern int mISDN_register_device(struct mISDNdevice *,
+				 struct device *parent, char *name);
+extern void mISDN_unregister_device(struct mISDNdevice *);
+extern int mISDN_register_Bprotocol(struct Bprotocol *);
+extern void mISDN_unregister_Bprotocol(struct Bprotocol *);
 extern struct mISDNclock *mISDN_register_clock(char *, int, clockctl_func_t *,
-						void *);
-extern void	mISDN_unregister_clock(struct mISDNclock *);
+					       void *);
+extern void mISDN_unregister_clock(struct mISDNclock *);
 
 static inline struct mISDNdevice *dev_to_mISDN(struct device *dev)
 {
@@ -565,8 +557,8 @@ static inline struct mISDNdevice *dev_to_mISDN(struct device *dev)
 		return NULL;
 }
 
-extern void	set_channel_address(struct mISDNchannel *, u_int, u_int);
-extern void	mISDN_clock_update(struct mISDNclock *, int, struct timeval *);
+extern void set_channel_address(struct mISDNchannel *, u_int, u_int);
+extern void mISDN_clock_update(struct mISDNclock *, int, struct timeval *);
 extern unsigned short mISDN_clock_get(void);
 
 #endif /* __KERNEL__ */

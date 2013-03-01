@@ -54,7 +54,6 @@ struct prcm_config {
 	unsigned short flags;
 };
 
-
 /* Core fields for cm_clksel, not ratio governed */
 #define RX_CLKSEL_DSS1			(0x10 << 8)
 #define RX_CLKSEL_DSS2			(0x0 << 13)
@@ -196,7 +195,7 @@ struct prcm_config {
 					 RVII_CLKSEL_DSS2 | RVII_CLKSEL_DSS1 | \
 					 RVII_CLKSEL_L4 | RVII_CLKSEL_L3)
 
-#define RVII_CLKSEL_MPU			(1 << 0) /* all divide by 1 */
+#define RVII_CLKSEL_MPU			(1 << 0)	/* all divide by 1 */
 #define RVII_CM_CLKSEL_MPU_VAL		RVII_CLKSEL_MPU
 
 #define RVII_CLKSEL_DSP			(1 << 0)
@@ -414,7 +413,6 @@ struct prcm_config {
 #define S658M	658000000
 #define S660M	660000000
 #define S798M	798000000
-
 
 extern const struct prcm_config omap2420_rate_table[];
 

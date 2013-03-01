@@ -19,18 +19,18 @@
 // use PGADDR(PDX(la), PTX(la), PGOFF(la)).
 
 /* page directory and page table constants */
-#define NPDEENTRY		1024					// page directory entries per page directory
-#define NPTEENTRY		1024					// page table entries per page table
+#define NPDEENTRY		1024	// page directory entries per page directory
+#define NPTEENTRY		1024	// page table entries per page table
 
-#define PGSIZE			4096					// bytes mapped by a page
-#define PGSHIFT			12						// log2(PGSIZE)
+#define PGSIZE			4096	// bytes mapped by a page
+#define PGSHIFT			12	// log2(PGSIZE)
 #define PTSIZE			(PGSIZE * NPTEENTRY)	// bytes mapped by a page directory entry
 #define PMSIZE			PTSIZE
 #define PUSIZE			PTSIZE
-#define PTSHIFT			22						// log2(PTSIZE)
+#define PTSHIFT			22	// log2(PTSIZE)
 
-#define PTXSHIFT		12						// offset of PTX in a linear address
-#define PDXSHIFT		22						// offset of PDX in a linear address
+#define PTXSHIFT		12	// offset of PTX in a linear address
+#define PDXSHIFT		22	// offset of PDX in a linear address
 #define PMXSHIFT		PDXSHIFT
 #define PUXSHIFT		PDXSHIFT
 #define PGXSHIFT		PDXSHIFT
@@ -61,16 +61,16 @@
 #define PGD_ADDR(pgd)   PTE_ADDR(pgd)
 
 /* page table/directory entry flags */
-#define PTE_P			0x001					// Present
-#define PTE_W			0x002					// Writeable
-#define PTE_U			0x004					// User
-#define PTE_PWT			0x008					// Write-Through
-#define PTE_PCD			0x010					// Cache-Disable
-#define PTE_A			0x020					// Accessed
-#define PTE_D			0x040					// Dirty
-#define PTE_PS			0x080					// Page Size
-#define PTE_MBZ			0x180					// Bits must be zero
-#define PTE_AVAIL		0xE00					// Available for software use
+#define PTE_P			0x001	// Present
+#define PTE_W			0x002	// Writeable
+#define PTE_U			0x004	// User
+#define PTE_PWT			0x008	// Write-Through
+#define PTE_PCD			0x010	// Cache-Disable
+#define PTE_A			0x020	// Accessed
+#define PTE_D			0x040	// Dirty
+#define PTE_PS			0x080	// Page Size
+#define PTE_MBZ			0x180	// Bits must be zero
+#define PTE_AVAIL		0xE00	// Available for software use
 												// The PTE_AVAIL bits aren't used by the kernel or interpreted by the
 												// hardware, so user processes are allowed to set them arbitrarily.
 
@@ -85,12 +85,10 @@
 	static inline void Clear_ ## name (unsigned int* pte_p) { *pte_p &= ~name; } \
 	static inline int Get_ ## name (unsigned int* pte_p) { return *pte_p & name; }
 
-SetterAndGetter (PTE_P)
-SetterAndGetter (PTE_W)
-SetterAndGetter (PTE_U)
-SetterAndGetter (PTE_A)
-SetterAndGetter (PTE_D)
-
-#endif  /* !__ASSEMBLER */
-
-#endif  /* !__ARCH_UM_INCLUDE_MMU_H__ */
+SetterAndGetter(PTE_P)
+    SetterAndGetter(PTE_W)
+    SetterAndGetter(PTE_U)
+    SetterAndGetter(PTE_A)
+    SetterAndGetter(PTE_D)
+#endif /* !__ASSEMBLER */
+#endif /* !__ARCH_UM_INCLUDE_MMU_H__ */

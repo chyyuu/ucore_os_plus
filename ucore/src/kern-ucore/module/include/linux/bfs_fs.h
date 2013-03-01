@@ -37,7 +37,7 @@ struct bfs_inode {
 	__u32 i_padding[4];
 };
 
-#define BFS_NAMELEN		14	
+#define BFS_NAMELEN		14
 #define BFS_DIRENT_SIZE		16
 #define BFS_DIRS_PER_BLOCK	32
 
@@ -55,11 +55,10 @@ struct bfs_super_block {
 	__le32 s_to;
 	__s32 s_bfrom;
 	__s32 s_bto;
-	char  s_fsname[6];
-	char  s_volume[6];
+	char s_fsname[6];
+	char s_volume[6];
 	__u32 s_padding[118];
 };
-
 
 #define BFS_OFF2INO(offset) \
         ((((offset) - BFS_BSIZE) / sizeof(struct bfs_inode)) + BFS_ROOT_INO)
@@ -77,5 +76,4 @@ struct bfs_super_block {
 #define BFS_UNCLEAN(bfs_sb, sb)	\
 	((le32_to_cpu(bfs_sb->s_from) != -1) && (le32_to_cpu(bfs_sb->s_to) != -1) && !(sb->s_flags & MS_RDONLY))
 
-
-#endif	/* _LINUX_BFS_FS_H */
+#endif /* _LINUX_BFS_FS_H */

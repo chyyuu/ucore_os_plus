@@ -3,10 +3,10 @@
 
 #ifndef CONFIG_GENERIC_FIND_NEXT_BIT
 extern unsigned long find_next_bit(const unsigned long *addr, unsigned long
-		size, unsigned long offset);
+				   size, unsigned long offset);
 
 extern unsigned long find_next_zero_bit(const unsigned long *addr, unsigned
-		long size, unsigned long offset);
+					long size, unsigned long offset);
 #endif
 
 #define find_first_bit(addr, size) find_next_bit((addr), (size), 0)

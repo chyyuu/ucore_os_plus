@@ -7,24 +7,23 @@
 #include <types.h>
 
 #define SPI_BASE   (0xf0000000 + (SPI_PHYSICAL_BASE >> 4))
-#define BLOCK_SIZE 512 			/* In byte */
+#define BLOCK_SIZE 512		/* In byte */
 
-struct partition_info_entry 
-{
+struct partition_info_entry {
 	uint8_t flag;
 	uint8_t padding1;
-	uint32_t start;         /* in block */
-	uint32_t size;          /* in block */
+	uint32_t start;		/* in block */
+	uint32_t size;		/* in block */
 	uint32_t padding2;
 	uint16_t padding3;
-} __attribute__((packed));
+} __attribute__ ((packed));
 
-#define PARTITION_ENTRY_FLAG_BOOTABLE 0x80       /* The block contains a valid kernel elf. */
+#define PARTITION_ENTRY_FLAG_BOOTABLE 0x80	/* The block contains a valid kernel elf. */
 #define PARTITION_ENTRY_FLAG_VALID    0x1
 
 #define MAX_PARTITION_NUM             4
 
-#endif  /* !__ASSEMBLER__ */
+#endif /* !__ASSEMBLER__ */
 
 /**
  * Register definitions
@@ -93,4 +92,4 @@ struct partition_info_entry
 #define SPI_WRITE_DATA_ERROR   0x20
 #define SPI_WRITE_BUSY_ERROR   0x30
 
-#endif  /* __ARCH_OR32_DRIVERS_SPI_H__ */
+#endif /* __ARCH_OR32_DRIVERS_SPI_H__ */

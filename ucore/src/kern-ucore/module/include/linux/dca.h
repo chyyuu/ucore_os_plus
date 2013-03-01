@@ -30,18 +30,17 @@ void dca_unregister_notify(struct notifier_block *nb);
 #define DCA_PROVIDER_REMOVE  0x0002
 
 struct dca_provider {
-	struct list_head	node;
-	struct dca_ops		*ops;
-	struct device 		*cd;
-	int			 id;
+	struct list_head node;
+	struct dca_ops *ops;
+	struct device *cd;
+	int id;
 };
 
 struct dca_ops {
-	int	(*add_requester)    (struct dca_provider *, struct device *);
-	int	(*remove_requester) (struct dca_provider *, struct device *);
-	u8	(*get_tag)	    (struct dca_provider *, struct device *,
-				     int cpu);
-	int	(*dev_managed)      (struct dca_provider *, struct device *);
+	int (*add_requester) (struct dca_provider *, struct device *);
+	int (*remove_requester) (struct dca_provider *, struct device *);
+	 u8(*get_tag) (struct dca_provider *, struct device *, int cpu);
+	int (*dev_managed) (struct dca_provider *, struct device *);
 };
 
 struct dca_provider *alloc_dca_provider(struct dca_ops *ops, int priv_size);

@@ -3,7 +3,6 @@
 
 /* Written 1997-2000 by Werner Almesberger, EPFL LRC/ICA */
 
-
 #ifndef LINUX_ATM_TCP_H
 #define LINUX_ATM_TCP_H
 
@@ -12,15 +11,14 @@
 #include <linux/atmioc.h>
 #include <linux/types.h>
 
-
 /*
  * All values in struct atmtcp_hdr are in network byte order
  */
 
 struct atmtcp_hdr {
-	__u16	vpi;
-	__u16	vci;
-	__u32	length;		/* ... of data part */
+	__u16 vpi;
+	__u16 vci;
+	__u32 length;		/* ... of data part */
 };
 
 /*
@@ -35,8 +33,8 @@ struct atmtcp_control {
 	struct atmtcp_hdr hdr;	/* must be first */
 	int type;		/* message type; both directions */
 	atm_kptr_t vcc;		/* both directions */
-	struct sockaddr_atmpvc addr; /* suggested value from kernel */
-	struct atm_qos	qos;	/* both directions */
+	struct sockaddr_atmpvc addr;	/* suggested value from kernel */
+	struct atm_qos qos;	/* both directions */
 	int result;		/* to kernel only */
 } __ATM_API_ALIGN;
 
@@ -56,13 +54,12 @@ struct atmtcp_control {
 #define ATMTCP_REMOVE	_IO('a',ATMIOC_ITF+15)	/* destroy persistent ATMTCP
 						   interface */
 
-
 #ifdef __KERNEL__
 
 struct atm_tcp_ops {
-	int (*attach)(struct atm_vcc *vcc,int itf);
-	int (*create_persistent)(int itf);
-	int (*remove_persistent)(int itf);
+	int (*attach) (struct atm_vcc * vcc, int itf);
+	int (*create_persistent) (int itf);
+	int (*remove_persistent) (int itf);
 	struct module *owner;
 };
 

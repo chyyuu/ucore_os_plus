@@ -16,32 +16,32 @@
  * RPC server socket.
  */
 struct svc_sock {
-	struct svc_xprt		sk_xprt;
-	struct socket *		sk_sock;	/* berkeley socket layer */
-	struct sock *		sk_sk;		/* INET layer */
+	struct svc_xprt sk_xprt;
+	struct socket *sk_sock;	/* berkeley socket layer */
+	struct sock *sk_sk;	/* INET layer */
 
 	/* We keep the old state_change and data_ready CB's here */
-	void			(*sk_ostate)(struct sock *);
-	void			(*sk_odata)(struct sock *, int bytes);
-	void			(*sk_owspace)(struct sock *);
+	void (*sk_ostate) (struct sock *);
+	void (*sk_odata) (struct sock *, int bytes);
+	void (*sk_owspace) (struct sock *);
 
 	/* private TCP part */
-	u32			sk_reclen;	/* length of record */
-	u32			sk_tcplen;	/* current read length */
+	u32 sk_reclen;		/* length of record */
+	u32 sk_tcplen;		/* current read length */
 };
 
 /*
  * Function prototypes.
  */
-void		svc_close_all(struct list_head *);
-int		svc_recv(struct svc_rqst *, long);
-int		svc_send(struct svc_rqst *);
-void		svc_drop(struct svc_rqst *);
-void		svc_sock_update_bufs(struct svc_serv *serv);
-int		svc_sock_names(char *buf, struct svc_serv *serv, char *toclose);
-int		svc_addsock(struct svc_serv *serv, int fd, char *name_return);
-void		svc_init_xprt_sock(void);
-void		svc_cleanup_xprt_sock(void);
+void svc_close_all(struct list_head *);
+int svc_recv(struct svc_rqst *, long);
+int svc_send(struct svc_rqst *);
+void svc_drop(struct svc_rqst *);
+void svc_sock_update_bufs(struct svc_serv *serv);
+int svc_sock_names(char *buf, struct svc_serv *serv, char *toclose);
+int svc_addsock(struct svc_serv *serv, int fd, char *name_return);
+void svc_init_xprt_sock(void);
+void svc_cleanup_xprt_sock(void);
 
 /*
  * svc_makesock socket characteristics

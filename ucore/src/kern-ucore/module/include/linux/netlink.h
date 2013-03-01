@@ -1,20 +1,20 @@
 #ifndef __LINUX_NETLINK_H
 #define __LINUX_NETLINK_H
 
-#include <linux/socket.h> /* for sa_family_t */
+#include <linux/socket.h>	/* for sa_family_t */
 #include <linux/types.h>
 
-#define NETLINK_ROUTE		0	/* Routing/device hook				*/
-#define NETLINK_UNUSED		1	/* Unused number				*/
-#define NETLINK_USERSOCK	2	/* Reserved for user mode socket protocols 	*/
-#define NETLINK_FIREWALL	3	/* Firewalling hook				*/
-#define NETLINK_INET_DIAG	4	/* INET socket monitoring			*/
+#define NETLINK_ROUTE		0	/* Routing/device hook                          */
+#define NETLINK_UNUSED		1	/* Unused number                                */
+#define NETLINK_USERSOCK	2	/* Reserved for user mode socket protocols      */
+#define NETLINK_FIREWALL	3	/* Firewalling hook                             */
+#define NETLINK_INET_DIAG	4	/* INET socket monitoring                       */
 #define NETLINK_NFLOG		5	/* netfilter/iptables ULOG */
 #define NETLINK_XFRM		6	/* ipsec */
 #define NETLINK_SELINUX		7	/* SELinux event notifications */
 #define NETLINK_ISCSI		8	/* Open-iSCSI */
 #define NETLINK_AUDIT		9	/* auditing */
-#define NETLINK_FIB_LOOKUP	10	
+#define NETLINK_FIB_LOOKUP	10
 #define NETLINK_CONNECTOR	11
 #define NETLINK_NETFILTER	12	/* netfilter subsystem */
 #define NETLINK_IP6_FW		13
@@ -25,45 +25,43 @@
 #define NETLINK_SCSITRANSPORT	18	/* SCSI Transports */
 #define NETLINK_ECRYPTFS	19
 
-#define MAX_LINKS 32		
+#define MAX_LINKS 32
 
 struct net;
 
-struct sockaddr_nl
-{
-	sa_family_t	nl_family;	/* AF_NETLINK	*/
-	unsigned short	nl_pad;		/* zero		*/
-	__u32		nl_pid;		/* port ID	*/
-       	__u32		nl_groups;	/* multicast groups mask */
+struct sockaddr_nl {
+	sa_family_t nl_family;	/* AF_NETLINK   */
+	unsigned short nl_pad;	/* zero         */
+	__u32 nl_pid;		/* port ID      */
+	__u32 nl_groups;	/* multicast groups mask */
 };
 
-struct nlmsghdr
-{
-	__u32		nlmsg_len;	/* Length of message including header */
-	__u16		nlmsg_type;	/* Message content */
-	__u16		nlmsg_flags;	/* Additional flags */
-	__u32		nlmsg_seq;	/* Sequence number */
-	__u32		nlmsg_pid;	/* Sending process port ID */
+struct nlmsghdr {
+	__u32 nlmsg_len;	/* Length of message including header */
+	__u16 nlmsg_type;	/* Message content */
+	__u16 nlmsg_flags;	/* Additional flags */
+	__u32 nlmsg_seq;	/* Sequence number */
+	__u32 nlmsg_pid;	/* Sending process port ID */
 };
 
 /* Flags values */
 
-#define NLM_F_REQUEST		1	/* It is request message. 	*/
+#define NLM_F_REQUEST		1	/* It is request message.       */
 #define NLM_F_MULTI		2	/* Multipart message, terminated by NLMSG_DONE */
 #define NLM_F_ACK		4	/* Reply with ack, with zero or error code */
-#define NLM_F_ECHO		8	/* Echo this request 		*/
+#define NLM_F_ECHO		8	/* Echo this request            */
 
 /* Modifiers to GET request */
-#define NLM_F_ROOT	0x100	/* specify tree	root	*/
-#define NLM_F_MATCH	0x200	/* return all matching	*/
-#define NLM_F_ATOMIC	0x400	/* atomic GET		*/
+#define NLM_F_ROOT	0x100	/* specify tree root    */
+#define NLM_F_MATCH	0x200	/* return all matching  */
+#define NLM_F_ATOMIC	0x400	/* atomic GET           */
 #define NLM_F_DUMP	(NLM_F_ROOT|NLM_F_MATCH)
 
 /* Modifiers to NEW request */
-#define NLM_F_REPLACE	0x100	/* Override existing		*/
-#define NLM_F_EXCL	0x200	/* Do not touch, if it exists	*/
-#define NLM_F_CREATE	0x400	/* Create, if it does not exist	*/
-#define NLM_F_APPEND	0x800	/* Add to end of list		*/
+#define NLM_F_REPLACE	0x100	/* Override existing            */
+#define NLM_F_EXCL	0x200	/* Do not touch, if it exists   */
+#define NLM_F_CREATE	0x400	/* Create, if it does not exist */
+#define NLM_F_APPEND	0x800	/* Add to end of list           */
 
 /*
    4.4BSD ADD		NLM_F_CREATE|NLM_F_EXCL
@@ -87,16 +85,15 @@ struct nlmsghdr
 			   (nlh)->nlmsg_len <= (len))
 #define NLMSG_PAYLOAD(nlh,len) ((nlh)->nlmsg_len - NLMSG_SPACE((len)))
 
-#define NLMSG_NOOP		0x1	/* Nothing.		*/
-#define NLMSG_ERROR		0x2	/* Error		*/
-#define NLMSG_DONE		0x3	/* End of a dump	*/
-#define NLMSG_OVERRUN		0x4	/* Data lost		*/
+#define NLMSG_NOOP		0x1	/* Nothing.             */
+#define NLMSG_ERROR		0x2	/* Error                */
+#define NLMSG_DONE		0x3	/* End of a dump        */
+#define NLMSG_OVERRUN		0x4	/* Data lost            */
 
 #define NLMSG_MIN_TYPE		0x10	/* < 0x10: reserved control messages */
 
-struct nlmsgerr
-{
-	int		error;
+struct nlmsgerr {
+	int error;
 	struct nlmsghdr msg;
 };
 
@@ -104,12 +101,11 @@ struct nlmsgerr
 #define NETLINK_DROP_MEMBERSHIP	2
 #define NETLINK_PKTINFO		3
 
-struct nl_pktinfo
-{
-	__u32	group;
+struct nl_pktinfo {
+	__u32 group;
 };
 
-#define NET_MAJOR 36		/* Major 36 is reserved for networking 						*/
+#define NET_MAJOR 36		/* Major 36 is reserved for networking                                          */
 
 enum {
 	NETLINK_UNCONNECTED = 0,
@@ -125,10 +121,9 @@ enum {
  *  <-------------- nlattr->nla_len -------------->
  */
 
-struct nlattr
-{
-	__u16           nla_len;
-	__u16           nla_type;
+struct nlattr {
+	__u16 nla_len;
+	__u16 nla_type;
 };
 
 /*
@@ -159,24 +154,22 @@ static inline struct nlmsghdr *nlmsg_hdr(const struct sk_buff *skb)
 	return (struct nlmsghdr *)skb->data;
 }
 
-struct netlink_skb_parms
-{
-	struct ucred		creds;		/* Skb credentials	*/
-	__u32			pid;
-	__u32			dst_group;
-	kernel_cap_t		eff_cap;
-	__u32			loginuid;	/* Login (audit) uid */
-	__u32			sessionid;	/* Session id (audit) */
-	__u32			sid;		/* SELinux security id */
+struct netlink_skb_parms {
+	struct ucred creds;	/* Skb credentials      */
+	__u32 pid;
+	__u32 dst_group;
+	kernel_cap_t eff_cap;
+	__u32 loginuid;		/* Login (audit) uid */
+	__u32 sessionid;	/* Session id (audit) */
+	__u32 sid;		/* SELinux security id */
 };
 
 #define NETLINK_CB(skb)		(*(struct netlink_skb_parms*)&((skb)->cb))
 #define NETLINK_CREDS(skb)	(&NETLINK_CB((skb)).creds)
 
-
 extern struct sock *netlink_kernel_create(struct net *net,
-					  int unit,unsigned int groups,
-					  void (*input)(struct sk_buff *skb),
+					  int unit, unsigned int groups,
+					  void (*input) (struct sk_buff * skb),
 					  struct mutex *cb_mutex,
 					  struct module *module);
 extern void netlink_kernel_release(struct sock *sk);
@@ -184,7 +177,8 @@ extern int netlink_change_ngroups(struct sock *sk, unsigned int groups);
 extern void netlink_clear_multicast_users(struct sock *sk, unsigned int group);
 extern void netlink_ack(struct sk_buff *in_skb, struct nlmsghdr *nlh, int err);
 extern int netlink_has_listeners(struct sock *sk, unsigned int group);
-extern int netlink_unicast(struct sock *ssk, struct sk_buff *skb, __u32 pid, int nonblock);
+extern int netlink_unicast(struct sock *ssk, struct sk_buff *skb, __u32 pid,
+			   int nonblock);
 extern int netlink_broadcast(struct sock *ssk, struct sk_buff *skb, __u32 pid,
 			     __u32 group, gfp_t allocation);
 extern void netlink_set_err(struct sock *ssk, __u32 pid, __u32 group, int code);
@@ -212,31 +206,29 @@ int netlink_sendskb(struct sock *sk, struct sk_buff *skb);
 
 #define NLMSG_DEFAULT_SIZE (NLMSG_GOODSIZE - NLMSG_HDRLEN)
 
-
-struct netlink_callback
-{
-	struct sk_buff	*skb;
-	struct nlmsghdr	*nlh;
-	int		(*dump)(struct sk_buff * skb, struct netlink_callback *cb);
-	int		(*done)(struct netlink_callback *cb);
-	int		family;
-	long		args[6];
+struct netlink_callback {
+	struct sk_buff *skb;
+	struct nlmsghdr *nlh;
+	int (*dump) (struct sk_buff * skb, struct netlink_callback * cb);
+	int (*done) (struct netlink_callback * cb);
+	int family;
+	long args[6];
 };
 
-struct netlink_notify
-{
+struct netlink_notify {
 	struct net *net;
 	int pid;
 	int protocol;
 };
 
-static __inline__ struct nlmsghdr *
-__nlmsg_put(struct sk_buff *skb, u32 pid, u32 seq, int type, int len, int flags)
+static __inline__ struct nlmsghdr *__nlmsg_put(struct sk_buff *skb, u32 pid,
+					       u32 seq, int type, int len,
+					       int flags)
 {
 	struct nlmsghdr *nlh;
 	int size = NLMSG_LENGTH(len);
 
-	nlh = (struct nlmsghdr*)skb_put(skb, NLMSG_ALIGN(size));
+	nlh = (struct nlmsghdr *)skb_put(skb, NLMSG_ALIGN(size));
 	nlh->nlmsg_type = type;
 	nlh->nlmsg_len = size;
 	nlh->nlmsg_flags = flags;
@@ -257,9 +249,9 @@ __nlmsg_put(struct sk_buff *skb, u32 pid, u32 seq, int type, int len, int flags)
 
 extern int netlink_dump_start(struct sock *ssk, struct sk_buff *skb,
 			      struct nlmsghdr *nlh,
-			      int (*dump)(struct sk_buff *skb, struct netlink_callback*),
-			      int (*done)(struct netlink_callback*));
-
+			      int (*dump) (struct sk_buff * skb,
+					   struct netlink_callback *),
+			      int (*done) (struct netlink_callback *));
 
 #define NL_NONROOT_RECV 0x1
 #define NL_NONROOT_SEND 0x2
@@ -267,4 +259,4 @@ extern void netlink_set_nonroot(int protocol, unsigned flag);
 
 #endif /* __KERNEL__ */
 
-#endif	/* __LINUX_NETLINK_H */
+#endif /* __LINUX_NETLINK_H */

@@ -12,32 +12,32 @@
  */
 #define ATPORT_FIRST	1
 #define ATPORT_RESERVED	128
-#define ATPORT_LAST	254		/* 254 is only legal on localtalk */ 
+#define ATPORT_LAST	254	/* 254 is only legal on localtalk */
 #define ATADDR_ANYNET	(__u16)0
 #define ATADDR_ANYNODE	(__u8)0
 #define ATADDR_ANYPORT  (__u8)0
 #define ATADDR_BCAST	(__u8)255
 #define DDP_MAXSZ	587
-#define DDP_MAXHOPS     15		/* 4 bits of hop counter */
+#define DDP_MAXHOPS     15	/* 4 bits of hop counter */
 
 #define SIOCATALKDIFADDR       (SIOCPROTOPRIVATE + 0)
 
 struct atalk_addr {
-	__be16	s_net;
-	__u8	s_node;
+	__be16 s_net;
+	__u8 s_node;
 };
 
 struct sockaddr_at {
-	sa_family_t	  sat_family;
-	__u8		  sat_port;
+	sa_family_t sat_family;
+	__u8 sat_port;
 	struct atalk_addr sat_addr;
-	char		  sat_zero[8];
+	char sat_zero[8];
 };
 
 struct atalk_netrange {
-	__u8	nr_phase;
-	__be16	nr_firstnet;
-	__be16	nr_lastnet;
+	__u8 nr_phase;
+	__be16 nr_firstnet;
+	__be16 nr_lastnet;
 };
 
 #ifdef __KERNEL__
@@ -45,10 +45,10 @@ struct atalk_netrange {
 #include <net/sock.h>
 
 struct atalk_route {
-	struct net_device  *dev;
-	struct atalk_addr  target;
-	struct atalk_addr  gateway;
-	int		   flags;
+	struct net_device *dev;
+	struct atalk_addr target;
+	struct atalk_addr gateway;
+	int flags;
 	struct atalk_route *next;
 };
 
@@ -61,24 +61,24 @@ struct atalk_route {
  *	@next - next element in the list of interfaces
  */
 struct atalk_iface {
-	struct net_device	*dev;
-	struct atalk_addr	address;
-	int			status;
-#define ATIF_PROBE	1		/* Probing for an address */
-#define ATIF_PROBE_FAIL	2		/* Probe collided */
-	struct atalk_netrange	nets;
-	struct atalk_iface	*next;
+	struct net_device *dev;
+	struct atalk_addr address;
+	int status;
+#define ATIF_PROBE	1	/* Probing for an address */
+#define ATIF_PROBE_FAIL	2	/* Probe collided */
+	struct atalk_netrange nets;
+	struct atalk_iface *next;
 };
-	
+
 struct atalk_sock {
 	/* struct sock has to be the first member of atalk_sock */
-	struct sock	sk;
-	__be16		dest_net;
-	__be16		src_net;
-	unsigned char	dest_node;
-	unsigned char	src_node;
-	unsigned char	dest_port;
-	unsigned char	src_port;
+	struct sock sk;
+	__be16 dest_net;
+	__be16 src_net;
+	unsigned char dest_node;
+	unsigned char src_node;
+	unsigned char dest_port;
+	unsigned char src_port;
 };
 
 static inline struct atalk_sock *at_sk(struct sock *sk)
@@ -87,14 +87,14 @@ static inline struct atalk_sock *at_sk(struct sock *sk)
 }
 
 struct ddpehdr {
-	__be16	deh_len_hops;	/* lower 10 bits are length, next 4 - hops */
-	__be16	deh_sum;
-	__be16	deh_dnet;
-	__be16	deh_snet;
-	__u8	deh_dnode;
-	__u8	deh_snode;
-	__u8	deh_dport;
-	__u8	deh_sport;
+	__be16 deh_len_hops;	/* lower 10 bits are length, next 4 - hops */
+	__be16 deh_sum;
+	__be16 deh_dnet;
+	__be16 deh_snet;
+	__u8 deh_dnode;
+	__u8 deh_snode;
+	__u8 deh_dport;
+	__u8 deh_sport;
 	/* And netatalk apps expect to stick the type in themselves */
 };
 
@@ -105,25 +105,25 @@ static __inline__ struct ddpehdr *ddp_hdr(struct sk_buff *skb)
 
 /* AppleTalk AARP headers */
 struct elapaarp {
-	__be16	hw_type;
+	__be16 hw_type;
 #define AARP_HW_TYPE_ETHERNET		1
 #define AARP_HW_TYPE_TOKENRING		2
-	__be16	pa_type;
-	__u8	hw_len;
-	__u8	pa_len;
+	__be16 pa_type;
+	__u8 hw_len;
+	__u8 pa_len;
 #define AARP_PA_ALEN			4
-	__be16	function;
+	__be16 function;
 #define AARP_REQUEST			1
 #define AARP_REPLY			2
 #define AARP_PROBE			3
-	__u8	hw_src[ETH_ALEN];
-	__u8	pa_src_zero;
-	__be16	pa_src_net;
-	__u8	pa_src_node;
-	__u8	hw_dst[ETH_ALEN];
-	__u8	pa_dst_zero;
-	__be16	pa_dst_net;
-	__u8	pa_dst_node;
+	__u8 hw_src[ETH_ALEN];
+	__u8 pa_src_zero;
+	__be16 pa_src_net;
+	__u8 pa_src_node;
+	__u8 hw_dst[ETH_ALEN];
+	__u8 pa_dst_zero;
+	__be16 pa_dst_net;
+	__u8 pa_dst_node;
 } __attribute__ ((packed));
 
 static __inline__ struct elapaarp *aarp_hdr(struct sk_buff *skb)
@@ -158,17 +158,16 @@ static inline struct atalk_iface *atalk_find_dev(struct net_device *dev)
 
 extern struct atalk_addr *atalk_find_dev_addr(struct net_device *dev);
 extern struct net_device *atrtr_get_dev(struct atalk_addr *sa);
-extern int		 aarp_send_ddp(struct net_device *dev,
-				       struct sk_buff *skb,
-				       struct atalk_addr *sa, void *hwaddr);
-extern void		 aarp_device_down(struct net_device *dev);
-extern void		 aarp_probe_network(struct atalk_iface *atif);
-extern int 		 aarp_proxy_probe_network(struct atalk_iface *atif,
-				     struct atalk_addr *sa);
-extern void		 aarp_proxy_remove(struct net_device *dev,
-					   struct atalk_addr *sa);
+extern int aarp_send_ddp(struct net_device *dev,
+			 struct sk_buff *skb,
+			 struct atalk_addr *sa, void *hwaddr);
+extern void aarp_device_down(struct net_device *dev);
+extern void aarp_probe_network(struct atalk_iface *atif);
+extern int aarp_proxy_probe_network(struct atalk_iface *atif,
+				    struct atalk_addr *sa);
+extern void aarp_proxy_remove(struct net_device *dev, struct atalk_addr *sa);
 
-extern void		aarp_cleanup_module(void);
+extern void aarp_cleanup_module(void);
 
 extern struct hlist_head atalk_sockets;
 extern rwlock_t atalk_sockets_lock;

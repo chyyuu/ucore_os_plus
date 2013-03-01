@@ -98,4 +98,3 @@
 #define OMAP34XX_SEC_AES_BASE	(OMAP34XX_SEC_BASE + 0x25000)
 
 #endif /* __ASM_ARCH_OMAP3_H */
-

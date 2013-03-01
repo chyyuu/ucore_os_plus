@@ -5,7 +5,6 @@
 #define NULL ((void *)0)
 #endif
 
-
 #define CHAR_BIT        8
 
 #define __always_inline inline __attribute__((always_inline))
@@ -61,13 +60,11 @@ typedef size_t ppn_t;
             (typeof(a))(ROUNDDOWN_2N((size_t)(a) + (1<<__n) - 1, __n));     \
         })
 
-
 /* Round up the result of dividing of n */
 #define ROUNDUP_DIV_2N(a, n) ({                                        \
 uint32_t __n = (1<<(uint32_t)(n));                           \
 (typeof(a))(((a) + __n - 1) >> (n));                     \
 })
-
 
 /* Return the offset of 'member' relative to the beginning of a struct type */
 #define offsetof(type, member)                                      \
@@ -83,4 +80,3 @@ uint32_t __n = (1<<(uint32_t)(n));                           \
     ((type *)((char *)(ptr) - offsetof(type, member)))
 
 #endif /* !__LIBS_DEFS_H__ */
-

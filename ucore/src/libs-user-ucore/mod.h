@@ -5,8 +5,8 @@
 #define __user
 #endif
 
-int init_module(void __user *umod, unsigned long len, const char __user * uargs);
-int cleanup_module(const char __user *name);
+int init_module(void __user * umod, unsigned long len,
+		const char __user * uargs);
+int cleanup_module(const char __user * name);
 
 #endif
-

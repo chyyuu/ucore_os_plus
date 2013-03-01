@@ -47,8 +47,7 @@ struct mmu_notifier_ops {
 	 * through the gart alias address, so leading to memory
 	 * corruption.
 	 */
-	void (*release)(struct mmu_notifier *mn,
-			struct mm_struct *mm);
+	void (*release) (struct mmu_notifier * mn, struct mm_struct * mm);
 
 	/*
 	 * clear_flush_young is called after the VM is
@@ -57,9 +56,8 @@ struct mmu_notifier_ops {
 	 * accesses to the page through the secondary MMUs and not
 	 * only to the ones through the Linux pte.
 	 */
-	int (*clear_flush_young)(struct mmu_notifier *mn,
-				 struct mm_struct *mm,
-				 unsigned long address);
+	int (*clear_flush_young) (struct mmu_notifier * mn,
+				  struct mm_struct * mm, unsigned long address);
 
 	/*
 	 * Before this is invoked any secondary MMU is still ok to
@@ -68,9 +66,8 @@ struct mmu_notifier_ops {
 	 * freed until this returns. If required set_page_dirty has to
 	 * be called internally to this method.
 	 */
-	void (*invalidate_page)(struct mmu_notifier *mn,
-				struct mm_struct *mm,
-				unsigned long address);
+	void (*invalidate_page) (struct mmu_notifier * mn,
+				 struct mm_struct * mm, unsigned long address);
 
 	/*
 	 * invalidate_range_start() and invalidate_range_end() must be
@@ -115,12 +112,12 @@ struct mmu_notifier_ops {
 	 * address space but may still be referenced by sptes until
 	 * the last refcount is dropped.
 	 */
-	void (*invalidate_range_start)(struct mmu_notifier *mn,
-				       struct mm_struct *mm,
-				       unsigned long start, unsigned long end);
-	void (*invalidate_range_end)(struct mmu_notifier *mn,
-				     struct mm_struct *mm,
-				     unsigned long start, unsigned long end);
+	void (*invalidate_range_start) (struct mmu_notifier * mn,
+					struct mm_struct * mm,
+					unsigned long start, unsigned long end);
+	void (*invalidate_range_end) (struct mmu_notifier * mn,
+				      struct mm_struct * mm,
+				      unsigned long start, unsigned long end);
 };
 
 /*
@@ -144,8 +141,7 @@ static inline int mm_has_notifiers(struct mm_struct *mm)
 	return unlikely(mm->mmu_notifier_mm);
 }
 
-extern int mmu_notifier_register(struct mmu_notifier *mn,
-				 struct mm_struct *mm);
+extern int mmu_notifier_register(struct mmu_notifier *mn, struct mm_struct *mm);
 extern int __mmu_notifier_register(struct mmu_notifier *mn,
 				   struct mm_struct *mm);
 extern void mmu_notifier_unregister(struct mmu_notifier *mn,
@@ -153,13 +149,15 @@ extern void mmu_notifier_unregister(struct mmu_notifier *mn,
 extern void __mmu_notifier_mm_destroy(struct mm_struct *mm);
 extern void __mmu_notifier_release(struct mm_struct *mm);
 extern int __mmu_notifier_clear_flush_young(struct mm_struct *mm,
-					  unsigned long address);
+					    unsigned long address);
 extern void __mmu_notifier_invalidate_page(struct mm_struct *mm,
-					  unsigned long address);
+					   unsigned long address);
 extern void __mmu_notifier_invalidate_range_start(struct mm_struct *mm,
-				  unsigned long start, unsigned long end);
+						  unsigned long start,
+						  unsigned long end);
 extern void __mmu_notifier_invalidate_range_end(struct mm_struct *mm,
-				  unsigned long start, unsigned long end);
+						unsigned long start,
+						unsigned long end);
 
 static inline void mmu_notifier_release(struct mm_struct *mm)
 {
@@ -168,7 +166,7 @@ static inline void mmu_notifier_release(struct mm_struct *mm)
 }
 
 static inline int mmu_notifier_clear_flush_young(struct mm_struct *mm,
-					  unsigned long address)
+						 unsigned long address)
 {
 	if (mm_has_notifiers(mm))
 		return __mmu_notifier_clear_flush_young(mm, address);
@@ -176,21 +174,23 @@ static inline int mmu_notifier_clear_flush_young(struct mm_struct *mm,
 }
 
 static inline void mmu_notifier_invalidate_page(struct mm_struct *mm,
-					  unsigned long address)
+						unsigned long address)
 {
 	if (mm_has_notifiers(mm))
 		__mmu_notifier_invalidate_page(mm, address);
 }
 
 static inline void mmu_notifier_invalidate_range_start(struct mm_struct *mm,
-				  unsigned long start, unsigned long end)
+						       unsigned long start,
+						       unsigned long end)
 {
 	if (mm_has_notifiers(mm))
 		__mmu_notifier_invalidate_range_start(mm, start, end);
 }
 
 static inline void mmu_notifier_invalidate_range_end(struct mm_struct *mm,
-				  unsigned long start, unsigned long end)
+						     unsigned long start,
+						     unsigned long end)
 {
 	if (mm_has_notifiers(mm))
 		__mmu_notifier_invalidate_range_end(mm, start, end);
@@ -243,23 +243,25 @@ static inline void mmu_notifier_release(struct mm_struct *mm)
 }
 
 static inline int mmu_notifier_clear_flush_young(struct mm_struct *mm,
-					  unsigned long address)
+						 unsigned long address)
 {
 	return 0;
 }
 
 static inline void mmu_notifier_invalidate_page(struct mm_struct *mm,
-					  unsigned long address)
+						unsigned long address)
 {
 }
 
 static inline void mmu_notifier_invalidate_range_start(struct mm_struct *mm,
-				  unsigned long start, unsigned long end)
+						       unsigned long start,
+						       unsigned long end)
 {
 }
 
 static inline void mmu_notifier_invalidate_range_end(struct mm_struct *mm,
-				  unsigned long start, unsigned long end)
+						     unsigned long start,
+						     unsigned long end)
 {
 }
 

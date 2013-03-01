@@ -12,7 +12,7 @@
  * This is commonly provided by 32bit archs to provide an optimized 64bit
  * divide.
  */
-static inline u64 div_u64_rem(u64 dividend, u32 divisor, u32 *remainder)
+static inline u64 div_u64_rem(u64 dividend, u32 divisor, u32 * remainder)
 {
 	*remainder = dividend % divisor;
 	return dividend / divisor;
@@ -21,7 +21,7 @@ static inline u64 div_u64_rem(u64 dividend, u32 divisor, u32 *remainder)
 /**
  * div_s64_rem - signed 64bit divide with 32bit divisor with remainder
  */
-static inline s64 div_s64_rem(s64 dividend, s32 divisor, s32 *remainder)
+static inline s64 div_s64_rem(s64 dividend, s32 divisor, s32 * remainder)
 {
 	*remainder = dividend % divisor;
 	return dividend / divisor;
@@ -38,7 +38,7 @@ static inline u64 div64_u64(u64 dividend, u64 divisor)
 #elif BITS_PER_LONG == 32
 
 #ifndef div_u64_rem
-static inline u64 div_u64_rem(u64 dividend, u32 divisor, u32 *remainder)
+static inline u64 div_u64_rem(u64 dividend, u32 divisor, u32 * remainder)
 {
 	*remainder = do_div(dividend, divisor);
 	return dividend;
@@ -46,7 +46,7 @@ static inline u64 div_u64_rem(u64 dividend, u32 divisor, u32 *remainder)
 #endif
 
 #ifndef div_s64_rem
-extern s64 div_s64_rem(s64 dividend, s32 divisor, s32 *remainder);
+extern s64 div_s64_rem(s64 dividend, s32 divisor, s32 * remainder);
 #endif
 
 #ifndef div64_u64
@@ -81,17 +81,17 @@ static inline s64 div_s64(s64 dividend, s32 divisor)
 }
 #endif
 
-u32 iter_div_u64_rem(u64 dividend, u32 divisor, u64 *remainder);
+u32 iter_div_u64_rem(u64 dividend, u32 divisor, u64 * remainder);
 
 static __always_inline u32
-__iter_div_u64_rem(u64 dividend, u32 divisor, u64 *remainder)
+__iter_div_u64_rem(u64 dividend, u32 divisor, u64 * remainder)
 {
 	u32 ret = 0;
 
 	while (dividend >= divisor) {
 		/* The following asm() prevents the compiler from
 		   optimising this loop into a modulo operation.  */
-		asm("" : "+rm"(dividend));
+asm("":	"+rm"(dividend));
 
 		dividend -= divisor;
 		ret++;

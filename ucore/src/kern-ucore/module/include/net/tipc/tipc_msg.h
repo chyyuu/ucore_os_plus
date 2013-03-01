@@ -43,10 +43,8 @@ struct tipc_msg {
 	__be32 hdr[15];
 };
 
-
 /*
 		TIPC user data message header format, version 2:
-
 
        1 0 9 8 7 6 5 4|3 2 1 0 9 8 7 6|5 4 3 2 1 0 9 8|7 6 5 4 3 2 1 0 
       +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
@@ -83,7 +81,6 @@ struct tipc_msg {
 #define TIPC_MCAST_MSG	1
 #define TIPC_NAMED_MSG	2
 #define TIPC_DIRECT_MSG	3
-
 
 static inline u32 msg_word(struct tipc_msg *m, u32 pos)
 {
@@ -122,7 +119,7 @@ static inline u32 msg_data_sz(struct tipc_msg *m)
 
 static inline unchar *msg_data(struct tipc_msg *m)
 {
-	return ((unchar *)m) + msg_hdr_sz(m);
+	return ((unchar *) m) + msg_hdr_sz(m);
 }
 
 static inline u32 msg_type(struct tipc_msg *m)

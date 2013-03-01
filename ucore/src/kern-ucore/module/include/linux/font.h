@@ -14,11 +14,11 @@
 #include <linux/types.h>
 
 struct font_desc {
-    int idx;
-    const char *name;
-    int width, height;
-    const void *data;
-    int pref;
+	int idx;
+	const char *name;
+	int width, height;
+	const void *data;
+	int pref;
 };
 
 #define VGA8x8_IDX	0
@@ -32,16 +32,12 @@ struct font_desc {
 #define ACORN8x8_IDX	8
 #define	MINI4x6_IDX	9
 
-extern const struct font_desc	font_vga_8x8,
-			font_vga_8x16,
-			font_pearl_8x8,
-			font_vga_6x11,
-			font_7x14,
-			font_10x18,
-			font_sun_8x16,
-			font_sun_12x22,
-			font_acorn_8x8,
-			font_mini_4x6;
+extern const struct font_desc font_vga_8x8,
+    font_vga_8x16,
+    font_pearl_8x8,
+    font_vga_6x11,
+    font_7x14,
+    font_10x18, font_sun_8x16, font_sun_12x22, font_acorn_8x8, font_mini_4x6;
 
 /* Find a font with a specific name */
 

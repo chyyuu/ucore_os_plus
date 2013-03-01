@@ -12,42 +12,43 @@
  */
 
 struct raw_prio_tree_node {
-	struct prio_tree_node	*left;
-	struct prio_tree_node	*right;
-	struct prio_tree_node	*parent;
+	struct prio_tree_node *left;
+	struct prio_tree_node *right;
+	struct prio_tree_node *parent;
 };
 
 struct prio_tree_node {
-	struct prio_tree_node	*left;
-	struct prio_tree_node	*right;
-	struct prio_tree_node	*parent;
-	unsigned long		start;
-	unsigned long		last;	/* last location _in_ interval */
+	struct prio_tree_node *left;
+	struct prio_tree_node *right;
+	struct prio_tree_node *parent;
+	unsigned long start;
+	unsigned long last;	/* last location _in_ interval */
 };
 
 struct prio_tree_root {
-	struct prio_tree_node	*prio_tree_node;
-	unsigned short 		index_bits;
-	unsigned short		raw;
-		/*
-		 * 0: nodes are of type struct prio_tree_node
-		 * 1: nodes are of type raw_prio_tree_node
-		 */
+	struct prio_tree_node *prio_tree_node;
+	unsigned short index_bits;
+	unsigned short raw;
+	/*
+	 * 0: nodes are of type struct prio_tree_node
+	 * 1: nodes are of type raw_prio_tree_node
+	 */
 };
 
 struct prio_tree_iter {
-	struct prio_tree_node	*cur;
-	unsigned long		mask;
-	unsigned long		value;
-	int			size_level;
+	struct prio_tree_node *cur;
+	unsigned long mask;
+	unsigned long value;
+	int size_level;
 
-	struct prio_tree_root	*root;
-	pgoff_t			r_index;
-	pgoff_t			h_index;
+	struct prio_tree_root *root;
+	pgoff_t r_index;
+	pgoff_t h_index;
 };
 
 static inline void prio_tree_iter_init(struct prio_tree_iter *iter,
-		struct prio_tree_root *root, pgoff_t r_index, pgoff_t h_index)
+				       struct prio_tree_root *root,
+				       pgoff_t r_index, pgoff_t h_index)
 {
 	iter->root = root;
 	iter->r_index = r_index;
@@ -101,11 +102,11 @@ static inline int prio_tree_right_empty(const struct prio_tree_node *node)
 	return node->right == node;
 }
 
-
 struct prio_tree_node *prio_tree_replace(struct prio_tree_root *root,
-                struct prio_tree_node *old, struct prio_tree_node *node);
+					 struct prio_tree_node *old,
+					 struct prio_tree_node *node);
 struct prio_tree_node *prio_tree_insert(struct prio_tree_root *root,
-                struct prio_tree_node *node);
+					struct prio_tree_node *node);
 void prio_tree_remove(struct prio_tree_root *root, struct prio_tree_node *node);
 struct prio_tree_node *prio_tree_next(struct prio_tree_iter *iter);
 

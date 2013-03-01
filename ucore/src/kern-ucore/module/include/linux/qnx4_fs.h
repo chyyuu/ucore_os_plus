@@ -41,41 +41,41 @@
  * This is the original qnx4 inode layout on disk.
  */
 struct qnx4_inode_entry {
-	char		di_fname[QNX4_SHORT_NAME_MAX];
-	qnx4_off_t	di_size;
-	qnx4_xtnt_t	di_first_xtnt;
-	__le32		di_xblk;
-	__le32		di_ftime;
-	__le32		di_mtime;
-	__le32		di_atime;
-	__le32		di_ctime;
-	qnx4_nxtnt_t	di_num_xtnts;
-	qnx4_mode_t	di_mode;
-	qnx4_muid_t	di_uid;
-	qnx4_mgid_t	di_gid;
-	qnx4_nlink_t	di_nlink;
-	__u8		di_zero[4];
-	qnx4_ftype_t	di_type;
-	__u8		di_status;
+	char di_fname[QNX4_SHORT_NAME_MAX];
+	qnx4_off_t di_size;
+	qnx4_xtnt_t di_first_xtnt;
+	__le32 di_xblk;
+	__le32 di_ftime;
+	__le32 di_mtime;
+	__le32 di_atime;
+	__le32 di_ctime;
+	qnx4_nxtnt_t di_num_xtnts;
+	qnx4_mode_t di_mode;
+	qnx4_muid_t di_uid;
+	qnx4_mgid_t di_gid;
+	qnx4_nlink_t di_nlink;
+	__u8 di_zero[4];
+	qnx4_ftype_t di_type;
+	__u8 di_status;
 };
 
 struct qnx4_link_info {
-	char		dl_fname[QNX4_NAME_MAX];
-	__le32		dl_inode_blk;
-	__u8		dl_inode_ndx;
-	__u8		dl_spare[10];
-	__u8		dl_status;
+	char dl_fname[QNX4_NAME_MAX];
+	__le32 dl_inode_blk;
+	__u8 dl_inode_ndx;
+	__u8 dl_spare[10];
+	__u8 dl_status;
 };
 
 struct qnx4_xblk {
-	__le32		xblk_next_xblk;
-	__le32		xblk_prev_xblk;
-	__u8		xblk_num_xtnts;
-	__u8		xblk_spare[3];
-	__le32		xblk_num_blocks;
-	qnx4_xtnt_t	xblk_xtnts[QNX4_MAX_XTNTS_PER_XBLK];
-	char		xblk_signature[8];
-	qnx4_xtnt_t	xblk_first_xtnt;
+	__le32 xblk_next_xblk;
+	__le32 xblk_prev_xblk;
+	__u8 xblk_num_xtnts;
+	__u8 xblk_spare[3];
+	__le32 xblk_num_blocks;
+	qnx4_xtnt_t xblk_xtnts[QNX4_MAX_XTNTS_PER_XBLK];
+	char xblk_signature[8];
+	qnx4_xtnt_t xblk_first_xtnt;
 };
 
 struct qnx4_super_block {
@@ -96,10 +96,10 @@ struct qnx4_super_block {
 #endif
 
 struct qnx4_sb_info {
-	struct buffer_head	*sb_buf;	/* superblock buffer */
-	struct qnx4_super_block	*sb;		/* our superblock */
-	unsigned int		Version;	/* may be useful */
-	struct qnx4_inode_entry	*BitMap;	/* useful */
+	struct buffer_head *sb_buf;	/* superblock buffer */
+	struct qnx4_super_block *sb;	/* our superblock */
+	unsigned int Version;	/* may be useful */
+	struct qnx4_inode_entry *BitMap;	/* useful */
 };
 
 struct qnx4_inode_info {
@@ -109,7 +109,8 @@ struct qnx4_inode_info {
 };
 
 extern struct inode *qnx4_iget(struct super_block *, unsigned long);
-extern struct dentry *qnx4_lookup(struct inode *dir, struct dentry *dentry, struct nameidata *nd);
+extern struct dentry *qnx4_lookup(struct inode *dir, struct dentry *dentry,
+				  struct nameidata *nd);
 extern unsigned long qnx4_count_free_blocks(struct super_block *sb);
 extern unsigned long qnx4_block_map(struct inode *inode, long iblock);
 
@@ -121,7 +122,8 @@ extern const struct file_operations qnx4_file_operations;
 extern const struct file_operations qnx4_dir_operations;
 extern int qnx4_is_free(struct super_block *sb, long block);
 extern int qnx4_set_bitmap(struct super_block *sb, long block, int busy);
-extern int qnx4_create(struct inode *inode, struct dentry *dentry, int mode, struct nameidata *nd);
+extern int qnx4_create(struct inode *inode, struct dentry *dentry, int mode,
+		       struct nameidata *nd);
 extern void qnx4_truncate(struct inode *inode);
 extern void qnx4_free_inode(struct inode *inode);
 extern int qnx4_unlink(struct inode *dir, struct dentry *dentry);
@@ -144,6 +146,6 @@ static inline struct qnx4_inode_entry *qnx4_raw_inode(struct inode *inode)
 	return &qnx4_i(inode)->raw;
 }
 
-#endif				/* __KERNEL__ */
+#endif /* __KERNEL__ */
 
 #endif

@@ -60,14 +60,14 @@ struct uwb_dev {
 	struct mutex mutex;
 	struct list_head list_node;
 	struct device dev;
-	struct uwb_rc *rc;		/* radio controller */
-	struct uwb_beca_e *bce;		/* Beacon Cache Entry */
+	struct uwb_rc *rc;	/* radio controller */
+	struct uwb_beca_e *bce;	/* Beacon Cache Entry */
 
 	struct uwb_mac_addr mac_addr;
 	struct uwb_dev_addr dev_addr;
 	int beacon_slot;
-	DECLARE_BITMAP(streams, UWB_NUM_STREAMS);
-	DECLARE_BITMAP(last_availability_bm, UWB_NUM_MAS);
+	 DECLARE_BITMAP(streams, UWB_NUM_STREAMS);
+	 DECLARE_BITMAP(last_availability_bm, UWB_NUM_MAS);
 };
 #define to_uwb_dev(d) container_of(d, struct uwb_dev, dev)
 
@@ -80,7 +80,6 @@ struct uwb_dev {
  * Maximum number of context IDs
  */
 enum { UWB_RC_CTX_MAX = 256 };
-
 
 /** Notification chain head for UWB generated events to listeners */
 struct uwb_notifs_chain {
@@ -191,7 +190,7 @@ struct uwb_rsv_move {
  */
 #define UWB_NUM_GLOBAL_STREAMS 1
 
-typedef void (*uwb_rsv_cb_f)(struct uwb_rsv *rsv);
+typedef void (*uwb_rsv_cb_f) (struct uwb_rsv * rsv);
 
 /**
  * struct uwb_rsv - a DRP reservation
@@ -265,7 +264,7 @@ struct uwb_rsv {
 };
 
 static const
-struct uwb_mas_bm uwb_mas_bm_zero = { .bm = { 0 } };
+struct uwb_mas_bm uwb_mas_bm_zero = {.bm = {0} };
 
 static inline void uwb_mas_bm_copy_le(void *dst, const struct uwb_mas_bm *mas)
 {
@@ -297,8 +296,8 @@ static inline void uwb_mas_bm_copy_le(void *dst, const struct uwb_mas_bm *mas)
  */
 struct uwb_drp_avail {
 	DECLARE_BITMAP(global, UWB_NUM_MAS);
-	DECLARE_BITMAP(local, UWB_NUM_MAS);
-	DECLARE_BITMAP(pending, UWB_NUM_MAS);
+	 DECLARE_BITMAP(local, UWB_NUM_MAS);
+	 DECLARE_BITMAP(pending, UWB_NUM_MAS);
 	struct uwb_ie_drp_avail ie;
 	bool ie_valid;
 };
@@ -319,8 +318,7 @@ struct uwb_rsv *uwb_rsv_create(struct uwb_rc *rc, uwb_rsv_cb_f cb,
 void uwb_rsv_destroy(struct uwb_rsv *rsv);
 
 int uwb_rsv_establish(struct uwb_rsv *rsv);
-int uwb_rsv_modify(struct uwb_rsv *rsv,
-		   int max_mas, int min_mas, int sparsity);
+int uwb_rsv_modify(struct uwb_rsv *rsv, int max_mas, int min_mas, int sparsity);
 void uwb_rsv_terminate(struct uwb_rsv *rsv);
 
 void uwb_rsv_accept(struct uwb_rsv *rsv, uwb_rsv_cb_f cb, void *pal_priv);
@@ -374,20 +372,20 @@ struct uwb_rc {
 
 	struct module *owner;
 	void *priv;
-	int (*start)(struct uwb_rc *rc);
-	void (*stop)(struct uwb_rc *rc);
-	int (*cmd)(struct uwb_rc *, const struct uwb_rccb *, size_t);
-	int (*reset)(struct uwb_rc *rc);
-	int (*filter_cmd)(struct uwb_rc *, struct uwb_rccb **, size_t *);
-	int (*filter_event)(struct uwb_rc *, struct uwb_rceb **, const size_t,
-			    size_t *, size_t *);
+	int (*start) (struct uwb_rc * rc);
+	void (*stop) (struct uwb_rc * rc);
+	int (*cmd) (struct uwb_rc *, const struct uwb_rccb *, size_t);
+	int (*reset) (struct uwb_rc * rc);
+	int (*filter_cmd) (struct uwb_rc *, struct uwb_rccb **, size_t *);
+	int (*filter_event) (struct uwb_rc *, struct uwb_rceb **, const size_t,
+			     size_t *, size_t *);
 
-	spinlock_t neh_lock;		/* protects neh_* and ctx_* */
+	spinlock_t neh_lock;	/* protects neh_* and ctx_* */
 	struct list_head neh_list;	/* Open NE handles */
 	unsigned long ctx_bm[UWB_RC_CTX_MAX / 8 / sizeof(unsigned long)];
 	u8 ctx_roll;
 
-	int beaconing;			/* Beaconing state [channel number] */
+	int beaconing;		/* Beaconing state [channel number] */
 	int beaconing_forced;
 	int scanning;
 	enum uwb_scan_type scan_type:3;
@@ -418,7 +416,6 @@ struct uwb_rc {
 
 	struct uwb_dbg *dbg;
 };
-
 
 /**
  * struct uwb_pal - a UWB PAL
@@ -455,8 +452,8 @@ struct uwb_pal {
 	struct device *device;
 	struct uwb_rc *rc;
 
-	void (*channel_changed)(struct uwb_pal *pal, int channel);
-	void (*new_rsv)(struct uwb_pal *pal, struct uwb_rsv *rsv);
+	void (*channel_changed) (struct uwb_pal * pal, int channel);
+	void (*new_rsv) (struct uwb_pal * pal, struct uwb_rsv * rsv);
 
 	int channel;
 	struct dentry *debugfs_dir;
@@ -482,10 +479,12 @@ static inline void uwb_dev_get(struct uwb_dev *uwb_dev)
 {
 	get_device(&uwb_dev->dev);
 }
+
 static inline void uwb_dev_put(struct uwb_dev *uwb_dev)
 {
 	put_device(&uwb_dev->dev);
 }
+
 struct uwb_dev *uwb_dev_try_get(struct uwb_rc *rc, struct uwb_dev *uwb_dev);
 
 /**
@@ -499,7 +498,7 @@ struct uwb_dev *uwb_dev_try_get(struct uwb_rc *rc, struct uwb_dev *uwb_dev);
  *           iterating and return the value to the caller of
  *           _foreach().
  */
-typedef int (*uwb_dev_for_each_f)(struct device *dev, void *priv);
+typedef int (*uwb_dev_for_each_f) (struct device * dev, void *priv);
 int uwb_dev_for_each(struct uwb_rc *rc, uwb_dev_for_each_f func, void *priv);
 
 struct uwb_rc *uwb_rc_alloc(void);
@@ -507,8 +506,8 @@ struct uwb_rc *uwb_rc_get_by_dev(const struct uwb_dev_addr *);
 struct uwb_rc *uwb_rc_get_by_grandpa(const struct device *);
 void uwb_rc_put(struct uwb_rc *rc);
 
-typedef void (*uwb_rc_cmd_cb_f)(struct uwb_rc *rc, void *arg,
-                                struct uwb_rceb *reply, ssize_t reply_size);
+typedef void (*uwb_rc_cmd_cb_f) (struct uwb_rc * rc, void *arg,
+				 struct uwb_rceb * reply, ssize_t reply_size);
 
 int uwb_rc_cmd_async(struct uwb_rc *rc, const char *cmd_name,
 		     struct uwb_rccb *cmd, size_t cmd_size,
@@ -563,7 +562,7 @@ static inline int uwb_mac_addr_cmp(const struct uwb_mac_addr *addr1,
 static inline int uwb_mac_addr_bcast(const struct uwb_mac_addr *addr)
 {
 	struct uwb_mac_addr bcast = {
-		.data = { 0xff, 0xff, 0xff, 0xff, 0xff, 0xff }
+		.data = {0xff, 0xff, 0xff, 0xff, 0xff, 0xff}
 	};
 	return !uwb_mac_addr_cmp(addr, &bcast);
 }
@@ -572,7 +571,7 @@ static inline int uwb_mac_addr_bcast(const struct uwb_mac_addr *addr)
 static inline int uwb_mac_addr_unset(const struct uwb_mac_addr *addr)
 {
 	struct uwb_mac_addr unset = {
-		.data = { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 }
+		.data = {0x00, 0x00, 0x00, 0x00, 0x00, 0x00}
 	};
 	return !uwb_mac_addr_cmp(addr, &unset);
 }
@@ -626,13 +625,12 @@ enum uwb_notifs {
 /* Callback function registered with UWB */
 struct uwb_notifs_handler {
 	struct list_head list_node;
-	void (*cb)(void *, struct uwb_dev *, enum uwb_notifs);
+	void (*cb) (void *, struct uwb_dev *, enum uwb_notifs);
 	void *data;
 };
 
 int uwb_notifs_register(struct uwb_rc *, struct uwb_notifs_handler *);
 int uwb_notifs_deregister(struct uwb_rc *, struct uwb_notifs_handler *);
-
 
 /**
  * UWB radio controller Event Size Entry (for creating entry tables)
@@ -696,8 +694,7 @@ struct edc {
 	u16 errorcount;
 };
 
-static inline
-void edc_init(struct edc *edc)
+static inline void edc_init(struct edc *edc)
 {
 	edc->timestart = jiffies;
 }
@@ -720,18 +717,18 @@ static inline int edc_inc(struct edc *err_hist, u16 max_err, u16 timeframe)
 		err_hist->errorcount = 1;
 		err_hist->timestart = now;
 	} else if (++err_hist->errorcount > max_err) {
-			err_hist->errorcount = 0;
-			err_hist->timestart = now;
-			return 1;
+		err_hist->errorcount = 0;
+		err_hist->timestart = now;
+		return 1;
 	}
 	return 0;
 }
 
-
 /* Information Element handling */
 
-struct uwb_ie_hdr *uwb_ie_next(void **ptr, size_t *len);
-int uwb_rc_ie_add(struct uwb_rc *uwb_rc, const struct uwb_ie_hdr *ies, size_t size);
+struct uwb_ie_hdr *uwb_ie_next(void **ptr, size_t * len);
+int uwb_rc_ie_add(struct uwb_rc *uwb_rc, const struct uwb_ie_hdr *ies,
+		  size_t size);
 int uwb_rc_ie_rm(struct uwb_rc *uwb_rc, enum uwb_ie element_id);
 
 /*
@@ -767,15 +764,13 @@ struct stats {
 	atomic_t samples;
 };
 
-static inline
-void stats_init(struct stats *stats)
+static inline void stats_init(struct stats *stats)
 {
 	atomic_set(&stats->samples, 0);
 	wmb();
 }
 
-static inline
-void stats_add_sample(struct stats *stats, s8 sample)
+static inline void stats_add_sample(struct stats *stats, s8 sample)
 {
 	s8 min, max;
 	s16 sigma;

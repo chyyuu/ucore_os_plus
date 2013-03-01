@@ -35,7 +35,7 @@ extern void omap3_pm_off_mode_enable(int);
 extern void omap_sram_idle(void);
 extern int omap_set_pwrdm_state(struct powerdomain *pwrdm, u32 state);
 extern int omap_pm_clkdms_setup(struct clockdomain *clkdm, void *unused);
-extern int (*omap_pm_suspend)(void);
+extern int (*omap_pm_suspend) (void);
 
 #if defined(CONFIG_PM_OPP)
 extern int omap3_opp_init(void);
@@ -45,6 +45,7 @@ static inline int omap3_opp_init(void)
 {
 	return -EINVAL;
 }
+
 static inline int omap4_opp_init(void)
 {
 	return -EINVAL;
@@ -70,8 +71,8 @@ extern void pm_dbg_update_time(struct powerdomain *pwrdm, int prev);
 extern void omap24xx_idle_loop_suspend(void);
 extern unsigned int omap24xx_idle_loop_suspend_sz;
 
-extern void omap24xx_cpu_suspend(u32 dll_ctrl, void __iomem *sdrc_dlla_ctrl,
-					void __iomem *sdrc_power);
+extern void omap24xx_cpu_suspend(u32 dll_ctrl, void __iomem * sdrc_dlla_ctrl,
+				 void __iomem * sdrc_power);
 extern unsigned int omap24xx_cpu_suspend_sz;
 
 /* 3xxx */
@@ -81,10 +82,10 @@ extern void omap34xx_cpu_suspend(int save_state);
 extern void omap3_do_wfi(void);
 extern unsigned int omap3_do_wfi_sz;
 /* ... and its pointer from SRAM after copy */
-extern void (*omap3_do_wfi_sram)(void);
+extern void (*omap3_do_wfi_sram) (void);
 
 /* save_secure_ram_context function pointer and size, for copy to SRAM */
-extern int save_secure_ram_context(u32 *addr);
+extern int save_secure_ram_context(u32 * addr);
 extern unsigned int save_secure_ram_context_sz;
 
 extern void omap3_save_scratchpad_contents(void);
@@ -98,8 +99,10 @@ extern u16 pm34xx_errata;
 extern void enable_omap3630_toggle_l2_on_restore(void);
 #else
 #define IS_PM34XX_ERRATUM(id)		0
-static inline void enable_omap3630_toggle_l2_on_restore(void) { }
-#endif		/* defined(CONFIG_PM) && defined(CONFIG_ARCH_OMAP3) */
+static inline void enable_omap3630_toggle_l2_on_restore(void)
+{
+}
+#endif /* defined(CONFIG_PM) && defined(CONFIG_ARCH_OMAP3) */
 
 #ifdef CONFIG_POWER_AVS_OMAP
 extern int omap_devinit_smartreflex(void);
@@ -110,7 +113,9 @@ static inline int omap_devinit_smartreflex(void)
 	return -EINVAL;
 }
 
-static inline void omap_enable_smartreflex_on_init(void) {}
+static inline void omap_enable_smartreflex_on_init(void)
+{
+}
 #endif
 
 #ifdef CONFIG_TWL4030_CORE
@@ -122,6 +127,7 @@ static inline int omap3_twl_init(void)
 {
 	return -EINVAL;
 }
+
 static inline int omap4_twl_init(void)
 {
 	return -EINVAL;

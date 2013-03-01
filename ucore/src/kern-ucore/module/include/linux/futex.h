@@ -11,7 +11,6 @@ union ktime;
 
 /* Second argument to futex syscall */
 
-
 #define FUTEX_WAIT		0
 #define FUTEX_WAKE		1
 #define FUTEX_FD		2
@@ -123,11 +122,11 @@ struct robust_list_head {
 #define FUTEX_BITSET_MATCH_ANY	0xffffffff
 
 #ifdef __KERNEL__
-long do_futex(u32 __user *uaddr, int op, u32 val, union ktime *timeout,
-	      u32 __user *uaddr2, u32 val2, u32 val3);
+long do_futex(u32 __user * uaddr, int op, u32 val, union ktime *timeout,
+	      u32 __user * uaddr2, u32 val2, u32 val3);
 
 extern int
-handle_futex_death(u32 __user *uaddr, struct task_struct *curr, int pi);
+handle_futex_death(u32 __user * uaddr, struct task_struct *curr, int pi);
 
 /*
  * Futexes are matched on equal values of this key.
@@ -144,8 +143,8 @@ handle_futex_death(u32 __user *uaddr, struct task_struct *curr, int pi);
  *       (but private mapping on an mm, and reference taken on it)
 */
 
-#define FUT_OFF_INODE    1 /* We set bit 0 if key has a reference on inode */
-#define FUT_OFF_MMSHARED 2 /* We set bit 1 if key has a reference on mm */
+#define FUT_OFF_INODE    1	/* We set bit 0 if key has a reference on inode */
+#define FUT_OFF_MMSHARED 2	/* We set bit 1 if key has a reference on mm */
 
 union futex_key {
 	struct {
@@ -175,6 +174,7 @@ extern int futex_cmpxchg_enabled;
 static inline void exit_robust_list(struct task_struct *curr)
 {
 }
+
 static inline void exit_pi_state_list(struct task_struct *curr)
 {
 }

@@ -30,18 +30,18 @@ struct kbd_struct {
    they can be associated to arbitrarily chosen keys */
 #define VC_SHIFTLOCK	KG_SHIFT	/* shift lock mode */
 #define VC_ALTGRLOCK	KG_ALTGR	/* altgr lock mode */
-#define VC_CTRLLOCK	KG_CTRL 	/* control lock mode */
-#define VC_ALTLOCK	KG_ALT  	/* alt lock mode */
+#define VC_CTRLLOCK	KG_CTRL	/* control lock mode */
+#define VC_ALTLOCK	KG_ALT	/* alt lock mode */
 #define VC_SHIFTLLOCK	KG_SHIFTL	/* shiftl lock mode */
 #define VC_SHIFTRLOCK	KG_SHIFTR	/* shiftr lock mode */
-#define VC_CTRLLLOCK	KG_CTRLL 	/* ctrll lock mode */
-#define VC_CTRLRLOCK	KG_CTRLR 	/* ctrlr lock mode */
-	unsigned char slockstate; 	/* for `sticky' Shift, Ctrl, etc. */
+#define VC_CTRLLLOCK	KG_CTRLL	/* ctrll lock mode */
+#define VC_CTRLRLOCK	KG_CTRLR	/* ctrlr lock mode */
+	unsigned char slockstate;	/* for `sticky' Shift, Ctrl, etc. */
 
-	unsigned char ledmode:2; 	/* one 2-bit value */
-#define LED_SHOW_FLAGS 0        /* traditional state */
-#define LED_SHOW_IOCTL 1        /* only change leds upon ioctl */
-#define LED_SHOW_MEM 2          /* `heartbeat': peek into memory */
+	unsigned char ledmode:2;	/* one 2-bit value */
+#define LED_SHOW_FLAGS 0	/* traditional state */
+#define LED_SHOW_IOCTL 1	/* only change leds upon ioctl */
+#define LED_SHOW_MEM 2		/* `heartbeat': peek into memory */
 
 	unsigned char ledflagstate:4;	/* flags, not lights */
 	unsigned char default_ledflagstate:4;
@@ -73,7 +73,7 @@ extern void setledstate(struct kbd_struct *kbd, unsigned int led);
 
 extern int do_poke_blanked_console;
 
-extern void (*kbd_ledfunc)(unsigned int led);
+extern void (*kbd_ledfunc) (unsigned int led);
 
 extern int set_console(int nr);
 extern void schedule_console_callback(void);
@@ -83,52 +83,52 @@ static inline void set_leds(void)
 	tasklet_schedule(&keyboard_tasklet);
 }
 
-static inline int vc_kbd_mode(struct kbd_struct * kbd, int flag)
+static inline int vc_kbd_mode(struct kbd_struct *kbd, int flag)
 {
 	return ((kbd->modeflags >> flag) & 1);
 }
 
-static inline int vc_kbd_led(struct kbd_struct * kbd, int flag)
+static inline int vc_kbd_led(struct kbd_struct *kbd, int flag)
 {
 	return ((kbd->ledflagstate >> flag) & 1);
 }
 
-static inline void set_vc_kbd_mode(struct kbd_struct * kbd, int flag)
+static inline void set_vc_kbd_mode(struct kbd_struct *kbd, int flag)
 {
 	kbd->modeflags |= 1 << flag;
 }
 
-static inline void set_vc_kbd_led(struct kbd_struct * kbd, int flag)
+static inline void set_vc_kbd_led(struct kbd_struct *kbd, int flag)
 {
 	kbd->ledflagstate |= 1 << flag;
 }
 
-static inline void clr_vc_kbd_mode(struct kbd_struct * kbd, int flag)
+static inline void clr_vc_kbd_mode(struct kbd_struct *kbd, int flag)
 {
 	kbd->modeflags &= ~(1 << flag);
 }
 
-static inline void clr_vc_kbd_led(struct kbd_struct * kbd, int flag)
+static inline void clr_vc_kbd_led(struct kbd_struct *kbd, int flag)
 {
 	kbd->ledflagstate &= ~(1 << flag);
 }
 
-static inline void chg_vc_kbd_lock(struct kbd_struct * kbd, int flag)
+static inline void chg_vc_kbd_lock(struct kbd_struct *kbd, int flag)
 {
 	kbd->lockstate ^= 1 << flag;
 }
 
-static inline void chg_vc_kbd_slock(struct kbd_struct * kbd, int flag)
+static inline void chg_vc_kbd_slock(struct kbd_struct *kbd, int flag)
 {
 	kbd->slockstate ^= 1 << flag;
 }
 
-static inline void chg_vc_kbd_mode(struct kbd_struct * kbd, int flag)
+static inline void chg_vc_kbd_mode(struct kbd_struct *kbd, int flag)
 {
 	kbd->modeflags ^= 1 << flag;
 }
 
-static inline void chg_vc_kbd_led(struct kbd_struct * kbd, int flag)
+static inline void chg_vc_kbd_led(struct kbd_struct *kbd, int flag)
 {
 	kbd->ledflagstate ^= 1 << flag;
 }

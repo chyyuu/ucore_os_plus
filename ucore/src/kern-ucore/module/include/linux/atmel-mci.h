@@ -21,9 +21,9 @@
  * But in most cases, it should work just fine.
  */
 struct mci_slot_pdata {
-	unsigned int		bus_width;
-	int			detect_pin;
-	int			wp_pin;
+	unsigned int bus_width;
+	int detect_pin;
+	int wp_pin;
 };
 
 /**
@@ -32,8 +32,8 @@ struct mci_slot_pdata {
  * @slot: Per-slot configuration data.
  */
 struct mci_platform_data {
-	struct dw_dma_slave	dma_slave;
-	struct mci_slot_pdata	slot[ATMEL_MCI_MAX_NR_SLOTS];
+	struct dw_dma_slave dma_slave;
+	struct mci_slot_pdata slot[ATMEL_MCI_MAX_NR_SLOTS];
 };
 
 #endif /* __LINUX_ATMEL_MCI_H */

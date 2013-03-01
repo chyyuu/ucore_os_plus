@@ -24,8 +24,14 @@ static inline void touch_nmi_watchdog(void)
 {
 	touch_softlockup_watchdog();
 }
-static inline void acpi_nmi_disable(void) { }
-static inline void acpi_nmi_enable(void) { }
+
+static inline void acpi_nmi_disable(void)
+{
+}
+
+static inline void acpi_nmi_enable(void)
+{
+}
 #endif
 
 #ifndef trigger_all_cpu_backtrace

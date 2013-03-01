@@ -126,7 +126,8 @@ struct rio_dev {
  */
 struct rio_msg {
 	struct resource *res;
-	void (*mcback) (struct rio_mport * mport, void *dev_id, int mbox, int slot);
+	void (*mcback) (struct rio_mport * mport, void *dev_id, int mbox,
+			int slot);
 };
 
 /**
@@ -139,7 +140,8 @@ struct rio_msg {
 struct rio_dbell {
 	struct list_head node;
 	struct resource *res;
-	void (*dinb) (struct rio_mport *mport, void *dev_id, u16 src, u16 dst, u16 info);
+	void (*dinb) (struct rio_mport * mport, void *dev_id, u16 src, u16 dst,
+		      u16 info);
 	void *dev_id;
 };
 
@@ -237,15 +239,16 @@ struct rio_switch {
  * @dsend: Callback to send a doorbell message.
  */
 struct rio_ops {
-	int (*lcread) (struct rio_mport *mport, int index, u32 offset, int len,
-			u32 *data);
-	int (*lcwrite) (struct rio_mport *mport, int index, u32 offset, int len,
-			u32 data);
-	int (*cread) (struct rio_mport *mport, int index, u16 destid,
-			u8 hopcount, u32 offset, int len, u32 *data);
-	int (*cwrite) (struct rio_mport *mport, int index, u16 destid,
-			u8 hopcount, u32 offset, int len, u32 data);
-	int (*dsend) (struct rio_mport *mport, int index, u16 destid, u16 data);
+	int (*lcread) (struct rio_mport * mport, int index, u32 offset, int len,
+		       u32 * data);
+	int (*lcwrite) (struct rio_mport * mport, int index, u32 offset,
+			int len, u32 data);
+	int (*cread) (struct rio_mport * mport, int index, u16 destid,
+		      u8 hopcount, u32 offset, int len, u32 * data);
+	int (*cwrite) (struct rio_mport * mport, int index, u16 destid,
+		       u8 hopcount, u32 offset, int len, u32 data);
+	int (*dsend) (struct rio_mport * mport, int index, u16 destid,
+		      u16 data);
 };
 
 #define RIO_RESOURCE_MEM	0x00000100
@@ -331,4 +334,4 @@ extern void rio_close_inb_mbox(struct rio_mport *, int);
 extern int rio_open_outb_mbox(struct rio_mport *, void *, int, int);
 extern void rio_close_outb_mbox(struct rio_mport *, int);
 
-#endif				/* LINUX_RIO_H */
+#endif /* LINUX_RIO_H */

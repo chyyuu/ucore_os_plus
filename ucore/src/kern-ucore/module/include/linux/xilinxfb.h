@@ -27,4 +27,4 @@ struct xilinxfb_platform_data {
 	u32 fb_phys;
 };
 
-#endif  /* __XILINXFB_H__ */
+#endif /* __XILINXFB_H__ */

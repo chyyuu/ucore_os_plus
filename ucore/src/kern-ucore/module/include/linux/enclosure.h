@@ -57,28 +57,26 @@ enum enclosure_component_setting {
 struct enclosure_device;
 struct enclosure_component;
 struct enclosure_component_callbacks {
-	void (*get_status)(struct enclosure_device *,
-			     struct enclosure_component *);
-	int (*set_status)(struct enclosure_device *,
-			  struct enclosure_component *,
-			  enum enclosure_status);
-	void (*get_fault)(struct enclosure_device *,
-			  struct enclosure_component *);
-	int (*set_fault)(struct enclosure_device *,
-			 struct enclosure_component *,
-			 enum enclosure_component_setting);
-	void (*get_active)(struct enclosure_device *,
+	void (*get_status) (struct enclosure_device *,
+			    struct enclosure_component *);
+	int (*set_status) (struct enclosure_device *,
+			   struct enclosure_component *, enum enclosure_status);
+	void (*get_fault) (struct enclosure_device *,
 			   struct enclosure_component *);
-	int (*set_active)(struct enclosure_device *,
+	int (*set_fault) (struct enclosure_device *,
 			  struct enclosure_component *,
 			  enum enclosure_component_setting);
-	void (*get_locate)(struct enclosure_device *,
-			   struct enclosure_component *);
-	int (*set_locate)(struct enclosure_device *,
-			  struct enclosure_component *,
-			  enum enclosure_component_setting);
+	void (*get_active) (struct enclosure_device *,
+			    struct enclosure_component *);
+	int (*set_active) (struct enclosure_device *,
+			   struct enclosure_component *,
+			   enum enclosure_component_setting);
+	void (*get_locate) (struct enclosure_device *,
+			    struct enclosure_component *);
+	int (*set_locate) (struct enclosure_device *,
+			   struct enclosure_component *,
+			   enum enclosure_component_setting);
 };
-
 
 struct enclosure_component {
 	void *scratch;
@@ -101,30 +99,29 @@ struct enclosure_device {
 	struct enclosure_component component[0];
 };
 
-static inline struct enclosure_device *
-to_enclosure_device(struct device *dev)
+static inline struct enclosure_device *to_enclosure_device(struct device *dev)
 {
 	return container_of(dev, struct enclosure_device, edev);
 }
 
-static inline struct enclosure_component *
-to_enclosure_component(struct device *dev)
+static inline struct enclosure_component *to_enclosure_component(struct device
+								 *dev)
 {
 	return container_of(dev, struct enclosure_component, cdev);
 }
 
-struct enclosure_device *
-enclosure_register(struct device *, const char *, int,
-		   struct enclosure_component_callbacks *);
+struct enclosure_device *enclosure_register(struct device *, const char *, int, struct enclosure_component_callbacks
+					    *);
 void enclosure_unregister(struct enclosure_device *);
-struct enclosure_component *
-enclosure_component_register(struct enclosure_device *, unsigned int,
-				 enum enclosure_component_type, const char *);
+struct enclosure_component *enclosure_component_register(struct enclosure_device
+							 *, unsigned int, enum
+							 enclosure_component_type,
+							 const char *);
 int enclosure_add_device(struct enclosure_device *enclosure, int component,
 			 struct device *dev);
 int enclosure_remove_device(struct enclosure_device *enclosure, int component);
 struct enclosure_device *enclosure_find(struct device *dev);
-int enclosure_for_each_device(int (*fn)(struct enclosure_device *, void *),
+int enclosure_for_each_device(int (*fn) (struct enclosure_device *, void *),
 			      void *data);
 
 #endif /* _LINUX_ENCLOSURE_H_ */

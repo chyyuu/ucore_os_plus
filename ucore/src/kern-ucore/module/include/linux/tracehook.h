@@ -108,8 +108,8 @@ static inline void ptrace_report_syscall(struct pt_regs *regs)
  *
  * Called without locks, just after entering kernel mode.
  */
-static inline __must_check int tracehook_report_syscall_entry(
-	struct pt_regs *regs)
+static inline __must_check int tracehook_report_syscall_entry(struct pt_regs
+							      *regs)
 {
 	ptrace_report_syscall(regs);
 	return 0;
@@ -376,7 +376,7 @@ static inline void tracehook_finish_release_task(struct task_struct *task)
  * Called without locks, shortly before returning to user mode
  * (or handling more signals).
  */
-static inline void tracehook_signal_handler(int sig, siginfo_t *info,
+static inline void tracehook_signal_handler(int sig, siginfo_t * info,
 					    const struct k_sigaction *ka,
 					    struct pt_regs *regs, int stepping)
 {
@@ -398,7 +398,7 @@ static inline void tracehook_signal_handler(int sig, siginfo_t *info,
  */
 static inline int tracehook_consider_ignored_signal(struct task_struct *task,
 						    int sig,
-						    void __user *handler)
+						    void __user * handler)
 {
 	return (task_ptrace(task) & PT_PTRACED) != 0;
 }
@@ -419,7 +419,7 @@ static inline int tracehook_consider_ignored_signal(struct task_struct *task,
  */
 static inline int tracehook_consider_fatal_signal(struct task_struct *task,
 						  int sig,
-						  void __user *handler)
+						  void __user * handler)
 {
 	return (task_ptrace(task) & PT_PTRACED) != 0;
 }
@@ -461,7 +461,7 @@ static inline int tracehook_force_sigpending(void)
  */
 static inline int tracehook_get_signal(struct task_struct *task,
 				       struct pt_regs *regs,
-				       siginfo_t *info,
+				       siginfo_t * info,
 				       struct k_sigaction *return_ka)
 {
 	return 0;
@@ -577,6 +577,6 @@ static inline void set_notify_resume(struct task_struct *task)
 static inline void tracehook_notify_resume(struct pt_regs *regs)
 {
 }
-#endif	/* TIF_NOTIFY_RESUME */
+#endif /* TIF_NOTIFY_RESUME */
 
-#endif	/* <linux/tracehook.h> */
+#endif /* <linux/tracehook.h> */

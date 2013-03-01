@@ -23,8 +23,7 @@ undo_isolate_page_range(unsigned long start_pfn, unsigned long end_pfn);
 /*
  * test all pages in [start_pfn, end_pfn)are isolated or not.
  */
-extern int
-test_pages_isolated(unsigned long start_pfn, unsigned long end_pfn);
+extern int test_pages_isolated(unsigned long start_pfn, unsigned long end_pfn);
 
 /*
  * Internal funcs.Changes pageblock's migrate type.
@@ -32,6 +31,5 @@ test_pages_isolated(unsigned long start_pfn, unsigned long end_pfn);
  */
 extern int set_migratetype_isolate(struct page *page);
 extern void unset_migratetype_isolate(struct page *page);
-
 
 #endif

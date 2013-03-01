@@ -24,8 +24,8 @@ static inline int reacquire_kernel_lock(struct task_struct *task)
 	return 0;
 }
 
-extern void __lockfunc lock_kernel(void)	__acquires(kernel_lock);
-extern void __lockfunc unlock_kernel(void)	__releases(kernel_lock);
+extern void __lockfunc lock_kernel(void) __acquires(kernel_lock);
+extern void __lockfunc unlock_kernel(void) __releases(kernel_lock);
 
 /*
  * Various legacy drivers don't really need the BKL in a specific

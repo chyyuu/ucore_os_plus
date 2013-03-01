@@ -28,9 +28,10 @@ enum stat_item {
 	DEACTIVATE_EMPTY,	/* Cpu slab was empty when deactivated */
 	DEACTIVATE_TO_HEAD,	/* Cpu slab was moved to the head of partials */
 	DEACTIVATE_TO_TAIL,	/* Cpu slab was moved to the tail of partials */
-	DEACTIVATE_REMOTE_FREES,/* Slab contained remotely freed objects */
+	DEACTIVATE_REMOTE_FREES,	/* Slab contained remotely freed objects */
 	ORDER_FALLBACK,		/* Number of times fallback was necessary */
-	NR_SLUB_STAT_ITEMS };
+	NR_SLUB_STAT_ITEMS
+};
 
 struct kmem_cache_cpu {
 	void **freelist;	/* Pointer to first free per cpu object */
@@ -86,7 +87,7 @@ struct kmem_cache {
 	struct kmem_cache_order_objects min;
 	gfp_t allocflags;	/* gfp flags to use on each alloc */
 	int refcount;		/* Refcount for slab cache destroy */
-	void (*ctor)(void *);
+	void (*ctor) (void *);
 	int inuse;		/* Offset to metadata */
 	int align;		/* Alignment */
 	const char *name;	/* Name (only for display!) */
@@ -144,29 +145,48 @@ static __always_inline int kmalloc_index(size_t size)
 	if (size > 128 && size <= 192)
 		return 2;
 #endif
-	if (size <=          8) return 3;
-	if (size <=         16) return 4;
-	if (size <=         32) return 5;
-	if (size <=         64) return 6;
-	if (size <=        128) return 7;
-	if (size <=        256) return 8;
-	if (size <=        512) return 9;
-	if (size <=       1024) return 10;
-	if (size <=   2 * 1024) return 11;
-	if (size <=   4 * 1024) return 12;
+	if (size <= 8)
+		return 3;
+	if (size <= 16)
+		return 4;
+	if (size <= 32)
+		return 5;
+	if (size <= 64)
+		return 6;
+	if (size <= 128)
+		return 7;
+	if (size <= 256)
+		return 8;
+	if (size <= 512)
+		return 9;
+	if (size <= 1024)
+		return 10;
+	if (size <= 2 * 1024)
+		return 11;
+	if (size <= 4 * 1024)
+		return 12;
 /*
  * The following is only needed to support architectures with a larger page
  * size than 4k.
  */
-	if (size <=   8 * 1024) return 13;
-	if (size <=  16 * 1024) return 14;
-	if (size <=  32 * 1024) return 15;
-	if (size <=  64 * 1024) return 16;
-	if (size <= 128 * 1024) return 17;
-	if (size <= 256 * 1024) return 18;
-	if (size <= 512 * 1024) return 19;
-	if (size <= 1024 * 1024) return 20;
-	if (size <=  2 * 1024 * 1024) return 21;
+	if (size <= 8 * 1024)
+		return 13;
+	if (size <= 16 * 1024)
+		return 14;
+	if (size <= 32 * 1024)
+		return 15;
+	if (size <= 64 * 1024)
+		return 16;
+	if (size <= 128 * 1024)
+		return 17;
+	if (size <= 256 * 1024)
+		return 18;
+	if (size <= 512 * 1024)
+		return 19;
+	if (size <= 1024 * 1024)
+		return 20;
+	if (size <= 2 * 1024 * 1024)
+		return 21;
 	return -1;
 
 /*
@@ -234,8 +254,8 @@ void *kmem_cache_alloc_node(struct kmem_cache *, gfp_t flags, int node);
 static __always_inline void *kmalloc_node(size_t size, gfp_t flags, int node)
 {
 	if (__builtin_constant_p(size) &&
-		size <= PAGE_SIZE && !(flags & SLUB_DMA)) {
-			struct kmem_cache *s = kmalloc_slab(size);
+	    size <= PAGE_SIZE && !(flags & SLUB_DMA)) {
+		struct kmem_cache *s = kmalloc_slab(size);
 
 		if (!s)
 			return ZERO_SIZE_PTR;

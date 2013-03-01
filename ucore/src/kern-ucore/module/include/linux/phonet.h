@@ -49,33 +49,33 @@
 
 /* Phonet protocol header */
 struct phonethdr {
-	__u8	pn_rdev;
-	__u8	pn_sdev;
-	__u8	pn_res;
-	__be16	pn_length;
-	__u8	pn_robj;
-	__u8	pn_sobj;
-} __attribute__((packed));
+	__u8 pn_rdev;
+	__u8 pn_sdev;
+	__u8 pn_res;
+	__be16 pn_length;
+	__u8 pn_robj;
+	__u8 pn_sobj;
+} __attribute__ ((packed));
 
 /* Common Phonet payload header */
 struct phonetmsg {
-	__u8	pn_trans_id;	/* transaction ID */
-	__u8	pn_msg_id;	/* message type */
+	__u8 pn_trans_id;	/* transaction ID */
+	__u8 pn_msg_id;		/* message type */
 	union {
 		struct {
-			__u8	pn_submsg_id;	/* message subtype */
-			__u8	pn_data[5];
+			__u8 pn_submsg_id;	/* message subtype */
+			__u8 pn_data[5];
 		} base;
 		struct {
-			__u16	pn_e_res_id;	/* extended resource ID */
-			__u8	pn_e_submsg_id;	/* message subtype */
-			__u8	pn_e_data[3];
+			__u16 pn_e_res_id;	/* extended resource ID */
+			__u8 pn_e_submsg_id;	/* message subtype */
+			__u8 pn_e_data[3];
 		} ext;
 	} pn_msg_u;
 };
 #define PN_COMMON_MESSAGE	0xF0
 #define PN_COMMGR		0x10
-#define PN_PREFIX		0xE0 /* resource for extended messages */
+#define PN_PREFIX		0xE0	/* resource for extended messages */
 #define pn_submsg_id		pn_msg_u.base.pn_submsg_id
 #define pn_e_submsg_id		pn_msg_u.ext.pn_e_submsg_id
 #define pn_e_res_id		pn_msg_u.ext.pn_e_res_id
@@ -137,15 +137,14 @@ static inline void pn_sockaddr_set_port(struct sockaddr_pn *spn, __u16 port)
 	spn->spn_obj = port & 0xff;
 }
 
-static inline void pn_sockaddr_set_object(struct sockaddr_pn *spn,
-						__u16 handle)
+static inline void pn_sockaddr_set_object(struct sockaddr_pn *spn, __u16 handle)
 {
 	spn->spn_dev = pn_dev(handle);
 	spn->spn_obj = pn_obj(handle);
 }
 
 static inline void pn_sockaddr_set_resource(struct sockaddr_pn *spn,
-						__u8 resource)
+					    __u8 resource)
 {
 	spn->spn_resource = resource;
 }

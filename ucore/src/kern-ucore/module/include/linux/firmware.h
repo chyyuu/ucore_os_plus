@@ -5,7 +5,7 @@
 #include <linux/types.h>
 #include <linux/compiler.h>
 
-#define FIRMWARE_NAME_MAX 30 
+#define FIRMWARE_NAME_MAX 30
 #define FW_ACTION_NOHOTPLUG 0
 #define FW_ACTION_HOTPLUG 1
 
@@ -37,23 +37,25 @@ struct builtin_fw {
 #if defined(CONFIG_FW_LOADER) || (defined(CONFIG_FW_LOADER_MODULE) && defined(MODULE))
 int request_firmware(const struct firmware **fw, const char *name,
 		     struct device *device);
-int request_firmware_nowait(
-	struct module *module, int uevent,
-	const char *name, struct device *device, void *context,
-	void (*cont)(const struct firmware *fw, void *context));
+int request_firmware_nowait(struct module *module, int uevent,
+			    const char *name, struct device *device,
+			    void *context,
+			    void (*cont) (const struct firmware * fw,
+					  void *context));
 
 void release_firmware(const struct firmware *fw);
 #else
 static inline int request_firmware(const struct firmware **fw,
-				   const char *name,
-				   struct device *device)
+				   const char *name, struct device *device)
 {
 	return -EINVAL;
 }
-static inline int request_firmware_nowait(
-	struct module *module, int uevent,
-	const char *name, struct device *device, void *context,
-	void (*cont)(const struct firmware *fw, void *context))
+
+static inline int request_firmware_nowait(struct module *module, int uevent,
+					  const char *name,
+					  struct device *device, void *context,
+					  void (*cont) (const struct firmware *
+							fw, void *context))
 {
 	return -EINVAL;
 }

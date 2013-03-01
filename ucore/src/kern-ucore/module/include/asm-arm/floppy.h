@@ -40,6 +40,7 @@ static inline int fd_dma_setup(void *data, unsigned int length,
 	enable_dma(DMA_FLOPPY);
 	return 0;
 }
+
 #define fd_dma_setup		fd_dma_setup
 
 #define fd_request_dma()	request_dma(DMA_FLOPPY,"floppy")
@@ -56,10 +57,9 @@ static inline int fd_dma_setup(void *data, unsigned int length,
  * to a non-zero track, and then restoring it to track 0.  If an error occurs,
  * then there is no floppy drive present.       [to be put back in again]
  */
-static unsigned char floppy_selects[2][4] =
-{
-	{ 0x10, 0x21, 0x23, 0x33 },
-	{ 0x10, 0x21, 0x23, 0x33 }
+static unsigned char floppy_selects[2][4] = {
+	{0x10, 0x21, 0x23, 0x33},
+	{0x10, 0x21, 0x23, 0x33}
 };
 
 #define fd_setdor(dor)								\
@@ -75,7 +75,7 @@ do {										\
 /*
  * Someday, we'll automatically detect which drives are present...
  */
-static inline void fd_scandrives (void)
+static inline void fd_scandrives(void)
 {
 #if 0
 	int floppy, drive_count;
@@ -86,7 +86,7 @@ static inline void fd_scandrives (void)
 	raw_cmd->track = 0;
 	raw_cmd->rate = ?;
 	drive_count = 0;
-	for (floppy = 0; floppy < 4; floppy ++) {
+	for (floppy = 0; floppy < 4; floppy++) {
 		current_drive = drive_count;
 		/*
 		 * Turn on floppy motor
@@ -106,7 +106,8 @@ static inline void fd_scandrives (void)
 		if (!successful) {
 			int i;
 			for (i = drive_count; i < 3; i--)
-				floppy_selects[fdc][i] = floppy_selects[fdc][i + 1];
+				floppy_selects[fdc][i] =
+				    floppy_selects[fdc][i + 1];
 			floppy_selects[fdc][3] = 0;
 			floppy -= 1;
 		} else
@@ -144,5 +145,5 @@ static void driveswap(int *ints, int dummy, int dummy2)
 }
 
 #define EXTRA_FLOPPY_PARAMS ,{ "driveswap", &driveswap, NULL, 0, 0 }
-	
+
 #endif

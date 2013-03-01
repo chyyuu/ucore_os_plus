@@ -74,11 +74,11 @@
 #define AUDIT_LAST_USER_MSG	1199
 #define AUDIT_FIRST_USER_MSG2	2100	/* More user space messages */
 #define AUDIT_LAST_USER_MSG2	2999
- 
-#define AUDIT_DAEMON_START      1200    /* Daemon startup record */
-#define AUDIT_DAEMON_END        1201    /* Daemon normal stop record */
-#define AUDIT_DAEMON_ABORT      1202    /* Daemon error stop record */
-#define AUDIT_DAEMON_CONFIG     1203    /* Daemon config change */
+
+#define AUDIT_DAEMON_START      1200	/* Daemon startup record */
+#define AUDIT_DAEMON_END        1201	/* Daemon normal stop record */
+#define AUDIT_DAEMON_ABORT      1202	/* Daemon error stop record */
+#define AUDIT_DAEMON_CONFIG     1203	/* Daemon config change */
 
 #define AUDIT_SYSCALL		1300	/* Syscall event */
 /* #define AUDIT_FS_WATCH	1301	 * Deprecated */
@@ -95,7 +95,7 @@
 #define AUDIT_MQ_NOTIFY		1314	/* POSIX MQ notify record type */
 #define AUDIT_MQ_GETSETATTR	1315	/* POSIX MQ get/set attribute record type */
 #define AUDIT_KERNEL_OTHER	1316	/* For use by 3rd party modules */
-#define AUDIT_FD_PAIR		1317    /* audit record for pipe/socketpair */
+#define AUDIT_FD_PAIR		1317	/* audit record for pipe/socketpair */
 #define AUDIT_OBJ_PID		1318	/* ptrace target */
 #define AUDIT_TTY		1319	/* Input on an administrative TTY */
 #define AUDIT_EOE		1320	/* End of multi-record event */
@@ -123,8 +123,8 @@
 
 #define AUDIT_FIRST_KERN_ANOM_MSG   1700
 #define AUDIT_LAST_KERN_ANOM_MSG    1799
-#define AUDIT_ANOM_PROMISCUOUS      1700 /* Device changed promiscuous mode */
-#define AUDIT_ANOM_ABEND            1701 /* Process ended abnormally */
+#define AUDIT_ANOM_PROMISCUOUS      1700	/* Device changed promiscuous mode */
+#define AUDIT_ANOM_ABEND            1701	/* Process ended abnormally */
 
 #define AUDIT_KERNEL		2000	/* Asynchronous audit record. NOT A REQUEST. */
 
@@ -170,7 +170,6 @@
  * If you are adding a new #define AUDIT_<whatever>, please ensure that
  * AUDIT_UNUSED_BITS is updated if need be. */
 #define AUDIT_UNUSED_BITS	0x07FFFC00
-
 
 /* Rule fields */
 				/* These are useful when checking the
@@ -308,18 +307,18 @@ enum {
 #define AUDIT_PERM_ATTR		8
 
 struct audit_status {
-	__u32		mask;		/* Bit mask for valid entries */
-	__u32		enabled;	/* 1 = enabled, 0 = disabled */
-	__u32		failure;	/* Failure-to-log action */
-	__u32		pid;		/* pid of auditd process */
-	__u32		rate_limit;	/* messages rate limit (per second) */
-	__u32		backlog_limit;	/* waiting messages limit */
-	__u32		lost;		/* messages lost */
-	__u32		backlog;	/* messages waiting in queue */
+	__u32 mask;		/* Bit mask for valid entries */
+	__u32 enabled;		/* 1 = enabled, 0 = disabled */
+	__u32 failure;		/* Failure-to-log action */
+	__u32 pid;		/* pid of auditd process */
+	__u32 rate_limit;	/* messages rate limit (per second) */
+	__u32 backlog_limit;	/* waiting messages limit */
+	__u32 lost;		/* messages lost */
+	__u32 backlog;		/* messages waiting in queue */
 };
 
 struct audit_tty_status {
-	__u32		enabled; /* 1 = enabled, 0 = disabled */
+	__u32 enabled;		/* 1 = enabled, 0 = disabled */
 };
 
 /* audit_rule_data supports filter rules with both integer and string
@@ -327,15 +326,15 @@ struct audit_tty_status {
  * AUDIT_LIST_RULES requests.
  */
 struct audit_rule_data {
-	__u32		flags;	/* AUDIT_PER_{TASK,CALL}, AUDIT_PREPEND */
-	__u32		action;	/* AUDIT_NEVER, AUDIT_POSSIBLE, AUDIT_ALWAYS */
-	__u32		field_count;
-	__u32		mask[AUDIT_BITMASK_SIZE]; /* syscall(s) affected */
-	__u32		fields[AUDIT_MAX_FIELDS];
-	__u32		values[AUDIT_MAX_FIELDS];
-	__u32		fieldflags[AUDIT_MAX_FIELDS];
-	__u32		buflen;	/* total length of string fields */
-	char		buf[0];	/* string fields buffer */
+	__u32 flags;		/* AUDIT_PER_{TASK,CALL}, AUDIT_PREPEND */
+	__u32 action;		/* AUDIT_NEVER, AUDIT_POSSIBLE, AUDIT_ALWAYS */
+	__u32 field_count;
+	__u32 mask[AUDIT_BITMASK_SIZE];	/* syscall(s) affected */
+	__u32 fields[AUDIT_MAX_FIELDS];
+	__u32 values[AUDIT_MAX_FIELDS];
+	__u32 fieldflags[AUDIT_MAX_FIELDS];
+	__u32 buflen;		/* total length of string fields */
+	char buf[0];		/* string fields buffer */
 };
 
 /* audit_rule is supported to maintain backward compatibility with
@@ -343,21 +342,21 @@ struct audit_rule_data {
  * AUDIT_ADD, AUDIT_DEL and AUDIT_LIST requests.
  */
 struct audit_rule {		/* for AUDIT_LIST, AUDIT_ADD, and AUDIT_DEL */
-	__u32		flags;	/* AUDIT_PER_{TASK,CALL}, AUDIT_PREPEND */
-	__u32		action;	/* AUDIT_NEVER, AUDIT_POSSIBLE, AUDIT_ALWAYS */
-	__u32		field_count;
-	__u32		mask[AUDIT_BITMASK_SIZE];
-	__u32		fields[AUDIT_MAX_FIELDS];
-	__u32		values[AUDIT_MAX_FIELDS];
+	__u32 flags;		/* AUDIT_PER_{TASK,CALL}, AUDIT_PREPEND */
+	__u32 action;		/* AUDIT_NEVER, AUDIT_POSSIBLE, AUDIT_ALWAYS */
+	__u32 field_count;
+	__u32 mask[AUDIT_BITMASK_SIZE];
+	__u32 fields[AUDIT_MAX_FIELDS];
+	__u32 values[AUDIT_MAX_FIELDS];
 };
 
 #ifdef __KERNEL__
 #include <linux/sched.h>
 
 struct audit_sig_info {
-	uid_t		uid;
-	pid_t		pid;
-	char		ctx[0];
+	uid_t uid;
+	pid_t pid;
+	char ctx[0];
 };
 
 struct audit_buffer;
@@ -371,30 +370,30 @@ struct audit_watch;
 struct audit_tree;
 
 struct audit_krule {
-	int			vers_ops;
-	u32			flags;
-	u32			listnr;
-	u32			action;
-	u32			mask[AUDIT_BITMASK_SIZE];
-	u32			buflen; /* for data alloc on list rules */
-	u32			field_count;
-	char			*filterkey; /* ties events to rules */
-	struct audit_field	*fields;
-	struct audit_field	*arch_f; /* quick access to arch field */
-	struct audit_field	*inode_f; /* quick access to an inode field */
-	struct audit_watch	*watch;	/* associated watch */
-	struct audit_tree	*tree;	/* associated watched tree */
-	struct list_head	rlist;	/* entry in audit_{watch,tree}.rules list */
-	struct list_head	list;	/* for AUDIT_LIST* purposes only */
-	u64			prio;
+	int vers_ops;
+	u32 flags;
+	u32 listnr;
+	u32 action;
+	u32 mask[AUDIT_BITMASK_SIZE];
+	u32 buflen;		/* for data alloc on list rules */
+	u32 field_count;
+	char *filterkey;	/* ties events to rules */
+	struct audit_field *fields;
+	struct audit_field *arch_f;	/* quick access to arch field */
+	struct audit_field *inode_f;	/* quick access to an inode field */
+	struct audit_watch *watch;	/* associated watch */
+	struct audit_tree *tree;	/* associated watched tree */
+	struct list_head rlist;	/* entry in audit_{watch,tree}.rules list */
+	struct list_head list;	/* for AUDIT_LIST* purposes only */
+	u64 prio;
 };
 
 struct audit_field {
-	u32				type;
-	u32				val;
-	u32				op;
-	char				*lsm_str;
-	void				*lsm_rule;
+	u32 type;
+	u32 val;
+	u32 op;
+	char *lsm_str;
+	void *lsm_rule;
 };
 
 #define AUDITSC_INVALID 0
@@ -408,7 +407,7 @@ extern int audit_classify_arch(int arch);
 /* These are defined in auditsc.c */
 				/* Public API */
 extern void audit_finish_fork(struct task_struct *child);
-extern int  audit_alloc(struct task_struct *task);
+extern int audit_alloc(struct task_struct *task);
 extern void audit_free(struct task_struct *task);
 extern void audit_syscall_entry(int arch,
 				int major, unsigned long a0, unsigned long a1,
@@ -426,21 +425,27 @@ static inline int audit_dummy_context(void)
 	void *p = current->audit_context;
 	return !p || *(int *)p;
 }
+
 static inline void audit_getname(const char *name)
 {
 	if (unlikely(!audit_dummy_context()))
 		__audit_getname(name);
 }
-static inline void audit_inode(const char *name, const struct dentry *dentry) {
+
+static inline void audit_inode(const char *name, const struct dentry *dentry)
+{
 	if (unlikely(!audit_dummy_context()))
 		__audit_inode(name, dentry);
 }
-static inline void audit_inode_child(const char *dname, 
+
+static inline void audit_inode_child(const char *dname,
 				     const struct dentry *dentry,
-				     const struct inode *parent) {
+				     const struct inode *parent)
+{
 	if (unlikely(!audit_dummy_context()))
 		__audit_inode_child(dname, dentry, parent);
 }
+
 void audit_core_dumps(long signr);
 
 static inline void audit_ptrace(struct task_struct *t)
@@ -452,57 +457,71 @@ static inline void audit_ptrace(struct task_struct *t)
 				/* Private API (for audit.c only) */
 extern unsigned int audit_serial(void);
 extern int auditsc_get_stamp(struct audit_context *ctx,
-			      struct timespec *t, unsigned int *serial);
-extern int  audit_set_loginuid(struct task_struct *task, uid_t loginuid);
+			     struct timespec *t, unsigned int *serial);
+extern int audit_set_loginuid(struct task_struct *task, uid_t loginuid);
 #define audit_get_loginuid(t) ((t)->loginuid)
 #define audit_get_sessionid(t) ((t)->sessionid)
 extern void audit_log_task_context(struct audit_buffer *ab);
 extern void __audit_ipc_obj(struct kern_ipc_perm *ipcp);
-extern void __audit_ipc_set_perm(unsigned long qbytes, uid_t uid, gid_t gid, mode_t mode);
+extern void __audit_ipc_set_perm(unsigned long qbytes, uid_t uid, gid_t gid,
+				 mode_t mode);
 extern int audit_bprm(struct linux_binprm *bprm);
 extern void audit_socketcall(int nargs, unsigned long *args);
 extern int audit_sockaddr(int len, void *addr);
 extern void __audit_fd_pair(int fd1, int fd2);
 extern int audit_set_macxattr(const char *name);
 extern void __audit_mq_open(int oflag, mode_t mode, struct mq_attr *attr);
-extern void __audit_mq_sendrecv(mqd_t mqdes, size_t msg_len, unsigned int msg_prio, const struct timespec *abs_timeout);
+extern void __audit_mq_sendrecv(mqd_t mqdes, size_t msg_len,
+				unsigned int msg_prio,
+				const struct timespec *abs_timeout);
 extern void __audit_mq_notify(mqd_t mqdes, const struct sigevent *notification);
 extern void __audit_mq_getsetattr(mqd_t mqdes, struct mq_attr *mqstat);
 extern int __audit_log_bprm_fcaps(struct linux_binprm *bprm,
 				  const struct cred *new,
 				  const struct cred *old);
-extern void __audit_log_capset(pid_t pid, const struct cred *new, const struct cred *old);
+extern void __audit_log_capset(pid_t pid, const struct cred *new,
+			       const struct cred *old);
 
 static inline void audit_ipc_obj(struct kern_ipc_perm *ipcp)
 {
 	if (unlikely(!audit_dummy_context()))
 		__audit_ipc_obj(ipcp);
 }
+
 static inline void audit_fd_pair(int fd1, int fd2)
 {
 	if (unlikely(!audit_dummy_context()))
 		__audit_fd_pair(fd1, fd2);
 }
-static inline void audit_ipc_set_perm(unsigned long qbytes, uid_t uid, gid_t gid, mode_t mode)
+
+static inline void audit_ipc_set_perm(unsigned long qbytes, uid_t uid,
+				      gid_t gid, mode_t mode)
 {
 	if (unlikely(!audit_dummy_context()))
 		__audit_ipc_set_perm(qbytes, uid, gid, mode);
 }
+
 static inline void audit_mq_open(int oflag, mode_t mode, struct mq_attr *attr)
 {
 	if (unlikely(!audit_dummy_context()))
 		__audit_mq_open(oflag, mode, attr);
 }
-static inline void audit_mq_sendrecv(mqd_t mqdes, size_t msg_len, unsigned int msg_prio, const struct timespec *abs_timeout)
+
+static inline void audit_mq_sendrecv(mqd_t mqdes, size_t msg_len,
+				     unsigned int msg_prio,
+				     const struct timespec *abs_timeout)
 {
 	if (unlikely(!audit_dummy_context()))
 		__audit_mq_sendrecv(mqdes, msg_len, msg_prio, abs_timeout);
 }
-static inline void audit_mq_notify(mqd_t mqdes, const struct sigevent *notification)
+
+static inline void audit_mq_notify(mqd_t mqdes,
+				   const struct sigevent *notification)
 {
 	if (unlikely(!audit_dummy_context()))
 		__audit_mq_notify(mqdes, notification);
 }
+
 static inline void audit_mq_getsetattr(mqd_t mqdes, struct mq_attr *mqstat)
 {
 	if (unlikely(!audit_dummy_context()))
@@ -519,7 +538,7 @@ static inline int audit_log_bprm_fcaps(struct linux_binprm *bprm,
 }
 
 static inline void audit_log_capset(pid_t pid, const struct cred *new,
-				   const struct cred *old)
+				    const struct cred *old)
 {
 	if (unlikely(!audit_dummy_context()))
 		__audit_log_capset(pid, new, old);
@@ -566,39 +585,34 @@ extern int audit_signals;
 #ifdef CONFIG_AUDIT
 /* These are defined in audit.c */
 				/* Public API */
-extern void		    audit_log(struct audit_context *ctx, gfp_t gfp_mask,
-				      int type, const char *fmt, ...)
-				      __attribute__((format(printf,4,5)));
+extern void audit_log(struct audit_context *ctx, gfp_t gfp_mask,
+		      int type, const char *fmt, ...)
+    __attribute__ ((format(printf, 4, 5)));
 
-extern struct audit_buffer *audit_log_start(struct audit_context *ctx, gfp_t gfp_mask, int type);
-extern void		    audit_log_format(struct audit_buffer *ab,
-					     const char *fmt, ...)
-			    __attribute__((format(printf,2,3)));
-extern void		    audit_log_end(struct audit_buffer *ab);
-extern int		    audit_string_contains_control(const char *string,
-							  size_t len);
-extern void		    audit_log_n_hex(struct audit_buffer *ab,
-					  const unsigned char *buf,
-					  size_t len);
-extern void		    audit_log_n_string(struct audit_buffer *ab,
-					       const char *buf,
-					       size_t n);
+extern struct audit_buffer *audit_log_start(struct audit_context *ctx,
+					    gfp_t gfp_mask, int type);
+extern void audit_log_format(struct audit_buffer *ab, const char *fmt, ...)
+    __attribute__ ((format(printf, 2, 3)));
+extern void audit_log_end(struct audit_buffer *ab);
+extern int audit_string_contains_control(const char *string, size_t len);
+extern void audit_log_n_hex(struct audit_buffer *ab,
+			    const unsigned char *buf, size_t len);
+extern void audit_log_n_string(struct audit_buffer *ab,
+			       const char *buf, size_t n);
 #define audit_log_string(a,b) audit_log_n_string(a, b, strlen(b));
-extern void		    audit_log_n_untrustedstring(struct audit_buffer *ab,
-							const char *string,
-							size_t n);
-extern void		    audit_log_untrustedstring(struct audit_buffer *ab,
-						      const char *string);
-extern void		    audit_log_d_path(struct audit_buffer *ab,
-					     const char *prefix,
-					     struct path *path);
-extern void		    audit_log_lost(const char *message);
-extern int		    audit_update_lsm_rules(void);
+extern void audit_log_n_untrustedstring(struct audit_buffer *ab,
+					const char *string, size_t n);
+extern void audit_log_untrustedstring(struct audit_buffer *ab,
+				      const char *string);
+extern void audit_log_d_path(struct audit_buffer *ab,
+			     const char *prefix, struct path *path);
+extern void audit_log_lost(const char *message);
+extern int audit_update_lsm_rules(void);
 
 				/* Private API (for audit.c only) */
 extern int audit_filter_user(struct netlink_skb_parms *cb);
 extern int audit_filter_type(int type);
-extern int  audit_receive_filter(int type, int pid, int uid, int seq,
+extern int audit_receive_filter(int type, int pid, int uid, int seq,
 				void *data, size_t datasz, uid_t loginuid,
 				u32 sessionid, u32 sid);
 extern int audit_enabled;

@@ -41,12 +41,12 @@
 #include <linux/sunrpc/gss_asn1.h>
 
 struct krb5_ctx {
-	int			initiate; /* 1 = initiating, 0 = accepting */
-	struct crypto_blkcipher	*enc;
-	struct crypto_blkcipher	*seq;
-	s32			endtime;
-	u32			seq_send;
-	struct xdr_netobj	mech_used;
+	int initiate;		/* 1 = initiating, 0 = accepting */
+	struct crypto_blkcipher *enc;
+	struct crypto_blkcipher *seq;
+	s32 endtime;
+	u32 seq_send;
+	struct xdr_netobj mech_used;
 };
 
 extern spinlock_t krb5_seq_lock;
@@ -61,15 +61,15 @@ enum sgn_alg {
 	SGN_ALG_DES_MAC_MD5 = 0x0000,
 	SGN_ALG_MD2_5 = 0x0001,
 	SGN_ALG_DES_MAC = 0x0002,
-	SGN_ALG_3 = 0x0003,		/* not published */
+	SGN_ALG_3 = 0x0003,	/* not published */
 	SGN_ALG_HMAC_MD5 = 0x0011,	/* microsoft w2k; no support */
 	SGN_ALG_HMAC_SHA1_DES3_KD = 0x0004
 };
 enum seal_alg {
 	SEAL_ALG_NONE = 0xffff,
 	SEAL_ALG_DES = 0x0000,
-	SEAL_ALG_1 = 0x0001,		/* not published */
-	SEAL_ALG_MICROSOFT_RC4 = 0x0010,/* microsoft w2k; no support */
+	SEAL_ALG_1 = 0x0001,	/* not published */
+	SEAL_ALG_MICROSOFT_RC4 = 0x0010,	/* microsoft w2k; no support */
 	SEAL_ALG_DES3KD = 0x0002
 };
 
@@ -115,22 +115,20 @@ enum seal_alg {
 
 s32
 make_checksum(char *, char *header, int hdrlen, struct xdr_buf *body,
-		   int body_offset, struct xdr_netobj *cksum);
+	      int body_offset, struct xdr_netobj *cksum);
 
 u32 gss_get_mic_kerberos(struct gss_ctx *, struct xdr_buf *,
-		struct xdr_netobj *);
+			 struct xdr_netobj *);
 
 u32 gss_verify_mic_kerberos(struct gss_ctx *, struct xdr_buf *,
-		struct xdr_netobj *);
+			    struct xdr_netobj *);
 
 u32
 gss_wrap_kerberos(struct gss_ctx *ctx_id, int offset,
-		struct xdr_buf *outbuf, struct page **pages);
+		  struct xdr_buf *outbuf, struct page **pages);
 
 u32
-gss_unwrap_kerberos(struct gss_ctx *ctx_id, int offset,
-		struct xdr_buf *buf);
-
+gss_unwrap_kerberos(struct gss_ctx *ctx_id, int offset, struct xdr_buf *buf);
 
 u32
 krb5_encrypt(struct crypto_blkcipher *key,
@@ -138,7 +136,7 @@ krb5_encrypt(struct crypto_blkcipher *key,
 
 u32
 krb5_decrypt(struct crypto_blkcipher *key,
-	     void *iv, void *in, void *out, int length); 
+	     void *iv, void *in, void *out, int length);
 
 int
 gss_encrypt_xdr_buf(struct crypto_blkcipher *tfm, struct xdr_buf *outbuf,
@@ -150,10 +148,10 @@ gss_decrypt_xdr_buf(struct crypto_blkcipher *tfm, struct xdr_buf *inbuf,
 
 s32
 krb5_make_seq_num(struct crypto_blkcipher *key,
-		int direction,
-		u32 seqnum, unsigned char *cksum, unsigned char *buf);
+		  int direction,
+		  u32 seqnum, unsigned char *cksum, unsigned char *buf);
 
 s32
 krb5_get_seq_num(struct crypto_blkcipher *key,
-	       unsigned char *cksum,
-	       unsigned char *buf, int *direction, u32 *seqnum);
+		 unsigned char *cksum,
+		 unsigned char *buf, int *direction, u32 * seqnum);

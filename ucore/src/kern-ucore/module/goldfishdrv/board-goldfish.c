@@ -36,17 +36,16 @@ int GOLDFISH_READY = 0;
 
 static struct resource goldfish_pdev_bus_resources[] = {
 	{
-		.start  = GOLDFISH_PDEV_BUS_BASE,
-		.end    = GOLDFISH_PDEV_BUS_BASE + GOLDFISH_PDEV_BUS_END - 1,
-		.flags  = IORESOURCE_IO,
-	},
+	 .start = GOLDFISH_PDEV_BUS_BASE,
+	 .end = GOLDFISH_PDEV_BUS_BASE + GOLDFISH_PDEV_BUS_END - 1,
+	 .flags = IORESOURCE_IO,
+	 },
 	{
-		.start	= IRQ_PDEV_BUS,
-		.end	= IRQ_PDEV_BUS,
-		.flags	= IORESOURCE_IRQ,
-	}
+	 .start = IRQ_PDEV_BUS,
+	 .end = IRQ_PDEV_BUS,
+	 .flags = IORESOURCE_IRQ,
+	 }
 };
-
 
 struct platform_device goldfish_pdev_bus_device = {
 	.name = "goldfish_pdev_bus",
@@ -62,17 +61,20 @@ static void __init goldfish_init(void)
 
 void goldfish_mask_irq(unsigned int irq)
 {
-	writel(irq, IO_ADDRESS(GOLDFISH_INTERRUPT_BASE) + GOLDFISH_INTERRUPT_DISABLE);
+	writel(irq,
+	       IO_ADDRESS(GOLDFISH_INTERRUPT_BASE) +
+	       GOLDFISH_INTERRUPT_DISABLE);
 }
 
 void goldfish_unmask_irq(unsigned int irq)
 {
-	writel(irq, IO_ADDRESS(GOLDFISH_INTERRUPT_BASE) + GOLDFISH_INTERRUPT_ENABLE);
+	writel(irq,
+	       IO_ADDRESS(GOLDFISH_INTERRUPT_BASE) + GOLDFISH_INTERRUPT_ENABLE);
 }
 
 static struct irq_chip goldfish_irq_chip = {
-	.name	= "goldfish",
-	.mask	= goldfish_mask_irq,
+	.name = "goldfish",
+	.mask = goldfish_mask_irq,
 	.mask_ack = goldfish_mask_irq,
 	.unmask = goldfish_unmask_irq,
 };
@@ -98,28 +100,23 @@ void goldfish_init_irq(void)
 
 static struct map_desc goldfish_io_desc[] __initdata = {
 	{
-		.virtual	= IO_BASE,
-		.pfn		= __phys_to_pfn(IO_START),
-		.length		= IO_SIZE,
-		.type		= MT_DEVICE
-	},
+	 .virtual = IO_BASE,
+	 .pfn = __phys_to_pfn(IO_START),
+	 .length = IO_SIZE,
+	 .type = MT_DEVICE},
 };
 
 static void __init goldfish_map_io(void)
 {
 	iotable_init(goldfish_io_desc, ARRAY_SIZE(goldfish_io_desc));
-    GOLDFISH_READY = 1;
+	GOLDFISH_READY = 1;
 }
 
 //extern struct sys_timer goldfish_timer;
 
 MACHINE_START(GOLDFISH, "Goldfish")
-	.phys_io	= IO_START,
-	.io_pg_offst	= ((IO_BASE) >> 18) & 0xfffc,
-	.boot_params	= 0x00000100,
-	.map_io		= goldfish_map_io,
-	.init_irq	= goldfish_init_irq,
-	.init_machine	= goldfish_init,
-	//.timer		= &goldfish_timer,
-MACHINE_END
-
+    .phys_io = IO_START,.io_pg_offst = ((IO_BASE) >> 18) & 0xfffc,.boot_params =
+    0x00000100,.map_io = goldfish_map_io,.init_irq =
+    goldfish_init_irq,.init_machine = goldfish_init,
+    //.timer                = &goldfish_timer,
+    MACHINE_END

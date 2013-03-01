@@ -21,27 +21,24 @@ a copy of the GCC Runtime Library Exception along with this program;
 see the files COPYING3 and COPYING.RUNTIME respectively.  If not, see
 <http://www.gnu.org/licenses/>.  */
 
-unsigned long
-udivmodsi4(unsigned long num, unsigned long den, int modwanted)
+unsigned long udivmodsi4(unsigned long num, unsigned long den, int modwanted)
 {
-  unsigned long bit = 1;
-  unsigned long res = 0;
+	unsigned long bit = 1;
+	unsigned long res = 0;
 
-  while (den < num && bit && !(den & (1L<<31)))
-    {
-      den <<=1;
-      bit <<=1;
-    }
-  while (bit)
-    {
-      if (num >= den)
-	{
-	  num -= den;
-	  res |= bit;
+	while (den < num && bit && !(den & (1L << 31))) {
+		den <<= 1;
+		bit <<= 1;
 	}
-      bit >>=1;
-      den >>=1;
-    }
-  if (modwanted) return num;
-  return res;
+	while (bit) {
+		if (num >= den) {
+			num -= den;
+			res |= bit;
+		}
+		bit >>= 1;
+		den >>= 1;
+	}
+	if (modwanted)
+		return num;
+	return res;
 }

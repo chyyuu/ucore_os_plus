@@ -25,8 +25,8 @@
 #include <linux/device.h>
 struct output_device;
 struct output_properties {
-	int (*set_state)(struct output_device *);
-	int (*get_status)(struct output_device *);
+	int (*set_state) (struct output_device *);
+	int (*get_status) (struct output_device *);
 };
 struct output_device {
 	int request_state;
@@ -35,8 +35,8 @@ struct output_device {
 };
 #define to_output_device(obj) container_of(obj, struct output_device, dev)
 struct output_device *video_output_register(const char *name,
-	struct device *dev,
-	void *devdata,
-	struct output_properties *op);
+					    struct device *dev,
+					    void *devdata,
+					    struct output_properties *op);
 void video_output_unregister(struct output_device *dev);
 #endif

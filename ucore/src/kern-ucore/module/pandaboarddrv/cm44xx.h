@@ -16,7 +16,6 @@
 #ifndef __ARCH_ASM_MACH_OMAP2_CM44XX_H
 #define __ARCH_ASM_MACH_OMAP2_CM44XX_H
 
-
 #include "prcm-common.h"
 #include "cm.h"
 

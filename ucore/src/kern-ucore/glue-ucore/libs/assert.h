@@ -2,7 +2,8 @@
 #define __KERN_DEBUG_ASSERT_H__
 
 void __warn(const char *file, int line, const char *fmt, ...);
-void __panic(const char *file, int line, const char *fmt, ...) __attribute__((noreturn));
+void __panic(const char *file, int line, const char *fmt, ...)
+    __attribute__ ((noreturn));
 
 #define warn(...)                                       \
     __warn(__FILE__, __LINE__, __VA_ARGS__)
@@ -22,4 +23,3 @@ void __panic(const char *file, int line, const char *fmt, ...) __attribute__((no
     switch (x) { case 0: case (x): ; }
 
 #endif /* !__KERN_DEBUG_ASSERT_H__ */
-

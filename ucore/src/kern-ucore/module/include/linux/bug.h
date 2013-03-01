@@ -24,27 +24,30 @@ const struct bug_entry *find_bug(unsigned long bugaddr);
 
 enum bug_trap_type report_bug(unsigned long bug_addr, struct pt_regs *regs);
 
-int  module_bug_finalize(const Elf_Ehdr *, const Elf_Shdr *,
-			 struct module *);
+int module_bug_finalize(const Elf_Ehdr *, const Elf_Shdr *, struct module *);
 void module_bug_cleanup(struct module *);
 
 /* These are defined by the architecture */
 int is_valid_bugaddr(unsigned long addr);
 
-#else	/* !CONFIG_GENERIC_BUG */
+#else /* !CONFIG_GENERIC_BUG */
 
 static inline enum bug_trap_type report_bug(unsigned long bug_addr,
 					    struct pt_regs *regs)
 {
 	return BUG_TRAP_TYPE_BUG;
 }
-static inline int  module_bug_finalize(const Elf_Ehdr *hdr,
-					const Elf_Shdr *sechdrs,
-					struct module *mod)
+
+static inline int module_bug_finalize(const Elf_Ehdr * hdr,
+				      const Elf_Shdr * sechdrs,
+				      struct module *mod)
 {
 	return 0;
 }
-static inline void module_bug_cleanup(struct module *mod) {}
 
-#endif	/* CONFIG_GENERIC_BUG */
-#endif	/* _LINUX_BUG_H */
+static inline void module_bug_cleanup(struct module *mod)
+{
+}
+
+#endif /* CONFIG_GENERIC_BUG */
+#endif /* _LINUX_BUG_H */

@@ -16,7 +16,8 @@
  * the prev/next entries already!
  */
 static inline void __list_add_rcu(struct list_head *new,
-		struct list_head *prev, struct list_head *next)
+				  struct list_head *prev,
+				  struct list_head *next)
 {
 	new->next = next;
 	new->prev = prev;
@@ -62,7 +63,7 @@ static inline void list_add_rcu(struct list_head *new, struct list_head *head)
  * list_for_each_entry_rcu().
  */
 static inline void list_add_tail_rcu(struct list_head *new,
-					struct list_head *head)
+				     struct list_head *head)
 {
 	__list_add_rcu(new, head->prev, head);
 }
@@ -134,7 +135,7 @@ static inline void hlist_del_init_rcu(struct hlist_node *n)
  * Note: @old should not be empty.
  */
 static inline void list_replace_rcu(struct list_head *old,
-				struct list_head *new)
+				    struct list_head *new)
 {
 	new->next = old->next;
 	new->prev = old->prev;
@@ -162,7 +163,7 @@ static inline void list_replace_rcu(struct list_head *old,
  */
 static inline void list_splice_init_rcu(struct list_head *list,
 					struct list_head *head,
-					void (*sync)(void))
+					void (*sync) (void))
 {
 	struct list_head *first = list->next;
 	struct list_head *last = list->prev;
@@ -218,7 +219,6 @@ static inline void list_splice_init_rcu(struct list_head *list,
 		prefetch(pos->member.next), &pos->member != (head); \
 		pos = list_entry(rcu_dereference(pos->member.next), typeof(*pos), member))
 
-
 /**
  * list_for_each_continue_rcu
  * @pos:	the &struct list_head to use as a loop cursor.
@@ -268,7 +268,7 @@ static inline void hlist_del_rcu(struct hlist_node *n)
  * The @old entry will be replaced with the @new entry atomically.
  */
 static inline void hlist_replace_rcu(struct hlist_node *old,
-					struct hlist_node *new)
+				     struct hlist_node *new)
 {
 	struct hlist_node *next = old->next;
 
@@ -300,7 +300,7 @@ static inline void hlist_replace_rcu(struct hlist_node *old,
  * list-traversal primitive must be guarded by rcu_read_lock().
  */
 static inline void hlist_add_head_rcu(struct hlist_node *n,
-					struct hlist_head *h)
+				      struct hlist_head *h)
 {
 	struct hlist_node *first = h->first;
 
@@ -383,5 +383,5 @@ static inline void hlist_add_after_rcu(struct hlist_node *prev,
 		({ tpos = hlist_entry(pos, typeof(*tpos), member); 1; }); \
 		pos = rcu_dereference(pos->next))
 
-#endif	/* __KERNEL__ */
+#endif /* __KERNEL__ */
 #endif

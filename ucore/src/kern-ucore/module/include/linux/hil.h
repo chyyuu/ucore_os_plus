@@ -40,7 +40,7 @@
 #include <asm/types.h>
 
 /* Physical constants relevant to raw loop/device timing. 
- */ 
+ */
 
 #define HIL_CLOCK		8MHZ
 #define HIL_EK1_CLOCK		30HZ
@@ -52,14 +52,13 @@
 #define HIL_TIMEOUT_DEVS_DATA	16	/* ms */
 #define HIL_TIMEOUT_SELFTEST	200	/* ms */
 
-
 /* Actual wire line coding.  These will only be useful if someone is 
  * implementing a software MLC to run HIL devices on a non-parisc machine.
  */
 
 #define HIL_WIRE_PACKET_LEN	15
 enum hil_wire_bitpos {
-	HIL_WIRE_START		= 0,
+	HIL_WIRE_START = 0,
 	HIL_WIRE_ADDR2,
 	HIL_WIRE_ADDR1,
 	HIL_WIRE_ADDR0,
@@ -80,22 +79,22 @@ enum hil_wire_bitpos {
  * we will call these "packets".
  */
 enum hil_pkt_bitpos {
-	HIL_PKT_CMD		= 0x00000800,
-	HIL_PKT_ADDR2		= 0x00000400,
-	HIL_PKT_ADDR1		= 0x00000200,
-	HIL_PKT_ADDR0		= 0x00000100,
-	HIL_PKT_ADDR_MASK	= 0x00000700,
-	HIL_PKT_ADDR_SHIFT	= 8,
-	HIL_PKT_DATA7		= 0x00000080,
-	HIL_PKT_DATA6		= 0x00000040,
-	HIL_PKT_DATA5		= 0x00000020,
-	HIL_PKT_DATA4		= 0x00000010,
-	HIL_PKT_DATA3		= 0x00000008,
-	HIL_PKT_DATA2		= 0x00000004,
-	HIL_PKT_DATA1		= 0x00000002,
-	HIL_PKT_DATA0		= 0x00000001,
-	HIL_PKT_DATA_MASK	= 0x000000FF,
-	HIL_PKT_DATA_SHIFT	= 0
+	HIL_PKT_CMD = 0x00000800,
+	HIL_PKT_ADDR2 = 0x00000400,
+	HIL_PKT_ADDR1 = 0x00000200,
+	HIL_PKT_ADDR0 = 0x00000100,
+	HIL_PKT_ADDR_MASK = 0x00000700,
+	HIL_PKT_ADDR_SHIFT = 8,
+	HIL_PKT_DATA7 = 0x00000080,
+	HIL_PKT_DATA6 = 0x00000040,
+	HIL_PKT_DATA5 = 0x00000020,
+	HIL_PKT_DATA4 = 0x00000010,
+	HIL_PKT_DATA3 = 0x00000008,
+	HIL_PKT_DATA2 = 0x00000004,
+	HIL_PKT_DATA1 = 0x00000002,
+	HIL_PKT_DATA0 = 0x00000001,
+	HIL_PKT_DATA_MASK = 0x000000FF,
+	HIL_PKT_DATA_SHIFT = 0
 };
 
 /* The HIL MLC also has several error/status/control bits.  We extend the 
@@ -106,90 +105,88 @@ enum hil_pkt_bitpos {
  * has had to deal with loop errors.
  */
 enum hil_error_bitpos {
-	HIL_ERR_OB	= 0x00000800, /* MLC is busy sending an auto-poll, 
-					 or we have filled up the output 
-					 buffer and must wait. */
-	HIL_ERR_INT	= 0x00010000, /* A normal interrupt has occurred. */
-	HIL_ERR_NMI	= 0x00020000, /* An NMI has occurred. */
-	HIL_ERR_LERR	= 0x00040000, /* A poll didn't come back. */
-	HIL_ERR_PERR	= 0x01000000, /* There was a Parity Error. */
-	HIL_ERR_FERR	= 0x02000000, /* There was a Framing Error. */
-	HIL_ERR_FOF	= 0x04000000  /* Input FIFO Overflowed. */
+	HIL_ERR_OB = 0x00000800,	/* MLC is busy sending an auto-poll, 
+					   or we have filled up the output 
+					   buffer and must wait. */
+	HIL_ERR_INT = 0x00010000,	/* A normal interrupt has occurred. */
+	HIL_ERR_NMI = 0x00020000,	/* An NMI has occurred. */
+	HIL_ERR_LERR = 0x00040000,	/* A poll didn't come back. */
+	HIL_ERR_PERR = 0x01000000,	/* There was a Parity Error. */
+	HIL_ERR_FERR = 0x02000000,	/* There was a Framing Error. */
+	HIL_ERR_FOF = 0x04000000	/* Input FIFO Overflowed. */
 };
 
 enum hil_control_bitpos {
-	HIL_CTRL_TEST	= 0x00010000,
-	HIL_CTRL_IPF	= 0x00040000,
-	HIL_CTRL_APE	= 0x02000000
+	HIL_CTRL_TEST = 0x00010000,
+	HIL_CTRL_IPF = 0x00040000,
+	HIL_CTRL_APE = 0x02000000
 };
 
 /* Bits 30,31 are unused, we use them to control write behavior. */
-#define HIL_DO_ALTER_CTRL  0x40000000 /* Write MSW of packet to control 
-                                          before writing LSW to loop */
-#define HIL_CTRL_ONLY      0xc0000000 /* *Only* alter the control registers */
+#define HIL_DO_ALTER_CTRL  0x40000000	/* Write MSW of packet to control 
+					   before writing LSW to loop */
+#define HIL_CTRL_ONLY      0xc0000000	/* *Only* alter the control registers */
 
 /* This gives us a 32-bit "packet" 
  */
 typedef u32 hil_packet;
 
-
 /* HIL Loop commands 
  */
 enum hil_command {
-	HIL_CMD_IFC	= 0x00,	/* Interface Clear */
-	HIL_CMD_EPT	= 0x01,	/* Enter Pass-Thru Mode */
-	HIL_CMD_ELB	= 0x02,	/* Enter Loop-Back Mode */
-	HIL_CMD_IDD	= 0x03,	/* Identify and Describe */
-	HIL_CMD_DSR	= 0x04,	/* Device Soft Reset */
-	HIL_CMD_PST	= 0x05,	/* Perform Self Test */
-	HIL_CMD_RRG	= 0x06,	/* Read Register */
-	HIL_CMD_WRG	= 0x07,	/* Write Register */
-	HIL_CMD_ACF	= 0x08,	/* Auto Configure */
-	HIL_CMDID_ACF	= 0x07,	/* Auto Configure bits with incremented ID */
-	HIL_CMD_POL	= 0x10,	/* Poll */
-	HIL_CMDCT_POL	= 0x0f,	/* Poll command bits with item count  */
-	HIL_CMD_RPL	= 0x20,	/* RePoll */
-	HIL_CMDCT_RPL	= 0x0f,	/* RePoll command bits with item count */
-	HIL_CMD_RNM	= 0x30,	/* Report Name */
-	HIL_CMD_RST	= 0x31,	/* Report Status */
-	HIL_CMD_EXD	= 0x32,	/* Extended Describe */
-	HIL_CMD_RSC	= 0x33,	/* Report Security Code */
+	HIL_CMD_IFC = 0x00,	/* Interface Clear */
+	HIL_CMD_EPT = 0x01,	/* Enter Pass-Thru Mode */
+	HIL_CMD_ELB = 0x02,	/* Enter Loop-Back Mode */
+	HIL_CMD_IDD = 0x03,	/* Identify and Describe */
+	HIL_CMD_DSR = 0x04,	/* Device Soft Reset */
+	HIL_CMD_PST = 0x05,	/* Perform Self Test */
+	HIL_CMD_RRG = 0x06,	/* Read Register */
+	HIL_CMD_WRG = 0x07,	/* Write Register */
+	HIL_CMD_ACF = 0x08,	/* Auto Configure */
+	HIL_CMDID_ACF = 0x07,	/* Auto Configure bits with incremented ID */
+	HIL_CMD_POL = 0x10,	/* Poll */
+	HIL_CMDCT_POL = 0x0f,	/* Poll command bits with item count  */
+	HIL_CMD_RPL = 0x20,	/* RePoll */
+	HIL_CMDCT_RPL = 0x0f,	/* RePoll command bits with item count */
+	HIL_CMD_RNM = 0x30,	/* Report Name */
+	HIL_CMD_RST = 0x31,	/* Report Status */
+	HIL_CMD_EXD = 0x32,	/* Extended Describe */
+	HIL_CMD_RSC = 0x33,	/* Report Security Code */
 
 	/* 0x34 to 0x3c reserved for future use  */
 
-	HIL_CMD_DKA	= 0x3d,	/* Disable Keyswitch Autorepeat */
-	HIL_CMD_EK1	= 0x3e,	/* Enable Keyswitch Autorepeat 1 */
-	HIL_CMD_EK2	= 0x3f,	/* Enable Keyswitch Autorepeat 2 */
-	HIL_CMD_PR1	= 0x40,	/* Prompt1 */  
-	HIL_CMD_PR2	= 0x41,	/* Prompt2 */
-	HIL_CMD_PR3	= 0x42,	/* Prompt3 */
-	HIL_CMD_PR4	= 0x43,	/* Prompt4 */
-	HIL_CMD_PR5	= 0x44,	/* Prompt5 */
-	HIL_CMD_PR6	= 0x45,	/* Prompt6 */
-	HIL_CMD_PR7	= 0x46,	/* Prompt7 */
-	HIL_CMD_PRM	= 0x47,	/* Prompt (General Purpose) */
-	HIL_CMD_AK1	= 0x48,	/* Acknowlege1 */  
-	HIL_CMD_AK2	= 0x49,	/* Acknowlege2 */
-	HIL_CMD_AK3	= 0x4a,	/* Acknowlege3 */
-	HIL_CMD_AK4	= 0x4b,	/* Acknowlege4 */
-	HIL_CMD_AK5	= 0x4c,	/* Acknowlege5 */
-	HIL_CMD_AK6	= 0x4d,	/* Acknowlege6 */
-	HIL_CMD_AK7	= 0x4e,	/* Acknowlege7 */
-	HIL_CMD_ACK	= 0x4f,	/* Acknowlege (General Purpose) */
+	HIL_CMD_DKA = 0x3d,	/* Disable Keyswitch Autorepeat */
+	HIL_CMD_EK1 = 0x3e,	/* Enable Keyswitch Autorepeat 1 */
+	HIL_CMD_EK2 = 0x3f,	/* Enable Keyswitch Autorepeat 2 */
+	HIL_CMD_PR1 = 0x40,	/* Prompt1 */
+	HIL_CMD_PR2 = 0x41,	/* Prompt2 */
+	HIL_CMD_PR3 = 0x42,	/* Prompt3 */
+	HIL_CMD_PR4 = 0x43,	/* Prompt4 */
+	HIL_CMD_PR5 = 0x44,	/* Prompt5 */
+	HIL_CMD_PR6 = 0x45,	/* Prompt6 */
+	HIL_CMD_PR7 = 0x46,	/* Prompt7 */
+	HIL_CMD_PRM = 0x47,	/* Prompt (General Purpose) */
+	HIL_CMD_AK1 = 0x48,	/* Acknowlege1 */
+	HIL_CMD_AK2 = 0x49,	/* Acknowlege2 */
+	HIL_CMD_AK3 = 0x4a,	/* Acknowlege3 */
+	HIL_CMD_AK4 = 0x4b,	/* Acknowlege4 */
+	HIL_CMD_AK5 = 0x4c,	/* Acknowlege5 */
+	HIL_CMD_AK6 = 0x4d,	/* Acknowlege6 */
+	HIL_CMD_AK7 = 0x4e,	/* Acknowlege7 */
+	HIL_CMD_ACK = 0x4f,	/* Acknowlege (General Purpose) */
 
 	/* 0x50 to 0x78 reserved for future use  */
 	/* 0x80 to 0xEF device-specific commands */
 	/* 0xf0 to 0xf9 reserved for future use  */
 
-	HIL_CMD_RIO	= 0xfa,	/* Register I/O Error */
-	HIL_CMD_SHR	= 0xfb,	/* System Hard Reset */
-	HIL_CMD_TER	= 0xfc,	/* Transmission Error */
-	HIL_CMD_CAE	= 0xfd,	/* Configuration Address Error */
-	HIL_CMD_DHR	= 0xfe,	/* Device Hard Reset */
+	HIL_CMD_RIO = 0xfa,	/* Register I/O Error */
+	HIL_CMD_SHR = 0xfb,	/* System Hard Reset */
+	HIL_CMD_TER = 0xfc,	/* Transmission Error */
+	HIL_CMD_CAE = 0xfd,	/* Configuration Address Error */
+	HIL_CMD_DHR = 0xfe,	/* Device Hard Reset */
 
 	/* 0xff is prohibited from use. */
 };
-
 
 /* 
  * Response "records" to HIL commands
@@ -203,7 +200,7 @@ enum hil_command {
 #define HIL_IDD_DID_TYPE_KB_RSVD	0xe0	/* Reserved keyboard type */
 #define HIL_IDD_DID_TYPE_KB_LANG_MASK	0x1f	/* Keyboard locale bits */
 #define HIL_IDD_DID_KBLANG_USE_ESD	0x00	/* Use ESD Locale instead */
-#define HIL_IDD_DID_TYPE_ABS		0x80    /* Absolute Positioners */
+#define HIL_IDD_DID_TYPE_ABS		0x80	/* Absolute Positioners */
 #define HIL_IDD_DID_ABS_RSVD1_MASK	0xf8	/* Reserved */
 #define HIL_IDD_DID_ABS_RSVD1		0x98
 #define HIL_IDD_DID_ABS_TABLET_MASK	0xf8	/* Tablets and digitizers */
@@ -214,7 +211,7 @@ enum hil_command {
 #define HIL_IDD_DID_ABS_RSVD2		0x88
 #define HIL_IDD_DID_ABS_RSVD3_MASK	0xfc	/* Reserved */
 #define HIL_IDD_DID_ABS_RSVD3		0x80
-#define HIL_IDD_DID_TYPE_REL		0x60    /* Relative Positioners */
+#define HIL_IDD_DID_TYPE_REL		0x60	/* Relative Positioners */
 #define HIL_IDD_DID_REL_RSVD1_MASK	0xf0	/* Reserved */
 #define HIL_IDD_DID_REL_RSVD1		0x70
 #define HIL_IDD_DID_REL_RSVD2_MASK	0xfc	/* Reserved */
@@ -223,7 +220,7 @@ enum hil_command {
 #define HIL_IDD_DID_REL_MOUSE		0x68
 #define HIL_IDD_DID_REL_QUAD_MASK	0xf8	/* Other Quadrature Devices */
 #define HIL_IDD_DID_REL_QUAD		0x60
-#define HIL_IDD_DID_TYPE_CHAR		0x40    /* Character Entry */
+#define HIL_IDD_DID_TYPE_CHAR		0x40	/* Character Entry */
 #define HIL_IDD_DID_CHAR_BARCODE_MASK	0xfc	/* Barcode Reader */
 #define HIL_IDD_DID_CHAR_BARCODE	0x5c
 #define HIL_IDD_DID_CHAR_RSVD1_MASK	0xfc	/* Reserved */
@@ -232,7 +229,7 @@ enum hil_command {
 #define HIL_IDD_DID_CHAR_RSVD2		0x50
 #define HIL_IDD_DID_CHAR_RSVD3_MASK	0xf0	/* Reserved */
 #define HIL_IDD_DID_CHAR_RSVD3		0x40
-#define HIL_IDD_DID_TYPE_OTHER		0x20    /* Miscellaneous */
+#define HIL_IDD_DID_TYPE_OTHER		0x20	/* Miscellaneous */
 #define HIL_IDD_DID_OTHER_RSVD1_MASK	0xf0	/* Reserved */
 #define HIL_IDD_DID_OTHER_RSVD1		0x30
 #define HIL_IDD_DID_OTHER_BARCODE_MASK	0xfc	/* Tone Generator */
@@ -245,7 +242,7 @@ enum hil_command {
 
 /* IDD record header 
  */
-#define HIL_IDD_HEADER_AXSET_MASK	0x03    /* Number of axis in a set */
+#define HIL_IDD_HEADER_AXSET_MASK	0x03	/* Number of axis in a set */
 #define HIL_IDD_HEADER_RSC		0x04	/* Supports RSC command */
 #define HIL_IDD_HEADER_EXD		0x08	/* Supports EXD command */
 #define HIL_IDD_HEADER_IOD		0x10	/* IOD byte to follow */
@@ -345,7 +342,7 @@ enum hil_command {
  ((*(header_ptr + HIL_EXD_LEN(header_ptr) - 1 -				\
      !!(*header_ptr & HIL_EXD_HEADER_LOCALE)) & HIL_PKT_DATA_MASK) << 8))
 
-/* Device locale codes. */ 
+/* Device locale codes. */
 
 /* Last defined locale code.  Everything above this is "Reserved",
    and note that this same table applies to the Device ID Byte where 
@@ -426,7 +423,6 @@ enum hil_command {
    KEY_N,		KEY_SPACE,	KEY_NEXT,	KEY_RESERVED,	\
    KEY_LEFT,		KEY_DOWN,	KEY_UP,		KEY_RIGHT
 
-
 #define HIL_KEYCODES_SET3_TBLSIZE 128
 #define HIL_KEYCODES_SET3 	\
   KEY_RESERVED,	KEY_ESC,	KEY_1,		KEY_2,			\
@@ -462,7 +458,6 @@ enum hil_command {
   KEY_RESERVED,	KEY_RESERVED,	KEY_RESERVED,	KEY_RESERVED,		\
   KEY_RESERVED,	KEY_RESERVED,	KEY_RESERVED,	KEY_RESERVED
 
-
 /* Response to POL command, the "poll record header" */
 
 #define HIL_POL_NUM_AXES_MASK	0x03	/* Number of axis reported */
@@ -478,6 +473,5 @@ enum hil_command {
 #define HIL_POL_CHARTYPE_SET2	0x60	/* Keycode Set 2 */
 #define HIL_POL_CHARTYPE_SET3	0x70	/* Keycode Set 3 */
 #define HIL_POL_AXIS_ALT	0x80	/* Data is from axis set 2 */
-
 
 #endif /* _HIL_H_ */

@@ -44,25 +44,25 @@
  * config switch CONFIG_KTIME_SCALAR.
  */
 union ktime {
-	s64	tv64;
+	s64 tv64;
 #if BITS_PER_LONG != 64 && !defined(CONFIG_KTIME_SCALAR)
 	struct {
-# ifdef __BIG_ENDIAN
-	s32	sec, nsec;
-# else
-	s32	nsec, sec;
-# endif
+#ifdef __BIG_ENDIAN
+		s32 sec, nsec;
+#else
+		s32 nsec, sec;
+#endif
 	} tv;
 #endif
 };
 
-typedef union ktime ktime_t;		/* Kill this */
+typedef union ktime ktime_t;	/* Kill this */
 
 #define KTIME_MAX			((s64)~((u64)1 << 63))
 #if (BITS_PER_LONG == 64)
-# define KTIME_SEC_MAX			(KTIME_MAX / NSEC_PER_SEC)
+#define KTIME_SEC_MAX			(KTIME_MAX / NSEC_PER_SEC)
 #else
-# define KTIME_SEC_MAX			LONG_MAX
+#define KTIME_SEC_MAX			LONG_MAX
 #endif
 
 /*
@@ -82,9 +82,11 @@ static inline ktime_t ktime_set(const long secs, const unsigned long nsecs)
 {
 #if (BITS_PER_LONG == 64)
 	if (unlikely(secs >= KTIME_SEC_MAX))
-		return (ktime_t){ .tv64 = KTIME_MAX };
+		return (ktime_t) {
+		.tv64 = KTIME_MAX};
 #endif
-	return (ktime_t) { .tv64 = (s64)secs * NSEC_PER_SEC + (s64)nsecs };
+	return (ktime_t) {
+	.tv64 = (s64) secs *NSEC_PER_SEC + (s64) nsecs};
 }
 
 /* Subtract two ktime_t variables. rem = lhs -rhs: */
@@ -150,7 +152,10 @@ static inline ktime_t timeval_to_ktime(struct timeval tv)
 /* Set a ktime_t variable to a value in sec/nsec representation: */
 static inline ktime_t ktime_set(const long secs, const unsigned long nsecs)
 {
-	return (ktime_t) { .tv = { .sec = secs, .nsec = nsecs } };
+	return (ktime_t) {
+		.tv = {
+		.sec = secs,.nsec = nsecs}
+	};
 }
 
 /**
@@ -192,7 +197,7 @@ static inline ktime_t ktime_add(const ktime_t add1, const ktime_t add2)
 	 *   tv.sec ++;
 	 */
 	if (res.tv.nsec >= NSEC_PER_SEC)
-		res.tv64 += (u32)-NSEC_PER_SEC;
+		res.tv64 += (u32) - NSEC_PER_SEC;
 
 	return res;
 }
@@ -223,8 +228,10 @@ extern ktime_t ktime_sub_ns(const ktime_t kt, u64 nsec);
  */
 static inline ktime_t timespec_to_ktime(const struct timespec ts)
 {
-	return (ktime_t) { .tv = { .sec = (s32)ts.tv_sec,
-			   	   .nsec = (s32)ts.tv_nsec } };
+	return (ktime_t) {
+		.tv = {
+		.sec = (s32) ts.tv_sec,.nsec = (s32) ts.tv_nsec}
+	};
 }
 
 /**
@@ -235,8 +242,10 @@ static inline ktime_t timespec_to_ktime(const struct timespec ts)
  */
 static inline ktime_t timeval_to_ktime(const struct timeval tv)
 {
-	return (ktime_t) { .tv = { .sec = (s32)tv.tv_sec,
-				   .nsec = (s32)tv.tv_usec * 1000 } };
+	return (ktime_t) {
+		.tv = {
+		.sec = (s32) tv.tv_sec,.nsec = (s32) tv.tv_usec * 1000}
+	};
 }
 
 /**
@@ -247,8 +256,8 @@ static inline ktime_t timeval_to_ktime(const struct timeval tv)
  */
 static inline struct timespec ktime_to_timespec(const ktime_t kt)
 {
-	return (struct timespec) { .tv_sec = (time_t) kt.tv.sec,
-				   .tv_nsec = (long) kt.tv.nsec };
+	return (struct timespec) {
+	.tv_sec = (time_t) kt.tv.sec,.tv_nsec = (long)kt.tv.nsec};
 }
 
 /**
@@ -260,8 +269,8 @@ static inline struct timespec ktime_to_timespec(const ktime_t kt)
 static inline struct timeval ktime_to_timeval(const ktime_t kt)
 {
 	return (struct timeval) {
-		.tv_sec = (time_t) kt.tv.sec,
-		.tv_usec = (suseconds_t) (kt.tv.nsec / NSEC_PER_USEC) };
+	.tv_sec = (time_t) kt.tv.sec,.tv_usec =
+		    (suseconds_t) (kt.tv.nsec / NSEC_PER_USEC)};
 }
 
 /**
@@ -297,7 +306,7 @@ static inline s64 ktime_to_us(const ktime_t kt)
 
 static inline s64 ktime_us_delta(const ktime_t later, const ktime_t earlier)
 {
-       return ktime_to_us(ktime_sub(later, earlier));
+	return ktime_to_us(ktime_sub(later, earlier));
 }
 
 static inline ktime_t ktime_add_us(const ktime_t kt, const u64 usec)
@@ -329,7 +338,7 @@ extern void ktime_get_ts(struct timespec *ts);
 
 static inline ktime_t ns_to_ktime(u64 ns)
 {
-	static const ktime_t ktime_zero = { .tv64 = 0 };
+	static const ktime_t ktime_zero = {.tv64 = 0 };
 	return ktime_add_ns(ktime_zero, ns);
 }
 

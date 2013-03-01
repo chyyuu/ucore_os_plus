@@ -29,7 +29,7 @@ struct tty_struct;
 #define SYSRQ_ENABLE_RTNICE	0x0100
 
 struct sysrq_key_op {
-	void (*handler)(int, struct tty_struct *);
+	void (*handler) (int, struct tty_struct *);
 	char *help_msg;
 	char *action_msg;
 	int enable_mask;
@@ -61,10 +61,12 @@ static inline int sysrq_on(void)
 {
 	return 0;
 }
+
 static inline int __reterr(void)
 {
 	return -EINVAL;
 }
+
 static inline void handle_sysrq(int key, struct tty_struct *tty)
 {
 }

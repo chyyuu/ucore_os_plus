@@ -34,9 +34,9 @@
  * protocol-specific structure under name c.
  */
 struct pn_sock {
-	struct sock	sk;
-	u16		sobject;
-	u8		resource;
+	struct sock sk;
+	u16 sobject;
+	u8 resource;
 };
 
 static inline struct pn_sock *pn_sk(struct sock *sk)
@@ -70,7 +70,7 @@ static inline struct phonetmsg *pn_msg(struct sk_buff *skb)
  * with a Phonet header.
  */
 static inline
-void pn_skb_get_src_sockaddr(struct sk_buff *skb, struct sockaddr_pn *sa)
+    void pn_skb_get_src_sockaddr(struct sk_buff *skb, struct sockaddr_pn *sa)
 {
 	struct phonethdr *ph = pn_hdr(skb);
 	u16 obj = pn_object(ph->pn_sdev, ph->pn_sobj);
@@ -82,7 +82,7 @@ void pn_skb_get_src_sockaddr(struct sk_buff *skb, struct sockaddr_pn *sa)
 }
 
 static inline
-void pn_skb_get_dst_sockaddr(struct sk_buff *skb, struct sockaddr_pn *sa)
+    void pn_skb_get_dst_sockaddr(struct sk_buff *skb, struct sockaddr_pn *sa)
 {
 	struct phonethdr *ph = pn_hdr(skb);
 	u16 obj = pn_object(ph->pn_rdev, ph->pn_robj);
@@ -95,9 +95,9 @@ void pn_skb_get_dst_sockaddr(struct sk_buff *skb, struct sockaddr_pn *sa)
 
 /* Protocols in Phonet protocol family. */
 struct phonet_protocol {
-	const struct proto_ops	*ops;
-	struct proto		*prot;
-	int			sock_type;
+	const struct proto_ops *ops;
+	struct proto *prot;
+	int sock_type;
 };
 
 int phonet_proto_register(int protocol, struct phonet_protocol *pp);

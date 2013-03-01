@@ -13,17 +13,17 @@
  * all the information we need to work with an inode after creation.
  */
 struct ncp_inode_info {
-	__le32	dirEntNum;
-	__le32	DosDirNum;
-	__u8	volNumber;
-	__le32	nwattr;
+	__le32 dirEntNum;
+	__le32 DosDirNum;
+	__u8 volNumber;
+	__le32 nwattr;
 	struct mutex open_mutex;
-	atomic_t	opened;
-	int	access;
-	int	flags;
+	atomic_t opened;
+	int access;
+	int flags;
 #define NCPI_KLUDGE_SYMLINK	0x0001
-	__u8	file_handle[6];
+	__u8 file_handle[6];
 	struct inode vfs_inode;
 };
 
-#endif	/* _LINUX_NCP_FS_I */
+#endif /* _LINUX_NCP_FS_I */

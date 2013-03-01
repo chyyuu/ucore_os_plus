@@ -6,7 +6,7 @@
 #include <linux/types.h>
 #include <linux/time.h>
 #include <linux/timex.h>
-#include <asm/param.h>			/* for HZ */
+#include <asm/param.h>		/* for HZ */
 
 /*
  * The following defines establish the engineering parameters of the PLL
@@ -16,27 +16,27 @@
  * nearest power of two in order to avoid hardware multiply operations.
  */
 #if HZ >= 12 && HZ < 24
-# define SHIFT_HZ	4
+#define SHIFT_HZ	4
 #elif HZ >= 24 && HZ < 48
-# define SHIFT_HZ	5
+#define SHIFT_HZ	5
 #elif HZ >= 48 && HZ < 96
-# define SHIFT_HZ	6
+#define SHIFT_HZ	6
 #elif HZ >= 96 && HZ < 192
-# define SHIFT_HZ	7
+#define SHIFT_HZ	7
 #elif HZ >= 192 && HZ < 384
-# define SHIFT_HZ	8
+#define SHIFT_HZ	8
 #elif HZ >= 384 && HZ < 768
-# define SHIFT_HZ	9
+#define SHIFT_HZ	9
 #elif HZ >= 768 && HZ < 1536
-# define SHIFT_HZ	10
+#define SHIFT_HZ	10
 #elif HZ >= 1536 && HZ < 3072
-# define SHIFT_HZ	11
+#define SHIFT_HZ	11
 #elif HZ >= 3072 && HZ < 6144
-# define SHIFT_HZ	12
+#define SHIFT_HZ	12
 #elif HZ >= 6144 && HZ < 12288
-# define SHIFT_HZ	13
+#define SHIFT_HZ	13
 #else
-# error Invalid value of HZ.
+#error Invalid value of HZ.
 #endif
 
 /* LATCH is used in the interval timer and ftape setup. */
@@ -86,7 +86,7 @@ u64 get_jiffies_64(void);
 #else
 static inline u64 get_jiffies_64(void)
 {
-	return (u64)jiffies;
+	return (u64) jiffies;
 }
 #endif
 
@@ -282,10 +282,10 @@ extern unsigned long preset_lpj;
  * so use the messy SH_DIV macro to do it.  Still all constants.
  */
 #if BITS_PER_LONG < 64
-# define MAX_SEC_IN_JIFFIES \
+#define MAX_SEC_IN_JIFFIES \
 	(long)((u64)((u64)MAX_JIFFY_OFFSET * TICK_NSEC) / NSEC_PER_SEC)
-#else	/* take care of overflow on 64 bits machines */
-# define MAX_SEC_IN_JIFFIES \
+#else /* take care of overflow on 64 bits machines */
+#define MAX_SEC_IN_JIFFIES \
 	(SH_DIV((MAX_JIFFY_OFFSET >> SEC_JIFFIE_SC) * TICK_NSEC, NSEC_PER_SEC, 1) - 1)
 
 #endif

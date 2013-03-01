@@ -64,10 +64,10 @@ struct dlm_write_request {
 	__u8 is64bit;
 	__u8 unused[2];
 
-	union  {
-		struct dlm_lock_params   lock;
+	union {
+		struct dlm_lock_params lock;
 		struct dlm_lspace_params lspace;
-		struct dlm_purge_params  purge;
+		struct dlm_purge_params purge;
 	} i;
 };
 
@@ -81,9 +81,9 @@ struct dlm_device_version {
 struct dlm_lock_result {
 	__u32 version[3];
 	__u32 length;
-	void __user * user_astaddr;
-	void __user * user_astparam;
-	struct dlm_lksb __user * user_lksb;
+	void __user *user_astaddr;
+	void __user *user_astparam;
+	struct dlm_lksb __user *user_lksb;
 	struct dlm_lksb lksb;
 	__u8 bast_mode;
 	__u8 unused[3];
@@ -105,4 +105,3 @@ struct dlm_lock_result {
 #define DLM_USER_LSFLG_FORCEFREE  2
 
 #endif
-

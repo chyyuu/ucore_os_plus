@@ -27,18 +27,19 @@ extern void *omap_sram_push_address(unsigned long size);
 
 extern void omap_sram_reprogram_clock(u32 dpllctl, u32 ckctl);
 
-extern void omap2_sram_ddr_init(u32 *slow_dll_ctrl, u32 fast_dll_ctrl,
+extern void omap2_sram_ddr_init(u32 * slow_dll_ctrl, u32 fast_dll_ctrl,
 				u32 base_cs, u32 force_unlock);
 extern void omap2_sram_reprogram_sdrc(u32 perf_level, u32 dll_val,
 				      u32 mem_type);
 extern u32 omap2_set_prcm(u32 dpll_ctrl_val, u32 sdrc_rfr_val, int bypass);
 
-extern u32 omap3_configure_core_dpll(
-			u32 m2, u32 unlock_dll, u32 f, u32 inc,
-			u32 sdrc_rfr_ctrl_0, u32 sdrc_actim_ctrl_a_0,
-			u32 sdrc_actim_ctrl_b_0, u32 sdrc_mr_0,
-			u32 sdrc_rfr_ctrl_1, u32 sdrc_actim_ctrl_a_1,
-			u32 sdrc_actim_ctrl_b_1, u32 sdrc_mr_1);
+extern u32 omap3_configure_core_dpll(u32 m2, u32 unlock_dll, u32 f, u32 inc,
+				     u32 sdrc_rfr_ctrl_0,
+				     u32 sdrc_actim_ctrl_a_0,
+				     u32 sdrc_actim_ctrl_b_0, u32 sdrc_mr_0,
+				     u32 sdrc_rfr_ctrl_1,
+				     u32 sdrc_actim_ctrl_a_1,
+				     u32 sdrc_actim_ctrl_b_1, u32 sdrc_mr_1);
 extern void omap3_sram_restore_context(void);
 
 /* Do not use these */
@@ -48,43 +49,46 @@ extern unsigned long omap1_sram_reprogram_clock_sz;
 extern void omap24xx_sram_reprogram_clock(u32 ckctl, u32 dpllctl);
 extern unsigned long omap24xx_sram_reprogram_clock_sz;
 
-extern void omap242x_sram_ddr_init(u32 *slow_dll_ctrl, u32 fast_dll_ctrl,
-						u32 base_cs, u32 force_unlock);
+extern void omap242x_sram_ddr_init(u32 * slow_dll_ctrl, u32 fast_dll_ctrl,
+				   u32 base_cs, u32 force_unlock);
 extern unsigned long omap242x_sram_ddr_init_sz;
 
 extern u32 omap242x_sram_set_prcm(u32 dpll_ctrl_val, u32 sdrc_rfr_val,
-						int bypass);
+				  int bypass);
 extern unsigned long omap242x_sram_set_prcm_sz;
 
 extern void omap242x_sram_reprogram_sdrc(u32 perf_level, u32 dll_val,
-						u32 mem_type);
+					 u32 mem_type);
 extern unsigned long omap242x_sram_reprogram_sdrc_sz;
 
-
-extern void omap243x_sram_ddr_init(u32 *slow_dll_ctrl, u32 fast_dll_ctrl,
-						u32 base_cs, u32 force_unlock);
+extern void omap243x_sram_ddr_init(u32 * slow_dll_ctrl, u32 fast_dll_ctrl,
+				   u32 base_cs, u32 force_unlock);
 extern unsigned long omap243x_sram_ddr_init_sz;
 
 extern u32 omap243x_sram_set_prcm(u32 dpll_ctrl_val, u32 sdrc_rfr_val,
-						int bypass);
+				  int bypass);
 extern unsigned long omap243x_sram_set_prcm_sz;
 
 extern void omap243x_sram_reprogram_sdrc(u32 perf_level, u32 dll_val,
-						u32 mem_type);
+					 u32 mem_type);
 extern unsigned long omap243x_sram_reprogram_sdrc_sz;
 
-extern u32 omap3_sram_configure_core_dpll(
-			u32 m2, u32 unlock_dll, u32 f, u32 inc,
-			u32 sdrc_rfr_ctrl_0, u32 sdrc_actim_ctrl_a_0,
-			u32 sdrc_actim_ctrl_b_0, u32 sdrc_mr_0,
-			u32 sdrc_rfr_ctrl_1, u32 sdrc_actim_ctrl_a_1,
-			u32 sdrc_actim_ctrl_b_1, u32 sdrc_mr_1);
+extern u32 omap3_sram_configure_core_dpll(u32 m2, u32 unlock_dll, u32 f,
+					  u32 inc, u32 sdrc_rfr_ctrl_0,
+					  u32 sdrc_actim_ctrl_a_0,
+					  u32 sdrc_actim_ctrl_b_0,
+					  u32 sdrc_mr_0, u32 sdrc_rfr_ctrl_1,
+					  u32 sdrc_actim_ctrl_a_1,
+					  u32 sdrc_actim_ctrl_b_1,
+					  u32 sdrc_mr_1);
 extern unsigned long omap3_sram_configure_core_dpll_sz;
 
 #ifdef CONFIG_PM
 extern void omap_push_sram_idle(void);
 #else
-static inline void omap_push_sram_idle(void) {}
+static inline void omap_push_sram_idle(void)
+{
+}
 #endif /* CONFIG_PM */
 
 #endif /* __ASSEMBLY__ */

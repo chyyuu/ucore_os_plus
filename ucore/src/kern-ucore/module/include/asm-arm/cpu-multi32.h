@@ -19,27 +19,27 @@ extern struct processor {
 	/* MISC
 	 * get data abort address/flags
 	 */
-	void (*_data_abort)(unsigned long pc);
+	void (*_data_abort) (unsigned long pc);
 	/*
 	 * Retrieve prefetch fault address
 	 */
-	unsigned long (*_prefetch_abort)(unsigned long lr);
+	unsigned long (*_prefetch_abort) (unsigned long lr);
 	/*
 	 * Set up any processor specifics
 	 */
-	void (*_proc_init)(void);
+	void (*_proc_init) (void);
 	/*
 	 * Disable any processor specifics
 	 */
-	void (*_proc_fin)(void);
+	void (*_proc_fin) (void);
 	/*
 	 * Special stuff for a reset
 	 */
-	void (*reset)(unsigned long addr) __attribute__((noreturn));
+	void (*reset) (unsigned long addr) __attribute__ ((noreturn));
 	/*
 	 * Idle the processor
 	 */
-	int (*_do_idle)(void);
+	int (*_do_idle) (void);
 	/*
 	 * Processor architecture specific
 	 */
@@ -47,17 +47,17 @@ extern struct processor {
 	 * clean a virtual address range from the
 	 * D-cache without flushing the cache.
 	 */
-	void (*dcache_clean_area)(void *addr, int size);
+	void (*dcache_clean_area) (void *addr, int size);
 
 	/*
 	 * Set the page table
 	 */
-	void (*switch_mm)(unsigned long pgd_phys, struct mm_struct *mm);
+	void (*switch_mm) (unsigned long pgd_phys, struct mm_struct * mm);
 	/*
 	 * Set a possibly extended PTE.  Non-extended PTEs should
 	 * ignore 'ext'.
 	 */
-	void (*set_pte_ext)(pte_t *ptep, pte_t pte, unsigned int ext);
+	void (*set_pte_ext) (pte_t * ptep, pte_t pte, unsigned int ext);
 } processor;
 
 #define cpu_proc_init()			processor._proc_init()

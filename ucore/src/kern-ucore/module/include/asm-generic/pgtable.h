@@ -92,7 +92,8 @@ do {									\
 
 #ifndef __HAVE_ARCH_PTEP_SET_WRPROTECT
 struct mm_struct;
-static inline void ptep_set_wrprotect(struct mm_struct *mm, unsigned long address, pte_t *ptep)
+static inline void ptep_set_wrprotect(struct mm_struct *mm,
+				      unsigned long address, pte_t * ptep)
 {
 	pte_t old_pte = *ptep;
 	set_pte_at(mm, address, ptep, pte_wrprotect(old_pte));
@@ -167,7 +168,7 @@ void pgd_clear_bad(pgd_t *);
 void pud_clear_bad(pud_t *);
 void pmd_clear_bad(pmd_t *);
 
-static inline int pgd_none_or_clear_bad(pgd_t *pgd)
+static inline int pgd_none_or_clear_bad(pgd_t * pgd)
 {
 	if (pgd_none(*pgd))
 		return 1;
@@ -178,7 +179,7 @@ static inline int pgd_none_or_clear_bad(pgd_t *pgd)
 	return 0;
 }
 
-static inline int pud_none_or_clear_bad(pud_t *pud)
+static inline int pud_none_or_clear_bad(pud_t * pud)
 {
 	if (pud_none(*pud))
 		return 1;
@@ -189,7 +190,7 @@ static inline int pud_none_or_clear_bad(pud_t *pud)
 	return 0;
 }
 
-static inline int pmd_none_or_clear_bad(pmd_t *pmd)
+static inline int pmd_none_or_clear_bad(pmd_t * pmd)
 {
 	if (pmd_none(*pmd))
 		return 1;
@@ -201,8 +202,7 @@ static inline int pmd_none_or_clear_bad(pmd_t *pmd)
 }
 
 static inline pte_t __ptep_modify_prot_start(struct mm_struct *mm,
-					     unsigned long addr,
-					     pte_t *ptep)
+					     unsigned long addr, pte_t * ptep)
 {
 	/*
 	 * Get the current pte state, but zero it out to make it
@@ -214,7 +214,7 @@ static inline pte_t __ptep_modify_prot_start(struct mm_struct *mm,
 
 static inline void __ptep_modify_prot_commit(struct mm_struct *mm,
 					     unsigned long addr,
-					     pte_t *ptep, pte_t pte)
+					     pte_t * ptep, pte_t pte)
 {
 	/*
 	 * The pte is non-present, so there's no hardware state to
@@ -239,8 +239,7 @@ static inline void __ptep_modify_prot_commit(struct mm_struct *mm,
  * actually committed before the pte lock is released, however.
  */
 static inline pte_t ptep_modify_prot_start(struct mm_struct *mm,
-					   unsigned long addr,
-					   pte_t *ptep)
+					   unsigned long addr, pte_t * ptep)
 {
 	return __ptep_modify_prot_start(mm, addr, ptep);
 }
@@ -251,7 +250,7 @@ static inline pte_t ptep_modify_prot_start(struct mm_struct *mm,
  */
 static inline void ptep_modify_prot_commit(struct mm_struct *mm,
 					   unsigned long addr,
-					   pte_t *ptep, pte_t pte)
+					   pte_t * ptep, pte_t pte)
 {
 	__ptep_modify_prot_commit(mm, addr, ptep, pte);
 }
@@ -301,8 +300,8 @@ static inline void ptep_modify_prot_commit(struct mm_struct *mm,
  * track_pfn_vma_new is called when a _new_ pfn mapping is being established
  * for physical range indicated by pfn and size.
  */
-static inline int track_pfn_vma_new(struct vm_area_struct *vma, pgprot_t *prot,
-					unsigned long pfn, unsigned long size)
+static inline int track_pfn_vma_new(struct vm_area_struct *vma, pgprot_t * prot,
+				    unsigned long pfn, unsigned long size)
 {
 	return 0;
 }
@@ -328,15 +327,15 @@ static inline int track_pfn_vma_copy(struct vm_area_struct *vma)
  * can be for the entire vma (in which case size can be zero).
  */
 static inline void untrack_pfn_vma(struct vm_area_struct *vma,
-					unsigned long pfn, unsigned long size)
+				   unsigned long pfn, unsigned long size)
 {
 }
 #else
-extern int track_pfn_vma_new(struct vm_area_struct *vma, pgprot_t *prot,
-				unsigned long pfn, unsigned long size);
+extern int track_pfn_vma_new(struct vm_area_struct *vma, pgprot_t * prot,
+			     unsigned long pfn, unsigned long size);
 extern int track_pfn_vma_copy(struct vm_area_struct *vma);
 extern void untrack_pfn_vma(struct vm_area_struct *vma, unsigned long pfn,
-				unsigned long size);
+			    unsigned long size);
 #endif
 
 #endif /* !__ASSEMBLY__ */

@@ -8,8 +8,8 @@
 #include <linux/kref.h>
 
 struct pidmap {
-       atomic_t nr_free;
-       void *page;
+	atomic_t nr_free;
+	void *page;
 };
 
 #define PIDMAP_ENTRIES         ((PID_MAX_LIMIT + 8*PAGE_SIZE - 1)/PAGE_SIZE/8)
@@ -42,7 +42,8 @@ static inline struct pid_namespace *get_pid_ns(struct pid_namespace *ns)
 	return ns;
 }
 
-extern struct pid_namespace *copy_pid_ns(unsigned long flags, struct pid_namespace *ns);
+extern struct pid_namespace *copy_pid_ns(unsigned long flags,
+					 struct pid_namespace *ns);
 extern void free_pid_ns(struct kref *kref);
 extern void zap_pid_ns_processes(struct pid_namespace *pid_ns);
 
@@ -60,8 +61,8 @@ static inline struct pid_namespace *get_pid_ns(struct pid_namespace *ns)
 	return ns;
 }
 
-static inline struct pid_namespace *
-copy_pid_ns(unsigned long flags, struct pid_namespace *ns)
+static inline struct pid_namespace *copy_pid_ns(unsigned long flags,
+						struct pid_namespace *ns)
 {
 	if (flags & CLONE_NEWPID)
 		ns = ERR_PTR(-EINVAL);
@@ -71,7 +72,6 @@ copy_pid_ns(unsigned long flags, struct pid_namespace *ns)
 static inline void put_pid_ns(struct pid_namespace *ns)
 {
 }
-
 
 static inline void zap_pid_ns_processes(struct pid_namespace *ns)
 {

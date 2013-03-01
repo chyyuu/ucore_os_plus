@@ -26,81 +26,81 @@
 #undef MULTI_CACHE
 
 #if defined(CONFIG_CPU_CACHE_V3)
-# ifdef _CACHE
-#  define MULTI_CACHE 1
-# else
-#  define _CACHE v3
-# endif
+#ifdef _CACHE
+#define MULTI_CACHE 1
+#else
+#define _CACHE v3
+#endif
 #endif
 
 #if defined(CONFIG_CPU_CACHE_V4)
-# ifdef _CACHE
-#  define MULTI_CACHE 1
-# else
-#  define _CACHE v4
-# endif
+#ifdef _CACHE
+#define MULTI_CACHE 1
+#else
+#define _CACHE v4
+#endif
 #endif
 
 #if defined(CONFIG_CPU_ARM920T) || defined(CONFIG_CPU_ARM922T) || \
     defined(CONFIG_CPU_ARM925T) || defined(CONFIG_CPU_ARM1020)
-# define MULTI_CACHE 1
+#define MULTI_CACHE 1
 #endif
 
 #if defined(CONFIG_CPU_ARM926T)
-# ifdef _CACHE
-#  define MULTI_CACHE 1
-# else
-#  define _CACHE arm926
-# endif
+#ifdef _CACHE
+#define MULTI_CACHE 1
+#else
+#define _CACHE arm926
+#endif
 #endif
 
 #if defined(CONFIG_CPU_ARM940T)
-# ifdef _CACHE
-#  define MULTI_CACHE 1
-# else
-#  define _CACHE arm940
-# endif
+#ifdef _CACHE
+#define MULTI_CACHE 1
+#else
+#define _CACHE arm940
+#endif
 #endif
 
 #if defined(CONFIG_CPU_ARM946E)
-# ifdef _CACHE
-#  define MULTI_CACHE 1
-# else
-#  define _CACHE arm946
-# endif
+#ifdef _CACHE
+#define MULTI_CACHE 1
+#else
+#define _CACHE arm946
+#endif
 #endif
 
 #if defined(CONFIG_CPU_CACHE_V4WB)
-# ifdef _CACHE
-#  define MULTI_CACHE 1
-# else
-#  define _CACHE v4wb
-# endif
+#ifdef _CACHE
+#define MULTI_CACHE 1
+#else
+#define _CACHE v4wb
+#endif
 #endif
 
 #if defined(CONFIG_CPU_XSCALE)
-# ifdef _CACHE
-#  define MULTI_CACHE 1
-# else
-#  define _CACHE xscale
-# endif
+#ifdef _CACHE
+#define MULTI_CACHE 1
+#else
+#define _CACHE xscale
+#endif
 #endif
 
 #if defined(CONFIG_CPU_XSC3)
-# ifdef _CACHE
-#  define MULTI_CACHE 1
-# else
-#  define _CACHE xsc3
-# endif
+#ifdef _CACHE
+#define MULTI_CACHE 1
+#else
+#define _CACHE xsc3
+#endif
 #endif
 
 #if defined(CONFIG_CPU_FEROCEON)
-# define MULTI_CACHE 1
+#define MULTI_CACHE 1
 #endif
 
 #if defined(CONFIG_CPU_V6)
 //# ifdef _CACHE
-#  define MULTI_CACHE 1
+#define MULTI_CACHE 1
 //# else
 //#  define _CACHE v6
 //# endif
@@ -108,7 +108,7 @@
 
 #if defined(CONFIG_CPU_V7)
 //# ifdef _CACHE
-#  define MULTI_CACHE 1
+#define MULTI_CACHE 1
 //# else
 //#  define _CACHE v7
 //# endif
@@ -189,23 +189,23 @@
  */
 
 struct cpu_cache_fns {
-	void (*flush_kern_all)(void);
-	void (*flush_user_all)(void);
-	void (*flush_user_range)(unsigned long, unsigned long, unsigned int);
+	void (*flush_kern_all) (void);
+	void (*flush_user_all) (void);
+	void (*flush_user_range) (unsigned long, unsigned long, unsigned int);
 
-	void (*coherent_kern_range)(unsigned long, unsigned long);
-	void (*coherent_user_range)(unsigned long, unsigned long);
-	void (*flush_kern_dcache_page)(void *);
+	void (*coherent_kern_range) (unsigned long, unsigned long);
+	void (*coherent_user_range) (unsigned long, unsigned long);
+	void (*flush_kern_dcache_page) (void *);
 
-	void (*dma_inv_range)(const void *, const void *);
-	void (*dma_clean_range)(const void *, const void *);
-	void (*dma_flush_range)(const void *, const void *);
+	void (*dma_inv_range) (const void *, const void *);
+	void (*dma_clean_range) (const void *, const void *);
+	void (*dma_flush_range) (const void *, const void *);
 };
 
 struct outer_cache_fns {
-	void (*inv_range)(unsigned long, unsigned long);
-	void (*clean_range)(unsigned long, unsigned long);
-	void (*flush_range)(unsigned long, unsigned long);
+	void (*inv_range) (unsigned long, unsigned long);
+	void (*clean_range) (unsigned long, unsigned long);
+	void (*flush_range) (unsigned long, unsigned long);
 };
 
 /*
@@ -273,11 +273,13 @@ static inline void outer_inv_range(unsigned long start, unsigned long end)
 	if (outer_cache.inv_range)
 		outer_cache.inv_range(start, end);
 }
+
 static inline void outer_clean_range(unsigned long start, unsigned long end)
 {
 	if (outer_cache.clean_range)
 		outer_cache.clean_range(start, end);
 }
+
 static inline void outer_flush_range(unsigned long start, unsigned long end)
 {
 	if (outer_cache.flush_range)
@@ -287,11 +289,16 @@ static inline void outer_flush_range(unsigned long start, unsigned long end)
 #else
 
 static inline void outer_inv_range(unsigned long start, unsigned long end)
-{ }
+{
+}
+
 static inline void outer_clean_range(unsigned long start, unsigned long end)
-{ }
+{
+}
+
 static inline void outer_flush_range(unsigned long start, unsigned long end)
-{ }
+{
+}
 
 #endif
 
@@ -323,7 +330,8 @@ static inline void flush_cache_mm(struct mm_struct *mm)
 }
 
 static inline void
-flush_cache_range(struct vm_area_struct *vma, unsigned long start, unsigned long end)
+flush_cache_range(struct vm_area_struct *vma, unsigned long start,
+		  unsigned long end)
 {
 	if (cpu_isset(smp_processor_id(), vma->vm_mm->cpu_vm_mask))
 		__cpuc_flush_user_range(start & PAGE_MASK, PAGE_ALIGN(end),
@@ -331,7 +339,8 @@ flush_cache_range(struct vm_area_struct *vma, unsigned long start, unsigned long
 }
 
 static inline void
-flush_cache_page(struct vm_area_struct *vma, unsigned long user_addr, unsigned long pfn)
+flush_cache_page(struct vm_area_struct *vma, unsigned long user_addr,
+		 unsigned long pfn)
 {
 	if (cpu_isset(smp_processor_id(), vma->vm_mm->cpu_vm_mask)) {
 		unsigned long addr = user_addr & PAGE_MASK;
@@ -341,8 +350,8 @@ flush_cache_page(struct vm_area_struct *vma, unsigned long user_addr, unsigned l
 
 static inline void
 flush_ptrace_access(struct vm_area_struct *vma, struct page *page,
-			 unsigned long uaddr, void *kaddr,
-			 unsigned long len, int write)
+		    unsigned long uaddr, void *kaddr,
+		    unsigned long len, int write)
 {
 	if (cpu_isset(smp_processor_id(), vma->vm_mm->cpu_vm_mask)) {
 		unsigned long addr = (unsigned long)kaddr;
@@ -351,8 +360,10 @@ flush_ptrace_access(struct vm_area_struct *vma, struct page *page,
 }
 #else
 extern void flush_cache_mm(struct mm_struct *mm);
-extern void flush_cache_range(struct vm_area_struct *vma, unsigned long start, unsigned long end);
-extern void flush_cache_page(struct vm_area_struct *vma, unsigned long user_addr, unsigned long pfn);
+extern void flush_cache_range(struct vm_area_struct *vma, unsigned long start,
+			      unsigned long end);
+extern void flush_cache_page(struct vm_area_struct *vma,
+			     unsigned long user_addr, unsigned long pfn);
 extern void flush_ptrace_access(struct vm_area_struct *vma, struct page *page,
 				unsigned long uaddr, void *kaddr,
 				unsigned long len, int write);
@@ -394,21 +405,21 @@ extern void flush_ptrace_access(struct vm_area_struct *vma, struct page *page,
  */
 extern void flush_dcache_page(struct page *);
 
-extern void __flush_dcache_page(struct address_space *mapping, struct page *page);
+extern void __flush_dcache_page(struct address_space *mapping,
+				struct page *page);
 
 static inline void __flush_icache_all(void)
 {
-	asm("mcr	p15, 0, %0, c7, c5, 0	@ invalidate I-cache\n"
-	    :
-	    : "r" (0));
+asm("mcr	p15, 0, %0, c7, c5, 0	@ invalidate I-cache\n":
+:"r"(0));
 }
 
 #define ARCH_HAS_FLUSH_ANON_PAGE
 static inline void flush_anon_page(struct vm_area_struct *vma,
-			 struct page *page, unsigned long vmaddr)
+				   struct page *page, unsigned long vmaddr)
 {
 	extern void __flush_anon_page(struct vm_area_struct *vma,
-				struct page *, unsigned long);
+				      struct page *, unsigned long);
 	if (PageAnon(page))
 		__flush_anon_page(vma, page, vmaddr);
 }
@@ -435,8 +446,8 @@ static inline void flush_kernel_dcache_page(struct page *page)
  */
 #define flush_icache_page(vma,page)	do { } while (0)
 
-static inline void flush_ioremap_region(unsigned long phys, void __iomem *virt,
-	unsigned offset, size_t size)
+static inline void flush_ioremap_region(unsigned long phys, void __iomem * virt,
+					unsigned offset, size_t size)
 {
 	const void *start = (void __force *)virt + offset;
 	dmac_inv_range(start, start + size);

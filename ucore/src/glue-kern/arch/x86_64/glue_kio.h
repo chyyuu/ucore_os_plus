@@ -13,6 +13,6 @@
 #define kcons_getc (*kcons_getc_ptr)
 
 extern void kcons_putc(int c);
-extern int  kcons_getc(void);
+extern int kcons_getc(void);
 
 #endif

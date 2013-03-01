@@ -23,22 +23,22 @@
 #include "sd_ops.h"
 
 static const unsigned int tran_exp[] = {
-	10000,		100000,		1000000,	10000000,
-	0,		0,		0,		0
+	10000, 100000, 1000000, 10000000,
+	0, 0, 0, 0
 };
 
 static const unsigned char tran_mant[] = {
-	0,	10,	12,	13,	15,	20,	25,	30,
-	35,	40,	45,	50,	55,	60,	70,	80,
+	0, 10, 12, 13, 15, 20, 25, 30,
+	35, 40, 45, 50, 55, 60, 70, 80,
 };
 
 static const unsigned int tacc_exp[] = {
-	1,	10,	100,	1000,	10000,	100000,	1000000, 10000000,
+	1, 10, 100, 1000, 10000, 100000, 1000000, 10000000,
 };
 
 static const unsigned int tacc_mant[] = {
-	0,	10,	12,	13,	15,	20,	25,	30,
-	35,	40,	45,	50,	55,	60,	70,	80,
+	0, 10, 12, 13, 15, 20, 25, 30,
+	35, 40, 45, 50, 55, 60, 70, 80,
 };
 
 #define UNSTUFF_BITS(resp,start,size)					\
@@ -68,20 +68,20 @@ static void mmc_decode_cid(struct mmc_card *card)
 	 * SD doesn't currently have a version field so we will
 	 * have to assume we can parse this.
 	 */
-	card->cid.manfid		= UNSTUFF_BITS(resp, 120, 8);
-	card->cid.oemid			= UNSTUFF_BITS(resp, 104, 16);
-	card->cid.prod_name[0]		= UNSTUFF_BITS(resp, 96, 8);
-	card->cid.prod_name[1]		= UNSTUFF_BITS(resp, 88, 8);
-	card->cid.prod_name[2]		= UNSTUFF_BITS(resp, 80, 8);
-	card->cid.prod_name[3]		= UNSTUFF_BITS(resp, 72, 8);
-	card->cid.prod_name[4]		= UNSTUFF_BITS(resp, 64, 8);
-	card->cid.hwrev			= UNSTUFF_BITS(resp, 60, 4);
-	card->cid.fwrev			= UNSTUFF_BITS(resp, 56, 4);
-	card->cid.serial		= UNSTUFF_BITS(resp, 24, 32);
-	card->cid.year			= UNSTUFF_BITS(resp, 12, 8);
-	card->cid.month			= UNSTUFF_BITS(resp, 8, 4);
+	card->cid.manfid = UNSTUFF_BITS(resp, 120, 8);
+	card->cid.oemid = UNSTUFF_BITS(resp, 104, 16);
+	card->cid.prod_name[0] = UNSTUFF_BITS(resp, 96, 8);
+	card->cid.prod_name[1] = UNSTUFF_BITS(resp, 88, 8);
+	card->cid.prod_name[2] = UNSTUFF_BITS(resp, 80, 8);
+	card->cid.prod_name[3] = UNSTUFF_BITS(resp, 72, 8);
+	card->cid.prod_name[4] = UNSTUFF_BITS(resp, 64, 8);
+	card->cid.hwrev = UNSTUFF_BITS(resp, 60, 4);
+	card->cid.fwrev = UNSTUFF_BITS(resp, 56, 4);
+	card->cid.serial = UNSTUFF_BITS(resp, 24, 32);
+	card->cid.year = UNSTUFF_BITS(resp, 12, 8);
+	card->cid.month = UNSTUFF_BITS(resp, 8, 4);
 
-	card->cid.year += 2000; /* SD cards year offset */
+	card->cid.year += 2000;	/* SD cards year offset */
 }
 
 /*
@@ -99,17 +99,17 @@ static int mmc_decode_csd(struct mmc_card *card)
 	case 0:
 		m = UNSTUFF_BITS(resp, 115, 4);
 		e = UNSTUFF_BITS(resp, 112, 3);
-		csd->tacc_ns	 = (tacc_exp[e] * tacc_mant[m] + 9) / 10;
-		csd->tacc_clks	 = UNSTUFF_BITS(resp, 104, 8) * 100;
+		csd->tacc_ns = (tacc_exp[e] * tacc_mant[m] + 9) / 10;
+		csd->tacc_clks = UNSTUFF_BITS(resp, 104, 8) * 100;
 
 		m = UNSTUFF_BITS(resp, 99, 4);
 		e = UNSTUFF_BITS(resp, 96, 3);
-		csd->max_dtr	  = tran_exp[e] * tran_mant[m];
-		csd->cmdclass	  = UNSTUFF_BITS(resp, 84, 12);
+		csd->max_dtr = tran_exp[e] * tran_mant[m];
+		csd->cmdclass = UNSTUFF_BITS(resp, 84, 12);
 
 		e = UNSTUFF_BITS(resp, 47, 3);
 		m = UNSTUFF_BITS(resp, 62, 12);
-		csd->capacity	  = (1 + m) << (e + 2);
+		csd->capacity = (1 + m) << (e + 2);
 
 		csd->read_blkbits = UNSTUFF_BITS(resp, 80, 4);
 		csd->read_partial = UNSTUFF_BITS(resp, 79, 1);
@@ -128,28 +128,28 @@ static int mmc_decode_csd(struct mmc_card *card)
 		 */
 		mmc_card_set_blockaddr(card);
 
-		csd->tacc_ns	 = 0; /* Unused */
-		csd->tacc_clks	 = 0; /* Unused */
+		csd->tacc_ns = 0;	/* Unused */
+		csd->tacc_clks = 0;	/* Unused */
 
 		m = UNSTUFF_BITS(resp, 99, 4);
 		e = UNSTUFF_BITS(resp, 96, 3);
-		csd->max_dtr	  = tran_exp[e] * tran_mant[m];
-		csd->cmdclass	  = UNSTUFF_BITS(resp, 84, 12);
+		csd->max_dtr = tran_exp[e] * tran_mant[m];
+		csd->cmdclass = UNSTUFF_BITS(resp, 84, 12);
 
 		m = UNSTUFF_BITS(resp, 48, 22);
-		csd->capacity     = (1 + m) << 10;
+		csd->capacity = (1 + m) << 10;
 
 		csd->read_blkbits = 9;
 		csd->read_partial = 0;
 		csd->write_misalign = 0;
 		csd->read_misalign = 0;
-		csd->r2w_factor = 4; /* Unused */
+		csd->r2w_factor = 4;	/* Unused */
 		csd->write_blkbits = 9;
 		csd->write_partial = 0;
 		break;
 	default:
 		printk(KERN_ERR "%s: unrecognised CSD structure version %d\n",
-			mmc_hostname(card->host), csd_struct);
+		       mmc_hostname(card->host), csd_struct);
 		return -EINVAL;
 	}
 
@@ -171,7 +171,7 @@ static int mmc_decode_scr(struct mmc_card *card)
 	scr_struct = UNSTUFF_BITS(resp, 60, 4);
 	if (scr_struct != 0) {
 		printk(KERN_ERR "%s: unrecognised SCR structure version %d\n",
-			mmc_hostname(card->host), scr_struct);
+		       mmc_hostname(card->host), scr_struct);
 		return -EINVAL;
 	}
 
@@ -194,8 +194,8 @@ static int mmc_read_switch(struct mmc_card *card)
 
 	if (!(card->csd.cmdclass & CCC_SWITCH)) {
 		printk(KERN_WARNING "%s: card lacks mandatory switch "
-			"function, performance might suffer.\n",
-			mmc_hostname(card->host));
+		       "function, performance might suffer.\n",
+		       mmc_hostname(card->host));
 		return 0;
 	}
 
@@ -204,7 +204,7 @@ static int mmc_read_switch(struct mmc_card *card)
 	status = kmalloc(64, GFP_KERNEL);
 	if (!status) {
 		printk(KERN_ERR "%s: could not allocate a buffer for "
-			"switch capabilities.\n", mmc_hostname(card->host));
+		       "switch capabilities.\n", mmc_hostname(card->host));
 		return -ENOMEM;
 	}
 
@@ -218,8 +218,8 @@ static int mmc_read_switch(struct mmc_card *card)
 			goto out;
 
 		printk(KERN_WARNING "%s: problem reading switch "
-			"capabilities, performance might suffer.\n",
-			mmc_hostname(card->host));
+		       "capabilities, performance might suffer.\n",
+		       mmc_hostname(card->host));
 		err = 0;
 
 		goto out;
@@ -259,7 +259,7 @@ static int mmc_switch_hs(struct mmc_card *card)
 	status = kmalloc(64, GFP_KERNEL);
 	if (!status) {
 		printk(KERN_ERR "%s: could not allocate a buffer for "
-			"switch capabilities.\n", mmc_hostname(card->host));
+		       "switch capabilities.\n", mmc_hostname(card->host));
 		return -ENOMEM;
 	}
 
@@ -269,8 +269,7 @@ static int mmc_switch_hs(struct mmc_card *card)
 
 	if ((status[16] & 0xF) != 1) {
 		printk(KERN_WARNING "%s: Problem switching card "
-			"into high-speed mode!\n",
-			mmc_hostname(card->host));
+		       "into high-speed mode!\n", mmc_hostname(card->host));
 	} else {
 		mmc_card_set_highspeed(card);
 		mmc_set_timing(card->host, MMC_TIMING_SD_HS);
@@ -283,9 +282,9 @@ out:
 }
 
 MMC_DEV_ATTR(cid, "%08x%08x%08x%08x\n", card->raw_cid[0], card->raw_cid[1],
-	card->raw_cid[2], card->raw_cid[3]);
+	     card->raw_cid[2], card->raw_cid[3]);
 MMC_DEV_ATTR(csd, "%08x%08x%08x%08x\n", card->raw_csd[0], card->raw_csd[1],
-	card->raw_csd[2], card->raw_csd[3]);
+	     card->raw_csd[2], card->raw_csd[3]);
 MMC_DEV_ATTR(scr, "%08x%08x\n", card->raw_scr[0], card->raw_scr[1]);
 MMC_DEV_ATTR(date, "%02d/%04d\n", card->cid.month, card->cid.year);
 MMC_DEV_ATTR(fwrev, "0x%x\n", card->cid.fwrev);
@@ -294,7 +293,6 @@ MMC_DEV_ATTR(manfid, "0x%06x\n", card->cid.manfid);
 MMC_DEV_ATTR(name, "%s\n", card->cid.prod_name);
 MMC_DEV_ATTR(oemid, "0x%04x\n", card->cid.oemid);
 MMC_DEV_ATTR(serial, "0x%08x\n", card->cid.serial);
-
 
 static struct attribute *sd_std_attrs[] = {
 	&dev_attr_cid.attr,
@@ -330,7 +328,7 @@ static struct device_type sd_type = {
  * we're trying to reinitialise.
  */
 static int mmc_sd_init_card(struct mmc_host *host, u32 ocr,
-	struct mmc_card *oldcard)
+			    struct mmc_card *oldcard)
 {
 	struct mmc_card *card;
 	int err;
@@ -459,7 +457,7 @@ static int mmc_sd_init_card(struct mmc_host *host, u32 ocr,
 			if (!err) {
 				if (retries > 1) {
 					printk(KERN_WARNING
-					       "%s: recovered\n", 
+					       "%s: recovered\n",
 					       mmc_hostname(host));
 				}
 				break;
@@ -502,7 +500,7 @@ static int mmc_sd_init_card(struct mmc_host *host, u32 ocr,
 	 * Switch to wider bus (if supported).
 	 */
 	if ((host->caps & MMC_CAP_4_BIT_DATA) &&
-		(card->scr.bus_widths & SD_SCR_BUS_WIDTH_4)) {
+	    (card->scr.bus_widths & SD_SCR_BUS_WIDTH_4)) {
 		err = mmc_app_set_bus_width(card, MMC_BUS_WIDTH_4);
 		if (err)
 			goto free_card;
@@ -516,9 +514,9 @@ static int mmc_sd_init_card(struct mmc_host *host, u32 ocr,
 	if (!oldcard) {
 		if (!host->ops->get_ro || host->ops->get_ro(host) < 0) {
 			printk(KERN_WARNING "%s: host does not "
-				"support reading read-only "
-				"switch. assuming write-enable.\n",
-				mmc_hostname(host));
+			       "support reading read-only "
+			       "switch. assuming write-enable.\n",
+			       mmc_hostname(host));
 		} else {
 			if (host->ops->get_ro(host) > 0)
 				mmc_card_set_readonly(card);
@@ -557,19 +555,19 @@ static void mmc_sd_detect(struct mmc_host *host)
 {
 	int err = 0;
 #ifdef CONFIG_MMC_PARANOID_SD_INIT
-        int retries = 5;
+	int retries = 5;
 #endif
 
 	BUG_ON(!host);
 	BUG_ON(!host->card);
-       
+
 	mmc_claim_host(host);
 
 	/*
 	 * Just check if our card has been removed.
 	 */
 #ifdef CONFIG_MMC_PARANOID_SD_INIT
-	while(retries) {
+	while (retries) {
 		err = mmc_send_status(host->card, NULL);
 		if (err) {
 			retries--;
@@ -636,7 +634,8 @@ static void mmc_sd_resume(struct mmc_host *host)
 		err = mmc_sd_init_card(host, host->ocr, host->card);
 
 		if (err) {
-			printk(KERN_ERR "%s: Re-init card rc = %d (retries = %d)\n",
+			printk(KERN_ERR
+			       "%s: Re-init card rc = %d (retries = %d)\n",
 			       mmc_hostname(host), err, retries);
 			mdelay(5);
 			retries--;
@@ -769,8 +768,7 @@ err:
 	mmc_release_host(host);
 
 	printk(KERN_ERR "%s: error %d whilst initialising SD card\n",
-		mmc_hostname(host), err);
+	       mmc_hostname(host), err);
 
 	return err;
 }
-

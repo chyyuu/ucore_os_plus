@@ -8,13 +8,13 @@
  *
  * The strlen() function returns the length of string @s.
  * */
-size_t
-strlen(const char *s) {
-    size_t cnt = 0;
-    while (*s ++ != '\0') {
-        cnt ++;
-    }
-    return cnt;
+size_t strlen(const char *s)
+{
+	size_t cnt = 0;
+	while (*s++ != '\0') {
+		cnt++;
+	}
+	return cnt;
 }
 
 /* *
@@ -30,13 +30,13 @@ strlen(const char *s) {
  * @len if there is no '\0' character among the first @len characters
  * pointed by @s.
  * */
-size_t
-strnlen(const char *s, size_t len) {
-    size_t cnt = 0;
-    while (cnt < len && *s ++ != '\0') {
-        cnt ++;
-    }
-    return cnt;
+size_t strnlen(const char *s, size_t len)
+{
+	size_t cnt = 0;
+	while (cnt < len && *s++ != '\0') {
+		cnt++;
+	}
+	return cnt;
 }
 
 /* *
@@ -51,15 +51,15 @@ strnlen(const char *s, size_t len) {
  * contain the same string as @src (including the terminating null character), and
  * should not overlap in memory with @src.
  * */
-char *
-strcpy(char *dst, const char *src) {
+char *strcpy(char *dst, const char *src)
+{
 #ifdef __HAVE_ARCH_STRCPY
-    return __strcpy(dst, src);
+	return __strcpy(dst, src);
 #else
-    char *p = dst;
-    while ((*p ++ = *src ++) != '\0')
-        /* nothing */;
-    return dst;
+	char *p = dst;
+	while ((*p++ = *src++) != '\0')
+		/* nothing */ ;
+	return dst;
 #endif /* __HAVE_ARCH_STRCPY */
 }
 
@@ -73,16 +73,16 @@ strcpy(char *dst, const char *src) {
  *
  * The return value is @dst
  * */
-char *
-strncpy(char *dst, const char *src, size_t len) {
-    char *p = dst;
-    while (len > 0) {
-        if ((*p = *src) != '\0') {
-            src ++;
-        }
-        p ++, len --;
-    }
-    return dst;
+char *strncpy(char *dst, const char *src, size_t len)
+{
+	char *p = dst;
+	while (len > 0) {
+		if ((*p = *src) != '\0') {
+			src++;
+		}
+		p++, len--;
+	}
+	return dst;
 }
 
 /* *
@@ -93,9 +93,9 @@ strncpy(char *dst, const char *src, size_t len) {
  *          resulting string.
  * @src:    string to be appended, this should not overlap @dst
  * */
-char *
-strcat(char *dst, const char *src) {
-    return strcpy(dst + strlen(dst), src);
+char *strcat(char *dst, const char *src)
+{
+	return strcpy(dst + strlen(dst), src);
 }
 
 /* *
@@ -113,15 +113,15 @@ strcat(char *dst, const char *src) {
  *   not match has a greater value in @s1 than in @s2;
  * - And a value less than zero indicates the opposite.
  * */
-int
-strcmp(const char *s1, const char *s2) {
+int strcmp(const char *s1, const char *s2)
+{
 #ifdef __HAVE_ARCH_STRCMP
-    return __strcmp(s1, s2);
+	return __strcmp(s1, s2);
 #else
-    while (*s1 != '\0' && *s1 == *s2) {
-        s1 ++, s2 ++;
-    }
-    return (int)((unsigned char)*s1 - (unsigned char)*s2);
+	while (*s1 != '\0' && *s1 == *s2) {
+		s1++, s2++;
+	}
+	return (int)((unsigned char)*s1 - (unsigned char)*s2);
 #endif /* __HAVE_ARCH_STRCMP */
 }
 
@@ -136,12 +136,12 @@ strcmp(const char *s1, const char *s2) {
  * the characters differ, until a terminating null-character is reached, or
  * until @n characters match in both strings, whichever happens first.
  * */
-int
-strncmp(const char *s1, const char *s2, size_t n) {
-    while (n > 0 && *s1 != '\0' && *s1 == *s2) {
-        n --, s1 ++, s2 ++;
-    }
-    return (n == 0) ? 0 : (int)((unsigned char)*s1 - (unsigned char)*s2);
+int strncmp(const char *s1, const char *s2, size_t n)
+{
+	while (n > 0 && *s1 != '\0' && *s1 == *s2) {
+		n--, s1++, s2++;
+	}
+	return (n == 0) ? 0 : (int)((unsigned char)*s1 - (unsigned char)*s2);
 }
 
 /* *
@@ -152,15 +152,15 @@ strncmp(const char *s1, const char *s2, size_t n) {
  * The strchr() function returns a pointer to the first occurrence of
  * character in @s. If the value is not found, the function returns 'NULL'.
  * */
-char *
-strchr(const char *s, char c) {
-    while (*s != '\0') {
-        if (*s == c) {
-            return (char *)s;
-        }
-        s ++;
-    }
-    return NULL;
+char *strchr(const char *s, char c)
+{
+	while (*s != '\0') {
+		if (*s == c) {
+			return (char *)s;
+		}
+		s++;
+	}
+	return NULL;
 }
 
 /* *
@@ -172,15 +172,15 @@ strchr(const char *s, char c) {
  * not found in @s, then it returns a pointer to the null byte at the
  * end of @s, rather than 'NULL'.
  * */
-char *
-strfind(const char *s, char c) {
-    while (*s != '\0') {
-        if (*s == c) {
-            break;
-        }
-        s ++;
-    }
-    return (char *)s;
+char *strfind(const char *s, char c)
+{
+	while (*s != '\0') {
+		if (*s == c) {
+			break;
+		}
+		s++;
+	}
+	return (char *)s;
 }
 
 /* *
@@ -213,62 +213,54 @@ strfind(const char *s, char c) {
  *
  * The strtol() function returns the converted integral number as a long int value.
  * */
-long
-strtol(const char *s, char **endptr, int base) {
-    int neg = 0;
-    long val = 0;
+long strtol(const char *s, char **endptr, int base)
+{
+	int neg = 0;
+	long val = 0;
 
-    // gobble initial whitespace
-    while (*s == ' ' || *s == '\t') {
-        s ++;
-    }
+	// gobble initial whitespace
+	while (*s == ' ' || *s == '\t') {
+		s++;
+	}
 
-    // plus/minus sign
-    if (*s == '+') {
-        s ++;
-    }
-    else if (*s == '-') {
-        s ++, neg = 1;
-    }
+	// plus/minus sign
+	if (*s == '+') {
+		s++;
+	} else if (*s == '-') {
+		s++, neg = 1;
+	}
+	// hex or octal base prefix
+	if ((base == 0 || base == 16) && (s[0] == '0' && s[1] == 'x')) {
+		s += 2, base = 16;
+	} else if (base == 0 && s[0] == '0') {
+		s++, base = 8;
+	} else if (base == 0) {
+		base = 10;
+	}
+	// digits
+	while (1) {
+		int dig;
 
-    // hex or octal base prefix
-    if ((base == 0 || base == 16) && (s[0] == '0' && s[1] == 'x')) {
-        s += 2, base = 16;
-    }
-    else if (base == 0 && s[0] == '0') {
-        s ++, base = 8;
-    }
-    else if (base == 0) {
-        base = 10;
-    }
+		if (*s >= '0' && *s <= '9') {
+			dig = *s - '0';
+		} else if (*s >= 'a' && *s <= 'z') {
+			dig = *s - 'a' + 10;
+		} else if (*s >= 'A' && *s <= 'Z') {
+			dig = *s - 'A' + 10;
+		} else {
+			break;
+		}
+		if (dig >= base) {
+			break;
+		}
+		s++, val = (val * base) + dig;
+		// we don't properly detect overflow!
+	}
 
-    // digits
-    while (1) {
-        int dig;
-
-        if (*s >= '0' && *s <= '9') {
-            dig = *s - '0';
-        }
-        else if (*s >= 'a' && *s <= 'z') {
-            dig = *s - 'a' + 10;
-        }
-        else if (*s >= 'A' && *s <= 'Z') {
-            dig = *s - 'A' + 10;
-        }
-        else {
-            break;
-        }
-        if (dig >= base) {
-            break;
-        }
-        s ++, val = (val * base) + dig;
-        // we don't properly detect overflow!
-    }
-
-    if (endptr) {
-        *endptr = (char *) s;
-    }
-    return (neg ? -val : val);
+	if (endptr) {
+		*endptr = (char *)s;
+	}
+	return (neg ? -val : val);
 }
 
 /* *
@@ -280,16 +272,16 @@ strtol(const char *s, char **endptr, int base) {
  *
  * The memset() function returns @s.
  * */
-void *
-memset(void *s, char c, size_t n) {
+void *memset(void *s, char c, size_t n)
+{
 #ifdef __HAVE_ARCH_MEMSET
-    return __memset(s, c, n);
+	return __memset(s, c, n);
 #else
-    char *p = s;
-    while (n -- > 0) {
-        *p ++ = c;
-    }
-    return s;
+	char *p = s;
+	while (n-- > 0) {
+		*p++ = c;
+	}
+	return s;
 #endif /* __HAVE_ARCH_MEMSET */
 }
 
@@ -302,24 +294,24 @@ memset(void *s, char c, size_t n) {
  *
  * The memmove() function returns @dst.
  * */
-void *
-memmove(void *dst, const void *src, size_t n) {
+void *memmove(void *dst, const void *src, size_t n)
+{
 #ifdef __HAVE_ARCH_MEMMOVE
-    return __memmove(dst, src, n);
+	return __memmove(dst, src, n);
 #else
-    const char *s = src;
-    char *d = dst;
-    if (s < d && s + n > d) {
-        s += n, d += n;
-        while (n -- > 0) {
-            *-- d = *-- s;
-        }
-    } else {
-        while (n -- > 0) {
-            *d ++ = *s ++;
-        }
-    }
-    return dst;
+	const char *s = src;
+	char *d = dst;
+	if (s < d && s + n > d) {
+		s += n, d += n;
+		while (n-- > 0) {
+			*--d = *--s;
+		}
+	} else {
+		while (n-- > 0) {
+			*d++ = *s++;
+		}
+	}
+	return dst;
 #endif /* __HAVE_ARCH_MEMMOVE */
 }
 
@@ -337,17 +329,17 @@ memmove(void *dst, const void *src, size_t n) {
  * by both @src and @dst, should be at least @n bytes, and should not overlap
  * (for overlapping memory area, memmove is a safer approach).
  * */
-void *
-memcpy(void *dst, const void *src, size_t n) {
+void *memcpy(void *dst, const void *src, size_t n)
+{
 #ifdef __HAVE_ARCH_MEMCPY
-    return __memcpy(dst, src, n);
+	return __memcpy(dst, src, n);
 #else
-    const char *s = src;
-    char *d = dst;
-    while (n -- > 0) {
-        *d ++ = *s ++;
-    }
-    return dst;
+	const char *s = src;
+	char *d = dst;
+	while (n-- > 0) {
+		*d++ = *s++;
+	}
+	return dst;
 #endif /* __HAVE_ARCH_MEMCPY */
 }
 
@@ -365,16 +357,15 @@ memcpy(void *dst, const void *src, size_t n) {
  *   as if evaluated as unsigned char values;
  * - And a value less than zero indicates the opposite.
  * */
-int
-memcmp(const void *v1, const void *v2, size_t n) {
-    const char *s1 = (const char *)v1;
-    const char *s2 = (const char *)v2;
-    while (n -- > 0) {
-        if (*s1 != *s2) {
-            return (int)((unsigned char)*s1 - (unsigned char)*s2);
-        }
-        s1 ++, s2 ++;
-    }
-    return 0;
+int memcmp(const void *v1, const void *v2, size_t n)
+{
+	const char *s1 = (const char *)v1;
+	const char *s2 = (const char *)v2;
+	while (n-- > 0) {
+		if (*s1 != *s2) {
+			return (int)((unsigned char)*s1 - (unsigned char)*s2);
+		}
+		s1++, s2++;
+	}
+	return 0;
 }
-

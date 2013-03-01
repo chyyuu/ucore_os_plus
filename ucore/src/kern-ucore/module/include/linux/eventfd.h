@@ -24,9 +24,10 @@ int eventfd_signal(struct file *file, int n);
 
 #define eventfd_fget(fd) ERR_PTR(-ENOSYS)
 static inline int eventfd_signal(struct file *file, int n)
-{ return 0; }
+{
+	return 0;
+}
 
 #endif /* CONFIG_EVENTFD */
 
 #endif /* _LINUX_EVENTFD_H */
-

@@ -4,4 +4,3 @@
 int syscall(struct um_pt_regs *regs);
 
 #endif /* !__KERN_SYSCALL_SYSCALL_H__ */
-

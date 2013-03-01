@@ -55,31 +55,31 @@ struct input_absinfo {
 	__s32 flat;
 };
 
-#define EVIOCGVERSION		_IOR('E', 0x01, int)			/* get driver version */
+#define EVIOCGVERSION		_IOR('E', 0x01, int)	/* get driver version */
 #define EVIOCGID		_IOR('E', 0x02, struct input_id)	/* get device ID */
-#define EVIOCGREP		_IOR('E', 0x03, int[2])			/* get repeat settings */
-#define EVIOCSREP		_IOW('E', 0x03, int[2])			/* set repeat settings */
-#define EVIOCGKEYCODE		_IOR('E', 0x04, int[2])			/* get keycode */
-#define EVIOCSKEYCODE		_IOW('E', 0x04, int[2])			/* set keycode */
+#define EVIOCGREP		_IOR('E', 0x03, int[2])	/* get repeat settings */
+#define EVIOCSREP		_IOW('E', 0x03, int[2])	/* set repeat settings */
+#define EVIOCGKEYCODE		_IOR('E', 0x04, int[2])	/* get keycode */
+#define EVIOCSKEYCODE		_IOW('E', 0x04, int[2])	/* set keycode */
 
-#define EVIOCGNAME(len)		_IOC(_IOC_READ, 'E', 0x06, len)		/* get device name */
-#define EVIOCGPHYS(len)		_IOC(_IOC_READ, 'E', 0x07, len)		/* get physical location */
-#define EVIOCGUNIQ(len)		_IOC(_IOC_READ, 'E', 0x08, len)		/* get unique identifier */
+#define EVIOCGNAME(len)		_IOC(_IOC_READ, 'E', 0x06, len)	/* get device name */
+#define EVIOCGPHYS(len)		_IOC(_IOC_READ, 'E', 0x07, len)	/* get physical location */
+#define EVIOCGUNIQ(len)		_IOC(_IOC_READ, 'E', 0x08, len)	/* get unique identifier */
 
-#define EVIOCGKEY(len)		_IOC(_IOC_READ, 'E', 0x18, len)		/* get global keystate */
-#define EVIOCGLED(len)		_IOC(_IOC_READ, 'E', 0x19, len)		/* get all LEDs */
-#define EVIOCGSND(len)		_IOC(_IOC_READ, 'E', 0x1a, len)		/* get all sounds status */
-#define EVIOCGSW(len)		_IOC(_IOC_READ, 'E', 0x1b, len)		/* get all switch states */
+#define EVIOCGKEY(len)		_IOC(_IOC_READ, 'E', 0x18, len)	/* get global keystate */
+#define EVIOCGLED(len)		_IOC(_IOC_READ, 'E', 0x19, len)	/* get all LEDs */
+#define EVIOCGSND(len)		_IOC(_IOC_READ, 'E', 0x1a, len)	/* get all sounds status */
+#define EVIOCGSW(len)		_IOC(_IOC_READ, 'E', 0x1b, len)	/* get all switch states */
 
 #define EVIOCGBIT(ev,len)	_IOC(_IOC_READ, 'E', 0x20 + ev, len)	/* get event bits */
-#define EVIOCGABS(abs)		_IOR('E', 0x40 + abs, struct input_absinfo)		/* get abs value/limits */
-#define EVIOCSABS(abs)		_IOW('E', 0xc0 + abs, struct input_absinfo)		/* set abs value/limits */
+#define EVIOCGABS(abs)		_IOR('E', 0x40 + abs, struct input_absinfo)	/* get abs value/limits */
+#define EVIOCSABS(abs)		_IOW('E', 0xc0 + abs, struct input_absinfo)	/* set abs value/limits */
 
 #define EVIOCSFF		_IOC(_IOC_WRITE, 'E', 0x80, sizeof(struct ff_effect))	/* send a force effect to a force feedback device */
-#define EVIOCRMFF		_IOW('E', 0x81, int)			/* Erase a force effect */
-#define EVIOCGEFFECTS		_IOR('E', 0x84, int)			/* Report number of effects playable at the same time */
+#define EVIOCRMFF		_IOW('E', 0x81, int)	/* Erase a force effect */
+#define EVIOCGEFFECTS		_IOR('E', 0x84, int)	/* Report number of effects playable at the same time */
 
-#define EVIOCGRAB		_IOW('E', 0x90, int)			/* Grab/Release device */
+#define EVIOCGRAB		_IOW('E', 0x90, int)	/* Grab/Release device */
 
 /*
  * Event types
@@ -531,8 +531,8 @@ struct input_absinfo {
 #define KEY_ADDRESSBOOK		0x1ad	/* AL Contacts/Address Book */
 #define KEY_MESSENGER		0x1ae	/* AL Instant Messaging */
 #define KEY_DISPLAYTOGGLE	0x1af	/* Turn display (LCD) on and off */
-#define KEY_SPELLCHECK		0x1b0   /* AL Spell Check */
-#define KEY_LOGOFF		0x1b1   /* AL Logoff */
+#define KEY_SPELLCHECK		0x1b0	/* AL Spell Check */
+#define KEY_LOGOFF		0x1b1	/* AL Logoff */
 
 #define KEY_DOLLAR		0x1b2
 #define KEY_EURO		0x1b3
@@ -646,7 +646,7 @@ struct input_absinfo {
 #define ABS_VOLUME		0x20
 #define ABS_MISC		0x28
 
-#define ABS_MT_SLOT         0x2f    /* MT slot being modified */
+#define ABS_MT_SLOT         0x2f	/* MT slot being modified */
 #define ABS_MT_TOUCH_MAJOR	0x30	/* Major axis of touching ellipse */
 #define ABS_MT_TOUCH_MINOR	0x31	/* Minor axis (omit if circular) */
 #define ABS_MT_WIDTH_MAJOR	0x32	/* Major axis of approaching ellipse */
@@ -656,9 +656,9 @@ struct input_absinfo {
 #define ABS_MT_POSITION_Y	0x36	/* Center Y ellipse position */
 #define ABS_MT_TOOL_TYPE	0x37	/* Type of touching device */
 #define ABS_MT_BLOB_ID		0x38	/* Group a set of packets as a blob */
-#define ABS_MT_TRACKING_ID  0x39    /* Unique ID of initiated contact */
-#define ABS_MT_PRESSURE     0x3a    /* Pressure on contact area */
-#define ABS_MT_DISTANCE     0x3b    /* Contact hover distance */
+#define ABS_MT_TRACKING_ID  0x39	/* Unique ID of initiated contact */
+#define ABS_MT_PRESSURE     0x3a	/* Pressure on contact area */
+#define ABS_MT_DISTANCE     0x3b	/* Contact hover distance */
 
 #define ABS_MAX			0x3f
 #define ABS_CNT			(ABS_MAX+1)
@@ -667,16 +667,16 @@ struct input_absinfo {
  * Switch events
  */
 
-#define SW_LID			0x00  /* set = lid shut */
-#define SW_TABLET_MODE		0x01  /* set = tablet mode */
-#define SW_HEADPHONE_INSERT	0x02  /* set = inserted */
-#define SW_RFKILL_ALL		0x03  /* rfkill master switch, type "any"
-					 set = radio enabled */
+#define SW_LID			0x00	/* set = lid shut */
+#define SW_TABLET_MODE		0x01	/* set = tablet mode */
+#define SW_HEADPHONE_INSERT	0x02	/* set = inserted */
+#define SW_RFKILL_ALL		0x03	/* rfkill master switch, type "any"
+					   set = radio enabled */
 #define SW_RADIO		SW_RFKILL_ALL	/* deprecated */
-#define SW_MICROPHONE_INSERT	0x04  /* set = inserted */
-#define SW_DOCK			0x05  /* set = plugged into dock */
-#define SW_LINEOUT_INSERT	0x06  /* set = inserted */
-#define SW_JACK_PHYSICAL_INSERT 0x07  /* set = mechanical switch set */
+#define SW_MICROPHONE_INSERT	0x04	/* set = inserted */
+#define SW_DOCK			0x05	/* set = plugged into dock */
+#define SW_LINEOUT_INSERT	0x06	/* set = inserted */
+#define SW_JACK_PHYSICAL_INSERT 0x07	/* set = mechanical switch set */
 #define SW_MAX			0x0f
 #define SW_CNT			(SW_MAX+1)
 
@@ -940,7 +940,7 @@ struct ff_effect {
 		struct ff_constant_effect constant;
 		struct ff_ramp_effect ramp;
 		struct ff_periodic_effect periodic;
-		struct ff_condition_effect condition[2]; /* One for each axis */
+		struct ff_condition_effect condition[2];	/* One for each axis */
 		struct ff_rumble_effect rumble;
 	} u;
 };
@@ -1088,8 +1088,8 @@ struct input_dev {
 	unsigned int keycodemax;
 	unsigned int keycodesize;
 	void *keycode;
-	int (*setkeycode)(struct input_dev *dev, int scancode, int keycode);
-	int (*getkeycode)(struct input_dev *dev, int scancode, int *keycode);
+	int (*setkeycode) (struct input_dev * dev, int scancode, int keycode);
+	int (*getkeycode) (struct input_dev * dev, int scancode, int *keycode);
 
 	struct ff_device *ff;
 
@@ -1111,10 +1111,11 @@ struct input_dev {
 	int absfuzz[ABS_MAX + 1];
 	int absflat[ABS_MAX + 1];
 
-	int (*open)(struct input_dev *dev);
-	void (*close)(struct input_dev *dev);
-	int (*flush)(struct input_dev *dev, struct file *file);
-	int (*event)(struct input_dev *dev, unsigned int type, unsigned int code, int value);
+	int (*open) (struct input_dev * dev);
+	void (*close) (struct input_dev * dev);
+	int (*flush) (struct input_dev * dev, struct file * file);
+	int (*event) (struct input_dev * dev, unsigned int type,
+		      unsigned int code, int value);
 
 	struct input_handle *grab;
 
@@ -1126,8 +1127,8 @@ struct input_dev {
 
 	struct device dev;
 
-	struct list_head	h_list;
-	struct list_head	node;
+	struct list_head h_list;
+	struct list_head node;
 };
 #define to_input_dev(d) container_of(d, struct input_dev, dev)
 
@@ -1216,10 +1217,12 @@ struct input_handler {
 
 	void *private;
 
-	void (*event)(struct input_handle *handle, unsigned int type, unsigned int code, int value);
-	int (*connect)(struct input_handler *handler, struct input_dev *dev, const struct input_device_id *id);
-	void (*disconnect)(struct input_handle *handle);
-	void (*start)(struct input_handle *handle);
+	void (*event) (struct input_handle * handle, unsigned int type,
+		       unsigned int code, int value);
+	int (*connect) (struct input_handler * handler, struct input_dev * dev,
+			const struct input_device_id * id);
+	void (*disconnect) (struct input_handle * handle);
+	void (*start) (struct input_handle * handle);
 
 	const struct file_operations *fops;
 	int minor;
@@ -1228,8 +1231,8 @@ struct input_handler {
 	const struct input_device_id *id_table;
 	const struct input_device_id *blacklist;
 
-	struct list_head	h_list;
-	struct list_head	node;
+	struct list_head h_list;
+	struct list_head node;
 };
 
 /**
@@ -1254,8 +1257,8 @@ struct input_handle {
 	struct input_dev *dev;
 	struct input_handler *handler;
 
-	struct list_head	d_node;
-	struct list_head	h_node;
+	struct list_head d_node;
+	struct list_head h_node;
 };
 
 struct input_dev *input_allocate_device(void);
@@ -1297,34 +1300,41 @@ void input_release_device(struct input_handle *);
 int input_open_device(struct input_handle *);
 void input_close_device(struct input_handle *);
 
-int input_flush_device(struct input_handle* handle, struct file* file);
+int input_flush_device(struct input_handle *handle, struct file *file);
 
-void input_event(struct input_dev *dev, unsigned int type, unsigned int code, int value);
-void input_inject_event(struct input_handle *handle, unsigned int type, unsigned int code, int value);
+void input_event(struct input_dev *dev, unsigned int type, unsigned int code,
+		 int value);
+void input_inject_event(struct input_handle *handle, unsigned int type,
+			unsigned int code, int value);
 
-static inline void input_report_key(struct input_dev *dev, unsigned int code, int value)
+static inline void input_report_key(struct input_dev *dev, unsigned int code,
+				    int value)
 {
-	input_event(dev, EV_KEY, code, !!value);
+	input_event(dev, EV_KEY, code, ! !value);
 }
 
-static inline void input_report_rel(struct input_dev *dev, unsigned int code, int value)
+static inline void input_report_rel(struct input_dev *dev, unsigned int code,
+				    int value)
 {
 	input_event(dev, EV_REL, code, value);
 }
 
-static inline void input_report_abs(struct input_dev *dev, unsigned int code, int value)
+static inline void input_report_abs(struct input_dev *dev, unsigned int code,
+				    int value)
 {
 	input_event(dev, EV_ABS, code, value);
 }
 
-static inline void input_report_ff_status(struct input_dev *dev, unsigned int code, int value)
+static inline void input_report_ff_status(struct input_dev *dev,
+					  unsigned int code, int value)
 {
 	input_event(dev, EV_FF_STATUS, code, value);
 }
 
-static inline void input_report_switch(struct input_dev *dev, unsigned int code, int value)
+static inline void input_report_switch(struct input_dev *dev, unsigned int code,
+				       int value)
 {
-	input_event(dev, EV_SW, code, !!value);
+	input_event(dev, EV_SW, code, ! !value);
 }
 
 static inline void input_sync(struct input_dev *dev)
@@ -1337,9 +1347,11 @@ static inline void input_mt_sync(struct input_dev *dev)
 	input_event(dev, EV_SYN, SYN_MT_REPORT, 0);
 }
 
-void input_set_capability(struct input_dev *dev, unsigned int type, unsigned int code);
+void input_set_capability(struct input_dev *dev, unsigned int type,
+			  unsigned int code);
 
-static inline void input_set_abs_params(struct input_dev *dev, int axis, int min, int max, int fuzz, int flat)
+static inline void input_set_abs_params(struct input_dev *dev, int axis,
+					int min, int max, int fuzz, int flat)
 {
 	dev->absmin[axis] = min;
 	dev->absmax[axis] = max;
@@ -1378,15 +1390,15 @@ extern struct class input_class;
  * bits.
  */
 struct ff_device {
-	int (*upload)(struct input_dev *dev, struct ff_effect *effect,
-		      struct ff_effect *old);
-	int (*erase)(struct input_dev *dev, int effect_id);
+	int (*upload) (struct input_dev * dev, struct ff_effect * effect,
+		       struct ff_effect * old);
+	int (*erase) (struct input_dev * dev, int effect_id);
 
-	int (*playback)(struct input_dev *dev, int effect_id, int value);
-	void (*set_gain)(struct input_dev *dev, u16 gain);
-	void (*set_autocenter)(struct input_dev *dev, u16 magnitude);
+	int (*playback) (struct input_dev * dev, int effect_id, int value);
+	void (*set_gain) (struct input_dev * dev, u16 gain);
+	void (*set_autocenter) (struct input_dev * dev, u16 magnitude);
 
-	void (*destroy)(struct ff_device *);
+	void (*destroy) (struct ff_device *);
 
 	void *private;
 
@@ -1402,13 +1414,16 @@ struct ff_device {
 int input_ff_create(struct input_dev *dev, int max_effects);
 void input_ff_destroy(struct input_dev *dev);
 
-int input_ff_event(struct input_dev *dev, unsigned int type, unsigned int code, int value);
+int input_ff_event(struct input_dev *dev, unsigned int type, unsigned int code,
+		   int value);
 
-int input_ff_upload(struct input_dev *dev, struct ff_effect *effect, struct file *file);
+int input_ff_upload(struct input_dev *dev, struct ff_effect *effect,
+		    struct file *file);
 int input_ff_erase(struct input_dev *dev, int effect_id, struct file *file);
 
 int input_ff_create_memless(struct input_dev *dev, void *data,
-		int (*play_effect)(struct input_dev *, void *, struct ff_effect *));
+			    int (*play_effect) (struct input_dev *, void *,
+						struct ff_effect *));
 
 #endif
 #endif

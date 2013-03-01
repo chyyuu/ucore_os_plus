@@ -39,7 +39,7 @@
  *
  * Its size is CFAG12864B_SIZE.
  */
-extern unsigned char * cfag12864b_buffer;
+extern unsigned char *cfag12864b_buffer;
 
 /*
  * Get the refresh rate of the LCD
@@ -79,4 +79,3 @@ extern unsigned char cfag12864b_isenabled(void);
 extern unsigned char cfag12864b_isinited(void);
 
 #endif /* _CFAG12864B_H_ */
-

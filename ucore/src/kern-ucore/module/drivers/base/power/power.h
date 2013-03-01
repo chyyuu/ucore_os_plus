@@ -21,8 +21,13 @@ extern void device_pm_remove(struct device *);
 
 #else /* CONFIG_PM_SLEEP */
 
-static inline void device_pm_add(struct device *dev) {}
-static inline void device_pm_remove(struct device *dev) {}
+static inline void device_pm_add(struct device *dev)
+{
+}
+
+static inline void device_pm_remove(struct device *dev)
+{
+}
 
 #endif
 

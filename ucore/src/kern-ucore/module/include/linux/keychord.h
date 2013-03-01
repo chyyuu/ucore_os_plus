@@ -49,4 +49,4 @@ struct input_keychord {
 	__u16 keycodes[];
 };
 
-#endif	/* __LINUX_KEYCHORD_H_ */
+#endif /* __LINUX_KEYCHORD_H_ */

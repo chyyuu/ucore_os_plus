@@ -13,12 +13,12 @@
 #include <stdlib.h>
 #include <kio.h>
 
-void
-check_mm_swap(void) {
-    kprintf("check_mm_swap() not supported!\n");
+void check_mm_swap(void)
+{
+	kprintf("check_mm_swap() not supported!\n");
 }
 
-void
-check_mm_shm_swap(void) {
-    kprintf("check_mm_shm_swap() not supported!\n");
+void check_mm_shm_swap(void)
+{
+	kprintf("check_mm_shm_swap() not supported!\n");
 }

@@ -14,7 +14,6 @@
 #ifndef _INET_HASHTABLES_H
 #define _INET_HASHTABLES_H
 
-
 #include <linux/interrupt.h>
 #include <linux/ip.h>
 #include <linux/ipv6.h>
@@ -78,12 +77,12 @@ struct inet_ehash_bucket {
  */
 struct inet_bind_bucket {
 #ifdef CONFIG_NET_NS
-	struct net		*ib_net;
+	struct net *ib_net;
 #endif
-	unsigned short		port;
-	signed short		fastreuse;
-	struct hlist_node	node;
-	struct hlist_head	owners;
+	unsigned short port;
+	signed short fastreuse;
+	struct hlist_node node;
+	struct hlist_head owners;
 };
 
 static inline struct net *ib_net(struct inet_bind_bucket *ib)
@@ -95,8 +94,8 @@ static inline struct net *ib_net(struct inet_bind_bucket *ib)
 	hlist_for_each_entry(tb, node, head, node)
 
 struct inet_bind_hashbucket {
-	spinlock_t		lock;
-	struct hlist_head	chain;
+	spinlock_t lock;
+	struct hlist_head chain;
 };
 
 /*
@@ -107,8 +106,8 @@ struct inet_bind_hashbucket {
  */
 #define LISTENING_NULLS_BASE (1U << 29)
 struct inet_listen_hashbucket {
-	spinlock_t		lock;
-	struct hlist_nulls_head	head;
+	spinlock_t lock;
+	struct hlist_nulls_head head;
 };
 
 /* This is for listening sockets, thus all sockets which possess wildcards. */
@@ -122,20 +121,20 @@ struct inet_hashinfo {
 	 *
 	 * TIME_WAIT sockets use a separate chain (twchain).
 	 */
-	struct inet_ehash_bucket	*ehash;
-	spinlock_t			*ehash_locks;
-	unsigned int			ehash_size;
-	unsigned int			ehash_locks_mask;
+	struct inet_ehash_bucket *ehash;
+	spinlock_t *ehash_locks;
+	unsigned int ehash_size;
+	unsigned int ehash_locks_mask;
 
 	/* Ok, let's try this, I give up, we do need a local binding
 	 * TCP hash as well as the others for fast bind/connect.
 	 */
-	struct inet_bind_hashbucket	*bhash;
+	struct inet_bind_hashbucket *bhash;
 
-	unsigned int			bhash_size;
+	unsigned int bhash_size;
 	/* Note : 4 bytes padding on 64 bit arches */
 
-	struct kmem_cache		*bind_bucket_cachep;
+	struct kmem_cache *bind_bucket_cachep;
 
 	/* All the above members are written once at bootup and
 	 * never written again _or_ are predominantly read-access.
@@ -147,21 +146,20 @@ struct inet_hashinfo {
 	 * table where wildcard'd TCP sockets can exist.  Hash function here
 	 * is just local port number.
 	 */
-	struct inet_listen_hashbucket	listening_hash[INET_LHTABLE_SIZE]
-					____cacheline_aligned_in_smp;
+	struct inet_listen_hashbucket listening_hash[INET_LHTABLE_SIZE]
+	    ____cacheline_aligned_in_smp;
 
 };
 
-static inline struct inet_ehash_bucket *inet_ehash_bucket(
-	struct inet_hashinfo *hashinfo,
-	unsigned int hash)
+static inline struct inet_ehash_bucket *inet_ehash_bucket(struct inet_hashinfo
+							  *hashinfo,
+							  unsigned int hash)
 {
 	return &hashinfo->ehash[hash & (hashinfo->ehash_size - 1)];
 }
 
-static inline spinlock_t *inet_ehash_lockp(
-	struct inet_hashinfo *hashinfo,
-	unsigned int hash)
+static inline spinlock_t *inet_ehash_lockp(struct inet_hashinfo *hashinfo,
+					   unsigned int hash)
 {
 	return &hashinfo->ehash_locks[hash & hashinfo->ehash_locks_mask];
 }
@@ -185,11 +183,12 @@ static inline int inet_ehash_locks_alloc(struct inet_hashinfo *hashinfo)
 	if (sizeof(spinlock_t) != 0) {
 #ifdef CONFIG_NUMA
 		if (size * sizeof(spinlock_t) > PAGE_SIZE)
-			hashinfo->ehash_locks = vmalloc(size * sizeof(spinlock_t));
+			hashinfo->ehash_locks =
+			    vmalloc(size * sizeof(spinlock_t));
 		else
 #endif
-		hashinfo->ehash_locks =	kmalloc(size * sizeof(spinlock_t),
-						GFP_KERNEL);
+			hashinfo->ehash_locks =
+			    kmalloc(size * sizeof(spinlock_t), GFP_KERNEL);
 		if (!hashinfo->ehash_locks)
 			return ENOMEM;
 		for (i = 0; i < size; i++)
@@ -204,26 +203,28 @@ static inline void inet_ehash_locks_free(struct inet_hashinfo *hashinfo)
 	if (hashinfo->ehash_locks) {
 #ifdef CONFIG_NUMA
 		unsigned int size = (hashinfo->ehash_locks_mask + 1) *
-							sizeof(spinlock_t);
+		    sizeof(spinlock_t);
 		if (size > PAGE_SIZE)
 			vfree(hashinfo->ehash_locks);
 		else
 #endif
-		kfree(hashinfo->ehash_locks);
+			kfree(hashinfo->ehash_locks);
 		hashinfo->ehash_locks = NULL;
 	}
 }
 
-extern struct inet_bind_bucket *
-		    inet_bind_bucket_create(struct kmem_cache *cachep,
-					    struct net *net,
-					    struct inet_bind_hashbucket *head,
-					    const unsigned short snum);
+extern struct inet_bind_bucket *inet_bind_bucket_create(struct kmem_cache
+							*cachep,
+							struct net *net, struct
+							inet_bind_hashbucket
+							*head,
+							const unsigned short
+							snum);
 extern void inet_bind_bucket_destroy(struct kmem_cache *cachep,
 				     struct inet_bind_bucket *tb);
 
 static inline int inet_bhashfn(struct net *net,
-		const __u16 lport, const int bhash_size)
+			       const __u16 lport, const int bhash_size)
 {
 	return (lport + net_hash_mix(net)) & (bhash_size - 1);
 }
@@ -260,8 +261,9 @@ extern struct sock *__inet_lookup_listener(struct net *net,
 					   const int dif);
 
 static inline struct sock *inet_lookup_listener(struct net *net,
-		struct inet_hashinfo *hashinfo,
-		__be32 daddr, __be16 dport, int dif)
+						struct inet_hashinfo *hashinfo,
+						__be32 daddr, __be16 dport,
+						int dif)
 {
 	return __inet_lookup_listener(net, hashinfo, daddr, ntohs(dport), dif);
 }
@@ -329,16 +331,20 @@ typedef __u64 __bitwise __addrpair;
  *
  * Local BH must be disabled here.
  */
-extern struct sock * __inet_lookup_established(struct net *net,
-		struct inet_hashinfo *hashinfo,
-		const __be32 saddr, const __be16 sport,
-		const __be32 daddr, const u16 hnum, const int dif);
+extern struct sock *__inet_lookup_established(struct net *net,
+					      struct inet_hashinfo *hashinfo,
+					      const __be32 saddr,
+					      const __be16 sport,
+					      const __be32 daddr,
+					      const u16 hnum, const int dif);
 
-static inline struct sock *
-	inet_lookup_established(struct net *net, struct inet_hashinfo *hashinfo,
-				const __be32 saddr, const __be16 sport,
-				const __be32 daddr, const __be16 dport,
-				const int dif)
+static inline struct sock *inet_lookup_established(struct net *net, struct inet_hashinfo
+						   *hashinfo,
+						   const __be32 saddr,
+						   const __be16 sport,
+						   const __be32 daddr,
+						   const __be16 dport,
+						   const int dif)
 {
 	return __inet_lookup_established(net, hashinfo, saddr, sport, daddr,
 					 ntohs(dport), dif);
@@ -352,7 +358,8 @@ static inline struct sock *__inet_lookup(struct net *net,
 {
 	u16 hnum = ntohs(dport);
 	struct sock *sk = __inet_lookup_established(net, hashinfo,
-				saddr, sport, daddr, hnum, dif);
+						    saddr, sport, daddr, hnum,
+						    dif);
 
 	return sk ? : __inet_lookup_listener(net, hashinfo, daddr, hnum, dif);
 }
@@ -389,10 +396,14 @@ static inline struct sock *__inet_lookup_skb(struct inet_hashinfo *hashinfo,
 }
 
 extern int __inet_hash_connect(struct inet_timewait_death_row *death_row,
-		struct sock *sk, u32 port_offset,
-		int (*check_established)(struct inet_timewait_death_row *,
-			struct sock *, __u16, struct inet_timewait_sock **),
-			       void (*hash)(struct sock *sk));
+			       struct sock *sk, u32 port_offset,
+			       int (*check_established) (struct
+							 inet_timewait_death_row
+							 *, struct sock *,
+							 __u16,
+							 struct
+							 inet_timewait_sock **),
+			       void (*hash) (struct sock * sk));
 extern int inet_hash_connect(struct inet_timewait_death_row *death_row,
 			     struct sock *sk);
 #endif /* _INET_HASHTABLES_H */

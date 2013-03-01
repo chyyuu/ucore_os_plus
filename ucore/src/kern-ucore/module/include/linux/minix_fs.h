@@ -22,8 +22,8 @@
 
 #define MINIX_I_MAP_SLOTS	8
 #define MINIX_Z_MAP_SLOTS	64
-#define MINIX_VALID_FS		0x0001		/* Clean fs. */
-#define MINIX_ERROR_FS		0x0002		/* fs has errors. */
+#define MINIX_VALID_FS		0x0001	/* Clean fs. */
+#define MINIX_ERROR_FS		0x0002	/* fs has errors. */
 
 #define MINIX_INODES_PER_BLOCK ((BLOCK_SIZE)/(sizeof (struct minix_inode)))
 
@@ -36,8 +36,8 @@ struct minix_inode {
 	__u16 i_uid;
 	__u32 i_size;
 	__u32 i_time;
-	__u8  i_gid;
-	__u8  i_nlinks;
+	__u8 i_gid;
+	__u8 i_nlinks;
 	__u16 i_zone[9];
 };
 
@@ -91,7 +91,7 @@ struct minix3_super_block {
 	__u16 s_magic;
 	__u16 s_pad2;
 	__u16 s_blocksize;
-	__u8  s_disk_version;
+	__u8 s_disk_version;
 };
 
 struct minix_dir_entry {

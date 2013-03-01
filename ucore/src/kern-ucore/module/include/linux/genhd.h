@@ -39,19 +39,19 @@ enum {
 	LINUX_LVM_PARTITION = 0x8e,
 	LINUX_RAID_PARTITION = 0xfd,	/* autodetect RAID partition */
 
-	SOLARIS_X86_PARTITION =	LINUX_SWAP_PARTITION,
+	SOLARIS_X86_PARTITION = LINUX_SWAP_PARTITION,
 	NEW_SOLARIS_X86_PARTITION = 0xbf,
 
 	DM6_AUX1PARTITION = 0x51,	/* no DDO:  use xlated geom */
 	DM6_AUX3PARTITION = 0x53,	/* no DDO:  use xlated geom */
-	DM6_PARTITION =	0x54,		/* has DDO: use xlated geom & offset */
-	EZD_PARTITION =	0x55,		/* EZ-DRIVE */
+	DM6_PARTITION = 0x54,	/* has DDO: use xlated geom & offset */
+	EZD_PARTITION = 0x55,	/* EZ-DRIVE */
 
 	FREEBSD_PARTITION = 0xa5,	/* FreeBSD Partition ID */
 	OPENBSD_PARTITION = 0xa6,	/* OpenBSD Partition ID */
 	NETBSD_PARTITION = 0xa9,	/* NetBSD Partition ID */
-	BSDI_PARTITION = 0xb7,		/* BSDI Partition ID */
-	MINIX_PARTITION = 0x81,		/* Minix Partition ID */
+	BSDI_PARTITION = 0xb7,	/* BSDI Partition ID */
+	MINIX_PARTITION = 0x81,	/* Minix Partition ID */
 	UNIXWARE_PARTITION = 0x63,	/* Same as GNU_HURD and SCO Unix */
 };
 
@@ -66,17 +66,17 @@ enum {
 #include <linux/workqueue.h>
 
 struct partition {
-	unsigned char boot_ind;		/* 0x80 - active */
-	unsigned char head;		/* starting head */
-	unsigned char sector;		/* starting sector */
-	unsigned char cyl;		/* starting cylinder */
-	unsigned char sys_ind;		/* What partition type */
-	unsigned char end_head;		/* end head */
+	unsigned char boot_ind;	/* 0x80 - active */
+	unsigned char head;	/* starting head */
+	unsigned char sector;	/* starting sector */
+	unsigned char cyl;	/* starting cylinder */
+	unsigned char sys_ind;	/* What partition type */
+	unsigned char end_head;	/* end head */
 	unsigned char end_sector;	/* end sector */
-	unsigned char end_cyl;		/* end cylinder */
+	unsigned char end_cyl;	/* end cylinder */
 	__le32 start_sect;	/* starting sector counting from 0 */
-	__le32 nr_sects;		/* nr of sectors in partition */
-} __attribute__((packed));
+	__le32 nr_sects;	/* nr of sectors in partition */
+} __attribute__ ((packed));
 
 struct disk_stats {
 	unsigned long sectors[2];	/* READs and WRITEs */
@@ -86,7 +86,7 @@ struct disk_stats {
 	unsigned long io_ticks;
 	unsigned long time_in_queue;
 };
-	
+
 struct hd_struct {
 	sector_t start_sect;
 	sector_t nr_sects;
@@ -112,7 +112,7 @@ struct hd_struct {
 #define GENHD_FL_CD				8
 #define GENHD_FL_UP				16
 #define GENHD_FL_SUPPRESS_PARTITION_INFO	32
-#define GENHD_FL_EXT_DEVT			64 /* allow extended devt */
+#define GENHD_FL_EXT_DEVT			64	/* allow extended devt */
 
 #define BLK_SCSI_MAX_CMDS	(256)
 #define BLK_SCSI_CMD_PER_LONG	(BLK_SCSI_MAX_CMDS / (sizeof(long) * 8))
@@ -134,10 +134,10 @@ struct gendisk {
 	/* major, first_minor and minors are input parameters only,
 	 * don't use directly.  Use disk_devt() and disk_max_parts().
 	 */
-	int major;			/* major number of driver */
+	int major;		/* major number of driver */
 	int first_minor;
-	int minors;                     /* maximum number of minors, =1 for
-                                         * disks that can't be partitioned. */
+	int minors;		/* maximum number of minors, =1 for
+				 * disks that can't be partitioned. */
 
 	char disk_name[DISK_NAME_LEN];	/* name of major driver */
 
@@ -154,12 +154,12 @@ struct gendisk {
 	void *private_data;
 
 	int flags;
-	struct device *driverfs_dev;  // FIXME: remove
+	struct device *driverfs_dev;	// FIXME: remove
 	struct kobject *slave_dir;
 
 	struct timer_rand_state *random;
 
-	atomic_t sync_io;		/* RAID */
+	atomic_t sync_io;	/* RAID */
 	struct work_struct async_notify;
 #ifdef  CONFIG_BLK_DEV_INTEGRITY
 	struct blk_integrity *integrity;
@@ -211,19 +211,19 @@ static inline void disk_put_part(struct hd_struct *part)
 /*
  * Smarter partition iterator without context limits.
  */
-#define DISK_PITER_REVERSE	(1 << 0) /* iterate in the reverse direction */
-#define DISK_PITER_INCL_EMPTY	(1 << 1) /* include 0-sized parts */
-#define DISK_PITER_INCL_PART0	(1 << 2) /* include partition 0 */
+#define DISK_PITER_REVERSE	(1 << 0)	/* iterate in the reverse direction */
+#define DISK_PITER_INCL_EMPTY	(1 << 1)	/* include 0-sized parts */
+#define DISK_PITER_INCL_PART0	(1 << 2)	/* include partition 0 */
 
 struct disk_part_iter {
-	struct gendisk		*disk;
-	struct hd_struct	*part;
-	int			idx;
-	unsigned int		flags;
+	struct gendisk *disk;
+	struct hd_struct *part;
+	int idx;
+	unsigned int flags;
 };
 
 extern void disk_part_iter_init(struct disk_part_iter *piter,
-				 struct gendisk *disk, unsigned int flags);
+				struct gendisk *disk, unsigned int flags);
 extern struct hd_struct *disk_part_iter_next(struct disk_part_iter *piter);
 extern void disk_part_iter_exit(struct disk_part_iter *piter);
 
@@ -263,8 +263,8 @@ static inline void part_stat_set_all(struct hd_struct *part, int value)
 	int i;
 
 	for_each_possible_cpu(i)
-		memset(per_cpu_ptr(part->dkstats, i), value,
-				sizeof(struct disk_stats));
+	    memset(per_cpu_ptr(part->dkstats, i), value,
+		   sizeof(struct disk_stats));
 }
 
 static inline int init_part_stats(struct hd_struct *part)
@@ -360,10 +360,12 @@ static inline sector_t get_start_sect(struct block_device *bdev)
 {
 	return bdev->bd_part->start_sect;
 }
+
 static inline sector_t get_capacity(struct gendisk *disk)
 {
 	return disk->part0.nr_sects;
 }
+
 static inline void set_capacity(struct gendisk *disk, sector_t size)
 {
 	disk->part0.nr_sects = size;
@@ -383,16 +385,15 @@ struct solaris_x86_slice {
 
 struct solaris_x86_vtoc {
 	unsigned int v_bootinfo[3];	/* info needed by mboot (unsupported) */
-	__le32 v_sanity;		/* to verify vtoc sanity */
-	__le32 v_version;		/* layout version */
-	char	v_volume[8];		/* volume name */
-	__le16	v_sectorsz;		/* sector size in bytes */
-	__le16	v_nparts;		/* number of partitions */
+	__le32 v_sanity;	/* to verify vtoc sanity */
+	__le32 v_version;	/* layout version */
+	char v_volume[8];	/* volume name */
+	__le16 v_sectorsz;	/* sector size in bytes */
+	__le16 v_nparts;	/* number of partitions */
 	unsigned int v_reserved[10];	/* free space */
-	struct solaris_x86_slice
-		v_slice[SOLARIS_X86_NUMSLICE]; /* slice headers */
-	unsigned int timestamp[SOLARIS_X86_NUMSLICE]; /* timestamp (unsupported) */
-	char	v_asciilabel[128];	/* for compatibility */
+	struct solaris_x86_slice v_slice[SOLARIS_X86_NUMSLICE];	/* slice headers */
+	unsigned int timestamp[SOLARIS_X86_NUMSLICE];	/* timestamp (unsupported) */
+	char v_asciilabel[128];	/* for compatibility */
 };
 
 #endif /* CONFIG_SOLARIS_X86_PARTITION */
@@ -410,49 +411,49 @@ struct solaris_x86_vtoc {
 #define OPENBSD_MAXPARTITIONS	16
 #define BSD_FS_UNUSED		0	/* disklabel unused partition entry ID */
 struct bsd_disklabel {
-	__le32	d_magic;		/* the magic number */
-	__s16	d_type;			/* drive type */
-	__s16	d_subtype;		/* controller/d_type specific */
-	char	d_typename[16];		/* type name, e.g. "eagle" */
-	char	d_packname[16];			/* pack identifier */ 
-	__u32	d_secsize;		/* # of bytes per sector */
-	__u32	d_nsectors;		/* # of data sectors per track */
-	__u32	d_ntracks;		/* # of tracks per cylinder */
-	__u32	d_ncylinders;		/* # of data cylinders per unit */
-	__u32	d_secpercyl;		/* # of data sectors per cylinder */
-	__u32	d_secperunit;		/* # of data sectors per unit */
-	__u16	d_sparespertrack;	/* # of spare sectors per track */
-	__u16	d_sparespercyl;		/* # of spare sectors per cylinder */
-	__u32	d_acylinders;		/* # of alt. cylinders per unit */
-	__u16	d_rpm;			/* rotational speed */
-	__u16	d_interleave;		/* hardware sector interleave */
-	__u16	d_trackskew;		/* sector 0 skew, per track */
-	__u16	d_cylskew;		/* sector 0 skew, per cylinder */
-	__u32	d_headswitch;		/* head switch time, usec */
-	__u32	d_trkseek;		/* track-to-track seek, usec */
-	__u32	d_flags;		/* generic flags */
+	__le32 d_magic;		/* the magic number */
+	__s16 d_type;		/* drive type */
+	__s16 d_subtype;	/* controller/d_type specific */
+	char d_typename[16];	/* type name, e.g. "eagle" */
+	char d_packname[16];	/* pack identifier */
+	__u32 d_secsize;	/* # of bytes per sector */
+	__u32 d_nsectors;	/* # of data sectors per track */
+	__u32 d_ntracks;	/* # of tracks per cylinder */
+	__u32 d_ncylinders;	/* # of data cylinders per unit */
+	__u32 d_secpercyl;	/* # of data sectors per cylinder */
+	__u32 d_secperunit;	/* # of data sectors per unit */
+	__u16 d_sparespertrack;	/* # of spare sectors per track */
+	__u16 d_sparespercyl;	/* # of spare sectors per cylinder */
+	__u32 d_acylinders;	/* # of alt. cylinders per unit */
+	__u16 d_rpm;		/* rotational speed */
+	__u16 d_interleave;	/* hardware sector interleave */
+	__u16 d_trackskew;	/* sector 0 skew, per track */
+	__u16 d_cylskew;	/* sector 0 skew, per cylinder */
+	__u32 d_headswitch;	/* head switch time, usec */
+	__u32 d_trkseek;	/* track-to-track seek, usec */
+	__u32 d_flags;		/* generic flags */
 #define NDDATA 5
-	__u32	d_drivedata[NDDATA];	/* drive-type specific information */
+	__u32 d_drivedata[NDDATA];	/* drive-type specific information */
 #define NSPARE 5
-	__u32	d_spare[NSPARE];	/* reserved for future use */
-	__le32	d_magic2;		/* the magic number (again) */
-	__le16	d_checksum;		/* xor of data incl. partitions */
+	__u32 d_spare[NSPARE];	/* reserved for future use */
+	__le32 d_magic2;	/* the magic number (again) */
+	__le16 d_checksum;	/* xor of data incl. partitions */
 
-			/* filesystem and partition information: */
-	__le16	d_npartitions;		/* number of partitions in following */
-	__le32	d_bbsize;		/* size of boot area at sn0, bytes */
-	__le32	d_sbsize;		/* max size of fs superblock, bytes */
-	struct	bsd_partition {		/* the partition table */
-		__le32	p_size;		/* number of sectors in partition */
-		__le32	p_offset;	/* starting sector */
-		__le32	p_fsize;	/* filesystem basic fragment size */
-		__u8	p_fstype;	/* filesystem type, see below */
-		__u8	p_frag;		/* filesystem fragments per block */
-		__le16	p_cpg;		/* filesystem cylinders per group */
+	/* filesystem and partition information: */
+	__le16 d_npartitions;	/* number of partitions in following */
+	__le32 d_bbsize;	/* size of boot area at sn0, bytes */
+	__le32 d_sbsize;	/* max size of fs superblock, bytes */
+	struct bsd_partition {	/* the partition table */
+		__le32 p_size;	/* number of sectors in partition */
+		__le32 p_offset;	/* starting sector */
+		__le32 p_fsize;	/* filesystem basic fragment size */
+		__u8 p_fstype;	/* filesystem type, see below */
+		__u8 p_frag;	/* filesystem fragments per block */
+		__le16 p_cpg;	/* filesystem cylinders per group */
 	} d_partitions[BSD_MAXPARTITIONS];	/* actually may be more */
 };
 
-#endif	/* CONFIG_BSD_DISKLABEL */
+#endif /* CONFIG_BSD_DISKLABEL */
 
 #ifdef CONFIG_UNIXWARE_DISKLABEL
 /*
@@ -463,69 +464,68 @@ struct bsd_disklabel {
 #define UNIXWARE_DISKMAGIC     (0xCA5E600DUL)	/* The disk magic number */
 #define UNIXWARE_DISKMAGIC2    (0x600DDEEEUL)	/* The slice table magic nr */
 #define UNIXWARE_NUMSLICE      16
-#define UNIXWARE_FS_UNUSED     0		/* Unused slice entry ID */
+#define UNIXWARE_FS_UNUSED     0	/* Unused slice entry ID */
 
 struct unixware_slice {
-	__le16   s_label;	/* label */
-	__le16   s_flags;	/* permission flags */
-	__le32   start_sect;	/* starting sector */
-	__le32   nr_sects;	/* number of sectors in slice */
+	__le16 s_label;		/* label */
+	__le16 s_flags;		/* permission flags */
+	__le32 start_sect;	/* starting sector */
+	__le32 nr_sects;	/* number of sectors in slice */
 };
 
 struct unixware_disklabel {
-	__le32   d_type;               	/* drive type */
-	__le32   d_magic;                /* the magic number */
-	__le32   d_version;              /* version number */
-	char    d_serial[12];           /* serial number of the device */
-	__le32   d_ncylinders;           /* # of data cylinders per device */
-	__le32   d_ntracks;              /* # of tracks per cylinder */
-	__le32   d_nsectors;             /* # of data sectors per track */
-	__le32   d_secsize;              /* # of bytes per sector */
-	__le32   d_part_start;           /* # of first sector of this partition */
-	__le32   d_unknown1[12];         /* ? */
- 	__le32	d_alt_tbl;              /* byte offset of alternate table */
- 	__le32	d_alt_len;              /* byte length of alternate table */
- 	__le32	d_phys_cyl;             /* # of physical cylinders per device */
- 	__le32	d_phys_trk;             /* # of physical tracks per cylinder */
- 	__le32	d_phys_sec;             /* # of physical sectors per track */
- 	__le32	d_phys_bytes;           /* # of physical bytes per sector */
- 	__le32	d_unknown2;             /* ? */
-	__le32   d_unknown3;             /* ? */
-	__le32	d_pad[8];               /* pad */
+	__le32 d_type;		/* drive type */
+	__le32 d_magic;		/* the magic number */
+	__le32 d_version;	/* version number */
+	char d_serial[12];	/* serial number of the device */
+	__le32 d_ncylinders;	/* # of data cylinders per device */
+	__le32 d_ntracks;	/* # of tracks per cylinder */
+	__le32 d_nsectors;	/* # of data sectors per track */
+	__le32 d_secsize;	/* # of bytes per sector */
+	__le32 d_part_start;	/* # of first sector of this partition */
+	__le32 d_unknown1[12];	/* ? */
+	__le32 d_alt_tbl;	/* byte offset of alternate table */
+	__le32 d_alt_len;	/* byte length of alternate table */
+	__le32 d_phys_cyl;	/* # of physical cylinders per device */
+	__le32 d_phys_trk;	/* # of physical tracks per cylinder */
+	__le32 d_phys_sec;	/* # of physical sectors per track */
+	__le32 d_phys_bytes;	/* # of physical bytes per sector */
+	__le32 d_unknown2;	/* ? */
+	__le32 d_unknown3;	/* ? */
+	__le32 d_pad[8];	/* pad */
 
 	struct unixware_vtoc {
-		__le32	v_magic;		/* the magic number */
-		__le32	v_version;		/* version number */
-		char	v_name[8];		/* volume name */
-		__le16	v_nslices;		/* # of slices */
-		__le16	v_unknown1;		/* ? */
-		__le32	v_reserved[10];		/* reserved */
-		struct unixware_slice
-			v_slice[UNIXWARE_NUMSLICE];	/* slice headers */
+		__le32 v_magic;	/* the magic number */
+		__le32 v_version;	/* version number */
+		char v_name[8];	/* volume name */
+		__le16 v_nslices;	/* # of slices */
+		__le16 v_unknown1;	/* ? */
+		__le32 v_reserved[10];	/* reserved */
+		struct unixware_slice v_slice[UNIXWARE_NUMSLICE];	/* slice headers */
 	} vtoc;
 
-};  /* 408 */
+};				/* 408 */
 
 #endif /* CONFIG_UNIXWARE_DISKLABEL */
 
 #ifdef CONFIG_MINIX_SUBPARTITION
-#   define MINIX_NR_SUBPARTITIONS  4
+#define MINIX_NR_SUBPARTITIONS  4
 #endif /* CONFIG_MINIX_SUBPARTITION */
 
 #define ADDPART_FLAG_NONE	0
 #define ADDPART_FLAG_RAID	1
 #define ADDPART_FLAG_WHOLEDISK	2
 
-extern int blk_alloc_devt(struct hd_struct *part, dev_t *devt);
+extern int blk_alloc_devt(struct hd_struct *part, dev_t * devt);
 extern void blk_free_devt(dev_t devt);
 extern dev_t blk_lookup_devt(const char *name, int partno);
-extern char *disk_name (struct gendisk *hd, int partno, char *buf);
+extern char *disk_name(struct gendisk *hd, int partno, char *buf);
 
 extern int disk_expand_part_tbl(struct gendisk *disk, int target);
 extern int rescan_partitions(struct gendisk *disk, struct block_device *bdev);
-extern struct hd_struct * __must_check add_partition(struct gendisk *disk,
-						     int partno, sector_t start,
-						     sector_t len, int flags);
+extern struct hd_struct *__must_check add_partition(struct gendisk *disk,
+						    int partno, sector_t start,
+						    sector_t len, int flags);
 extern void delete_partition(struct gendisk *, int);
 extern void printk_all_partitions(void);
 
@@ -534,10 +534,9 @@ extern struct gendisk *alloc_disk(int minors);
 extern struct kobject *get_disk(struct gendisk *disk);
 extern void put_disk(struct gendisk *disk);
 extern void blk_register_region(dev_t devt, unsigned long range,
-			struct module *module,
-			struct kobject *(*probe)(dev_t, int *, void *),
-			int (*lock)(dev_t, void *),
-			void *data);
+				struct module *module,
+				struct kobject *(*probe) (dev_t, int *, void *),
+				int (*lock) (dev_t, void *), void *data);
 extern void blk_unregister_region(dev_t devt, unsigned long range);
 
 extern ssize_t part_size_show(struct device *dev,
@@ -554,7 +553,9 @@ extern ssize_t part_fail_store(struct device *dev,
 
 #else /* CONFIG_BLOCK */
 
-static inline void printk_all_partitions(void) { }
+static inline void printk_all_partitions(void)
+{
+}
 
 static inline dev_t blk_lookup_devt(const char *name, int partno)
 {

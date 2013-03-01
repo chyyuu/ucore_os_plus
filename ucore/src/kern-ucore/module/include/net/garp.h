@@ -7,11 +7,11 @@
 #define GARP_END_MARK		0x0
 
 struct garp_pdu_hdr {
-	__be16	protocol;
+	__be16 protocol;
 };
 
 struct garp_msg_hdr {
-	u8	attrtype;
+	u8 attrtype;
 };
 
 enum garp_attr_event {
@@ -24,13 +24,13 @@ enum garp_attr_event {
 };
 
 struct garp_attr_hdr {
-	u8	len;
-	u8	event;
-	u8	data[];
+	u8 len;
+	u8 event;
+	u8 data[];
 };
 
 struct garp_skb_cb {
-	u8	cur_type;
+	u8 cur_type;
 };
 
 static inline struct garp_skb_cb *garp_cb(struct sk_buff *skb)
@@ -76,11 +76,11 @@ enum garp_action {
 };
 
 struct garp_attr {
-	struct rb_node			node;
-	enum garp_applicant_state	state;
-	u8				type;
-	u8				dlen;
-	unsigned char			data[];
+	struct rb_node node;
+	enum garp_applicant_state state;
+	u8 type;
+	u8 dlen;
+	unsigned char data[];
 };
 
 enum garp_applications {
@@ -90,39 +90,39 @@ enum garp_applications {
 #define GARP_APPLICATION_MAX	(__GARP_APPLICATION_MAX - 1)
 
 struct garp_application {
-	enum garp_applications	type;
-	unsigned int		maxattr;
-	struct stp_proto	proto;
+	enum garp_applications type;
+	unsigned int maxattr;
+	struct stp_proto proto;
 };
 
 struct garp_applicant {
-	struct garp_application	*app;
-	struct net_device	*dev;
-	struct timer_list	join_timer;
+	struct garp_application *app;
+	struct net_device *dev;
+	struct timer_list join_timer;
 
-	spinlock_t		lock;
-	struct sk_buff_head	queue;
-	struct sk_buff		*pdu;
-	struct rb_root		gid;
+	spinlock_t lock;
+	struct sk_buff_head queue;
+	struct sk_buff *pdu;
+	struct rb_root gid;
 };
 
 struct garp_port {
-	struct garp_applicant	*applicants[GARP_APPLICATION_MAX + 1];
+	struct garp_applicant *applicants[GARP_APPLICATION_MAX + 1];
 };
 
-extern int	garp_register_application(struct garp_application *app);
-extern void	garp_unregister_application(struct garp_application *app);
+extern int garp_register_application(struct garp_application *app);
+extern void garp_unregister_application(struct garp_application *app);
 
-extern int	garp_init_applicant(struct net_device *dev,
-				    struct garp_application *app);
-extern void	garp_uninit_applicant(struct net_device *dev,
-				      struct garp_application *app);
+extern int garp_init_applicant(struct net_device *dev,
+			       struct garp_application *app);
+extern void garp_uninit_applicant(struct net_device *dev,
+				  struct garp_application *app);
 
-extern int	garp_request_join(const struct net_device *dev,
-				  const struct garp_application *app,
-				  const void *data, u8 len, u8 type);
-extern void	garp_request_leave(const struct net_device *dev,
-				   const struct garp_application *app,
-				   const void *data, u8 len, u8 type);
+extern int garp_request_join(const struct net_device *dev,
+			     const struct garp_application *app,
+			     const void *data, u8 len, u8 type);
+extern void garp_request_leave(const struct net_device *dev,
+			       const struct garp_application *app,
+			       const void *data, u8 len, u8 type);
 
 #endif /* _NET_GARP_H */

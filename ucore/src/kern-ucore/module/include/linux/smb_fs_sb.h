@@ -37,8 +37,8 @@ struct smb_sb_info {
 	/* List of all smbfs superblocks */
 	struct list_head entry;
 
-        enum smb_conn_state state;
-	struct file * sock_file;
+	enum smb_conn_state state;
+	struct file *sock_file;
 	int conn_error;
 	enum smb_receive_state rstate;
 
@@ -47,7 +47,7 @@ struct smb_sb_info {
 	struct list_head recvq;
 	u16 mid;
 
-        struct smb_mount_data_kernel *mnt;
+	struct smb_mount_data_kernel *mnt;
 
 	/* Connections are counted. Each time a new socket arrives,
 	 * generation is incremented.
@@ -59,13 +59,13 @@ struct smb_sb_info {
 	int conn_complete;
 	struct semaphore sem;
 
-	unsigned char      header[SMB_HEADER_LEN + 20*2 + 2];
-	u32                header_len;
-	u32                smb_len;
-	u32                smb_read;
+	unsigned char header[SMB_HEADER_LEN + 20 * 2 + 2];
+	u32 header_len;
+	u32 smb_len;
+	u32 smb_read;
 
-        /* We use our own data_ready callback, but need the original one */
-        void *data_ready;
+	/* We use our own data_ready callback, but need the original one */
+	void *data_ready;
 
 	/* nls pointers for codepage conversions */
 	struct nls_table *remote_nls;
@@ -76,20 +76,17 @@ struct smb_sb_info {
 	struct super_block *super_block;
 };
 
-static inline int
-smb_lock_server_interruptible(struct smb_sb_info *server)
+static inline int smb_lock_server_interruptible(struct smb_sb_info *server)
 {
 	return down_interruptible(&(server->sem));
 }
 
-static inline void
-smb_lock_server(struct smb_sb_info *server)
+static inline void smb_lock_server(struct smb_sb_info *server)
 {
 	down(&(server->sem));
 }
 
-static inline void
-smb_unlock_server(struct smb_sb_info *server)
+static inline void smb_unlock_server(struct smb_sb_info *server)
 {
 	up(&(server->sem));
 }

@@ -84,6 +84,6 @@
 #define EMIFS_CCS(n)		(EMIFS_CS0_CONFIG + (4 * (n)))
 #define EMIFS_ACS(n)		(EMIFS_ACS0 + (4 * (n)))
 
-#endif	/* __ASSEMBLER__ */
+#endif /* __ASSEMBLER__ */
 
-#endif	/* __ASM_ARCH_TC_H */
+#endif /* __ASM_ARCH_TC_H */

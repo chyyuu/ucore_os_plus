@@ -22,18 +22,16 @@
  *	Try and keep these values and structures similar to BSD, especially
  *	the BPF code definitions which need to match so you can share filters
  */
- 
-struct sock_filter	/* Filter block */
-{
-	__u16	code;   /* Actual filter code */
-	__u8	jt;	/* Jump true */
-	__u8	jf;	/* Jump false */
-	__u32	k;      /* Generic multiuse field */
+
+struct sock_filter {		/* Filter block */
+	__u16 code;		/* Actual filter code */
+	__u8 jt;		/* Jump true */
+	__u8 jf;		/* Jump false */
+	__u32 k;		/* Generic multiuse field */
 };
 
-struct sock_fprog	/* Required for SO_ATTACH_FILTER. */
-{
-	unsigned short		len;	/* Number of filter blocks */
+struct sock_fprog {		/* Required for SO_ATTACH_FILTER. */
+	unsigned short len;	/* Number of filter blocks */
 	struct sock_filter __user *filter;
 };
 
@@ -128,12 +126,11 @@ struct sock_fprog	/* Required for SO_ATTACH_FILTER. */
 #define SKF_LL_OFF    (-0x200000)
 
 #ifdef __KERNEL__
-struct sk_filter
-{
-	atomic_t		refcnt;
-	unsigned int         	len;	/* Number of filter blocks */
-	struct rcu_head		rcu;
-	struct sock_filter     	insns[0];
+struct sk_filter {
+	atomic_t refcnt;
+	unsigned int len;	/* Number of filter blocks */
+	struct rcu_head rcu;
+	struct sock_filter insns[0];
 };
 
 static inline unsigned int sk_filter_len(const struct sk_filter *fp)

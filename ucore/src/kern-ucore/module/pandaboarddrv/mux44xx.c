@@ -534,7 +534,7 @@ static struct omap_mux __initdata omap4_core_muxmodes[] = {
 	_OMAP4_MUXENTRY(DPM_EMU19, 191, "dpm_emu19", "dmtimer11_pwm_evt",
 			"dsi2_te1", "gpio_191", "rfbi_data0", "dispc2_data0",
 			"hw_dbg19", "reserved"),
-	{ .reg_offset = OMAP_MUX_TERMINATOR },
+	{.reg_offset = OMAP_MUX_TERMINATOR},
 };
 
 /*
@@ -748,7 +748,7 @@ static struct omap_ball __initdata omap4_core_cbl_ball[] = {
 	_OMAP4_BALLENTRY(DPM_EMU17, "ab3", NULL),
 	_OMAP4_BALLENTRY(DPM_EMU18, "ab4", NULL),
 	_OMAP4_BALLENTRY(DPM_EMU19, "ac4", NULL),
-	{ .reg_offset = OMAP_MUX_TERMINATOR },
+	{.reg_offset = OMAP_MUX_TERMINATOR},
 };
 #else
 #define omap4_core_cbl_ball  NULL
@@ -980,7 +980,7 @@ static struct omap_mux __initdata omap4_es2_core_subset[] = {
 	_OMAP4_MUXENTRY(DPM_EMU19, 191, "dpm_emu19", "dmtimer11_pwm_evt",
 			"dsi2_te1", "gpio_191", "rfbi_data0", "dispc2_data0",
 			"hw_dbg19", "safe_mode"),
-	{ .reg_offset = OMAP_MUX_TERMINATOR },
+	{.reg_offset = OMAP_MUX_TERMINATOR},
 };
 
 /*
@@ -1194,7 +1194,7 @@ static struct omap_ball __initdata omap4_core_cbs_ball[] = {
 	_OMAP4_BALLENTRY(DPM_EMU17, "ab3", NULL),
 	_OMAP4_BALLENTRY(DPM_EMU18, "ab4", NULL),
 	_OMAP4_BALLENTRY(DPM_EMU19, "ac4", NULL),
-	{ .reg_offset = OMAP_MUX_TERMINATOR },
+	{.reg_offset = OMAP_MUX_TERMINATOR},
 };
 #else
 #define omap4_core_cbs_ball  NULL
@@ -1264,7 +1264,7 @@ static struct omap_mux __initdata omap4_wkup_muxmodes[] = {
 			NULL, NULL),
 	_OMAP4_MUXENTRY(JTAG_TDO, 0, "jtag_tdo", NULL, NULL, NULL, NULL, NULL,
 			NULL, NULL),
-	{ .reg_offset = OMAP_MUX_TERMINATOR },
+	{.reg_offset = OMAP_MUX_TERMINATOR},
 };
 
 /*
@@ -1303,14 +1303,14 @@ static struct omap_ball __initdata omap4_wkup_cbl_cbs_ball[] = {
 	_OMAP4_BALLENTRY(JTAG_TMS_TMSC, "ah1", NULL),
 	_OMAP4_BALLENTRY(JTAG_TDI, "ae1", NULL),
 	_OMAP4_BALLENTRY(JTAG_TDO, "ae2", NULL),
-	{ .reg_offset = OMAP_MUX_TERMINATOR },
+	{.reg_offset = OMAP_MUX_TERMINATOR},
 };
 #else
 #define omap4_wkup_cbl_cbs_ball  NULL
 #endif
 
 int __init omap4_mux_init(struct omap_board_mux *board_subset,
-	struct omap_board_mux *board_wkup_subset, int flags)
+			  struct omap_board_mux *board_wkup_subset, int flags)
 {
 	struct omap_ball *package_balls_core;
 	struct omap_ball *package_balls_wkup = omap4_wkup_cbl_cbs_ball;
@@ -1353,4 +1353,3 @@ int __init omap4_mux_init(struct omap_board_mux *board_subset,
 
 	return ret;
 }
-

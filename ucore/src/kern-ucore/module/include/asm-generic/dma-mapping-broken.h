@@ -8,13 +8,12 @@
 
 struct scatterlist;
 
-extern void *
-dma_alloc_coherent(struct device *dev, size_t size, dma_addr_t *dma_handle,
-		   gfp_t flag);
+extern void *dma_alloc_coherent(struct device *dev, size_t size,
+				dma_addr_t * dma_handle, gfp_t flag);
 
 extern void
 dma_free_coherent(struct device *dev, size_t size, void *cpu_addr,
-		    dma_addr_t dma_handle);
+		  dma_addr_t dma_handle);
 
 #define dma_alloc_noncoherent(d, s, h, f) dma_alloc_coherent(d, s, h, f)
 #define dma_free_noncoherent(d, s, v, h) dma_free_coherent(d, s, v, h)
@@ -60,20 +59,15 @@ dma_sync_sg_for_cpu(struct device *dev, struct scatterlist *sg, int nelems,
 #define dma_sync_single_range_for_device dma_sync_single_range_for_cpu
 #define dma_sync_sg_for_device dma_sync_sg_for_cpu
 
-extern int
-dma_mapping_error(struct device *dev, dma_addr_t dma_addr);
+extern int dma_mapping_error(struct device *dev, dma_addr_t dma_addr);
 
-extern int
-dma_supported(struct device *dev, u64 mask);
+extern int dma_supported(struct device *dev, u64 mask);
 
-extern int
-dma_set_mask(struct device *dev, u64 mask);
+extern int dma_set_mask(struct device *dev, u64 mask);
 
-extern int
-dma_get_cache_alignment(void);
+extern int dma_get_cache_alignment(void);
 
-extern int
-dma_is_consistent(struct device *dev, dma_addr_t dma_handle);
+extern int dma_is_consistent(struct device *dev, dma_addr_t dma_handle);
 
 extern void
 dma_cache_sync(struct device *dev, void *vaddr, size_t size,

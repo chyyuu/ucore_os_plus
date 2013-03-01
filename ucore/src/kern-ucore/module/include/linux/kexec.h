@@ -96,42 +96,40 @@ struct kimage {
 	unsigned long control_page;
 
 	/* Flags to indicate special processing */
-	unsigned int type : 1;
+	unsigned int type:1;
 #define KEXEC_TYPE_DEFAULT 0
 #define KEXEC_TYPE_CRASH   1
-	unsigned int preserve_context : 1;
+	unsigned int preserve_context:1;
 
 #ifdef ARCH_HAS_KIMAGE_ARCH
 	struct kimage_arch arch;
 #endif
 };
 
-
-
 /* kexec interface functions */
 extern void machine_kexec(struct kimage *image);
 extern int machine_kexec_prepare(struct kimage *image);
 extern void machine_kexec_cleanup(struct kimage *image);
 extern asmlinkage long sys_kexec_load(unsigned long entry,
-					unsigned long nr_segments,
-					struct kexec_segment __user *segments,
-					unsigned long flags);
+				      unsigned long nr_segments,
+				      struct kexec_segment __user * segments,
+				      unsigned long flags);
 extern int kernel_kexec(void);
 #ifdef CONFIG_COMPAT
 extern asmlinkage long compat_sys_kexec_load(unsigned long entry,
-				unsigned long nr_segments,
-				struct compat_kexec_segment __user *segments,
-				unsigned long flags);
+					     unsigned long nr_segments,
+					     struct compat_kexec_segment __user
+					     * segments, unsigned long flags);
 #endif
 extern struct page *kimage_alloc_control_pages(struct kimage *image,
-						unsigned int order);
+					       unsigned int order);
 extern void crash_kexec(struct pt_regs *);
 int kexec_should_crash(struct task_struct *);
 void crash_save_cpu(struct pt_regs *regs, int cpu);
 void crash_save_vmcoreinfo(void);
 void arch_crash_save_vmcoreinfo(void);
 void vmcoreinfo_append_str(const char *fmt, ...)
-	__attribute__ ((format (printf, 1, 2)));
+    __attribute__ ((format(printf, 1, 2)));
 unsigned long paddr_vmcoreinfo_note(void);
 
 #define VMCOREINFO_OSRELEASE(value) \
@@ -198,19 +196,26 @@ extern struct kimage *kexec_crash_image;
 /* Location of a reserved region to hold the crash kernel.
  */
 extern struct resource crashk_res;
-typedef u32 note_buf_t[KEXEC_NOTE_BYTES/4];
+typedef u32 note_buf_t[KEXEC_NOTE_BYTES / 4];
 extern note_buf_t *crash_notes;
-extern u32 vmcoreinfo_note[VMCOREINFO_NOTE_SIZE/4];
+extern u32 vmcoreinfo_note[VMCOREINFO_NOTE_SIZE / 4];
 extern size_t vmcoreinfo_size;
 extern size_t vmcoreinfo_max_size;
 
 int __init parse_crashkernel(char *cmdline, unsigned long long system_ram,
-		unsigned long long *crash_size, unsigned long long *crash_base);
+			     unsigned long long *crash_size,
+			     unsigned long long *crash_base);
 
 #else /* !CONFIG_KEXEC */
 struct pt_regs;
 struct task_struct;
-static inline void crash_kexec(struct pt_regs *regs) { }
-static inline int kexec_should_crash(struct task_struct *p) { return 0; }
+static inline void crash_kexec(struct pt_regs *regs)
+{
+}
+
+static inline int kexec_should_crash(struct task_struct *p)
+{
+	return 0;
+}
 #endif /* CONFIG_KEXEC */
 #endif /* LINUX_KEXEC_H */

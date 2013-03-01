@@ -28,21 +28,20 @@ extern struct bus_type of_platform_bus_type;
  * An of_platform_driver driver is attached to a basic of_device on
  * the "platform bus" (of_platform_bus_type).
  */
-struct of_platform_driver
-{
-	const char		*name;
-	const struct of_device_id	*match_table;
-	struct module		*owner;
+struct of_platform_driver {
+	const char *name;
+	const struct of_device_id *match_table;
+	struct module *owner;
 
-	int	(*probe)(struct of_device* dev,
-			 const struct of_device_id *match);
-	int	(*remove)(struct of_device* dev);
+	int (*probe) (struct of_device * dev,
+		      const struct of_device_id * match);
+	int (*remove) (struct of_device * dev);
 
-	int	(*suspend)(struct of_device* dev, pm_message_t state);
-	int	(*resume)(struct of_device* dev);
-	int	(*shutdown)(struct of_device* dev);
+	int (*suspend) (struct of_device * dev, pm_message_t state);
+	int (*resume) (struct of_device * dev);
+	int (*shutdown) (struct of_device * dev);
 
-	struct device_driver	driver;
+	struct device_driver driver;
 };
 #define	to_of_platform_driver(drv) \
 	container_of(drv,struct of_platform_driver, driver)
@@ -57,4 +56,4 @@ extern struct of_device *of_find_device_by_node(struct device_node *np);
 
 extern int of_bus_type_init(struct bus_type *bus, const char *name);
 
-#endif	/* _LINUX_OF_PLATFORM_H */
+#endif /* _LINUX_OF_PLATFORM_H */

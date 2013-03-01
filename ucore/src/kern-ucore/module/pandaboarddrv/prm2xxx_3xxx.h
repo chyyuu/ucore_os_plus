@@ -26,7 +26,6 @@
 #define OMAP34XX_PRM_REGADDR(module, reg)				\
 		OMAP2_L4_IO_ADDRESS(OMAP3430_PRM_BASE + (module) + (reg))
 
-
 /*
  * OMAP2-specific global PRM registers
  * Use __raw_{read,write}l() with these registers.
@@ -103,7 +102,6 @@
 #define OMAP3430_PRM_IRQSTATUS_MPU	OMAP34XX_PRM_REGADDR(OCP_MOD, 0x0018)
 #define OMAP3_PRM_IRQENABLE_MPU_OFFSET	0x001c
 #define OMAP3430_PRM_IRQENABLE_MPU	OMAP34XX_PRM_REGADDR(OCP_MOD, 0x001c)
-
 
 #define OMAP3_PRM_VC_SMPS_SA_OFFSET	0x0020
 #define OMAP3430_PRM_VC_SMPS_SA		OMAP34XX_PRM_REGADDR(OMAP3430_GR_MOD, 0x0020)
@@ -226,7 +224,6 @@
 #define OMAP3430_PRM_IRQSTATUS_IVA2			0x00f8
 #define OMAP3430_PRM_IRQENABLE_IVA2			0x00fc
 
-
 #ifndef __ASSEMBLER__
 /* Power/reset management domain register get/set */
 extern u32 omap2_prm_read_mod_reg(s16 module, u16 idx);
@@ -258,8 +255,8 @@ extern void omap3xxx_prm_reconfigure_io_chain(void);
 /* PRM interrupt-related functions */
 extern void omap3xxx_prm_read_pending_irqs(unsigned long *events);
 extern void omap3xxx_prm_ocp_barrier(void);
-extern void omap3xxx_prm_save_and_clear_irqen(u32 *saved_mask);
-extern void omap3xxx_prm_restore_irqen(u32 *saved_mask);
+extern void omap3xxx_prm_save_and_clear_irqen(u32 * saved_mask);
+extern void omap3xxx_prm_restore_irqen(u32 * saved_mask);
 
 #endif /* __ASSEMBLER */
 
@@ -313,7 +310,6 @@ extern void omap3xxx_prm_restore_irqen(u32 *saved_mask);
 /* 2420 calls RST_DPLL3 'RST_DPLL' */
 #define OMAP_RST_DPLL3_MASK				(1 << 2)
 #define OMAP_RST_GS_MASK				(1 << 1)
-
 
 /*
  * Bits common to module-shared registers
@@ -375,12 +371,10 @@ extern void omap3xxx_prm_restore_irqen(u32 *saved_mask);
  */
 #define OMAP_LOGICRETSTATE_MASK				(1 << 2)
 
-
 /*
  * MAX_MODULE_HARDRESET_WAIT: Maximum microseconds to wait for an OMAP
  * submodule to exit hardreset
  */
 #define MAX_MODULE_HARDRESET_WAIT		10000
-
 
 #endif

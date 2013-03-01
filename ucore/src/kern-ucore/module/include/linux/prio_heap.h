@@ -19,7 +19,7 @@ struct ptr_heap {
 	void **ptrs;
 	int max;
 	int size;
-	int (*gt)(void *, void *);
+	int (*gt) (void *, void *);
 };
 
 /**
@@ -30,7 +30,7 @@ struct ptr_heap {
  * @gt: comparison operator, which should implement "greater than"
  */
 extern int heap_init(struct ptr_heap *heap, size_t size, gfp_t gfp_mask,
-		     int (*gt)(void *, void *));
+		     int (*gt) (void *, void *));
 
 /**
  * heap_free - release a heap's storage
@@ -52,7 +52,5 @@ void heap_free(struct ptr_heap *heap);
  * elements currently in the heap.
  */
 extern void *heap_insert(struct ptr_heap *heap, void *p);
-
-
 
 #endif /* _LINUX_PRIO_HEAP_H */

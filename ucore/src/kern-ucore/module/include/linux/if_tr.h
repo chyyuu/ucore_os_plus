@@ -24,7 +24,7 @@
 
 /* IEEE 802.5 Token-Ring magic constants.  The frame sizes omit the preamble
    and FCS/CRC (frame check sequence). */
-#define TR_ALEN		6		/* Octets in one token-ring addr */
+#define TR_ALEN		6	/* Octets in one token-ring addr */
 #define TR_HLEN 	(sizeof(struct trh_hdr)+sizeof(struct trllc))
 #define AC		0x10
 #define LLC_FRAME 	0x40
@@ -35,12 +35,12 @@
 
 /* This is an Token-Ring frame header. */
 struct trh_hdr {
-	__u8  ac;			/* access control field */
-	__u8  fc;			/* frame control field */
-	__u8  daddr[TR_ALEN];		/* destination address */
-	__u8  saddr[TR_ALEN];		/* source address */
-	__be16 rcf;			/* route control field */
-	__be16 rseg[8];			/* routing registers */
+	__u8 ac;		/* access control field */
+	__u8 fc;		/* frame control field */
+	__u8 daddr[TR_ALEN];	/* destination address */
+	__u8 saddr[TR_ALEN];	/* source address */
+	__be16 rcf;		/* route control field */
+	__be16 rseg[8];		/* routing registers */
 };
 
 #ifdef __KERNEL__
@@ -54,24 +54,24 @@ static inline struct trh_hdr *tr_hdr(const struct sk_buff *skb)
 
 /* This is an Token-Ring LLC structure */
 struct trllc {
-	__u8  dsap;			/* destination SAP */
-	__u8  ssap;			/* source SAP */
-	__u8  llc;			/* LLC control field */
-	__u8  protid[3];		/* protocol id */
-	__be16 ethertype;		/* ether type field */
+	__u8 dsap;		/* destination SAP */
+	__u8 ssap;		/* source SAP */
+	__u8 llc;		/* LLC control field */
+	__u8 protid[3];		/* protocol id */
+	__be16 ethertype;	/* ether type field */
 };
 
 /* Token-Ring statistics collection data. */
 struct tr_statistics {
-	unsigned long rx_packets;       /* total packets received	*/
-	unsigned long tx_packets;	/* total packets transmitted	*/
-	unsigned long rx_bytes;		/* total bytes received   	*/
-	unsigned long tx_bytes;		/* total bytes transmitted	*/
-	unsigned long rx_errors;	/* bad packets received		*/
-	unsigned long tx_errors;	/* packet transmit problems	*/
-	unsigned long rx_dropped;	/* no space in linux buffers	*/
-	unsigned long tx_dropped;	/* no space available in linux	*/
-	unsigned long multicast;	/* multicast packets received	*/
+	unsigned long rx_packets;	/* total packets received       */
+	unsigned long tx_packets;	/* total packets transmitted    */
+	unsigned long rx_bytes;	/* total bytes received         */
+	unsigned long tx_bytes;	/* total bytes transmitted      */
+	unsigned long rx_errors;	/* bad packets received         */
+	unsigned long tx_errors;	/* packet transmit problems     */
+	unsigned long rx_dropped;	/* no space in linux buffers    */
+	unsigned long tx_dropped;	/* no space available in linux  */
+	unsigned long multicast;	/* multicast packets received   */
 	unsigned long transmit_collision;
 
 	/* detailed Token-Ring errors. See IBM Token-Ring Network
@@ -100,4 +100,4 @@ struct tr_statistics {
 #define TR_RCF_BROADCAST_MASK 	0xC000
 #define TR_MAXRIFLEN 		18
 
-#endif	/* _LINUX_IF_TR_H */
+#endif /* _LINUX_IF_TR_H */

@@ -40,18 +40,17 @@ extern bootmem_data_t bootmem_node_data[];
 
 extern unsigned long bootmem_bootmap_pages(unsigned long);
 
-extern unsigned long init_bootmem_node(pg_data_t *pgdat,
+extern unsigned long init_bootmem_node(pg_data_t * pgdat,
 				       unsigned long freepfn,
 				       unsigned long startpfn,
 				       unsigned long endpfn);
 extern unsigned long init_bootmem(unsigned long addr, unsigned long memend);
 
-extern unsigned long free_all_bootmem_node(pg_data_t *pgdat);
+extern unsigned long free_all_bootmem_node(pg_data_t * pgdat);
 extern unsigned long free_all_bootmem(void);
 
-extern void free_bootmem_node(pg_data_t *pgdat,
-			      unsigned long addr,
-			      unsigned long size);
+extern void free_bootmem_node(pg_data_t * pgdat,
+			      unsigned long addr, unsigned long size);
 extern void free_bootmem(unsigned long addr, unsigned long size);
 
 /*
@@ -65,35 +64,29 @@ extern void free_bootmem(unsigned long addr, unsigned long size);
 #define BOOTMEM_DEFAULT		0
 #define BOOTMEM_EXCLUSIVE	(1<<0)
 
-extern int reserve_bootmem_node(pg_data_t *pgdat,
-				 unsigned long physaddr,
-				 unsigned long size,
-				 int flags);
+extern int reserve_bootmem_node(pg_data_t * pgdat,
+				unsigned long physaddr,
+				unsigned long size, int flags);
 #ifndef CONFIG_HAVE_ARCH_BOOTMEM_NODE
 extern int reserve_bootmem(unsigned long addr, unsigned long size, int flags);
 #endif
 
 extern void *__alloc_bootmem_nopanic(unsigned long size,
-			     unsigned long align,
-			     unsigned long goal);
+				     unsigned long align, unsigned long goal);
 extern void *__alloc_bootmem(unsigned long size,
-				     unsigned long align,
-				     unsigned long goal);
+			     unsigned long align, unsigned long goal);
 extern void *__alloc_bootmem_low(unsigned long size,
-				 unsigned long align,
-				 unsigned long goal);
-extern void *__alloc_bootmem_node(pg_data_t *pgdat,
+				 unsigned long align, unsigned long goal);
+extern void *__alloc_bootmem_node(pg_data_t * pgdat,
 				  unsigned long size,
-				  unsigned long align,
-				  unsigned long goal);
-extern void *__alloc_bootmem_node_nopanic(pg_data_t *pgdat,
-				  unsigned long size,
-				  unsigned long align,
-				  unsigned long goal);
-extern void *__alloc_bootmem_low_node(pg_data_t *pgdat,
+				  unsigned long align, unsigned long goal);
+extern void *__alloc_bootmem_node_nopanic(pg_data_t * pgdat,
+					  unsigned long size,
+					  unsigned long align,
+					  unsigned long goal);
+extern void *__alloc_bootmem_low_node(pg_data_t * pgdat,
 				      unsigned long size,
-				      unsigned long align,
-				      unsigned long goal);
+				      unsigned long align, unsigned long goal);
 #ifndef CONFIG_HAVE_ARCH_BOOTMEM_NODE
 #define alloc_bootmem(x) \
 	__alloc_bootmem(x, SMP_CACHE_BYTES, __pa(MAX_DMA_ADDRESS))
@@ -153,6 +146,5 @@ extern void *alloc_large_system_hash(const char *tablename,
 #define HASHDIST_DEFAULT 0
 #endif
 extern int hashdist;		/* Distribute hashes across NUMA nodes? */
-
 
 #endif /* _LINUX_BOOTMEM_H */

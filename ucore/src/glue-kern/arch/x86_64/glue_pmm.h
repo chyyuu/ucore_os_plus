@@ -23,12 +23,12 @@ struct segdesc;
 #define get_sv_gdt		  (*get_sv_gdt_ptr)
 
 extern uintptr_t kalloc_pages(size_t npages);
-extern void      kfree_pages(uintptr_t basepa, size_t npages);
-extern void      kpage_private_set(uintptr_t pa, void *private);
-extern void     *kpage_private_get(uintptr_t pa);
-extern void      load_rsp0(uintptr_t rsp0);
-extern pgd_t    *init_pgdir_get(void);
-extern void      print_pgdir(int (*printf)(const char *fmt, ...));
+extern void kfree_pages(uintptr_t basepa, size_t npages);
+extern void kpage_private_set(uintptr_t pa, void *private);
+extern void *kpage_private_get(uintptr_t pa);
+extern void load_rsp0(uintptr_t rsp0);
+extern pgd_t *init_pgdir_get(void);
+extern void print_pgdir(int (*printf) (const char *fmt, ...));
 extern struct segdesc *get_sv_gdt();
 
 /* Simply translate between VA and PA without checking */

@@ -18,11 +18,11 @@ struct ihex_binrec {
 	__be32 addr;
 	__be16 len;
 	uint8_t data[0];
-} __attribute__((packed));
+} __attribute__ ((packed));
 
 /* Find the next record, taking into account the 4-byte alignment */
-static inline const struct ihex_binrec *
-ihex_next_binrec(const struct ihex_binrec *rec)
+static inline const struct ihex_binrec *ihex_next_binrec(const struct
+							 ihex_binrec *rec)
 {
 	int next = ((be16_to_cpu(rec->len) + 5) & ~3) - 2;
 	rec = (void *)&rec->data[next];
@@ -52,8 +52,7 @@ static inline int ihex_validate_fw(const struct firmware *fw)
 /* Request firmware and validate it so that we can trust we won't
  * run off the end while reading records... */
 static inline int request_ihex_firmware(const struct firmware **fw,
-					const char *fw_name,
-					struct device *dev)
+					const char *fw_name, struct device *dev)
 {
 	const struct firmware *lfw;
 	int ret;

@@ -23,9 +23,9 @@
  * 	@tfrcrx_p:	current estimate of loss event rate (3.2.2)
  */
 struct tfrc_rx_info {
-  	__u32 tfrcrx_x_recv;
+	__u32 tfrcrx_x_recv;
 	__u32 tfrcrx_rtt;
-  	__u32 tfrcrx_p;
+	__u32 tfrcrx_p;
 };
 
 /** 	tfrc_tx_info    -    TFRC Sender Data Structure

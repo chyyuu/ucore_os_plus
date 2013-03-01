@@ -27,7 +27,7 @@ struct ncp_mount_data {
 	int version;
 	unsigned int ncp_fd;	/* The socket to the ncp port */
 	__kernel_uid_t mounted_uid;	/* Who may umount() this filesystem? */
-	__kernel_pid_t wdog_pid;		/* Who cares for our watchdog packets? */
+	__kernel_pid_t wdog_pid;	/* Who cares for our watchdog packets? */
 
 	unsigned char mounted_vol[NCP_VOLNAME_LEN + 1];
 	unsigned int time_out;	/* How long should I wait after
@@ -71,21 +71,21 @@ struct ncp_mount_data_v4 {
 #ifdef __KERNEL__
 
 struct ncp_mount_data_kernel {
-	unsigned long    flags;		/* NCP_MOUNT_* flags */
-	unsigned int	 int_flags;	/* internal flags */
+	unsigned long flags;	/* NCP_MOUNT_* flags */
+	unsigned int int_flags;	/* internal flags */
 #define NCP_IMOUNT_LOGGEDIN_POSSIBLE	0x0001
 	__kernel_uid32_t mounted_uid;	/* Who may umount() this filesystem? */
-	struct pid      *wdog_pid;	/* Who cares for our watchdog packets? */
-	unsigned int     ncp_fd;	/* The socket to the ncp port */
-	unsigned int     time_out;	/* How long should I wait after
-					   sending a NCP request? */
-	unsigned int     retry_count;	/* And how often should I retry? */
-	unsigned char	 mounted_vol[NCP_VOLNAME_LEN + 1];
+	struct pid *wdog_pid;	/* Who cares for our watchdog packets? */
+	unsigned int ncp_fd;	/* The socket to the ncp port */
+	unsigned int time_out;	/* How long should I wait after
+				   sending a NCP request? */
+	unsigned int retry_count;	/* And how often should I retry? */
+	unsigned char mounted_vol[NCP_VOLNAME_LEN + 1];
 	__kernel_uid32_t uid;
 	__kernel_gid32_t gid;
-	__kernel_mode_t  file_mode;
-	__kernel_mode_t  dir_mode;
-	int		 info_fd;
+	__kernel_mode_t file_mode;
+	__kernel_mode_t dir_mode;
+	int info_fd;
 };
 
 #endif /* __KERNEL__ */

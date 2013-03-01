@@ -23,10 +23,11 @@ struct pnp_dev;
  */
 #ifdef CONFIG_PNP
 struct resource *pnp_get_resource(struct pnp_dev *dev, unsigned long type,
-				unsigned int num);
+				  unsigned int num);
 #else
 static inline struct resource *pnp_get_resource(struct pnp_dev *dev,
-			unsigned long type, unsigned int num)
+						unsigned long type,
+						unsigned int num)
 {
 	return NULL;
 }
@@ -52,7 +53,6 @@ static inline resource_size_t pnp_resource_len(struct resource *res)
 		return 0;
 	return res->end - res->start + 1;
 }
-
 
 static inline resource_size_t pnp_port_start(struct pnp_dev *dev,
 					     unsigned int bar)
@@ -99,7 +99,6 @@ static inline resource_size_t pnp_port_len(struct pnp_dev *dev,
 	return 0;
 }
 
-
 static inline resource_size_t pnp_mem_start(struct pnp_dev *dev,
 					    unsigned int bar)
 {
@@ -110,8 +109,7 @@ static inline resource_size_t pnp_mem_start(struct pnp_dev *dev,
 	return 0;
 }
 
-static inline resource_size_t pnp_mem_end(struct pnp_dev *dev,
-					  unsigned int bar)
+static inline resource_size_t pnp_mem_end(struct pnp_dev *dev, unsigned int bar)
 {
 	struct resource *res = pnp_get_resource(dev, IORESOURCE_MEM, bar);
 
@@ -134,8 +132,7 @@ static inline int pnp_mem_valid(struct pnp_dev *dev, unsigned int bar)
 	return pnp_resource_valid(pnp_get_resource(dev, IORESOURCE_MEM, bar));
 }
 
-static inline resource_size_t pnp_mem_len(struct pnp_dev *dev,
-					  unsigned int bar)
+static inline resource_size_t pnp_mem_len(struct pnp_dev *dev, unsigned int bar)
 {
 	struct resource *res = pnp_get_resource(dev, IORESOURCE_MEM, bar);
 
@@ -143,7 +140,6 @@ static inline resource_size_t pnp_mem_len(struct pnp_dev *dev,
 		return pnp_resource_len(res);
 	return 0;
 }
-
 
 static inline resource_size_t pnp_irq(struct pnp_dev *dev, unsigned int bar)
 {
@@ -168,7 +164,6 @@ static inline int pnp_irq_valid(struct pnp_dev *dev, unsigned int bar)
 	return pnp_resource_valid(pnp_get_resource(dev, IORESOURCE_IRQ, bar));
 }
 
-
 static inline resource_size_t pnp_dma(struct pnp_dev *dev, unsigned int bar)
 {
 	struct resource *res = pnp_get_resource(dev, IORESOURCE_DMA, bar);
@@ -192,26 +187,25 @@ static inline int pnp_dma_valid(struct pnp_dev *dev, unsigned int bar)
 	return pnp_resource_valid(pnp_get_resource(dev, IORESOURCE_DMA, bar));
 }
 
-
 /*
  * Device Management
  */
 
 struct pnp_card {
-	struct device dev;		/* Driver Model device interface */
-	unsigned char number;		/* used as an index, must be unique */
+	struct device dev;	/* Driver Model device interface */
+	unsigned char number;	/* used as an index, must be unique */
 	struct list_head global_list;	/* node in global list of cards */
 	struct list_head protocol_list;	/* node in protocol's list of cards */
 	struct list_head devices;	/* devices attached to the card */
 
 	struct pnp_protocol *protocol;
-	struct pnp_id *id;		/* contains supported EISA IDs */
+	struct pnp_id *id;	/* contains supported EISA IDs */
 
 	char name[PNP_NAME_LEN];	/* contains a human-readable name */
-	unsigned char pnpver;		/* Plug & Play version */
+	unsigned char pnpver;	/* Plug & Play version */
 	unsigned char productver;	/* product version */
-	unsigned int serial;		/* serial number */
-	unsigned char checksum;		/* if zero - checksum passed */
+	unsigned int serial;	/* serial number */
+	unsigned char checksum;	/* if zero - checksum passed */
 	struct proc_dir_entry *procdir;	/* directory entry in /proc/bus/isapnp */
 };
 
@@ -241,9 +235,9 @@ static inline void pnp_set_card_drvdata(struct pnp_card_link *pcard, void *data)
 }
 
 struct pnp_dev {
-	struct device dev;		/* Driver Model device interface */
+	struct device dev;	/* Driver Model device interface */
 	u64 dma_mask;
-	unsigned int number;		/* used as an index, must be unique */
+	unsigned int number;	/* used as an index, must be unique */
 	int status;
 
 	struct list_head global_list;	/* node in global list of devices */
@@ -256,7 +250,7 @@ struct pnp_dev {
 	struct pnp_driver *driver;
 	struct pnp_card_link *card_link;
 
-	struct pnp_id *id;		/* supported EISA IDs */
+	struct pnp_id *id;	/* supported EISA IDs */
 
 	int active;
 	int capabilities;
@@ -265,7 +259,7 @@ struct pnp_dev {
 	struct list_head options;
 
 	char name[PNP_NAME_LEN];	/* contains a human-readable name */
-	int flags;			/* used by protocols */
+	int flags;		/* used by protocols */
 	struct proc_dir_entry *procent;	/* device entry in /proc/bus/isapnp */
 	void *data;
 };
@@ -358,10 +352,11 @@ struct pnp_driver {
 	char *name;
 	const struct pnp_device_id *id_table;
 	unsigned int flags;
-	int (*probe) (struct pnp_dev *dev, const struct pnp_device_id *dev_id);
-	void (*remove) (struct pnp_dev *dev);
-	int (*suspend) (struct pnp_dev *dev, pm_message_t state);
-	int (*resume) (struct pnp_dev *dev);
+	int (*probe) (struct pnp_dev * dev,
+		      const struct pnp_device_id * dev_id);
+	void (*remove) (struct pnp_dev * dev);
+	int (*suspend) (struct pnp_dev * dev, pm_message_t state);
+	int (*resume) (struct pnp_dev * dev);
 	struct device_driver driver;
 };
 
@@ -372,11 +367,11 @@ struct pnp_card_driver {
 	char *name;
 	const struct pnp_card_device_id *id_table;
 	unsigned int flags;
-	int (*probe) (struct pnp_card_link *card,
-		      const struct pnp_card_device_id *card_id);
-	void (*remove) (struct pnp_card_link *card);
-	int (*suspend) (struct pnp_card_link *card, pm_message_t state);
-	int (*resume) (struct pnp_card_link *card);
+	int (*probe) (struct pnp_card_link * card,
+		      const struct pnp_card_device_id * card_id);
+	void (*remove) (struct pnp_card_link * card);
+	int (*suspend) (struct pnp_card_link * card, pm_message_t state);
+	int (*resume) (struct pnp_card_link * card);
 	struct pnp_driver link;
 };
 
@@ -395,9 +390,9 @@ struct pnp_protocol {
 	char *name;
 
 	/* resource control functions */
-	int (*get) (struct pnp_dev *dev);
-	int (*set) (struct pnp_dev *dev);
-	int (*disable) (struct pnp_dev *dev);
+	int (*get) (struct pnp_dev * dev);
+	int (*set) (struct pnp_dev * dev);
+	int (*disable) (struct pnp_dev * dev);
 
 	/* protocol specific suspend/resume */
 	int (*suspend) (struct pnp_dev * dev, pm_message_t state);
@@ -456,32 +451,90 @@ void pnp_unregister_driver(struct pnp_driver *drv);
 #else
 
 /* device management */
-static inline int pnp_device_attach(struct pnp_dev *pnp_dev) { return -ENODEV; }
-static inline void pnp_device_detach(struct pnp_dev *pnp_dev) { }
+static inline int pnp_device_attach(struct pnp_dev *pnp_dev)
+{
+	return -ENODEV;
+}
+
+static inline void pnp_device_detach(struct pnp_dev *pnp_dev)
+{
+}
 
 #define pnp_platform_devices 0
 
 /* multidevice card support */
-static inline struct pnp_dev *pnp_request_card_device(struct pnp_card_link *clink, const char *id, struct pnp_dev *from) { return NULL; }
-static inline void pnp_release_card_device(struct pnp_dev *dev) { }
-static inline int pnp_register_card_driver(struct pnp_card_driver *drv) { return -ENODEV; }
-static inline void pnp_unregister_card_driver(struct pnp_card_driver *drv) { }
+static inline struct pnp_dev *pnp_request_card_device(struct pnp_card_link
+						      *clink, const char *id,
+						      struct pnp_dev *from)
+{
+	return NULL;
+}
+
+static inline void pnp_release_card_device(struct pnp_dev *dev)
+{
+}
+
+static inline int pnp_register_card_driver(struct pnp_card_driver *drv)
+{
+	return -ENODEV;
+}
+
+static inline void pnp_unregister_card_driver(struct pnp_card_driver *drv)
+{
+}
 
 /* resource management */
 static inline int pnp_possible_config(struct pnp_dev *dev, int type,
 				      resource_size_t base,
-				      resource_size_t size) { return 0; }
-static inline int pnp_auto_config_dev(struct pnp_dev *dev) { return -ENODEV; }
-static inline int pnp_start_dev(struct pnp_dev *dev) { return -ENODEV; }
-static inline int pnp_stop_dev(struct pnp_dev *dev) { return -ENODEV; }
-static inline int pnp_activate_dev(struct pnp_dev *dev) { return -ENODEV; }
-static inline int pnp_disable_dev(struct pnp_dev *dev) { return -ENODEV; }
+				      resource_size_t size)
+{
+	return 0;
+}
+
+static inline int pnp_auto_config_dev(struct pnp_dev *dev)
+{
+	return -ENODEV;
+}
+
+static inline int pnp_start_dev(struct pnp_dev *dev)
+{
+	return -ENODEV;
+}
+
+static inline int pnp_stop_dev(struct pnp_dev *dev)
+{
+	return -ENODEV;
+}
+
+static inline int pnp_activate_dev(struct pnp_dev *dev)
+{
+	return -ENODEV;
+}
+
+static inline int pnp_disable_dev(struct pnp_dev *dev)
+{
+	return -ENODEV;
+}
 
 /* protocol helpers */
-static inline int pnp_is_active(struct pnp_dev *dev) { return 0; }
-static inline int compare_pnp_id(struct pnp_id *pos, const char *id) { return -ENODEV; }
-static inline int pnp_register_driver(struct pnp_driver *drv) { return -ENODEV; }
-static inline void pnp_unregister_driver(struct pnp_driver *drv) { }
+static inline int pnp_is_active(struct pnp_dev *dev)
+{
+	return 0;
+}
+
+static inline int compare_pnp_id(struct pnp_id *pos, const char *id)
+{
+	return -ENODEV;
+}
+
+static inline int pnp_register_driver(struct pnp_driver *drv)
+{
+	return -ENODEV;
+}
+
+static inline void pnp_unregister_driver(struct pnp_driver *drv)
+{
+}
 
 #endif /* CONFIG_PNP */
 

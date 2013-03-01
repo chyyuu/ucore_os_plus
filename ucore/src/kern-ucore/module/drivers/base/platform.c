@@ -24,8 +24,9 @@
 				 driver))
 
 struct device platform_bus = {
-	.init_name	= "platform",
+	.init_name = "platform",
 };
+
 EXPORT_SYMBOL_GPL(platform_bus);
 
 /**
@@ -47,6 +48,7 @@ struct resource *platform_get_resource(struct platform_device *dev,
 	}
 	return NULL;
 }
+
 EXPORT_SYMBOL_GPL(platform_get_resource);
 
 /**
@@ -60,6 +62,7 @@ int platform_get_irq(struct platform_device *dev, unsigned int num)
 
 	return r ? r->start : -ENXIO;
 }
+
 EXPORT_SYMBOL_GPL(platform_get_irq);
 
 /**
@@ -81,6 +84,7 @@ struct resource *platform_get_resource_byname(struct platform_device *dev,
 	}
 	return NULL;
 }
+
 EXPORT_SYMBOL_GPL(platform_get_resource_byname);
 
 /**
@@ -95,6 +99,7 @@ int platform_get_irq_byname(struct platform_device *dev, char *name)
 
 	return r ? r->start : -ENXIO;
 }
+
 EXPORT_SYMBOL_GPL(platform_get_irq_byname);
 
 /**
@@ -117,6 +122,7 @@ int platform_add_devices(struct platform_device **devs, int num)
 
 	return ret;
 }
+
 EXPORT_SYMBOL_GPL(platform_add_devices);
 
 struct platform_object {
@@ -136,6 +142,7 @@ void platform_device_put(struct platform_device *pdev)
 	if (pdev)
 		put_device(&pdev->dev);
 }
+
 EXPORT_SYMBOL_GPL(platform_device_put);
 
 static void platform_device_release(struct device *dev)
@@ -171,6 +178,7 @@ struct platform_device *platform_device_alloc(const char *name, int id)
 
 	return pa ? &pa->pdev : NULL;
 }
+
 EXPORT_SYMBOL_GPL(platform_device_alloc);
 
 /**
@@ -196,6 +204,7 @@ int platform_device_add_resources(struct platform_device *pdev,
 	}
 	return r ? 0 : -ENOMEM;
 }
+
 EXPORT_SYMBOL_GPL(platform_device_add_resources);
 
 /**
@@ -220,6 +229,7 @@ int platform_device_add_data(struct platform_device *pdev, const void *data,
 	}
 	return d ? 0 : -ENOMEM;
 }
+
 EXPORT_SYMBOL_GPL(platform_device_add_data);
 
 /**
@@ -242,7 +252,7 @@ int platform_device_add(struct platform_device *pdev)
 	pdev->dev.bus = &platform_bus_type;
 
 	if (pdev->id != -1)
-		dev_set_name(&pdev->dev, "%s.%d", pdev->name,  pdev->id);
+		dev_set_name(&pdev->dev, "%s.%d", pdev->name, pdev->id);
 	else
 		dev_set_name(&pdev->dev, pdev->name);
 
@@ -276,7 +286,7 @@ int platform_device_add(struct platform_device *pdev)
 	if (ret == 0)
 		return ret;
 
- failed:
+failed:
 	while (--i >= 0) {
 		struct resource *r = &pdev->resource[i];
 		unsigned long type = resource_type(r);
@@ -287,6 +297,7 @@ int platform_device_add(struct platform_device *pdev)
 
 	return ret;
 }
+
 EXPORT_SYMBOL_GPL(platform_device_add);
 
 /**
@@ -313,6 +324,7 @@ void platform_device_del(struct platform_device *pdev)
 		}
 	}
 }
+
 EXPORT_SYMBOL_GPL(platform_device_del);
 
 /**
@@ -324,6 +336,7 @@ int platform_device_register(struct platform_device *pdev)
 	device_initialize(&pdev->dev);
 	return platform_device_add(pdev);
 }
+
 EXPORT_SYMBOL_GPL(platform_device_register);
 
 /**
@@ -339,6 +352,7 @@ void platform_device_unregister(struct platform_device *pdev)
 	platform_device_del(pdev);
 	platform_device_put(pdev);
 }
+
 EXPORT_SYMBOL_GPL(platform_device_unregister);
 
 /**
@@ -391,6 +405,7 @@ error:
 	platform_device_put(pdev);
 	return ERR_PTR(retval);
 }
+
 EXPORT_SYMBOL_GPL(platform_device_register_simple);
 
 /**
@@ -407,10 +422,10 @@ EXPORT_SYMBOL_GPL(platform_device_register_simple);
  * unloaded without waiting for the last reference to the device to be
  * dropped.
  */
-struct platform_device *platform_device_register_data(
-		struct device *parent,
-		const char *name, int id,
-		const void *data, size_t size)
+struct platform_device *platform_device_register_data(struct device *parent,
+						      const char *name, int id,
+						      const void *data,
+						      size_t size)
 {
 	struct platform_device *pdev;
 	int retval;
@@ -504,6 +519,7 @@ int platform_driver_register(struct platform_driver *drv)
 		drv->driver.resume = platform_drv_resume;
 	return driver_register(&drv->driver);
 }
+
 EXPORT_SYMBOL_GPL(platform_driver_register);
 
 /**
@@ -514,6 +530,7 @@ void platform_driver_unregister(struct platform_driver *drv)
 {
 	driver_unregister(&drv->driver);
 }
+
 EXPORT_SYMBOL_GPL(platform_driver_unregister);
 
 /**
@@ -534,7 +551,8 @@ EXPORT_SYMBOL_GPL(platform_driver_unregister);
  * a negative error code and with the driver not registered.
  */
 int __init_or_module platform_driver_probe(struct platform_driver *drv,
-		int (*probe)(struct platform_device *))
+					   int (*probe) (struct platform_device
+							 *))
 {
 	int retval, code;
 
@@ -558,6 +576,7 @@ int __init_or_module platform_driver_probe(struct platform_driver *drv,
 		platform_driver_unregister(drv);
 	return retval;
 }
+
 EXPORT_SYMBOL_GPL(platform_driver_probe);
 
 /* modalias support enables more hands-off userspace setup:
@@ -569,7 +588,7 @@ EXPORT_SYMBOL_GPL(platform_driver_probe);
 static ssize_t modalias_show(struct device *dev, struct device_attribute *a,
 			     char *buf)
 {
-	struct platform_device	*pdev = to_platform_device(dev);
+	struct platform_device *pdev = to_platform_device(dev);
 	int len = snprintf(buf, PAGE_SIZE, "platform:%s\n", pdev->name);
 
 	return (len >= PAGE_SIZE) ? (PAGE_SIZE - 1) : len;
@@ -582,7 +601,7 @@ static struct device_attribute platform_dev_attrs[] = {
 
 static int platform_uevent(struct device *dev, struct kobj_uevent_env *env)
 {
-	struct platform_device	*pdev = to_platform_device(dev);
+	struct platform_device *pdev = to_platform_device(dev);
 
 	add_uevent_var(env, "MODALIAS=platform:%s", pdev->name);
 	return 0;
@@ -944,12 +963,13 @@ static struct dev_pm_ops platform_dev_pm_ops = {
 #endif /* !CONFIG_PM_SLEEP */
 
 struct bus_type platform_bus_type = {
-	.name		= "platform",
-	.dev_attrs	= platform_dev_attrs,
-	.match		= platform_match,
-	.uevent		= platform_uevent,
-	.pm		= PLATFORM_PM_OPS_PTR,
+	.name = "platform",
+	.dev_attrs = platform_dev_attrs,
+	.match = platform_match,
+	.uevent = platform_uevent,
+	.pm = PLATFORM_PM_OPS_PTR,
 };
+
 EXPORT_SYMBOL_GPL(platform_bus_type);
 
 int __init platform_bus_init(void)
@@ -959,14 +979,14 @@ int __init platform_bus_init(void)
 	error = device_register(&platform_bus);
 	if (error)
 		return error;
-	error =  bus_register(&platform_bus_type);
+	error = bus_register(&platform_bus_type);
 	if (error)
 		device_unregister(&platform_bus);
 	return error;
 }
 
 #ifndef ARCH_HAS_DMA_GET_REQUIRED_MASK
-u64 dma_get_required_mask(struct device *dev)
+u64 dma_get_required_mask(struct device * dev)
 {
 	u32 low_totalram = ((max_pfn - 1) << PAGE_SHIFT);
 	u32 high_totalram = ((max_pfn - 1) >> (32 - PAGE_SHIFT));
@@ -980,9 +1000,10 @@ u64 dma_get_required_mask(struct device *dev)
 	} else {
 		high_totalram = (1 << (fls(high_totalram) - 1));
 		high_totalram += high_totalram - 1;
-		mask = (((u64)high_totalram) << 32) + 0xffffffff;
+		mask = (((u64) high_totalram) << 32) + 0xffffffff;
 	}
 	return mask;
 }
+
 EXPORT_SYMBOL_GPL(dma_get_required_mask);
 #endif

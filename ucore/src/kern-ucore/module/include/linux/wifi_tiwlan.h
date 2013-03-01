@@ -23,10 +23,10 @@
 #define WMPA_SECTION_SIZE_2	(WMPA_NUMBER_OF_BUFFERS * 2048)
 
 struct wifi_platform_data {
-        int (*set_power)(int val);
-        int (*set_reset)(int val);
-        int (*set_carddetect)(int val);
-	void *(*mem_prealloc)(int section, unsigned long size);
+	int (*set_power) (int val);
+	int (*set_reset) (int val);
+	int (*set_carddetect) (int val);
+	void *(*mem_prealloc) (int section, unsigned long size);
 };
 
 #endif

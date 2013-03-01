@@ -26,7 +26,7 @@
 #define		ISICOM_CMAJOR	113	/* callout */
 #define		ISICOM_MAGIC	(('M' << 8) | 'T')
 
-#define		WAKEUP_CHARS	256	/* hard coded for now	*/
+#define		WAKEUP_CHARS	256	/* hard coded for now   */
 #define		TX_SIZE		254
 
 #define		BOARD_COUNT	4
@@ -58,7 +58,7 @@
 
 #define	BOARD(line)  (((line) >> 4) & 0x3)
 
-	/*	isi kill queue bitmap	*/
+	/*      isi kill queue bitmap   */
 
 #define		ISICOM_KILLTX		0x01
 #define		ISICOM_KILLRX		0x02
@@ -68,7 +68,7 @@
 #define		FIRMWARE_LOADED		0x0001
 #define		BOARD_ACTIVE		0x0002
 
- 	/* isi_port status bitmap  */
+	/* isi_port status bitmap  */
 
 #define		ISI_CTS			0x1000
 #define		ISI_DSR			0x2000
@@ -77,7 +77,6 @@
 #define		ISI_DTR			0x0100
 #define		ISI_RTS			0x0200
 
-
 #define		ISI_TXOK		0x0001
 
-#endif	/*	ISICOM_H	*/
+#endif /*      ISICOM_H        */

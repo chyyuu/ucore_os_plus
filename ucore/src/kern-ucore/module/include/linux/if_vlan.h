@@ -17,17 +17,17 @@
 #include <linux/netdevice.h>
 #include <linux/etherdevice.h>
 
-#define VLAN_HLEN	4		/* The additional bytes (on top of the Ethernet header)
-					 * that VLAN requires.
-					 */
-#define VLAN_ETH_ALEN	6		/* Octets in one ethernet addr	 */
-#define VLAN_ETH_HLEN	18		/* Total octets in header.	 */
-#define VLAN_ETH_ZLEN	64		/* Min. octets in frame sans FCS */
+#define VLAN_HLEN	4	/* The additional bytes (on top of the Ethernet header)
+				 * that VLAN requires.
+				 */
+#define VLAN_ETH_ALEN	6	/* Octets in one ethernet addr   */
+#define VLAN_ETH_HLEN	18	/* Total octets in header.       */
+#define VLAN_ETH_ZLEN	64	/* Min. octets in frame sans FCS */
 
 /*
  * According to 802.3ac, the packet can be 4 bytes longer. --Klika Jan
  */
-#define VLAN_ETH_DATA_LEN	1500	/* Max. octets in payload	 */
+#define VLAN_ETH_DATA_LEN	1500	/* Max. octets in payload        */
 #define VLAN_ETH_FRAME_LEN	1518	/* Max. octets in frame sans FCS */
 
 /*
@@ -36,8 +36,8 @@
  *	@h_vlan_encapsulated_proto: packet type ID or len
  */
 struct vlan_hdr {
-	__be16	h_vlan_TCI;
-	__be16	h_vlan_encapsulated_proto;
+	__be16 h_vlan_TCI;
+	__be16 h_vlan_encapsulated_proto;
 };
 
 /**
@@ -49,11 +49,11 @@ struct vlan_hdr {
  *	@h_vlan_encapsulated_proto: packet type ID or len
  */
 struct vlan_ethhdr {
-	unsigned char	h_dest[ETH_ALEN];
-	unsigned char	h_source[ETH_ALEN];
-	__be16		h_vlan_proto;
-	__be16		h_vlan_TCI;
-	__be16		h_vlan_encapsulated_proto;
+	unsigned char h_dest[ETH_ALEN];
+	unsigned char h_source[ETH_ALEN];
+	__be16 h_vlan_proto;
+	__be16 h_vlan_TCI;
+	__be16 h_vlan_encapsulated_proto;
 };
 
 #include <linux/skbuff.h>
@@ -66,7 +66,7 @@ static inline struct vlan_ethhdr *vlan_eth_hdr(const struct sk_buff *skb)
 #define VLAN_VID_MASK	0xfff
 
 /* found in socket.c */
-extern void vlan_ioctl_set(int (*hook)(struct net *, void __user *));
+extern void vlan_ioctl_set(int (*hook) (struct net *, void __user *));
 
 /* if this changes, algorithm will have to be reworked because this
  * depends on completely exhausting the VLAN identifier space.  Thus
@@ -77,13 +77,13 @@ extern void vlan_ioctl_set(int (*hook)(struct net *, void __user *));
 #define VLAN_GROUP_ARRAY_PART_LEN     (VLAN_GROUP_ARRAY_LEN/VLAN_GROUP_ARRAY_SPLIT_PARTS)
 
 struct vlan_group {
-	struct net_device	*real_dev; /* The ethernet(like) device
-					    * the vlan is attached to.
-					    */
-	unsigned int		nr_vlans;
-	struct hlist_node	hlist;	/* linked list */
+	struct net_device *real_dev;	/* The ethernet(like) device
+					 * the vlan is attached to.
+					 */
+	unsigned int nr_vlans;
+	struct hlist_node hlist;	/* linked list */
 	struct net_device **vlan_devices_arrays[VLAN_GROUP_ARRAY_SPLIT_PARTS];
-	struct rcu_head		rcu;
+	struct rcu_head rcu;
 };
 
 static inline struct net_device *vlan_group_get_device(struct vlan_group *vg,
@@ -95,8 +95,7 @@ static inline struct net_device *vlan_group_get_device(struct vlan_group *vg,
 }
 
 static inline void vlan_group_set_device(struct vlan_group *vg,
-					 u16 vlan_id,
-					 struct net_device *dev)
+					 u16 vlan_id, struct net_device *dev)
 {
 	struct net_device **array;
 	if (!vg)
@@ -168,8 +167,7 @@ static inline int vlan_gro_frags(struct napi_struct *napi,
  * @vlan_tci: VLAN TCI as received from the card
  */
 static inline int vlan_hwaccel_rx(struct sk_buff *skb,
-				  struct vlan_group *grp,
-				  u16 vlan_tci)
+				  struct vlan_group *grp, u16 vlan_tci)
 {
 	return __vlan_hwaccel_rx(skb, grp, vlan_tci, 0);
 }
@@ -181,8 +179,7 @@ static inline int vlan_hwaccel_rx(struct sk_buff *skb,
  * @vlan_tci: VLAN TCI as received from the card
  */
 static inline int vlan_hwaccel_receive_skb(struct sk_buff *skb,
-					   struct vlan_group *grp,
-					   u16 vlan_tci)
+					   struct vlan_group *grp, u16 vlan_tci)
 {
 	return __vlan_hwaccel_rx(skb, grp, vlan_tci, 1);
 }
@@ -263,7 +260,7 @@ static inline struct sk_buff *vlan_put_tag(struct sk_buff *skb, u16 vlan_tci)
  *
  * Returns error if the skb is not of VLAN type
  */
-static inline int __vlan_get_tag(const struct sk_buff *skb, u16 *vlan_tci)
+static inline int __vlan_get_tag(const struct sk_buff *skb, u16 * vlan_tci)
 {
 	struct vlan_ethhdr *veth = (struct vlan_ethhdr *)skb->data;
 
@@ -283,7 +280,7 @@ static inline int __vlan_get_tag(const struct sk_buff *skb, u16 *vlan_tci)
  * Returns error if @skb->vlan_tci is not set correctly
  */
 static inline int __vlan_hwaccel_get_tag(const struct sk_buff *skb,
-					 u16 *vlan_tci)
+					 u16 * vlan_tci)
 {
 	if (vlan_tx_tag_present(skb)) {
 		*vlan_tci = skb->vlan_tci;
@@ -303,7 +300,7 @@ static inline int __vlan_hwaccel_get_tag(const struct sk_buff *skb,
  *
  * Returns error if the skb is not VLAN tagged
  */
-static inline int vlan_get_tag(const struct sk_buff *skb, u16 *vlan_tci)
+static inline int vlan_get_tag(const struct sk_buff *skb, u16 * vlan_tci)
 {
 	if (skb->dev->features & NETIF_F_HW_VLAN_TX) {
 		return __vlan_hwaccel_get_tag(skb, vlan_tci);
@@ -326,37 +323,37 @@ enum vlan_ioctl_cmds {
 	GET_VLAN_EGRESS_PRIORITY_CMD,
 	SET_VLAN_NAME_TYPE_CMD,
 	SET_VLAN_FLAG_CMD,
-	GET_VLAN_REALDEV_NAME_CMD, /* If this works, you know it's a VLAN device, btw */
-	GET_VLAN_VID_CMD /* Get the VID of this VLAN (specified by name) */
+	GET_VLAN_REALDEV_NAME_CMD,	/* If this works, you know it's a VLAN device, btw */
+	GET_VLAN_VID_CMD	/* Get the VID of this VLAN (specified by name) */
 };
 
 enum vlan_flags {
-	VLAN_FLAG_REORDER_HDR	= 0x1,
-	VLAN_FLAG_GVRP		= 0x2,
+	VLAN_FLAG_REORDER_HDR = 0x1,
+	VLAN_FLAG_GVRP = 0x2,
 };
 
 enum vlan_name_types {
-	VLAN_NAME_TYPE_PLUS_VID, /* Name will look like:  vlan0005 */
-	VLAN_NAME_TYPE_RAW_PLUS_VID, /* name will look like:  eth1.0005 */
-	VLAN_NAME_TYPE_PLUS_VID_NO_PAD, /* Name will look like:  vlan5 */
-	VLAN_NAME_TYPE_RAW_PLUS_VID_NO_PAD, /* Name will look like:  eth0.5 */
+	VLAN_NAME_TYPE_PLUS_VID,	/* Name will look like:  vlan0005 */
+	VLAN_NAME_TYPE_RAW_PLUS_VID,	/* name will look like:  eth1.0005 */
+	VLAN_NAME_TYPE_PLUS_VID_NO_PAD,	/* Name will look like:  vlan5 */
+	VLAN_NAME_TYPE_RAW_PLUS_VID_NO_PAD,	/* Name will look like:  eth0.5 */
 	VLAN_NAME_TYPE_HIGHEST
 };
 
 struct vlan_ioctl_args {
-	int cmd; /* Should be one of the vlan_ioctl_cmds enum above. */
+	int cmd;		/* Should be one of the vlan_ioctl_cmds enum above. */
 	char device1[24];
 
-        union {
+	union {
 		char device2[24];
 		int VID;
 		unsigned int skb_priority;
 		unsigned int name_type;
 		unsigned int bind_type;
-		unsigned int flag; /* Matches vlan_dev_info flags */
-        } u;
+		unsigned int flag;	/* Matches vlan_dev_info flags */
+	} u;
 
-	short vlan_qos;   
+	short vlan_qos;
 };
 
 #endif /* !(_LINUX_IF_VLAN_H_) */

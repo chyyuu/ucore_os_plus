@@ -18,15 +18,15 @@ struct dquot;
 
 /* Operations */
 struct qtree_fmt_operations {
-	void (*mem2disk_dqblk)(void *disk, struct dquot *dquot);	/* Convert given entry from in memory format to disk one */
-	void (*disk2mem_dqblk)(struct dquot *dquot, void *disk);	/* Convert given entry from disk format to in memory one */
-	int (*is_id)(void *disk, struct dquot *dquot);	/* Is this structure for given id? */
+	void (*mem2disk_dqblk) (void *disk, struct dquot * dquot);	/* Convert given entry from in memory format to disk one */
+	void (*disk2mem_dqblk) (struct dquot * dquot, void *disk);	/* Convert given entry from disk format to in memory one */
+	int (*is_id) (void *disk, struct dquot * dquot);	/* Is this structure for given id? */
 };
 
 /* Inmemory copy of version specific information */
 struct qtree_mem_dqinfo {
 	struct super_block *dqi_sb;	/* Sb quota is on */
-	int dqi_type;			/* Quota type */
+	int dqi_type;		/* Quota type */
 	unsigned int dqi_blocks;	/* # of blocks in quota file */
 	unsigned int dqi_free_blk;	/* First block in list of free blocks */
 	unsigned int dqi_free_entry;	/* First block with free entry */

@@ -8,4 +8,3 @@
 #define __USER_DS     0x1
 
 #endif /* __ASM_ARM_SEGMENT_H */
-

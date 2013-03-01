@@ -5,52 +5,49 @@
 #include <linux/netlink.h>
 
 /* The struct should be in sync with struct net_device_stats */
-struct rtnl_link_stats
-{
-	__u32	rx_packets;		/* total packets received	*/
-	__u32	tx_packets;		/* total packets transmitted	*/
-	__u32	rx_bytes;		/* total bytes received 	*/
-	__u32	tx_bytes;		/* total bytes transmitted	*/
-	__u32	rx_errors;		/* bad packets received		*/
-	__u32	tx_errors;		/* packet transmit problems	*/
-	__u32	rx_dropped;		/* no space in linux buffers	*/
-	__u32	tx_dropped;		/* no space available in linux	*/
-	__u32	multicast;		/* multicast packets received	*/
-	__u32	collisions;
+struct rtnl_link_stats {
+	__u32 rx_packets;	/* total packets received       */
+	__u32 tx_packets;	/* total packets transmitted    */
+	__u32 rx_bytes;		/* total bytes received         */
+	__u32 tx_bytes;		/* total bytes transmitted      */
+	__u32 rx_errors;	/* bad packets received         */
+	__u32 tx_errors;	/* packet transmit problems     */
+	__u32 rx_dropped;	/* no space in linux buffers    */
+	__u32 tx_dropped;	/* no space available in linux  */
+	__u32 multicast;	/* multicast packets received   */
+	__u32 collisions;
 
 	/* detailed rx_errors: */
-	__u32	rx_length_errors;
-	__u32	rx_over_errors;		/* receiver ring buff overflow	*/
-	__u32	rx_crc_errors;		/* recved pkt with crc error	*/
-	__u32	rx_frame_errors;	/* recv'd frame alignment error */
-	__u32	rx_fifo_errors;		/* recv'r fifo overrun		*/
-	__u32	rx_missed_errors;	/* receiver missed packet	*/
+	__u32 rx_length_errors;
+	__u32 rx_over_errors;	/* receiver ring buff overflow  */
+	__u32 rx_crc_errors;	/* recved pkt with crc error    */
+	__u32 rx_frame_errors;	/* recv'd frame alignment error */
+	__u32 rx_fifo_errors;	/* recv'r fifo overrun          */
+	__u32 rx_missed_errors;	/* receiver missed packet       */
 
 	/* detailed tx_errors */
-	__u32	tx_aborted_errors;
-	__u32	tx_carrier_errors;
-	__u32	tx_fifo_errors;
-	__u32	tx_heartbeat_errors;
-	__u32	tx_window_errors;
+	__u32 tx_aborted_errors;
+	__u32 tx_carrier_errors;
+	__u32 tx_fifo_errors;
+	__u32 tx_heartbeat_errors;
+	__u32 tx_window_errors;
 
 	/* for cslip etc */
-	__u32	rx_compressed;
-	__u32	tx_compressed;
+	__u32 rx_compressed;
+	__u32 tx_compressed;
 };
 
 /* The struct should be in sync with struct ifmap */
-struct rtnl_link_ifmap
-{
-	__u64	mem_start;
-	__u64	mem_end;
-	__u64	base_addr;
-	__u16	irq;
-	__u8	dma;
-	__u8	port;
+struct rtnl_link_ifmap {
+	__u64 mem_start;
+	__u64 mem_end;
+	__u64 base_addr;
+	__u16 irq;
+	__u8 dma;
+	__u8 port;
 };
 
-enum
-{
+enum {
 	IFLA_UNSPEC,
 	IFLA_ADDRESS,
 	IFLA_BROADCAST,
@@ -83,7 +80,6 @@ enum
 	IFLA_IFALIAS,
 	__IFLA_MAX
 };
-
 
 #define IFLA_MAX (__IFLA_MAX - 1)
 
@@ -123,30 +119,27 @@ enum
  */
 
 /* Subtype attributes for IFLA_PROTINFO */
-enum
-{
+enum {
 	IFLA_INET6_UNSPEC,
-	IFLA_INET6_FLAGS,	/* link flags			*/
-	IFLA_INET6_CONF,	/* sysctl parameters		*/
-	IFLA_INET6_STATS,	/* statistics			*/
-	IFLA_INET6_MCAST,	/* MC things. What of them?	*/
+	IFLA_INET6_FLAGS,	/* link flags                   */
+	IFLA_INET6_CONF,	/* sysctl parameters            */
+	IFLA_INET6_STATS,	/* statistics                   */
+	IFLA_INET6_MCAST,	/* MC things. What of them?     */
 	IFLA_INET6_CACHEINFO,	/* time values and max reasm size */
-	IFLA_INET6_ICMP6STATS,	/* statistics (icmpv6)		*/
+	IFLA_INET6_ICMP6STATS,	/* statistics (icmpv6)          */
 	__IFLA_INET6_MAX
 };
 
 #define IFLA_INET6_MAX	(__IFLA_INET6_MAX - 1)
 
-struct ifla_cacheinfo
-{
-	__u32	max_reasm_len;
-	__u32	tstamp;		/* ipv6InterfaceTable updated timestamp */
-	__u32	reachable_time;
-	__u32	retrans_time;
+struct ifla_cacheinfo {
+	__u32 max_reasm_len;
+	__u32 tstamp;		/* ipv6InterfaceTable updated timestamp */
+	__u32 reachable_time;
+	__u32 retrans_time;
 };
 
-enum
-{
+enum {
 	IFLA_INFO_UNSPEC,
 	IFLA_INFO_KIND,
 	IFLA_INFO_DATA,
@@ -158,8 +151,7 @@ enum
 
 /* VLAN section */
 
-enum
-{
+enum {
 	IFLA_VLAN_UNSPEC,
 	IFLA_VLAN_ID,
 	IFLA_VLAN_FLAGS,
@@ -171,12 +163,11 @@ enum
 #define IFLA_VLAN_MAX	(__IFLA_VLAN_MAX - 1)
 
 struct ifla_vlan_flags {
-	__u32	flags;
-	__u32	mask;
+	__u32 flags;
+	__u32 mask;
 };
 
-enum
-{
+enum {
 	IFLA_VLAN_QOS_UNSPEC,
 	IFLA_VLAN_QOS_MAPPING,
 	__IFLA_VLAN_QOS_MAX
@@ -184,8 +175,7 @@ enum
 
 #define IFLA_VLAN_QOS_MAX	(__IFLA_VLAN_QOS_MAX - 1)
 
-struct ifla_vlan_qos_mapping
-{
+struct ifla_vlan_qos_mapping {
 	__u32 from;
 	__u32 to;
 };

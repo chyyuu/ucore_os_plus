@@ -16,10 +16,9 @@
  * =====================================================================================
  */
 
-
 #ifndef  MACH_BOARD_H
 #define  MACH_BOARD_H
 
 #include "board-at91.h"
 
-#endif  
+#endif

@@ -68,7 +68,7 @@ void cleanup_fault_attr_dentries(struct fault_attr *attr);
 #else /* CONFIG_FAULT_INJECTION_DEBUG_FS */
 
 static inline int init_fault_attr_dentries(struct fault_attr *attr,
-					  const char *name)
+					   const char *name)
 {
 	return -ENODEV;
 }

@@ -32,19 +32,19 @@ struct serio {
 
 	struct serio_device_id id;
 
-	spinlock_t lock;		/* protects critical sections from port's interrupt handler */
+	spinlock_t lock;	/* protects critical sections from port's interrupt handler */
 
-	int (*write)(struct serio *, unsigned char);
-	int (*open)(struct serio *);
-	void (*close)(struct serio *);
-	int (*start)(struct serio *);
-	void (*stop)(struct serio *);
+	int (*write) (struct serio *, unsigned char);
+	int (*open) (struct serio *);
+	void (*close) (struct serio *);
+	int (*start) (struct serio *);
+	void (*stop) (struct serio *);
 
 	struct serio *parent, *child;
-	unsigned int depth;		/* level of nesting in serio hierarchy */
+	unsigned int depth;	/* level of nesting in serio hierarchy */
 
 	struct serio_driver *drv;	/* accessed from interrupt, must be protected by serio->lock and serio->sem */
-	struct mutex drv_mutex;		/* protects serio->drv so attributes can pin driver */
+	struct mutex drv_mutex;	/* protects serio->drv so attributes can pin driver */
 
 	struct device dev;
 	unsigned int registered;	/* port has been fully registered with driver core */
@@ -60,12 +60,12 @@ struct serio_driver {
 	struct serio_device_id *id_table;
 	unsigned int manual_bind;
 
-	void (*write_wakeup)(struct serio *);
-	irqreturn_t (*interrupt)(struct serio *, unsigned char, unsigned int);
-	int  (*connect)(struct serio *, struct serio_driver *drv);
-	int  (*reconnect)(struct serio *);
-	void (*disconnect)(struct serio *);
-	void (*cleanup)(struct serio *);
+	void (*write_wakeup) (struct serio *);
+	 irqreturn_t(*interrupt) (struct serio *, unsigned char, unsigned int);
+	int (*connect) (struct serio *, struct serio_driver * drv);
+	int (*reconnect) (struct serio *);
+	void (*disconnect) (struct serio *);
+	void (*cleanup) (struct serio *);
 
 	struct device_driver driver;
 };
@@ -75,7 +75,8 @@ int serio_open(struct serio *serio, struct serio_driver *drv);
 void serio_close(struct serio *serio);
 void serio_rescan(struct serio *serio);
 void serio_reconnect(struct serio *serio);
-irqreturn_t serio_interrupt(struct serio *serio, unsigned char data, unsigned int flags);
+irqreturn_t serio_interrupt(struct serio *serio, unsigned char data,
+			    unsigned int flags);
 
 void __serio_register_port(struct serio *serio, struct module *owner);
 static inline void serio_register_port(struct serio *serio)
@@ -86,11 +87,13 @@ static inline void serio_register_port(struct serio *serio)
 void serio_unregister_port(struct serio *serio);
 void serio_unregister_child_port(struct serio *serio);
 
-int __serio_register_driver(struct serio_driver *drv, struct module *owner, const char *mod_name);
+int __serio_register_driver(struct serio_driver *drv, struct module *owner,
+			    const char *mod_name);
 static inline int __must_check serio_register_driver(struct serio_driver *drv)
 {
 	return __serio_register_driver(drv, THIS_MODULE, KBUILD_MODNAME);
 }
+
 void serio_unregister_driver(struct serio_driver *drv);
 
 static inline int serio_write(struct serio *serio, unsigned char data)
@@ -152,7 +155,6 @@ static inline void serio_unpin_driver(struct serio *serio)
 {
 	mutex_unlock(&serio->drv_mutex);
 }
-
 
 #endif
 

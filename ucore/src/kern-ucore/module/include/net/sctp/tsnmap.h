@@ -66,7 +66,7 @@ struct sctp_tsnmap {
 	__u32 base_tsn;
 
 	/* Last Rcvd   : This is the last TSN received in
-	 * TSN	       : sequence. This value is set initially by
+	 * TSN         : sequence. This value is set initially by
 	 *             : taking the peer's Initial TSN, received in
 	 *             : the INIT or INIT ACK chunk, and subtracting
 	 *             : one from it.
@@ -148,8 +148,8 @@ static inline __be32 *sctp_tsnmap_get_dups(struct sctp_tsnmap *map)
 }
 
 /* How many gap ack blocks do we have recorded? */
-__u16 sctp_tsnmap_num_gabs(struct sctp_tsnmap *map,
-			   struct sctp_gap_ack_block *gabs);
+__u16 sctp_tsnmap_num_gabs(struct sctp_tsnmap * map,
+			   struct sctp_gap_ack_block * gabs);
 
 /* Refresh the count on pending data. */
 __u16 sctp_tsnmap_pending(struct sctp_tsnmap *map);

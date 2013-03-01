@@ -11,4 +11,4 @@
 #define SEEK_CUR	1	/* Seek from current position.  */
 #define SEEK_END	2	/* Seek from end of file.  */
 
-#endif  /* !__ARCH_UM_INCLUDE_LINUX_FCNTL_H__ */
+#endif /* !__ARCH_UM_INCLUDE_LINUX_FCNTL_H__ */

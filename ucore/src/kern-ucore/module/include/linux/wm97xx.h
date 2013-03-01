@@ -62,7 +62,6 @@
 #define WM97XX_AUX_ID3		0x8003
 #define WM97XX_AUX_ID4		0x8004
 
-
 /* WM9712 Bits */
 #define WM9712_45W		0x1000	/* set for 5-wire touchscreen */
 #define WM9712_PDEN		0x0800	/* measure only when pen down */
@@ -91,7 +90,6 @@
 #define	WM9705_MASK_SYNC	0x0030	/* rising/falling edge on mask initiates sample */
 #define WM9705_PDD(i)		(i & 0x000f)	/* pen detect comparator threshold */
 
-
 /* WM9713 Bits */
 #define WM9713_PDPOL		0x0400	/* Pen down polarity */
 #define WM9713_POLL		0x0200	/* initiate a polling measurement */
@@ -100,7 +98,7 @@
 #define WM9713_ADCSEL_Y		0x0004	/* Y measurement */
 #define WM9713_ADCSEL_PRES	0x0008	/* Pressure measurement */
 #define WM9713_COO		0x0001	/* enable coordinate mode */
-#define WM9713_45W		0x1000  /* set for 5 wire panel */
+#define WM9713_45W		0x1000	/* set for 5 wire panel */
 #define WM9713_PDEN		0x0800	/* measure only when pen down */
 #define WM9713_ADCSEL_MASK	0x00fe	/* ADC selection mask */
 #define WM9713_WAIT		0x0200	/* coordinate wait */
@@ -135,9 +133,7 @@
 #define WM97XX_GPIO_14		(1 << 14)
 #define WM97XX_GPIO_15		(1 << 15)
 
-
 #define AC97_LINK_FRAME		21	/* time in uS for AC97 link frame */
-
 
 /*---------------- Return codes from sample reading functions ---------------*/
 
@@ -159,49 +155,49 @@
 
 /* The structure used to return arch specific sampled data into */
 struct wm97xx_data {
-    int x;
-    int y;
-    int p;
+	int x;
+	int y;
+	int p;
 };
 
 /*
  * Codec GPIO status
  */
 enum wm97xx_gpio_status {
-    WM97XX_GPIO_HIGH,
-    WM97XX_GPIO_LOW
+	WM97XX_GPIO_HIGH,
+	WM97XX_GPIO_LOW
 };
 
 /*
  * Codec GPIO direction
  */
 enum wm97xx_gpio_dir {
-    WM97XX_GPIO_IN,
-    WM97XX_GPIO_OUT
+	WM97XX_GPIO_IN,
+	WM97XX_GPIO_OUT
 };
 
 /*
  * Codec GPIO polarity
  */
 enum wm97xx_gpio_pol {
-    WM97XX_GPIO_POL_HIGH,
-    WM97XX_GPIO_POL_LOW
+	WM97XX_GPIO_POL_HIGH,
+	WM97XX_GPIO_POL_LOW
 };
 
 /*
  * Codec GPIO sticky
  */
 enum wm97xx_gpio_sticky {
-    WM97XX_GPIO_STICKY,
-    WM97XX_GPIO_NOTSTICKY
+	WM97XX_GPIO_STICKY,
+	WM97XX_GPIO_NOTSTICKY
 };
 
 /*
  * Codec GPIO wake
  */
 enum wm97xx_gpio_wake {
-    WM97XX_GPIO_WAKE,
-    WM97XX_GPIO_NOWAKE
+	WM97XX_GPIO_WAKE,
+	WM97XX_GPIO_NOWAKE
 };
 
 /*
@@ -239,7 +235,6 @@ struct wm97xx_codec_drv {
 	void (*aux_prepare) (struct wm97xx *);
 };
 
-
 /* Machine specific and accelerated touch operations */
 struct wm97xx_mach_ops {
 
@@ -257,33 +252,33 @@ struct wm97xx_mach_ops {
 	int irq_gpio;
 
 	/* pre and post sample - can be used to minimise any analog noise */
-	void (*pre_sample) (int);  /* function to run before sampling */
-	void (*post_sample) (int);  /* function to run after sampling */
+	void (*pre_sample) (int);	/* function to run before sampling */
+	void (*post_sample) (int);	/* function to run after sampling */
 };
 
 struct wm97xx {
 	u16 dig[3], id, gpio[6], misc;	/* Cached codec registers */
-	u16 dig_save[3];		/* saved during aux reading */
-	struct wm97xx_codec_drv *codec;	/* attached codec driver*/
+	u16 dig_save[3];	/* saved during aux reading */
+	struct wm97xx_codec_drv *codec;	/* attached codec driver */
 	struct input_dev *input_dev;	/* touchscreen input device */
-	struct snd_ac97 *ac97;		/* ALSA codec access */
-	struct device *dev;		/* ALSA device */
+	struct snd_ac97 *ac97;	/* ALSA codec access */
+	struct device *dev;	/* ALSA device */
 	struct platform_device *battery_dev;
 	struct platform_device *touch_dev;
 	struct wm97xx_mach_ops *mach_ops;
 	struct mutex codec_mutex;
-	struct delayed_work ts_reader;  /* Used to poll touchscreen */
-	unsigned long ts_reader_interval; /* Current interval for timer */
-	unsigned long ts_reader_min_interval; /* Minimum interval */
-	unsigned int pen_irq;		/* Pen IRQ number in use */
+	struct delayed_work ts_reader;	/* Used to poll touchscreen */
+	unsigned long ts_reader_interval;	/* Current interval for timer */
+	unsigned long ts_reader_min_interval;	/* Minimum interval */
+	unsigned int pen_irq;	/* Pen IRQ number in use */
 	struct workqueue_struct *ts_workq;
 	struct work_struct pen_event_work;
-	u16 acc_slot;			/* AC97 slot used for acc touch data */
-	u16 acc_rate;			/* acc touch data rate */
-	unsigned pen_is_down:1;		/* Pen is down */
-	unsigned aux_waiting:1;		/* aux measurement waiting */
+	u16 acc_slot;		/* AC97 slot used for acc touch data */
+	u16 acc_rate;		/* acc touch data rate */
+	unsigned pen_is_down:1;	/* Pen is down */
+	unsigned aux_waiting:1;	/* aux measurement waiting */
 	unsigned pen_probably_down:1;	/* used in polling mode */
-	u16 suspend_mode;               /* PRP in suspend mode */
+	u16 suspend_mode;	/* PRP in suspend mode */
 };
 
 /*
@@ -292,12 +287,12 @@ struct wm97xx {
  */
 enum wm97xx_gpio_status wm97xx_get_gpio(struct wm97xx *wm, u32 gpio);
 void wm97xx_set_gpio(struct wm97xx *wm, u32 gpio,
-			  enum wm97xx_gpio_status status);
+		     enum wm97xx_gpio_status status);
 void wm97xx_config_gpio(struct wm97xx *wm, u32 gpio,
-				     enum wm97xx_gpio_dir dir,
-				     enum wm97xx_gpio_pol pol,
-				     enum wm97xx_gpio_sticky sticky,
-				     enum wm97xx_gpio_wake wake);
+			enum wm97xx_gpio_dir dir,
+			enum wm97xx_gpio_pol pol,
+			enum wm97xx_gpio_sticky sticky,
+			enum wm97xx_gpio_wake wake);
 
 void wm97xx_set_suspend_mode(struct wm97xx *wm, u16 mode);
 

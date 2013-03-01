@@ -14,10 +14,10 @@
 /* Types of messages */
 
 enum {
-	RTM_BASE	= 16,
+	RTM_BASE = 16,
 #define RTM_BASE	RTM_BASE
 
-	RTM_NEWLINK	= 16,
+	RTM_NEWLINK = 16,
 #define RTM_NEWLINK	RTM_NEWLINK
 	RTM_DELLINK,
 #define RTM_DELLINK	RTM_DELLINK
@@ -26,74 +26,74 @@ enum {
 	RTM_SETLINK,
 #define RTM_SETLINK	RTM_SETLINK
 
-	RTM_NEWADDR	= 20,
+	RTM_NEWADDR = 20,
 #define RTM_NEWADDR	RTM_NEWADDR
 	RTM_DELADDR,
 #define RTM_DELADDR	RTM_DELADDR
 	RTM_GETADDR,
 #define RTM_GETADDR	RTM_GETADDR
 
-	RTM_NEWROUTE	= 24,
+	RTM_NEWROUTE = 24,
 #define RTM_NEWROUTE	RTM_NEWROUTE
 	RTM_DELROUTE,
 #define RTM_DELROUTE	RTM_DELROUTE
 	RTM_GETROUTE,
 #define RTM_GETROUTE	RTM_GETROUTE
 
-	RTM_NEWNEIGH	= 28,
+	RTM_NEWNEIGH = 28,
 #define RTM_NEWNEIGH	RTM_NEWNEIGH
 	RTM_DELNEIGH,
 #define RTM_DELNEIGH	RTM_DELNEIGH
 	RTM_GETNEIGH,
 #define RTM_GETNEIGH	RTM_GETNEIGH
 
-	RTM_NEWRULE	= 32,
+	RTM_NEWRULE = 32,
 #define RTM_NEWRULE	RTM_NEWRULE
 	RTM_DELRULE,
 #define RTM_DELRULE	RTM_DELRULE
 	RTM_GETRULE,
 #define RTM_GETRULE	RTM_GETRULE
 
-	RTM_NEWQDISC	= 36,
+	RTM_NEWQDISC = 36,
 #define RTM_NEWQDISC	RTM_NEWQDISC
 	RTM_DELQDISC,
 #define RTM_DELQDISC	RTM_DELQDISC
 	RTM_GETQDISC,
 #define RTM_GETQDISC	RTM_GETQDISC
 
-	RTM_NEWTCLASS	= 40,
+	RTM_NEWTCLASS = 40,
 #define RTM_NEWTCLASS	RTM_NEWTCLASS
 	RTM_DELTCLASS,
 #define RTM_DELTCLASS	RTM_DELTCLASS
 	RTM_GETTCLASS,
 #define RTM_GETTCLASS	RTM_GETTCLASS
 
-	RTM_NEWTFILTER	= 44,
+	RTM_NEWTFILTER = 44,
 #define RTM_NEWTFILTER	RTM_NEWTFILTER
 	RTM_DELTFILTER,
 #define RTM_DELTFILTER	RTM_DELTFILTER
 	RTM_GETTFILTER,
 #define RTM_GETTFILTER	RTM_GETTFILTER
 
-	RTM_NEWACTION	= 48,
+	RTM_NEWACTION = 48,
 #define RTM_NEWACTION   RTM_NEWACTION
 	RTM_DELACTION,
 #define RTM_DELACTION   RTM_DELACTION
 	RTM_GETACTION,
 #define RTM_GETACTION   RTM_GETACTION
 
-	RTM_NEWPREFIX	= 52,
+	RTM_NEWPREFIX = 52,
 #define RTM_NEWPREFIX	RTM_NEWPREFIX
 
 	RTM_GETMULTICAST = 58,
 #define RTM_GETMULTICAST RTM_GETMULTICAST
 
-	RTM_GETANYCAST	= 62,
+	RTM_GETANYCAST = 62,
 #define RTM_GETANYCAST	RTM_GETANYCAST
 
-	RTM_NEWNEIGHTBL	= 64,
+	RTM_NEWNEIGHTBL = 64,
 #define RTM_NEWNEIGHTBL	RTM_NEWNEIGHTBL
-	RTM_GETNEIGHTBL	= 66,
+	RTM_GETNEIGHTBL = 66,
 #define RTM_GETNEIGHTBL	RTM_GETNEIGHTBL
 	RTM_SETNEIGHTBL,
 #define RTM_SETNEIGHTBL	RTM_SETNEIGHTBL
@@ -127,10 +127,9 @@ enum {
    with attribute type.
  */
 
-struct rtattr
-{
-	unsigned short	rta_len;
-	unsigned short	rta_type;
+struct rtattr {
+	unsigned short rta_len;
+	unsigned short rta_type;
 };
 
 /* Macros to handle rtattributes */
@@ -147,60 +146,54 @@ struct rtattr
 #define RTA_DATA(rta)   ((void*)(((char*)(rta)) + RTA_LENGTH(0)))
 #define RTA_PAYLOAD(rta) ((int)((rta)->rta_len) - RTA_LENGTH(0))
 
-
-
-
 /******************************************************************************
  *		Definitions used in routing table administration.
  ****/
 
-struct rtmsg
-{
-	unsigned char		rtm_family;
-	unsigned char		rtm_dst_len;
-	unsigned char		rtm_src_len;
-	unsigned char		rtm_tos;
+struct rtmsg {
+	unsigned char rtm_family;
+	unsigned char rtm_dst_len;
+	unsigned char rtm_src_len;
+	unsigned char rtm_tos;
 
-	unsigned char		rtm_table;	/* Routing table id */
-	unsigned char		rtm_protocol;	/* Routing protocol; see below	*/
-	unsigned char		rtm_scope;	/* See below */	
-	unsigned char		rtm_type;	/* See below	*/
+	unsigned char rtm_table;	/* Routing table id */
+	unsigned char rtm_protocol;	/* Routing protocol; see below  */
+	unsigned char rtm_scope;	/* See below */
+	unsigned char rtm_type;	/* See below    */
 
-	unsigned		rtm_flags;
+	unsigned rtm_flags;
 };
 
 /* rtm_type */
 
-enum
-{
+enum {
 	RTN_UNSPEC,
-	RTN_UNICAST,		/* Gateway or direct route	*/
-	RTN_LOCAL,		/* Accept locally		*/
+	RTN_UNICAST,		/* Gateway or direct route      */
+	RTN_LOCAL,		/* Accept locally               */
 	RTN_BROADCAST,		/* Accept locally as broadcast,
 				   send as broadcast */
 	RTN_ANYCAST,		/* Accept locally as broadcast,
 				   but send as unicast */
-	RTN_MULTICAST,		/* Multicast route		*/
-	RTN_BLACKHOLE,		/* Drop				*/
+	RTN_MULTICAST,		/* Multicast route              */
+	RTN_BLACKHOLE,		/* Drop                         */
 	RTN_UNREACHABLE,	/* Destination is unreachable   */
-	RTN_PROHIBIT,		/* Administratively prohibited	*/
-	RTN_THROW,		/* Not in this table		*/
-	RTN_NAT,		/* Translate this address	*/
-	RTN_XRESOLVE,		/* Use external resolver	*/
+	RTN_PROHIBIT,		/* Administratively prohibited  */
+	RTN_THROW,		/* Not in this table            */
+	RTN_NAT,		/* Translate this address       */
+	RTN_XRESOLVE,		/* Use external resolver        */
 	__RTN_MAX
 };
 
 #define RTN_MAX (__RTN_MAX - 1)
-
 
 /* rtm_protocol */
 
 #define RTPROT_UNSPEC	0
 #define RTPROT_REDIRECT	1	/* Route installed by ICMP redirects;
 				   not used by current IPv4 */
-#define RTPROT_KERNEL	2	/* Route installed by kernel		*/
-#define RTPROT_BOOT	3	/* Route installed during boot		*/
-#define RTPROT_STATIC	4	/* Route installed by administrator	*/
+#define RTPROT_KERNEL	2	/* Route installed by kernel            */
+#define RTPROT_BOOT	3	/* Route installed during boot          */
+#define RTPROT_STATIC	4	/* Route installed by administrator     */
 
 /* Values of protocol >= RTPROT_STATIC are not interpreted by kernel;
    they are just passed from user and back as is.
@@ -229,41 +222,37 @@ enum
    could be assigned a value between UNIVERSE and LINK.
 */
 
-enum rt_scope_t
-{
-	RT_SCOPE_UNIVERSE=0,
+enum rt_scope_t {
+	RT_SCOPE_UNIVERSE = 0,
 /* User defined values  */
-	RT_SCOPE_SITE=200,
-	RT_SCOPE_LINK=253,
-	RT_SCOPE_HOST=254,
-	RT_SCOPE_NOWHERE=255
+	RT_SCOPE_SITE = 200,
+	RT_SCOPE_LINK = 253,
+	RT_SCOPE_HOST = 254,
+	RT_SCOPE_NOWHERE = 255
 };
 
 /* rtm_flags */
 
-#define RTM_F_NOTIFY		0x100	/* Notify user of route change	*/
-#define RTM_F_CLONED		0x200	/* This route is cloned		*/
-#define RTM_F_EQUALIZE		0x400	/* Multipath equalizer: NI	*/
-#define RTM_F_PREFIX		0x800	/* Prefix addresses		*/
+#define RTM_F_NOTIFY		0x100	/* Notify user of route change  */
+#define RTM_F_CLONED		0x200	/* This route is cloned         */
+#define RTM_F_EQUALIZE		0x400	/* Multipath equalizer: NI      */
+#define RTM_F_PREFIX		0x800	/* Prefix addresses             */
 
 /* Reserved table identifiers */
 
-enum rt_class_t
-{
-	RT_TABLE_UNSPEC=0,
+enum rt_class_t {
+	RT_TABLE_UNSPEC = 0,
 /* User defined values */
-	RT_TABLE_COMPAT=252,
-	RT_TABLE_DEFAULT=253,
-	RT_TABLE_MAIN=254,
-	RT_TABLE_LOCAL=255,
-	RT_TABLE_MAX=0xFFFFFFFF
+	RT_TABLE_COMPAT = 252,
+	RT_TABLE_DEFAULT = 253,
+	RT_TABLE_MAIN = 254,
+	RT_TABLE_LOCAL = 255,
+	RT_TABLE_MAX = 0xFFFFFFFF
 };
-
 
 /* Routing message attributes */
 
-enum rtattr_type_t
-{
+enum rtattr_type_t {
 	RTA_UNSPEC,
 	RTA_DST,
 	RTA_SRC,
@@ -274,11 +263,11 @@ enum rtattr_type_t
 	RTA_PREFSRC,
 	RTA_METRICS,
 	RTA_MULTIPATH,
-	RTA_PROTOINFO, /* no longer used */
+	RTA_PROTOINFO,		/* no longer used */
 	RTA_FLOW,
 	RTA_CACHEINFO,
-	RTA_SESSION, /* no longer used */
-	RTA_MP_ALGO, /* no longer used */
+	RTA_SESSION,		/* no longer used */
+	RTA_MP_ALGO,		/* no longer used */
 	RTA_TABLE,
 	__RTA_MAX
 };
@@ -297,19 +286,18 @@ enum rtattr_type_t
  * and rtt for different paths from multipath.
  */
 
-struct rtnexthop
-{
-	unsigned short		rtnh_len;
-	unsigned char		rtnh_flags;
-	unsigned char		rtnh_hops;
-	int			rtnh_ifindex;
+struct rtnexthop {
+	unsigned short rtnh_len;
+	unsigned char rtnh_flags;
+	unsigned char rtnh_hops;
+	int rtnh_ifindex;
 };
 
 /* rtnh_flags */
 
-#define RTNH_F_DEAD		1	/* Nexthop is dead (used by multipath)	*/
-#define RTNH_F_PERVASIVE	2	/* Do recursive gateway lookup	*/
-#define RTNH_F_ONLINK		4	/* Gateway is forced on link	*/
+#define RTNH_F_DEAD		1	/* Nexthop is dead (used by multipath)  */
+#define RTNH_F_PERVASIVE	2	/* Do recursive gateway lookup  */
+#define RTNH_F_ONLINK		4	/* Gateway is forced on link    */
 
 /* Macros to handle hexthops */
 
@@ -324,24 +312,22 @@ struct rtnexthop
 
 /* RTM_CACHEINFO */
 
-struct rta_cacheinfo
-{
-	__u32	rta_clntref;
-	__u32	rta_lastuse;
-	__s32	rta_expires;
-	__u32	rta_error;
-	__u32	rta_used;
+struct rta_cacheinfo {
+	__u32 rta_clntref;
+	__u32 rta_lastuse;
+	__s32 rta_expires;
+	__u32 rta_error;
+	__u32 rta_used;
 
 #define RTNETLINK_HAVE_PEERINFO 1
-	__u32	rta_id;
-	__u32	rta_ts;
-	__u32	rta_tsage;
+	__u32 rta_id;
+	__u32 rta_ts;
+	__u32 rta_tsage;
 };
 
 /* RTM_METRICS --- array of struct rtattr with types of RTAX_* */
 
-enum
-{
+enum {
 	RTAX_UNSPEC,
 #define RTAX_UNSPEC RTAX_UNSPEC
 	RTAX_LOCK,
@@ -380,25 +366,24 @@ enum
 #define RTAX_FEATURE_TIMESTAMP	0x00000004
 #define RTAX_FEATURE_ALLFRAG	0x00000008
 
-struct rta_session
-{
-	__u8	proto;
-	__u8	pad1;
-	__u16	pad2;
+struct rta_session {
+	__u8 proto;
+	__u8 pad1;
+	__u16 pad2;
 
 	union {
 		struct {
-			__u16	sport;
-			__u16	dport;
+			__u16 sport;
+			__u16 dport;
 		} ports;
 
 		struct {
-			__u8	type;
-			__u8	code;
-			__u16	ident;
+			__u8 type;
+			__u8 code;
+			__u16 ident;
 		} icmpt;
 
-		__u32		spi;
+		__u32 spi;
 	} u;
 };
 
@@ -406,9 +391,8 @@ struct rta_session
  *		General form of address family dependent message.
  ****/
 
-struct rtgenmsg
-{
-	unsigned char		rtgen_family;
+struct rtgenmsg {
+	unsigned char rtgen_family;
 };
 
 /*****************************************************************
@@ -420,34 +404,31 @@ struct rtgenmsg
  * on network protocol.
  */
 
-struct ifinfomsg
-{
-	unsigned char	ifi_family;
-	unsigned char	__ifi_pad;
-	unsigned short	ifi_type;		/* ARPHRD_* */
-	int		ifi_index;		/* Link index	*/
-	unsigned	ifi_flags;		/* IFF_* flags	*/
-	unsigned	ifi_change;		/* IFF_* change mask */
+struct ifinfomsg {
+	unsigned char ifi_family;
+	unsigned char __ifi_pad;
+	unsigned short ifi_type;	/* ARPHRD_* */
+	int ifi_index;		/* Link index   */
+	unsigned ifi_flags;	/* IFF_* flags  */
+	unsigned ifi_change;	/* IFF_* change mask */
 };
 
 /********************************************************************
  *		prefix information 
  ****/
 
-struct prefixmsg
-{
-	unsigned char	prefix_family;
-	unsigned char	prefix_pad1;
-	unsigned short	prefix_pad2;
-	int		prefix_ifindex;
-	unsigned char	prefix_type;
-	unsigned char	prefix_len;
-	unsigned char	prefix_flags;
-	unsigned char	prefix_pad3;
+struct prefixmsg {
+	unsigned char prefix_family;
+	unsigned char prefix_pad1;
+	unsigned short prefix_pad2;
+	int prefix_ifindex;
+	unsigned char prefix_type;
+	unsigned char prefix_len;
+	unsigned char prefix_flags;
+	unsigned char prefix_pad3;
 };
 
-enum 
-{
+enum {
 	PREFIX_UNSPEC,
 	PREFIX_ADDRESS,
 	PREFIX_CACHEINFO,
@@ -456,30 +437,26 @@ enum
 
 #define PREFIX_MAX	(__PREFIX_MAX - 1)
 
-struct prefix_cacheinfo
-{
-	__u32	preferred_time;
-	__u32	valid_time;
+struct prefix_cacheinfo {
+	__u32 preferred_time;
+	__u32 valid_time;
 };
-
 
 /*****************************************************************
  *		Traffic control messages.
  ****/
 
-struct tcmsg
-{
-	unsigned char	tcm_family;
-	unsigned char	tcm__pad1;
-	unsigned short	tcm__pad2;
-	int		tcm_ifindex;
-	__u32		tcm_handle;
-	__u32		tcm_parent;
-	__u32		tcm_info;
+struct tcmsg {
+	unsigned char tcm_family;
+	unsigned char tcm__pad1;
+	unsigned short tcm__pad2;
+	int tcm_ifindex;
+	__u32 tcm_handle;
+	__u32 tcm_parent;
+	__u32 tcm_info;
 };
 
-enum
-{
+enum {
 	TCA_UNSPEC,
 	TCA_KIND,
 	TCA_OPTIONS,
@@ -501,21 +478,19 @@ enum
  *		Neighbor Discovery userland options
  ****/
 
-struct nduseroptmsg
-{
-	unsigned char	nduseropt_family;
-	unsigned char	nduseropt_pad1;
-	unsigned short	nduseropt_opts_len;	/* Total length of options */
-	int		nduseropt_ifindex;
-	__u8		nduseropt_icmp_type;
-	__u8		nduseropt_icmp_code;
-	unsigned short	nduseropt_pad2;
-	unsigned int	nduseropt_pad3;
+struct nduseroptmsg {
+	unsigned char nduseropt_family;
+	unsigned char nduseropt_pad1;
+	unsigned short nduseropt_opts_len;	/* Total length of options */
+	int nduseropt_ifindex;
+	__u8 nduseropt_icmp_type;
+	__u8 nduseropt_icmp_code;
+	unsigned short nduseropt_pad2;
+	unsigned int nduseropt_pad3;
 	/* Followed by one or more ND options */
 };
 
-enum
-{
+enum {
 	NDUSEROPT_UNSPEC,
 	NDUSEROPT_SRCADDR,
 	__NDUSEROPT_MAX
@@ -597,15 +572,14 @@ enum rtnetlink_groups {
 #define RTNLGRP_MAX	(__RTNLGRP_MAX - 1)
 
 /* TC action piece */
-struct tcamsg
-{
-	unsigned char	tca_family;
-	unsigned char	tca__pad1;
-	unsigned short	tca__pad2;
+struct tcamsg {
+	unsigned char tca_family;
+	unsigned char tca__pad1;
+	unsigned short tca__pad2;
 };
 #define TA_RTA(r)  ((struct rtattr*)(((char*)(r)) + NLMSG_ALIGN(sizeof(struct tcamsg))))
 #define TA_PAYLOAD(n) NLMSG_PAYLOAD(n,sizeof(struct tcamsg))
-#define TCA_ACT_TAB 1 /* attr type must be >=1 */	
+#define TCA_ACT_TAB 1		/* attr type must be >=1 */
 #define TCAA_MAX 1
 
 /* End of information exported to user level */
@@ -620,22 +594,24 @@ static __inline__ int rtattr_strcmp(const struct rtattr *rta, const char *str)
 	return len > rta->rta_len || memcmp(RTA_DATA(rta), str, len);
 }
 
-extern int rtnetlink_send(struct sk_buff *skb, struct net *net, u32 pid, u32 group, int echo);
+extern int rtnetlink_send(struct sk_buff *skb, struct net *net, u32 pid,
+			  u32 group, int echo);
 extern int rtnl_unicast(struct sk_buff *skb, struct net *net, u32 pid);
 extern int rtnl_notify(struct sk_buff *skb, struct net *net, u32 pid, u32 group,
 		       struct nlmsghdr *nlh, gfp_t flags);
 extern void rtnl_set_sk_err(struct net *net, u32 group, int error);
-extern int rtnetlink_put_metrics(struct sk_buff *skb, u32 *metrics);
+extern int rtnetlink_put_metrics(struct sk_buff *skb, u32 * metrics);
 extern int rtnl_put_cacheinfo(struct sk_buff *skb, struct dst_entry *dst,
 			      u32 id, u32 ts, u32 tsage, long expires,
 			      u32 error);
 
-extern void __rta_fill(struct sk_buff *skb, int attrtype, int attrlen, const void *data);
+extern void __rta_fill(struct sk_buff *skb, int attrtype, int attrlen,
+		       const void *data);
 
 #define RTA_PUT(skb, attrtype, attrlen, data) \
 ({	if (unlikely(skb_tailroom(skb) < (int)RTA_SPACE(attrlen))) \
 		 goto rtattr_failure; \
-   	__rta_fill(skb, attrtype, attrlen, data); }) 
+   	__rta_fill(skb, attrtype, attrlen, data); })
 
 #define RTA_APPEND(skb, attrlen, data) \
 ({	if (unlikely(skb_tailroom(skb) < (int)(attrlen))) \
@@ -727,14 +703,14 @@ extern void __rta_fill(struct sk_buff *skb, int attrtype, int attrlen, const voi
 
 #define RTA_GET_SECS(rta) ((unsigned long) RTA_GET_U64(rta) * HZ)
 #define RTA_GET_MSECS(rta) (msecs_to_jiffies((unsigned long) RTA_GET_U64(rta)))
-		
-static inline struct rtattr *
-__rta_reserve(struct sk_buff *skb, int attrtype, int attrlen)
+
+static inline struct rtattr *__rta_reserve(struct sk_buff *skb, int attrtype,
+					   int attrlen)
 {
 	struct rtattr *rta;
 	int size = RTA_LENGTH(attrlen);
 
-	rta = (struct rtattr*)skb_put(skb, RTA_ALIGN(size));
+	rta = (struct rtattr *)skb_put(skb, RTA_ALIGN(size));
 	rta->rta_type = attrtype;
 	rta->rta_len = size;
 	memset(RTA_DATA(rta) + attrlen, 0, RTA_ALIGN(size) - size);
@@ -767,12 +743,11 @@ extern void __rtnl_unlock(void);
 
 static inline u32 rtm_get_table(struct rtattr **rta, u8 table)
 {
-	return RTA_GET_U32(rta[RTA_TABLE-1]);
+	return RTA_GET_U32(rta[RTA_TABLE - 1]);
 rtattr_failure:
 	return table;
 }
 
 #endif /* __KERNEL__ */
 
-
-#endif	/* __LINUX_RTNETLINK_H */
+#endif /* __LINUX_RTNETLINK_H */

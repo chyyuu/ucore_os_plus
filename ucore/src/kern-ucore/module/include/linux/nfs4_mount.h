@@ -20,39 +20,39 @@
 
 struct nfs_string {
 	unsigned int len;
-	const char __user * data;
+	const char __user *data;
 };
 
 struct nfs4_mount_data {
-	int version;				/* 1 */
-	int flags;				/* 1 */
-	int rsize;				/* 1 */
-	int wsize;				/* 1 */
-	int timeo;				/* 1 */
-	int retrans;				/* 1 */
-	int acregmin;				/* 1 */
-	int acregmax;				/* 1 */
-	int acdirmin;				/* 1 */
-	int acdirmax;				/* 1 */
+	int version;		/* 1 */
+	int flags;		/* 1 */
+	int rsize;		/* 1 */
+	int wsize;		/* 1 */
+	int timeo;		/* 1 */
+	int retrans;		/* 1 */
+	int acregmin;		/* 1 */
+	int acregmax;		/* 1 */
+	int acdirmin;		/* 1 */
+	int acdirmax;		/* 1 */
 
 	/* see the definition of 'struct clientaddr4' in RFC3010 */
-	struct nfs_string client_addr;		/* 1 */
+	struct nfs_string client_addr;	/* 1 */
 
 	/* Mount path */
-	struct nfs_string mnt_path;		/* 1 */
+	struct nfs_string mnt_path;	/* 1 */
 
 	/* Server details */
-	struct nfs_string hostname;		/* 1 */
+	struct nfs_string hostname;	/* 1 */
 	/* Server IP address */
-	unsigned int host_addrlen;		/* 1 */
-	struct sockaddr __user * host_addr;	/* 1 */
+	unsigned int host_addrlen;	/* 1 */
+	struct sockaddr __user *host_addr;	/* 1 */
 
 	/* Transport protocol to use */
-	int proto;				/* 1 */
+	int proto;		/* 1 */
 
 	/* Pseudo-flavours to use for authentication. See RFC2623 */
-	int auth_flavourlen;			/* 1 */
-	int __user *auth_flavours;		/* 1 */
+	int auth_flavourlen;	/* 1 */
+	int __user *auth_flavours;	/* 1 */
 };
 
 /* bits in the flags field */

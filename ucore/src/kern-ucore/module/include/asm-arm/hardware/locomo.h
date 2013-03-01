@@ -35,15 +35,14 @@
 #define LOCOMO_MCSX3	0x1c
 
 /* Touch panel controller */
-#define LOCOMO_ASD	0x20		/* AD start delay */
-#define LOCOMO_HSD	0x28		/* HSYS delay */
-#define LOCOMO_HSC	0x2c		/* HSYS period */
-#define LOCOMO_TADC	0x30		/* tablet ADC clock */
-
+#define LOCOMO_ASD	0x20	/* AD start delay */
+#define LOCOMO_HSD	0x28	/* HSYS delay */
+#define LOCOMO_HSC	0x2c	/* HSYS period */
+#define LOCOMO_TADC	0x30	/* tablet ADC clock */
 
 /* Long time timer */
-#define LOCOMO_LTC	0xd8		/* LTC interrupt setting */
-#define LOCOMO_LTINT	0xdc		/* LTC interrupt */
+#define LOCOMO_LTC	0xd8	/* LTC interrupt setting */
+#define LOCOMO_LTINT	0xdc	/* LTC interrupt */
 
 /* DAC control signal for LCD (COMADJ ) */
 #define LOCOMO_DAC		0xe0
@@ -55,22 +54,22 @@
 
 /* SPI interface */
 #define LOCOMO_SPI	0x60
-#define LOCOMO_SPIMD	0x00		/* SPI mode setting */
-#define LOCOMO_SPICT	0x04		/* SPI mode control */
-#define LOCOMO_SPIST	0x08		/* SPI status */
+#define LOCOMO_SPIMD	0x00	/* SPI mode setting */
+#define LOCOMO_SPICT	0x04	/* SPI mode control */
+#define LOCOMO_SPIST	0x08	/* SPI status */
 #define	LOCOMO_SPI_TEND	(1 << 3)	/* Transfer end bit */
 #define	LOCOMO_SPI_REND	(1 << 2)	/* Receive end bit */
 #define	LOCOMO_SPI_RFW	(1 << 1)	/* write buffer bit */
-#define	LOCOMO_SPI_RFR	(1)		/* read buffer bit */
+#define	LOCOMO_SPI_RFR	(1)	/* read buffer bit */
 
-#define LOCOMO_SPIIS	0x10		/* SPI interrupt status */
-#define LOCOMO_SPIWE	0x14		/* SPI interrupt status write enable */
-#define LOCOMO_SPIIE	0x18		/* SPI interrupt enable */
-#define LOCOMO_SPIIR	0x1c		/* SPI interrupt request */
-#define LOCOMO_SPITD	0x20		/* SPI transfer data write */
-#define LOCOMO_SPIRD	0x24		/* SPI receive data read */
-#define LOCOMO_SPITS	0x28		/* SPI transfer data shift */
-#define LOCOMO_SPIRS	0x2C		/* SPI receive data shift */
+#define LOCOMO_SPIIS	0x10	/* SPI interrupt status */
+#define LOCOMO_SPIWE	0x14	/* SPI interrupt status write enable */
+#define LOCOMO_SPIIE	0x18	/* SPI interrupt enable */
+#define LOCOMO_SPIIR	0x1c	/* SPI interrupt request */
+#define LOCOMO_SPITD	0x20	/* SPI transfer data write */
+#define LOCOMO_SPIRD	0x24	/* SPI receive data read */
+#define LOCOMO_SPITS	0x28	/* SPI transfer data shift */
+#define LOCOMO_SPIRS	0x2C	/* SPI receive data shift */
 
 /* GPIO */
 #define LOCOMO_GPD		0x90	/* GPIO direction */
@@ -120,8 +119,8 @@
 
 /* Backlight controller: TFT signal */
 #define LOCOMO_BACKLIGHT	0x38
-#define LOCOMO_TC		0x00		/* TFT control signal */
-#define LOCOMO_CPSD		0x04		/* CPS delay */
+#define LOCOMO_TC		0x00	/* TFT control signal */
+#define LOCOMO_CPSD		0x04	/* CPS delay */
 
 /* Audio controller */
 #define LOCOMO_AUDIO		0x54
@@ -169,14 +168,14 @@ extern struct bus_type locomo_bus_type;
 #define LOCOMO_DEVID_SPI	6
 
 struct locomo_dev {
-	struct device	dev;
-	unsigned int	devid;
-	unsigned int	irq[1];
+	struct device dev;
+	unsigned int devid;
+	unsigned int irq[1];
 
-	void		*mapbase;
-	unsigned long	length;
+	void *mapbase;
+	unsigned long length;
 
-	u64		dma_mask;
+	u64 dma_mask;
 };
 
 #define LOCOMO_DEV(_d)	container_of((_d), struct locomo_dev, dev)
@@ -185,12 +184,12 @@ struct locomo_dev {
 #define locomo_set_drvdata(d,p)	dev_set_drvdata(&(d)->dev, p)
 
 struct locomo_driver {
-	struct device_driver	drv;
-	unsigned int		devid;
-	int (*probe)(struct locomo_dev *);
-	int (*remove)(struct locomo_dev *);
-	int (*suspend)(struct locomo_dev *, pm_message_t);
-	int (*resume)(struct locomo_dev *);
+	struct device_driver drv;
+	unsigned int devid;
+	int (*probe) (struct locomo_dev *);
+	int (*remove) (struct locomo_dev *);
+	int (*suspend) (struct locomo_dev *, pm_message_t);
+	int (*resume) (struct locomo_dev *);
 };
 
 #define LOCOMO_DRV(_d)	container_of((_d), struct locomo_driver, drv)
@@ -203,13 +202,15 @@ int locomo_driver_register(struct locomo_driver *);
 void locomo_driver_unregister(struct locomo_driver *);
 
 /* GPIO control functions */
-void locomo_gpio_set_dir(struct device *dev, unsigned int bits, unsigned int dir);
+void locomo_gpio_set_dir(struct device *dev, unsigned int bits,
+			 unsigned int dir);
 int locomo_gpio_read_level(struct device *dev, unsigned int bits);
 int locomo_gpio_read_output(struct device *dev, unsigned int bits);
 void locomo_gpio_write(struct device *dev, unsigned int bits, unsigned int set);
 
 /* M62332 control function */
-void locomo_m62332_senddata(struct locomo_dev *ldev, unsigned int dac_data, int channel);
+void locomo_m62332_senddata(struct locomo_dev *ldev, unsigned int dac_data,
+			    int channel);
 
 /* Frontlight control */
 void locomo_frontlight_set(struct locomo_dev *dev, int duty, int vr, int bpwf);

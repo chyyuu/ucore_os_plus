@@ -17,8 +17,8 @@
  * is per-backend specific
  */
 struct atm_backend_ppp {
-	atm_backend_t	backend_num;	/* ATM_BACKEND_PPP */
-	int		encaps;		/* PPPOATM_ENCAPS_* */
+	atm_backend_t backend_num;	/* ATM_BACKEND_PPP */
+	int encaps;		/* PPPOATM_ENCAPS_* */
 };
 
-#endif	/* _LINUX_ATMPPP_H */
+#endif /* _LINUX_ATMPPP_H */

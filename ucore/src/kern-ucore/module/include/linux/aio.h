@@ -85,45 +85,45 @@ struct kioctx;
  * indefinitely for kick_iocb() to be called.
  */
 struct kiocb {
-	struct list_head	ki_run_list;
-	unsigned long		ki_flags;
-	int			ki_users;
-	unsigned		ki_key;		/* id of this request */
+	struct list_head ki_run_list;
+	unsigned long ki_flags;
+	int ki_users;
+	unsigned ki_key;	/* id of this request */
 
-	struct file		*ki_filp;
-	struct kioctx		*ki_ctx;	/* may be NULL for sync ops */
-	int			(*ki_cancel)(struct kiocb *, struct io_event *);
-	ssize_t			(*ki_retry)(struct kiocb *);
-	void			(*ki_dtor)(struct kiocb *);
+	struct file *ki_filp;
+	struct kioctx *ki_ctx;	/* may be NULL for sync ops */
+	int (*ki_cancel) (struct kiocb *, struct io_event *);
+	 ssize_t(*ki_retry) (struct kiocb *);
+	void (*ki_dtor) (struct kiocb *);
 
 	union {
-		void __user		*user;
-		struct task_struct	*tsk;
+		void __user *user;
+		struct task_struct *tsk;
 	} ki_obj;
 
-	__u64			ki_user_data;	/* user's data for completion */
-	wait_queue_t		ki_wait;
-	loff_t			ki_pos;
+	__u64 ki_user_data;	/* user's data for completion */
+	wait_queue_t ki_wait;
+	loff_t ki_pos;
 
-	void			*private;
+	void *private;
 	/* State that we remember to be able to restart/retry  */
-	unsigned short		ki_opcode;
-	size_t			ki_nbytes; 	/* copy of iocb->aio_nbytes */
-	char 			__user *ki_buf;	/* remaining iocb->aio_buf */
-	size_t			ki_left; 	/* remaining bytes */
-	struct iovec		ki_inline_vec;	/* inline vector */
- 	struct iovec		*ki_iovec;
- 	unsigned long		ki_nr_segs;
- 	unsigned long		ki_cur_seg;
+	unsigned short ki_opcode;
+	size_t ki_nbytes;	/* copy of iocb->aio_nbytes */
+	char __user *ki_buf;	/* remaining iocb->aio_buf */
+	size_t ki_left;		/* remaining bytes */
+	struct iovec ki_inline_vec;	/* inline vector */
+	struct iovec *ki_iovec;
+	unsigned long ki_nr_segs;
+	unsigned long ki_cur_seg;
 
-	struct list_head	ki_list;	/* the aio core uses this
-						 * for cancellation */
+	struct list_head ki_list;	/* the aio core uses this
+					 * for cancellation */
 
 	/*
 	 * If the aio_resfd field of the userspace iocb is not zero,
 	 * this is the underlying file* to deliver event to.
 	 */
-	struct file		*ki_eventfd;
+	struct file *ki_eventfd;
 };
 
 #define is_sync_kiocb(iocb)	((iocb)->ki_key == KIOCB_SYNC_KEY)
@@ -147,61 +147,60 @@ struct kiocb {
 #define AIO_RING_COMPAT_FEATURES	1
 #define AIO_RING_INCOMPAT_FEATURES	0
 struct aio_ring {
-	unsigned	id;	/* kernel internal index number */
-	unsigned	nr;	/* number of io_events */
-	unsigned	head;
-	unsigned	tail;
+	unsigned id;		/* kernel internal index number */
+	unsigned nr;		/* number of io_events */
+	unsigned head;
+	unsigned tail;
 
-	unsigned	magic;
-	unsigned	compat_features;
-	unsigned	incompat_features;
-	unsigned	header_length;	/* size of aio_ring */
+	unsigned magic;
+	unsigned compat_features;
+	unsigned incompat_features;
+	unsigned header_length;	/* size of aio_ring */
 
-
-	struct io_event		io_events[0];
-}; /* 128 bytes + ring size */
+	struct io_event io_events[0];
+};				/* 128 bytes + ring size */
 
 #define aio_ring_avail(info, ring)	(((ring)->head + (info)->nr - 1 - (ring)->tail) % (info)->nr)
 
 #define AIO_RING_PAGES	8
 struct aio_ring_info {
-	unsigned long		mmap_base;
-	unsigned long		mmap_size;
+	unsigned long mmap_base;
+	unsigned long mmap_size;
 
-	struct page		**ring_pages;
-	spinlock_t		ring_lock;
-	long			nr_pages;
+	struct page **ring_pages;
+	spinlock_t ring_lock;
+	long nr_pages;
 
-	unsigned		nr, tail;
+	unsigned nr, tail;
 
-	struct page		*internal_pages[AIO_RING_PAGES];
+	struct page *internal_pages[AIO_RING_PAGES];
 };
 
 struct kioctx {
-	atomic_t		users;
-	int			dead;
-	struct mm_struct	*mm;
+	atomic_t users;
+	int dead;
+	struct mm_struct *mm;
 
 	/* This needs improving */
-	unsigned long		user_id;
-	struct hlist_node	list;
+	unsigned long user_id;
+	struct hlist_node list;
 
-	wait_queue_head_t	wait;
+	wait_queue_head_t wait;
 
-	spinlock_t		ctx_lock;
+	spinlock_t ctx_lock;
 
-	int			reqs_active;
-	struct list_head	active_reqs;	/* used for cancellation */
-	struct list_head	run_list;	/* used for kicked reqs */
+	int reqs_active;
+	struct list_head active_reqs;	/* used for cancellation */
+	struct list_head run_list;	/* used for kicked reqs */
 
 	/* sys_io_setup currently limits this to an unsigned int */
-	unsigned		max_reqs;
+	unsigned max_reqs;
 
-	struct aio_ring_info	ring_info;
+	struct aio_ring_info ring_info;
 
-	struct delayed_work	wq;
+	struct delayed_work wq;
 
-	struct rcu_head		rcu_head;
+	struct rcu_head rcu_head;
 };
 
 /* prototypes */
@@ -215,12 +214,29 @@ extern int aio_complete(struct kiocb *iocb, long res, long res2);
 struct mm_struct;
 extern void exit_aio(struct mm_struct *mm);
 #else
-static inline ssize_t wait_on_sync_kiocb(struct kiocb *iocb) { return 0; }
-static inline int aio_put_req(struct kiocb *iocb) { return 0; }
-static inline void kick_iocb(struct kiocb *iocb) { }
-static inline int aio_complete(struct kiocb *iocb, long res, long res2) { return 0; }
+static inline ssize_t wait_on_sync_kiocb(struct kiocb *iocb)
+{
+	return 0;
+}
+
+static inline int aio_put_req(struct kiocb *iocb)
+{
+	return 0;
+}
+
+static inline void kick_iocb(struct kiocb *iocb)
+{
+}
+
+static inline int aio_complete(struct kiocb *iocb, long res, long res2)
+{
+	return 0;
+}
+
 struct mm_struct;
-static inline void exit_aio(struct mm_struct *mm) { }
+static inline void exit_aio(struct mm_struct *mm)
+{
+}
 #endif /* CONFIG_AIO */
 
 #define io_wait_to_kiocb(wait) container_of(wait, struct kiocb, ki_wait)

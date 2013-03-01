@@ -16,7 +16,6 @@
 #ifndef __LINUX_IF_PPPOX_H
 #define __LINUX_IF_PPPOX_H
 
-
 #include <linux/types.h>
 #include <asm/byteorder.h>
 
@@ -40,30 +39,30 @@
 
 /************************************************************************ 
  * PPPoE addressing definition 
- */ 
+ */
 typedef __be16 sid_t;
-struct pppoe_addr{ 
-       sid_t           sid;                    /* Session identifier */ 
-       unsigned char   remote[ETH_ALEN];       /* Remote address */ 
-       char            dev[IFNAMSIZ];          /* Local device to use */ 
-}; 
- 
+struct pppoe_addr {
+	sid_t sid;		/* Session identifier */
+	unsigned char remote[ETH_ALEN];	/* Remote address */
+	char dev[IFNAMSIZ];	/* Local device to use */
+};
+
 /************************************************************************ 
  * Protocols supported by AF_PPPOX 
- */ 
-#define PX_PROTO_OE    0 /* Currently just PPPoE */
-#define PX_PROTO_OL2TP 1 /* Now L2TP also */
+ */
+#define PX_PROTO_OE    0	/* Currently just PPPoE */
+#define PX_PROTO_OL2TP 1	/* Now L2TP also */
 #define PX_PROTO_OLAC  2
 #define PX_PROTO_OPNS  3
 #define PX_MAX_PROTO   4
 
-struct sockaddr_pppox { 
-       sa_family_t     sa_family;            /* address family, AF_PPPOX */ 
-       unsigned int    sa_protocol;          /* protocol identifier */ 
-       union{ 
-               struct pppoe_addr       pppoe; 
-       }sa_addr; 
-}__attribute__ ((packed)); 
+struct sockaddr_pppox {
+	sa_family_t sa_family;	/* address family, AF_PPPOX */
+	unsigned int sa_protocol;	/* protocol identifier */
+	union {
+		struct pppoe_addr pppoe;
+	} sa_addr;
+} __attribute__ ((packed));
 
 /* The use of the above union isn't viable because the size of this
  * struct must stay fixed over time -- applications use sizeof(struct
@@ -71,10 +70,10 @@ struct sockaddr_pppox {
  * type instead.
  */
 struct sockaddr_pppol2tp {
-	sa_family_t     sa_family;      /* address family, AF_PPPOX */
-	unsigned int    sa_protocol;    /* protocol identifier */
+	sa_family_t sa_family;	/* address family, AF_PPPOX */
+	unsigned int sa_protocol;	/* protocol identifier */
 	struct pppol2tp_addr pppol2tp;
-}__attribute__ ((packed));
+} __attribute__ ((packed));
 
 /*********************************************************************
  *
@@ -96,7 +95,7 @@ struct pppoe_tag {
 	__be16 tag_type;
 	__be16 tag_len;
 	char tag_data[0];
-} __attribute ((packed));
+} __attribute((packed));
 
 /* Tag identifiers */
 #define PTT_EOL		__constant_htons(0x0000)
@@ -112,11 +111,11 @@ struct pppoe_tag {
 
 struct pppoe_hdr {
 #if defined(__LITTLE_ENDIAN_BITFIELD)
-	__u8 ver : 4;
-	__u8 type : 4;
+	__u8 ver:4;
+	__u8 type:4;
 #elif defined(__BIG_ENDIAN_BITFIELD)
-	__u8 type : 4;
-	__u8 ver : 4;
+	__u8 type:4;
+	__u8 ver:4;
 #else
 #error	"Please fix <asm/byteorder.h>"
 #endif
@@ -138,39 +137,39 @@ static inline struct pppoe_hdr *pppoe_hdr(const struct sk_buff *skb)
 }
 
 struct pppoe_opt {
-	struct net_device      *dev;	  /* device associated with socket*/
-	int			ifindex;  /* ifindex of device associated with socket */
-	struct pppoe_addr	pa;	  /* what this socket is bound to*/
-	struct sockaddr_pppox	relay;	  /* what socket data will be
-					     relayed to (PPPoE relaying) */
+	struct net_device *dev;	/* device associated with socket */
+	int ifindex;		/* ifindex of device associated with socket */
+	struct pppoe_addr pa;	/* what this socket is bound to */
+	struct sockaddr_pppox relay;	/* what socket data will be
+					   relayed to (PPPoE relaying) */
 };
 
 struct pppolac_opt {
-	__u32	local;
-	__u32	remote;
-	__u16	sequence;
-	__u8	sequencing;
+	__u32 local;
+	__u32 remote;
+	__u16 sequence;
+	__u8 sequencing;
 };
 
 struct pppopns_opt {
-	__u16	local;
-	__u16	remote;
-	__u32	sequence;
+	__u16 local;
+	__u16 remote;
+	__u32 sequence;
 };
 
 #include <net/sock.h>
 
 struct pppox_sock {
 	/* struct sock must be the first member of pppox_sock */
-	struct sock		sk;
-	struct ppp_channel	chan;
-	struct pppox_sock	*next;	  /* for hash table */
+	struct sock sk;
+	struct ppp_channel chan;
+	struct pppox_sock *next;	/* for hash table */
 	union {
 		struct pppoe_opt pppoe;
 		struct pppolac_opt lac;
 		struct pppopns_opt pns;
 	} proto;
-	__be16			num;
+	__be16 num;
 };
 #define pppoe_dev	proto.pppoe.dev
 #define pppoe_ifindex	proto.pppoe.ifindex
@@ -190,25 +189,26 @@ static inline struct sock *sk_pppox(struct pppox_sock *po)
 struct module;
 
 struct pppox_proto {
-	int		(*create)(struct net *net, struct socket *sock);
-	int		(*ioctl)(struct socket *sock, unsigned int cmd,
-				 unsigned long arg);
-	struct module	*owner;
+	int (*create) (struct net * net, struct socket * sock);
+	int (*ioctl) (struct socket * sock, unsigned int cmd,
+		      unsigned long arg);
+	struct module *owner;
 };
 
 extern int register_pppox_proto(int proto_num, struct pppox_proto *pp);
 extern void unregister_pppox_proto(int proto_num);
-extern void pppox_unbind_sock(struct sock *sk);/* delete ppp-channel binding */
-extern int pppox_ioctl(struct socket *sock, unsigned int cmd, unsigned long arg);
+extern void pppox_unbind_sock(struct sock *sk);	/* delete ppp-channel binding */
+extern int pppox_ioctl(struct socket *sock, unsigned int cmd,
+		       unsigned long arg);
 
 /* PPPoX socket states */
 enum {
-    PPPOX_NONE		= 0,  /* initial state */
-    PPPOX_CONNECTED	= 1,  /* connection established ==TCP_ESTABLISHED */
-    PPPOX_BOUND		= 2,  /* bound to ppp device */
-    PPPOX_RELAY		= 4,  /* forwarding is enabled */
-    PPPOX_ZOMBIE	= 8,  /* dead, but still bound to ppp device */
-    PPPOX_DEAD		= 16  /* dead, useless, please clean me up!*/
+	PPPOX_NONE = 0,		/* initial state */
+	PPPOX_CONNECTED = 1,	/* connection established ==TCP_ESTABLISHED */
+	PPPOX_BOUND = 2,	/* bound to ppp device */
+	PPPOX_RELAY = 4,	/* forwarding is enabled */
+	PPPOX_ZOMBIE = 8,	/* dead, but still bound to ppp device */
+	PPPOX_DEAD = 16		/* dead, useless, please clean me up! */
 };
 
 #endif /* __KERNEL__ */

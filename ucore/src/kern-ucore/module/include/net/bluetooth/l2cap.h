@@ -29,15 +29,15 @@
 #define L2CAP_DEFAULT_MTU	672
 #define L2CAP_DEFAULT_FLUSH_TO	0xFFFF
 
-#define L2CAP_CONN_TIMEOUT	(40000) /* 40 seconds */
-#define L2CAP_INFO_TIMEOUT	(4000)  /*  4 seconds */
+#define L2CAP_CONN_TIMEOUT	(40000)	/* 40 seconds */
+#define L2CAP_INFO_TIMEOUT	(4000)	/*  4 seconds */
 
 /* L2CAP socket address */
 struct sockaddr_l2 {
-	sa_family_t	l2_family;
-	__le16		l2_psm;
-	bdaddr_t	l2_bdaddr;
-	__le16		l2_cid;
+	sa_family_t l2_family;
+	__le16 l2_psm;
+	bdaddr_t l2_bdaddr;
+	__le16 l2_cid;
 };
 
 /* L2CAP socket options */
@@ -46,13 +46,13 @@ struct l2cap_options {
 	__u16 omtu;
 	__u16 imtu;
 	__u16 flush_to;
-	__u8  mode;
+	__u8 mode;
 };
 
 #define L2CAP_CONNINFO	0x02
 struct l2cap_conninfo {
 	__u16 hci_handle;
-	__u8  dev_class[3];
+	__u8 dev_class[3];
 };
 
 #define L2CAP_LM	0x03
@@ -78,32 +78,32 @@ struct l2cap_conninfo {
 
 /* L2CAP structures */
 struct l2cap_hdr {
-	__le16     len;
-	__le16     cid;
+	__le16 len;
+	__le16 cid;
 } __attribute__ ((packed));
 #define L2CAP_HDR_SIZE		4
 
 struct l2cap_cmd_hdr {
-	__u8       code;
-	__u8       ident;
-	__le16     len;
+	__u8 code;
+	__u8 ident;
+	__le16 len;
 } __attribute__ ((packed));
 #define L2CAP_CMD_HDR_SIZE	4
 
 struct l2cap_cmd_rej {
-	__le16     reason;
+	__le16 reason;
 } __attribute__ ((packed));
 
 struct l2cap_conn_req {
-	__le16     psm;
-	__le16     scid;
+	__le16 psm;
+	__le16 scid;
 } __attribute__ ((packed));
 
 struct l2cap_conn_rsp {
-	__le16     dcid;
-	__le16     scid;
-	__le16     result;
-	__le16     status;
+	__le16 dcid;
+	__le16 scid;
+	__le16 result;
+	__le16 status;
 } __attribute__ ((packed));
 
 /* connect result */
@@ -119,16 +119,16 @@ struct l2cap_conn_rsp {
 #define L2CAP_CS_AUTHOR_PEND  0x0002
 
 struct l2cap_conf_req {
-	__le16     dcid;
-	__le16     flags;
-	__u8       data[0];
+	__le16 dcid;
+	__le16 flags;
+	__u8 data[0];
 } __attribute__ ((packed));
 
 struct l2cap_conf_rsp {
-	__le16     scid;
-	__le16     flags;
-	__le16     result;
-	__u8       data[0];
+	__le16 scid;
+	__le16 flags;
+	__le16 result;
+	__u8 data[0];
 } __attribute__ ((packed));
 
 #define L2CAP_CONF_SUCCESS	0x0000
@@ -137,9 +137,9 @@ struct l2cap_conf_rsp {
 #define L2CAP_CONF_UNKNOWN	0x0003
 
 struct l2cap_conf_opt {
-	__u8       type;
-	__u8       len;
-	__u8       val[0];
+	__u8 type;
+	__u8 len;
+	__u8 val[0];
 } __attribute__ ((packed));
 #define L2CAP_CONF_OPT_SIZE	2
 
@@ -151,12 +151,12 @@ struct l2cap_conf_opt {
 #define L2CAP_CONF_MAX_SIZE	22
 
 struct l2cap_conf_rfc {
-	__u8       mode;
-	__u8       txwin_size;
-	__u8       max_transmit;
-	__le16     retrans_timeout;
-	__le16     monitor_timeout;
-	__le16     max_pdu_size;
+	__u8 mode;
+	__u8 txwin_size;
+	__u8 max_transmit;
+	__le16 retrans_timeout;
+	__le16 monitor_timeout;
+	__le16 max_pdu_size;
 } __attribute__ ((packed));
 
 #define L2CAP_MODE_BASIC	0x00
@@ -164,23 +164,23 @@ struct l2cap_conf_rfc {
 #define L2CAP_MODE_FLOWCTL	0x02
 
 struct l2cap_disconn_req {
-	__le16     dcid;
-	__le16     scid;
+	__le16 dcid;
+	__le16 scid;
 } __attribute__ ((packed));
 
 struct l2cap_disconn_rsp {
-	__le16     dcid;
-	__le16     scid;
+	__le16 dcid;
+	__le16 scid;
 } __attribute__ ((packed));
 
 struct l2cap_info_req {
-	__le16      type;
+	__le16 type;
 } __attribute__ ((packed));
 
 struct l2cap_info_rsp {
-	__le16      type;
-	__le16      result;
-	__u8        data[0];
+	__le16 type;
+	__le16 result;
+	__u8 data[0];
 } __attribute__ ((packed));
 
 /* info type */
@@ -194,34 +194,34 @@ struct l2cap_info_rsp {
 
 /* ----- L2CAP connections ----- */
 struct l2cap_chan_list {
-	struct sock	*head;
-	rwlock_t	lock;
-	long		num;
+	struct sock *head;
+	rwlock_t lock;
+	long num;
 };
 
 struct l2cap_conn {
-	struct hci_conn	*hcon;
+	struct hci_conn *hcon;
 
-	bdaddr_t	*dst;
-	bdaddr_t	*src;
+	bdaddr_t *dst;
+	bdaddr_t *src;
 
-	unsigned int	mtu;
+	unsigned int mtu;
 
-	__u32		feat_mask;
+	__u32 feat_mask;
 
-	__u8		info_state;
-	__u8		info_ident;
+	__u8 info_state;
+	__u8 info_ident;
 
 	struct timer_list info_timer;
 
-	spinlock_t	lock;
+	spinlock_t lock;
 
 	struct sk_buff *rx_skb;
-	__u32		rx_len;
-	__u8		rx_ident;
-	__u8		tx_ident;
+	__u32 rx_len;
+	__u8 rx_ident;
+	__u8 tx_ident;
 
-	__u8		disc_reason;
+	__u8 disc_reason;
 
 	struct l2cap_chan_list chan_list;
 };
@@ -234,30 +234,30 @@ struct l2cap_conn {
 #define l2cap_pi(sk) ((struct l2cap_pinfo *) sk)
 
 struct l2cap_pinfo {
-	struct bt_sock	bt;
-	__le16		psm;
-	__u16		dcid;
-	__u16		scid;
+	struct bt_sock bt;
+	__le16 psm;
+	__u16 dcid;
+	__u16 scid;
 
-	__u16		imtu;
-	__u16		omtu;
-	__u16		flush_to;
-	__u8            sec_level;
-	__u8		role_switch;
-	__u8            force_reliable;
+	__u16 imtu;
+	__u16 omtu;
+	__u16 flush_to;
+	__u8 sec_level;
+	__u8 role_switch;
+	__u8 force_reliable;
 
-	__u8		conf_req[64];
-	__u8		conf_len;
-	__u8		conf_state;
-	__u8		conf_retry;
+	__u8 conf_req[64];
+	__u8 conf_len;
+	__u8 conf_state;
+	__u8 conf_retry;
 
-	__u8		ident;
+	__u8 ident;
 
-	__le16		sport;
+	__le16 sport;
 
-	struct l2cap_conn	*conn;
-	struct sock		*next_c;
-	struct sock		*prev_c;
+	struct l2cap_conn *conn;
+	struct sock *next_c;
+	struct sock *prev_c;
 };
 
 #define L2CAP_CONF_REQ_SENT	0x01

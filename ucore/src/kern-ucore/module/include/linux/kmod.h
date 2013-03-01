@@ -29,13 +29,17 @@
 #ifdef CONFIG_MODULES
 /* modprobe exit status on success, -ve on error.  Return value
  * usually useless though. */
-extern int request_module(const char * name, ...) __attribute__ ((format (printf, 1, 2)));
+extern int request_module(const char *name, ...)
+    __attribute__ ((format(printf, 1, 2)));
 #define try_then_request_module(x, mod...) ((x) ?: (request_module(mod), (x)))
 #else
-static inline int request_module(const char * name, ...) { return -ENOSYS; }
+static inline int request_module(const char *name, ...)
+{
+	return -ENOSYS;
+}
+
 #define try_then_request_module(x, mod...) (x)
 #endif
-
 
 struct key;
 struct file;
@@ -51,7 +55,7 @@ void call_usermodehelper_setkeys(struct subprocess_info *info,
 int call_usermodehelper_stdinpipe(struct subprocess_info *sub_info,
 				  struct file **filp);
 void call_usermodehelper_setcleanup(struct subprocess_info *info,
-				    void (*cleanup)(char **argv, char **envp));
+				    void (*cleanup) (char **argv, char **envp));
 
 enum umh_wait {
 	UMH_NO_WAIT = -1,	/* don't wait at all */

@@ -24,8 +24,8 @@
 #include <net/snmp.h>
 
 struct icmp_err {
-  int		errno;
-  unsigned	fatal:1;
+	int errno;
+	unsigned fatal:1;
 };
 
 extern struct icmp_err icmp_err_convert[];
@@ -39,18 +39,18 @@ struct net_proto_family;
 struct sk_buff;
 struct net;
 
-extern void	icmp_send(struct sk_buff *skb_in,  int type, int code, __be32 info);
-extern int	icmp_rcv(struct sk_buff *skb);
-extern int	icmp_ioctl(struct sock *sk, int cmd, unsigned long arg);
-extern int	icmp_init(void);
-extern void	icmp_out_count(struct net *net, unsigned char type);
+extern void icmp_send(struct sk_buff *skb_in, int type, int code, __be32 info);
+extern int icmp_rcv(struct sk_buff *skb);
+extern int icmp_ioctl(struct sock *sk, int cmd, unsigned long arg);
+extern int icmp_init(void);
+extern void icmp_out_count(struct net *net, unsigned char type);
 
 /* Move into dst.h ? */
-extern int 	xrlim_allow(struct dst_entry *dst, int timeout);
+extern int xrlim_allow(struct dst_entry *dst, int timeout);
 
 struct raw_sock {
 	/* inet_sock has to be the first member */
-	struct inet_sock   inet;
+	struct inet_sock inet;
 	struct icmp_filter filter;
 };
 
@@ -59,4 +59,4 @@ static inline struct raw_sock *raw_sk(const struct sock *sk)
 	return (struct raw_sock *)sk;
 }
 
-#endif	/* _ICMP_H */
+#endif /* _ICMP_H */

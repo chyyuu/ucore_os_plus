@@ -111,15 +111,16 @@ extern struct resource iomem_resource;
 extern int request_resource(struct resource *root, struct resource *new);
 extern int release_resource(struct resource *new);
 extern void reserve_region_with_split(struct resource *root,
-			     resource_size_t start, resource_size_t end,
-			     const char *name);
+				      resource_size_t start,
+				      resource_size_t end, const char *name);
 extern int insert_resource(struct resource *parent, struct resource *new);
-extern void insert_resource_expand_to_fit(struct resource *root, struct resource *new);
+extern void insert_resource_expand_to_fit(struct resource *root,
+					  struct resource *new);
 extern int allocate_resource(struct resource *root, struct resource *new,
 			     resource_size_t size, resource_size_t min,
 			     resource_size_t max, resource_size_t align,
-			     void (*alignf)(void *, struct resource *,
-					    resource_size_t, resource_size_t),
+			     void (*alignf) (void *, struct resource *,
+					     resource_size_t, resource_size_t),
 			     void *alignf_data);
 int adjust_resource(struct resource *res, resource_size_t start,
 		    resource_size_t size);
@@ -128,6 +129,7 @@ static inline resource_size_t resource_size(struct resource *res)
 {
 	return res->end - res->start + 1;
 }
+
 static inline unsigned long resource_type(struct resource *res)
 {
 	return res->flags & IORESOURCE_TYPE_BITS;
@@ -141,10 +143,10 @@ static inline unsigned long resource_type(struct resource *res)
 	__request_region(&iomem_resource, (start), (n), (name), IORESOURCE_EXCLUSIVE)
 #define rename_region(region, newname) do { (region)->name = (newname); } while (0)
 
-extern struct resource * __request_region(struct resource *,
-					resource_size_t start,
-					resource_size_t n,
-					const char *name, int flags);
+extern struct resource *__request_region(struct resource *,
+					 resource_size_t start,
+					 resource_size_t n,
+					 const char *name, int flags);
 
 /* Compatibility cruft */
 #define release_region(start,n)	__release_region(&ioport_resource, (start), (n))
@@ -153,10 +155,10 @@ extern struct resource * __request_region(struct resource *,
 
 extern int __check_region(struct resource *, resource_size_t, resource_size_t);
 extern void __release_region(struct resource *, resource_size_t,
-				resource_size_t);
+			     resource_size_t);
 
 static inline int __deprecated check_region(resource_size_t s,
-						resource_size_t n)
+					    resource_size_t n)
 {
 	return __check_region(&ioport_resource, s, n);
 }
@@ -168,9 +170,11 @@ struct device;
 #define devm_request_mem_region(dev,start,n,name) \
 	__devm_request_region(dev, &iomem_resource, (start), (n), (name))
 
-extern struct resource * __devm_request_region(struct device *dev,
-				struct resource *parent, resource_size_t start,
-				resource_size_t n, const char *name);
+extern struct resource *__devm_request_region(struct device *dev,
+					      struct resource *parent,
+					      resource_size_t start,
+					      resource_size_t n,
+					      const char *name);
 
 #define devm_release_region(dev, start, n) \
 	__devm_release_region(dev, &ioport_resource, (start), (n))
@@ -183,4 +187,4 @@ extern int iomem_map_sanity_check(resource_size_t addr, unsigned long size);
 extern int iomem_is_exclusive(u64 addr);
 
 #endif /* __ASSEMBLY__ */
-#endif	/* _LINUX_IOPORT_H */
+#endif /* _LINUX_IOPORT_H */

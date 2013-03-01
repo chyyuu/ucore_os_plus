@@ -36,7 +36,6 @@
 #define	STL_MAXPORTS		64
 #define	STL_MAXDEVS		(STL_MAXBRDS * STL_MAXPORTS)
 
-
 /*
  *	Define a set of structures to hold all the board/panel/port info
  *	for our ports. These will be dynamically allocated as required.
@@ -53,9 +52,9 @@
  *	interrupt code only needs to change the tail.
  */
 struct stlrq {
-	char	*buf;
-	char	*head;
-	char	*tail;
+	char *buf;
+	char *head;
+	char *tail;
 };
 
 /*
@@ -68,73 +67,72 @@ struct stlrq {
  *	board/panel info for a port.
  */
 struct stlport {
-	unsigned long		magic;
-	struct tty_port		port;
-	unsigned int		portnr;
-	unsigned int		panelnr;
-	unsigned int		brdnr;
-	int			ioaddr;
-	int			uartaddr;
-	unsigned int		pagenr;
-	unsigned long		istate;
-	int			baud_base;
-	int			custom_divisor;
-	int			close_delay;
-	int			closing_wait;
-	int			openwaitcnt;
-	int			brklen;
-	unsigned int		sigs;
-	unsigned int		rxignoremsk;
-	unsigned int		rxmarkmsk;
-	unsigned int		imr;
-	unsigned int		crenable;
-	unsigned long		clk;
-	unsigned long		hwid;
-	void			*uartp;
-	comstats_t		stats;
-	struct stlrq		tx;
+	unsigned long magic;
+	struct tty_port port;
+	unsigned int portnr;
+	unsigned int panelnr;
+	unsigned int brdnr;
+	int ioaddr;
+	int uartaddr;
+	unsigned int pagenr;
+	unsigned long istate;
+	int baud_base;
+	int custom_divisor;
+	int close_delay;
+	int closing_wait;
+	int openwaitcnt;
+	int brklen;
+	unsigned int sigs;
+	unsigned int rxignoremsk;
+	unsigned int rxmarkmsk;
+	unsigned int imr;
+	unsigned int crenable;
+	unsigned long clk;
+	unsigned long hwid;
+	void *uartp;
+	comstats_t stats;
+	struct stlrq tx;
 };
 
 struct stlpanel {
-	unsigned long	magic;
-	unsigned int	panelnr;
-	unsigned int	brdnr;
-	unsigned int	pagenr;
-	unsigned int	nrports;
-	int		iobase;
-	void		*uartp;
-	void		(*isr)(struct stlpanel *panelp, unsigned int iobase);
-	unsigned int	hwid;
-	unsigned int	ackmask;
-	struct stlport	*ports[STL_PORTSPERPANEL];
+	unsigned long magic;
+	unsigned int panelnr;
+	unsigned int brdnr;
+	unsigned int pagenr;
+	unsigned int nrports;
+	int iobase;
+	void *uartp;
+	void (*isr) (struct stlpanel * panelp, unsigned int iobase);
+	unsigned int hwid;
+	unsigned int ackmask;
+	struct stlport *ports[STL_PORTSPERPANEL];
 };
 
 struct stlbrd {
-	unsigned long	magic;
-	unsigned int	brdnr;
-	unsigned int	brdtype;
-	unsigned int	state;
-	unsigned int	nrpanels;
-	unsigned int	nrports;
-	unsigned int	nrbnks;
-	int		irq;
-	int		irqtype;
-	int		(*isr)(struct stlbrd *brdp);
-	unsigned int	ioaddr1;
-	unsigned int	ioaddr2;
-	unsigned int	iosize1;
-	unsigned int	iosize2;
-	unsigned int	iostatus;
-	unsigned int	ioctrl;
-	unsigned int	ioctrlval;
-	unsigned int	hwid;
-	unsigned long	clk;
-	unsigned int	bnkpageaddr[STL_MAXBANKS];
-	unsigned int	bnkstataddr[STL_MAXBANKS];
-	struct stlpanel	*bnk2panel[STL_MAXBANKS];
-	struct stlpanel	*panels[STL_MAXPANELS];
+	unsigned long magic;
+	unsigned int brdnr;
+	unsigned int brdtype;
+	unsigned int state;
+	unsigned int nrpanels;
+	unsigned int nrports;
+	unsigned int nrbnks;
+	int irq;
+	int irqtype;
+	int (*isr) (struct stlbrd * brdp);
+	unsigned int ioaddr1;
+	unsigned int ioaddr2;
+	unsigned int iosize1;
+	unsigned int iosize2;
+	unsigned int iostatus;
+	unsigned int ioctrl;
+	unsigned int ioctrlval;
+	unsigned int hwid;
+	unsigned long clk;
+	unsigned int bnkpageaddr[STL_MAXBANKS];
+	unsigned int bnkstataddr[STL_MAXBANKS];
+	struct stlpanel *bnk2panel[STL_MAXBANKS];
+	struct stlpanel *panels[STL_MAXPANELS];
 };
-
 
 /*
  *	Define MAGIC numbers used for above structures.

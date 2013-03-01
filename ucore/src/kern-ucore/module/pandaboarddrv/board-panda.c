@@ -29,103 +29,101 @@
 #define GPIO_HUB_NRESET		62
 #define GPIO_WIFI_PMENA		43
 #define GPIO_WIFI_IRQ		53
-#define HDMI_GPIO_CT_CP_HPD 60 /* HPD mode enable/disable */
-#define HDMI_GPIO_LS_OE 41 /* Level shifter for HDMI */
-#define HDMI_GPIO_HPD  63 /* Hotplug detect */
+#define HDMI_GPIO_CT_CP_HPD 60	/* HPD mode enable/disable */
+#define HDMI_GPIO_LS_OE 41	/* Level shifter for HDMI */
+#define HDMI_GPIO_HPD  63	/* Hotplug detect */
 
 static struct omap_globals omap4_globals = {
-	.class	= OMAP443X_CLASS,
-	.tap	= OMAP2_L4_IO_ADDRESS(OMAP443X_SCM_BASE),
-	.ctrl	= OMAP2_L4_IO_ADDRESS(OMAP443X_SCM_BASE),
-	.ctrl_pad	= OMAP2_L4_IO_ADDRESS(OMAP443X_CTRL_BASE),
-	.prm	= OMAP2_L4_IO_ADDRESS(OMAP4430_PRM_BASE),
-	.cm	= OMAP2_L4_IO_ADDRESS(OMAP4430_CM_BASE),
-	.cm2	= OMAP2_L4_IO_ADDRESS(OMAP4430_CM2_BASE),
-	.prcm_mpu	= OMAP2_L4_IO_ADDRESS(OMAP4430_PRCM_MPU_BASE),
+	.class = OMAP443X_CLASS,
+	.tap = OMAP2_L4_IO_ADDRESS(OMAP443X_SCM_BASE),
+	.ctrl = OMAP2_L4_IO_ADDRESS(OMAP443X_SCM_BASE),
+	.ctrl_pad = OMAP2_L4_IO_ADDRESS(OMAP443X_CTRL_BASE),
+	.prm = OMAP2_L4_IO_ADDRESS(OMAP4430_PRM_BASE),
+	.cm = OMAP2_L4_IO_ADDRESS(OMAP4430_CM_BASE),
+	.cm2 = OMAP2_L4_IO_ADDRESS(OMAP4430_CM2_BASE),
+	.prcm_mpu = OMAP2_L4_IO_ADDRESS(OMAP4430_PRCM_MPU_BASE),
 };
 
 /* wl127x BT, FM, GPS connectivity chip */
 static struct ti_st_plat_data wilink_platform_data = {
-	.nshutdown_gpio	= 46,
-	.dev_name	= "/dev/ttyO1",
-	.flow_cntrl	= 1,
-	.baud_rate	= 3000000,
-	.chip_enable	= NULL,
-	.suspend	= NULL,
-	.resume		= NULL,
+	.nshutdown_gpio = 46,
+	.dev_name = "/dev/ttyO1",
+	.flow_cntrl = 1,
+	.baud_rate = 3000000,
+	.chip_enable = NULL,
+	.suspend = NULL,
+	.resume = NULL,
 };
 
-
 static struct platform_device wl1271_device = {
-	.name	= "kim",
-	.id	= -1,
-	.dev	= {
-		.platform_data	= &wilink_platform_data,
-	},
+	.name = "kim",
+	.id = -1,
+	.dev = {
+		.platform_data = &wilink_platform_data,
+		},
 };
 
 static struct gpio_led gpio_leds[] = {
 	{
-		.name			= "pandaboard::status1",
-		.default_trigger	= "heartbeat",
-		.gpio			= 7,
-	},
+	 .name = "pandaboard::status1",
+	 .default_trigger = "heartbeat",
+	 .gpio = 7,
+	 },
 	{
-		.name			= "pandaboard::status2",
-		.default_trigger	= "mmc0",
-		.gpio			= 8,
-	},
+	 .name = "pandaboard::status2",
+	 .default_trigger = "mmc0",
+	 .gpio = 8,
+	 },
 };
 
 static struct gpio_led_platform_data gpio_led_info = {
-	.leds		= gpio_leds,
-	.num_leds	= ARRAY_SIZE(gpio_leds),
+	.leds = gpio_leds,
+	.num_leds = ARRAY_SIZE(gpio_leds),
 };
 
 static struct platform_device leds_gpio = {
-	.name	= "leds-gpio",
-	.id	= -1,
-	.dev	= {
-		.platform_data	= &gpio_led_info,
-	},
+	.name = "leds-gpio",
+	.id = -1,
+	.dev = {
+		.platform_data = &gpio_led_info,
+		},
 };
 
 #if 0
 static struct omap_abe_twl6040_data panda_abe_audio_data = {
 	/* Audio out */
-	.has_hs		= ABE_TWL6040_LEFT | ABE_TWL6040_RIGHT,
+	.has_hs = ABE_TWL6040_LEFT | ABE_TWL6040_RIGHT,
 	/* HandsFree through expansion connector */
-	.has_hf		= ABE_TWL6040_LEFT | ABE_TWL6040_RIGHT,
+	.has_hf = ABE_TWL6040_LEFT | ABE_TWL6040_RIGHT,
 	/* PandaBoard: FM TX, PandaBoardES: can be connected to audio out */
-	.has_aux	= ABE_TWL6040_LEFT | ABE_TWL6040_RIGHT,
+	.has_aux = ABE_TWL6040_LEFT | ABE_TWL6040_RIGHT,
 	/* PandaBoard: FM RX, PandaBoardES: audio in */
-	.has_afm	= ABE_TWL6040_LEFT | ABE_TWL6040_RIGHT,
+	.has_afm = ABE_TWL6040_LEFT | ABE_TWL6040_RIGHT,
 	/* No jack detection. */
-	.jack_detection	= 0,
+	.jack_detection = 0,
 	/* MCLK input is 38.4MHz */
-	.mclk_freq	= 38400000,
+	.mclk_freq = 38400000,
 
 };
 
 static struct platform_device panda_abe_audio = {
-	.name		= "omap-abe-twl6040",
-	.id		= -1,
+	.name = "omap-abe-twl6040",
+	.id = -1,
 	.dev = {
 		.platform_data = &panda_abe_audio_data,
-	},
+		},
 };
 #endif
 
 static struct platform_device panda_hdmi_audio_codec = {
-	.name	= "hdmi-audio-codec",
-	.id	= -1,
+	.name = "hdmi-audio-codec",
+	.id = -1,
 };
 
 static struct platform_device btwilink_device = {
-	.name	= "btwilink",
-	.id	= -1,
+	.name = "btwilink",
+	.id = -1,
 };
-
 
 static struct platform_device *panda_devices[] __initdata = {
 	&leds_gpio,
@@ -135,8 +133,7 @@ static struct platform_device *panda_devices[] __initdata = {
 	&btwilink_device,
 };
 
-
-static struct wl12xx_platform_data omap_panda_wlan_data  __initdata = {
+static struct wl12xx_platform_data omap_panda_wlan_data __initdata = {
 	/* PANDA ref clock is 38.4 MHz */
 	.board_ref_clock = 2,
 };
@@ -225,13 +222,12 @@ static struct omap_board_mux board_mux[] __initdata = {
 	/* NIRQ2 for twl6040 */
 	OMAP4_MUX(SYS_NIRQ2, OMAP_MUX_MODE0 |
 		  OMAP_PIN_INPUT_PULLUP | OMAP_PIN_OFF_WAKEUPENABLE),
-	{ .reg_offset = OMAP_MUX_TERMINATOR },
+	{.reg_offset = OMAP_MUX_TERMINATOR},
 };
 
 #else
 #define board_mux	NULL
 #endif
-
 
 static void omap4_panda_init_rev(void)
 {
@@ -252,27 +248,26 @@ static void omap4_panda_init_rev(void)
 #ifdef	CONFIG_ARCH_OMAP4
 static struct map_desc omap44xx_io_desc[] __initdata = {
 	{
-		.virtual	= L3_44XX_VIRT,
-		.pfn		= __phys_to_pfn(L3_44XX_PHYS),
-		.length		= L3_44XX_SIZE,
-		.type		= MT_DEVICE,
-	},
+	 .virtual = L3_44XX_VIRT,
+	 .pfn = __phys_to_pfn(L3_44XX_PHYS),
+	 .length = L3_44XX_SIZE,
+	 .type = MT_DEVICE,
+	 },
 	{
-		.virtual	= L4_44XX_VIRT,
-		.pfn		= __phys_to_pfn(L4_44XX_PHYS),
-		.length		= L4_44XX_SIZE,
-		.type		= MT_DEVICE,
-	},
+	 .virtual = L4_44XX_VIRT,
+	 .pfn = __phys_to_pfn(L4_44XX_PHYS),
+	 .length = L4_44XX_SIZE,
+	 .type = MT_DEVICE,
+	 },
 	{
-		.virtual	= L4_PER_44XX_VIRT,
-		.pfn		= __phys_to_pfn(L4_PER_44XX_PHYS),
-		.length		= L4_PER_44XX_SIZE,
-		.type		= MT_DEVICE,
-	},
+	 .virtual = L4_PER_44XX_VIRT,
+	 .pfn = __phys_to_pfn(L4_PER_44XX_PHYS),
+	 .length = L4_PER_44XX_SIZE,
+	 .type = MT_DEVICE,
+	 },
 
 };
 #endif
-
 
 void __init omap_barriers_init(void)
 {
@@ -361,13 +356,10 @@ static void __init omap4_panda_init(void)
 
 static void omap44xx_init_machine()
 {
-  omap4430_init_early();
-  omap4_panda_init();
-  omap4430_init_late();
+	omap4430_init_early();
+	omap4_panda_init();
+	omap4430_init_late();
 }
 
 MACHINE_START(OMAP4_PANDA, "OMAP4 Panda board")
-  .map_io		= omap4_map_io,
-  .init_machine = omap44xx_init_machine,
-MACHINE_END
-
+    .map_io = omap4_map_io,.init_machine = omap44xx_init_machine, MACHINE_END

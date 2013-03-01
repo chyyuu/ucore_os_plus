@@ -79,7 +79,7 @@ struct agp_memory {
 	u32 physical;
 	bool is_bound;
 	bool is_flushed;
-        bool vmalloc_flag;
+	bool vmalloc_flag;
 	/* list of agp_memory mapped to the aperture */
 	struct list_head mapped_list;
 };
@@ -93,10 +93,11 @@ struct agp_memory {
 extern struct agp_bridge_data *agp_bridge;
 extern struct list_head agp_bridges;
 
-extern struct agp_bridge_data *(*agp_find_bridge)(struct pci_dev *);
+extern struct agp_bridge_data *(*agp_find_bridge) (struct pci_dev *);
 
 extern void agp_free_memory(struct agp_memory *);
-extern struct agp_memory *agp_allocate_memory(struct agp_bridge_data *, size_t, u32);
+extern struct agp_memory *agp_allocate_memory(struct agp_bridge_data *, size_t,
+					      u32);
 extern int agp_copy_info(struct agp_bridge_data *, struct agp_kern_info *);
 extern int agp_bind_memory(struct agp_memory *, off_t);
 extern int agp_unbind_memory(struct agp_memory *);
@@ -106,4 +107,4 @@ extern struct agp_bridge_data *agp_backend_acquire(struct pci_dev *);
 extern void agp_backend_release(struct agp_bridge_data *);
 extern void agp_flush_chipset(struct agp_bridge_data *);
 
-#endif				/* _AGP_BACKEND_H */
+#endif /* _AGP_BACKEND_H */

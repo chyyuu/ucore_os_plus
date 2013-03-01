@@ -114,7 +114,7 @@ extern struct omap_vc_channel omap4_vc_core;
 void omap_vc_init_channel(struct voltagedomain *voltdm);
 int omap_vc_pre_scale(struct voltagedomain *voltdm,
 		      unsigned long target_volt,
-		      u8 *target_vsel, u8 *current_vsel);
+		      u8 * target_vsel, u8 * current_vsel);
 void omap_vc_post_scale(struct voltagedomain *voltdm,
 			unsigned long target_volt,
 			u8 target_vsel, u8 current_vsel);
@@ -122,4 +122,3 @@ int omap_vc_bypass_scale(struct voltagedomain *voltdm,
 			 unsigned long target_volt);
 
 #endif
-

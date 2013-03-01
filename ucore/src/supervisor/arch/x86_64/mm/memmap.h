@@ -15,10 +15,10 @@
 #define MEMMAP_FLAG_BAD         5
 
 void memmap_reset(void);
-int  memmap_append(uintptr_t start, uintptr_t end, int flag);
+int memmap_append(uintptr_t start, uintptr_t end, int flag);
 void memmap_process(int verbose);
 
-int  memmap_test(uintptr_t start, uintptr_t end);
-int  memmap_enumerate(int num, uintptr_t *start, uintptr_t *end);
+int memmap_test(uintptr_t start, uintptr_t end);
+int memmap_enumerate(int num, uintptr_t * start, uintptr_t * end);
 
 #endif

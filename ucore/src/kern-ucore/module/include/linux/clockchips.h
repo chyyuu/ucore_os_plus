@@ -75,24 +75,23 @@ enum clock_event_nofitiers {
  * @next_event:		local storage for the next event in oneshot mode
  */
 struct clock_event_device {
-	const char		*name;
-	unsigned int		features;
-	unsigned long		max_delta_ns;
-	unsigned long		min_delta_ns;
-	unsigned long		mult;
-	int			shift;
-	int			rating;
-	int			irq;
-	const struct cpumask	*cpumask;
-	int			(*set_next_event)(unsigned long evt,
-						  struct clock_event_device *);
-	void			(*set_mode)(enum clock_event_mode mode,
-					    struct clock_event_device *);
-	void			(*event_handler)(struct clock_event_device *);
-	void			(*broadcast)(const struct cpumask *mask);
-	struct list_head	list;
-	enum clock_event_mode	mode;
-	ktime_t			next_event;
+	const char *name;
+	unsigned int features;
+	unsigned long max_delta_ns;
+	unsigned long min_delta_ns;
+	unsigned long mult;
+	int shift;
+	int rating;
+	int irq;
+	const struct cpumask *cpumask;
+	int (*set_next_event) (unsigned long evt, struct clock_event_device *);
+	void (*set_mode) (enum clock_event_mode mode,
+			  struct clock_event_device *);
+	void (*event_handler) (struct clock_event_device *);
+	void (*broadcast) (const struct cpumask * mask);
+	struct list_head list;
+	enum clock_event_mode mode;
+	ktime_t next_event;
 };
 
 /*
@@ -109,10 +108,10 @@ struct clock_event_device {
 static inline unsigned long div_sc(unsigned long ticks, unsigned long nsec,
 				   int shift)
 {
-	uint64_t tmp = ((uint64_t)ticks) << shift;
+	uint64_t tmp = ((uint64_t) ticks) << shift;
 
 	do_div(tmp, nsec);
-	return (unsigned long) tmp;
+	return (unsigned long)tmp;
 }
 
 /* Clock event layer functions */
@@ -133,7 +132,7 @@ extern void clockevents_handle_noop(struct clock_event_device *dev);
 #ifdef CONFIG_GENERIC_CLOCKEVENTS
 extern void clockevents_notify(unsigned long reason, void *arg);
 #else
-# define clockevents_notify(reason, arg) do { } while (0)
+#define clockevents_notify(reason, arg) do { } while (0)
 #endif
 
 #else /* CONFIG_GENERIC_CLOCKEVENTS_BUILD */

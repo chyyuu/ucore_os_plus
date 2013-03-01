@@ -20,4 +20,3 @@ int mkfifo(const char *name, uint32_t open_flags);
 void print_stat(const char *name, int fd, struct stat *stat);
 
 #endif /* !__USER_LIBS_FILE_H__ */
-

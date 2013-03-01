@@ -30,69 +30,65 @@
  * without using the following operations WILL break the atomic
  * nature of these ops.
  */
-static inline void atomic_set(atomic_t *v, int i)
+static inline void atomic_set(atomic_t * v, int i)
 {
 	unsigned long tmp;
 
 	__asm__ __volatile__("@ atomic_set\n"
-"1:	ldrex	%0, [%1]\n"
-"	strex	%0, %2, [%1]\n"
-"	teq	%0, #0\n"
-"	bne	1b"
-	: "=&r" (tmp)
-	: "r" (&v->counter), "r" (i)
-	: "cc");
+			     "1:	ldrex	%0, [%1]\n"
+			     "	strex	%0, %2, [%1]\n"
+			     "	teq	%0, #0\n" "	bne	1b":"=&r"(tmp)
+			     :"r"(&v->counter), "r"(i)
+			     :"cc");
 }
 
-static inline int atomic_add_return(int i, atomic_t *v)
+static inline int atomic_add_return(int i, atomic_t * v)
 {
 	unsigned long tmp;
 	int result;
 
 	__asm__ __volatile__("@ atomic_add_return\n"
-"1:	ldrex	%0, [%2]\n"
-"	add	%0, %0, %3\n"
-"	strex	%1, %0, [%2]\n"
-"	teq	%1, #0\n"
-"	bne	1b"
-	: "=&r" (result), "=&r" (tmp)
-	: "r" (&v->counter), "Ir" (i)
-	: "cc");
+			     "1:	ldrex	%0, [%2]\n"
+			     "	add	%0, %0, %3\n"
+			     "	strex	%1, %0, [%2]\n"
+			     "	teq	%1, #0\n"
+			     "	bne	1b":"=&r"(result), "=&r"(tmp)
+			     :"r"(&v->counter), "Ir"(i)
+			     :"cc");
 
 	return result;
 }
 
-static inline int atomic_sub_return(int i, atomic_t *v)
+static inline int atomic_sub_return(int i, atomic_t * v)
 {
 	unsigned long tmp;
 	int result;
 
 	__asm__ __volatile__("@ atomic_sub_return\n"
-"1:	ldrex	%0, [%2]\n"
-"	sub	%0, %0, %3\n"
-"	strex	%1, %0, [%2]\n"
-"	teq	%1, #0\n"
-"	bne	1b"
-	: "=&r" (result), "=&r" (tmp)
-	: "r" (&v->counter), "Ir" (i)
-	: "cc");
+			     "1:	ldrex	%0, [%2]\n"
+			     "	sub	%0, %0, %3\n"
+			     "	strex	%1, %0, [%2]\n"
+			     "	teq	%1, #0\n"
+			     "	bne	1b":"=&r"(result), "=&r"(tmp)
+			     :"r"(&v->counter), "Ir"(i)
+			     :"cc");
 
 	return result;
 }
 
-static inline int atomic_cmpxchg(atomic_t *ptr, int old, int new)
+static inline int atomic_cmpxchg(atomic_t * ptr, int old, int new)
 {
 	unsigned long oldval, res;
 
 	do {
 		__asm__ __volatile__("@ atomic_cmpxchg\n"
-		"ldrex	%1, [%2]\n"
-		"mov	%0, #0\n"
-		"teq	%1, %3\n"
-		"strexeq %0, %4, [%2]\n"
-		    : "=&r" (res), "=&r" (oldval)
-		    : "r" (&ptr->counter), "Ir" (old), "r" (new)
-		    : "cc");
+				     "ldrex	%1, [%2]\n"
+				     "mov	%0, #0\n"
+				     "teq	%1, %3\n"
+				     "strexeq %0, %4, [%2]\n":"=&r"
+				     (res), "=&r"(oldval)
+				     :"r"(&ptr->counter), "Ir"(old), "r"(new)
+				     :"cc");
 	} while (res);
 
 	return oldval;
@@ -103,14 +99,13 @@ static inline void atomic_clear_mask(unsigned long mask, unsigned long *addr)
 	unsigned long tmp, tmp2;
 
 	__asm__ __volatile__("@ atomic_clear_mask\n"
-"1:	ldrex	%0, [%2]\n"
-"	bic	%0, %0, %3\n"
-"	strex	%1, %0, [%2]\n"
-"	teq	%1, #0\n"
-"	bne	1b"
-	: "=&r" (tmp), "=&r" (tmp2)
-	: "r" (addr), "Ir" (mask)
-	: "cc");
+			     "1:	ldrex	%0, [%2]\n"
+			     "	bic	%0, %0, %3\n"
+			     "	strex	%1, %0, [%2]\n"
+			     "	teq	%1, #0\n"
+			     "	bne	1b":"=&r"(tmp), "=&r"(tmp2)
+			     :"r"(addr), "Ir"(mask)
+			     :"cc");
 }
 
 #else /* ARM_ARCH_6 */
@@ -123,7 +118,7 @@ static inline void atomic_clear_mask(unsigned long mask, unsigned long *addr)
 
 #define atomic_set(v,i)	(((v)->counter) = (i))
 
-static inline int atomic_add_return(int i, atomic_t *v)
+static inline int atomic_add_return(int i, atomic_t * v)
 {
 	unsigned long flags;
 	int val;
@@ -136,7 +131,7 @@ static inline int atomic_add_return(int i, atomic_t *v)
 	return val;
 }
 
-static inline int atomic_sub_return(int i, atomic_t *v)
+static inline int atomic_sub_return(int i, atomic_t * v)
 {
 	unsigned long flags;
 	int val;
@@ -149,7 +144,7 @@ static inline int atomic_sub_return(int i, atomic_t *v)
 	return val;
 }
 
-static inline int atomic_cmpxchg(atomic_t *v, int old, int new)
+static inline int atomic_cmpxchg(atomic_t * v, int old, int new)
 {
 	int ret;
 	unsigned long flags;
@@ -176,7 +171,7 @@ static inline void atomic_clear_mask(unsigned long mask, unsigned long *addr)
 
 #define atomic_xchg(v, new) (xchg(&((v)->counter), new))
 
-static inline int atomic_add_unless(atomic_t *v, int a, int u)
+static inline int atomic_add_unless(atomic_t * v, int a, int u)
 {
 	int c, old;
 
@@ -185,6 +180,7 @@ static inline int atomic_add_unless(atomic_t *v, int a, int u)
 		c = old;
 	return c != u;
 }
+
 #define atomic_inc_not_zero(v) atomic_add_unless((v), 1, 0)
 
 #define atomic_add(i, v)	(void) atomic_add_return(i, v)

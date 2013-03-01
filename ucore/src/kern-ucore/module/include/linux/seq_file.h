@@ -27,10 +27,10 @@ struct seq_file {
 };
 
 struct seq_operations {
-	void * (*start) (struct seq_file *m, loff_t *pos);
-	void (*stop) (struct seq_file *m, void *v);
-	void * (*next) (struct seq_file *m, void *v, loff_t *pos);
-	int (*show) (struct seq_file *m, void *v);
+	void *(*start) (struct seq_file * m, loff_t * pos);
+	void (*stop) (struct seq_file * m, void *v);
+	void *(*next) (struct seq_file * m, void *v, loff_t * pos);
+	int (*show) (struct seq_file * m, void *v);
 };
 
 #define SEQ_SKIP 1
@@ -45,33 +45,33 @@ int seq_putc(struct seq_file *m, char c);
 int seq_puts(struct seq_file *m, const char *s);
 
 int seq_printf(struct seq_file *, const char *, ...)
-	__attribute__ ((format (printf,2,3)));
+    __attribute__ ((format(printf, 2, 3)));
 
 int seq_path(struct seq_file *, struct path *, char *);
 int seq_dentry(struct seq_file *, struct dentry *, char *);
 int seq_path_root(struct seq_file *m, struct path *path, struct path *root,
 		  char *esc);
 int seq_bitmap(struct seq_file *m, const unsigned long *bits,
-				   unsigned int nr_bits);
+	       unsigned int nr_bits);
 static inline int seq_cpumask(struct seq_file *m, const struct cpumask *mask)
 {
 	return seq_bitmap(m, mask->bits, nr_cpu_ids);
 }
 
-static inline int seq_nodemask(struct seq_file *m, nodemask_t *mask)
+static inline int seq_nodemask(struct seq_file *m, nodemask_t * mask)
 {
 	return seq_bitmap(m, mask->bits, MAX_NUMNODES);
 }
 
 int seq_bitmap_list(struct seq_file *m, unsigned long *bits,
-		unsigned int nr_bits);
+		    unsigned int nr_bits);
 
-static inline int seq_cpumask_list(struct seq_file *m, cpumask_t *mask)
+static inline int seq_cpumask_list(struct seq_file *m, cpumask_t * mask)
 {
 	return seq_bitmap_list(m, mask->bits, NR_CPUS);
 }
 
-static inline int seq_nodemask_list(struct seq_file *m, nodemask_t *mask)
+static inline int seq_nodemask_list(struct seq_file *m, nodemask_t * mask)
 {
 	return seq_bitmap_list(m, mask->bits, MAX_NUMNODES);
 }
@@ -88,11 +88,10 @@ int seq_release_private(struct inode *, struct file *);
  * Helpers for iteration over list_head-s in seq_files
  */
 
-extern struct list_head *seq_list_start(struct list_head *head,
-		loff_t pos);
+extern struct list_head *seq_list_start(struct list_head *head, loff_t pos);
 extern struct list_head *seq_list_start_head(struct list_head *head,
-		loff_t pos);
+					     loff_t pos);
 extern struct list_head *seq_list_next(void *v, struct list_head *head,
-		loff_t *ppos);
+				       loff_t * ppos);
 
 #endif

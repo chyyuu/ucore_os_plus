@@ -40,7 +40,7 @@
 	:							\
 	: "memory", "cc");					\
 	})
-	
+
 /*
  * Enable IRQs
  */

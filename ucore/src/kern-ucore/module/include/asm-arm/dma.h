@@ -35,7 +35,7 @@ typedef unsigned int dmamode_t;
 #define DMA_MODE_CASCADE 2
 #define DMA_AUTOINIT	 4
 
-extern spinlock_t  dma_spin_lock;
+extern spinlock_t dma_spin_lock;
 
 static inline unsigned long claim_dma_lock(void)
 {
@@ -65,7 +65,7 @@ extern void set_dma_page(dmach_t channel, char pagenr);
  *
  * Some architectures may need to do allocate an interrupt
  */
-extern int  request_dma(dmach_t channel, const char * device_id);
+extern int request_dma(dmach_t channel, const char *device_id);
 
 /* Free a DMA channel
  *
@@ -136,7 +136,7 @@ extern void set_dma_speed(dmach_t channel, int cycle_ns);
  * If called before the channel has been used, it may return 1.
  * Otherwise, it returns the number of _bytes_ left to transfer.
  */
-extern int  get_dma_residue(dmach_t channel);
+extern int get_dma_residue(dmach_t channel);
 
 #ifndef NO_DMA
 #define NO_DMA	255

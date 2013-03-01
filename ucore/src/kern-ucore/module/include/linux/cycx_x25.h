@@ -24,7 +24,7 @@
 */
 #ifndef PACKED
 #define PACKED __attribute__((packed))
-#endif 
+#endif
 
 /* X.25 shared memory layout. */
 #define	X25_MBOX_OFFS	0x300	/* general mailbox block */
@@ -39,8 +39,8 @@ extern unsigned int cycx_debug;
 /* X.25 Command Block. */
 struct cycx_x25_cmd {
 	u16 command;
-	u16 link;	/* values: 0 or 1 */
-	u16 len;	/* values: 0 thru 0x205 (517) */
+	u16 link;		/* values: 0 or 1 */
+	u16 len;		/* values: 0 thru 0x205 (517) */
 	u32 buf;
 } PACKED;
 
@@ -92,22 +92,22 @@ struct cycx_x25_cmd {
  *	@flags - see dosx25.doc, in portuguese, for details
  */
 struct cycx_x25_config {
-	u8  link;
-	u8  speed;
-	u8  clock;
-	u8  n2;
-	u8  n2win;
-	u8  n3win;
-	u8  nvc;
-	u8  pktlen;
-	u8  locaddr;
-	u8  remaddr;
+	u8 link;
+	u8 speed;
+	u8 clock;
+	u8 n2;
+	u8 n2win;
+	u8 n3win;
+	u8 nvc;
+	u8 pktlen;
+	u8 locaddr;
+	u8 remaddr;
 	u16 t1;
 	u16 t2;
-	u8  t21;
-	u8  npvc;
-	u8  t23;
-	u8  flags;
+	u8 t21;
+	u8 npvc;
+	u8 t23;
+	u8 flags;
 } PACKED;
 
 struct cycx_x25_stats {
@@ -122,4 +122,4 @@ struct cycx_x25_stats {
 	u16 tx_aborts;
 	u16 rx_aborts;
 } PACKED;
-#endif	/* _CYCX_X25_H */
+#endif /* _CYCX_X25_H */

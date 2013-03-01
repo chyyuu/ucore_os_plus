@@ -72,17 +72,17 @@ struct rpcrdma_write_array {
 };
 
 struct rpcrdma_msg {
-	__be32 rm_xid;	/* Mirrors the RPC header xid */
-	__be32 rm_vers;	/* Version of this protocol */
+	__be32 rm_xid;		/* Mirrors the RPC header xid */
+	__be32 rm_vers;		/* Version of this protocol */
 	__be32 rm_credit;	/* Buffers requested/granted */
-	__be32 rm_type;	/* Type of message (enum rpcrdma_proc) */
+	__be32 rm_type;		/* Type of message (enum rpcrdma_proc) */
 	union {
 
-		struct {			/* no chunks */
+		struct {	/* no chunks */
 			__be32 rm_empty[3];	/* 3 empty chunk lists */
 		} rm_nochunks;
 
-		struct {			/* no chunks and padded */
+		struct {	/* no chunks and padded */
 			__be32 rm_align;	/* Padding alignment */
 			__be32 rm_thresh;	/* Padding threshold */
 			__be32 rm_pempty[3];	/* 3 empty chunk lists */
@@ -113,4 +113,4 @@ enum rpcrdma_proc {
 	RDMA_ERROR = 4		/* An RPC RDMA encoding error */
 };
 
-#endif				/* _LINUX_SUNRPC_RPC_RDMA_H */
+#endif /* _LINUX_SUNRPC_RPC_RDMA_H */

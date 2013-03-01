@@ -25,20 +25,19 @@
 
 /* irq */
 int request_irq(unsigned int irq, irq_handler_t handler,
-                 unsigned long irqflags, const char *devname, void *dev_id)
+		unsigned long irqflags, const char *devname, void *dev_id)
 {
-  if( irq > 31)
-    return -EINVAL;
-  printk(KERN_DEBUG "request_irq %d\n", irq);
-  register_irq(irq, handler, dev_id);
-  pic_enable(irq);
-  return 0;
+	if (irq > 31)
+		return -EINVAL;
+	printk(KERN_DEBUG "request_irq %d\n", irq);
+	register_irq(irq, handler, dev_id);
+	pic_enable(irq);
+	return 0;
 }
 
 void free_irq(unsigned int irq, void *dev_id)
 {
-  printk(KERN_ALERT "TODO %s\n", __func__);
-  pic_disable(irq);
-  return;
+	printk(KERN_ALERT "TODO %s\n", __func__);
+	pic_disable(irq);
+	return;
 }
-

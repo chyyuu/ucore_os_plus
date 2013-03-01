@@ -15,32 +15,32 @@ struct sock;
 
 struct netns_ipv4 {
 #ifdef CONFIG_SYSCTL
-	struct ctl_table_header	*forw_hdr;
-	struct ctl_table_header	*frags_hdr;
-	struct ctl_table_header	*ipv4_hdr;
+	struct ctl_table_header *forw_hdr;
+	struct ctl_table_header *frags_hdr;
+	struct ctl_table_header *ipv4_hdr;
 	struct ctl_table_header *route_hdr;
 #endif
-	struct ipv4_devconf	*devconf_all;
-	struct ipv4_devconf	*devconf_dflt;
+	struct ipv4_devconf *devconf_all;
+	struct ipv4_devconf *devconf_dflt;
 #ifdef CONFIG_IP_MULTIPLE_TABLES
-	struct fib_rules_ops	*rules_ops;
+	struct fib_rules_ops *rules_ops;
 #endif
-	struct hlist_head	*fib_table_hash;
-	struct sock		*fibnl;
+	struct hlist_head *fib_table_hash;
+	struct sock *fibnl;
 
-	struct sock		**icmp_sk;
-	struct sock		*tcp_sock;
+	struct sock **icmp_sk;
+	struct sock *tcp_sock;
 
-	struct netns_frags	frags;
+	struct netns_frags frags;
 #ifdef CONFIG_NETFILTER
-	struct xt_table		*iptable_filter;
-	struct xt_table		*iptable_mangle;
-	struct xt_table		*iptable_raw;
-	struct xt_table		*arptable_filter;
-	struct xt_table		*iptable_security;
-	struct xt_table		*nat_table;
-	struct hlist_head	*nat_bysource;
-	int			nat_vmalloced;
+	struct xt_table *iptable_filter;
+	struct xt_table *iptable_mangle;
+	struct xt_table *iptable_raw;
+	struct xt_table *arptable_filter;
+	struct xt_table *iptable_security;
+	struct xt_table *nat_table;
+	struct hlist_head *nat_bysource;
+	int nat_vmalloced;
 #endif
 
 	int sysctl_icmp_echo_ignore_all;

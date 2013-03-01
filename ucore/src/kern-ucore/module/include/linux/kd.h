@@ -13,7 +13,7 @@
 struct consolefontdesc {
 	unsigned short charcount;	/* characters in font (256 or 512) */
 	unsigned short charheight;	/* scan lines per character (1-32) */
-	char __user *chardata;		/* font data in expanded form */
+	char __user *chardata;	/* font data in expanded form */
 };
 
 #define PIO_FONTRESET   0x4B6D	/* reset to default font */
@@ -32,7 +32,7 @@ struct consolefontdesc {
 
 #define KDGKBTYPE	0x4B33	/* get keyboard type */
 #define 	KB_84		0x01
-#define 	KB_101		0x02 	/* this is what we always answer */
+#define 	KB_101		0x02	/* this is what we always answer */
 #define 	KB_OTHER	0x03
 
 #define KDADDIO		0x4B34	/* add i/o port as valid */
@@ -55,7 +55,7 @@ typedef char scrnmap_t;
 #define GIO_SCRNMAP	0x4B40	/* get screen mapping from kernel */
 #define PIO_SCRNMAP	0x4B41	/* put screen mapping table in kernel */
 #define GIO_UNISCRNMAP  0x4B69	/* get full Unicode screen mapping */
-#define PIO_UNISCRNMAP  0x4B6A  /* set full Unicode screen mapping */
+#define PIO_UNISCRNMAP  0x4B6A	/* set full Unicode screen mapping */
 
 #define GIO_UNIMAP	0x4B66	/* get unicode-to-font mapping from kernel */
 struct unipair {
@@ -69,9 +69,9 @@ struct unimapdesc {
 #define PIO_UNIMAP	0x4B67	/* put unicode-to-font mapping in kernel */
 #define PIO_UNIMAPCLR	0x4B68	/* clear table, possibly advise hash algorithm */
 struct unimapinit {
-	unsigned short advised_hashsize;  /* 0 if no opinion */
-	unsigned short advised_hashstep;  /* 0 if no opinion */
-	unsigned short advised_hashlevel; /* 0 if no opinion */
+	unsigned short advised_hashsize;	/* 0 if no opinion */
+	unsigned short advised_hashstep;	/* 0 if no opinion */
+	unsigned short advised_hashlevel;	/* 0 if no opinion */
 };
 
 #define UNI_DIRECT_BASE 0xF000	/* start of Direct Font Region */
@@ -116,24 +116,24 @@ struct kbsentry {
 #define KDSKBSENT	0x4B49	/* sets one function key string entry */
 
 struct kbdiacr {
-        unsigned char diacr, base, result;
+	unsigned char diacr, base, result;
 };
 struct kbdiacrs {
-        unsigned int kb_cnt;    /* number of entries in following array */
-	struct kbdiacr kbdiacr[256];    /* MAX_DIACR from keyboard.h */
+	unsigned int kb_cnt;	/* number of entries in following array */
+	struct kbdiacr kbdiacr[256];	/* MAX_DIACR from keyboard.h */
 };
-#define KDGKBDIACR      0x4B4A  /* read kernel accent table */
-#define KDSKBDIACR      0x4B4B  /* write kernel accent table */
+#define KDGKBDIACR      0x4B4A	/* read kernel accent table */
+#define KDSKBDIACR      0x4B4B	/* write kernel accent table */
 
 struct kbdiacruc {
 	unsigned int diacr, base, result;
 };
 struct kbdiacrsuc {
-        unsigned int kb_cnt;    /* number of entries in following array */
-	struct kbdiacruc kbdiacruc[256];    /* MAX_DIACR from keyboard.h */
+	unsigned int kb_cnt;	/* number of entries in following array */
+	struct kbdiacruc kbdiacruc[256];	/* MAX_DIACR from keyboard.h */
 };
-#define KDGKBDIACRUC    0x4BFA  /* read kernel accent table - UCS */
-#define KDSKBDIACRUC    0x4BFB  /* write kernel accent table - UCS */
+#define KDGKBDIACRUC    0x4BFA	/* read kernel accent table - UCS */
+#define KDSKBDIACRUC    0x4BFB	/* write kernel accent table - UCS */
 
 struct kbkeycode {
 	unsigned int scancode, keycode;
@@ -144,12 +144,12 @@ struct kbkeycode {
 #define KDSIGACCEPT	0x4B4E	/* accept kbd generated signals */
 
 struct kbd_repeat {
-	int delay;	/* in msec; <= 0: don't change */
-	int period;	/* in msec; <= 0: don't change */
-			/* earlier this field was misnamed "rate" */
+	int delay;		/* in msec; <= 0: don't change */
+	int period;		/* in msec; <= 0: don't change */
+	/* earlier this field was misnamed "rate" */
 };
 
-#define KDKBDREP        0x4B52  /* set keyboard delay/repeat rate;
+#define KDKBDREP        0x4B52	/* set keyboard delay/repeat rate;
 				 * actually used values are returned */
 
 #define KDFONTOP	0x4B72	/* font operations */

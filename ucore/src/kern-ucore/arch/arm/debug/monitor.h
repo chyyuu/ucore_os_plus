@@ -13,4 +13,3 @@ int mon_dump(int argc, char **argv, struct trapframe *tf);
 int mon_kgdb(int argc, char **argv, struct trapframe *tf);
 
 #endif /* !__KERN_DEBUG_MONITOR_H__ */
-

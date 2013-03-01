@@ -18,13 +18,13 @@
  * implementation.  Any fields which are not set default to a safe value.
  */
 struct apm_power_info {
-	unsigned char	ac_line_status;
+	unsigned char ac_line_status;
 #define APM_AC_OFFLINE			0
 #define APM_AC_ONLINE			1
 #define APM_AC_BACKUP			2
 #define APM_AC_UNKNOWN			0xff
 
-	unsigned char	battery_status;
+	unsigned char battery_status;
 #define APM_BATTERY_STATUS_HIGH		0
 #define APM_BATTERY_STATUS_LOW		1
 #define APM_BATTERY_STATUS_CRITICAL	2
@@ -32,7 +32,7 @@ struct apm_power_info {
 #define APM_BATTERY_STATUS_NOT_PRESENT	4
 #define APM_BATTERY_STATUS_UNKNOWN	0xff
 
-	unsigned char	battery_flag;
+	unsigned char battery_flag;
 #define APM_BATTERY_FLAG_HIGH		(1 << 0)
 #define APM_BATTERY_FLAG_LOW		(1 << 1)
 #define APM_BATTERY_FLAG_CRITICAL	(1 << 2)
@@ -40,9 +40,9 @@ struct apm_power_info {
 #define APM_BATTERY_FLAG_NOT_PRESENT	(1 << 7)
 #define APM_BATTERY_FLAG_UNKNOWN	0xff
 
-	int		battery_life;
-	int		time;
-	int		units;
+	int battery_life;
+	int time;
+	int units;
 #define APM_UNITS_MINS			0
 #define APM_UNITS_SECS			1
 #define APM_UNITS_UNKNOWN		-1
@@ -52,7 +52,7 @@ struct apm_power_info {
 /*
  * This allows machines to provide their own "apm get power status" function.
  */
-extern void (*apm_get_power_status)(struct apm_power_info *);
+extern void (*apm_get_power_status) (struct apm_power_info *);
 
 /*
  * Queue an event (APM_SYS_SUSPEND or APM_CRITICAL_SUSPEND)

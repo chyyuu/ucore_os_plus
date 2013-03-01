@@ -61,7 +61,6 @@
  */
 #include <linux/errno.h>
 
-
 #define BIT_SEG7_A		0
 #define BIT_SEG7_B		1
 #define BIT_SEG7_C		2
@@ -72,7 +71,7 @@
 #define BIT_SEG7_RESERVED	7
 
 struct seg7_conversion_map {
-	unsigned char	table[128];
+	unsigned char table[128];
 };
 
 static __inline__ int map_to_seg7(struct seg7_conversion_map *map, int c)
@@ -183,5 +182,4 @@ static __inline__ int map_to_seg7(struct seg7_conversion_map *map, int c)
 #define SEG7_DEFAULT_MAP(_name)		\
 	SEG7_CONVERSION_MAP(_name,MAP_ASCII7SEG_ALPHANUM)
 
-#endif	/* MAP_TO_7SEGMENT_H */
-
+#endif /* MAP_TO_7SEGMENT_H */

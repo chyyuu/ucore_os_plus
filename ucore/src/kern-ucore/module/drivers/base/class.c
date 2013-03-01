@@ -62,18 +62,17 @@ static void class_release(struct kobject *kobj)
 }
 
 static struct sysfs_ops class_sysfs_ops = {
-	.show	= class_attr_show,
-	.store	= class_attr_store,
+	.show = class_attr_show,
+	.store = class_attr_store,
 };
 
 static struct kobj_type class_ktype = {
-	.sysfs_ops	= &class_sysfs_ops,
-	.release	= class_release,
+	.sysfs_ops = &class_sysfs_ops,
+	.release = class_release,
 };
 
 /* Hotplug events for classes go to the class class_subsys */
 static struct kset *class_kset;
-
 
 int class_create_file(struct class *cls, const struct class_attribute *attr)
 {
@@ -159,7 +158,8 @@ int __class_register(struct class *cls, struct lock_class_key *key)
 	cp = kzalloc(sizeof(*cp), GFP_KERNEL);
 	if (!cp)
 		return -ENOMEM;
-	klist_init(&cp->class_devices, klist_class_dev_get, klist_class_dev_put);
+	klist_init(&cp->class_devices, klist_class_dev_get,
+		   klist_class_dev_put);
 	INIT_LIST_HEAD(&cp->class_interfaces);
 	kset_init(&cp->class_dirs);
 	__mutex_init(&cp->class_mutex, "struct class mutex", key);
@@ -193,6 +193,7 @@ int __class_register(struct class *cls, struct lock_class_key *key)
 	class_put(cls);
 	return error;
 }
+
 EXPORT_SYMBOL_GPL(__class_register);
 
 void class_unregister(struct class *cls)
@@ -246,6 +247,7 @@ error:
 	kfree(cls);
 	return ERR_PTR(retval);
 }
+
 EXPORT_SYMBOL_GPL(__class_create);
 
 /**
@@ -304,6 +306,7 @@ void class_dev_iter_init(struct class_dev_iter *iter, struct class *class,
 	klist_iter_init_node(&class->p->class_devices, &iter->ki, start_knode);
 	iter->type = type;
 }
+
 EXPORT_SYMBOL_GPL(class_dev_iter_init);
 
 /**
@@ -332,6 +335,7 @@ struct device *class_dev_iter_next(struct class_dev_iter *iter)
 			return dev;
 	}
 }
+
 EXPORT_SYMBOL_GPL(class_dev_iter_next);
 
 /**
@@ -345,6 +349,7 @@ void class_dev_iter_exit(struct class_dev_iter *iter)
 {
 	klist_iter_exit(&iter->ki);
 }
+
 EXPORT_SYMBOL_GPL(class_dev_iter_exit);
 
 /**
@@ -366,7 +371,7 @@ EXPORT_SYMBOL_GPL(class_dev_iter_exit);
  * code.  There's no locking restriction.
  */
 int class_for_each_device(struct class *class, struct device *start,
-			  void *data, int (*fn)(struct device *, void *))
+			  void *data, int (*fn) (struct device *, void *))
 {
 	struct class_dev_iter iter;
 	struct device *dev;
@@ -390,6 +395,7 @@ int class_for_each_device(struct class *class, struct device *start,
 
 	return error;
 }
+
 EXPORT_SYMBOL_GPL(class_for_each_device);
 
 /**
@@ -414,7 +420,7 @@ EXPORT_SYMBOL_GPL(class_for_each_device);
  */
 struct device *class_find_device(struct class *class, struct device *start,
 				 void *data,
-				 int (*match)(struct device *, void *))
+				 int (*match) (struct device *, void *))
 {
 	struct class_dev_iter iter;
 	struct device *dev;
@@ -438,6 +444,7 @@ struct device *class_find_device(struct class *class, struct device *start,
 
 	return dev;
 }
+
 EXPORT_SYMBOL_GPL(class_find_device);
 
 int class_interface_register(struct class_interface *class_intf)

@@ -128,7 +128,7 @@ static inline bool ieee80211_ratelimit_debug(u32 level)
 {
 	return false;
 }
-#endif				/* CONFIG_IEEE80211_DEBUG */
+#endif /* CONFIG_IEEE80211_DEBUG */
 
 /*
  * To use the debug system:
@@ -868,10 +868,10 @@ enum {
 };
 
 struct ieee80211_channel {
-	u32 freq;	/* in MHz */
+	u32 freq;		/* in MHz */
 	u8 channel;
 	u8 flags;
-	u8 max_power;	/* in dBm */
+	u8 max_power;		/* in dBm */
 };
 
 struct ieee80211_geo {
@@ -972,7 +972,7 @@ struct ieee80211_device {
 
 	int (*handle_management) (struct net_device * dev,
 				  struct ieee80211_network * network, u16 type);
-	int (*is_qos_active) (struct net_device *dev, struct sk_buff *skb);
+	int (*is_qos_active) (struct net_device * dev, struct sk_buff * skb);
 
 	/* Typical STA methods */
 	int (*handle_auth) (struct net_device * dev,
@@ -1127,7 +1127,8 @@ extern void ieee80211_txb_free(struct ieee80211_txb *);
 
 /* ieee80211_rx.c */
 extern void ieee80211_rx_any(struct ieee80211_device *ieee,
-		     struct sk_buff *skb, struct ieee80211_rx_stats *stats);
+			     struct sk_buff *skb,
+			     struct ieee80211_rx_stats *stats);
 extern int ieee80211_rx(struct ieee80211_device *ieee, struct sk_buff *skb,
 			struct ieee80211_rx_stats *rx_stats);
 /* make sure to set stats->len */
@@ -1152,8 +1153,7 @@ extern u8 ieee80211_get_channel_flags(struct ieee80211_device *ieee,
 extern const struct ieee80211_channel *ieee80211_get_channel(struct
 							     ieee80211_device
 							     *ieee, u8 channel);
-extern u32 ieee80211_channel_to_freq(struct ieee80211_device * ieee,
-				      u8 channel);
+extern u32 ieee80211_channel_to_freq(struct ieee80211_device *ieee, u8 channel);
 
 /* ieee80211_wx.c */
 extern int ieee80211_wx_get_scan(struct ieee80211_device *ieee,
@@ -1182,4 +1182,4 @@ static inline int ieee80211_get_scans(struct ieee80211_device *ieee)
 	return ieee->scans;
 }
 
-#endif				/* IEEE80211_H */
+#endif /* IEEE80211_H */

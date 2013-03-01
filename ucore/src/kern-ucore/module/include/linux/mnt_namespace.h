@@ -8,22 +8,22 @@
 #include <linux/seq_file.h>
 
 struct mnt_namespace {
-	atomic_t		count;
-	struct vfsmount *	root;
-	struct list_head	list;
+	atomic_t count;
+	struct vfsmount *root;
+	struct list_head list;
 	wait_queue_head_t poll;
 	int event;
 };
 
 struct proc_mounts {
-	struct seq_file m; /* must be the first element */
+	struct seq_file m;	/* must be the first element */
 	struct mnt_namespace *ns;
 	struct path root;
 	int event;
 };
 
 extern struct mnt_namespace *copy_mnt_ns(unsigned long, struct mnt_namespace *,
-		struct fs_struct *);
+					 struct fs_struct *);
 extern void __put_mnt_ns(struct mnt_namespace *ns);
 
 static inline void put_mnt_ns(struct mnt_namespace *ns)

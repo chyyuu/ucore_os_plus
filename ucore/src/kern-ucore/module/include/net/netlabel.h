@@ -265,8 +265,8 @@ static inline void netlbl_secattr_cache_free(struct netlbl_lsm_cache *cache)
  * on failure.
  *
  */
-static inline struct netlbl_lsm_secattr_catmap *netlbl_secattr_catmap_alloc(
-	                                                           gfp_t flags)
+static inline struct netlbl_lsm_secattr_catmap
+*netlbl_secattr_catmap_alloc(gfp_t flags)
 {
 	return kzalloc(sizeof(struct netlbl_lsm_secattr_catmap), flags);
 }
@@ -279,8 +279,8 @@ static inline struct netlbl_lsm_secattr_catmap *netlbl_secattr_catmap_alloc(
  * Free a LSM secattr catmap.
  *
  */
-static inline void netlbl_secattr_catmap_free(
-	                              struct netlbl_lsm_secattr_catmap *catmap)
+static inline void netlbl_secattr_catmap_free(struct netlbl_lsm_secattr_catmap
+					      *catmap)
 {
 	struct netlbl_lsm_secattr_catmap *iter;
 
@@ -358,26 +358,22 @@ static inline void netlbl_secattr_free(struct netlbl_lsm_secattr *secattr)
 int netlbl_cfg_map_del(const char *domain,
 		       u16 family,
 		       const void *addr,
-		       const void *mask,
-		       struct netlbl_audit *audit_info);
+		       const void *mask, struct netlbl_audit *audit_info);
 int netlbl_cfg_unlbl_map_add(const char *domain,
 			     u16 family,
 			     const void *addr,
-			     const void *mask,
-			     struct netlbl_audit *audit_info);
+			     const void *mask, struct netlbl_audit *audit_info);
 int netlbl_cfg_unlbl_static_add(struct net *net,
 				const char *dev_name,
 				const void *addr,
 				const void *mask,
 				u16 family,
-				u32 secid,
-				struct netlbl_audit *audit_info);
+				u32 secid, struct netlbl_audit *audit_info);
 int netlbl_cfg_unlbl_static_del(struct net *net,
 				const char *dev_name,
 				const void *addr,
 				const void *mask,
-				u16 family,
-				struct netlbl_audit *audit_info);
+				u16 family, struct netlbl_audit *audit_info);
 int netlbl_cfg_cipsov4_add(struct cipso_v4_doi *doi_def,
 			   struct netlbl_audit *audit_info);
 void netlbl_cfg_cipsov4_del(u32 doi, struct netlbl_audit *audit_info);
@@ -394,12 +390,9 @@ int netlbl_secattr_catmap_walk(struct netlbl_lsm_secattr_catmap *catmap,
 int netlbl_secattr_catmap_walk_rng(struct netlbl_lsm_secattr_catmap *catmap,
 				   u32 offset);
 int netlbl_secattr_catmap_setbit(struct netlbl_lsm_secattr_catmap *catmap,
-				 u32 bit,
-				 gfp_t flags);
+				 u32 bit, gfp_t flags);
 int netlbl_secattr_catmap_setrng(struct netlbl_lsm_secattr_catmap *catmap,
-				 u32 start,
-				 u32 end,
-				 gfp_t flags);
+				 u32 start, u32 end, gfp_t flags);
 
 /*
  * LSM protocol operations (NetLabel LSM/kernel API)
@@ -408,17 +401,14 @@ int netlbl_enabled(void);
 int netlbl_sock_setattr(struct sock *sk,
 			const struct netlbl_lsm_secattr *secattr);
 void netlbl_sock_delattr(struct sock *sk);
-int netlbl_sock_getattr(struct sock *sk,
-			struct netlbl_lsm_secattr *secattr);
+int netlbl_sock_getattr(struct sock *sk, struct netlbl_lsm_secattr *secattr);
 int netlbl_conn_setattr(struct sock *sk,
 			struct sockaddr *addr,
 			const struct netlbl_lsm_secattr *secattr);
 int netlbl_skbuff_setattr(struct sk_buff *skb,
-			  u16 family,
-			  const struct netlbl_lsm_secattr *secattr);
+			  u16 family, const struct netlbl_lsm_secattr *secattr);
 int netlbl_skbuff_getattr(const struct sk_buff *skb,
-			  u16 family,
-			  struct netlbl_lsm_secattr *secattr);
+			  u16 family, struct netlbl_lsm_secattr *secattr);
 void netlbl_skbuff_err(struct sk_buff *skb, int error, int gateway);
 
 /*
@@ -442,6 +432,7 @@ static inline int netlbl_cfg_map_del(const char *domain,
 {
 	return -ENOSYS;
 }
+
 static inline int netlbl_cfg_unlbl_map_add(const char *domain,
 					   u16 family,
 					   void *addr,
@@ -450,6 +441,7 @@ static inline int netlbl_cfg_unlbl_map_add(const char *domain,
 {
 	return -ENOSYS;
 }
+
 static inline int netlbl_cfg_unlbl_static_add(struct net *net,
 					      const char *dev_name,
 					      const void *addr,
@@ -460,6 +452,7 @@ static inline int netlbl_cfg_unlbl_static_add(struct net *net,
 {
 	return -ENOSYS;
 }
+
 static inline int netlbl_cfg_unlbl_static_del(struct net *net,
 					      const char *dev_name,
 					      const void *addr,
@@ -469,16 +462,19 @@ static inline int netlbl_cfg_unlbl_static_del(struct net *net,
 {
 	return -ENOSYS;
 }
+
 static inline int netlbl_cfg_cipsov4_add(struct cipso_v4_doi *doi_def,
 					 struct netlbl_audit *audit_info)
 {
 	return -ENOSYS;
 }
+
 static inline void netlbl_cfg_cipsov4_del(u32 doi,
 					  struct netlbl_audit *audit_info)
 {
 	return;
 }
+
 static inline int netlbl_cfg_cipsov4_map_add(u32 doi,
 					     const char *domain,
 					     const struct in_addr *addr,
@@ -487,85 +483,93 @@ static inline int netlbl_cfg_cipsov4_map_add(u32 doi,
 {
 	return -ENOSYS;
 }
-static inline int netlbl_secattr_catmap_walk(
-	                              struct netlbl_lsm_secattr_catmap *catmap,
-				      u32 offset)
+
+static inline int netlbl_secattr_catmap_walk(struct netlbl_lsm_secattr_catmap
+					     *catmap, u32 offset)
 {
 	return -ENOENT;
 }
-static inline int netlbl_secattr_catmap_walk_rng(
-				      struct netlbl_lsm_secattr_catmap *catmap,
-				      u32 offset)
+
+static inline int netlbl_secattr_catmap_walk_rng(struct
+						 netlbl_lsm_secattr_catmap
+						 *catmap, u32 offset)
 {
 	return -ENOENT;
 }
-static inline int netlbl_secattr_catmap_setbit(
-	                              struct netlbl_lsm_secattr_catmap *catmap,
-				      u32 bit,
-				      gfp_t flags)
+
+static inline int netlbl_secattr_catmap_setbit(struct netlbl_lsm_secattr_catmap
+					       *catmap, u32 bit, gfp_t flags)
 {
 	return 0;
 }
-static inline int netlbl_secattr_catmap_setrng(
-	                              struct netlbl_lsm_secattr_catmap *catmap,
-				      u32 start,
-				      u32 end,
-				      gfp_t flags)
+
+static inline int netlbl_secattr_catmap_setrng(struct netlbl_lsm_secattr_catmap
+					       *catmap, u32 start, u32 end,
+					       gfp_t flags)
 {
 	return 0;
 }
+
 static inline int netlbl_enabled(void)
 {
 	return 0;
 }
+
 static inline int netlbl_sock_setattr(struct sock *sk,
-				     const struct netlbl_lsm_secattr *secattr)
+				      const struct netlbl_lsm_secattr *secattr)
 {
 	return -ENOSYS;
 }
+
 static inline void netlbl_sock_delattr(struct sock *sk)
 {
 }
+
 static inline int netlbl_sock_getattr(struct sock *sk,
 				      struct netlbl_lsm_secattr *secattr)
 {
 	return -ENOSYS;
 }
+
 static inline int netlbl_conn_setattr(struct sock *sk,
 				      struct sockaddr *addr,
 				      const struct netlbl_lsm_secattr *secattr)
 {
 	return -ENOSYS;
 }
-static inline int netlbl_skbuff_setattr(struct sk_buff *skb,
-				      u16 family,
-				      const struct netlbl_lsm_secattr *secattr)
+
+static inline int netlbl_skbuff_setattr(struct sk_buff *skb, u16 family, const struct netlbl_lsm_secattr
+					*secattr)
 {
 	return -ENOSYS;
 }
+
 static inline int netlbl_skbuff_getattr(const struct sk_buff *skb,
 					u16 family,
 					struct netlbl_lsm_secattr *secattr)
 {
 	return -ENOSYS;
 }
+
 static inline void netlbl_skbuff_err(struct sk_buff *skb,
-				     int error,
-				     int gateway)
+				     int error, int gateway)
 {
 	return;
 }
+
 static inline void netlbl_cache_invalidate(void)
 {
 	return;
 }
+
 static inline int netlbl_cache_add(const struct sk_buff *skb,
 				   const struct netlbl_lsm_secattr *secattr)
 {
 	return 0;
 }
-static inline struct audit_buffer *netlbl_audit_start(int type,
-						struct netlbl_audit *audit_info)
+
+static inline struct audit_buffer *netlbl_audit_start(int type, struct netlbl_audit
+						      *audit_info)
 {
 	return NULL;
 }

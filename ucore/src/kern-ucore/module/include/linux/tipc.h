@@ -42,7 +42,7 @@
 /*
  * TIPC addressing primitives
  */
- 
+
 struct tipc_portid {
 	__u32 ref;
 	__u32 node;
@@ -60,8 +60,7 @@ struct tipc_name_seq {
 };
 
 static inline __u32 tipc_addr(unsigned int zone,
-			      unsigned int cluster,
-			      unsigned int node)
+			      unsigned int cluster, unsigned int node)
 {
 	return (zone << 24) | (cluster << 12) | node;
 }
@@ -107,7 +106,7 @@ static inline unsigned int tipc_node(__u32 addr)
  * Message importance levels
  */
 
-#define TIPC_LOW_IMPORTANCE		0  /* default */
+#define TIPC_LOW_IMPORTANCE		0	/* default */
 #define TIPC_MEDIUM_IMPORTANCE		1
 #define TIPC_HIGH_IMPORTANCE		2
 #define TIPC_CRITICAL_IMPORTANCE	3
@@ -127,9 +126,9 @@ static inline unsigned int tipc_node(__u32 addr)
  * TIPC topology subscription service definitions
  */
 
-#define TIPC_SUB_PORTS     	0x01  	/* filter for port availability */
-#define TIPC_SUB_SERVICE     	0x02  	/* filter for service availability */
-#define TIPC_SUB_CANCEL         0x04    /* cancel a subscription */
+#define TIPC_SUB_PORTS     	0x01	/* filter for port availability */
+#define TIPC_SUB_SERVICE     	0x02	/* filter for service availability */
+#define TIPC_SUB_CANCEL         0x04	/* cancel a subscription */
 #if 0
 /* The following filter options are not currently implemented */
 #define TIPC_SUB_NO_BIND_EVTS	0x04	/* filter out "publish" events */
@@ -141,9 +140,9 @@ static inline unsigned int tipc_node(__u32 addr)
 
 struct tipc_subscr {
 	struct tipc_name_seq seq;	/* name sequence of interest */
-	__u32 timeout;			/* subscription duration (in ms) */
-        __u32 filter;   		/* bitmask of filter options */
-	char usr_handle[8];		/* available for subscriber use */
+	__u32 timeout;		/* subscription duration (in ms) */
+	__u32 filter;		/* bitmask of filter options */
+	char usr_handle[8];	/* available for subscriber use */
 };
 
 #define TIPC_PUBLISHED		1	/* publication event */
@@ -151,11 +150,11 @@ struct tipc_subscr {
 #define TIPC_SUBSCR_TIMEOUT	3	/* subscription timeout event */
 
 struct tipc_event {
-	__u32 event;			/* event type */
-	__u32 found_lower;		/* matching name seq instances */
-	__u32 found_upper;		/*    "      "    "     "      */
+	__u32 event;		/* event type */
+	__u32 found_lower;	/* matching name seq instances */
+	__u32 found_upper;	/*    "      "    "     "      */
 	struct tipc_portid port;	/* associated port */
-	struct tipc_subscr s;		/* associated subscription */
+	struct tipc_subscr s;	/* associated subscription */
 };
 
 /*
@@ -181,14 +180,14 @@ struct tipc_event {
 
 struct sockaddr_tipc {
 	unsigned short family;
-	unsigned char  addrtype;
-	signed   char  scope;
+	unsigned char addrtype;
+	signed char scope;
 	union {
 		struct tipc_portid id;
 		struct tipc_name_seq nameseq;
 		struct {
 			struct tipc_name name;
-			__u32 domain; /* 0: own zone */
+			__u32 domain;	/* 0: own zone */
 		} name;
 	} addr;
 };

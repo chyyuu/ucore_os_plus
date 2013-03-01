@@ -44,9 +44,9 @@
  * was unsigned short, but we might as well be ready for > 64kB I/O pages
  */
 struct bio_vec {
-	struct page	*bv_page;
-	unsigned int	bv_len;
-	unsigned int	bv_offset;
+	struct page *bv_page;
+	unsigned int bv_len;
+	unsigned int bv_offset;
 };
 
 struct bio_set;
@@ -60,55 +60,55 @@ typedef void (bio_destructor_t) (struct bio *);
  * stacking drivers)
  */
 struct bio {
-	sector_t		bi_sector;	/* device address in 512 byte
-						   sectors */
-	struct bio		*bi_next;	/* request queue link */
-	struct block_device	*bi_bdev;
-	unsigned long		bi_flags;	/* status, command, etc */
-	unsigned long		bi_rw;		/* bottom bits READ/WRITE,
-						 * top bits priority
-						 */
+	sector_t bi_sector;	/* device address in 512 byte
+				   sectors */
+	struct bio *bi_next;	/* request queue link */
+	struct block_device *bi_bdev;
+	unsigned long bi_flags;	/* status, command, etc */
+	unsigned long bi_rw;	/* bottom bits READ/WRITE,
+				 * top bits priority
+				 */
 
-	unsigned short		bi_vcnt;	/* how many bio_vec's */
-	unsigned short		bi_idx;		/* current index into bvl_vec */
+	unsigned short bi_vcnt;	/* how many bio_vec's */
+	unsigned short bi_idx;	/* current index into bvl_vec */
 
 	/* Number of segments in this BIO after
 	 * physical address coalescing is performed.
 	 */
-	unsigned int		bi_phys_segments;
+	unsigned int bi_phys_segments;
 
-	unsigned int		bi_size;	/* residual I/O count */
+	unsigned int bi_size;	/* residual I/O count */
 
 	/*
 	 * To keep track of the max segment size, we account for the
 	 * sizes of the first and last mergeable segments in this bio.
 	 */
-	unsigned int		bi_seg_front_size;
-	unsigned int		bi_seg_back_size;
+	unsigned int bi_seg_front_size;
+	unsigned int bi_seg_back_size;
 
-	unsigned int		bi_max_vecs;	/* max bvl_vecs we can hold */
+	unsigned int bi_max_vecs;	/* max bvl_vecs we can hold */
 
-	unsigned int		bi_comp_cpu;	/* completion CPU */
+	unsigned int bi_comp_cpu;	/* completion CPU */
 
-	atomic_t		bi_cnt;		/* pin count */
+	atomic_t bi_cnt;	/* pin count */
 
-	struct bio_vec		*bi_io_vec;	/* the actual vec list */
+	struct bio_vec *bi_io_vec;	/* the actual vec list */
 
-	bio_end_io_t		*bi_end_io;
+	bio_end_io_t *bi_end_io;
 
-	void			*bi_private;
+	void *bi_private;
 #if defined(CONFIG_BLK_DEV_INTEGRITY)
-	struct bio_integrity_payload *bi_integrity;  /* data integrity */
+	struct bio_integrity_payload *bi_integrity;	/* data integrity */
 #endif
 
-	bio_destructor_t	*bi_destructor;	/* destructor */
+	bio_destructor_t *bi_destructor;	/* destructor */
 
 	/*
 	 * We can inline a number of vecs at the end of the bio, to avoid
 	 * double allocations for a small number of bio_vecs. This member
 	 * MUST obviously be kept at the very end of the bio.
 	 */
-	struct bio_vec		bi_inline_vecs[0];
+	struct bio_vec bi_inline_vecs[0];
 };
 
 /*
@@ -134,7 +134,7 @@ struct bio {
 #define BIO_POOL_BITS		(4)
 #define BIO_POOL_OFFSET		(BITS_PER_LONG - BIO_POOL_BITS)
 #define BIO_POOL_MASK		(1UL << BIO_POOL_OFFSET)
-#define BIO_POOL_IDX(bio)	((bio)->bi_flags >> BIO_POOL_OFFSET)	
+#define BIO_POOL_IDX(bio)	((bio)->bi_flags >> BIO_POOL_OFFSET)
 
 /*
  * bio bi_rw flags
@@ -218,7 +218,7 @@ static inline unsigned int bio_cur_sectors(struct bio *bio)
 {
 	if (bio->bi_vcnt)
 		return bio_iovec(bio)->bv_len >> 9;
-	else /* dataless requests such as discard */
+	else			/* dataless requests such as discard */
 		return bio->bi_size >> 9;
 }
 
@@ -314,21 +314,21 @@ static inline int bio_has_allocated_vec(struct bio *bio)
  * bio integrity payload
  */
 struct bio_integrity_payload {
-	struct bio		*bip_bio;	/* parent bio */
-	struct bio_vec		*bip_vec;	/* integrity data vector */
+	struct bio *bip_bio;	/* parent bio */
+	struct bio_vec *bip_vec;	/* integrity data vector */
 
-	sector_t		bip_sector;	/* virtual start sector */
+	sector_t bip_sector;	/* virtual start sector */
 
-	void			*bip_buf;	/* generated integrity data */
-	bio_end_io_t		*bip_end_io;	/* saved I/O completion fn */
+	void *bip_buf;		/* generated integrity data */
+	bio_end_io_t *bip_end_io;	/* saved I/O completion fn */
 
-	unsigned int		bip_size;
+	unsigned int bip_size;
 
-	unsigned short		bip_pool;	/* pool the ivec came from */
-	unsigned short		bip_vcnt;	/* # of integrity bio_vecs */
-	unsigned short		bip_idx;	/* current bip_vec index */
+	unsigned short bip_pool;	/* pool the ivec came from */
+	unsigned short bip_vcnt;	/* # of integrity bio_vecs */
+	unsigned short bip_idx;	/* current bip_vec index */
 
-	struct work_struct	bip_work;	/* I/O completion */
+	struct work_struct bip_work;	/* I/O completion */
 };
 #endif /* CONFIG_BLK_DEV_INTEGRITY */
 
@@ -343,14 +343,14 @@ struct bio_integrity_payload {
  *   in bio2.bi_private
  */
 struct bio_pair {
-	struct bio			bio1, bio2;
-	struct bio_vec			bv1, bv2;
+	struct bio bio1, bio2;
+	struct bio_vec bv1, bv2;
 #if defined(CONFIG_BLK_DEV_INTEGRITY)
-	struct bio_integrity_payload	bip1, bip2;
-	struct bio_vec			iv1, iv2;
+	struct bio_integrity_payload bip1, bip2;
+	struct bio_vec iv1, iv2;
 #endif
-	atomic_t			cnt;
-	int				error;
+	atomic_t cnt;
+	int error;
 };
 extern struct bio_pair *bio_split(struct bio *bi, int first_sectors);
 extern void bio_pair_release(struct bio_pair *dbio);
@@ -373,7 +373,8 @@ extern struct bio *bio_clone(struct bio *, gfp_t);
 
 extern void bio_init(struct bio *);
 
-extern int bio_add_page(struct bio *, struct page *, unsigned int,unsigned int);
+extern int bio_add_page(struct bio *, struct page *, unsigned int,
+			unsigned int);
 extern int bio_add_pc_page(struct request_queue *, struct bio *, struct page *,
 			   unsigned int, unsigned int);
 extern int bio_get_nr_vecs(struct block_device *);
@@ -399,7 +400,8 @@ extern struct bio *bio_copy_user_iov(struct request_queue *,
 				     int, int, gfp_t);
 extern int bio_uncopy_user(struct bio *);
 void zero_fill_bio(struct bio *bio);
-extern struct bio_vec *bvec_alloc_bs(gfp_t, int, unsigned long *, struct bio_set *);
+extern struct bio_vec *bvec_alloc_bs(gfp_t, int, unsigned long *,
+				     struct bio_set *);
 extern void bvec_free_bs(struct bio_set *, struct bio_vec *, unsigned int);
 extern unsigned int bvec_nr_vecs(unsigned short idx);
 
@@ -455,7 +457,7 @@ extern struct biovec_slab bvec_slabs[BIOVEC_NR_POOLS] __read_mostly;
  * This function MUST be inlined - it plays with the CPU interrupt flags.
  */
 static __always_inline char *bvec_kmap_irq(struct bio_vec *bvec,
-		unsigned long *flags)
+					   unsigned long *flags)
 {
 	unsigned long addr;
 
@@ -464,19 +466,18 @@ static __always_inline char *bvec_kmap_irq(struct bio_vec *bvec,
 	 * balancing is a lot nicer this way
 	 */
 	local_irq_save(*flags);
-	addr = (unsigned long) kmap_atomic(bvec->bv_page, KM_BIO_SRC_IRQ);
+	addr = (unsigned long)kmap_atomic(bvec->bv_page, KM_BIO_SRC_IRQ);
 
 	BUG_ON(addr & ~PAGE_MASK);
 
-	return (char *) addr + bvec->bv_offset;
+	return (char *)addr + bvec->bv_offset;
 }
 
-static __always_inline void bvec_kunmap_irq(char *buffer,
-		unsigned long *flags)
+static __always_inline void bvec_kunmap_irq(char *buffer, unsigned long *flags)
 {
-	unsigned long ptr = (unsigned long) buffer & PAGE_MASK;
+	unsigned long ptr = (unsigned long)buffer & PAGE_MASK;
 
-	kunmap_atomic((void *) ptr, KM_BIO_SRC_IRQ);
+	kunmap_atomic((void *)ptr, KM_BIO_SRC_IRQ);
 	local_irq_restore(*flags);
 }
 
@@ -490,6 +491,7 @@ static inline char *__bio_kmap_irq(struct bio *bio, unsigned short idx,
 {
 	return bvec_kmap_irq(bio_iovec_idx(bio, idx), flags);
 }
+
 #define __bio_kunmap_irq(buf, flags)	bvec_kunmap_irq(buf, flags)
 
 #define bio_kmap_irq(bio, flags) \
@@ -519,10 +521,16 @@ static inline int bio_has_data(struct bio *bio)
 
 #define bio_integrity(bio) (bio->bi_integrity != NULL)
 
-extern struct bio_integrity_payload *bio_integrity_alloc_bioset(struct bio *, gfp_t, unsigned int, struct bio_set *);
-extern struct bio_integrity_payload *bio_integrity_alloc(struct bio *, gfp_t, unsigned int);
+extern struct bio_integrity_payload *bio_integrity_alloc_bioset(struct bio *,
+								gfp_t,
+								unsigned int,
+								struct bio_set
+								*);
+extern struct bio_integrity_payload *bio_integrity_alloc(struct bio *, gfp_t,
+							 unsigned int);
 extern void bio_integrity_free(struct bio *, struct bio_set *);
-extern int bio_integrity_add_page(struct bio *, struct page *, unsigned int, unsigned int);
+extern int bio_integrity_add_page(struct bio *, struct page *, unsigned int,
+				  unsigned int);
 extern int bio_integrity_enabled(struct bio *bio);
 extern int bio_integrity_set_tag(struct bio *, void *, unsigned int);
 extern int bio_integrity_get_tag(struct bio *, void *, unsigned int);
@@ -531,7 +539,8 @@ extern void bio_integrity_endio(struct bio *, int);
 extern void bio_integrity_advance(struct bio *, unsigned int);
 extern void bio_integrity_trim(struct bio *, unsigned int, unsigned int);
 extern void bio_integrity_split(struct bio *, struct bio_pair *, int);
-extern int bio_integrity_clone(struct bio *, struct bio *, gfp_t, struct bio_set *);
+extern int bio_integrity_clone(struct bio *, struct bio *, gfp_t,
+			       struct bio_set *);
 extern int bioset_integrity_create(struct bio_set *, int);
 extern void bioset_integrity_free(struct bio_set *);
 extern void bio_integrity_init_slab(void);

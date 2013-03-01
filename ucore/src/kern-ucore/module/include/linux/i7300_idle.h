@@ -35,16 +35,16 @@ static const struct fbd_ioat fbd_ioat_list[] = {
 
 /* table of devices that work with this driver */
 static const struct pci_device_id pci_tbl[] = {
-	{ PCI_DEVICE(PCI_VENDOR_ID_INTEL, PCI_DEVICE_ID_INTEL_FBD_CNB) },
+	{PCI_DEVICE(PCI_VENDOR_ID_INTEL, PCI_DEVICE_ID_INTEL_FBD_CNB)},
 #if SUPPORT_I5000
-	{ PCI_DEVICE(PCI_VENDOR_ID_INTEL, PCI_DEVICE_ID_INTEL_5000_ERR) },
+	{PCI_DEVICE(PCI_VENDOR_ID_INTEL, PCI_DEVICE_ID_INTEL_5000_ERR)},
 #endif
-	{ } /* Terminating entry */
+	{}			/* Terminating entry */
 };
 
 /* Check for known platforms with I/O-AT */
 static inline int i7300_idle_platform_probe(struct pci_dev **fbd_dev,
-						struct pci_dev **ioat_dev)
+					    struct pci_dev **ioat_dev)
 {
 	int i;
 	struct pci_dev *memdev, *dmadev;

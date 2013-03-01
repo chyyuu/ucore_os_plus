@@ -24,12 +24,11 @@
 
 int __ucore_linux_stat_getsize()
 {
-  return sizeof(struct stat);
+	return sizeof(struct stat);
 }
 
-int __ucore_stat2linux_stat(const struct ucore_stat *us, const struct stat* ls)
+int __ucore_stat2linux_stat(const struct ucore_stat *us, const struct stat *ls)
 {
-  memset(ls, 0, sizeof(struct stat));
-  return sizeof(struct stat);
+	memset(ls, 0, sizeof(struct stat));
+	return sizeof(struct stat);
 }
-

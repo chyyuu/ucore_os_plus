@@ -16,28 +16,27 @@
 
 extern u32 ixp2000_uengine_mask;
 
-struct ixp2000_uengine_code
-{
-	u32	cpu_model_bitmask;
-	u8	cpu_min_revision;
-	u8	cpu_max_revision;
+struct ixp2000_uengine_code {
+	u32 cpu_model_bitmask;
+	u8 cpu_min_revision;
+	u8 cpu_max_revision;
 
-	u32	uengine_parameters;
+	u32 uengine_parameters;
 
 	struct ixp2000_reg_value {
-		int	reg;
-		u32	value;
+		int reg;
+		u32 value;
 	} *initial_reg_values;
 
-	int	num_insns;
-	u8	*insns;
+	int num_insns;
+	u8 *insns;
 };
 
 u32 ixp2000_uengine_csr_read(int uengine, int offset);
 void ixp2000_uengine_csr_write(int uengine, int offset, u32 value);
 void ixp2000_uengine_reset(u32 uengine_mask);
 void ixp2000_uengine_set_mode(int uengine, u32 mode);
-void ixp2000_uengine_load_microcode(int uengine, u8 *ucode, int insns);
+void ixp2000_uengine_load_microcode(int uengine, u8 * ucode, int insns);
 void ixp2000_uengine_init_context(int uengine, int context, int pc);
 void ixp2000_uengine_start_contexts(int uengine, u8 ctx_mask);
 void ixp2000_uengine_stop_contexts(int uengine, u8 ctx_mask);
@@ -57,6 +56,5 @@ int ixp2000_uengine_load(int uengine, struct ixp2000_uengine_code *c);
 #define IXP2000_UENGINE_LM_ADDR1_PER_CONTEXT	0x00000000
 #define IXP2000_UENGINE_LM_ADDR0_GLOBAL		0x00010000
 #define IXP2000_UENGINE_LM_ADDR0_PER_CONTEXT	0x00000000
-
 
 #endif

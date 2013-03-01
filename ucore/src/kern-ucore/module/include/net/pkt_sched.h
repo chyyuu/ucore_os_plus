@@ -5,12 +5,11 @@
 #include <linux/ktime.h>
 #include <net/sch_generic.h>
 
-struct qdisc_walker
-{
-	int	stop;
-	int	skip;
-	int	count;
-	int	(*fn)(struct Qdisc *, unsigned long cl, struct qdisc_walker *);
+struct qdisc_walker {
+	int stop;
+	int skip;
+	int count;
+	int (*fn) (struct Qdisc *, unsigned long cl, struct qdisc_walker *);
 };
 
 #define QDISC_ALIGNTO		32
@@ -18,7 +17,7 @@ struct qdisc_walker
 
 static inline void *qdisc_priv(struct Qdisc *q)
 {
-	return (char *) q + QDISC_ALIGN(sizeof(struct Qdisc));
+	return (char *)q + QDISC_ALIGN(sizeof(struct Qdisc));
 }
 
 /* 
@@ -38,8 +37,8 @@ static inline void *qdisc_priv(struct Qdisc *q)
    in the most critical places.
  */
 
-typedef u64	psched_time_t;
-typedef long	psched_tdiff_t;
+typedef u64 psched_time_t;
+typedef long psched_tdiff_t;
 
 /* Avoid doing 64 bit divide by 1000 */
 #define PSCHED_US2NS(x)			((s64)(x) << 10)
@@ -60,8 +59,8 @@ psched_tdiff_bounded(psched_time_t tv1, psched_time_t tv2, psched_time_t bound)
 }
 
 struct qdisc_watchdog {
-	struct hrtimer	timer;
-	struct Qdisc	*qdisc;
+	struct hrtimer timer;
+	struct Qdisc *qdisc;
 };
 
 extern void qdisc_watchdog_init(struct qdisc_watchdog *wd, struct Qdisc *qdisc);
@@ -82,7 +81,7 @@ extern void qdisc_list_del(struct Qdisc *q);
 extern struct Qdisc *qdisc_lookup(struct net_device *dev, u32 handle);
 extern struct Qdisc *qdisc_lookup_class(struct net_device *dev, u32 handle);
 extern struct qdisc_rate_table *qdisc_get_rtab(struct tc_ratespec *r,
-		struct nlattr *tab);
+					       struct nlattr *tab);
 extern void qdisc_put_rtab(struct qdisc_rate_table *tab);
 extern void qdisc_put_stab(struct qdisc_size_table *tab);
 

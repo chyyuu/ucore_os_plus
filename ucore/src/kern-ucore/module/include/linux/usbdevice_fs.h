@@ -42,14 +42,14 @@ struct usbdevfs_ctrltransfer {
 	__u16 wValue;
 	__u16 wIndex;
 	__u16 wLength;
-	__u32 timeout;  /* in milliseconds */
- 	void __user *data;
+	__u32 timeout;		/* in milliseconds */
+	void __user *data;
 };
 
 struct usbdevfs_bulktransfer {
 	unsigned int ep;
 	unsigned int len;
-	unsigned int timeout; /* in milliseconds */
+	unsigned int timeout;	/* in milliseconds */
 	void __user *data;
 };
 
@@ -104,15 +104,15 @@ struct usbdevfs_urb {
 	int number_of_packets;
 	int error_count;
 	unsigned int signr;	/* signal to be sent on completion,
-				  or 0 if none should be sent. */
+				   or 0 if none should be sent. */
 	void __user *usercontext;
 	struct usbdevfs_iso_packet_desc iso_frame_desc[0];
 };
 
 /* ioctls for talking directly to drivers */
 struct usbdevfs_ioctl {
-	int	ifno;		/* interface 0..N ; negative numbers reserved */
-	int	ioctl_code;	/* MUST encode size + direction of data so the
+	int ifno;		/* interface 0..N ; negative numbers reserved */
+	int ioctl_code;		/* MUST encode size + direction of data so the
 				 * macros in <asm/ioctl.h> give correct values */
 	void __user *data;	/* param buffer (in, or out) */
 };
@@ -121,7 +121,7 @@ struct usbdevfs_ioctl {
  * except find out what device connects to what port. */
 struct usbdevfs_hub_portinfo {
 	char nports;		/* number of downstream ports in this hub */
-	char port [127];	/* e.g. port 3 connects to device 27 */
+	char port[127];		/* e.g. port 3 connects to device 27 */
 };
 
 #ifdef __KERNEL__
@@ -139,7 +139,7 @@ struct usbdevfs_urb32 {
 	compat_int_t number_of_packets;
 	compat_int_t error_count;
 	compat_uint_t signr;
-	compat_caddr_t usercontext; /* unused */
+	compat_caddr_t usercontext;	/* unused */
 	struct usbdevfs_iso_packet_desc iso_frame_desc[0];
 };
 

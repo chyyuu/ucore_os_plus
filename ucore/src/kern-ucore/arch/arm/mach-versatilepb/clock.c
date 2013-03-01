@@ -17,7 +17,6 @@
  */
 #include <stdlib.h>
 
-
 #include <arm.h>
 #include <trap.h>
 #include <stdio.h>
@@ -31,7 +30,6 @@ volatile size_t ticks;
 #define TIMER2_VA_BASE       __io_address(VERSATILE_TIMER2_3_BASE)
 #define TIMER3_VA_BASE      (__io_address(VERSATILE_TIMER2_3_BASE) + 0x20)
 
-
 #define TimerXLoad (0)
 #define TimerXValue (4)
 #define TimerXControl (8)
@@ -44,23 +42,23 @@ volatile size_t ticks;
  * and then enable INT_TIMER0 (IRQ).
  * PCLK = 50 Mhz, divider = 1/16, prescaler = 24
  * */
-void
-clock_init(void) {
-  outw(TIMER0_VA_BASE+TimerXControl,0);
-  //clear int output
-  outw(TIMER0_VA_BASE+TimerXIntClr, ~0);
-  //load value
-  outw(TIMER0_VA_BASE+TimerXLoad, LOAD_VALUE);
+void clock_init(void)
+{
+	outw(TIMER0_VA_BASE + TimerXControl, 0);
+	//clear int output
+	outw(TIMER0_VA_BASE + TimerXIntClr, ~0);
+	//load value
+	outw(TIMER0_VA_BASE + TimerXLoad, LOAD_VALUE);
 
-  //periodic, 32bit, int, en , 1/16
-  outw(TIMER0_VA_BASE+TimerXControl, 0xe6);
+	//periodic, 32bit, int, en , 1/16
+	outw(TIMER0_VA_BASE + TimerXControl, 0xe6);
 
-  //vic enable
-  pic_enable(TIMER0_IRQ);
-  kprintf("++ setup timer interrupts\n");
+	//vic enable
+	pic_enable(TIMER0_IRQ);
+	kprintf("++ setup timer interrupts\n");
 }
 
-void clock_clear(void){
-  outw(TIMER0_VA_BASE+TimerXIntClr, ~0);
+void clock_clear(void)
+{
+	outw(TIMER0_VA_BASE + TimerXIntClr, ~0);
 }
-

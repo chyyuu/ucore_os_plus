@@ -79,18 +79,18 @@
 #define UCB_ID_1400             0x4304
 
 struct ucb1400_ts {
-	struct input_dev	*ts_idev;
-	struct task_struct	*ts_task;
-	int			id;
-	wait_queue_head_t	ts_wait;
-	unsigned int		ts_restart:1;
-	int			irq;
-	unsigned int		irq_pending;	/* not bit field shared */
-	struct snd_ac97		*ac97;
+	struct input_dev *ts_idev;
+	struct task_struct *ts_task;
+	int id;
+	wait_queue_head_t ts_wait;
+	unsigned int ts_restart:1;
+	int irq;
+	unsigned int irq_pending;	/* not bit field shared */
+	struct snd_ac97 *ac97;
 };
 
 struct ucb1400 {
-	struct platform_device	*ucb1400_ts;
+	struct platform_device *ucb1400_ts;
 };
 
 static inline u16 ucb1400_reg_read(struct snd_ac97 *ac97, u16 reg)
@@ -109,11 +109,11 @@ static inline u16 ucb1400_gpio_get_value(struct snd_ac97 *ac97, u16 gpio)
 }
 
 static inline void ucb1400_gpio_set_value(struct snd_ac97 *ac97, u16 gpio,
-						u16 val)
+					  u16 val)
 {
 	ucb1400_reg_write(ac97, UCB_IO_DATA, val ?
-			ucb1400_reg_read(ac97, UCB_IO_DATA) | (1 << gpio) :
-			ucb1400_reg_read(ac97, UCB_IO_DATA) & ~(1 << gpio));
+			  ucb1400_reg_read(ac97, UCB_IO_DATA) | (1 << gpio) :
+			  ucb1400_reg_read(ac97, UCB_IO_DATA) & ~(1 << gpio));
 }
 
 static inline u16 ucb1400_gpio_get_direction(struct snd_ac97 *ac97, u16 gpio)
@@ -122,11 +122,11 @@ static inline u16 ucb1400_gpio_get_direction(struct snd_ac97 *ac97, u16 gpio)
 }
 
 static inline void ucb1400_gpio_set_direction(struct snd_ac97 *ac97, u16 gpio,
-						u16 dir)
+					      u16 dir)
 {
 	ucb1400_reg_write(ac97, UCB_IO_DIR, dir ?
-			ucb1400_reg_read(ac97, UCB_IO_DIR) | (1 << gpio) :
-			ucb1400_reg_read(ac97, UCB_IO_DIR) & ~(1 << gpio));
+			  ucb1400_reg_read(ac97, UCB_IO_DIR) | (1 << gpio) :
+			  ucb1400_reg_read(ac97, UCB_IO_DIR) & ~(1 << gpio));
 }
 
 static inline void ucb1400_adc_enable(struct snd_ac97 *ac97)
@@ -135,7 +135,7 @@ static inline void ucb1400_adc_enable(struct snd_ac97 *ac97)
 }
 
 static unsigned int ucb1400_adc_read(struct snd_ac97 *ac97, u16 adc_channel,
-					int adcsync)
+				     int adcsync)
 {
 	unsigned int val;
 
@@ -144,10 +144,10 @@ static unsigned int ucb1400_adc_read(struct snd_ac97 *ac97, u16 adc_channel,
 
 	ucb1400_reg_write(ac97, UCB_ADC_CR, UCB_ADC_ENA | adc_channel);
 	ucb1400_reg_write(ac97, UCB_ADC_CR, UCB_ADC_ENA | adc_channel |
-				UCB_ADC_START);
+			  UCB_ADC_START);
 
 	while (!((val = ucb1400_reg_read(ac97, UCB_ADC_DATA))
-			& UCB_ADC_DAT_VALID))
+		 & UCB_ADC_DAT_VALID))
 		schedule_timeout_uninterruptible(1);
 
 	return val & UCB_ADC_DAT_MASK;

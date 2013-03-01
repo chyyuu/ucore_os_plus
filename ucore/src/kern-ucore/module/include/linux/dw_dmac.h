@@ -18,7 +18,7 @@
  * @nr_channels: Number of channels supported by hardware (max 8)
  */
 struct dw_dma_platform_data {
-	unsigned int	nr_channels;
+	unsigned int nr_channels;
 };
 
 /**
@@ -46,12 +46,12 @@ enum dw_dma_slave_width {
  * @cfg_lo: Platform-specific initializer for the CFG_LO register
  */
 struct dw_dma_slave {
-	struct device		*dma_dev;
-	dma_addr_t		tx_reg;
-	dma_addr_t		rx_reg;
-	enum dw_dma_slave_width	reg_width;
-	u32			cfg_hi;
-	u32			cfg_lo;
+	struct device *dma_dev;
+	dma_addr_t tx_reg;
+	dma_addr_t rx_reg;
+	enum dw_dma_slave_width reg_width;
+	u32 cfg_hi;
+	u32 cfg_lo;
 };
 
 /* Platform-configurable bits in CFG_HI */

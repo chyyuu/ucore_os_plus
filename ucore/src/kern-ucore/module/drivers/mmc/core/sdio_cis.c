@@ -40,18 +40,18 @@ static int cistpl_vers_1(struct mmc_card *card, struct sdio_func *func,
 			nr_strings++;
 	}
 
-	if (buf[i-1] != '\0') {
+	if (buf[i - 1] != '\0') {
 		printk(KERN_WARNING "SDIO: ignoring broken CISTPL_VERS_1\n");
 		return 0;
 	}
 
 	size = i;
 
-	buffer = kzalloc(sizeof(char*) * nr_strings + size, GFP_KERNEL);
+	buffer = kzalloc(sizeof(char *) * nr_strings + size, GFP_KERNEL);
 	if (!buffer)
 		return -ENOMEM;
 
-	string = (char*)(buffer + nr_strings);
+	string = (char *)(buffer + nr_strings);
 
 	for (i = 0; i < nr_strings; i++) {
 		buffer[i] = string;
@@ -62,10 +62,10 @@ static int cistpl_vers_1(struct mmc_card *card, struct sdio_func *func,
 
 	if (func) {
 		func->num_info = nr_strings;
-		func->info = (const char**)buffer;
+		func->info = (const char **)buffer;
 	} else {
 		card->num_info = nr_strings;
-		card->info = (const char**)buffer;
+		card->info = (const char **)buffer;
 	}
 
 	return 0;
@@ -94,9 +94,9 @@ static int cistpl_manfid(struct mmc_card *card, struct sdio_func *func,
 }
 
 static const unsigned char speed_val[16] =
-	{ 0, 10, 12, 13, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 70, 80 };
+    { 0, 10, 12, 13, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 70, 80 };
 static const unsigned int speed_unit[8] =
-	{ 10000, 100000, 1000000, 10000000, 0, 0, 0, 0 };
+    { 10000, 100000, 1000000, 10000000, 0, 0, 0, 0 };
 
 static int cistpl_funce_common(struct mmc_card *card,
 			       const unsigned char *buf, unsigned size)
@@ -109,7 +109,7 @@ static int cistpl_funce_common(struct mmc_card *card,
 
 	/* TPLFE_MAX_TRAN_SPEED */
 	card->cis.max_dtr = speed_val[(buf[3] >> 3) & 15] *
-			    speed_unit[buf[3] & 7];
+	    speed_unit[buf[3] & 7];
 
 	return 0;
 }
@@ -163,7 +163,7 @@ static int cistpl_funce(struct mmc_card *card, struct sdio_func *func,
 	return 0;
 }
 
-typedef int (tpl_parse_t)(struct mmc_card *, struct sdio_func *,
+typedef int (tpl_parse_t) (struct mmc_card *, struct sdio_func *,
 			   const unsigned char *, unsigned);
 
 struct cis_tpl {
@@ -173,10 +173,10 @@ struct cis_tpl {
 };
 
 static const struct cis_tpl cis_tpl_list[] = {
-	{	0x15,	3,	cistpl_vers_1		},
-	{	0x20,	4,	cistpl_manfid		},
-	{	0x21,	2,	/* cistpl_funcid */	},
-	{	0x22,	0,	cistpl_funce		},
+	{0x15, 3, cistpl_vers_1},
+	{0x20, 4, cistpl_manfid},
+	{0x21, 2, /* cistpl_funcid */ },
+	{0x22, 0, cistpl_funce},
 };
 
 static int sdio_read_cis(struct mmc_card *card, struct sdio_func *func)
@@ -199,7 +199,8 @@ static int sdio_read_cis(struct mmc_card *card, struct sdio_func *func)
 			fn = 0;
 
 		ret = mmc_io_rw_direct(card, 0, 0,
-			SDIO_FBR_BASE(fn) + SDIO_FBR_CIS + i, 0, &x);
+				       SDIO_FBR_BASE(fn) + SDIO_FBR_CIS + i, 0,
+				       &x);
 		if (ret)
 			return ret;
 		ptr |= x << (i * 8);
@@ -349,4 +350,3 @@ void sdio_free_func_cis(struct sdio_func *func)
 	 */
 	put_device(&func->card->dev);
 }
-

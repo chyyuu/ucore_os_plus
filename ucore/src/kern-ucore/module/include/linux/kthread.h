@@ -4,10 +4,9 @@
 #include <linux/err.h>
 #include <linux/sched.h>
 
-struct task_struct *kthread_create(int (*threadfn)(void *data),
-				   void *data,
-				   const char namefmt[], ...)
-	__attribute__((format(printf, 3, 4)));
+struct task_struct *kthread_create(int (*threadfn) (void *data),
+				   void *data, const char namefmt[], ...)
+    __attribute__ ((format(printf, 3, 4)));
 
 /**
  * kthread_run - create and wake a thread.

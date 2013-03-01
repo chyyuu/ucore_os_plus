@@ -5,7 +5,7 @@
  * Machine-dependent VM system definitions.
  */
 
-//#define PAGE_SIZE  4096		/* size of VM page */
+//#define PAGE_SIZE  4096               /* size of VM page */
 #define PAGE_FRAME 0xfffff000	/* mask for getting page number from addr */
 
 /*
@@ -66,7 +66,7 @@
  * in bootup before VM initialization is complete.
  */
 
-void ram_getsize(uintptr_t *lo, uintptr_t *hi);
+void ram_getsize(uintptr_t * lo, uintptr_t * hi);
 
 /*
  * The ELF executable type for this platform.

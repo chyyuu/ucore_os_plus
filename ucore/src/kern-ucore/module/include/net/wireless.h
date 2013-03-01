@@ -46,12 +46,12 @@ enum ieee80211_band {
  * 	is not permitted.
  */
 enum ieee80211_channel_flags {
-	IEEE80211_CHAN_DISABLED		= 1<<0,
-	IEEE80211_CHAN_PASSIVE_SCAN	= 1<<1,
-	IEEE80211_CHAN_NO_IBSS		= 1<<2,
-	IEEE80211_CHAN_RADAR		= 1<<3,
-	IEEE80211_CHAN_NO_FAT_ABOVE	= 1<<4,
-	IEEE80211_CHAN_NO_FAT_BELOW	= 1<<5,
+	IEEE80211_CHAN_DISABLED = 1 << 0,
+	IEEE80211_CHAN_PASSIVE_SCAN = 1 << 1,
+	IEEE80211_CHAN_NO_IBSS = 1 << 2,
+	IEEE80211_CHAN_RADAR = 1 << 3,
+	IEEE80211_CHAN_NO_FAT_ABOVE = 1 << 4,
+	IEEE80211_CHAN_NO_FAT_BELOW = 1 << 5,
 };
 
 /**
@@ -106,11 +106,11 @@ struct ieee80211_channel {
  * @IEEE80211_RATE_ERP_G: This is an ERP rate in 802.11g mode.
  */
 enum ieee80211_rate_flags {
-	IEEE80211_RATE_SHORT_PREAMBLE	= 1<<0,
-	IEEE80211_RATE_MANDATORY_A	= 1<<1,
-	IEEE80211_RATE_MANDATORY_B	= 1<<2,
-	IEEE80211_RATE_MANDATORY_G	= 1<<3,
-	IEEE80211_RATE_ERP_G		= 1<<4,
+	IEEE80211_RATE_SHORT_PREAMBLE = 1 << 0,
+	IEEE80211_RATE_MANDATORY_A = 1 << 1,
+	IEEE80211_RATE_MANDATORY_B = 1 << 2,
+	IEEE80211_RATE_MANDATORY_G = 1 << 3,
+	IEEE80211_RATE_ERP_G = 1 << 4,
 };
 
 /**
@@ -146,7 +146,7 @@ struct ieee80211_rate {
  * @mcs: Supported MCS rates
  */
 struct ieee80211_sta_ht_cap {
-	u16 cap; /* use IEEE80211_HT_CAP_ */
+	u16 cap;		/* use IEEE80211_HT_CAP_ */
 	bool ht_supported;
 	u8 ampdu_factor;
 	u8 ampdu_density;
@@ -209,7 +209,7 @@ struct wiphy {
 	struct ieee80211_supported_band *bands[IEEE80211_NUM_BANDS];
 
 	/* Lets us get back the wiphy on the callback */
-	int (*reg_notifier)(struct wiphy *wiphy, enum reg_set_by setby);
+	int (*reg_notifier) (struct wiphy * wiphy, enum reg_set_by setby);
 
 	/* fields below are read-only, assigned by cfg80211 */
 
@@ -220,7 +220,7 @@ struct wiphy {
 	/* dir in debugfs: ieee80211/<wiphyname> */
 	struct dentry *debugfsdir;
 
-	char priv[0] __attribute__((__aligned__(NETDEV_ALIGN)));
+	char priv[0] __attribute__ ((__aligned__(NETDEV_ALIGN)));
 };
 
 /** struct wireless_dev - wireless per-netdev state
@@ -341,8 +341,8 @@ extern struct ieee80211_channel *__ieee80211_get_channel(struct wiphy *wiphy,
 /**
  * ieee80211_get_channel - get channel struct from wiphy for specified frequency
  */
-static inline struct ieee80211_channel *
-ieee80211_get_channel(struct wiphy *wiphy, int freq)
+static inline struct ieee80211_channel *ieee80211_get_channel(struct wiphy
+							      *wiphy, int freq)
 {
 	return __ieee80211_get_channel(wiphy, freq);
 }
@@ -359,9 +359,10 @@ ieee80211_get_channel(struct wiphy *wiphy, int freq)
  * rate map, which is, for this function, given as a bitmap of
  * indices of rates in the band's bitrate table.
  */
-struct ieee80211_rate *
-ieee80211_get_response_rate(struct ieee80211_supported_band *sband,
-			    u64 basic_rates, int bitrate);
+struct ieee80211_rate *ieee80211_get_response_rate(struct
+						   ieee80211_supported_band
+						   *sband, u64 basic_rates,
+						   int bitrate);
 
 /**
  * regulatory_hint - driver hint to the wireless core a regulatory domain
@@ -393,6 +394,5 @@ extern void regulatory_hint(struct wiphy *wiphy, const char *alpha2);
  * sending us incorrect or outdated information against a country.
  */
 extern void regulatory_hint_11d(struct wiphy *wiphy,
-				u8 *country_ie,
-				u8 country_ie_len);
+				u8 * country_ie, u8 country_ie_len);
 #endif /* __NET_WIRELESS_H */

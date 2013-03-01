@@ -74,7 +74,7 @@ extern void cpu_hotplug_init(void);
 extern void cpu_maps_update_begin(void);
 extern void cpu_maps_update_done(void);
 
-#else	/* CONFIG_SMP */
+#else /* CONFIG_SMP */
 
 static inline int register_cpu_notifier(struct notifier_block *nb)
 {
@@ -124,12 +124,15 @@ extern void put_online_cpus(void);
 #define unregister_hotcpu_notifier(nb)	unregister_cpu_notifier(nb)
 int cpu_down(unsigned int cpu);
 
-#else		/* CONFIG_HOTPLUG_CPU */
+#else /* CONFIG_HOTPLUG_CPU */
 
 static inline void cpuhotplug_mutex_lock(struct mutex *cpu_hp_mutex)
-{ }
+{
+}
+
 static inline void cpuhotplug_mutex_unlock(struct mutex *cpu_hp_mutex)
-{ }
+{
+}
 
 #define get_online_cpus()	do { } while (0)
 #define put_online_cpus()	do { } while (0)
@@ -137,7 +140,7 @@ static inline void cpuhotplug_mutex_unlock(struct mutex *cpu_hp_mutex)
 /* These aren't inline functions due to a GCC bug. */
 #define register_hotcpu_notifier(nb)	({ (void)(nb); 0; })
 #define unregister_hotcpu_notifier(nb)	({ (void)(nb); })
-#endif		/* CONFIG_HOTPLUG_CPU */
+#endif /* CONFIG_HOTPLUG_CPU */
 
 #ifdef CONFIG_PM_SLEEP_SMP
 extern int suspend_cpu_hotplug;
@@ -147,8 +150,14 @@ extern void enable_nonboot_cpus(void);
 #else /* !CONFIG_PM_SLEEP_SMP */
 #define suspend_cpu_hotplug	0
 
-static inline int disable_nonboot_cpus(void) { return 0; }
-static inline void enable_nonboot_cpus(void) {}
+static inline int disable_nonboot_cpus(void)
+{
+	return 0;
+}
+
+static inline void enable_nonboot_cpus(void)
+{
+}
 #endif /* !CONFIG_PM_SLEEP_SMP */
 
 #endif /* _LINUX_CPU_H_ */

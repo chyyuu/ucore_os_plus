@@ -18,7 +18,7 @@ struct task_io_accounting {
 	u64 syscr;
 	/* # of write syscalls */
 	u64 syscw;
-#endif /* CONFIG_TASK_XACCT */
+#endif				/* CONFIG_TASK_XACCT */
 
 #ifdef CONFIG_TASK_IO_ACCOUNTING
 	/*
@@ -41,5 +41,5 @@ struct task_io_accounting {
 	 * information loss in doing that.
 	 */
 	u64 cancelled_write_bytes;
-#endif /* CONFIG_TASK_IO_ACCOUNTING */
+#endif				/* CONFIG_TASK_IO_ACCOUNTING */
 };

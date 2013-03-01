@@ -5,81 +5,81 @@
 
 #ifndef __NO_UCORE_STAT__
 struct stat {
-#else 
+#else
 struct ucore_stat {
 #endif
-    uint32_t st_mode;                   // protection mode and file type
-    size_t st_nlinks;                   // number of hard links
-    size_t st_blocks;                   // number of blocks file is using
-    size_t st_size;                     // file size (bytes)
+	uint32_t st_mode;	// protection mode and file type
+	size_t st_nlinks;	// number of hard links
+	size_t st_blocks;	// number of blocks file is using
+	size_t st_size;		// file size (bytes)
 };
 
 struct linux_stat {
 #if defined(__ARMEB__)
-        unsigned short st_dev;
-        unsigned short __pad1;
+	unsigned short st_dev;
+	unsigned short __pad1;
 #else
-        unsigned long  st_dev;
+	unsigned long st_dev;
 #endif
-        unsigned long  st_ino;
-        unsigned short st_mode;
-        unsigned short st_nlink;
-        unsigned short st_uid;
-        unsigned short st_gid;
+	unsigned long st_ino;
+	unsigned short st_mode;
+	unsigned short st_nlink;
+	unsigned short st_uid;
+	unsigned short st_gid;
 #if defined(__ARMEB__)
-        unsigned short st_rdev;
-        unsigned short __pad2;
+	unsigned short st_rdev;
+	unsigned short __pad2;
 #else
-        unsigned long  st_rdev;
+	unsigned long st_rdev;
 #endif
-        unsigned long  st_size;
-        unsigned long  st_blksize;
-        unsigned long  st_blocks;
-        unsigned long  st_atime;
-        unsigned long  st_atime_nsec;
-        unsigned long  st_mtime;
-        unsigned long  st_mtime_nsec;
-        unsigned long  st_ctime;
-        unsigned long  st_ctime_nsec;
-        unsigned long  __unused4;
-        unsigned long  __unused5;
+	unsigned long st_size;
+	unsigned long st_blksize;
+	unsigned long st_blocks;
+	unsigned long st_atime;
+	unsigned long st_atime_nsec;
+	unsigned long st_mtime;
+	unsigned long st_mtime_nsec;
+	unsigned long st_ctime;
+	unsigned long st_ctime_nsec;
+	unsigned long __unused4;
+	unsigned long __unused5;
 };
 
 struct linux_stat64 {
-		unsigned long long st_dev;
-		unsigned char __pad0[4];
-		unsigned long __st_ino;
-		unsigned int st_mode;
-		unsigned int st_nlink;
-		unsigned int st_uid;
-		unsigned int st_gid;
-		unsigned long long st_rdev;
-		unsigned char __pad3[4];
-		long long st_size;
-		unsigned long st_blksize;
-		unsigned long long st_blocks;
-		unsigned long st_atime;
-		unsigned long st_atime_nsec;
-		unsigned long st_mtime;
-		unsigned long st_mtime_nsec;
-		unsigned long st_ctime;
-		unsigned long st_ctime_nsec;
-		unsigned long long st_ino;
+	unsigned long long st_dev;
+	unsigned char __pad0[4];
+	unsigned long __st_ino;
+	unsigned int st_mode;
+	unsigned int st_nlink;
+	unsigned int st_uid;
+	unsigned int st_gid;
+	unsigned long long st_rdev;
+	unsigned char __pad3[4];
+	long long st_size;
+	unsigned long st_blksize;
+	unsigned long long st_blocks;
+	unsigned long st_atime;
+	unsigned long st_atime_nsec;
+	unsigned long st_mtime;
+	unsigned long st_mtime_nsec;
+	unsigned long st_ctime;
+	unsigned long st_ctime_nsec;
+	unsigned long long st_ino;
 };
 
 #if 0
-#define S_IFMT          070000          // mask for type of file
-#define S_IFREG         010000          // ordinary regular file
-#define S_IFDIR         020000          // directory
-#define S_IFLNK         030000          // symbolic link
-#define S_IFCHR         040000          // character device
-#define S_IFBLK         050000          // block device
+#define S_IFMT          070000	// mask for type of file
+#define S_IFREG         010000	// ordinary regular file
+#define S_IFDIR         020000	// directory
+#define S_IFLNK         030000	// symbolic link
+#define S_IFCHR         040000	// character device
+#define S_IFBLK         050000	// block device
 
-#define S_ISREG(mode)                   (((mode) & S_IFMT) == S_IFREG)      // regular file
-#define S_ISDIR(mode)                   (((mode) & S_IFMT) == S_IFDIR)      // directory
-#define S_ISLNK(mode)                   (((mode) & S_IFMT) == S_IFLNK)      // symlink
-#define S_ISCHR(mode)                   (((mode) & S_IFMT) == S_IFCHR)      // char device
-#define S_ISBLK(mode)                   (((mode) & S_IFMT) == S_IFBLK)      // block device
+#define S_ISREG(mode)                   (((mode) & S_IFMT) == S_IFREG)	// regular file
+#define S_ISDIR(mode)                   (((mode) & S_IFMT) == S_IFDIR)	// directory
+#define S_ISLNK(mode)                   (((mode) & S_IFMT) == S_IFLNK)	// symlink
+#define S_ISCHR(mode)                   (((mode) & S_IFMT) == S_IFCHR)	// char device
+#define S_ISBLK(mode)                   (((mode) & S_IFMT) == S_IFBLK)	// block device
 #endif
 
 #if defined(__KERNEL__) || !defined(__GLIBC__) || (__GLIBC__ < 2)
@@ -124,4 +124,3 @@ struct linux_stat64 {
 #endif
 
 #endif /* !__LIBS_STAT_H__ */
-

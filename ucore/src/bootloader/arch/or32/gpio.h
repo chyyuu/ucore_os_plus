@@ -8,4 +8,4 @@
 #define GPIO_INPUT          0x0
 #define GPIO_OUTPUT         0x4
 
-#endif  /* !__ARCH_OR32_DRIVERS_GPIO_H__ */
+#endif /* !__ARCH_OR32_DRIVERS_GPIO_H__ */

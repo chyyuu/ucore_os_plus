@@ -27,11 +27,11 @@ struct inode;
 #define NGROUPS_PER_BLOCK	((unsigned int)(PAGE_SIZE / sizeof(gid_t)))
 
 struct group_info {
-	atomic_t	usage;
-	int		ngroups;
-	int		nblocks;
-	gid_t		small_block[NGROUPS_SMALL];
-	gid_t		*blocks[0];
+	atomic_t usage;
+	int ngroups;
+	int nblocks;
+	gid_t small_block[NGROUPS_SMALL];
+	gid_t *blocks[0];
 };
 
 /**
@@ -79,12 +79,12 @@ extern int in_egroup_p(gid_t);
  */
 #ifdef CONFIG_KEYS
 struct thread_group_cred {
-	atomic_t	usage;
-	pid_t		tgid;			/* thread group process ID */
-	spinlock_t	lock;
-	struct key	*session_keyring;	/* keyring inherited over fork */
-	struct key	*process_keyring;	/* keyring private to this process */
-	struct rcu_head	rcu;			/* RCU deletion hook */
+	atomic_t usage;
+	pid_t tgid;		/* thread group process ID */
+	spinlock_t lock;
+	struct key *session_keyring;	/* keyring inherited over fork */
+	struct key *process_keyring;	/* keyring private to this process */
+	struct rcu_head rcu;	/* RCU deletion hook */
 };
 #endif
 
@@ -112,33 +112,33 @@ struct thread_group_cred {
  * same context as task->real_cred.
  */
 struct cred {
-	atomic_t	usage;
-	uid_t		uid;		/* real UID of the task */
-	gid_t		gid;		/* real GID of the task */
-	uid_t		suid;		/* saved UID of the task */
-	gid_t		sgid;		/* saved GID of the task */
-	uid_t		euid;		/* effective UID of the task */
-	gid_t		egid;		/* effective GID of the task */
-	uid_t		fsuid;		/* UID for VFS ops */
-	gid_t		fsgid;		/* GID for VFS ops */
-	unsigned	securebits;	/* SUID-less security management */
-	kernel_cap_t	cap_inheritable; /* caps our children can inherit */
-	kernel_cap_t	cap_permitted;	/* caps we're permitted */
-	kernel_cap_t	cap_effective;	/* caps we can actually use */
-	kernel_cap_t	cap_bset;	/* capability bounding set */
+	atomic_t usage;
+	uid_t uid;		/* real UID of the task */
+	gid_t gid;		/* real GID of the task */
+	uid_t suid;		/* saved UID of the task */
+	gid_t sgid;		/* saved GID of the task */
+	uid_t euid;		/* effective UID of the task */
+	gid_t egid;		/* effective GID of the task */
+	uid_t fsuid;		/* UID for VFS ops */
+	gid_t fsgid;		/* GID for VFS ops */
+	unsigned securebits;	/* SUID-less security management */
+	kernel_cap_t cap_inheritable;	/* caps our children can inherit */
+	kernel_cap_t cap_permitted;	/* caps we're permitted */
+	kernel_cap_t cap_effective;	/* caps we can actually use */
+	kernel_cap_t cap_bset;	/* capability bounding set */
 #ifdef CONFIG_KEYS
-	unsigned char	jit_keyring;	/* default keyring to attach requested
+	unsigned char jit_keyring;	/* default keyring to attach requested
 					 * keys to */
-	struct key	*thread_keyring; /* keyring private to this thread */
-	struct key	*request_key_auth; /* assumed request_key authority */
-	struct thread_group_cred *tgcred; /* thread-group shared credentials */
+	struct key *thread_keyring;	/* keyring private to this thread */
+	struct key *request_key_auth;	/* assumed request_key authority */
+	struct thread_group_cred *tgcred;	/* thread-group shared credentials */
 #endif
 #ifdef CONFIG_SECURITY
-	void		*security;	/* subjective LSM security */
+	void *security;		/* subjective LSM security */
 #endif
 	struct user_struct *user;	/* real user ID subscription */
 	struct group_info *group_info;	/* supplementary groups for euid/fsgid */
-	struct rcu_head	rcu;		/* RCU deletion hook */
+	struct rcu_head rcu;	/* RCU deletion hook */
 };
 
 extern void __put_cred(struct cred *);
@@ -185,7 +185,7 @@ static inline struct cred *get_new_cred(struct cred *cred)
  */
 static inline const struct cred *get_cred(const struct cred *cred)
 {
-	return get_new_cred((struct cred *) cred);
+	return get_new_cred((struct cred *)cred);
 }
 
 /**
@@ -201,7 +201,7 @@ static inline const struct cred *get_cred(const struct cred *cred)
  */
 static inline void put_cred(const struct cred *_cred)
 {
-	struct cred *cred = (struct cred *) _cred;
+	struct cred *cred = (struct cred *)_cred;
 
 	BUG_ON(atomic_read(&(cred)->usage) <= 0);
 	if (atomic_dec_and_test(&(cred)->usage))

@@ -30,31 +30,34 @@ struct tty_struct;
 
 struct consw {
 	struct module *owner;
-	const char *(*con_startup)(void);
-	void	(*con_init)(struct vc_data *, int);
-	void	(*con_deinit)(struct vc_data *);
-	void	(*con_clear)(struct vc_data *, int, int, int, int);
-	void	(*con_putc)(struct vc_data *, int, int, int);
-	void	(*con_putcs)(struct vc_data *, const unsigned short *, int, int, int);
-	void	(*con_cursor)(struct vc_data *, int);
-	int	(*con_scroll)(struct vc_data *, int, int, int, int);
-	void	(*con_bmove)(struct vc_data *, int, int, int, int, int, int);
-	int	(*con_switch)(struct vc_data *);
-	int	(*con_blank)(struct vc_data *, int, int);
-	int	(*con_font_set)(struct vc_data *, struct console_font *, unsigned);
-	int	(*con_font_get)(struct vc_data *, struct console_font *);
-	int	(*con_font_default)(struct vc_data *, struct console_font *, char *);
-	int	(*con_font_copy)(struct vc_data *, int);
-	int     (*con_resize)(struct vc_data *, unsigned int, unsigned int,
-			       unsigned int);
-	int	(*con_set_palette)(struct vc_data *, unsigned char *);
-	int	(*con_scrolldelta)(struct vc_data *, int);
-	int	(*con_set_origin)(struct vc_data *);
-	void	(*con_save_screen)(struct vc_data *);
-	u8	(*con_build_attr)(struct vc_data *, u8, u8, u8, u8, u8, u8);
-	void	(*con_invert_region)(struct vc_data *, u16 *, int);
-	u16    *(*con_screen_pos)(struct vc_data *, int);
-	unsigned long (*con_getxy)(struct vc_data *, unsigned long, int *, int *);
+	const char *(*con_startup) (void);
+	void (*con_init) (struct vc_data *, int);
+	void (*con_deinit) (struct vc_data *);
+	void (*con_clear) (struct vc_data *, int, int, int, int);
+	void (*con_putc) (struct vc_data *, int, int, int);
+	void (*con_putcs) (struct vc_data *, const unsigned short *, int, int,
+			   int);
+	void (*con_cursor) (struct vc_data *, int);
+	int (*con_scroll) (struct vc_data *, int, int, int, int);
+	void (*con_bmove) (struct vc_data *, int, int, int, int, int, int);
+	int (*con_switch) (struct vc_data *);
+	int (*con_blank) (struct vc_data *, int, int);
+	int (*con_font_set) (struct vc_data *, struct console_font *, unsigned);
+	int (*con_font_get) (struct vc_data *, struct console_font *);
+	int (*con_font_default) (struct vc_data *, struct console_font *,
+				 char *);
+	int (*con_font_copy) (struct vc_data *, int);
+	int (*con_resize) (struct vc_data *, unsigned int, unsigned int,
+			   unsigned int);
+	int (*con_set_palette) (struct vc_data *, unsigned char *);
+	int (*con_scrolldelta) (struct vc_data *, int);
+	int (*con_set_origin) (struct vc_data *);
+	void (*con_save_screen) (struct vc_data *);
+	 u8(*con_build_attr) (struct vc_data *, u8, u8, u8, u8, u8, u8);
+	void (*con_invert_region) (struct vc_data *, u16 *, int);
+	u16 *(*con_screen_pos) (struct vc_data *, int);
+	unsigned long (*con_getxy) (struct vc_data *, unsigned long, int *,
+				    int *);
 };
 
 extern const struct consw *conswitchp;
@@ -87,31 +90,32 @@ void give_up_console(const struct consw *sw);
  */
 
 #define CON_PRINTBUFFER	(1)
-#define CON_CONSDEV	(2) /* Last on the command line */
+#define CON_CONSDEV	(2)	/* Last on the command line */
 #define CON_ENABLED	(4)
 #define CON_BOOT	(8)
-#define CON_ANYTIME	(16) /* Safe to call when cpu is offline */
-#define CON_BRL		(32) /* Used for a braille device */
+#define CON_ANYTIME	(16)	/* Safe to call when cpu is offline */
+#define CON_BRL		(32)	/* Used for a braille device */
 
 struct console {
-	char	name[16];
-	void	(*write)(struct console *, const char *, unsigned);
-	int	(*read)(struct console *, char *, unsigned);
-	struct tty_driver *(*device)(struct console *, int *);
-	void	(*unblank)(void);
-	int	(*setup)(struct console *, char *);
-	int	(*early_setup)(void);
-	short	flags;
-	short	index;
-	int	cflag;
-	void	*data;
-	struct	 console *next;
+	char name[16];
+	void (*write) (struct console *, const char *, unsigned);
+	int (*read) (struct console *, char *, unsigned);
+	struct tty_driver *(*device) (struct console *, int *);
+	void (*unblank) (void);
+	int (*setup) (struct console *, char *);
+	int (*early_setup) (void);
+	short flags;
+	short index;
+	int cflag;
+	void *data;
+	struct console *next;
 };
 
 extern int console_set_on_cmdline;
 
 extern int add_preferred_console(char *name, int idx, char *options);
-extern int update_console_cmdline(char *name, int idx, char *name_new, int idx_new, char *options);
+extern int update_console_cmdline(char *name, int idx, char *name_new,
+				  int idx_new, char *options);
 extern void register_console(struct console *);
 extern int unregister_console(struct console *);
 extern struct console *console_drivers;
@@ -125,7 +129,8 @@ extern void console_stop(struct console *);
 extern void console_start(struct console *);
 extern int is_console_locked(void);
 extern int braille_register_console(struct console *, int index,
-		char *console_options, char *braille_options);
+				    char *console_options,
+				    char *braille_options);
 extern int braille_unregister_console(struct console *);
 
 extern int console_suspend_enabled;

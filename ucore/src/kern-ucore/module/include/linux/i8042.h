@@ -7,7 +7,6 @@
  * the Free Software Foundation.
  */
 
-
 /*
  * Standard commands.
  */

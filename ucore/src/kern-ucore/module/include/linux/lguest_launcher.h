@@ -52,12 +52,11 @@ struct lguest_vqconfig {
 /*:*/
 
 /* Write command first word is a request. */
-enum lguest_req
-{
-	LHREQ_INITIALIZE, /* + base, pfnlimit, start */
-	LHREQ_GETDMA, /* No longer used */
-	LHREQ_IRQ, /* + irq */
-	LHREQ_BREAK, /* + on/off flag (on blocks until someone does off) */
+enum lguest_req {
+	LHREQ_INITIALIZE,	/* + base, pfnlimit, start */
+	LHREQ_GETDMA,		/* No longer used */
+	LHREQ_IRQ,		/* + irq */
+	LHREQ_BREAK,		/* + on/off flag (on blocks until someone does off) */
 };
 
 /* The alignment to use between consumer and producer parts of vring.

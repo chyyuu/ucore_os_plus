@@ -38,5 +38,4 @@
  */
 #define OMAP4_MAX_PRCM_PARTITIONS		6
 
-
 #endif

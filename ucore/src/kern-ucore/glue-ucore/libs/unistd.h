@@ -55,7 +55,6 @@
 #define SYS_pipe            140
 #define SYS_mkfifo          141
 
-
 /* chenyh 2012/7 */
 #define SYS_ioctl           142
 #define SYS_linux_mmap      143
@@ -97,7 +96,6 @@
 //FIXME
 #define CLONE_SEM            CLONE_THREAD
 
-
 /* SYS_mmap flags */
 #define MMAP_WRITE          0x00000100
 #define MMAP_STACK          0x00000200
@@ -105,19 +103,19 @@
 #if 0
 /* VFS flags */
 // flags for open: choose one of these
-#define O_RDONLY            0           // open for reading only
-#define O_WRONLY            1           // open for writing only
-#define O_RDWR              2           // open for reading and writing
+#define O_RDONLY            0	// open for reading only
+#define O_WRONLY            1	// open for writing only
+#define O_RDWR              2	// open for reading and writing
 // then or in any of these:
-#define O_CREAT             0x00000004  // create file if it does not exist
-#define O_EXCL              0x00000008  // error if O_CREAT and the file exists
-#define O_TRUNC             0x00000010  // truncate file upon open
-#define O_APPEND            0x00000020  // append on each write
+#define O_CREAT             0x00000004	// create file if it does not exist
+#define O_EXCL              0x00000008	// error if O_CREAT and the file exists
+#define O_TRUNC             0x00000010	// truncate file upon open
+#define O_APPEND            0x00000020	// append on each write
 // additonal related definition
-#define O_ACCMODE           3           // mask for O_RDONLY / O_WRONLY / O_RDWR
+#define O_ACCMODE           3	// mask for O_RDONLY / O_WRONLY / O_RDWR
 
 #endif
-#define NO_FD               -0x9527     // invalid fd
+#define NO_FD               -0x9527	// invalid fd
 
 /* open/fcntl - O_SYNC is only implemented on blocks devices and on files
    located on an ext2 file system */
@@ -125,10 +123,10 @@
 #define O_RDONLY             00
 #define O_WRONLY             01
 #define O_RDWR               02
-#define O_CREAT            0100 /* not fcntl */
-#define O_EXCL             0200 /* not fcntl */
-#define O_NOCTTY           0400 /* not fcntl */
-#define O_TRUNC           01000 /* not fcntl */
+#define O_CREAT            0100	/* not fcntl */
+#define O_EXCL             0200	/* not fcntl */
+#define O_NOCTTY           0400	/* not fcntl */
+#define O_TRUNC           01000	/* not fcntl */
 #define O_APPEND          02000
 #define O_NONBLOCK        04000
 #define O_NDELAY        O_NONBLOCK
@@ -136,11 +134,10 @@
 #define O_FSYNC          O_SYNC
 #define O_ASYNC          020000
 
-
 /* lseek codes */
-#define LSEEK_SET           0           // seek relative to beginning of file
-#define LSEEK_CUR           1           // seek relative to current position in file
-#define LSEEK_END           2           // seek relative to end of file
+#define LSEEK_SET           0	// seek relative to beginning of file
+#define LSEEK_CUR           1	// seek relative to current position in file
+#define LSEEK_END           2	// seek relative to end of file
 
 #define FS_MAX_DNAME_LEN    31
 #define FS_MAX_FNAME_LEN    255
@@ -152,4 +149,3 @@
 #define EXEC_MAX_ENV_LEN    4095
 
 #endif /* !__LIBS_UNISTD_H__ */
-

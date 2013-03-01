@@ -17,7 +17,6 @@
 extern int dm355evm_msp_write(u8 value, u8 reg);
 extern int dm355evm_msp_read(u8 reg);
 
-
 /* command/control registers */
 #define DM355EVM_MSP_COMMAND		0x00
 #	define MSP_COMMAND_NULL		0

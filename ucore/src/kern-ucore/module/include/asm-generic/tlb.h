@@ -22,26 +22,26 @@
  * and page free order so much..
  */
 #ifdef CONFIG_SMP
-  #ifdef ARCH_FREE_PTR_NR
-    #define FREE_PTR_NR   ARCH_FREE_PTR_NR
-  #else
-    #define FREE_PTE_NR	506
-  #endif
-  #define tlb_fast_mode(tlb) ((tlb)->nr == ~0U)
+#ifdef ARCH_FREE_PTR_NR
+#define FREE_PTR_NR   ARCH_FREE_PTR_NR
 #else
-  #define FREE_PTE_NR	1
-  #define tlb_fast_mode(tlb) 1
+#define FREE_PTE_NR	506
+#endif
+#define tlb_fast_mode(tlb) ((tlb)->nr == ~0U)
+#else
+#define FREE_PTE_NR	1
+#define tlb_fast_mode(tlb) 1
 #endif
 
 /* struct mmu_gather is an opaque type used by the mm code for passing around
  * any data needed by arch specific code for tlb_remove_page.
  */
 struct mmu_gather {
-	struct mm_struct	*mm;
-	unsigned int		nr;	/* set to ~0U means fast mode */
-	unsigned int		need_flush;/* Really unmapped some ptes? */
-	unsigned int		fullmm; /* non-zero means full mm flush */
-	struct page *		pages[FREE_PTE_NR];
+	struct mm_struct *mm;
+	unsigned int nr;	/* set to ~0U means fast mode */
+	unsigned int need_flush;	/* Really unmapped some ptes? */
+	unsigned int fullmm;	/* non-zero means full mm flush */
+	struct page *pages[FREE_PTE_NR];
 };
 
 /* Users of the generic TLB shootdown code must declare this storage space. */
@@ -50,8 +50,8 @@ DECLARE_PER_CPU(struct mmu_gather, mmu_gathers);
 /* tlb_gather_mmu
  *	Return a pointer to an initialized struct mmu_gather.
  */
-static inline struct mmu_gather *
-tlb_gather_mmu(struct mm_struct *mm, unsigned int full_mm_flush)
+static inline struct mmu_gather *tlb_gather_mmu(struct mm_struct *mm,
+						unsigned int full_mm_flush)
 {
 	struct mmu_gather *tlb = &get_cpu_var(mmu_gathers);
 

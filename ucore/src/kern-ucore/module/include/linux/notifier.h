@@ -6,7 +6,7 @@
  *
  *				Alan Cox <Alan.Cox@linux.org>
  */
- 
+
 #ifndef _LINUX_NOTIFIER_H
 #define _LINUX_NOTIFIER_H
 #include <linux/errno.h>
@@ -48,7 +48,7 @@
  */
 
 struct notifier_block {
-	int (*notifier_call)(struct notifier_block *, unsigned long, void *);
+	int (*notifier_call) (struct notifier_block *, unsigned long, void *);
 	struct notifier_block *next;
 	int priority;
 };
@@ -113,47 +113,51 @@ extern void srcu_init_notifier_head(struct srcu_notifier_head *nh);
 #ifdef __KERNEL__
 
 extern int atomic_notifier_chain_register(struct atomic_notifier_head *nh,
-		struct notifier_block *nb);
+					  struct notifier_block *nb);
 extern int blocking_notifier_chain_register(struct blocking_notifier_head *nh,
-		struct notifier_block *nb);
+					    struct notifier_block *nb);
 extern int raw_notifier_chain_register(struct raw_notifier_head *nh,
-		struct notifier_block *nb);
+				       struct notifier_block *nb);
 extern int srcu_notifier_chain_register(struct srcu_notifier_head *nh,
-		struct notifier_block *nb);
+					struct notifier_block *nb);
 
-extern int blocking_notifier_chain_cond_register(
-		struct blocking_notifier_head *nh,
-		struct notifier_block *nb);
+extern int blocking_notifier_chain_cond_register(struct blocking_notifier_head
+						 *nh,
+						 struct notifier_block *nb);
 
 extern int atomic_notifier_chain_unregister(struct atomic_notifier_head *nh,
-		struct notifier_block *nb);
+					    struct notifier_block *nb);
 extern int blocking_notifier_chain_unregister(struct blocking_notifier_head *nh,
-		struct notifier_block *nb);
+					      struct notifier_block *nb);
 extern int raw_notifier_chain_unregister(struct raw_notifier_head *nh,
-		struct notifier_block *nb);
+					 struct notifier_block *nb);
 extern int srcu_notifier_chain_unregister(struct srcu_notifier_head *nh,
-		struct notifier_block *nb);
+					  struct notifier_block *nb);
 
 extern int atomic_notifier_call_chain(struct atomic_notifier_head *nh,
-		unsigned long val, void *v);
+				      unsigned long val, void *v);
 extern int __atomic_notifier_call_chain(struct atomic_notifier_head *nh,
-	unsigned long val, void *v, int nr_to_call, int *nr_calls);
+					unsigned long val, void *v,
+					int nr_to_call, int *nr_calls);
 extern int blocking_notifier_call_chain(struct blocking_notifier_head *nh,
-		unsigned long val, void *v);
+					unsigned long val, void *v);
 extern int __blocking_notifier_call_chain(struct blocking_notifier_head *nh,
-	unsigned long val, void *v, int nr_to_call, int *nr_calls);
+					  unsigned long val, void *v,
+					  int nr_to_call, int *nr_calls);
 extern int raw_notifier_call_chain(struct raw_notifier_head *nh,
-		unsigned long val, void *v);
+				   unsigned long val, void *v);
 extern int __raw_notifier_call_chain(struct raw_notifier_head *nh,
-	unsigned long val, void *v, int nr_to_call, int *nr_calls);
+				     unsigned long val, void *v, int nr_to_call,
+				     int *nr_calls);
 extern int srcu_notifier_call_chain(struct srcu_notifier_head *nh,
-		unsigned long val, void *v);
+				    unsigned long val, void *v);
 extern int __srcu_notifier_call_chain(struct srcu_notifier_head *nh,
-	unsigned long val, void *v, int nr_to_call, int *nr_calls);
+				      unsigned long val, void *v,
+				      int nr_to_call, int *nr_calls);
 
-#define NOTIFY_DONE		0x0000		/* Don't care */
-#define NOTIFY_OK		0x0001		/* Suits me */
-#define NOTIFY_STOP_MASK	0x8000		/* Don't call further */
+#define NOTIFY_DONE		0x0000	/* Don't care */
+#define NOTIFY_OK		0x0001	/* Suits me */
+#define NOTIFY_STOP_MASK	0x8000	/* Don't call further */
 #define NOTIFY_BAD		(NOTIFY_STOP_MASK|0x0002)
 						/* Bad/Veto action */
 /*
@@ -181,7 +185,7 @@ static inline int notifier_to_errno(int ret)
  *	low memory chain, screenblank chain (for plug in modular screenblankers) 
  *	VC switch chains (for loadable kernel svgalib VC switch helpers) etc...
  */
- 
+
 /* netdevice notifier chain */
 #define NETDEV_UP	0x0001	/* For now you can't veto a device up/down */
 #define NETDEV_DOWN	0x0002
@@ -206,23 +210,23 @@ static inline int notifier_to_errno(int ret)
 
 #define NETLINK_URELEASE	0x0001	/* Unicast netlink socket released */
 
-#define CPU_ONLINE		0x0002 /* CPU (unsigned)v is up */
-#define CPU_UP_PREPARE		0x0003 /* CPU (unsigned)v coming up */
-#define CPU_UP_CANCELED		0x0004 /* CPU (unsigned)v NOT coming up */
-#define CPU_DOWN_PREPARE	0x0005 /* CPU (unsigned)v going down */
-#define CPU_DOWN_FAILED		0x0006 /* CPU (unsigned)v NOT going down */
-#define CPU_DEAD		0x0007 /* CPU (unsigned)v dead */
-#define CPU_DYING		0x0008 /* CPU (unsigned)v not running any task,
-					* not handling interrupts, soon dead.
-					* Called on the dying cpu, interrupts
-					* are already disabled. Must not
-					* sleep, must not fail */
-#define CPU_POST_DEAD		0x0009 /* CPU (unsigned)v dead, cpu_hotplug
-					* lock is dropped */
-#define CPU_STARTING		0x000A /* CPU (unsigned)v soon running.
-					* Called on the new cpu, just before
-					* enabling interrupts. Must not sleep,
-					* must not fail */
+#define CPU_ONLINE		0x0002	/* CPU (unsigned)v is up */
+#define CPU_UP_PREPARE		0x0003	/* CPU (unsigned)v coming up */
+#define CPU_UP_CANCELED		0x0004	/* CPU (unsigned)v NOT coming up */
+#define CPU_DOWN_PREPARE	0x0005	/* CPU (unsigned)v going down */
+#define CPU_DOWN_FAILED		0x0006	/* CPU (unsigned)v NOT going down */
+#define CPU_DEAD		0x0007	/* CPU (unsigned)v dead */
+#define CPU_DYING		0x0008	/* CPU (unsigned)v not running any task,
+					 * not handling interrupts, soon dead.
+					 * Called on the dying cpu, interrupts
+					 * are already disabled. Must not
+					 * sleep, must not fail */
+#define CPU_POST_DEAD		0x0009	/* CPU (unsigned)v dead, cpu_hotplug
+					 * lock is dropped */
+#define CPU_STARTING		0x000A	/* CPU (unsigned)v soon running.
+					 * Called on the new cpu, just before
+					 * enabling interrupts. Must not sleep,
+					 * must not fail */
 
 /* Used for CPU hotplug events occuring while tasks are frozen due to a suspend
  * operation in progress
@@ -239,30 +243,30 @@ static inline int notifier_to_errno(int ret)
 #define CPU_STARTING_FROZEN	(CPU_STARTING | CPU_TASKS_FROZEN)
 
 /* Hibernation and suspend events */
-#define PM_HIBERNATION_PREPARE	0x0001 /* Going to hibernate */
-#define PM_POST_HIBERNATION	0x0002 /* Hibernation finished */
-#define PM_SUSPEND_PREPARE	0x0003 /* Going to suspend the system */
-#define PM_POST_SUSPEND		0x0004 /* Suspend finished */
-#define PM_RESTORE_PREPARE	0x0005 /* Going to restore a saved image */
-#define PM_POST_RESTORE		0x0006 /* Restore failed */
+#define PM_HIBERNATION_PREPARE	0x0001	/* Going to hibernate */
+#define PM_POST_HIBERNATION	0x0002	/* Hibernation finished */
+#define PM_SUSPEND_PREPARE	0x0003	/* Going to suspend the system */
+#define PM_POST_SUSPEND		0x0004	/* Suspend finished */
+#define PM_RESTORE_PREPARE	0x0005	/* Going to restore a saved image */
+#define PM_POST_RESTORE		0x0006	/* Restore failed */
 
 /* Console keyboard events.
  * Note: KBD_KEYCODE is always sent before KBD_UNBOUND_KEYCODE, KBD_UNICODE and
  * KBD_KEYSYM. */
-#define KBD_KEYCODE		0x0001 /* Keyboard keycode, called before any other */
-#define KBD_UNBOUND_KEYCODE	0x0002 /* Keyboard keycode which is not bound to any other */
-#define KBD_UNICODE		0x0003 /* Keyboard unicode */
-#define KBD_KEYSYM		0x0004 /* Keyboard keysym */
-#define KBD_POST_KEYSYM		0x0005 /* Called after keyboard keysym interpretation */
+#define KBD_KEYCODE		0x0001	/* Keyboard keycode, called before any other */
+#define KBD_UNBOUND_KEYCODE	0x0002	/* Keyboard keycode which is not bound to any other */
+#define KBD_UNICODE		0x0003	/* Keyboard unicode */
+#define KBD_KEYSYM		0x0004	/* Keyboard keysym */
+#define KBD_POST_KEYSYM		0x0005	/* Called after keyboard keysym interpretation */
 
 extern struct blocking_notifier_head reboot_notifier_list;
 
 /* Virtual Terminal events. */
-#define VT_ALLOCATE		0x0001 /* Console got allocated */
-#define VT_DEALLOCATE		0x0002 /* Console will be deallocated */
-#define VT_WRITE		0x0003 /* A char got output */
-#define VT_UPDATE		0x0004 /* A bigger update occurred */
-#define VT_PREWRITE		0x0005 /* A char is about to be written to the console */
+#define VT_ALLOCATE		0x0001	/* Console got allocated */
+#define VT_DEALLOCATE		0x0002	/* Console will be deallocated */
+#define VT_WRITE		0x0003	/* A char got output */
+#define VT_UPDATE		0x0004	/* A bigger update occurred */
+#define VT_PREWRITE		0x0005	/* A char is about to be written to the console */
 
 #endif /* __KERNEL__ */
 #endif /* _LINUX_NOTIFIER_H */

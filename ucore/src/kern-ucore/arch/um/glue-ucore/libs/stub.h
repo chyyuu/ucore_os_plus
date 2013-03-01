@@ -56,21 +56,21 @@ struct stub_frame {
 struct stub_stack {
 	uintptr_t current_addr;
 	uint32_t current_no;
-	void* frames;
+	void *frames;
 };
 
 #define current_stub_frame(stack)						\
 	((struct stub_frame *)&(stack->frames) + stack->current_no)
 
-extern void* __syscall_stub_start;
-extern void* __syscall_stub_end;
+extern void *__syscall_stub_start;
+extern void *__syscall_stub_end;
 
-void stub_entry (void);
-void stub_start (void);
-void stub_segv_handler (int sig);
-void stub_exec_syscall ();
+void stub_entry(void);
+void stub_start(void);
+void stub_segv_handler(int sig);
+void stub_exec_syscall();
 
-void stub_push_frame (struct stub_stack* stack);
-void stub_pop_frame (struct stub_stack* stack);
+void stub_push_frame(struct stub_stack *stack);
+void stub_pop_frame(struct stub_stack *stack);
 
-#endif  // __ARCH_UM_INCLUDE_STUB_H__
+#endif // __ARCH_UM_INCLUDE_STUB_H__

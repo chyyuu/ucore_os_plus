@@ -13,4 +13,3 @@ size_t pipe_state_read(struct pipe_state *state, void *buf, size_t n);
 size_t pipe_state_write(struct pipe_state *state, void *buf, size_t n);
 
 #endif /* !__KERN_FS_PIPE_PIPE_STATE_H__ */
-

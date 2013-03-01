@@ -21,19 +21,18 @@
 	     (bit) < (size); \
 	     (bit) = find_next_bit((addr), (size), (bit) + 1))
 
-
 static __inline__ int get_bitmask_order(unsigned int count)
 {
 	int order;
-	
+
 	order = fls(count);
-	return order;	/* We could be slightly more clever with -1 here... */
+	return order;		/* We could be slightly more clever with -1 here... */
 }
 
 static __inline__ int get_count_order(unsigned int count)
 {
 	int order;
-	
+
 	order = fls(count) - 1;
 	if (count & (count - 1))
 		order++;

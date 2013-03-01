@@ -1,16 +1,13 @@
 /* atmdev.h - ATM device driver declarations and various related items */
- 
+
 /* Written 1995-2000 by Werner Almesberger, EPFL LRC/ICA */
- 
 
 #ifndef LINUX_ATMDEV_H
 #define LINUX_ATMDEV_H
 
-
 #include <linux/atmapi.h>
 #include <linux/atm.h>
 #include <linux/atmioc.h>
-
 
 #define ESI_LEN		6
 
@@ -29,13 +26,12 @@
 #define ATM_DS3_PCR	(8000*12)
 			/* DS3: 12 cells in a 125 usec time slot */
 
-
 #define __AAL_STAT_ITEMS \
     __HANDLE_ITEM(tx);			/* TX okay */ \
     __HANDLE_ITEM(tx_err);		/* TX errors */ \
     __HANDLE_ITEM(rx);			/* RX okay */ \
     __HANDLE_ITEM(rx_err);		/* RX errors */ \
-    __HANDLE_ITEM(rx_drop);		/* RX out of memory */
+    __HANDLE_ITEM(rx_drop);	/* RX out of memory */
 
 struct atm_aal_stats {
 #define __HANDLE_ITEM(i) int i
@@ -43,13 +39,11 @@ struct atm_aal_stats {
 #undef __HANDLE_ITEM
 };
 
-
 struct atm_dev_stats {
 	struct atm_aal_stats aal0;
 	struct atm_aal_stats aal34;
 	struct atm_aal_stats aal5;
 } __ATM_API_ALIGN;
-
 
 #define ATM_GETLINKRATE	_IOW('a',ATMIOC_ITF+1,struct atmif_sioc)
 					/* get link rate */
@@ -99,7 +93,7 @@ struct atm_dev_stats {
 #define ATM_NEWBACKENDIF _IOW('a',ATMIOC_SPECIAL+3,atm_backend_t)
 					/* use backend to make new if */
 #define ATM_ADDPARTY  	_IOW('a', ATMIOC_SPECIAL+4,struct atm_iobuf)
- 					/* add party to p2mp call */
+					/* add party to p2mp call */
 #ifdef CONFIG_COMPAT
 /* It actually takes struct sockaddr_atmsvc, not struct atm_iobuf */
 #define COMPAT_ATM_ADDPARTY  	_IOW('a', ATMIOC_SPECIAL+4,struct compat_atm_iobuf)
@@ -112,7 +106,7 @@ struct atm_dev_stats {
  * above.  In the future we may support dynamic loading of these - for now,
  * they're just being used to share the ATMIOC_BACKEND ioctls
  */
-#define ATM_BACKEND_RAW		0	
+#define ATM_BACKEND_RAW		0
 #define ATM_BACKEND_PPP		1	/* PPPoATM - RFC2364 */
 #define ATM_BACKEND_BR2684	2	/* Bridged RFC1483/2684 */
 
@@ -132,8 +126,8 @@ struct atm_dev_stats {
 #define __ATM_LM_ANALOG 16	/* loop back the analog signal --------'      */
 
 /* Direction of loopback */
-#define __ATM_LM_MKLOC(n)	((n))	    /* Local (i.e. loop TX to RX) */
-#define __ATM_LM_MKRMT(n)	((n) << 8)  /* Remote (i.e. loop RX to TX) */
+#define __ATM_LM_MKLOC(n)	((n))	/* Local (i.e. loop TX to RX) */
+#define __ATM_LM_MKRMT(n)	((n) << 8)	/* Remote (i.e. loop RX to TX) */
 
 #define __ATM_LM_XTLOC(n)	((n) & 0xff)
 #define __ATM_LM_XTRMT(n)	(((n) >> 8) & 0xff)
@@ -155,7 +149,6 @@ struct atm_dev_stats {
  * __ATM_LM_XTLOC(x) <= __ATM_LM_XTRMT(x)
  */
 
-
 struct atm_iobuf {
 	int length;
 	void __user *buffer;
@@ -163,20 +156,20 @@ struct atm_iobuf {
 
 /* for ATM_GETCIRANGE / ATM_SETCIRANGE */
 
-#define ATM_CI_MAX      -1              /* use maximum range of VPI/VCI */
- 
+#define ATM_CI_MAX      -1	/* use maximum range of VPI/VCI */
+
 struct atm_cirange {
-	signed char	vpi_bits;	/* 1..8, ATM_CI_MAX (-1) for maximum */
-	signed char	vci_bits;	/* 1..16, ATM_CI_MAX (-1) for maximum */
+	signed char vpi_bits;	/* 1..8, ATM_CI_MAX (-1) for maximum */
+	signed char vci_bits;	/* 1..16, ATM_CI_MAX (-1) for maximum */
 };
 
 /* for ATM_SETSC; actually taken from the ATM_VF number space */
 
-#define ATM_SC_RX	1024		/* enable RX single-copy */
-#define ATM_SC_TX	2048		/* enable TX single-copy */
+#define ATM_SC_RX	1024	/* enable RX single-copy */
+#define ATM_SC_TX	2048	/* enable TX single-copy */
 
-#define ATM_BACKLOG_DEFAULT 32 /* if we get more, we're likely to time out
-				  anyway */
+#define ATM_BACKLOG_DEFAULT 32	/* if we get more, we're likely to time out
+				   anyway */
 
 /* MF: change_qos (Modify) flags */
 
@@ -210,14 +203,13 @@ struct atm_cirange {
     "256",	"512",		"1024",		"2048", \
     "SESSION",	"HASSAP",	"BOUND",	"CLOSE"
 
-
 #ifdef __KERNEL__
 
 #include <linux/device.h>
-#include <linux/wait.h> /* wait_queue_head_t */
-#include <linux/time.h> /* struct timeval */
+#include <linux/wait.h>		/* wait_queue_head_t */
+#include <linux/time.h>		/* struct timeval */
 #include <linux/net.h>
-#include <linux/skbuff.h> /* struct sk_buff */
+#include <linux/skbuff.h>	/* struct sk_buff */
 #include <linux/uio.h>
 #include <net/sock.h>
 #include <asm/atomic.h>
@@ -242,13 +234,11 @@ struct k_atm_aal_stats {
 #undef __HANDLE_ITEM
 };
 
-
 struct k_atm_dev_stats {
 	struct k_atm_aal_stats aal0;
 	struct k_atm_aal_stats aal34;
 	struct k_atm_aal_stats aal5;
 };
-
 
 enum {
 	ATM_VF_ADDR,		/* Address is in use. Set by anybody, cleared
@@ -270,11 +260,10 @@ enum {
 				   to be available */
 	ATM_VF_SESSION,		/* VCC is p2mp session control descriptor */
 	ATM_VF_HASSAP,		/* SAP has been set */
-	ATM_VF_CLOSE,		/* asynchronous close - treat like VF_RELEASED*/
+	ATM_VF_CLOSE,		/* asynchronous close - treat like VF_RELEASED */
 	ATM_VF_WAITING,		/* waiting for reply from sigd */
 	ATM_VF_IS_CLIP,		/* in use by CLIP protocol */
 };
-
 
 #define ATM_VF2VS(flags) \
     (test_bit(ATM_VF_READY,&(flags)) ? ATM_VS_CONNECTED : \
@@ -283,11 +272,9 @@ enum {
      test_bit(ATM_VF_REGIS,&(flags)) ? ATM_VS_INUSE : \
      test_bit(ATM_VF_BOUND,&(flags)) ? ATM_VS_BOUND : ATM_VS_IDLE)
 
-
 enum {
 	ATM_DF_REMOVED,		/* device was removed from atm_devs list */
 };
-
 
 #define ATM_PHY_SIG_LOST    0	/* no carrier/light */
 #define ATM_PHY_SIG_UNKNOWN 1	/* carrier/light status is unknown */
@@ -297,33 +284,33 @@ enum {
 
 struct atm_vcc {
 	/* struct sock has to be the first member of atm_vcc */
-	struct sock	sk;
-	unsigned long	flags;		/* VCC flags (ATM_VF_*) */
-	short		vpi;		/* VPI and VCI (types must be equal */
-					/* with sockaddr) */
-	int 		vci;
-	unsigned long	aal_options;	/* AAL layer options */
-	unsigned long	atm_options;	/* ATM layer options */
-	struct atm_dev	*dev;		/* device back pointer */
-	struct atm_qos	qos;		/* QOS */
-	struct atm_sap	sap;		/* SAP */
-	void (*push)(struct atm_vcc *vcc,struct sk_buff *skb);
-	void (*pop)(struct atm_vcc *vcc,struct sk_buff *skb); /* optional */
-	int (*push_oam)(struct atm_vcc *vcc,void *cell);
-	int (*send)(struct atm_vcc *vcc,struct sk_buff *skb);
-	void		*dev_data;	/* per-device data */
-	void		*proto_data;	/* per-protocol data */
+	struct sock sk;
+	unsigned long flags;	/* VCC flags (ATM_VF_*) */
+	short vpi;		/* VPI and VCI (types must be equal */
+	/* with sockaddr) */
+	int vci;
+	unsigned long aal_options;	/* AAL layer options */
+	unsigned long atm_options;	/* ATM layer options */
+	struct atm_dev *dev;	/* device back pointer */
+	struct atm_qos qos;	/* QOS */
+	struct atm_sap sap;	/* SAP */
+	void (*push) (struct atm_vcc * vcc, struct sk_buff * skb);
+	void (*pop) (struct atm_vcc * vcc, struct sk_buff * skb);	/* optional */
+	int (*push_oam) (struct atm_vcc * vcc, void *cell);
+	int (*send) (struct atm_vcc * vcc, struct sk_buff * skb);
+	void *dev_data;		/* per-device data */
+	void *proto_data;	/* per-protocol data */
 	struct k_atm_aal_stats *stats;	/* pointer to AAL stats group */
 	/* SVC part --- may move later ------------------------------------- */
-	short		itf;		/* interface number */
+	short itf;		/* interface number */
 	struct sockaddr_atmsvc local;
 	struct sockaddr_atmsvc remote;
 	/* Multipoint part ------------------------------------------------- */
-	struct atm_vcc	*session;	/* session VCC descriptor */
+	struct atm_vcc *session;	/* session VCC descriptor */
 	/* Other stuff ----------------------------------------------------- */
-	void		*user_back;	/* user backlink - not touched by */
-					/* native ATM stack. Currently used */
-					/* by CLIP and sch_atm. */
+	void *user_back;	/* user backlink - not touched by */
+	/* native ATM stack. Currently used */
+	/* by CLIP and sch_atm. */
 };
 
 static inline struct atm_vcc *atm_sk(struct sock *sk)
@@ -343,7 +330,7 @@ static inline struct sock *sk_atm(struct atm_vcc *vcc)
 
 struct atm_dev_addr {
 	struct sockaddr_atmsvc addr;	/* ATM address */
-	struct list_head entry;		/* next address */
+	struct list_head entry;	/* next address */
 };
 
 enum atm_addr_type_t { ATM_ADDR_LOCAL, ATM_ADDR_LECS };
@@ -351,73 +338,74 @@ enum atm_addr_type_t { ATM_ADDR_LOCAL, ATM_ADDR_LECS };
 struct atm_dev {
 	const struct atmdev_ops *ops;	/* device operations; NULL if unused */
 	const struct atmphy_ops *phy;	/* PHY operations, may be undefined */
-					/* (NULL) */
-	const char	*type;		/* device type name */
-	int		number;		/* device index */
-	void		*dev_data;	/* per-device data */
-	void		*phy_data;	/* private PHY date */
-	unsigned long	flags;		/* device flags (ATM_DF_*) */
-	struct list_head local;		/* local ATM addresses */
-	struct list_head lecs;		/* LECS ATM addresses learned via ILMI */
-	unsigned char	esi[ESI_LEN];	/* ESI ("MAC" addr) */
+	/* (NULL) */
+	const char *type;	/* device type name */
+	int number;		/* device index */
+	void *dev_data;		/* per-device data */
+	void *phy_data;		/* private PHY date */
+	unsigned long flags;	/* device flags (ATM_DF_*) */
+	struct list_head local;	/* local ATM addresses */
+	struct list_head lecs;	/* LECS ATM addresses learned via ILMI */
+	unsigned char esi[ESI_LEN];	/* ESI ("MAC" addr) */
 	struct atm_cirange ci_range;	/* VPI/VCI range */
 	struct k_atm_dev_stats stats;	/* statistics */
-	char		signal;		/* signal status (ATM_PHY_SIG_*) */
-	int		link_rate;	/* link rate (default: OC3) */
-	atomic_t	refcnt;		/* reference count */
-	spinlock_t	lock;		/* protect internal members */
+	char signal;		/* signal status (ATM_PHY_SIG_*) */
+	int link_rate;		/* link rate (default: OC3) */
+	atomic_t refcnt;	/* reference count */
+	spinlock_t lock;	/* protect internal members */
 #ifdef CONFIG_PROC_FS
-	struct proc_dir_entry *proc_entry; /* proc entry */
-	char *proc_name;		/* proc entry name */
+	struct proc_dir_entry *proc_entry;	/* proc entry */
+	char *proc_name;	/* proc entry name */
 #endif
 	struct device class_dev;	/* sysfs device */
 	struct list_head dev_list;	/* linkage */
 };
 
- 
 /* OF: send_Oam Flags */
 
 #define ATM_OF_IMMED  1		/* Attempt immediate delivery */
 #define ATM_OF_INRATE 2		/* Attempt in-rate delivery */
 
-
 /*
  * ioctl, getsockopt, and setsockopt are optional and can be set to NULL.
  */
 
-struct atmdev_ops { /* only send is required */
-	void (*dev_close)(struct atm_dev *dev);
-	int (*open)(struct atm_vcc *vcc);
-	void (*close)(struct atm_vcc *vcc);
-	int (*ioctl)(struct atm_dev *dev,unsigned int cmd,void __user *arg);
+struct atmdev_ops {		/* only send is required */
+	void (*dev_close) (struct atm_dev * dev);
+	int (*open) (struct atm_vcc * vcc);
+	void (*close) (struct atm_vcc * vcc);
+	int (*ioctl) (struct atm_dev * dev, unsigned int cmd,
+		      void __user * arg);
 #ifdef CONFIG_COMPAT
-	int (*compat_ioctl)(struct atm_dev *dev,unsigned int cmd,
-			    void __user *arg);
+	int (*compat_ioctl) (struct atm_dev * dev, unsigned int cmd,
+			     void __user * arg);
 #endif
-	int (*getsockopt)(struct atm_vcc *vcc,int level,int optname,
-	    void __user *optval,int optlen);
-	int (*setsockopt)(struct atm_vcc *vcc,int level,int optname,
-	    void __user *optval,int optlen);
-	int (*send)(struct atm_vcc *vcc,struct sk_buff *skb);
-	int (*send_oam)(struct atm_vcc *vcc,void *cell,int flags);
-	void (*phy_put)(struct atm_dev *dev,unsigned char value,
-	    unsigned long addr);
-	unsigned char (*phy_get)(struct atm_dev *dev,unsigned long addr);
-	int (*change_qos)(struct atm_vcc *vcc,struct atm_qos *qos,int flags);
-	int (*proc_read)(struct atm_dev *dev,loff_t *pos,char *page);
+	int (*getsockopt) (struct atm_vcc * vcc, int level, int optname,
+			   void __user * optval, int optlen);
+	int (*setsockopt) (struct atm_vcc * vcc, int level, int optname,
+			   void __user * optval, int optlen);
+	int (*send) (struct atm_vcc * vcc, struct sk_buff * skb);
+	int (*send_oam) (struct atm_vcc * vcc, void *cell, int flags);
+	void (*phy_put) (struct atm_dev * dev, unsigned char value,
+			 unsigned long addr);
+	unsigned char (*phy_get) (struct atm_dev * dev, unsigned long addr);
+	int (*change_qos) (struct atm_vcc * vcc, struct atm_qos * qos,
+			   int flags);
+	int (*proc_read) (struct atm_dev * dev, loff_t * pos, char *page);
 	struct module *owner;
 };
 
 struct atmphy_ops {
-	int (*start)(struct atm_dev *dev);
-	int (*ioctl)(struct atm_dev *dev,unsigned int cmd,void __user *arg);
-	void (*interrupt)(struct atm_dev *dev);
-	int (*stop)(struct atm_dev *dev);
+	int (*start) (struct atm_dev * dev);
+	int (*ioctl) (struct atm_dev * dev, unsigned int cmd,
+		      void __user * arg);
+	void (*interrupt) (struct atm_dev * dev);
+	int (*stop) (struct atm_dev * dev);
 };
 
 struct atm_skb_data {
-	struct atm_vcc	*vcc;		/* ATM VCC */
-	unsigned long	atm_options;	/* ATM layer options */
+	struct atm_vcc *vcc;	/* ATM VCC */
+	unsigned long atm_options;	/* ATM layer options */
 };
 
 #define VCC_HTABLE_SIZE 32
@@ -427,12 +415,10 @@ extern rwlock_t vcc_sklist_lock;
 
 #define ATM_SKB(skb) (((struct atm_skb_data *) (skb)->cb))
 
-struct atm_dev *atm_dev_register(const char *type,const struct atmdev_ops *ops,
-    int number,unsigned long *flags); /* number == -1: pick first available */
+struct atm_dev *atm_dev_register(const char *type, const struct atmdev_ops *ops, int number, unsigned long *flags);	/* number == -1: pick first available */
 struct atm_dev *atm_dev_lookup(int number);
 void atm_dev_deregister(struct atm_dev *dev);
 void vcc_insert_socket(struct sock *sk);
-
 
 /*
  * This is approximately the algorithm used by alloc_skb.
@@ -444,31 +430,26 @@ static inline int atm_guess_pdu2truesize(int size)
 	return (SKB_DATA_ALIGN(size) + sizeof(struct skb_shared_info));
 }
 
-
-static inline void atm_force_charge(struct atm_vcc *vcc,int truesize)
+static inline void atm_force_charge(struct atm_vcc *vcc, int truesize)
 {
 	atomic_add(truesize, &sk_atm(vcc)->sk_rmem_alloc);
 }
 
-
-static inline void atm_return(struct atm_vcc *vcc,int truesize)
+static inline void atm_return(struct atm_vcc *vcc, int truesize)
 {
 	atomic_sub(truesize, &sk_atm(vcc)->sk_rmem_alloc);
 }
 
-
-static inline int atm_may_send(struct atm_vcc *vcc,unsigned int size)
+static inline int atm_may_send(struct atm_vcc *vcc, unsigned int size)
 {
 	return (size + atomic_read(&sk_atm(vcc)->sk_wmem_alloc)) <
-	       sk_atm(vcc)->sk_sndbuf;
+	    sk_atm(vcc)->sk_sndbuf;
 }
-
 
 static inline void atm_dev_hold(struct atm_dev *dev)
 {
 	atomic_inc(&dev->refcnt);
 }
-
 
 static inline void atm_dev_put(struct atm_dev *dev)
 {
@@ -480,10 +461,9 @@ static inline void atm_dev_put(struct atm_dev *dev)
 	}
 }
 
-
-int atm_charge(struct atm_vcc *vcc,int truesize);
-struct sk_buff *atm_alloc_charge(struct atm_vcc *vcc,int pdu_size,
-    gfp_t gfp_flags);
+int atm_charge(struct atm_vcc *vcc, int truesize);
+struct sk_buff *atm_alloc_charge(struct atm_vcc *vcc, int pdu_size,
+				 gfp_t gfp_flags);
 int atm_pcr_goal(const struct atm_trafprm *tp);
 
 void vcc_release_async(struct atm_vcc *vcc, int reply);
@@ -492,7 +472,7 @@ struct atm_ioctl {
 	struct module *owner;
 	/* A module reference is kept if appropriate over this call.
 	 * Return -ENOIOCTLCMD if you don't handle it. */
-	int (*ioctl)(struct socket *, unsigned int cmd, unsigned long arg);
+	int (*ioctl) (struct socket *, unsigned int cmd, unsigned long arg);
 	struct list_head list;
 };
 

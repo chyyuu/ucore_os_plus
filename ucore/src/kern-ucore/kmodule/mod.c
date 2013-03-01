@@ -30,8 +30,7 @@ static unsigned long module_addr_min = -1UL, module_addr_max = 0;
 
 static list_entry_t modules = { &(modules), &(modules) };
 
-static char last_unloaded_module[MODULE_NAME_LEN+1];
-
+static char last_unloaded_module[MODULE_NAME_LEN + 1];
 
 void *module_alloc(unsigned long size)
 {
@@ -44,56 +43,54 @@ void module_free(struct module *module, void *region)
 }
 
 static inline void *percpu_modalloc(unsigned long size, unsigned long align,
-										const char *name)
+				    const char *name)
 {
 	return NULL;
 }
 
 static inline unsigned int find_pcpusec(struct elfhdr *hdr,
-										struct secthdr *sechdrs,
-										const char *secstrings)
+					struct secthdr *sechdrs,
+					const char *secstrings)
 {
 	return 0;
 }
 
 static inline int check_version(struct secthdr *sechdrs,
-                                unsigned int versindex,
-                                const char *symname,
-                                struct module *mod, 
-                                const unsigned long *crc)
+				unsigned int versindex,
+				const char *symname,
+				struct module *mod, const unsigned long *crc)
 {
-    return 1;
+	return 1;
 }
 
 /* Resolve a symbol for this module.  I.e. if we find one, record usage. Must be holding module_mutex. */
 static const struct kernel_symbol *resolve_symbol(struct secthdr *sechdrs,
-										unsigned int versindex,
-										const char *name,
-										struct module *mod)
+						  unsigned int versindex,
+						  const char *name,
+						  struct module *mod)
 {
 	struct module *owner;
 	const struct kernel_symbol *sym;
 	const unsigned long *crc;
- 	sym = find_symbol(name, &owner, &crc, 1);
+	sym = find_symbol(name, &owner, &crc, 1);
 	if (sym) {
-        kprintf("\tresolve_symbol: symbol %s found\n", name);
+		kprintf("\tresolve_symbol: symbol %s found\n", name);
 		if (!check_version(sechdrs, versindex, name, mod, crc) ||
-			!use_module(mod, owner))
+		    !use_module(mod, owner))
 			sym = NULL;
 	}
 	return sym;
 }
 
-
 static inline int same_magic(const char *amagic, const char *bmagic,
-	                              bool has_crcs)
+			     bool has_crcs)
 {
 	return strcmp(amagic, bmagic) == 0;
 }
 
 static inline int check_modstruct_version(struct secthdr *sechdrs,
-                                            unsigned int versindex,
-                                            struct module *mod)
+					  unsigned int versindex,
+					  struct module *mod)
 {
 	return 1;
 }
@@ -104,7 +101,6 @@ static void set_license(struct module *mod, const char *license)
 		license = "unspecified";
 	// TODO: the feature is left for future use.
 }
-
 
 static char *next_string(char *string, unsigned long *secsize)
 {
@@ -123,11 +119,8 @@ static char *next_string(char *string, unsigned long *secsize)
 	return string;
 }
 
-
-
 static char *get_modinfo(struct secthdr *sechdrs,
-                         unsigned int info,
-                         const char *tag)
+			 unsigned int info, const char *tag)
 {
 	char *p;
 	unsigned int taglen = strlen(tag);
@@ -144,8 +137,6 @@ extern const struct kernel_symbol __start___ksymtab[];
 extern const struct kernel_symbol __stop___ksymtab[];
 //extern const unsigned long __start___kcrctab[];
 
-
-
 #ifndef CONFIG_MODVERSIONS
 #define symversion(base, idx) NULL
 #else
@@ -153,32 +144,30 @@ extern const struct kernel_symbol __stop___ksymtab[];
 #endif
 
 static unsigned int find_sec(struct elfhdr *hdr,
-							struct secthdr *sechdrs,
-							const char *secstrings,
-							const char *name)
+			     struct secthdr *sechdrs,
+			     const char *secstrings, const char *name)
 {
 	unsigned int i;
 	for (i = 1; i < hdr->e_shnum; i++)
 		if ((sechdrs[i].sh_flags & SHF_ALLOC)
-			&& strcmp(secstrings+sechdrs[i].sh_name, name) == 0)
+		    && strcmp(secstrings + sechdrs[i].sh_name, name) == 0)
 			return i;
 	return 0;
 }
 
-static void *section_addr(struct elfhdr *hdr, struct secthdr *shdrs, const char *secstrings, const char *name)
+static void *section_addr(struct elfhdr *hdr, struct secthdr *shdrs,
+			  const char *secstrings, const char *name)
 {
 	/* Section 0 has sh_addr 0. */
 
 	return (void *)shdrs[find_sec(hdr, shdrs, secstrings, name)].sh_addr;
 }
 
-
 static void *section_objs(struct elfhdr *hdr,
-						struct secthdr *sechdrs,
-						const char *secstrings,
-						const char *name,
-						size_t object_size,
-						unsigned int *num)
+			  struct secthdr *sechdrs,
+			  const char *secstrings,
+			  const char *name,
+			  size_t object_size, unsigned int *num)
 {
 	unsigned int sec = find_sec(hdr, sechdrs, secstrings, name);
 	/* Section 0 has sh_addr 0 and sh_size 0. */
@@ -186,271 +175,280 @@ static void *section_objs(struct elfhdr *hdr,
 	return (void *)sechdrs[sec].sh_addr;
 }
 
-
-
 static inline int within(unsigned long addr, void *start, unsigned long size)
 {
-    return ((void *)addr >= start && (void *)addr < start + size);
+	return ((void *)addr >= start && (void *)addr < start + size);
 }
 
-static const struct kernel_symbol *lookup_symbol(const char *name,
-        const struct kernel_symbol *start,
-        const struct kernel_symbol *stop)
+static const struct kernel_symbol *lookup_symbol(const char *name, const struct kernel_symbol
+						 *start, const struct kernel_symbol
+						 *stop)
 {
-    const struct kernel_symbol *ks = start;
-    for (; ks < stop; ++ks) {
-        if (strcmp(ks->name, name) == 0)
-            return ks;
-    }
-    return NULL;
+	const struct kernel_symbol *ks = start;
+	for (; ks < stop; ++ks) {
+		if (strcmp(ks->name, name) == 0)
+			return ks;
+	}
+	return NULL;
 }
 
-static int is_exported(const char *name, unsigned long value, const struct module *mod)
+static int is_exported(const char *name, unsigned long value,
+		       const struct module *mod)
 {
-    const struct kernel_symbol *ks;
-    if (!mod)
-        ks = lookup_symbol(name, __start___ksymtab, __stop___ksymtab);
-    else
-        ks = lookup_symbol(name, mod->syms, mod->syms + mod->num_syms);
-    return ks != NULL && ks->value == value;
+	const struct kernel_symbol *ks;
+	if (!mod)
+		ks = lookup_symbol(name, __start___ksymtab, __stop___ksymtab);
+	else
+		ks = lookup_symbol(name, mod->syms, mod->syms + mod->num_syms);
+	return ks != NULL && ks->value == value;
 }
 
 // get the module whose code contains an address
 struct module *__module_text_address(unsigned long addr)
 {
-    struct module *mod = __module_address(addr);
-    if (mod) {
-        if (!within(addr, mod->module_init, mod->init_text_size) && !within(addr, mod->module_core, mod->core_text_size))
-            mod = NULL;
-    }
-    return NULL;
+	struct module *mod = __module_address(addr);
+	if (mod) {
+		if (!within(addr, mod->module_init, mod->init_text_size)
+		    && !within(addr, mod->module_core, mod->core_text_size))
+			mod = NULL;
+	}
+	return NULL;
 }
+
 EXPORT_SYMBOL(__module_text_address);
 
 // get the module which contains an address
 struct module *__module_address(unsigned long addr)
 {
-    struct module *mod;
+	struct module *mod;
 
-    if (addr < module_addr_min || addr > module_addr_max) 
-        return NULL;
+	if (addr < module_addr_min || addr > module_addr_max)
+		return NULL;
 
-    list_entry_t *list = &(modules), *le = list;
-    while ((le = list_next(le)) != list) {
-        mod = le2mod(le, list);
-        if (within_module_core(addr, mod) || within_module_init(addr, mod))
-            return mod;
-    }
-    return NULL;
+	list_entry_t *list = &(modules), *le = list;
+	while ((le = list_next(le)) != list) {
+		mod = le2mod(le, list);
+		if (within_module_core(addr, mod)
+		    || within_module_init(addr, mod))
+			return mod;
+	}
+	return NULL;
 }
+
 EXPORT_SYMBOL(__module_address);
 
 // is this address inside a module?
 bool is_module_address(unsigned long addr)
 {
-    bool ret;
-    ret = __module_address(addr) != NULL;
+	bool ret;
+	ret = __module_address(addr) != NULL;
 
-    return ret;
+	return ret;
 }
 
 // is this address inside module code?
 bool is_module_text_address(unsigned long addr)
 {
-    bool ret;
-    ret = __module_text_address(addr) != NULL;
-    return ret;
+	bool ret;
+	ret = __module_text_address(addr) != NULL;
+	return ret;
 }
 
 struct module *find_module(const char *name)
 {
-    struct module *mod;
-    list_entry_t *list = &(modules), *le = list;
-    while ((le = list_next(le)) != list) {
-        mod = le2mod(le, list);
-        if (strcmp(mod->name, name) == 0)
-            return mod;
-    }
-    return NULL;
+	struct module *mod;
+	list_entry_t *list = &(modules), *le = list;
+	while ((le = list_next(le)) != list) {
+		mod = le2mod(le, list);
+		if (strcmp(mod->name, name) == 0)
+			return mod;
+	}
+	return NULL;
 }
+
 EXPORT_SYMBOL(find_module);
 
 static bool each_symbol_in_section(const struct symsearch *arr,
-                                unsigned int arrsize,
-                                struct module *owner,
-                                bool (*fn)(const struct symsearch *syms,
-                                        struct module *owner,
-                                        unsigned int symnum,
-                                        void *data),
-                                void *data)
+				   unsigned int arrsize,
+				   struct module *owner,
+				   bool(*fn) (const struct symsearch * syms,
+					      struct module * owner,
+					      unsigned int symnum,
+					      void *data), void *data)
 {
-    unsigned int i, j;
-    for (j = 0; j < arrsize; ++j) {
-        for (i = 0; i < arr[j].stop - arr[j].start; i++) 
-            if (fn(&arr[j], owner, i, data))
-                return 1;
-    }
-    return 0;
+	unsigned int i, j;
+	for (j = 0; j < arrsize; ++j) {
+		for (i = 0; i < arr[j].stop - arr[j].start; i++)
+			if (fn(&arr[j], owner, i, data))
+				return 1;
+	}
+	return 0;
 }
 
-bool each_symbol(bool (*fn)(const struct symsearch *arr, struct module *owner, 
-                unsigned int symnum, void *data), void *data)
+bool each_symbol(bool(*fn) (const struct symsearch * arr, struct module * owner,
+			    unsigned int symnum, void *data), void *data)
 {
-    struct module *mod;
-    const struct symsearch arr[] = {
-        {__start___ksymtab, __stop___ksymtab, /*__start___kcrctab*/ NULL, 0},
-    };
+	struct module *mod;
+	const struct symsearch arr[] = {
+		{__start___ksymtab, __stop___ksymtab, /*__start___kcrctab*/
+		 NULL, 0},
+	};
 
-    if (each_symbol_in_section(arr, ARRAY_SIZE(arr), NULL, fn, data))
-        return 1;
+	if (each_symbol_in_section(arr, ARRAY_SIZE(arr), NULL, fn, data))
+		return 1;
 
-    list_entry_t *list = &(modules), *le = list;
-    while ((le = list_next(le)) != list) {
-        mod = le2mod(le, list);
-        struct symsearch arr[] = {
-            {mod->syms, mod->syms + mod->num_syms, mod->crcs, 0},
-        };
-        if (each_symbol_in_section(arr, ARRAY_SIZE(arr), mod, fn, data))
-            return 1;
-    }
-    return 0;
+	list_entry_t *list = &(modules), *le = list;
+	while ((le = list_next(le)) != list) {
+		mod = le2mod(le, list);
+		struct symsearch arr[] = {
+			{mod->syms, mod->syms + mod->num_syms, mod->crcs, 0},
+		};
+		if (each_symbol_in_section(arr, ARRAY_SIZE(arr), mod, fn, data))
+			return 1;
+	}
+	return 0;
 }
+
 EXPORT_SYMBOL(each_symbol);
 
-struct find_symbol_arg
-{
-    // input
-    const char *name;
-    bool warn;
+struct find_symbol_arg {
+	// input
+	const char *name;
+	bool warn;
 
-    // output
-    struct module *owner;
-    const unsigned long *crc;
-    const struct kernel_symbol *sym;
+	// output
+	struct module *owner;
+	const unsigned long *crc;
+	const struct kernel_symbol *sym;
 };
 
-static bool find_symbol_in_section(const struct symsearch *syms, struct module *owner, unsigned int symnum, void *data)
+static bool find_symbol_in_section(const struct symsearch *syms,
+				   struct module *owner, unsigned int symnum,
+				   void *data)
 {
-    struct find_symbol_arg *fsa = data;
-    kprintf("\tfind_symbol_in_section: kernel symbol %s, searching for %s\n", 
-        syms->start[symnum].name,
-        fsa->name);
-    if (strcmp(syms->start[symnum].name, fsa->name) != 0)
-        return 0;
-    fsa->owner = owner;
-    fsa->crc = symversion(syms->crcs, symnum);
-    fsa->sym = &syms->start[symnum];
-    kprintf("\tfind_symbol_in_section: symbol %s matched\n", syms->start[symnum].name);
-    return 1;
+	struct find_symbol_arg *fsa = data;
+	kprintf
+	    ("\tfind_symbol_in_section: kernel symbol %s, searching for %s\n",
+	     syms->start[symnum].name, fsa->name);
+	if (strcmp(syms->start[symnum].name, fsa->name) != 0)
+		return 0;
+	fsa->owner = owner;
+	fsa->crc = symversion(syms->crcs, symnum);
+	fsa->sym = &syms->start[symnum];
+	kprintf("\tfind_symbol_in_section: symbol %s matched\n",
+		syms->start[symnum].name);
+	return 1;
 }
 
-const struct kernel_symbol *find_symbol(const char *name, 
-                                        struct module **owner, 
-                                        const unsigned long **crc, 
-                                        bool warn)
+const struct kernel_symbol *find_symbol(const char *name,
+					struct module **owner,
+					const unsigned long **crc, bool warn)
 {
-    struct find_symbol_arg fsa;
-    fsa.name = name;
-    fsa.warn = warn;
+	struct find_symbol_arg fsa;
+	fsa.name = name;
+	fsa.warn = warn;
 
-    if (each_symbol(find_symbol_in_section, &fsa)) {
-        if (owner)
-            *owner = fsa.owner;
-        if (crc)
-            *crc = fsa.crc;
-        return fsa.sym;
-    }
-    return NULL;
+	if (each_symbol(find_symbol_in_section, &fsa)) {
+		if (owner)
+			*owner = fsa.owner;
+		if (crc)
+			*crc = fsa.crc;
+		return fsa.sym;
+	}
+	return NULL;
 }
+
 EXPORT_SYMBOL(find_symbol);
 
 int module_get_kallsym(unsigned int symnum, unsigned long *value, char *type,
-    char *name, char *module_name, int *exported)
+		       char *name, char *module_name, int *exported)
 {
-    struct module *mod;
-    list_entry_t *list = &(modules), *le = list;
-    while ((le = list_next(le)) != list) {
-        mod = le2mod(le, list);
-        if (symnum < mod->num_symtab) {
-            *value = mod->symtab[symnum].st_value;
-            *type = mod->symtab[symnum].st_info;
-            strncpy(name, mod->strtab + mod->symtab[symnum].st_name, 128);
-            strncpy(module_name, mod->name, MODULE_NAME_LEN);
-            *exported = is_exported(name, *value, mod);
-            return 0;
-        }
-        symnum -= mod->num_symtab;
-    }
-    return -1;
+	struct module *mod;
+	list_entry_t *list = &(modules), *le = list;
+	while ((le = list_next(le)) != list) {
+		mod = le2mod(le, list);
+		if (symnum < mod->num_symtab) {
+			*value = mod->symtab[symnum].st_value;
+			*type = mod->symtab[symnum].st_info;
+			strncpy(name, mod->strtab + mod->symtab[symnum].st_name,
+				128);
+			strncpy(module_name, mod->name, MODULE_NAME_LEN);
+			*exported = is_exported(name, *value, mod);
+			return 0;
+		}
+		symnum -= mod->num_symtab;
+	}
+	return -1;
 }
 
 static unsigned long mod_find_symname(struct module *mod, const char *name)
 {
-    unsigned int i;
-    for (i = 0; i < mod->num_symtab; i++)
-        if (strcmp(name, mod->strtab+mod->symtab[i].st_name) == 0 &&
-            mod->symtab[i].st_info != 'U')
-            return mod->symtab[i].st_value;
-    return 0;
+	unsigned int i;
+	for (i = 0; i < mod->num_symtab; i++)
+		if (strcmp(name, mod->strtab + mod->symtab[i].st_name) == 0 &&
+		    mod->symtab[i].st_info != 'U')
+			return mod->symtab[i].st_value;
+	return 0;
 }
 
 unsigned long module_kallsyms_lookup_name(const char *name)
 {
-    struct module *mod;
-    char *colon;
-    unsigned long ret = 0;
+	struct module *mod;
+	char *colon;
+	unsigned long ret = 0;
 
-    if ((colon = strchr(name, ':')) != NULL) {
-        *colon = '\0';
-        if ((mod = find_module(name)) != NULL)
-            ret = mod_find_symname(mod, colon+1);
-        *colon = ':';
-    } else {
-        list_entry_t *list = &(modules), *le = list;
-        while ((le = list_next(le)) != list) {
-            mod = le2mod(le, list);
-            if ((ret = mod_find_symname(mod, name)) != 0)
-                break;
-        }
-    }
-    return ret;
+	if ((colon = strchr(name, ':')) != NULL) {
+		*colon = '\0';
+		if ((mod = find_module(name)) != NULL)
+			ret = mod_find_symname(mod, colon + 1);
+		*colon = ':';
+	} else {
+		list_entry_t *list = &(modules), *le = list;
+		while ((le = list_next(le)) != list) {
+			mod = le2mod(le, list);
+			if ((ret = mod_find_symname(mod, name)) != 0)
+				break;
+		}
+	}
+	return ret;
 }
 
-
-int module_kallsyms_on_each_symbol(int (*fn)(void *, const char *, struct module *, unsigned long), void *data)
+int module_kallsyms_on_each_symbol(int (*fn)
+				    (void *, const char *, struct module *,
+				     unsigned long), void *data)
 {
-    struct module *mod;
-    unsigned int i;
-    int ret;
-    list_entry_t *list = &(modules), *le = list;
-    while ((le = list_next(le)) != list) {
-        mod = le2mod(le, list);
-        for (i = 0; i < mod->num_symtab; ++i) {
-            ret = fn(data, mod->strtab + mod->symtab[i].st_name, mod, mod->symtab[i].st_value);
-            if (ret != 0)
-                return ret;
-        }
-    }
-    return 0;
+	struct module *mod;
+	unsigned int i;
+	int ret;
+	list_entry_t *list = &(modules), *le = list;
+	while ((le = list_next(le)) != list) {
+		mod = le2mod(le, list);
+		for (i = 0; i < mod->num_symtab; ++i) {
+			ret =
+			    fn(data, mod->strtab + mod->symtab[i].st_name, mod,
+			       mod->symtab[i].st_value);
+			if (ret != 0)
+				return ret;
+		}
+	}
+	return 0;
 
 }
-
 
 unsigned int module_refcount(struct module *mod)
 {
 	return atomic_read(__module_ref_addr(mod, 0));
 }
-EXPORT_SYMBOL(module_refcount);
-	
 
-void __module_put_and_exit(struct module * mod,long code)
+EXPORT_SYMBOL(module_refcount);
+
+void __module_put_and_exit(struct module *mod, long code)
 {
 	module_put(mod);
 	do_exit(code);
 }
 
-struct module_use
-{
+struct module_use {
 	list_entry_t list;
 	struct module *module_which_uses;
 };
@@ -463,27 +461,26 @@ static void module_unload_init(struct module *mod)
 	list_init(&mod->modules_which_use_me);
 	atomic_set(__module_ref_addr(mod, 0), 1);
 }
-	
-
 
 static int already_uses(struct module *a, struct module *b)
 {
 	struct module_use *use;
 	list_entry_t *list = &(b->modules_which_use_me), *le = list;
-    while ((le = list_next(le)) != list) {
-        use = le2moduse(le, list);
-        if (use->module_which_uses == a) {
+	while ((le = list_next(le)) != list) {
+		use = le2moduse(le, list);
+		if (use->module_which_uses == a) {
 			return 1;
-        }
-    }
+		}
+	}
 	return 0;
 }
 
-int use_module(struct module * a,struct module * b)
+int use_module(struct module *a, struct module *b)
 {
 	struct module_use *use;
 	int no_warn, err;
-	if (b == NULL || already_uses(a, b)) return 1;
+	if (b == NULL || already_uses(a, b))
+		return 1;
 
 	// TODO: interrupt or time out
 
@@ -498,15 +495,17 @@ int use_module(struct module * a,struct module * b)
 	list_add(&use->list, &b->modules_which_use_me);
 	return 1;
 }
+
 EXPORT_SYMBOL(use_module);
 
 static void module_unload_free(struct module *mod)
 {
 	struct module *i;
 	list_entry_t *list = &(modules), *le = list;
-    while ((le = list_next(le)) != list) {
-        i = le2mod(le, list);
-        list_entry_t *list_use = &(i->modules_which_use_me), *le_use = list_use;
+	while ((le = list_next(le)) != list) {
+		i = le2mod(le, list);
+		list_entry_t *list_use = &(i->modules_which_use_me), *le_use =
+		    list_use;
 		struct module_use *use;
 		while ((le_use = list_next(le_use)) != list_use) {
 			use = le2moduse(le_use, list);
@@ -517,9 +516,8 @@ static void module_unload_free(struct module *mod)
 				break;
 			}
 		}
-    }
+	}
 }
-
 
 void print_modules(void)
 {
@@ -528,23 +526,23 @@ void print_modules(void)
 
 	kprintf("Modules linked in:");
 	list_entry_t *list = &(modules), *le = list;
-    while ((le = list_next(le)) != list) {
-        mod = le2mod(le, list);
-        kprintf(" %s", mod->name);
-    }
+	while ((le = list_next(le)) != list) {
+		mod = le2mod(le, list);
+		kprintf(" %s", mod->name);
+	}
 	kprintf("\n");
 }
 
 static int __unlink_module(void *_mod)
 {
-    struct module *mod = _mod;
-    list_del(&mod->list);
-    return 0;
+	struct module *mod = _mod;
+	list_del(&mod->list);
+	return 0;
 }
 
 static void free_module(struct module *mod)
 {
-    __unlink_module(mod);
+	__unlink_module(mod);
 	module_unload_free(mod);
 	module_free(mod, mod->module_init);
 	module_free(mod, mod->module_core);
@@ -552,16 +550,15 @@ static void free_module(struct module *mod)
 
 /* Additional bytes needed by arch in front of individual sections */
 unsigned int __weak arch_mod_section_prepend(struct module *mod,
-    										unsigned int section)
+					     unsigned int section)
 {
 	/* default implementation just returns zero */
 	return 0;
 }
 
-
 /* Update size with this section: return offset. */
 static long get_offset(struct module *mod, unsigned int *size,
-                       struct secthdr *sechdr, unsigned int section)
+		       struct secthdr *sechdr, unsigned int section)
 {
 	long ret;
 	*size += arch_mod_section_prepend(mod, section);
@@ -570,20 +567,19 @@ static long get_offset(struct module *mod, unsigned int *size,
 	return ret;
 }
 
-static void layout_sections(struct module *mod, 
-							const struct elfhdr *hdr,
-							struct secthdr *sechdrs,
-							const char *secstrings)
+static void layout_sections(struct module *mod,
+			    const struct elfhdr *hdr,
+			    struct secthdr *sechdrs, const char *secstrings)
 {
 	static unsigned long const masks[][2] = {
-			{ SHF_EXECINSTR | SHF_ALLOC,     ARCH_SHF_SMALL },
-			{ SHF_ALLOC, SHF_WRITE | ARCH_SHF_SMALL },
-			{ SHF_WRITE | SHF_ALLOC, ARCH_SHF_SMALL },
-			{ ARCH_SHF_SMALL | SHF_ALLOC, 0 }
-		};
+		{SHF_EXECINSTR | SHF_ALLOC, ARCH_SHF_SMALL},
+		{SHF_ALLOC, SHF_WRITE | ARCH_SHF_SMALL},
+		{SHF_WRITE | SHF_ALLOC, ARCH_SHF_SMALL},
+		{ARCH_SHF_SMALL | SHF_ALLOC, 0}
+	};
 
 	unsigned int m, i;
-	
+
 	for (i = 0; i < hdr->e_shnum; i++) {
 		sechdrs[i].sh_entsize = ~0UL;
 	}
@@ -594,9 +590,10 @@ static void layout_sections(struct module *mod,
 			struct secthdr *s = &sechdrs[i];
 
 			if ((s->sh_flags & masks[m][0]) != masks[m][0]
-				|| (s->sh_flags & masks[m][1])
-				|| s->sh_entsize != ~0UL
-				|| strncmp(secstrings + s->sh_name, ".init", strlen(".init")) == 0)
+			    || (s->sh_flags & masks[m][1])
+			    || s->sh_entsize != ~0UL
+			    || strncmp(secstrings + s->sh_name, ".init",
+				       strlen(".init")) == 0)
 				continue;
 			s->sh_entsize = get_offset(mod, &mod->core_size, s, i);
 			kprintf("\t%s\n", secstrings + s->sh_name);
@@ -611,19 +608,19 @@ static void layout_sections(struct module *mod,
 			struct secthdr *s = &sechdrs[i];
 
 			if ((s->sh_flags & masks[m][0]) != masks[m][0]
-				|| (s->sh_flags & masks[m][1])
-				|| s->sh_entsize != ~0UL
-				|| strncmp(secstrings + s->sh_name, ".init", strlen(".init")) != 0)
+			    || (s->sh_flags & masks[m][1])
+			    || s->sh_entsize != ~0UL
+			    || strncmp(secstrings + s->sh_name, ".init",
+				       strlen(".init")) != 0)
 				continue;
 			s->sh_entsize = get_offset(mod, &mod->init_size, s, i)
-								| INIT_OFFSET_MASK;
+			    | INIT_OFFSET_MASK;
 			kprintf("\t%s\n", secstrings + s->sh_name);
 		}
 		if (m == 0)
 			mod->init_text_size = mod->init_size;
 	}
 }
-
 
 static void *module_alloc_update_bounds(unsigned long size)
 {
@@ -646,8 +643,8 @@ static int verify_export_symbols(struct module *mod)
 		const struct kernel_symbol *sym;
 		unsigned int num;
 	} arr[] = {
-		{ mod->syms, mod->num_syms },
-	};
+		{
+	mod->syms, mod->num_syms},};
 
 	for (i = 0; i < ARRAY_SIZE(arr); i++) {
 		for (s = arr[i].sym; s < arr[i].sym + arr[i].num; s++) {
@@ -663,13 +660,11 @@ static int verify_export_symbols(struct module *mod)
 	return 0;
 }
 
-
 static int simplify_symbols(struct secthdr *sechdrs,
-								unsigned int symindex,
-								const char *strtab,
-								unsigned int versindex,
-								unsigned int pcpuindex,
-								struct module *mod)
+			    unsigned int symindex,
+			    const char *strtab,
+			    unsigned int versindex,
+			    unsigned int pcpuindex, struct module *mod)
 {
 	struct symtab_s *sym = (void *)sechdrs[symindex].sh_addr;
 	unsigned long secbase;
@@ -679,17 +674,22 @@ static int simplify_symbols(struct secthdr *sechdrs,
 	for (i = 1; i < n; i++) {
 		switch (sym[i].st_shndx) {
 		case SHN_COMMON:
- 			/* We compiled with -fno-common.  These are not supposed to happen.  */
-			kprintf("simplify_symbols: Common symbol: %s\n", strtab + sym[i].st_name);
- 			kprintf("%s: please compile with -fno-common\n", mod->name);
+			/* We compiled with -fno-common.  These are not supposed to happen.  */
+			kprintf("simplify_symbols: Common symbol: %s\n",
+				strtab + sym[i].st_name);
+			kprintf("%s: please compile with -fno-common\n",
+				mod->name);
 			ret = -1;
 			break;
 		case SHN_ABS:
 			/* Don't need to do anything */
-			kprintf("simplify_symbols: Absolute symbol: 0x%08lx\n", (long)sym[i].st_value);
+			kprintf("simplify_symbols: Absolute symbol: 0x%08lx\n",
+				(long)sym[i].st_value);
 			break;
 		case SHN_UNDEF:
-			ksym = resolve_symbol(sechdrs, versindex, strtab + sym[i].st_name, mod);
+			ksym =
+			    resolve_symbol(sechdrs, versindex,
+					   strtab + sym[i].st_name, mod);
 			/* Ok if resolved.  */
 			if (ksym) {
 				sym[i].st_value = ksym->value;
@@ -698,7 +698,8 @@ static int simplify_symbols(struct secthdr *sechdrs,
 			/* Ok if weak. */
 			if (ELF_ST_BIND(sym[i].st_info) == STB_WEAK)
 				break;
-			kprintf("simplify_symbols: Unknown symbol %s\n", strtab + sym[i].st_name);
+			kprintf("simplify_symbols: Unknown symbol %s\n",
+				strtab + sym[i].st_name);
 			ret = -1;
 			break;
 		default:
@@ -715,7 +716,9 @@ static int simplify_symbols(struct secthdr *sechdrs,
 
 static const char vermagic[] = "";
 
-static noinline struct module *load_module(void __user *umod, unsigned long len, const char __user *uargs)
+static noinline struct module *load_module(void __user * umod,
+					   unsigned long len,
+					   const char __user * uargs)
 {
 	struct elfhdr *hdr;
 	struct secthdr *sechdrs;
@@ -728,34 +731,32 @@ static noinline struct module *load_module(void __user *umod, unsigned long len,
 	unsigned int modindex, versindex, infoindex, pcpuindex;
 	struct module *mod;
 	long err = 0;
-    void *ptr = NULL;
+	void *ptr = NULL;
 
-	kprintf("load_module: umod=%p, len=%lu, uargs=%p\n", 
-		umod, len, uargs);
+	kprintf("load_module: umod=%p, len=%lu, uargs=%p\n", umod, len, uargs);
 
 	if (len < sizeof(*hdr))
 		return NULL;
 	if (len > 64 * 1024 * 1024 || (hdr = kmalloc(len)) == NULL)
 		return NULL;
-	
-    kprintf("load_module: copy_from_user\n");
 
-    struct mm_struct *mm = current->mm;
-    lock_mm(mm);
+	kprintf("load_module: copy_from_user\n");
+
+	struct mm_struct *mm = current->mm;
+	lock_mm(mm);
 	if (!copy_from_user(mm, hdr, umod, len, 1)) {
 		unlock_mm(mm);
 		goto free_hdr;
 	}
 	unlock_mm(mm);
 
-    kprintf("load_module: hdr:%p\n", hdr);
+	kprintf("load_module: hdr:%p\n", hdr);
 	// sanity check
 	if (memcmp(&(hdr->e_magic), ELFMAG, SELFMAG) != 0
-		|| hdr->e_type != ET_REL
-		|| !elf_check_arch(hdr)
-		|| hdr->e_shentsize != sizeof(*sechdrs)) {
-			kprintf("load_module: sanity check failed.\n");
-			goto free_hdr;
+	    || hdr->e_type != ET_REL || !elf_check_arch(hdr)
+	    || hdr->e_shentsize != sizeof(*sechdrs)) {
+		kprintf("load_module: sanity check failed.\n");
+		goto free_hdr;
 	}
 
 	if (len < hdr->e_shoff + hdr->e_shnum * sizeof(*sechdrs))
@@ -767,12 +768,12 @@ static noinline struct module *load_module(void __user *umod, unsigned long len,
 
 	for (i = 1; i < hdr->e_shnum; i++) {
 		if (sechdrs[i].sh_type != SHT_NOBITS
-			&& len < sechdrs[i].sh_offset + sechdrs[i].sh_size)
+		    && len < sechdrs[i].sh_offset + sechdrs[i].sh_size)
 			goto truncated;
 
 		// mark sh_addr
-		sechdrs[i].sh_addr = (size_t)hdr + sechdrs[i].sh_offset;
-		
+		sechdrs[i].sh_addr = (size_t) hdr + sechdrs[i].sh_offset;
+
 		if (sechdrs[i].sh_type == SHT_SYMTAB) {
 			symindex = i;
 			strindex = sechdrs[i].sh_link;
@@ -781,18 +782,19 @@ static noinline struct module *load_module(void __user *umod, unsigned long len,
 
 	}
 
-	modindex = find_sec(hdr, sechdrs, secstrings, ".gnu.linkonce.this_module");
+	modindex =
+	    find_sec(hdr, sechdrs, secstrings, ".gnu.linkonce.this_module");
 
 	if (!modindex) {
 		kprintf("load_module: No module found in object.\n");
 		goto free_hdr;
 	}
-
 	// temp: point mod into copy of data
 	mod = (void *)sechdrs[modindex].sh_addr;
 
 	if (symindex == 0) {
-		kprintf("load_module: %s module has no symbols (stripped?).\n", mod->name);
+		kprintf("load_module: %s module has no symbols (stripped?).\n",
+			mod->name);
 		goto free_hdr;
 	}
 	versindex = find_sec(hdr, sechdrs, secstrings, "__versions");
@@ -811,17 +813,17 @@ static noinline struct module *load_module(void __user *umod, unsigned long len,
 		goto free_hdr;
 	}
 
-    /*
-	modmagic = get_modinfo(sechdrs, infoindex, "vermagic");
+	/*
+	   modmagic = get_modinfo(sechdrs, infoindex, "vermagic");
 
-	if (!modmagic) {
-		kprintf("load_module: bad vermagic\n");
-		goto free_hdr;
-	} else if (!same_magic(modmagic, vermagic, versindex)) {
-		; 
-		// TODO: module magic is left for future use.
-	}
-    */
+	   if (!modmagic) {
+	   kprintf("load_module: bad vermagic\n");
+	   goto free_hdr;
+	   } else if (!same_magic(modmagic, vermagic, versindex)) {
+	   ; 
+	   // TODO: module magic is left for future use.
+	   }
+	 */
 
 	staging = get_modinfo(sechdrs, infoindex, "staging");
 	// TODO: staging is left for future use.
@@ -837,7 +839,7 @@ static noinline struct module *load_module(void __user *umod, unsigned long len,
 	// TODO: we do not need it for x86 or arm
 
 	// TODO: percpu is no longer needed.
-	
+
 	layout_sections(mod, hdr, sechdrs, secstrings);
 
 	ptr = module_alloc_update_bounds(mod->core_size);
@@ -860,17 +862,22 @@ static noinline struct module *load_module(void __user *umod, unsigned long len,
 	for (i = 0; i < hdr->e_shnum; i++) {
 		void *dest;
 		if (!(sechdrs[i].sh_flags & SHF_ALLOC)) {
-			kprintf("\tSkipped %s\n", secstrings + sechdrs[i].sh_name);
-            continue;
-        }
+			kprintf("\tSkipped %s\n",
+				secstrings + sechdrs[i].sh_name);
+			continue;
+		}
 		if (sechdrs[i].sh_entsize & INIT_OFFSET_MASK)
-			dest = mod->module_init + (sechdrs[i].sh_entsize & ~INIT_OFFSET_MASK);
+			dest =
+			    mod->module_init +
+			    (sechdrs[i].sh_entsize & ~INIT_OFFSET_MASK);
 		else
 			dest = mod->module_core + sechdrs[i].sh_entsize;
 		if (sechdrs[i].sh_type != SHT_NOBITS)
-			memcpy(dest, (void *)sechdrs[i].sh_addr, sechdrs[i].sh_size);
+			memcpy(dest, (void *)sechdrs[i].sh_addr,
+			       sechdrs[i].sh_size);
 		sechdrs[i].sh_addr = (unsigned long)dest;
-		kprintf("\t0x%lx %s\n", sechdrs[i].sh_addr, secstrings + sechdrs[i].sh_name);
+		kprintf("\t0x%lx %s\n", sechdrs[i].sh_addr,
+			secstrings + sechdrs[i].sh_name);
 	}
 	/* Module has been moved. */
 	mod = (void *)sechdrs[modindex].sh_addr;
@@ -882,13 +889,13 @@ static noinline struct module *load_module(void __user *umod, unsigned long len,
 	set_license(mod, get_modinfo(sechdrs, infoindex, "license"));
 
 	err = simplify_symbols(sechdrs, symindex, strtab, versindex, pcpuindex,
-							mod);
+			       mod);
 
 	if (err < 0)
 		goto cleanup;
 
 	mod->syms = section_objs(hdr, sechdrs, secstrings, "__ksymtab",
-				sizeof(*mod->syms), &mod->num_syms);
+				 sizeof(*mod->syms), &mod->num_syms);
 	mod->crcs = section_addr(hdr, sechdrs, secstrings, "__kcrctab");
 
 	// relocations
@@ -907,7 +914,9 @@ static noinline struct module *load_module(void __user *umod, unsigned long len,
 		if (sechdrs[i].sh_type == SHT_REL)
 			err = apply_relocate(sechdrs, strtab, symindex, i, mod);
 		else if (sechdrs[i].sh_type == SHT_RELA)
-			err = apply_relocate_add(sechdrs, strtab, symindex, i, mod);
+			err =
+			    apply_relocate_add(sechdrs, strtab, symindex, i,
+					       mod);
 
 		if (err < 0)
 			goto cleanup;
@@ -917,7 +926,7 @@ static noinline struct module *load_module(void __user *umod, unsigned long len,
 	if (err < 0)
 		goto cleanup;
 
-    // TODO: kallsyms is left for future use.
+	// TODO: kallsyms is left for future use.
 	//add_kallsyms(mod, sechdrs, symindex, strindex, secstrings);
 
 	err = module_finalize(hdr, sechdrs, mod);
@@ -928,17 +937,17 @@ static noinline struct module *load_module(void __user *umod, unsigned long len,
 
 	kfree(hdr);
 	return mod;
-	
+
 cleanup:
 	module_unload_free(mod);
 
 free_init:
 	module_free(mod, mod->module_init);
-	
+
 free_core:
 	module_free(mod, mod->module_core);
 
-free_percpu:	
+free_percpu:
 
 free_mod:
 
@@ -951,22 +960,23 @@ truncated:
 	goto free_hdr;
 }
 
-int do_init_module(void __user *umod, unsigned long len, const char __user *uargs) {
-    struct module *mod;
+int do_init_module(void __user * umod, unsigned long len,
+		   const char __user * uargs)
+{
+	struct module *mod;
 	int ret = 0;
 
 	// TODO: non-preemptive kernel does not need to lock module mutex
 
 	mod = load_module(umod, len, uargs);
-    if (mod == NULL) {
-        // TODO: non-preemptive kernel does not need to unlock module mutex
-        return -1;
-    }
-
+	if (mod == NULL) {
+		// TODO: non-preemptive kernel does not need to unlock module mutex
+		return -1;
+	}
 	// TODO: non-preemptive kernel does not need to unlock module mutex
-	
-    if (mod->init != NULL)
-		ret = (*mod->init)();
+
+	if (mod->init != NULL)
+		ret = (*mod->init) ();
 	if (ret < 0) {
 		mod->state = MODULE_STATE_GOING;
 		// TODO: non-preemptive kernel does not need to lock module mutex
@@ -976,7 +986,8 @@ int do_init_module(void __user *umod, unsigned long len, const char __user *uarg
 	}
 	if (ret > 0) {
 		kprintf("%s: %s->init suspiciously returned %d\n"
-			"%s: loading anyway...\n", __func__, mod->name, ret, __func__);
+			"%s: loading anyway...\n", __func__, mod->name, ret,
+			__func__);
 	}
 	mod->state = MODULE_STATE_LIVE;
 
@@ -990,7 +1001,7 @@ int do_init_module(void __user *umod, unsigned long len, const char __user *uarg
 	return 0;
 }
 
-int do_cleanup_module(const char __user *name_user) 
+int do_cleanup_module(const char __user * name_user)
 {
 	struct module *mod;
 	char name[MODULE_NAME_LEN];
@@ -1000,29 +1011,29 @@ int do_cleanup_module(const char __user *name_user)
 	lock_mm(mm);
 
 	int length = strlen(name_user);
-    if (!copy_from_user(mm, name, name_user, length, 1)) {
-        unlock_mm(mm);
-        return -E_INVAL;
-    }
-    unlock_mm(mm);
-    name[length] = '\0';
+	if (!copy_from_user(mm, name, name_user, length, 1)) {
+		unlock_mm(mm);
+		return -E_INVAL;
+	}
+	unlock_mm(mm);
+	name[length] = '\0';
 
 	mod = find_module(name);
 
 	if (!mod) {
 		ret = -E_NOENT;
 		goto out;
-    }
-	
-    if (!list_empty(&mod->modules_which_use_me)) {
+	}
+
+	if (!list_empty(&mod->modules_which_use_me)) {
 		ret = -E_INVAL;
 		goto out;
-    }
+	}
 
-    if (mod->state != MODULE_STATE_LIVE) {
-    	kprintf("do_cleanup_module: %s already dying\n", mod->name);
+	if (mod->state != MODULE_STATE_LIVE) {
+		kprintf("do_cleanup_module: %s already dying\n", mod->name);
 		ret = -E_BUSY;
-    }
+	}
 
 	if (mod->init && !mod->exit) {
 		kprintf("do_cleanup_module: %s can't be removed\n", mod->name);
@@ -1034,110 +1045,108 @@ int do_cleanup_module(const char __user *name_user)
 
 	if (mod->exit != NULL)
 		mod->exit();
-	
+
 	strncpy(last_unloaded_module, mod->name, strlen(mod->name));
 	free_module(mod);
-    return ret;
+	return ret;
 
 out:
 	return ret;
-	
-}
 
+}
 
 /* Apply the given relocation to the (simplified) ELF.  Return -error
     or 0. */
 
 #ifndef ARCH_ARM
-#ifndef __UCORE_64__ /* i386 */
+#ifndef __UCORE_64__		/* i386 */
 
 #else /* x86_64 */
 
 int apply_relocate(struct secthdr *sechdrs,
-                      const char *strtab,
-                      unsigned int symindex,
-                      unsigned int relsec,
-                      struct module *mod)
+		   const char *strtab,
+		   unsigned int symindex,
+		   unsigned int relsec, struct module *mod)
 {
-    kprintf("apply_relocate: module %s: ADD RELOCATION unsupported\n", mod->name);
-    return -1;
+	kprintf("apply_relocate: module %s: ADD RELOCATION unsupported\n",
+		mod->name);
+	return -1;
 }
+
 /* Apply the given add relocation to the (simplified) ELF.  Return
     -error or 0 */
 int apply_relocate_add(struct secthdr *sechdrs,
-                          const char *strtab,
-                          unsigned int symindex,
-                          unsigned int relsec,
-                          struct module *mod)
+		       const char *strtab,
+		       unsigned int symindex,
+		       unsigned int relsec, struct module *mod)
 {
-    unsigned int i;
-    struct reloc_a_s *rel = (void *)sechdrs[relsec].sh_addr;
-    struct symtab_s *sym;
-    void *loc;
-    uint64_t val;
-    
-    kprintf("Applying relocate section %u to %u\n", relsec,
-            sechdrs[relsec].sh_info);
-    for (i = 0; i < sechdrs[relsec].sh_size / sizeof(*rel); i++) {
-        /* This is where to make the change */
-        loc = (void *)sechdrs[sechdrs[relsec].sh_info].sh_addr
-                    + rel[i].r_offset;
-        /* This is the symbol it is referring to.  Note that all
-        undefined symbols have been resolved.  */
-        sym = (struct symtab_s *)sechdrs[symindex].sh_addr
-                + GET_RELOC_SYM(rel[i].r_info);
-        val = sym->st_value + rel[i].r_addend;
-        switch (GET_RELOC_TYPE(rel[i].r_info)) {
-        case R_X86_64_NONE:
-            break;
-        case R_X86_64_64:
-            /* Add the value, subtract its postition */
-            *(uint64_t *)loc = val;
-            break;
-        case R_X86_64_32:
-            *(uint32_t *)loc = val;
-            if (val != *(uint32_t *)loc)
-                goto overflow;
-            break;
-        case R_X86_64_32S:
-            *(int32_t*)loc = val;
-            if ((int64_t)val != *(int32_t *)loc)
-                goto overflow;
-            break;
-        case R_X86_64_PC32:
-            val -= (uint64_t)loc;
-            *(uint32_t *)loc = val;
-            break;
-        default:
-            kprintf("apply_relocate_add: module %s: Unknown relocation: %llu\n",
-            mod->name, GET_RELOC_TYPE(rel[i].r_info));
-            return -1;
-        }
-    }
-    return 0;
+	unsigned int i;
+	struct reloc_a_s *rel = (void *)sechdrs[relsec].sh_addr;
+	struct symtab_s *sym;
+	void *loc;
+	uint64_t val;
+
+	kprintf("Applying relocate section %u to %u\n", relsec,
+		sechdrs[relsec].sh_info);
+	for (i = 0; i < sechdrs[relsec].sh_size / sizeof(*rel); i++) {
+		/* This is where to make the change */
+		loc = (void *)sechdrs[sechdrs[relsec].sh_info].sh_addr
+		    + rel[i].r_offset;
+		/* This is the symbol it is referring to.  Note that all
+		   undefined symbols have been resolved.  */
+		sym = (struct symtab_s *)sechdrs[symindex].sh_addr
+		    + GET_RELOC_SYM(rel[i].r_info);
+		val = sym->st_value + rel[i].r_addend;
+		switch (GET_RELOC_TYPE(rel[i].r_info)) {
+		case R_X86_64_NONE:
+			break;
+		case R_X86_64_64:
+			/* Add the value, subtract its postition */
+			*(uint64_t *) loc = val;
+			break;
+		case R_X86_64_32:
+			*(uint32_t *) loc = val;
+			if (val != *(uint32_t *) loc)
+				goto overflow;
+			break;
+		case R_X86_64_32S:
+			*(int32_t *) loc = val;
+			if ((int64_t) val != *(int32_t *) loc)
+				goto overflow;
+			break;
+		case R_X86_64_PC32:
+			val -= (uint64_t) loc;
+			*(uint32_t *) loc = val;
+			break;
+		default:
+			kprintf
+			    ("apply_relocate_add: module %s: Unknown relocation: %llu\n",
+			     mod->name, GET_RELOC_TYPE(rel[i].r_info));
+			return -1;
+		}
+	}
+	return 0;
 
 overflow:
-    kprintf("apply_relocate_add: overflow in relocation type %d val %LX\n",
-            (int)GET_RELOC_TYPE(rel[i].r_info), val);
-    kprintf("apply_relocate_add: %s likely not compiled with -mcmodel=kernel\n",
-            mod->name);
-    return -1;
+	kprintf("apply_relocate_add: overflow in relocation type %d val %LX\n",
+		(int)GET_RELOC_TYPE(rel[i].r_info), val);
+	kprintf
+	    ("apply_relocate_add: %s likely not compiled with -mcmodel=kernel\n",
+	     mod->name);
+	return -1;
 }
-
 
 #endif
 
 #else /* ARM */
 
-
-
 #endif
 
 int module_finalize(const struct elfhdr *hdr,
-					const struct secthdr *sechdrs,
-					struct module *mod)
+		    const struct secthdr *sechdrs, struct module *mod)
 {
-	const struct secthdr *s, *text = NULL, *alt = NULL, *locks = NULL, *para = NULL;
+	const struct secthdr *s, *text = NULL, *alt = NULL, *locks =
+	    NULL, *para = NULL;
 	char *secstrings = (void *)hdr + sechdrs[hdr->e_shstrndx].sh_offset;
 	for (s = sechdrs; s < sechdrs + hdr->e_shnum; s++) {
 		if (!strcmp(".text", secstrings + s->sh_name))
@@ -1161,6 +1170,7 @@ int module_finalize(const struct elfhdr *hdr,
 	return 0;
 }
 
-void mod_init() {
+void mod_init()
+{
 	// TODO: read mod dep file
 }

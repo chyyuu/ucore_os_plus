@@ -23,7 +23,7 @@
 #include <linux/cpumask.h>
 
 struct node {
-	struct sys_device	sysdev;
+	struct sys_device sysdev;
 };
 
 struct memory_block;
@@ -36,31 +36,35 @@ extern int register_one_node(int nid);
 extern void unregister_one_node(int nid);
 extern int register_cpu_under_node(unsigned int cpu, unsigned int nid);
 extern int unregister_cpu_under_node(unsigned int cpu, unsigned int nid);
-extern int register_mem_sect_under_node(struct memory_block *mem_blk,
-						int nid);
+extern int register_mem_sect_under_node(struct memory_block *mem_blk, int nid);
 extern int unregister_mem_sect_under_nodes(struct memory_block *mem_blk);
 #else
 static inline int register_one_node(int nid)
 {
 	return 0;
 }
+
 static inline int unregister_one_node(int nid)
 {
 	return 0;
 }
+
 static inline int register_cpu_under_node(unsigned int cpu, unsigned int nid)
 {
 	return 0;
 }
+
 static inline int unregister_cpu_under_node(unsigned int cpu, unsigned int nid)
 {
 	return 0;
 }
+
 static inline int register_mem_sect_under_node(struct memory_block *mem_blk,
-							int nid)
+					       int nid)
 {
 	return 0;
 }
+
 static inline int unregister_mem_sect_under_nodes(struct memory_block *mem_blk)
 {
 	return 0;

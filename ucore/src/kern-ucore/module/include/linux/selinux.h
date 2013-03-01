@@ -29,7 +29,7 @@ struct kern_ipc_perm;
  *     of zero for sid indicates no SID could be determined (but no error
  *     occurred).
  */
-int selinux_string_to_sid(char *str, u32 *sid);
+int selinux_string_to_sid(char *str, u32 * sid);
 
 /**
  *     selinux_secmark_relabel_packet_permission - secmark permission check
@@ -63,10 +63,10 @@ void selinux_secmark_refcount_inc(void);
 void selinux_secmark_refcount_dec(void);
 #else
 
-static inline int selinux_string_to_sid(const char *str, u32 *sid)
+static inline int selinux_string_to_sid(const char *str, u32 * sid)
 {
-       *sid = 0;
-       return 0;
+	*sid = 0;
+	return 0;
 }
 
 static inline int selinux_secmark_relabel_packet_permission(u32 sid)
@@ -84,6 +84,6 @@ static inline void selinux_secmark_refcount_dec(void)
 	return;
 }
 
-#endif	/* CONFIG_SECURITY_SELINUX */
+#endif /* CONFIG_SECURITY_SELINUX */
 
 #endif /* _LINUX_SELINUX_H */

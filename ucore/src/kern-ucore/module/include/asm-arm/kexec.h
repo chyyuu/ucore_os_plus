@@ -22,7 +22,9 @@
 struct kimage;
 /* Provide a dummy definition to avoid build failures. */
 static inline void crash_setup_regs(struct pt_regs *newregs,
-                                        struct pt_regs *oldregs) { }
+				    struct pt_regs *oldregs)
+{
+}
 
 #endif /* __ASSEMBLY__ */
 

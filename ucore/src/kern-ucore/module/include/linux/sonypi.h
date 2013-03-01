@@ -155,6 +155,6 @@
 #define SONYPI_COMMAND_GETCAMERAROMVERSION	18	/* obsolete */
 #define SONYPI_COMMAND_GETCAMERAREVISION	19	/* obsolete */
 
-#endif				/* __KERNEL__ */
+#endif /* __KERNEL__ */
 
-#endif				/* _SONYPI_H_ */
+#endif /* _SONYPI_H_ */

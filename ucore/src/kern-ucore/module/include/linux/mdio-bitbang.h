@@ -12,21 +12,21 @@ struct mdiobb_ops {
 	/* Set the Management Data Clock high if level is one,
 	 * low if level is zero.
 	 */
-	void (*set_mdc)(struct mdiobb_ctrl *ctrl, int level);
+	void (*set_mdc) (struct mdiobb_ctrl * ctrl, int level);
 
 	/* Configure the Management Data I/O pin as an input if
 	 * "output" is zero, or an output if "output" is one.
 	 */
-	void (*set_mdio_dir)(struct mdiobb_ctrl *ctrl, int output);
+	void (*set_mdio_dir) (struct mdiobb_ctrl * ctrl, int output);
 
 	/* Set the Management Data I/O pin high if value is one,
 	 * low if "value" is zero.  This may only be called
 	 * when the MDIO pin is configured as an output.
 	 */
-	void (*set_mdio_data)(struct mdiobb_ctrl *ctrl, int value);
+	void (*set_mdio_data) (struct mdiobb_ctrl * ctrl, int value);
 
 	/* Retrieve the state Management Data I/O pin. */
-	int (*get_mdio_data)(struct mdiobb_ctrl *ctrl);
+	int (*get_mdio_data) (struct mdiobb_ctrl * ctrl);
 };
 
 struct mdiobb_ctrl {

@@ -41,26 +41,26 @@
 #include <linux/seqlock.h>
 
 #ifdef CONFIG_RCU_CPU_STALL_DETECTOR
-#define RCU_SECONDS_TILL_STALL_CHECK	(10 * HZ) /* for rcp->jiffies_stall */
-#define RCU_SECONDS_TILL_STALL_RECHECK	(30 * HZ) /* for rcp->jiffies_stall */
+#define RCU_SECONDS_TILL_STALL_CHECK	(10 * HZ)	/* for rcp->jiffies_stall */
+#define RCU_SECONDS_TILL_STALL_RECHECK	(30 * HZ)	/* for rcp->jiffies_stall */
 #endif /* #ifdef CONFIG_RCU_CPU_STALL_DETECTOR */
 
 /* Global control variables for rcupdate callback mechanism. */
 struct rcu_ctrlblk {
-	long	cur;		/* Current batch number.                      */
-	long	completed;	/* Number of the last completed batch         */
-	long	pending;	/* Number of the last pending batch           */
+	long cur;		/* Current batch number.                      */
+	long completed;		/* Number of the last completed batch         */
+	long pending;		/* Number of the last pending batch           */
 #ifdef CONFIG_RCU_CPU_STALL_DETECTOR
 	unsigned long gp_start;	/* Time at which GP started in jiffies. */
 	unsigned long jiffies_stall;
-				/* Time at which to check for CPU stalls. */
-#endif /* #ifdef CONFIG_RCU_CPU_STALL_DETECTOR */
+	/* Time at which to check for CPU stalls. */
+#endif				/* #ifdef CONFIG_RCU_CPU_STALL_DETECTOR */
 
-	int	signaled;
+	int signaled;
 
-	spinlock_t	lock	____cacheline_internodealigned_in_smp;
-	DECLARE_BITMAP(cpumask, NR_CPUS); /* CPUs that need to switch for */
-					  /* current batch to proceed.     */
+	spinlock_t lock ____cacheline_internodealigned_in_smp;
+	 DECLARE_BITMAP(cpumask, NR_CPUS);	/* CPUs that need to switch for */
+	/* current batch to proceed.     */
 } ____cacheline_internodealigned_in_smp;
 
 /* Is batch a before batch b ? */
@@ -78,32 +78,32 @@ static inline int rcu_batch_after(long a, long b)
 /* Per-CPU data for Read-Copy UPdate. */
 struct rcu_data {
 	/* 1) quiescent state handling : */
-	long		quiescbatch;     /* Batch # for grace period */
-	int		passed_quiesc;	 /* User-mode/idle loop etc. */
-	int		qs_pending;	 /* core waits for quiesc state */
+	long quiescbatch;	/* Batch # for grace period */
+	int passed_quiesc;	/* User-mode/idle loop etc. */
+	int qs_pending;		/* core waits for quiesc state */
 
 	/* 2) batch handling */
 	/*
 	 * if nxtlist is not NULL, then:
 	 * batch:
-	 *	The batch # for the last entry of nxtlist
+	 *      The batch # for the last entry of nxtlist
 	 * [*nxttail[1], NULL = *nxttail[2]):
-	 *	Entries that batch # <= batch
+	 *      Entries that batch # <= batch
 	 * [*nxttail[0], *nxttail[1]):
-	 *	Entries that batch # <= batch - 1
+	 *      Entries that batch # <= batch - 1
 	 * [nxtlist, *nxttail[0]):
-	 *	Entries that batch # <= batch - 2
-	 *	The grace period for these entries has completed, and
-	 *	the other grace-period-completed entries may be moved
-	 *	here temporarily in rcu_process_callbacks().
+	 *      Entries that batch # <= batch - 2
+	 *      The grace period for these entries has completed, and
+	 *      the other grace-period-completed entries may be moved
+	 *      here temporarily in rcu_process_callbacks().
 	 */
-	long  	       	batch;
+	long batch;
 	struct rcu_head *nxtlist;
 	struct rcu_head **nxttail[3];
-	long            qlen; 	 	 /* # of queued callbacks */
+	long qlen;		/* # of queued callbacks */
 	struct rcu_head *donelist;
 	struct rcu_head **donetail;
-	long		blimit;		 /* Upper limit on a processed batch */
+	long blimit;		/* Upper limit on a processed batch */
 	int cpu;
 	struct rcu_head barrier;
 };
@@ -122,6 +122,7 @@ static inline void rcu_qsctr_inc(int cpu)
 	struct rcu_data *rdp = &per_cpu(rcu_data, cpu);
 	rdp->passed_quiesc = 1;
 }
+
 static inline void rcu_bh_qsctr_inc(int cpu)
 {
 	struct rcu_data *rdp = &per_cpu(rcu_bh_data, cpu);
@@ -133,12 +134,12 @@ extern int rcu_needs_cpu(int cpu);
 
 #ifdef CONFIG_DEBUG_LOCK_ALLOC
 extern struct lockdep_map rcu_lock_map;
-# define rcu_read_acquire()	\
+#define rcu_read_acquire()	\
 			lock_acquire(&rcu_lock_map, 0, 0, 2, 1, NULL, _THIS_IP_)
-# define rcu_read_release()	lock_release(&rcu_lock_map, 1, _THIS_IP_)
+#define rcu_read_release()	lock_release(&rcu_lock_map, 1, _THIS_IP_)
 #else
-# define rcu_read_acquire()	do { } while (0)
-# define rcu_read_release()	do { } while (0)
+#define rcu_read_acquire()	do { } while (0)
+#define rcu_read_release()	do { } while (0)
 #endif
 
 #define __rcu_read_lock() \

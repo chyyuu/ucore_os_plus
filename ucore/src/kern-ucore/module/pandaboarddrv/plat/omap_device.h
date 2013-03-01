@@ -68,16 +68,16 @@ extern struct dev_pm_domain omap_device_pm_domain;
  *
  */
 struct omap_device {
-	struct platform_device		*pdev;
-	struct omap_hwmod		**hwmods;
-	struct omap_device_pm_latency	*pm_lats;
-	u32				dev_wakeup_lat;
-	u32				_dev_wakeup_lat_limit;
-	u8				pm_lats_cnt;
-	s8				pm_lat_level;
-	u8				hwmods_cnt;
-	u8				_state;
-	u8                              flags;
+	struct platform_device *pdev;
+	struct omap_hwmod **hwmods;
+	struct omap_device_pm_latency *pm_lats;
+	u32 dev_wakeup_lat;
+	u32 _dev_wakeup_lat_limit;
+	u8 pm_lats_cnt;
+	s8 pm_lat_level;
+	u8 hwmods_cnt;
+	u8 _state;
+	u8 flags;
 };
 
 /* Device driver interface (call via platform_data fn ptrs) */
@@ -89,16 +89,18 @@ int omap_device_shutdown(struct platform_device *pdev);
 /* Core code interface */
 
 struct platform_device *omap_device_build(const char *pdev_name, int pdev_id,
-				      struct omap_hwmod *oh, void *pdata,
-				      int pdata_len,
-				      struct omap_device_pm_latency *pm_lats,
-				      int pm_lats_cnt, int is_early_device);
+					  struct omap_hwmod *oh, void *pdata,
+					  int pdata_len,
+					  struct omap_device_pm_latency
+					  *pm_lats, int pm_lats_cnt,
+					  int is_early_device);
 
 struct platform_device *omap_device_build_ss(const char *pdev_name, int pdev_id,
-					 struct omap_hwmod **oh, int oh_cnt,
-					 void *pdata, int pdata_len,
-					 struct omap_device_pm_latency *pm_lats,
-					 int pm_lats_cnt, int is_early_device);
+					     struct omap_hwmod **oh, int oh_cnt,
+					     void *pdata, int pdata_len,
+					     struct omap_device_pm_latency
+					     *pm_lats, int pm_lats_cnt,
+					     int is_early_device);
 
 struct omap_device *omap_device_alloc(struct platform_device *pdev,
 				      struct omap_hwmod **ohs, int oh_cnt,
@@ -144,10 +146,10 @@ int omap_device_enable_clocks(struct omap_device *od);
 struct omap_device_pm_latency {
 	u32 deactivate_lat;
 	u32 deactivate_lat_worst;
-	int (*deactivate_func)(struct omap_device *od);
+	int (*deactivate_func) (struct omap_device * od);
 	u32 activate_lat;
 	u32 activate_lat_worst;
-	int (*activate_func)(struct omap_device *od);
+	int (*activate_func) (struct omap_device * od);
 	u32 flags;
 };
 
@@ -160,7 +162,7 @@ static inline struct omap_device *to_omap_device(struct platform_device *pdev)
 }
 
 static inline
-void omap_device_disable_idle_on_suspend(struct platform_device *pdev)
+    void omap_device_disable_idle_on_suspend(struct platform_device *pdev)
 {
 	struct omap_device *od = to_omap_device(pdev);
 

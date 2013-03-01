@@ -31,14 +31,12 @@
 
 #define MODULE_NAME_LEN MAX_PARAM_PREFIX_LEN
 
-struct kernel_symbol
-{
+struct kernel_symbol {
 	unsigned long value;
 	const char *name;
 };
 
-struct modversion_info
-{
+struct modversion_info {
 	unsigned long crc;
 	char name[MODULE_NAME_LEN];
 };
@@ -46,17 +44,16 @@ struct modversion_info
 struct module;
 
 struct module_attribute {
-        struct attribute attr;
-        ssize_t (*show)(struct module_attribute *, struct module *, char *);
-        ssize_t (*store)(struct module_attribute *, struct module *,
-			 const char *, size_t count);
-	void (*setup)(struct module *, const char *);
-	int (*test)(struct module *);
-	void (*free)(struct module *);
+	struct attribute attr;
+	 ssize_t(*show) (struct module_attribute *, struct module *, char *);
+	 ssize_t(*store) (struct module_attribute *, struct module *,
+			  const char *, size_t count);
+	void (*setup) (struct module *, const char *);
+	int (*test) (struct module *);
+	void (*free) (struct module *);
 };
 
-struct module_kobject
-{
+struct module_kobject {
 	struct kobject kobj;
 	struct module *mod;
 	struct kobject *drivers_dir;
@@ -70,10 +67,10 @@ extern void cleanup_module(void);
 /* Archs provide a method of finding the correct exception table. */
 struct exception_table_entry;
 
-const struct exception_table_entry *
-search_extable(const struct exception_table_entry *first,
-	       const struct exception_table_entry *last,
-	       unsigned long value);
+const struct exception_table_entry *search_extable(const struct
+						   exception_table_entry *first, const struct
+						   exception_table_entry *last,
+						   unsigned long value);
 void sort_extable(struct exception_table_entry *start,
 		  struct exception_table_entry *finish);
 void sort_main_extable(void);
@@ -85,7 +82,7 @@ extern const struct gtype##_id __mod_##gtype##_table		\
 
 extern struct module __this_module;
 #define THIS_MODULE (&__this_module)
-#else  /* !MODULE */
+#else /* !MODULE */
 #define MODULE_GENERIC_TABLE(gtype,name)
 #define THIS_MODULE ((struct module *)0)
 #endif
@@ -128,7 +125,7 @@ extern struct module __this_module;
 
 /* Author, ideally of form NAME[, NAME]*[ and NAME] */
 #define MODULE_AUTHOR(_author) MODULE_INFO(author, _author)
-  
+
 /* What your module does. */
 #define MODULE_DESCRIPTION(_description) MODULE_INFO(description, _description)
 
@@ -208,7 +205,6 @@ void *__symbol_get_gpl(const char *symbol);
 #define EXPORT_SYMBOL_GPL_FUTURE(sym)				\
 	__EXPORT_SYMBOL(sym, "_gpl_future")
 
-
 #ifdef CONFIG_UNUSED_SYMBOLS
 #define EXPORT_UNUSED_SYMBOL(sym) __EXPORT_SYMBOL(sym, "_unused")
 #define EXPORT_UNUSED_SYMBOL_GPL(sym) __EXPORT_SYMBOL(sym, "_unused_gpl")
@@ -219,15 +215,13 @@ void *__symbol_get_gpl(const char *symbol);
 
 #endif
 
-enum module_state
-{
+enum module_state {
 	MODULE_STATE_LIVE,
 	MODULE_STATE_COMING,
 	MODULE_STATE_GOING,
 };
 
-struct module
-{
+struct module {
 	enum module_state state;
 
 	/* Member of list of modules */
@@ -275,7 +269,7 @@ struct module
 	struct exception_table_entry *extable;
 
 	/* Startup function. */
-	int (*init)(void);
+	int (*init) (void);
 
 	/* If this is non-NULL, vfree after init() returns */
 	void *module_init;
@@ -337,7 +331,7 @@ struct module
 	struct task_struct *waiter;
 
 	/* Destruction function. */
-	void (*exit)(void);
+	void (*exit) (void);
 
 #ifdef CONFIG_SMP
 	char *refptr;
@@ -366,25 +360,25 @@ int is_module_address(unsigned long addr);
 static inline int within_module_core(unsigned long addr, struct module *mod)
 {
 	return (unsigned long)mod->module_core <= addr &&
-	       addr < (unsigned long)mod->module_core + mod->core_size;
+	    addr < (unsigned long)mod->module_core + mod->core_size;
 }
 
 static inline int within_module_init(unsigned long addr, struct module *mod)
 {
 	return (unsigned long)mod->module_init <= addr &&
-	       addr < (unsigned long)mod->module_init + mod->init_size;
+	    addr < (unsigned long)mod->module_init + mod->init_size;
 }
 
 /* Returns 0 and fills in value, defined and namebuf, or -ERANGE if
    symnum out of range. */
 int module_get_kallsym(unsigned int symnum, unsigned long *value, char *type,
-			char *name, char *module_name, int *exported);
+		       char *name, char *module_name, int *exported);
 
 /* Look for this name: can be of form module:name. */
 unsigned long module_kallsyms_lookup_name(const char *name);
 
 extern void __module_put_and_exit(struct module *mod, long code)
-	__attribute__((noreturn));
+    __attribute__ ((noreturn));
 #define module_put_and_exit(code) __module_put_and_exit(THIS_MODULE, code);
 
 #ifdef CONFIG_MODULE_UNLOAD
@@ -429,17 +423,20 @@ static inline int try_module_get(struct module *module)
 
 extern void module_put(struct module *module);
 
-#else /*!CONFIG_MODULE_UNLOAD*/
+#else /*!CONFIG_MODULE_UNLOAD */
 static inline int try_module_get(struct module *module)
 {
 	return !module || module_is_live(module);
 }
+
 static inline void module_put(struct module *module)
 {
 }
+
 static inline void __module_get(struct module *module)
 {
 }
+
 #define symbol_put(x) do { } while(0)
 #define symbol_put_addr(p) do { } while(0)
 
@@ -456,18 +453,19 @@ static inline void __module_get(struct module *module)
  * least KSYM_NAME_LEN long: a pointer to namebuf is returned if
  * found, otherwise NULL. */
 const char *module_address_lookup(unsigned long addr,
-			    unsigned long *symbolsize,
-			    unsigned long *offset,
-			    char **modname,
-			    char *namebuf);
+				  unsigned long *symbolsize,
+				  unsigned long *offset,
+				  char **modname, char *namebuf);
 int lookup_module_symbol_name(unsigned long addr, char *symname);
-int lookup_module_symbol_attrs(unsigned long addr, unsigned long *size, unsigned long *offset, char *modname, char *name);
+int lookup_module_symbol_attrs(unsigned long addr, unsigned long *size,
+			       unsigned long *offset, char *modname,
+			       char *name);
 
 /* For extable.c to search modules' exception tables. */
 const struct exception_table_entry *search_module_extables(unsigned long addr);
 
-int register_module_notifier(struct notifier_block * nb);
-int unregister_module_notifier(struct notifier_block * nb);
+int register_module_notifier(struct notifier_block *nb);
+int unregister_module_notifier(struct notifier_block *nb);
 
 extern void print_modules(void);
 
@@ -484,8 +482,8 @@ extern int module_get_iter_tracepoints(struct tracepoint_iter *iter);
 #define EXPORT_UNUSED_SYMBOL_GPL(sym)
 
 /* Given an address, look for it in the exception tables. */
-static inline const struct exception_table_entry *
-search_module_extables(unsigned long addr)
+static inline const struct exception_table_entry
+*search_module_extables(unsigned long addr)
 {
 	return NULL;
 }
@@ -529,10 +527,9 @@ static inline void module_put(struct module *module)
 
 /* For kallsyms to ask for address resolution.  NULL means not found. */
 static inline const char *module_address_lookup(unsigned long addr,
-					  unsigned long *symbolsize,
-					  unsigned long *offset,
-					  char **modname,
-					  char *namebuf)
+						unsigned long *symbolsize,
+						unsigned long *offset,
+						char **modname, char *namebuf)
 {
 	return NULL;
 }
@@ -542,14 +539,17 @@ static inline int lookup_module_symbol_name(unsigned long addr, char *symname)
 	return -ERANGE;
 }
 
-static inline int lookup_module_symbol_attrs(unsigned long addr, unsigned long *size, unsigned long *offset, char *modname, char *name)
+static inline int lookup_module_symbol_attrs(unsigned long addr,
+					     unsigned long *size,
+					     unsigned long *offset,
+					     char *modname, char *name)
 {
 	return -ERANGE;
 }
 
 static inline int module_get_kallsym(unsigned int symnum, unsigned long *value,
-					char *type, char *name,
-					char *module_name, int *exported)
+				     char *type, char *name,
+				     char *module_name, int *exported)
 {
 	return -ERANGE;
 }
@@ -559,13 +559,13 @@ static inline unsigned long module_kallsyms_lookup_name(const char *name)
 	return 0;
 }
 
-static inline int register_module_notifier(struct notifier_block * nb)
+static inline int register_module_notifier(struct notifier_block *nb)
 {
 	/* no events will happen anyway, so this can always succeed */
 	return 0;
 }
 
-static inline int unregister_module_notifier(struct notifier_block * nb)
+static inline int unregister_module_notifier(struct notifier_block *nb)
 {
 	return 0;
 }
@@ -601,8 +601,7 @@ extern int module_sysfs_initialized;
 
 int mod_sysfs_init(struct module *mod);
 int mod_sysfs_setup(struct module *mod,
-			   struct kernel_param *kparam,
-			   unsigned int num_params);
+		    struct kernel_param *kparam, unsigned int num_params);
 int module_add_modinfo_attrs(struct module *mod);
 void module_remove_modinfo_attrs(struct module *mod);
 
@@ -614,8 +613,8 @@ static inline int mod_sysfs_init(struct module *mod)
 }
 
 static inline int mod_sysfs_setup(struct module *mod,
-			   struct kernel_param *kparam,
-			   unsigned int num_params)
+				  struct kernel_param *kparam,
+				  unsigned int num_params)
 {
 	return 0;
 }
@@ -626,7 +625,8 @@ static inline int module_add_modinfo_attrs(struct module *mod)
 }
 
 static inline void module_remove_modinfo_attrs(struct module *mod)
-{ }
+{
+}
 
 #endif /* CONFIG_SYSFS */
 

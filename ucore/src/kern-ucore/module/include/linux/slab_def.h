@@ -17,10 +17,10 @@
 
 /* Size description struct for general caches. */
 struct cache_sizes {
-	size_t		 	cs_size;
-	struct kmem_cache	*cs_cachep;
+	size_t cs_size;
+	struct kmem_cache *cs_cachep;
 #ifdef CONFIG_ZONE_DMA
-	struct kmem_cache	*cs_dmacachep;
+	struct kmem_cache *cs_dmacachep;
 #endif
 };
 extern struct cache_sizes malloc_sizes[];
@@ -80,15 +80,16 @@ static inline void *kmalloc_node(size_t size, gfp_t flags, int node)
 found:
 #ifdef CONFIG_ZONE_DMA
 		if (flags & GFP_DMA)
-			return kmem_cache_alloc_node(malloc_sizes[i].cs_dmacachep,
-						flags, node);
+			return
+			    kmem_cache_alloc_node(malloc_sizes[i].cs_dmacachep,
+						  flags, node);
 #endif
 		return kmem_cache_alloc_node(malloc_sizes[i].cs_cachep,
-						flags, node);
+					     flags, node);
 	}
 	return __kmalloc_node(size, flags, node);
 }
 
-#endif	/* CONFIG_NUMA */
+#endif /* CONFIG_NUMA */
 
-#endif	/* _LINUX_SLAB_DEF_H */
+#endif /* _LINUX_SLAB_DEF_H */

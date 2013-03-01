@@ -8,9 +8,9 @@
 #include <fatfs/ffs.h>
 #include <yaffs2_direct/yaffs_vfs.h>
 
-struct inode;   // abstract structure for an on-disk file (inode.h)
-struct device;  // abstract structure for a device (dev.h)
-struct iobuf;   // kernel or userspace I/O buffer (iobuf.h)
+struct inode;			// abstract structure for an on-disk file (inode.h)
+struct device;			// abstract structure for a device (dev.h)
+struct iobuf;			// kernel or userspace I/O buffer (iobuf.h)
 
 /*
  * Abstract filesystem. (Or device accessible as a file.)
@@ -36,39 +36,37 @@ struct iobuf;   // kernel or userspace I/O buffer (iobuf.h)
  *
  */
 struct fs {
-    union {
-        struct pipe_fs __pipe_info;
-        struct sfs_fs __sfs_info;
+	union {
+		struct pipe_fs __pipe_info;
+		struct sfs_fs __sfs_info;
 #ifdef UCONFIG_HAVE_YAFFS2
-        struct yaffs2_fs __yaffs2_info;
+		struct yaffs2_fs __yaffs2_info;
 #endif
 #ifdef UCONFIG_HAVE_FATFS
-        struct ffs_fs __ffs_info;
+		struct ffs_fs __ffs_info;
 #endif
-    } fs_info;
-    enum {
-      fs_type_pipe_info = 0x5678,
-      fs_type_sfs_info,
+	} fs_info;
+	enum {
+		fs_type_pipe_info = 0x5678,
+		fs_type_sfs_info,
 #ifdef UCONFIG_HAVE_YAFFS2
-      fs_type_yaffs2_info,
+		fs_type_yaffs2_info,
 #endif
 #ifdef UCONFIG_HAVE_FATFS
-      fs_type_ffs_info,
+		fs_type_ffs_info,
 #endif
-    } fs_type;
-    int (*fs_sync)(struct fs *fs);
-    struct inode *(*fs_get_root)(struct fs *fs);
-    int (*fs_unmount)(struct fs *fs);
-    int (*fs_cleanup)(struct fs *fs);
+	} fs_type;
+	int (*fs_sync) (struct fs * fs);
+	struct inode *(*fs_get_root) (struct fs * fs);
+	int (*fs_unmount) (struct fs * fs);
+	int (*fs_cleanup) (struct fs * fs);
 };
 
-struct file_system_type
-{
-    const char *name;
-    int (*mount)(const char *devname);
-    list_entry_t file_system_type_link;
+struct file_system_type {
+	const char *name;
+	int (*mount) (const char *devname);
+	list_entry_t file_system_type_link;
 };
-
 
 #define __fs_type(type)                                             fs_type_##type##_info
 
@@ -122,7 +120,6 @@ int vfs_sync(void);
 int vfs_get_root(const char *devname, struct inode **root_store);
 const char *vfs_get_devname(struct fs *fs);
 
-
 /*
  * VFS layer high-level operations on pathnames
  * Because namei may destroy pathnames, these all may too.
@@ -150,7 +147,6 @@ int vfs_unlink(char *path);
 int vfs_rename(char *old_path, char *new_path);
 int vfs_chdir(char *path);
 int vfs_getcwd(struct iobuf *iob);
-
 
 /*
  * VFS layer mid-level operations.
@@ -210,16 +206,16 @@ int vfs_get_bootfs(struct inode **node_store);
 int vfs_add_fs(const char *devname, struct fs *fs);
 int vfs_add_dev(const char *devname, struct inode *devnode, bool mountable);
 
-int vfs_mount(const char *devname, int (*mountfunc)(struct device *dev, struct fs **fs_store));
+int vfs_mount(const char *devname,
+	      int (*mountfunc) (struct device * dev, struct fs ** fs_store));
 int vfs_unmount(const char *devname);
 int vfs_unmount_all(void);
 
 void file_system_type_list_init(void);
-int register_filesystem(const char *name, int (*mount)(const char *devname));
+int register_filesystem(const char *name, int (*mount) (const char *devname));
 int unregister_filesystem(const char *name);
 
 int do_mount(const char *devname, const char *fsname);
 int do_umount(const char *devname);
 
 #endif /* !__KERN_FS_VFS_VFS_H__ */
-

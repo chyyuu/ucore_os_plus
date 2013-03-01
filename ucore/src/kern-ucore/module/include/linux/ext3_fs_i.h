@@ -30,27 +30,27 @@ typedef unsigned long ext3_fsblk_t;
 #define E3FSBLK "%lu"
 
 struct ext3_reserve_window {
-	ext3_fsblk_t	_rsv_start;	/* First byte reserved */
-	ext3_fsblk_t	_rsv_end;	/* Last byte reserved or 0 */
+	ext3_fsblk_t _rsv_start;	/* First byte reserved */
+	ext3_fsblk_t _rsv_end;	/* Last byte reserved or 0 */
 };
 
 struct ext3_reserve_window_node {
-	struct rb_node		rsv_node;
-	__u32			rsv_goal_size;
-	__u32			rsv_alloc_hit;
-	struct ext3_reserve_window	rsv_window;
+	struct rb_node rsv_node;
+	__u32 rsv_goal_size;
+	__u32 rsv_alloc_hit;
+	struct ext3_reserve_window rsv_window;
 };
 
 struct ext3_block_alloc_info {
 	/* information about reservation window */
-	struct ext3_reserve_window_node	rsv_window_node;
+	struct ext3_reserve_window_node rsv_window_node;
 	/*
 	 * was i_next_alloc_block in ext3_inode_info
 	 * is the logical (file-relative) number of the
 	 * most-recently-allocated block in this file.
 	 * We use this for detecting linearly ascending allocation requests.
 	 */
-	__u32                   last_alloc_logical_block;
+	__u32 last_alloc_logical_block;
 	/*
 	 * Was i_next_alloc_goal in ext3_inode_info
 	 * is the *physical* companion to i_next_alloc_block.
@@ -58,7 +58,7 @@ struct ext3_block_alloc_info {
 	 * allocated to this file.  This give us the goal (target) for the next
 	 * allocation when we detect linearly ascending requests.
 	 */
-	ext3_fsblk_t		last_alloc_physical_block;
+	ext3_fsblk_t last_alloc_physical_block;
 };
 
 #define rsv_start rsv_window._rsv_start
@@ -68,16 +68,16 @@ struct ext3_block_alloc_info {
  * third extended file system inode data in memory
  */
 struct ext3_inode_info {
-	__le32	i_data[15];	/* unconverted */
-	__u32	i_flags;
+	__le32 i_data[15];	/* unconverted */
+	__u32 i_flags;
 #ifdef EXT3_FRAGMENTS
-	__u32	i_faddr;
-	__u8	i_frag_no;
-	__u8	i_frag_size;
+	__u32 i_faddr;
+	__u8 i_frag_no;
+	__u8 i_frag_size;
 #endif
-	ext3_fsblk_t	i_file_acl;
-	__u32	i_dir_acl;
-	__u32	i_dtime;
+	ext3_fsblk_t i_file_acl;
+	__u32 i_dir_acl;
+	__u32 i_dtime;
 
 	/*
 	 * i_block_group is the number of the block group which contains
@@ -86,13 +86,13 @@ struct ext3_inode_info {
 	 * place a file's data blocks near its inode block, and new inodes
 	 * near to their parent directory's inode.
 	 */
-	__u32	i_block_group;
-	__u32	i_state;		/* Dynamic state flags for ext3 */
+	__u32 i_block_group;
+	__u32 i_state;		/* Dynamic state flags for ext3 */
 
 	/* block reservation info */
 	struct ext3_block_alloc_info *i_block_alloc_info;
 
-	__u32	i_dir_start_lookup;
+	__u32 i_dir_start_lookup;
 #ifdef CONFIG_EXT3_FS_XATTR
 	/*
 	 * Extended attributes can be read independently of the main file
@@ -104,8 +104,8 @@ struct ext3_inode_info {
 	struct rw_semaphore xattr_sem;
 #endif
 #ifdef CONFIG_EXT3_FS_POSIX_ACL
-	struct posix_acl	*i_acl;
-	struct posix_acl	*i_default_acl;
+	struct posix_acl *i_acl;
+	struct posix_acl *i_default_acl;
 #endif
 
 	struct list_head i_orphan;	/* unlinked but open inodes */
@@ -125,7 +125,7 @@ struct ext3_inode_info {
 	 * a truncate is in progress.  The only things which change i_disksize
 	 * are ext3_get_block (growth) and ext3_truncate (shrinkth).
 	 */
-	loff_t	i_disksize;
+	loff_t i_disksize;
 
 	/* on-disk additional length */
 	__u16 i_extra_isize;
@@ -144,4 +144,4 @@ struct ext3_inode_info {
 	struct inode vfs_inode;
 };
 
-#endif	/* _LINUX_EXT3_FS_I */
+#endif /* _LINUX_EXT3_FS_I */

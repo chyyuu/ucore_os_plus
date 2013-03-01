@@ -692,19 +692,18 @@ static inline u32 i2o_dma_high(dma_addr_t dma_addr)
 
 extern u16 i2o_sg_tablesize(struct i2o_controller *c, u16 body_size);
 extern dma_addr_t i2o_dma_map_single(struct i2o_controller *c, void *ptr,
-					    size_t size,
-					    enum dma_data_direction direction,
-					    u32 ** sg_ptr);
+				     size_t size,
+				     enum dma_data_direction direction,
+				     u32 ** sg_ptr);
 extern int i2o_dma_map_sg(struct i2o_controller *c,
-				 struct scatterlist *sg, int sg_count,
-				 enum dma_data_direction direction,
-				 u32 ** sg_ptr);
+			  struct scatterlist *sg, int sg_count,
+			  enum dma_data_direction direction, u32 ** sg_ptr);
 extern int i2o_dma_alloc(struct device *dev, struct i2o_dma *addr, size_t len);
 extern void i2o_dma_free(struct device *dev, struct i2o_dma *addr);
 extern int i2o_dma_realloc(struct device *dev, struct i2o_dma *addr,
-								size_t len);
+			   size_t len);
 extern int i2o_pool_alloc(struct i2o_pool *pool, const char *name,
-				 size_t size, int min_nr);
+			  size_t size, int min_nr);
 extern void i2o_pool_free(struct i2o_pool *pool);
 /* I2O driver (OSM) functions */
 extern int i2o_driver_register(struct i2o_driver *);
@@ -985,4 +984,4 @@ extern void i2o_dump_message(struct i2o_message *);
 extern void i2o_dump_hrt(struct i2o_controller *c);
 extern void i2o_debug_state(struct i2o_controller *c);
 
-#endif				/* _I2O_H */
+#endif /* _I2O_H */

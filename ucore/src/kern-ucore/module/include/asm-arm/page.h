@@ -45,63 +45,63 @@
 #undef MULTI_USER
 
 #ifdef CONFIG_CPU_COPY_V3
-# ifdef _USER
-#  define MULTI_USER 1
-# else
-#  define _USER v3
-# endif
+#ifdef _USER
+#define MULTI_USER 1
+#else
+#define _USER v3
+#endif
 #endif
 
 #ifdef CONFIG_CPU_COPY_V4WT
-# ifdef _USER
-#  define MULTI_USER 1
-# else
-#  define _USER v4wt
-# endif
+#ifdef _USER
+#define MULTI_USER 1
+#else
+#define _USER v4wt
+#endif
 #endif
 
 #ifdef CONFIG_CPU_COPY_V4WB
-# ifdef _USER
-#  define MULTI_USER 1
-# else
-#  define _USER v4wb
-# endif
+#ifdef _USER
+#define MULTI_USER 1
+#else
+#define _USER v4wb
+#endif
 #endif
 
 #ifdef CONFIG_CPU_COPY_FEROCEON
-# ifdef _USER
-#  define MULTI_USER 1
-# else
-#  define _USER feroceon
-# endif
+#ifdef _USER
+#define MULTI_USER 1
+#else
+#define _USER feroceon
+#endif
 #endif
 
 #ifdef CONFIG_CPU_SA1100
-# ifdef _USER
-#  define MULTI_USER 1
-# else
-#  define _USER v4_mc
-# endif
+#ifdef _USER
+#define MULTI_USER 1
+#else
+#define _USER v4_mc
+#endif
 #endif
 
 #ifdef CONFIG_CPU_XSCALE
-# ifdef _USER
-#  define MULTI_USER 1
-# else
-#  define _USER xscale_mc
-# endif
+#ifdef _USER
+#define MULTI_USER 1
+#else
+#define _USER xscale_mc
+#endif
 #endif
 
 #ifdef CONFIG_CPU_XSC3
-# ifdef _USER
-#  define MULTI_USER 1
-# else
-#  define _USER xsc3_mc
-# endif
+#ifdef _USER
+#define MULTI_USER 1
+#else
+#define _USER xsc3_mc
+#endif
 #endif
 
 #ifdef CONFIG_CPU_COPY_V6
-# define MULTI_USER 1
+#define MULTI_USER 1
 #endif
 
 #if !defined(_USER) && !defined(MULTI_USER)
@@ -111,9 +111,10 @@
 struct page;
 
 struct cpu_user_fns {
-	void (*cpu_clear_user_highpage)(struct page *page, unsigned long vaddr);
-	void (*cpu_copy_user_highpage)(struct page *to, struct page *from,
-			unsigned long vaddr);
+	void (*cpu_clear_user_highpage) (struct page * page,
+					 unsigned long vaddr);
+	void (*cpu_copy_user_highpage) (struct page * to, struct page * from,
+					unsigned long vaddr);
 };
 
 #ifdef MULTI_USER
@@ -129,7 +130,7 @@ extern struct cpu_user_fns cpu_user;
 
 extern void __cpu_clear_user_highpage(struct page *page, unsigned long vaddr);
 extern void __cpu_copy_user_highpage(struct page *to, struct page *from,
-			unsigned long vaddr);
+				     unsigned long vaddr);
 #endif
 
 #define clear_user_highpage(page,vaddr)		\
@@ -148,10 +149,18 @@ extern void copy_page(void *to, const void *from);
 /*
  * These are used to make use of C type-checking..
  */
-typedef struct { unsigned long pte; } pte_t;
-typedef struct { unsigned long pmd; } pmd_t;
-typedef struct { unsigned long pgd[2]; } pgd_t;
-typedef struct { unsigned long pgprot; } pgprot_t;
+typedef struct {
+	unsigned long pte;
+} pte_t;
+typedef struct {
+	unsigned long pmd;
+} pmd_t;
+typedef struct {
+	unsigned long pgd[2];
+} pgd_t;
+typedef struct {
+	unsigned long pgprot;
+} pgprot_t;
 
 #define pte_val(x)      ((x).pte)
 #define pmd_val(x)      ((x).pmd)

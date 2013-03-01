@@ -31,86 +31,85 @@
  * */
 
 #define SECTSIZE        512
-#define ELFHDR          ((struct elfhdr *)0x10000)      // scratch space
+#define ELFHDR          ((struct elfhdr *)0x10000)	// scratch space
 
 /* waitdisk - wait for disk ready */
-static void
-waitdisk(void) {
-    while ((inb(0x1F7) & 0xC0) != 0x40)
-        /* do nothing */;
+static void waitdisk(void)
+{
+	while ((inb(0x1F7) & 0xC0) != 0x40)
+		/* do nothing */ ;
 }
 
 /* readsect - read a single sector at @secno into @dst */
-static void
-readsect(void *dst, uint32_t secno) {
-    // wait for disk to be ready
-    waitdisk();
+static void readsect(void *dst, uint32_t secno)
+{
+	// wait for disk to be ready
+	waitdisk();
 
-    outb(0x1F2, 1);                         // count = 1
-    outb(0x1F3, secno & 0xFF);
-    outb(0x1F4, (secno >> 8) & 0xFF);
-    outb(0x1F5, (secno >> 16) & 0xFF);
-    outb(0x1F6, ((secno >> 24) & 0xF) | 0xE0);
-    outb(0x1F7, 0x20);                      // cmd 0x20 - read sectors
+	outb(0x1F2, 1);		// count = 1
+	outb(0x1F3, secno & 0xFF);
+	outb(0x1F4, (secno >> 8) & 0xFF);
+	outb(0x1F5, (secno >> 16) & 0xFF);
+	outb(0x1F6, ((secno >> 24) & 0xF) | 0xE0);
+	outb(0x1F7, 0x20);	// cmd 0x20 - read sectors
 
-    // wait for disk to be ready
-    waitdisk();
+	// wait for disk to be ready
+	waitdisk();
 
-    // read a sector
-    insl(0x1F0, dst, SECTSIZE / 4);
+	// read a sector
+	insl(0x1F0, dst, SECTSIZE / 4);
 }
 
 /* *
  * readseg - read @count bytes at @offset from kernel into virtual address @pa,
  * might copy more than asked.
  * */
-static void
-readseg(uintptr_t pa, uint32_t count, uint32_t offset) {
-    uintptr_t end_pa = pa + count;
+static void readseg(uintptr_t pa, uint32_t count, uint32_t offset)
+{
+	uintptr_t end_pa = pa + count;
 
-    // round down to sector boundary
-    pa -= offset % SECTSIZE;
+	// round down to sector boundary
+	pa -= offset % SECTSIZE;
 
-    // translate from bytes to sectors; kernel starts at sector KERN_START_SECT
-    uint32_t secno = (offset / SECTSIZE) + KERN_START_SECT;
+	// translate from bytes to sectors; kernel starts at sector KERN_START_SECT
+	uint32_t secno = (offset / SECTSIZE) + KERN_START_SECT;
 
-    // If this is too slow, we could read lots of sectors at a time.
-    // We'd write more to memory than asked, but it doesn't matter --
-    // we load in increasing order.
-    for (; pa < end_pa; pa += SECTSIZE, secno ++) {
-        readsect((void *)pa, secno);
-    }
+	// If this is too slow, we could read lots of sectors at a time.
+	// We'd write more to memory than asked, but it doesn't matter --
+	// we load in increasing order.
+	for (; pa < end_pa; pa += SECTSIZE, secno++) {
+		readsect((void *)pa, secno);
+	}
 }
 
 /* bootmain - the entry of bootloader */
-void
-bootmain(void) {
-    // read the 1st page off disk
-    readseg((uintptr_t)ELFHDR, SECTSIZE * 8, 0);
+void bootmain(void)
+{
+	// read the 1st page off disk
+	readseg((uintptr_t) ELFHDR, SECTSIZE * 8, 0);
 
-    // is this a valid ELF?
-    if (ELFHDR->e_magic != ELF_MAGIC) {
-        goto bad;
-    }
+	// is this a valid ELF?
+	if (ELFHDR->e_magic != ELF_MAGIC) {
+		goto bad;
+	}
 
-    struct proghdr *ph, *eph;
+	struct proghdr *ph, *eph;
 
-    // load each program segment (ignores ph flags)
-    ph = (struct proghdr *)((uintptr_t)ELFHDR + (size_t)ELFHDR->e_phoff);
-    eph = ph + (size_t)ELFHDR->e_phnum;
-    for (; ph < eph; ph ++) {
-        readseg(ph->p_pa, ph->p_memsz, ph->p_offset);
-    }
+	// load each program segment (ignores ph flags)
+	ph = (struct proghdr *)((uintptr_t) ELFHDR + (size_t) ELFHDR->e_phoff);
+	eph = ph + (size_t) ELFHDR->e_phnum;
+	for (; ph < eph; ph++) {
+		readseg(ph->p_pa, ph->p_memsz, ph->p_offset);
+	}
 
-    // call the entry point from the ELF header
-    // note: does not return
-    ((void (*)(void))((uintptr_t)ELFHDR->e_entry))();
+	// call the entry point from the ELF header
+	// note: does not return
+	((void (*)(void))((uintptr_t) ELFHDR->e_entry)) ();
 
 bad:
-    outw(0x8A00, 0x8A00);
-    outw(0x8A00, 0x8E00);
+	outw(0x8A00, 0x8A00);
+	outw(0x8A00, 0x8E00);
 
-    /* do nothing */
-    while (1);
+	/* do nothing */
+	while (1) ;
 }
-

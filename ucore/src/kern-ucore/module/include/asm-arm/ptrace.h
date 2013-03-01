@@ -60,10 +60,10 @@
 /*
  * Groups of PSR bits
  */
-#define PSR_f		0xff000000	/* Flags		*/
-#define PSR_s		0x00ff0000	/* Status		*/
-#define PSR_x		0x0000ff00	/* Extension		*/
-#define PSR_c		0x000000ff	/* Control		*/
+#define PSR_f		0xff000000	/* Flags                */
+#define PSR_s		0x00ff0000	/* Status               */
+#define PSR_x		0x0000ff00	/* Extension            */
+#define PSR_c		0x000000ff	/* Control              */
 
 #ifndef __ASSEMBLY__
 
@@ -133,7 +133,8 @@ static inline int valid_user_regs(struct pt_regs *regs)
 	/*
 	 * Force CPSR to something logical...
 	 */
-	regs->ARM_cpsr &= PSR_f | PSR_s | (PSR_x & ~PSR_A_BIT) | PSR_T_BIT | MODE32_BIT;
+	regs->ARM_cpsr &=
+	    PSR_f | PSR_s | (PSR_x & ~PSR_A_BIT) | PSR_T_BIT | MODE32_BIT;
 	if (!(elf_hwcap & HWCAP_26BIT))
 		regs->ARM_cpsr |= USR_MODE;
 
@@ -156,4 +157,3 @@ extern unsigned long profile_pc(struct pt_regs *regs);
 #endif /* __ASSEMBLY__ */
 
 #endif
-

@@ -33,8 +33,7 @@
 	: "r" (uaddr), "r" (oparg), "Ir" (-EFAULT)		\
 	: "cc", "memory")
 
-static inline int
-futex_atomic_op_inuser (int encoded_op, int __user *uaddr)
+static inline int futex_atomic_op_inuser(int encoded_op, int __user * uaddr)
 {
 	int op = (encoded_op >> 28) & 7;
 	int cmp = (encoded_op >> 24) & 15;
@@ -61,7 +60,8 @@ futex_atomic_op_inuser (int encoded_op, int __user *uaddr)
 		__futex_atomic_op("orr	%0, %1, %3", ret, oldval, uaddr, oparg);
 		break;
 	case FUTEX_OP_ANDN:
-		__futex_atomic_op("and	%0, %1, %3", ret, oldval, uaddr, ~oparg);
+		__futex_atomic_op("and	%0, %1, %3", ret, oldval, uaddr,
+				  ~oparg);
 		break;
 	case FUTEX_OP_XOR:
 		__futex_atomic_op("eor	%0, %1, %3", ret, oldval, uaddr, oparg);
@@ -74,20 +74,33 @@ futex_atomic_op_inuser (int encoded_op, int __user *uaddr)
 
 	if (!ret) {
 		switch (cmp) {
-		case FUTEX_OP_CMP_EQ: ret = (oldval == cmparg); break;
-		case FUTEX_OP_CMP_NE: ret = (oldval != cmparg); break;
-		case FUTEX_OP_CMP_LT: ret = (oldval < cmparg); break;
-		case FUTEX_OP_CMP_GE: ret = (oldval >= cmparg); break;
-		case FUTEX_OP_CMP_LE: ret = (oldval <= cmparg); break;
-		case FUTEX_OP_CMP_GT: ret = (oldval > cmparg); break;
-		default: ret = -ENOSYS;
+		case FUTEX_OP_CMP_EQ:
+			ret = (oldval == cmparg);
+			break;
+		case FUTEX_OP_CMP_NE:
+			ret = (oldval != cmparg);
+			break;
+		case FUTEX_OP_CMP_LT:
+			ret = (oldval < cmparg);
+			break;
+		case FUTEX_OP_CMP_GE:
+			ret = (oldval >= cmparg);
+			break;
+		case FUTEX_OP_CMP_LE:
+			ret = (oldval <= cmparg);
+			break;
+		case FUTEX_OP_CMP_GT:
+			ret = (oldval > cmparg);
+			break;
+		default:
+			ret = -ENOSYS;
 		}
 	}
 	return ret;
 }
 
 static inline int
-futex_atomic_cmpxchg_inatomic(int __user *uaddr, int oldval, int newval)
+futex_atomic_cmpxchg_inatomic(int __user * uaddr, int oldval, int newval)
 {
 	int val;
 
@@ -97,21 +110,20 @@ futex_atomic_cmpxchg_inatomic(int __user *uaddr, int oldval, int newval)
 	pagefault_disable();	/* implies preempt_disable() */
 
 	__asm__ __volatile__("@futex_atomic_cmpxchg_inatomic\n"
-	"1:	ldrt	%0, [%3]\n"
-	"	teq	%0, %1\n"
-	"2:	streqt	%2, [%3]\n"
-	"3:\n"
-	"	.section __ex_table,\"a\"\n"
-	"	.align	3\n"
-	"	.long	1b, 4f, 2b, 4f\n"
-	"	.previous\n"
-	"	.section .fixup,\"ax\"\n"
-	"4:	mov	%0, %4\n"
-	"	b	3b\n"
-	"	.previous"
-	: "=&r" (val)
-	: "r" (oldval), "r" (newval), "r" (uaddr), "Ir" (-EFAULT)
-	: "cc", "memory");
+			     "1:	ldrt	%0, [%3]\n"
+			     "	teq	%0, %1\n"
+			     "2:	streqt	%2, [%3]\n"
+			     "3:\n"
+			     "	.section __ex_table,\"a\"\n"
+			     "	.align	3\n"
+			     "	.long	1b, 4f, 2b, 4f\n"
+			     "	.previous\n"
+			     "	.section .fixup,\"ax\"\n"
+			     "4:	mov	%0, %4\n"
+			     "	b	3b\n" "	.previous":"=&r"(val)
+			     :"r"(oldval), "r"(newval), "r"(uaddr),
+			     "Ir"(-EFAULT)
+			     :"cc", "memory");
 
 	pagefault_enable();	/* subsumes preempt_enable() */
 

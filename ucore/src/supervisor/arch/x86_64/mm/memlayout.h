@@ -14,14 +14,14 @@
 #define SEG_TSS(apic_id) 8 + (apic_id)
 
 /* global descrptor numbers */
-#define GD_KTEXT    ((SEG_KTEXT) << 4)      // kernel text
-#define GD_KDATA    ((SEG_KDATA) << 4)      // kernel data
-#define GD_KPLS     ((SEG_KPLS)  << 4)      // kernel pls
-#define GD_UTEXT    ((SEG_UTEXT) << 4)      // user text
-#define GD_UDATA    ((SEG_UDATA) << 4)      // user data
+#define GD_KTEXT    ((SEG_KTEXT) << 4)	// kernel text
+#define GD_KDATA    ((SEG_KDATA) << 4)	// kernel data
+#define GD_KPLS     ((SEG_KPLS)  << 4)	// kernel pls
+#define GD_UTEXT    ((SEG_UTEXT) << 4)	// user text
+#define GD_UDATA    ((SEG_UDATA) << 4)	// user data
 #define GD_TLS1     ((SEG_TLS1) << 4)
 #define GD_TLS2     ((SEG_TLS2) << 4)
-#define GD_TSS(apic_id) ((SEG_TSS(apic_id)) << 4)        // task segment selector
+#define GD_TSS(apic_id) ((SEG_TSS(apic_id)) << 4)	// task segment selector
 
 #define DPL_KERNEL  (0)
 #define DPL_USER    (3)
@@ -62,12 +62,12 @@
  * */
 
 #define SVBASE              0xFFFF800000000000
-#define SVSIZE              0x0000100000000000          // the maximum amount of kern remapped memory
+#define SVSIZE              0x0000100000000000	// the maximum amount of kern remapped memory
 #define SVTOP               (SVBASE + SVSIZE)
 
 /* All physical memory mapped at this address */
 #define PHYSBASE            0xFFFF900000000000
-#define PHYSSIZE            0x0000400000000000          // the maximum amount of physical memory
+#define PHYSSIZE            0x0000400000000000	// the maximum amount of physical memory
 
 /* RESERVED MEMORY FOR DRIVER OS */
 #define RESERVED_DRIVER_OS_SIZE 0x10000000
@@ -82,8 +82,8 @@
  * */
 #define VPT                 0xFFFFD00000000000
 
-#define KSTACKPAGE          4                           // # of pages in kernel stack
-#define KSTACKSIZE          (KSTACKPAGE * PGSIZE)       // sizeof kernel stack
+#define KSTACKPAGE          4	// # of pages in kernel stack
+#define KSTACKSIZE          (KSTACKPAGE * PGSIZE)	// sizeof kernel stack
 
 #ifndef __ASSEMBLER__
 
@@ -97,17 +97,17 @@ typedef uintptr_t pmd_t;
 typedef uintptr_t pte_t;
 
 // some constants for bios interrupt 15h AX = 0xE820
-#define E820MAX             20      // number of entries in E820MAP
-#define E820_ARM            1       // address range memory
-#define E820_ARR            2       // address range reserved
+#define E820MAX             20	// number of entries in E820MAP
+#define E820_ARM            1	// address range memory
+#define E820_ARR            2	// address range reserved
 
 struct e820map {
-    int nr_map;
-    struct {
-        uint64_t addr;
-        uint64_t size;
-        uint32_t type;
-    } __attribute__((packed)) map[E820MAX];
+	int nr_map;
+	struct {
+		uint64_t addr;
+		uint64_t size;
+		uint32_t type;
+	} __attribute__ ((packed)) map[E820MAX];
 };
 
 /* *
@@ -116,17 +116,17 @@ struct e820map {
  * that convert Page to other data types, such as phyical address.
  * */
 struct Page {
-    atomic_t ref;                   // page frame's reference counter
-    uint32_t flags;                 // array of flags that describe the status of the page frame
-    unsigned int property;          // used in buddy system, stores the order (the X in 2^X) of the continuous memory block
-    int zone_num;                   // used in buddy system, the No. of zone which the page belongs to
-    list_entry_t page_link;         // free list link
+	atomic_t ref;		// page frame's reference counter
+	uint32_t flags;		// array of flags that describe the status of the page frame
+	unsigned int property;	// used in buddy system, stores the order (the X in 2^X) of the continuous memory block
+	int zone_num;		// used in buddy system, the No. of zone which the page belongs to
+	list_entry_t page_link;	// free list link
 	void *private;
 };
 
 /* Flags describing the status of a page frame */
-#define PG_reserved                 0       // the page descriptor is reserved for kernel or unusable
-#define PG_property                 1       // the member 'property' is valid
+#define PG_reserved                 0	// the page descriptor is reserved for kernel or unusable
+#define PG_property                 1	// the member 'property' is valid
 
 #define SetPageReserved(page)       set_bit(PG_reserved, &((page)->flags))
 #define ClearPageReserved(page)     clear_bit(PG_reserved, &((page)->flags))
@@ -141,11 +141,10 @@ struct Page {
 
 /* free_area_t - maintains a doubly linked list to record free (unused) pages */
 typedef struct {
-    list_entry_t free_list;         // the list header
-    unsigned int nr_free;           // # of free pages in this free list
+	list_entry_t free_list;	// the list header
+	unsigned int nr_free;	// # of free pages in this free list
 } free_area_t;
 
 #endif /* !__ASSEMBLER__ */
 
 #endif /* !__KERN_MM_MEMLAYOUT_H__ */
-

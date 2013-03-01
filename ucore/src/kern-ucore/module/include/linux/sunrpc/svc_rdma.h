@@ -129,41 +129,41 @@ struct svc_rdma_req_map {
 #define	SVCRDMA_DEVCAP_READ_W_INV	2	/* read w/ invalidate */
 
 struct svcxprt_rdma {
-	struct svc_xprt      sc_xprt;		/* SVC transport structure */
-	struct rdma_cm_id    *sc_cm_id;		/* RDMA connection id */
-	struct list_head     sc_accept_q;	/* Conn. waiting accept */
-	int		     sc_ord;		/* RDMA read limit */
-	int                  sc_max_sge;
+	struct svc_xprt sc_xprt;	/* SVC transport structure */
+	struct rdma_cm_id *sc_cm_id;	/* RDMA connection id */
+	struct list_head sc_accept_q;	/* Conn. waiting accept */
+	int sc_ord;		/* RDMA read limit */
+	int sc_max_sge;
 
-	int                  sc_sq_depth;	/* Depth of SQ */
-	atomic_t             sc_sq_count;	/* Number of SQ WR on queue */
+	int sc_sq_depth;	/* Depth of SQ */
+	atomic_t sc_sq_count;	/* Number of SQ WR on queue */
 
-	int                  sc_max_requests;	/* Depth of RQ */
-	int                  sc_max_req_size;	/* Size of each RQ WR buf */
+	int sc_max_requests;	/* Depth of RQ */
+	int sc_max_req_size;	/* Size of each RQ WR buf */
 
-	struct ib_pd         *sc_pd;
+	struct ib_pd *sc_pd;
 
-	atomic_t	     sc_dma_used;
-	atomic_t	     sc_ctxt_used;
-	struct list_head     sc_rq_dto_q;
-	spinlock_t	     sc_rq_dto_lock;
-	struct ib_qp         *sc_qp;
-	struct ib_cq         *sc_rq_cq;
-	struct ib_cq         *sc_sq_cq;
-	struct ib_mr         *sc_phys_mr;	/* MR for server memory */
-	u32		     sc_dev_caps;	/* distilled device caps */
-	u32		     sc_dma_lkey;	/* local dma key */
-	unsigned int	     sc_frmr_pg_list_len;
-	struct list_head     sc_frmr_q;
-	spinlock_t	     sc_frmr_q_lock;
+	atomic_t sc_dma_used;
+	atomic_t sc_ctxt_used;
+	struct list_head sc_rq_dto_q;
+	spinlock_t sc_rq_dto_lock;
+	struct ib_qp *sc_qp;
+	struct ib_cq *sc_rq_cq;
+	struct ib_cq *sc_sq_cq;
+	struct ib_mr *sc_phys_mr;	/* MR for server memory */
+	u32 sc_dev_caps;	/* distilled device caps */
+	u32 sc_dma_lkey;	/* local dma key */
+	unsigned int sc_frmr_pg_list_len;
+	struct list_head sc_frmr_q;
+	spinlock_t sc_frmr_q_lock;
 
-	spinlock_t	     sc_lock;		/* transport lock */
+	spinlock_t sc_lock;	/* transport lock */
 
-	wait_queue_head_t    sc_send_wait;	/* SQ exhaustion waitlist */
-	unsigned long	     sc_flags;
-	struct list_head     sc_dto_q;		/* DTO tasklet I/O pending Q */
-	struct list_head     sc_read_complete_q;
-	struct work_struct   sc_work;
+	wait_queue_head_t sc_send_wait;	/* SQ exhaustion waitlist */
+	unsigned long sc_flags;
+	struct list_head sc_dto_q;	/* DTO tasklet I/O pending Q */
+	struct list_head sc_read_complete_q;
+	struct work_struct sc_work;
 };
 /* sc_flags */
 #define RDMAXPRT_RQ_PENDING	1
@@ -215,7 +215,8 @@ extern void svc_rdma_put_context(struct svc_rdma_op_ctxt *, int);
 extern void svc_rdma_unmap_dma(struct svc_rdma_op_ctxt *ctxt);
 extern struct svc_rdma_req_map *svc_rdma_get_req_map(void);
 extern void svc_rdma_put_req_map(struct svc_rdma_req_map *);
-extern int svc_rdma_fastreg(struct svcxprt_rdma *, struct svc_rdma_fastreg_mr *);
+extern int svc_rdma_fastreg(struct svcxprt_rdma *,
+			    struct svc_rdma_fastreg_mr *);
 extern struct svc_rdma_fastreg_mr *svc_rdma_get_frmr(struct svcxprt_rdma *);
 extern void svc_rdma_put_frmr(struct svcxprt_rdma *,
 			      struct svc_rdma_fastreg_mr *);
@@ -232,11 +233,12 @@ extern void svc_rdma_cleanup(void);
  * Returns the address of the first read chunk or <nul> if no read chunk is
  * present
  */
-static inline struct rpcrdma_read_chunk *
-svc_rdma_get_read_chunk(struct rpcrdma_msg *rmsgp)
+static inline struct rpcrdma_read_chunk *svc_rdma_get_read_chunk(struct
+								 rpcrdma_msg
+								 *rmsgp)
 {
 	struct rpcrdma_read_chunk *ch =
-		(struct rpcrdma_read_chunk *)&rmsgp->rm_body.rm_chunks[0];
+	    (struct rpcrdma_read_chunk *)&rmsgp->rm_body.rm_chunks[0];
 
 	if (ch->rc_discrim == 0)
 		return NULL;
@@ -248,8 +250,9 @@ svc_rdma_get_read_chunk(struct rpcrdma_msg *rmsgp)
  * Returns the address of the first read write array element or <nul> if no
  * write array list is present
  */
-static inline struct rpcrdma_write_array *
-svc_rdma_get_write_array(struct rpcrdma_msg *rmsgp)
+static inline struct rpcrdma_write_array *svc_rdma_get_write_array(struct
+								   rpcrdma_msg
+								   *rmsgp)
 {
 	if (rmsgp->rm_body.rm_chunks[0] != 0
 	    || rmsgp->rm_body.rm_chunks[1] == 0)
@@ -262,8 +265,9 @@ svc_rdma_get_write_array(struct rpcrdma_msg *rmsgp)
  * Returns the address of the first reply array element or <nul> if no
  * reply array is present
  */
-static inline struct rpcrdma_write_array *
-svc_rdma_get_reply_array(struct rpcrdma_msg *rmsgp)
+static inline struct rpcrdma_write_array *svc_rdma_get_reply_array(struct
+								   rpcrdma_msg
+								   *rmsgp)
 {
 	struct rpcrdma_read_chunk *rch;
 	struct rpcrdma_write_array *wr_ary;
@@ -291,17 +295,16 @@ svc_rdma_get_reply_array(struct rpcrdma_msg *rmsgp)
 	wr_ary = svc_rdma_get_write_array(rmsgp);
 	if (wr_ary) {
 		rp_ary = (struct rpcrdma_write_array *)
-			&wr_ary->
-			wc_array[wr_ary->wc_nchunks].wc_target.rs_length;
+		    &wr_ary->wc_array[wr_ary->wc_nchunks].wc_target.rs_length;
 
 		goto found_it;
 	}
 
 	/* No read list, no write list */
 	rp_ary = (struct rpcrdma_write_array *)
-		&rmsgp->rm_body.rm_chunks[2];
+	    &rmsgp->rm_body.rm_chunks[2];
 
- found_it:
+found_it:
 	if (rp_ary->wc_discrim == 0)
 		return NULL;
 

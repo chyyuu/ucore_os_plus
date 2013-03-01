@@ -347,7 +347,8 @@ static inline void rio_init_dbell_res(struct resource *res, u16 start, u16 end)
 
 /* Mailbox management */
 extern int rio_request_outb_mbox(struct rio_mport *, void *, int, int,
-				 void (*)(struct rio_mport *, void *,int, int));
+				 void (*)(struct rio_mport *, void *, int,
+					  int));
 extern int rio_release_outb_mbox(struct rio_mport *, int);
 
 /**
@@ -401,7 +402,8 @@ static inline void *rio_get_inb_message(struct rio_mport *mport, int mbox)
 
 /* Doorbell management */
 extern int rio_request_inb_dbell(struct rio_mport *, void *, u16, u16,
-				 void (*)(struct rio_mport *, void *, u16, u16, u16));
+				 void (*)(struct rio_mport *, void *, u16, u16,
+					  u16));
 extern int rio_release_inb_dbell(struct rio_mport *, u16, u16);
 extern struct resource *rio_request_outb_dbell(struct rio_dev *, u16, u16);
 extern int rio_release_outb_dbell(struct rio_dev *, struct resource *);
@@ -462,4 +464,4 @@ extern struct rio_dev *rio_get_device(u16 vid, u16 did, struct rio_dev *from);
 extern struct rio_dev *rio_get_asm(u16 vid, u16 did, u16 asm_vid, u16 asm_did,
 				   struct rio_dev *from);
 
-#endif				/* LINUX_RIO_DRV_H */
+#endif /* LINUX_RIO_DRV_H */

@@ -4,20 +4,20 @@
 /* Trap Numbers */
 
 /* Processor-defined: */
-#define T_RESET			0   // Reset
-#define T_UNDEF			1   // Undefined instruction
-#define T_SWI			2   // software interrupt
-#define T_PABT			3   // Prefetch abort
-#define T_DABT			4   // Data abort
+#define T_RESET			0	// Reset
+#define T_UNDEF			1	// Undefined instruction
+#define T_SWI			2	// software interrupt
+#define T_PABT			3	// Prefetch abort
+#define T_DABT			4	// Data abort
 // #define T_RESERVED
-#define T_IRQ			6   // Interrupt request
-#define T_FIQ			7   // Fast interrupt request
+#define T_IRQ			6	// Interrupt request
+#define T_FIQ			7	// Fast interrupt request
 
 /* *
  * Hardware interrupt
  * ranges from 32 to 63
  * */
-#define IRQ_OFFSET		32   // Interrupt request
+#define IRQ_OFFSET		32	// Interrupt request
 #define IRQ_MAX_RANGE	63
 
 #define USR26_MODE	0x00000000
@@ -35,10 +35,8 @@
  * These are arbitrarily chosen, but with care not to overlap
  * processor defined exceptions or interrupt vectors.
  * */
-#define T_SWITCH_TOK            121 // a random system call
-#define T_PANIC            122 // a random system call
-
-
+#define T_SWITCH_TOK            121	// a random system call
+#define T_PANIC            122	// a random system call
 
 #ifndef __ASSEMBLER__
 
@@ -50,10 +48,9 @@
 #if 0
 /* General purpose registers minus fp, sp and pc */
 struct pushregs {
-    uint32_t reg_r [13];
+	uint32_t reg_r[13];
 };
 #endif
-
 
 /*
  * This struct defines the way the registers are stored on the
@@ -82,7 +79,6 @@ struct pushregs {
 #define ARM_r1		reg_r[1]
 #define ARM_r0		reg_r[0]
 #define ARM_ORIG_r0	reg_r[17]
-
 
 #define user_mode(regs)	\
 	(((regs)->ARM_cpsr & 0xf) == 0)
@@ -114,10 +110,9 @@ struct pushregs {
  * */
 struct trapframe {
 	struct pushregs tf_regs;
-	uint32_t tf_trapno;		// Trap number
-	uint32_t tf_err;		// Error code
-} __attribute__((packed));
-
+	uint32_t tf_trapno;	// Trap number
+	uint32_t tf_err;	// Error code
+} __attribute__ ((packed));
 
 #define local_intr_enable_hw  intr_enable()
 #define local_intr_disable_hw intr_disable()

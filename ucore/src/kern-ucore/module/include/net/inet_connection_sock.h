@@ -36,32 +36,31 @@ struct tcp_congestion_ops;
  * (i.e. things that depend on the address family)
  */
 struct inet_connection_sock_af_ops {
-	int	    (*queue_xmit)(struct sk_buff *skb, int ipfragok);
-	void	    (*send_check)(struct sock *sk, int len,
-				  struct sk_buff *skb);
-	int	    (*rebuild_header)(struct sock *sk);
-	int	    (*conn_request)(struct sock *sk, struct sk_buff *skb);
-	struct sock *(*syn_recv_sock)(struct sock *sk, struct sk_buff *skb,
-				      struct request_sock *req,
-				      struct dst_entry *dst);
-	int	    (*remember_stamp)(struct sock *sk);
-	u16	    net_header_len;
-	u16	    sockaddr_len;
-	int	    (*setsockopt)(struct sock *sk, int level, int optname, 
-				  char __user *optval, int optlen);
-	int	    (*getsockopt)(struct sock *sk, int level, int optname, 
-				  char __user *optval, int __user *optlen);
+	int (*queue_xmit) (struct sk_buff * skb, int ipfragok);
+	void (*send_check) (struct sock * sk, int len, struct sk_buff * skb);
+	int (*rebuild_header) (struct sock * sk);
+	int (*conn_request) (struct sock * sk, struct sk_buff * skb);
+	struct sock *(*syn_recv_sock) (struct sock * sk, struct sk_buff * skb,
+				       struct request_sock * req,
+				       struct dst_entry * dst);
+	int (*remember_stamp) (struct sock * sk);
+	u16 net_header_len;
+	u16 sockaddr_len;
+	int (*setsockopt) (struct sock * sk, int level, int optname,
+			   char __user * optval, int optlen);
+	int (*getsockopt) (struct sock * sk, int level, int optname,
+			   char __user * optval, int __user * optlen);
 #ifdef CONFIG_COMPAT
-	int	    (*compat_setsockopt)(struct sock *sk,
-				int level, int optname,
-				char __user *optval, int optlen);
-	int	    (*compat_getsockopt)(struct sock *sk,
-				int level, int optname,
-				char __user *optval, int __user *optlen);
+	int (*compat_setsockopt) (struct sock * sk,
+				  int level, int optname,
+				  char __user * optval, int optlen);
+	int (*compat_getsockopt) (struct sock * sk,
+				  int level, int optname,
+				  char __user * optval, int __user * optlen);
 #endif
-	void	    (*addr2sockaddr)(struct sock *sk, struct sockaddr *);
-	int	    (*bind_conflict)(const struct sock *sk,
-				     const struct inet_bind_bucket *tb);
+	void (*addr2sockaddr) (struct sock * sk, struct sockaddr *);
+	int (*bind_conflict) (const struct sock * sk,
+			      const struct inet_bind_bucket * tb);
 };
 
 /** inet_connection_sock - INET connection oriented sock
@@ -86,46 +85,46 @@ struct inet_connection_sock_af_ops {
  */
 struct inet_connection_sock {
 	/* inet_sock has to be the first member! */
-	struct inet_sock	  icsk_inet;
+	struct inet_sock icsk_inet;
 	struct request_sock_queue icsk_accept_queue;
-	struct inet_bind_bucket	  *icsk_bind_hash;
-	unsigned long		  icsk_timeout;
- 	struct timer_list	  icsk_retransmit_timer;
- 	struct timer_list	  icsk_delack_timer;
-	__u32			  icsk_rto;
-	__u32			  icsk_pmtu_cookie;
+	struct inet_bind_bucket *icsk_bind_hash;
+	unsigned long icsk_timeout;
+	struct timer_list icsk_retransmit_timer;
+	struct timer_list icsk_delack_timer;
+	__u32 icsk_rto;
+	__u32 icsk_pmtu_cookie;
 	const struct tcp_congestion_ops *icsk_ca_ops;
 	const struct inet_connection_sock_af_ops *icsk_af_ops;
-	unsigned int		  (*icsk_sync_mss)(struct sock *sk, u32 pmtu);
-	__u8			  icsk_ca_state;
-	__u8			  icsk_retransmits;
-	__u8			  icsk_pending;
-	__u8			  icsk_backoff;
-	__u8			  icsk_syn_retries;
-	__u8			  icsk_probes_out;
-	__u16			  icsk_ext_hdr_len;
+	unsigned int (*icsk_sync_mss) (struct sock * sk, u32 pmtu);
+	__u8 icsk_ca_state;
+	__u8 icsk_retransmits;
+	__u8 icsk_pending;
+	__u8 icsk_backoff;
+	__u8 icsk_syn_retries;
+	__u8 icsk_probes_out;
+	__u16 icsk_ext_hdr_len;
 	struct {
-		__u8		  pending;	 /* ACK is pending			   */
-		__u8		  quick;	 /* Scheduled number of quick acks	   */
-		__u8		  pingpong;	 /* The session is interactive		   */
-		__u8		  blocked;	 /* Delayed ACK was blocked by socket lock */
-		__u32		  ato;		 /* Predicted tick of soft clock	   */
-		unsigned long	  timeout;	 /* Currently scheduled timeout		   */
-		__u32		  lrcvtime;	 /* timestamp of last received data packet */
-		__u16		  last_seg_size; /* Size of last incoming segment	   */
-		__u16		  rcv_mss;	 /* MSS used for delayed ACK decisions	   */ 
+		__u8 pending;	/* ACK is pending                         */
+		__u8 quick;	/* Scheduled number of quick acks         */
+		__u8 pingpong;	/* The session is interactive             */
+		__u8 blocked;	/* Delayed ACK was blocked by socket lock */
+		__u32 ato;	/* Predicted tick of soft clock           */
+		unsigned long timeout;	/* Currently scheduled timeout            */
+		__u32 lrcvtime;	/* timestamp of last received data packet */
+		__u16 last_seg_size;	/* Size of last incoming segment          */
+		__u16 rcv_mss;	/* MSS used for delayed ACK decisions     */
 	} icsk_ack;
 	struct {
-		int		  enabled;
+		int enabled;
 
 		/* Range of MTUs to search */
-		int		  search_high;
-		int		  search_low;
+		int search_high;
+		int search_low;
 
 		/* Information on the current probe. */
-		int		  probe_size;
+		int probe_size;
 	} icsk_mtup;
-	u32			  icsk_ca_priv[16];
+	u32 icsk_ca_priv[16];
 #define ICSK_CA_PRIV_SIZE	(16 * sizeof(u32))
 };
 
@@ -149,16 +148,18 @@ extern struct sock *inet_csk_clone(struct sock *sk,
 				   const gfp_t priority);
 
 enum inet_csk_ack_state_t {
-	ICSK_ACK_SCHED	= 1,
-	ICSK_ACK_TIMER  = 2,
+	ICSK_ACK_SCHED = 1,
+	ICSK_ACK_TIMER = 2,
 	ICSK_ACK_PUSHED = 4,
 	ICSK_ACK_PUSHED2 = 8
 };
 
 extern void inet_csk_init_xmit_timers(struct sock *sk,
-				      void (*retransmit_handler)(unsigned long),
-				      void (*delack_handler)(unsigned long),
-				      void (*keepalive_handler)(unsigned long));
+				      void (*retransmit_handler) (unsigned
+								  long),
+				      void (*delack_handler) (unsigned long),
+				      void (*keepalive_handler) (unsigned
+								 long));
 extern void inet_csk_clear_xmit_timers(struct sock *sk);
 
 static inline void inet_csk_schedule_ack(struct sock *sk)
@@ -177,7 +178,8 @@ static inline void inet_csk_delack_init(struct sock *sk)
 }
 
 extern void inet_csk_delete_keepalive_timer(struct sock *sk);
-extern void inet_csk_reset_keepalive_timer(struct sock *sk, unsigned long timeout);
+extern void inet_csk_reset_keepalive_timer(struct sock *sk,
+					   unsigned long timeout);
 
 #ifdef INET_CSK_DEBUG
 extern const char inet_csk_timer_bug_msg[];
@@ -186,7 +188,7 @@ extern const char inet_csk_timer_bug_msg[];
 static inline void inet_csk_clear_xmit_timer(struct sock *sk, const int what)
 {
 	struct inet_connection_sock *icsk = inet_csk(sk);
-	
+
 	if (what == ICSK_TIME_RETRANS || what == ICSK_TIME_PROBE0) {
 		icsk->icsk_pending = 0;
 #ifdef INET_CSK_CLEAR_TIMERS
@@ -225,11 +227,13 @@ static inline void inet_csk_reset_xmit_timer(struct sock *sk, const int what,
 	if (what == ICSK_TIME_RETRANS || what == ICSK_TIME_PROBE0) {
 		icsk->icsk_pending = what;
 		icsk->icsk_timeout = jiffies + when;
-		sk_reset_timer(sk, &icsk->icsk_retransmit_timer, icsk->icsk_timeout);
+		sk_reset_timer(sk, &icsk->icsk_retransmit_timer,
+			       icsk->icsk_timeout);
 	} else if (what == ICSK_TIME_DACK) {
 		icsk->icsk_ack.pending |= ICSK_ACK_TIMER;
 		icsk->icsk_ack.timeout = jiffies + when;
-		sk_reset_timer(sk, &icsk->icsk_delack_timer, icsk->icsk_ack.timeout);
+		sk_reset_timer(sk, &icsk->icsk_delack_timer,
+			       icsk->icsk_ack.timeout);
 	}
 #ifdef INET_CSK_DEBUG
 	else {
@@ -249,7 +253,7 @@ extern int inet_csk_bind_conflict(const struct sock *sk,
 				  const struct inet_bind_bucket *tb);
 extern int inet_csk_get_port(struct sock *sk, unsigned short snum);
 
-extern struct dst_entry* inet_csk_route_req(struct sock *sk,
+extern struct dst_entry *inet_csk_route_req(struct sock *sk,
 					    const struct request_sock *req);
 
 static inline void inet_csk_reqsk_queue_add(struct sock *sk,
@@ -321,16 +325,17 @@ extern void inet_csk_destroy_sock(struct sock *sk);
 static inline unsigned int inet_csk_listen_poll(const struct sock *sk)
 {
 	return !reqsk_queue_empty(&inet_csk(sk)->icsk_accept_queue) ?
-			(POLLIN | POLLRDNORM) : 0;
+	    (POLLIN | POLLRDNORM) : 0;
 }
 
-extern int  inet_csk_listen_start(struct sock *sk, const int nr_table_entries);
+extern int inet_csk_listen_start(struct sock *sk, const int nr_table_entries);
 extern void inet_csk_listen_stop(struct sock *sk);
 
 extern void inet_csk_addr2sockaddr(struct sock *sk, struct sockaddr *uaddr);
 
 extern int inet_csk_compat_getsockopt(struct sock *sk, int level, int optname,
-				      char __user *optval, int __user *optlen);
+				      char __user * optval,
+				      int __user * optlen);
 extern int inet_csk_compat_setsockopt(struct sock *sk, int level, int optname,
-				      char __user *optval, int optlen);
+				      char __user * optval, int optlen);
 #endif /* _INET_CONNECTION_SOCK_H */

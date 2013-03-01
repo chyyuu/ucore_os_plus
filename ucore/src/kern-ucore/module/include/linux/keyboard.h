@@ -20,7 +20,7 @@
 #define MAX_NR_KEYMAPS	256
 /* This means 128Kb if all keymaps are allocated. Only the superuser
 	may increase the number of keymaps beyond MAX_NR_OF_USER_KEYMAPS. */
-#define MAX_NR_OF_USER_KEYMAPS 256 	/* should be at least 7 */
+#define MAX_NR_OF_USER_KEYMAPS 256	/* should be at least 7 */
 
 #ifdef __KERNEL__
 struct notifier_block;
@@ -86,8 +86,8 @@ extern int unregister_keyboard_notifier(struct notifier_block *nb);
 #define K_INSERT	K(KT_FN,21)
 #define K_REMOVE	K(KT_FN,22)
 #define K_SELECT	K(KT_FN,23)
-#define K_PGUP		K(KT_FN,24) /* PGUP is a synonym for PRIOR */
-#define K_PGDN		K(KT_FN,25) /* PGDN is a synonym for NEXT */
+#define K_PGUP		K(KT_FN,24)	/* PGUP is a synonym for PRIOR */
+#define K_PGDN		K(KT_FN,25)	/* PGDN is a synonym for NEXT */
 #define K_MACRO	 	K(KT_FN,26)
 #define K_HELP		K(KT_FN,27)
 #define K_DO		K(KT_FN,28)
@@ -319,7 +319,6 @@ extern int unregister_keyboard_notifier(struct notifier_block *nb);
 #define K_F245		K(KT_FN,254)
 #define K_UNDO		K(KT_FN,255)
 
-
 #define K_HOLE		K(KT_SPEC,0)
 #define K_ENTER		K(KT_SPEC,1)
 #define K_SH_REGS	K(KT_SPEC,2)
@@ -341,8 +340,8 @@ extern int unregister_keyboard_notifier(struct notifier_block *nb);
 #define K_SPAWNCONSOLE	K(KT_SPEC,18)
 #define K_BARENUMLOCK	K(KT_SPEC,19)
 
-#define K_ALLOCATED	K(KT_SPEC,126) /* dynamically allocated keymap */
-#define K_NOSUCHMAP	K(KT_SPEC,127) /* returned by KDGKBENT */
+#define K_ALLOCATED	K(KT_SPEC,126)	/* dynamically allocated keymap */
+#define K_NOSUCHMAP	K(KT_SPEC,127)	/* returned by KDGKBENT */
 
 #define K_P0		K(KT_PAD,0)
 #define K_P1		K(KT_PAD,1)

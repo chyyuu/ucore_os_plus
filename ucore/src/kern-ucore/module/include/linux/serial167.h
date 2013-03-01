@@ -7,10 +7,10 @@
  */
 
 struct cyclades_monitor {
-        unsigned long           int_count;
-        unsigned long           char_count;
-        unsigned long           char_max;
-        unsigned long           char_last;
+	unsigned long int_count;
+	unsigned long char_count;
+	unsigned long char_max;
+	unsigned long char_last;
 };
 
 /*
@@ -23,34 +23,34 @@ struct cyclades_monitor {
  */
 
 struct cyclades_port {
-	int                     magic;
-	int                     type;
-	int			card;
-	int			line;
-	int			flags; 		/* defined in tty.h */
-	struct tty_struct 	*tty;
-	int			read_status_mask;
-	int			timeout;
-	int			xmit_fifo_size;
-	int                     cor1,cor2,cor3,cor4,cor5,cor6,cor7;
-	int                     tbpr,tco,rbpr,rco;
-	int			ignore_status_mask;
-	int			close_delay;
-	int			IER; 	/* Interrupt Enable Register */
-	unsigned long		last_active;
-	int			count;	/* # of fd on device */
-	int                     x_char; /* to be pushed out ASAP */
-	int                     x_break;
-	int			blocked_open; /* # of blocked opens */
-	unsigned char 		*xmit_buf;
-	int			xmit_head;
-	int			xmit_tail;
-	int			xmit_cnt;
-        int                     default_threshold;
-        int                     default_timeout;
-	wait_queue_head_t	open_wait;
-	wait_queue_head_t	close_wait;
-        struct cyclades_monitor mon;
+	int magic;
+	int type;
+	int card;
+	int line;
+	int flags;		/* defined in tty.h */
+	struct tty_struct *tty;
+	int read_status_mask;
+	int timeout;
+	int xmit_fifo_size;
+	int cor1, cor2, cor3, cor4, cor5, cor6, cor7;
+	int tbpr, tco, rbpr, rco;
+	int ignore_status_mask;
+	int close_delay;
+	int IER;		/* Interrupt Enable Register */
+	unsigned long last_active;
+	int count;		/* # of fd on device */
+	int x_char;		/* to be pushed out ASAP */
+	int x_break;
+	int blocked_open;	/* # of blocked opens */
+	unsigned char *xmit_buf;
+	int xmit_head;
+	int xmit_tail;
+	int xmit_cnt;
+	int default_threshold;
+	int default_timeout;
+	wait_queue_head_t open_wait;
+	wait_queue_head_t close_wait;
+	struct cyclades_monitor mon;
 };
 
 #define CYCLADES_MAGIC  0x4359
@@ -127,7 +127,7 @@ struct cyclades_port {
 #define      Cy_1_STOP		(0x02)
 #define      Cy_2_STOP		(0x04)
 #define CyCOR4		(0x15)
-#define      CyREC_FIFO		(0x0F)  /* Receive FIFO threshold */
+#define      CyREC_FIFO		(0x0F)	/* Receive FIFO threshold */
 #define CyCOR5		(0x14)
 #define CyCOR6		(0x18)
 #define CyCOR7		(0x07)
@@ -148,7 +148,6 @@ struct cyclades_port {
 #define CySCRL		(0x23)
 #define CySCRH		(0x22)
 #define CyTFTC		(0x80)
-
 
 /* max number of chars in the FIFO */
 

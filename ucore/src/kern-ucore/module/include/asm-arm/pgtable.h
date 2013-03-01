@@ -198,8 +198,8 @@ extern void __pgd_error(const char *file, int line, unsigned long val);
  */
 #define _L_PTE_DEFAULT	L_PTE_PRESENT | L_PTE_YOUNG
 
-extern pgprot_t		pgprot_user;
-extern pgprot_t		pgprot_kernel;
+extern pgprot_t pgprot_user;
+extern pgprot_t pgprot_kernel;
 
 #define _MOD_PROT(p, b)	__pgprot(pgprot_val(p) | (b))
 
@@ -297,14 +297,17 @@ extern struct page *empty_zero_page;
 #define PTE_BIT_FUNC(fn,op) \
 static inline pte_t pte_##fn(pte_t pte) { pte_val(pte) op; return pte; }
 
-PTE_BIT_FUNC(wrprotect, &= ~L_PTE_WRITE);
-PTE_BIT_FUNC(mkwrite,   |= L_PTE_WRITE);
-PTE_BIT_FUNC(mkclean,   &= ~L_PTE_DIRTY);
-PTE_BIT_FUNC(mkdirty,   |= L_PTE_DIRTY);
-PTE_BIT_FUNC(mkold,     &= ~L_PTE_YOUNG);
-PTE_BIT_FUNC(mkyoung,   |= L_PTE_YOUNG);
+PTE_BIT_FUNC(wrprotect, &=~L_PTE_WRITE);
+PTE_BIT_FUNC(mkwrite, |=L_PTE_WRITE);
+PTE_BIT_FUNC(mkclean, &=~L_PTE_DIRTY);
+PTE_BIT_FUNC(mkdirty, |=L_PTE_DIRTY);
+PTE_BIT_FUNC(mkold, &=~L_PTE_YOUNG);
+PTE_BIT_FUNC(mkyoung, |=L_PTE_YOUNG);
 
-static inline pte_t pte_mkspecial(pte_t pte) { return pte; }
+static inline pte_t pte_mkspecial(pte_t pte)
+{
+	return pte;
+}
 
 /*
  * Mark the prot value as uncacheable and unbufferable.

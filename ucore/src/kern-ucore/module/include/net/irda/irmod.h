@@ -49,18 +49,18 @@ typedef enum { FLOW_STOP, FLOW_START } LOCAL_FLOW;
  *  please do not touch :-)
  */
 typedef enum {
-	LM_USER_REQUEST = 1,  /* User request */
-	LM_LAP_DISCONNECT,    /* Unexpected IrLAP disconnect */
-	LM_CONNECT_FAILURE,   /* Failed to establish IrLAP connection */
-	LM_LAP_RESET,         /* IrLAP reset */
-	LM_INIT_DISCONNECT,   /* Link Management initiated disconnect */
-	LM_LSAP_NOTCONN,      /* Data delivered on unconnected LSAP */
-	LM_NON_RESP_CLIENT,   /* Non responsive LM-MUX client */
-	LM_NO_AVAIL_CLIENT,   /* No available LM-MUX client */
-	LM_CONN_HALF_OPEN,    /* Connection is half open */
-	LM_BAD_SOURCE_ADDR,   /* Illegal source address (i.e 0x00) */
+	LM_USER_REQUEST = 1,	/* User request */
+	LM_LAP_DISCONNECT,	/* Unexpected IrLAP disconnect */
+	LM_CONNECT_FAILURE,	/* Failed to establish IrLAP connection */
+	LM_LAP_RESET,		/* IrLAP reset */
+	LM_INIT_DISCONNECT,	/* Link Management initiated disconnect */
+	LM_LSAP_NOTCONN,	/* Data delivered on unconnected LSAP */
+	LM_NON_RESP_CLIENT,	/* Non responsive LM-MUX client */
+	LM_NO_AVAIL_CLIENT,	/* No available LM-MUX client */
+	LM_CONN_HALF_OPEN,	/* Connection is half open */
+	LM_BAD_SOURCE_ADDR,	/* Illegal source address (i.e 0x00) */
 } LM_REASON;
-#define LM_UNKNOWN 0xff       /* Unspecified disconnect reason */
+#define LM_UNKNOWN 0xff		/* Unspecified disconnect reason */
 
 /* A few forward declarations (to make compiler happy) */
 struct qos_info;		/* in <net/irda/qos.h> */
@@ -69,27 +69,27 @@ struct qos_info;		/* in <net/irda/qos.h> */
  *  Notify structure used between transport and link management layers
  */
 typedef struct {
-	int (*data_indication)(void *priv, void *sap, struct sk_buff *skb);
-	int (*udata_indication)(void *priv, void *sap, struct sk_buff *skb);
-	void (*connect_confirm)(void *instance, void *sap, 
-				struct qos_info *qos, __u32 max_sdu_size,
-				__u8 max_header_size, struct sk_buff *skb);
-	void (*connect_indication)(void *instance, void *sap, 
-				   struct qos_info *qos, __u32 max_sdu_size, 
-				   __u8 max_header_size, struct sk_buff *skb);
-	void (*disconnect_indication)(void *instance, void *sap, 
-				      LM_REASON reason, struct sk_buff *);
-	void (*flow_indication)(void *instance, void *sap, LOCAL_FLOW flow);
-	void (*status_indication)(void *instance,
-				  LINK_STATUS link, LOCK_STATUS lock);
-	void *instance; /* Layer instance pointer */
-	char name[16];  /* Name of layer */
+	int (*data_indication) (void *priv, void *sap, struct sk_buff * skb);
+	int (*udata_indication) (void *priv, void *sap, struct sk_buff * skb);
+	void (*connect_confirm) (void *instance, void *sap,
+				 struct qos_info * qos, __u32 max_sdu_size,
+				 __u8 max_header_size, struct sk_buff * skb);
+	void (*connect_indication) (void *instance, void *sap,
+				    struct qos_info * qos, __u32 max_sdu_size,
+				    __u8 max_header_size, struct sk_buff * skb);
+	void (*disconnect_indication) (void *instance, void *sap,
+				       LM_REASON reason, struct sk_buff *);
+	void (*flow_indication) (void *instance, void *sap, LOCAL_FLOW flow);
+	void (*status_indication) (void *instance,
+				   LINK_STATUS link, LOCK_STATUS lock);
+	void *instance;		/* Layer instance pointer */
+	char name[16];		/* Name of layer */
 } notify_t;
 
 #define NOTIFY_MAX_NAME 16
 
 /* Zero the notify structure */
-void irda_notify_init(notify_t *notify);
+void irda_notify_init(notify_t * notify);
 
 /* Locking wrapper - Note the inverted logic on irda_lock().
  * Those function basically return false if the lock is already in the
@@ -98,12 +98,3 @@ void irda_notify_init(notify_t *notify);
 #define irda_unlock(lock)	(test_and_clear_bit(0, (void *) (lock)))
 
 #endif /* IRMOD_H */
-
-
-
-
-
-
-
-
-

@@ -11,24 +11,24 @@
  * Trace categories
  */
 enum blktrace_cat {
-	BLK_TC_READ	= 1 << 0,	/* reads */
-	BLK_TC_WRITE	= 1 << 1,	/* writes */
-	BLK_TC_BARRIER	= 1 << 2,	/* barrier */
-	BLK_TC_SYNC	= 1 << 3,	/* sync IO */
-	BLK_TC_SYNCIO	= BLK_TC_SYNC,
-	BLK_TC_QUEUE	= 1 << 4,	/* queueing/merging */
-	BLK_TC_REQUEUE	= 1 << 5,	/* requeueing */
-	BLK_TC_ISSUE	= 1 << 6,	/* issue */
-	BLK_TC_COMPLETE	= 1 << 7,	/* completions */
-	BLK_TC_FS	= 1 << 8,	/* fs requests */
-	BLK_TC_PC	= 1 << 9,	/* pc requests */
-	BLK_TC_NOTIFY	= 1 << 10,	/* special message */
-	BLK_TC_AHEAD	= 1 << 11,	/* readahead */
-	BLK_TC_META	= 1 << 12,	/* metadata */
-	BLK_TC_DISCARD	= 1 << 13,	/* discard requests */
-	BLK_TC_DRV_DATA	= 1 << 14,	/* binary per-driver data */
+	BLK_TC_READ = 1 << 0,	/* reads */
+	BLK_TC_WRITE = 1 << 1,	/* writes */
+	BLK_TC_BARRIER = 1 << 2,	/* barrier */
+	BLK_TC_SYNC = 1 << 3,	/* sync IO */
+	BLK_TC_SYNCIO = BLK_TC_SYNC,
+	BLK_TC_QUEUE = 1 << 4,	/* queueing/merging */
+	BLK_TC_REQUEUE = 1 << 5,	/* requeueing */
+	BLK_TC_ISSUE = 1 << 6,	/* issue */
+	BLK_TC_COMPLETE = 1 << 7,	/* completions */
+	BLK_TC_FS = 1 << 8,	/* fs requests */
+	BLK_TC_PC = 1 << 9,	/* pc requests */
+	BLK_TC_NOTIFY = 1 << 10,	/* special message */
+	BLK_TC_AHEAD = 1 << 11,	/* readahead */
+	BLK_TC_META = 1 << 12,	/* metadata */
+	BLK_TC_DISCARD = 1 << 13,	/* discard requests */
+	BLK_TC_DRV_DATA = 1 << 14,	/* binary per-driver data */
 
-	BLK_TC_END	= 1 << 15,	/* only 16-bits, reminder */
+	BLK_TC_END = 1 << 15,	/* only 16-bits, reminder */
 };
 
 #define BLK_TC_SHIFT		(16)
@@ -38,34 +38,33 @@ enum blktrace_cat {
  * Basic trace actions
  */
 enum blktrace_act {
-	__BLK_TA_QUEUE = 1,		/* queued */
-	__BLK_TA_BACKMERGE,		/* back merged to existing rq */
-	__BLK_TA_FRONTMERGE,		/* front merge to existing rq */
-	__BLK_TA_GETRQ,			/* allocated new request */
-	__BLK_TA_SLEEPRQ,		/* sleeping on rq allocation */
-	__BLK_TA_REQUEUE,		/* request requeued */
-	__BLK_TA_ISSUE,			/* sent to driver */
-	__BLK_TA_COMPLETE,		/* completed by driver */
-	__BLK_TA_PLUG,			/* queue was plugged */
-	__BLK_TA_UNPLUG_IO,		/* queue was unplugged by io */
-	__BLK_TA_UNPLUG_TIMER,		/* queue was unplugged by timer */
-	__BLK_TA_INSERT,		/* insert request */
-	__BLK_TA_SPLIT,			/* bio was split */
-	__BLK_TA_BOUNCE,		/* bio was bounced */
-	__BLK_TA_REMAP,			/* bio was remapped */
-	__BLK_TA_ABORT,			/* request aborted */
-	__BLK_TA_DRV_DATA,		/* driver-specific binary data */
+	__BLK_TA_QUEUE = 1,	/* queued */
+	__BLK_TA_BACKMERGE,	/* back merged to existing rq */
+	__BLK_TA_FRONTMERGE,	/* front merge to existing rq */
+	__BLK_TA_GETRQ,		/* allocated new request */
+	__BLK_TA_SLEEPRQ,	/* sleeping on rq allocation */
+	__BLK_TA_REQUEUE,	/* request requeued */
+	__BLK_TA_ISSUE,		/* sent to driver */
+	__BLK_TA_COMPLETE,	/* completed by driver */
+	__BLK_TA_PLUG,		/* queue was plugged */
+	__BLK_TA_UNPLUG_IO,	/* queue was unplugged by io */
+	__BLK_TA_UNPLUG_TIMER,	/* queue was unplugged by timer */
+	__BLK_TA_INSERT,	/* insert request */
+	__BLK_TA_SPLIT,		/* bio was split */
+	__BLK_TA_BOUNCE,	/* bio was bounced */
+	__BLK_TA_REMAP,		/* bio was remapped */
+	__BLK_TA_ABORT,		/* request aborted */
+	__BLK_TA_DRV_DATA,	/* driver-specific binary data */
 };
 
 /*
  * Notify events.
  */
 enum blktrace_notify {
-	__BLK_TN_PROCESS = 0,		/* establish pid/name mapping */
-	__BLK_TN_TIMESTAMP,		/* include system clock */
-	__BLK_TN_MESSAGE,		/* Character string message */
+	__BLK_TN_PROCESS = 0,	/* establish pid/name mapping */
+	__BLK_TN_TIMESTAMP,	/* include system clock */
+	__BLK_TN_MESSAGE,	/* Character string message */
 };
-
 
 /*
  * Trace actions in full. Additionally, read or write is masked
@@ -134,9 +133,9 @@ enum {
  */
 struct blk_user_trace_setup {
 	char name[BLKTRACE_BDEV_SIZE];	/* output */
-	__u16 act_mask;			/* input */
-	__u32 buf_size;			/* input */
-	__u32 buf_nr;			/* input */
+	__u16 act_mask;		/* input */
+	__u32 buf_size;		/* input */
+	__u32 buf_nr;		/* input */
 	__u64 start_lba;
 	__u64 end_lba;
 	__u32 pid;
@@ -163,7 +162,8 @@ struct blk_trace {
 extern int blk_trace_ioctl(struct block_device *, unsigned, char __user *);
 extern void blk_trace_shutdown(struct request_queue *);
 extern int do_blk_trace_setup(struct request_queue *q,
-	char *name, dev_t dev, struct blk_user_trace_setup *buts);
+			      char *name, dev_t dev,
+			      struct blk_user_trace_setup *buts);
 extern void __trace_note_message(struct blk_trace *, const char *fmt, ...);
 
 /**
@@ -190,7 +190,7 @@ extern void __trace_note_message(struct blk_trace *, const char *fmt, ...);
 extern void blk_add_driver_data(struct request_queue *q, struct request *rq,
 				void *data, size_t len);
 extern int blk_trace_setup(struct request_queue *q, char *name, dev_t dev,
-			   char __user *arg);
+			   char __user * arg);
 extern int blk_trace_startstop(struct request_queue *q, int start);
 extern int blk_trace_remove(struct request_queue *q);
 

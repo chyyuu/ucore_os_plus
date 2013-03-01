@@ -5,13 +5,13 @@
 
 /* copied from wait.h */
 
-#  if defined __GNUC__ && !defined __cplusplus
-#   define __WAIT_INT(status) \
+#if defined __GNUC__ && !defined __cplusplus
+#define __WAIT_INT(status) \
   (__extension__ (((union { __typeof(status) __in; int __i; }) \
                    { .__in = (status) }).__i))
-#  else
-#   define __WAIT_INT(status)	(*(__const int *) &(status))
-#  endif
+#else
+#define __WAIT_INT(status)	(*(__const int *) &(status))
+#endif
 
 /* copied from bits/waitflags.h  */
 
@@ -23,13 +23,12 @@
 #define WSTOPPED	2	/* Report stopped child (same as WUNTRACED). */
 #define WEXITED		4	/* Report dead child.  */
 #define WCONTINUED	8	/* Report continued child.  */
-#define WNOWAIT		0x01000000 /* Don't reap, just poll status.  */
+#define WNOWAIT		0x01000000	/* Don't reap, just poll status.  */
 
-#define __WNOTHREAD     0x20000000 /* Don't wait on children of other threads
-				      in this group */
-#define __WALL		0x40000000 /* Wait for any child.  */
-#define __WCLONE	0x80000000 /* Wait for cloned process.  */
-
+#define __WNOTHREAD     0x20000000	/* Don't wait on children of other threads
+					   in this group */
+#define __WALL		0x40000000	/* Wait for any child.  */
+#define __WCLONE	0x80000000	/* Wait for cloned process.  */
 
 /* wait status getter. copied from bits/waitstatus.h */
 
@@ -75,4 +74,4 @@
 
 #endif /* __ASSEMBLER__ */
 
-#endif  /* !__ARCH_UM_INCLUDE_LINUX_WAIT_H__ */
+#endif /* !__ARCH_UM_INCLUDE_LINUX_WAIT_H__ */

@@ -57,13 +57,13 @@
 
 /* Flag to prevent checks on free */
 #ifdef CONFIG_DEBUG_OBJECTS
-# define SLAB_DEBUG_OBJECTS	0x00400000UL
+#define SLAB_DEBUG_OBJECTS	0x00400000UL
 #else
-# define SLAB_DEBUG_OBJECTS	0x00000000UL
+#define SLAB_DEBUG_OBJECTS	0x00000000UL
 #endif
 
 /* The following flags affect the page allocator grouping pages by mobility */
-#define SLAB_RECLAIM_ACCOUNT	0x00020000UL		/* Objects are reclaimable */
+#define SLAB_RECLAIM_ACCOUNT	0x00020000UL	/* Objects are reclaimable */
 #define SLAB_TEMPORARY		SLAB_RECLAIM_ACCOUNT	/* Objects are short-lived */
 /*
  * ZERO_SIZE_PTR will be returned for zero sized kmalloc requests.
@@ -85,8 +85,7 @@ void __init kmem_cache_init(void);
 int slab_is_available(void);
 
 struct kmem_cache *kmem_cache_create(const char *, size_t, size_t,
-			unsigned long,
-			void (*)(void *));
+				     unsigned long, void (*)(void *));
 void kmem_cache_destroy(struct kmem_cache *);
 int kmem_cache_shrink(struct kmem_cache *);
 void kmem_cache_free(struct kmem_cache *, void *);
@@ -124,8 +123,8 @@ int kmem_ptr_validate(struct kmem_cache *cachep, const void *ptr);
 /*
  * Common kmalloc functions provided by all allocators
  */
-void * __must_check __krealloc(const void *, size_t, gfp_t);
-void * __must_check krealloc(const void *, size_t, gfp_t);
+void *__must_check __krealloc(const void *, size_t, gfp_t);
+void *__must_check krealloc(const void *, size_t, gfp_t);
 void kfree(const void *);
 void kzfree(const void *);
 size_t ksize(const void *);
@@ -239,7 +238,7 @@ static inline void *__kmalloc_node(size_t size, gfp_t flags, int node)
 void *kmem_cache_alloc(struct kmem_cache *, gfp_t);
 
 static inline void *kmem_cache_alloc_node(struct kmem_cache *cachep,
-					gfp_t flags, int node)
+					  gfp_t flags, int node)
 {
 	return kmem_cache_alloc(cachep, flags);
 }
@@ -317,4 +316,4 @@ static inline void *kzalloc_node(size_t size, gfp_t flags, int node)
 	return kmalloc_node(size, flags | __GFP_ZERO, node);
 }
 
-#endif	/* _LINUX_SLAB_H */
+#endif /* _LINUX_SLAB_H */

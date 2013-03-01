@@ -32,7 +32,7 @@ struct cramfs_inode {
 	/* SIZE for device files is i_rdev */
 	__u32 size:CRAMFS_SIZE_WIDTH, gid:CRAMFS_GID_WIDTH;
 	/* NAMELEN is the length of the file name, divided by 4 and
-           rounded up.  (cramfs doesn't support hard links.) */
+	   rounded up.  (cramfs doesn't support hard links.) */
 	/* OFFSET: For symlinks and non-empty regular files, this
 	   contains the offset (divided by 4) of the file data in
 	   compressed form (starting with an array of block pointers;
@@ -53,13 +53,13 @@ struct cramfs_info {
  * Superblock information at the beginning of the FS.
  */
 struct cramfs_super {
-	__u32 magic;			/* 0x28cd3d45 - random number */
-	__u32 size;			/* length in bytes */
-	__u32 flags;			/* feature flags */
-	__u32 future;			/* reserved for future use */
-	__u8 signature[16];		/* "Compressed ROMFS" */
+	__u32 magic;		/* 0x28cd3d45 - random number */
+	__u32 size;		/* length in bytes */
+	__u32 flags;		/* feature flags */
+	__u32 future;		/* reserved for future use */
+	__u8 signature[16];	/* "Compressed ROMFS" */
 	struct cramfs_info fsid;	/* unique filesystem info */
-	__u8 name[16];			/* user-defined name */
+	__u8 name[16];		/* user-defined name */
 	struct cramfs_inode root;	/* root inode data */
 };
 

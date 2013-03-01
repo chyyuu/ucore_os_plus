@@ -6,11 +6,11 @@ struct prot_inuse;
 
 struct netns_core {
 	/* core sysctls */
-	struct ctl_table_header	*sysctl_hdr;
+	struct ctl_table_header *sysctl_hdr;
 
-	int	sysctl_somaxconn;
+	int sysctl_somaxconn;
 
-	struct prot_inuse	*inuse;
+	struct prot_inuse *inuse;
 };
 
 #endif

@@ -18,31 +18,27 @@
 /* Supported ACL a_version fields */
 #define POSIX_ACL_XATTR_VERSION	0x0002
 
-
 /* An undefined entry e_id value */
 #define ACL_UNDEFINED_ID	(-1)
 
 typedef struct {
-	__le16			e_tag;
-	__le16			e_perm;
-	__le32			e_id;
+	__le16 e_tag;
+	__le16 e_perm;
+	__le32 e_id;
 } posix_acl_xattr_entry;
 
 typedef struct {
-	__le32			a_version;
-	posix_acl_xattr_entry	a_entries[0];
+	__le32 a_version;
+	posix_acl_xattr_entry a_entries[0];
 } posix_acl_xattr_header;
 
-
-static inline size_t
-posix_acl_xattr_size(int count)
+static inline size_t posix_acl_xattr_size(int count)
 {
 	return (sizeof(posix_acl_xattr_header) +
 		(count * sizeof(posix_acl_xattr_entry)));
 }
 
-static inline int
-posix_acl_xattr_count(size_t size)
+static inline int posix_acl_xattr_count(size_t size)
 {
 	if (size < sizeof(posix_acl_xattr_header))
 		return -1;
@@ -55,4 +51,4 @@ posix_acl_xattr_count(size_t size)
 struct posix_acl *posix_acl_from_xattr(const void *value, size_t size);
 int posix_acl_to_xattr(const struct posix_acl *acl, void *buffer, size_t size);
 
-#endif	/* _POSIX_ACL_XATTR_H */
+#endif /* _POSIX_ACL_XATTR_H */

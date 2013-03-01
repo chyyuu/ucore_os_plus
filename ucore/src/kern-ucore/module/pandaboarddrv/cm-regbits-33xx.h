@@ -16,7 +16,6 @@
  * GNU General Public License for more details.
  */
 
-
 #ifndef __ARCH_ARM_MACH_OMAP2_CM_REGBITS_33XX_H
 #define __ARCH_ARM_MACH_OMAP2_CM_REGBITS_33XX_H
 

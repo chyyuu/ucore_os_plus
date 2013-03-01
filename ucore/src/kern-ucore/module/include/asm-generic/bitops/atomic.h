@@ -11,8 +11,8 @@
  * Hash function to index into a different SPINLOCK.
  * Since "a" is usually an address, use one spinlock per cacheline.
  */
-#  define ATOMIC_HASH_SIZE 4
-#  define ATOMIC_HASH(a) (&(__atomic_hash[ (((unsigned long) a)/L1_CACHE_BYTES) & (ATOMIC_HASH_SIZE-1) ]))
+#define ATOMIC_HASH_SIZE 4
+#define ATOMIC_HASH(a) (&(__atomic_hash[ (((unsigned long) a)/L1_CACHE_BYTES) & (ATOMIC_HASH_SIZE-1) ]))
 
 extern raw_spinlock_t __atomic_hash[ATOMIC_HASH_SIZE] __lock_aligned;
 
@@ -30,10 +30,9 @@ extern raw_spinlock_t __atomic_hash[ATOMIC_HASH_SIZE] __lock_aligned;
 	local_irq_restore(f);				\
 } while(0)
 
-
 #else
-#  define _atomic_spin_lock_irqsave(l,f) do { local_irq_save(f); } while (0)
-#  define _atomic_spin_unlock_irqrestore(l,f) do { local_irq_restore(f); } while (0)
+#define _atomic_spin_lock_irqsave(l,f) do { local_irq_save(f); } while (0)
+#define _atomic_spin_unlock_irqrestore(l,f) do { local_irq_restore(f); } while (0)
 #endif
 
 /*
@@ -68,7 +67,7 @@ static inline void set_bit(int nr, volatile unsigned long *addr)
 	unsigned long flags;
 
 	_atomic_spin_lock_irqsave(p, flags);
-	*p  |= mask;
+	*p |= mask;
 	_atomic_spin_unlock_irqrestore(p, flags);
 }
 

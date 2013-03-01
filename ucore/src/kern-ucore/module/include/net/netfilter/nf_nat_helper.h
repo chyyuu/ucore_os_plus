@@ -22,11 +22,10 @@ extern int nf_nat_mangle_udp_packet(struct sk_buff *skb,
 				    const char *rep_buffer,
 				    unsigned int rep_len);
 extern int nf_nat_seq_adjust(struct sk_buff *skb,
-			     struct nf_conn *ct,
-			     enum ip_conntrack_info ctinfo);
-extern int (*nf_nat_seq_adjust_hook)(struct sk_buff *skb,
-				     struct nf_conn *ct,
-				     enum ip_conntrack_info ctinfo);
+			     struct nf_conn *ct, enum ip_conntrack_info ctinfo);
+extern int (*nf_nat_seq_adjust_hook) (struct sk_buff * skb,
+				      struct nf_conn * ct,
+				      enum ip_conntrack_info ctinfo);
 
 /* Setup NAT on this expected conntrack so it follows master, but goes
  * to port ct->master->saved_proto. */

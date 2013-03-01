@@ -17,8 +17,8 @@
 #include <linux/types.h>
 #include <linux/crc-ccitt.h>
 
-#define INIT_FCS  0xffff   /* Initial FCS value */
-#define GOOD_FCS  0xf0b8   /* Good final FCS value */
+#define INIT_FCS  0xffff	/* Initial FCS value */
+#define GOOD_FCS  0xf0b8	/* Good final FCS value */
 
 /* Recompute the FCS with one more character appended. */
 #define irda_fcs(fcs, c) crc_ccitt_byte(fcs, c)

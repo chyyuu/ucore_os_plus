@@ -34,8 +34,7 @@
  * on our cache or tlb entries.
  */
 
-struct exception_table_entry
-{
+struct exception_table_entry {
 	unsigned long insn, fixup;
 };
 
@@ -382,31 +381,41 @@ do {									\
 	: "r" (x), "i" (-EFAULT)				\
 	: "cc")
 
-
 #ifdef CONFIG_MMU
-extern unsigned long __must_check __copy_from_user(void *to, const void __user *from, unsigned long n);
-extern unsigned long __must_check __copy_to_user(void __user *to, const void *from, unsigned long n);
-extern unsigned long __must_check __clear_user(void __user *addr, unsigned long n);
+extern unsigned long __must_check __copy_from_user(void *to,
+						   const void __user * from,
+						   unsigned long n);
+extern unsigned long __must_check __copy_to_user(void __user * to,
+						 const void *from,
+						 unsigned long n);
+extern unsigned long __must_check __clear_user(void __user * addr,
+					       unsigned long n);
 #else
 #define __copy_from_user(to,from,n)	(memcpy(to, (void __force *)from, n), 0)
 #define __copy_to_user(to,from,n)	(memcpy((void __force *)to, from, n), 0)
 #define __clear_user(addr,n)		(memset((void __force *)addr, 0, n), 0)
 #endif
 
-extern unsigned long __must_check __strncpy_from_user(char *to, const char __user *from, unsigned long count);
-extern unsigned long __must_check __strnlen_user(const char __user *s, long n);
+extern unsigned long __must_check __strncpy_from_user(char *to,
+						      const char __user * from,
+						      unsigned long count);
+extern unsigned long __must_check __strnlen_user(const char __user * s, long n);
 
 #if 0
-static inline unsigned long __must_check copy_from_user(void *to, const void __user *from, unsigned long n)
+static inline unsigned long __must_check copy_from_user(void *to,
+							const void __user *
+							from, unsigned long n)
 {
 	if (access_ok(VERIFY_READ, from, n))
 		n = __copy_from_user(to, from, n);
-	else /* security hole - plug it */
+	else			/* security hole - plug it */
 		memset(to, 0, n);
 	return n;
 }
 
-static inline unsigned long __must_check copy_to_user(void __user *to, const void *from, unsigned long n)
+static inline unsigned long __must_check copy_to_user(void __user * to,
+						      const void *from,
+						      unsigned long n)
 {
 	if (access_ok(VERIFY_WRITE, to, n))
 		n = __copy_to_user(to, from, n);
@@ -419,14 +428,17 @@ static inline unsigned long __must_check copy_to_user(void __user *to, const voi
 #define __copy_to_user_inatomic __copy_to_user
 #define __copy_from_user_inatomic __copy_from_user
 
-static inline unsigned long __must_check clear_user(void __user *to, unsigned long n)
+static inline unsigned long __must_check clear_user(void __user * to,
+						    unsigned long n)
 {
 	if (access_ok(VERIFY_WRITE, to, n))
 		n = __clear_user(to, n);
 	return n;
 }
 
-static inline long __must_check strncpy_from_user(char *dst, const char __user *src, long count)
+static inline long __must_check strncpy_from_user(char *dst,
+						  const char __user * src,
+						  long count)
 {
 	long res = -EFAULT;
 	if (access_ok(VERIFY_READ, src, 1))
@@ -436,7 +448,7 @@ static inline long __must_check strncpy_from_user(char *dst, const char __user *
 
 #define strlen_user(s)	strnlen_user(s, ~0UL >> 1)
 
-static inline long __must_check strnlen_user(const char __user *s, long n)
+static inline long __must_check strnlen_user(const char __user * s, long n)
 {
 	unsigned long res = 0;
 

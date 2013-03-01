@@ -64,7 +64,7 @@ static inline void delayacct_clear_flag(int flag)
 
 static inline void delayacct_tsk_init(struct task_struct *tsk)
 {
-	/* reinitialize in case parent's non-null pointer was dup'ed*/
+	/* reinitialize in case parent's non-null pointer was dup'ed */
 	tsk->delays = NULL;
 	if (delayacct_on)
 		__delayacct_tsk_init(tsk);
@@ -95,7 +95,7 @@ static inline void delayacct_blkio_end(void)
 }
 
 static inline int delayacct_add_tsk(struct taskstats *d,
-					struct task_struct *tsk)
+				    struct task_struct *tsk)
 {
 	if (!delayacct_on || !tsk->delays)
 		return 0;
@@ -123,30 +123,56 @@ static inline void delayacct_freepages_end(void)
 
 #else
 static inline void delayacct_set_flag(int flag)
-{}
+{
+}
+
 static inline void delayacct_clear_flag(int flag)
-{}
+{
+}
+
 static inline void delayacct_init(void)
-{}
+{
+}
+
 static inline void delayacct_tsk_init(struct task_struct *tsk)
-{}
+{
+}
+
 static inline void delayacct_tsk_free(struct task_struct *tsk)
-{}
+{
+}
+
 static inline void delayacct_blkio_start(void)
-{}
+{
+}
+
 static inline void delayacct_blkio_end(void)
-{}
+{
+}
+
 static inline int delayacct_add_tsk(struct taskstats *d,
-					struct task_struct *tsk)
-{ return 0; }
+				    struct task_struct *tsk)
+{
+	return 0;
+}
+
 static inline __u64 delayacct_blkio_ticks(struct task_struct *tsk)
-{ return 0; }
+{
+	return 0;
+}
+
 static inline int delayacct_is_task_waiting_on_io(struct task_struct *p)
-{ return 0; }
+{
+	return 0;
+}
+
 static inline void delayacct_freepages_start(void)
-{}
+{
+}
+
 static inline void delayacct_freepages_end(void)
-{}
+{
+}
 
 #endif /* CONFIG_TASK_DELAY_ACCT */
 

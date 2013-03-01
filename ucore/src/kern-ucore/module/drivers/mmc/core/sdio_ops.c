@@ -19,7 +19,7 @@
 #include "core.h"
 #include "sdio_ops.h"
 
-int mmc_send_io_op_cond(struct mmc_host *host, u32 ocr, u32 *rocr)
+int mmc_send_io_op_cond(struct mmc_host *host, u32 ocr, u32 * rocr)
 {
 	struct mmc_command cmd;
 	int i, err = 0;
@@ -68,7 +68,7 @@ int mmc_send_io_op_cond(struct mmc_host *host, u32 ocr, u32 *rocr)
 }
 
 int mmc_io_rw_direct(struct mmc_card *card, int write, unsigned fn,
-	unsigned addr, u8 in, u8* out)
+		     unsigned addr, u8 in, u8 * out)
 {
 	struct mmc_command cmd;
 	int err;
@@ -112,7 +112,8 @@ int mmc_io_rw_direct(struct mmc_card *card, int write, unsigned fn,
 }
 
 int mmc_io_rw_extended(struct mmc_card *card, int write, unsigned fn,
-	unsigned addr, int incr_addr, u8 *buf, unsigned blocks, unsigned blksz)
+		       unsigned addr, int incr_addr, u8 * buf, unsigned blocks,
+		       unsigned blksz)
 {
 	struct mmc_request mrq;
 	struct mmc_command cmd;
@@ -140,7 +141,7 @@ int mmc_io_rw_extended(struct mmc_card *card, int write, unsigned fn,
 	if (blocks == 1 && blksz <= 512)
 		cmd.arg |= (blksz == 512) ? 0 : blksz;	/* byte mode */
 	else
-		cmd.arg |= 0x08000000 | blocks;		/* block mode */
+		cmd.arg |= 0x08000000 | blocks;	/* block mode */
 	cmd.flags = MMC_RSP_SPI_R5 | MMC_RSP_R5 | MMC_CMD_ADTC;
 
 	data.blksz = blksz;
@@ -173,4 +174,3 @@ int mmc_io_rw_extended(struct mmc_card *card, int write, unsigned fn,
 
 	return 0;
 }
-

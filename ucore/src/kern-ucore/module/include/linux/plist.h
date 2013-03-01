@@ -86,14 +86,14 @@ struct plist_head {
 };
 
 struct plist_node {
-	int			prio;
-	struct plist_head	plist;
+	int prio;
+	struct plist_head plist;
 };
 
 #ifdef CONFIG_DEBUG_PI_LIST
-# define PLIST_HEAD_LOCK_INIT(_lock)	.lock = _lock
+#define PLIST_HEAD_LOCK_INIT(_lock)	.lock = _lock
 #else
-# define PLIST_HEAD_LOCK_INIT(_lock)
+#define PLIST_HEAD_LOCK_INIT(_lock)
 #endif
 
 /**
@@ -124,8 +124,7 @@ struct plist_node {
  * @head:	&struct plist_head pointer
  * @lock:	list spinlock, remembered for debugging
  */
-static inline void
-plist_head_init(struct plist_head *head, spinlock_t *lock)
+static inline void plist_head_init(struct plist_head *head, spinlock_t * lock)
 {
 	INIT_LIST_HEAD(&head->prio_list);
 	INIT_LIST_HEAD(&head->node_list);
@@ -215,13 +214,13 @@ static inline int plist_node_empty(const struct plist_node *node)
  * @member:	the name of the list_struct within the struct
  */
 #ifdef CONFIG_DEBUG_PI_LIST
-# define plist_first_entry(head, type, member)	\
+#define plist_first_entry(head, type, member)	\
 ({ \
 	WARN_ON(plist_head_empty(head)); \
 	container_of(plist_first(head), type, member); \
 })
 #else
-# define plist_first_entry(head, type, member)	\
+#define plist_first_entry(head, type, member)	\
 	container_of(plist_first(head), type, member)
 #endif
 
@@ -231,7 +230,7 @@ static inline int plist_node_empty(const struct plist_node *node)
  *
  * Assumes the plist is _not_ empty.
  */
-static inline struct plist_node* plist_first(const struct plist_head *head)
+static inline struct plist_node *plist_first(const struct plist_head *head)
 {
 	return list_entry(head->node_list.next,
 			  struct plist_node, plist.node_list);

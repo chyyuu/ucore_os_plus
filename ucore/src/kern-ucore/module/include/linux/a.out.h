@@ -14,29 +14,29 @@
 /* these go in the N_MACHTYPE field */
 enum machine_type {
 #if defined (M_OLDSUN2)
-  M__OLDSUN2 = M_OLDSUN2,
+	M__OLDSUN2 = M_OLDSUN2,
 #else
-  M_OLDSUN2 = 0,
+	M_OLDSUN2 = 0,
 #endif
 #if defined (M_68010)
-  M__68010 = M_68010,
+	M__68010 = M_68010,
 #else
-  M_68010 = 1,
+	M_68010 = 1,
 #endif
 #if defined (M_68020)
-  M__68020 = M_68020,
+	M__68020 = M_68020,
 #else
-  M_68020 = 2,
+	M_68020 = 2,
 #endif
 #if defined (M_SPARC)
-  M__SPARC = M_SPARC,
+	M__SPARC = M_SPARC,
 #else
-  M_SPARC = 3,
+	M_SPARC = 3,
 #endif
-  /* skip a bunch so we don't run into any of sun's numbers */
-  M_386 = 100,
-  M_MIPS1 = 151,	/* MIPS R3000/R3000 binary */
-  M_MIPS2 = 152		/* MIPS R6000/R4000 binary */
+	/* skip a bunch so we don't run into any of sun's numbers */
+	M_386 = 100,
+	M_MIPS1 = 151,		/* MIPS R3000/R3000 binary */
+	M_MIPS2 = 152		/* MIPS R6000/R4000 binary */
 };
 
 #if !defined (N_MAGIC)
@@ -120,7 +120,7 @@ enum machine_type {
 #endif
 #ifdef	sony
 #define	SEGMENT_SIZE	0x2000
-#endif	/* Sony.  */
+#endif /* Sony.  */
 #ifdef is68k
 #define SEGMENT_SIZE 0x20000
 #endif
@@ -165,15 +165,15 @@ enum machine_type {
 
 #if !defined (N_NLIST_DECLARED)
 struct nlist {
-  union {
-    char *n_name;
-    struct nlist *n_next;
-    long n_strx;
-  } n_un;
-  unsigned char n_type;
-  char n_other;
-  short n_desc;
-  unsigned long n_value;
+	union {
+		char *n_name;
+		struct nlist *n_next;
+		long n_strx;
+	} n_un;
+	unsigned char n_type;
+	char n_other;
+	short n_desc;
+	unsigned long n_value;
 };
 #endif /* no N_NLIST_DECLARED.  */
 
@@ -242,34 +242,33 @@ struct nlist {
    all of which apply to the text section.
    Likewise, the data-relocation section applies to the data section.  */
 
-struct relocation_info
-{
-  /* Address (within segment) to be relocated.  */
-  int r_address;
-  /* The meaning of r_symbolnum depends on r_extern.  */
-  unsigned int r_symbolnum:24;
-  /* Nonzero means value is a pc-relative offset
-     and it should be relocated for changes in its own address
-     as well as for changes in the symbol or section specified.  */
-  unsigned int r_pcrel:1;
-  /* Length (as exponent of 2) of the field to be relocated.
-     Thus, a value of 2 indicates 1<<2 bytes.  */
-  unsigned int r_length:2;
-  /* 1 => relocate with value of symbol.
-          r_symbolnum is the index of the symbol
-	  in file's the symbol table.
-     0 => relocate with the address of a segment.
-          r_symbolnum is N_TEXT, N_DATA, N_BSS or N_ABS
-	  (the N_EXT bit may be set also, but signifies nothing).  */
-  unsigned int r_extern:1;
-  /* Four bits that aren't used, but when writing an object file
-     it is desirable to clear them.  */
+struct relocation_info {
+	/* Address (within segment) to be relocated.  */
+	int r_address;
+	/* The meaning of r_symbolnum depends on r_extern.  */
+	unsigned int r_symbolnum:24;
+	/* Nonzero means value is a pc-relative offset
+	   and it should be relocated for changes in its own address
+	   as well as for changes in the symbol or section specified.  */
+	unsigned int r_pcrel:1;
+	/* Length (as exponent of 2) of the field to be relocated.
+	   Thus, a value of 2 indicates 1<<2 bytes.  */
+	unsigned int r_length:2;
+	/* 1 => relocate with value of symbol.
+	   r_symbolnum is the index of the symbol
+	   in file's the symbol table.
+	   0 => relocate with the address of a segment.
+	   r_symbolnum is N_TEXT, N_DATA, N_BSS or N_ABS
+	   (the N_EXT bit may be set also, but signifies nothing).  */
+	unsigned int r_extern:1;
+	/* Four bits that aren't used, but when writing an object file
+	   it is desirable to clear them.  */
 #ifdef NS32K
-  unsigned r_bsr:1;
-  unsigned r_disp:1;
-  unsigned r_pad:2;
+	unsigned r_bsr:1;
+	unsigned r_disp:1;
+	unsigned r_pad:2;
 #else
-  unsigned int r_pad:4;
+	unsigned int r_pad:4;
 #endif
 };
 #endif /* no N_RELOCATION_INFO_DECLARED.  */

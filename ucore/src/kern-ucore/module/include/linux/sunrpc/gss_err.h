@@ -64,13 +64,11 @@ typedef unsigned int OM_uint32;
 #define GSS_C_GSS_CODE 1
 #define GSS_C_MECH_CODE 2
 
-
 /*
  * Expiration time of 2^32-1 seconds means infinite lifetime for a
  * credential or security context
  */
 #define GSS_C_INDEFINITE ((OM_uint32) 0xfffffffful)
-
 
 /* Major status codes */
 

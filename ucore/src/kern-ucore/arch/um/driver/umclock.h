@@ -10,7 +10,7 @@
 
 extern volatile size_t ticks;
 
-int umclock_init (void);
-int umclock_set_interval (long sec, long usec);
+int umclock_init(void);
+int umclock_set_interval(long sec, long usec);
 
-#endif  /* !__ARCH_UM_DRIVERS_CLOCK_H__ */
+#endif /* !__ARCH_UM_DRIVERS_CLOCK_H__ */

@@ -24,7 +24,7 @@ typedef struct {
  *  modified for 2.6 by Hyok S. Choi <hyok.choi@samsung.com>
  */
 typedef struct {
-	unsigned long		end_brk;
+	unsigned long end_brk;
 } mm_context_t;
 
 #endif

@@ -9,21 +9,21 @@
  *     copied from asm/sigcontext.h
  **************************************************/
 struct _fpx_sw_bytes {
-	uint32_t magic1;		 /* FP_XSTATE_MAGIC1 */
-	uint32_t extended_size;	 /* total size of the layout referred by
-				 	 	 	  * fpstate pointer in the sigcontext.
-				 	 	 	  */
+	uint32_t magic1;	/* FP_XSTATE_MAGIC1 */
+	uint32_t extended_size;	/* total size of the layout referred by
+				 * fpstate pointer in the sigcontext.
+				 */
 	uint64_t xstate_bv;
-					 	 	 /* feature bit mask (including fp/sse/extended
-				 	 	 	  * state) that is present in the memory
-				 	 	 	  * layout.
-				 	 	 	  */
-	uint32_t xstate_size;	 /* actual xsave state size, based on the
-				 	 	 	  * features saved in the layout.
-				 	 	 	  * 'extended_size' will be greater than
-				 	 	 	  * 'xstate_size'.
-				 	 	 	  */
-	uint32_t padding[7]; 	 /*  for future use. */
+	/* feature bit mask (including fp/sse/extended
+	 * state) that is present in the memory
+	 * layout.
+	 */
+	uint32_t xstate_size;	/* actual xsave state size, based on the
+				 * features saved in the layout.
+				 * 'extended_size' will be greater than
+				 * 'xstate_size'.
+				 */
+	uint32_t padding[7];	/*  for future use. */
 };
 
 struct _fpreg {
@@ -43,28 +43,28 @@ struct _xmmreg {
 
 struct _fpstate {
 	/* Regular FPU environment */
-	unsigned long	cw;
-	unsigned long	sw;
-	unsigned long	tag;
-	unsigned long	ipoff;
-	unsigned long	cssel;
-	unsigned long	dataoff;
-	unsigned long	datasel;
-	struct _fpreg	_st[8];
-	unsigned short	status;
-	unsigned short	magic;		/* 0xffff = regular FPU data only */
+	unsigned long cw;
+	unsigned long sw;
+	unsigned long tag;
+	unsigned long ipoff;
+	unsigned long cssel;
+	unsigned long dataoff;
+	unsigned long datasel;
+	struct _fpreg _st[8];
+	unsigned short status;
+	unsigned short magic;	/* 0xffff = regular FPU data only */
 
 	/* FXSR FPU environment */
-	unsigned long	_fxsr_env[6];	/* FXSR FPU env is ignored */
-	unsigned long	mxcsr;
-	unsigned long	reserved;
-	struct _fpxreg	_fxsr_st[8];	/* FXSR FPU reg data is ignored */
-	struct _xmmreg	_xmm[8];
-	unsigned long	padding1[44];
+	unsigned long _fxsr_env[6];	/* FXSR FPU env is ignored */
+	unsigned long mxcsr;
+	unsigned long reserved;
+	struct _fpxreg _fxsr_st[8];	/* FXSR FPU reg data is ignored */
+	struct _xmmreg _xmm[8];
+	unsigned long padding1[44];
 
 	union {
-		unsigned long	padding2[12];
-		struct _fpx_sw_bytes sw_reserved; /* represents the extended state info */
+		unsigned long padding2[12];
+		struct _fpx_sw_bytes sw_reserved;	/* represents the extended state info */
 	};
 };
 
@@ -97,10 +97,10 @@ struct sigcontext {
  * signal context related structures end
  **************************************************/
 
-int segv_handler (int sig, struct um_pt_regs *regs);
-int io_handler (int sig, struct um_pt_regs *regs);
-int vtimer_handler (int sig, struct um_pt_regs *regs);
+int segv_handler(int sig, struct um_pt_regs *regs);
+int io_handler(int sig, struct um_pt_regs *regs);
+int vtimer_handler(int sig, struct um_pt_regs *regs);
 
-void host_signal_init ();
+void host_signal_init();
 
-#endif  /* !__ARCH_UM_INCLUDE_HOST_SIGNAL_H__ */
+#endif /* !__ARCH_UM_INCLUDE_HOST_SIGNAL_H__ */

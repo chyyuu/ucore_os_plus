@@ -27,7 +27,7 @@ int dquot_drop(struct inode *inode);
 struct dquot *dqget(struct super_block *sb, unsigned int id, int type);
 void dqput(struct dquot *dquot);
 int dquot_scan_active(struct super_block *sb,
-		      int (*fn)(struct dquot *dquot, unsigned long priv),
+		      int (*fn) (struct dquot * dquot, unsigned long priv),
 		      unsigned long priv);
 struct dquot *dquot_alloc(struct super_block *sb, int type);
 void dquot_destroy(struct dquot *dquot);
@@ -46,20 +46,22 @@ int dquot_commit_info(struct super_block *sb, int type);
 int dquot_mark_dquot_dirty(struct dquot *dquot);
 
 int vfs_quota_on(struct super_block *sb, int type, int format_id,
- 	char *path, int remount);
+		 char *path, int remount);
 int vfs_quota_enable(struct inode *inode, int type, int format_id,
-	unsigned int flags);
+		     unsigned int flags);
 int vfs_quota_on_path(struct super_block *sb, int type, int format_id,
- 	struct path *path);
+		      struct path *path);
 int vfs_quota_on_mount(struct super_block *sb, char *qf_name,
- 	int format_id, int type);
+		       int format_id, int type);
 int vfs_quota_off(struct super_block *sb, int type, int remount);
 int vfs_quota_disable(struct super_block *sb, int type, unsigned int flags);
 int vfs_quota_sync(struct super_block *sb, int type);
 int vfs_get_dqinfo(struct super_block *sb, int type, struct if_dqinfo *ii);
 int vfs_set_dqinfo(struct super_block *sb, int type, struct if_dqinfo *ii);
-int vfs_get_dqblk(struct super_block *sb, int type, qid_t id, struct if_dqblk *di);
-int vfs_set_dqblk(struct super_block *sb, int type, qid_t id, struct if_dqblk *di);
+int vfs_get_dqblk(struct super_block *sb, int type, qid_t id,
+		  struct if_dqblk *di);
+int vfs_set_dqblk(struct super_block *sb, int type, qid_t id,
+		  struct if_dqblk *di);
 
 void vfs_dq_drop(struct inode *inode);
 int vfs_dq_transfer(struct inode *inode, struct iattr *iattr);
@@ -77,25 +79,24 @@ static inline struct mem_dqinfo *sb_dqinfo(struct super_block *sb, int type)
 static inline int sb_has_quota_usage_enabled(struct super_block *sb, int type)
 {
 	return sb_dqopt(sb)->flags &
-				dquot_state_flag(DQUOT_USAGE_ENABLED, type);
+	    dquot_state_flag(DQUOT_USAGE_ENABLED, type);
 }
 
 static inline int sb_has_quota_limits_enabled(struct super_block *sb, int type)
 {
 	return sb_dqopt(sb)->flags &
-				dquot_state_flag(DQUOT_LIMITS_ENABLED, type);
+	    dquot_state_flag(DQUOT_LIMITS_ENABLED, type);
 }
 
 static inline int sb_has_quota_suspended(struct super_block *sb, int type)
 {
-	return sb_dqopt(sb)->flags &
-				dquot_state_flag(DQUOT_SUSPENDED, type);
+	return sb_dqopt(sb)->flags & dquot_state_flag(DQUOT_SUSPENDED, type);
 }
 
 static inline int sb_any_quota_suspended(struct super_block *sb)
 {
 	return sb_has_quota_suspended(sb, USRQUOTA) ||
-		sb_has_quota_suspended(sb, GRPQUOTA);
+	    sb_has_quota_suspended(sb, GRPQUOTA);
 }
 
 /* Does kernel know about any quota information for given sb + type? */
@@ -108,19 +109,19 @@ static inline int sb_has_quota_loaded(struct super_block *sb, int type)
 static inline int sb_any_quota_loaded(struct super_block *sb)
 {
 	return sb_has_quota_loaded(sb, USRQUOTA) ||
-		sb_has_quota_loaded(sb, GRPQUOTA);
+	    sb_has_quota_loaded(sb, GRPQUOTA);
 }
 
 static inline int sb_has_quota_active(struct super_block *sb, int type)
 {
 	return sb_has_quota_loaded(sb, type) &&
-	       !sb_has_quota_suspended(sb, type);
+	    !sb_has_quota_suspended(sb, type);
 }
 
 static inline int sb_any_quota_active(struct super_block *sb)
 {
 	return sb_has_quota_active(sb, USRQUOTA) ||
-	       sb_has_quota_active(sb, GRPQUOTA);
+	    sb_has_quota_active(sb, GRPQUOTA);
 }
 
 /*
@@ -149,8 +150,7 @@ static inline int vfs_dq_prealloc_space_nodirty(struct inode *inode, qsize_t nr)
 		/* Used space is updated in alloc_space() */
 		if (inode->i_sb->dq_op->alloc_space(inode, nr, 1) == NO_QUOTA)
 			return 1;
-	}
-	else
+	} else
 		inode_add_bytes(inode, nr);
 	return 0;
 }
@@ -158,7 +158,7 @@ static inline int vfs_dq_prealloc_space_nodirty(struct inode *inode, qsize_t nr)
 static inline int vfs_dq_prealloc_space(struct inode *inode, qsize_t nr)
 {
 	int ret;
-        if (!(ret =  vfs_dq_prealloc_space_nodirty(inode, nr)))
+	if (!(ret = vfs_dq_prealloc_space_nodirty(inode, nr)))
 		mark_inode_dirty(inode);
 	return ret;
 }
@@ -169,8 +169,7 @@ static inline int vfs_dq_alloc_space_nodirty(struct inode *inode, qsize_t nr)
 		/* Used space is updated in alloc_space() */
 		if (inode->i_sb->dq_op->alloc_space(inode, nr, 0) == NO_QUOTA)
 			return 1;
-	}
-	else
+	} else
 		inode_add_bytes(inode, nr);
 	return 0;
 }
@@ -348,32 +347,32 @@ static inline void vfs_dq_free_space(struct inode *inode, qsize_t nr)
 {
 	vfs_dq_free_space_nodirty(inode, nr);
 	mark_inode_dirty(inode);
-}	
+}
 
 #endif /* CONFIG_QUOTA */
 
 static inline int vfs_dq_prealloc_block_nodirty(struct inode *inode, qsize_t nr)
 {
 	return vfs_dq_prealloc_space_nodirty(inode,
-			nr << inode->i_sb->s_blocksize_bits);
+					     nr << inode->
+					     i_sb->s_blocksize_bits);
 }
 
 static inline int vfs_dq_prealloc_block(struct inode *inode, qsize_t nr)
 {
 	return vfs_dq_prealloc_space(inode,
-			nr << inode->i_sb->s_blocksize_bits);
+				     nr << inode->i_sb->s_blocksize_bits);
 }
 
 static inline int vfs_dq_alloc_block_nodirty(struct inode *inode, qsize_t nr)
 {
- 	return vfs_dq_alloc_space_nodirty(inode,
-			nr << inode->i_sb->s_blocksize_bits);
+	return vfs_dq_alloc_space_nodirty(inode,
+					  nr << inode->i_sb->s_blocksize_bits);
 }
 
 static inline int vfs_dq_alloc_block(struct inode *inode, qsize_t nr)
 {
-	return vfs_dq_alloc_space(inode,
-			nr << inode->i_sb->s_blocksize_bits);
+	return vfs_dq_alloc_space(inode, nr << inode->i_sb->s_blocksize_bits);
 }
 
 static inline void vfs_dq_free_block_nodirty(struct inode *inode, qsize_t nr)

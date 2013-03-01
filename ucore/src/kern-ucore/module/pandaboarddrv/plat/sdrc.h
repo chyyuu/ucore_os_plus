@@ -16,7 +16,6 @@
  * published by the Free Software Foundation.
  */
 
-
 /* SDRC register offsets - read/write with sdrc_{read,write}_reg() */
 
 #define SDRC_SYSCONFIG		0x010
@@ -76,9 +75,8 @@
 #define SDRC_RFR_CTRL_165MHz	(0x00044c00 | 1)
 #define SDRC_RFR_CTRL_133MHz	(0x0003de00 | 1)
 #define SDRC_RFR_CTRL_100MHz	(0x0002da01 | 1)
-#define SDRC_RFR_CTRL_110MHz	(0x0002da01 | 1) /* Need to calc */
-#define SDRC_RFR_CTRL_BYPASS	(0x00005000 | 1) /* Need to calc */
-
+#define SDRC_RFR_CTRL_110MHz	(0x0002da01 | 1)	/* Need to calc */
+#define SDRC_RFR_CTRL_BYPASS	(0x00005000 | 1)	/* Need to calc */
 
 /*
  * SMS register access
@@ -98,7 +96,6 @@
 #define SMS_ROT_SIZE(context)		(0x184 + 0x10 * context)
 #define SMS_ROT_PHYSICAL_BA(context)	(0x188 + 0x10 * context)
 /* REVISIT: fill in other SMS registers here */
-
 
 #ifndef __ASSEMBLER__
 
@@ -125,10 +122,12 @@ struct omap_sdrc_params {
 
 #ifdef CONFIG_SOC_HAS_OMAP2_SDRC
 void omap2_sdrc_init(struct omap_sdrc_params *sdrc_cs0,
-			    struct omap_sdrc_params *sdrc_cs1);
+		     struct omap_sdrc_params *sdrc_cs1);
 #else
 static inline void __init omap2_sdrc_init(struct omap_sdrc_params *sdrc_cs0,
-					  struct omap_sdrc_params *sdrc_cs1) {};
+					  struct omap_sdrc_params *sdrc_cs1)
+{
+};
 #endif
 
 int omap2_sdrc_get_params(unsigned long r,
@@ -157,8 +156,8 @@ struct omap_sdrc_params *rx51_get_sdram_timings(void);
 u32 omap2xxx_sdrc_dll_is_unlocked(void);
 u32 omap2xxx_sdrc_reprogram(u32 level, u32 force);
 
-#endif  /* CONFIG_ARCH_OMAP2 */
+#endif /* CONFIG_ARCH_OMAP2 */
 
-#endif  /* __ASSEMBLER__ */
+#endif /* __ASSEMBLER__ */
 
 #endif

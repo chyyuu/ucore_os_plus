@@ -16,7 +16,6 @@
  * =====================================================================================
  */
 
-
 #ifndef  MACH_BOARD_VERSATILE_H
 #define  MACH_BOARD_VERSATILE_H
 
@@ -49,7 +48,7 @@
 //extern macro
 
 #define SDRAM0_START 0x0000
-#define SDRAM0_SIZE  0x4000000 //64M
+#define SDRAM0_SIZE  0x4000000	//64M
 
 #define IO_SPACE_START VERSATILEPB_IO_START
 #define IO_SPACE_SIZE  0x200000
@@ -68,4 +67,4 @@ extern void board_init(void);
 
 #endif
 
-#endif  
+#endif

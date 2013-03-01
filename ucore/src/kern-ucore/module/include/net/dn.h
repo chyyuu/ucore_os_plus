@@ -6,66 +6,65 @@
 #include <asm/byteorder.h>
 #include <asm/unaligned.h>
 
-struct dn_scp                                   /* Session Control Port */
-{
-        unsigned char           state;
-#define DN_O     1                      /* Open                 */
-#define DN_CR    2                      /* Connect Receive      */
-#define DN_DR    3                      /* Disconnect Reject    */
-#define DN_DRC   4                      /* Discon. Rej. Complete*/
-#define DN_CC    5                      /* Connect Confirm      */
-#define DN_CI    6                      /* Connect Initiate     */
-#define DN_NR    7                      /* No resources         */
-#define DN_NC    8                      /* No communication     */
-#define DN_CD    9                      /* Connect Delivery     */
-#define DN_RJ    10                     /* Rejected             */
-#define DN_RUN   11                     /* Running              */
-#define DN_DI    12                     /* Disconnect Initiate  */
-#define DN_DIC   13                     /* Disconnect Complete  */
-#define DN_DN    14                     /* Disconnect Notificat */
-#define DN_CL    15                     /* Closed               */
-#define DN_CN    16                     /* Closed Notification  */
+struct dn_scp {			/* Session Control Port */
+	unsigned char state;
+#define DN_O     1		/* Open                 */
+#define DN_CR    2		/* Connect Receive      */
+#define DN_DR    3		/* Disconnect Reject    */
+#define DN_DRC   4		/* Discon. Rej. Complete */
+#define DN_CC    5		/* Connect Confirm      */
+#define DN_CI    6		/* Connect Initiate     */
+#define DN_NR    7		/* No resources         */
+#define DN_NC    8		/* No communication     */
+#define DN_CD    9		/* Connect Delivery     */
+#define DN_RJ    10		/* Rejected             */
+#define DN_RUN   11		/* Running              */
+#define DN_DI    12		/* Disconnect Initiate  */
+#define DN_DIC   13		/* Disconnect Complete  */
+#define DN_DN    14		/* Disconnect Notificat */
+#define DN_CL    15		/* Closed               */
+#define DN_CN    16		/* Closed Notification  */
 
-        __le16          addrloc;
-        __le16          addrrem;
-        __u16          numdat;
-        __u16          numoth;
-        __u16          numoth_rcv;
-        __u16          numdat_rcv;
-        __u16          ackxmt_dat;
-        __u16          ackxmt_oth;
-        __u16          ackrcv_dat;
-        __u16          ackrcv_oth;
-        __u8           flowrem_sw;
-	__u8           flowloc_sw;
+	__le16 addrloc;
+	__le16 addrrem;
+	__u16 numdat;
+	__u16 numoth;
+	__u16 numoth_rcv;
+	__u16 numdat_rcv;
+	__u16 ackxmt_dat;
+	__u16 ackxmt_oth;
+	__u16 ackrcv_dat;
+	__u16 ackrcv_oth;
+	__u8 flowrem_sw;
+	__u8 flowloc_sw;
 #define DN_SEND         2
 #define DN_DONTSEND     1
 #define DN_NOCHANGE     0
-	__u16		flowrem_dat;
-	__u16		flowrem_oth;
-	__u16		flowloc_dat;
-	__u16		flowloc_oth;
-	__u8		services_rem;
-	__u8		services_loc;
-	__u8		info_rem;
-	__u8		info_loc;
+	__u16 flowrem_dat;
+	__u16 flowrem_oth;
+	__u16 flowloc_dat;
+	__u16 flowloc_oth;
+	__u8 services_rem;
+	__u8 services_loc;
+	__u8 info_rem;
+	__u8 info_loc;
 
-	__u16		segsize_rem;
-	__u16		segsize_loc;
+	__u16 segsize_rem;
+	__u16 segsize_loc;
 
-	__u8		nonagle;
-	__u8		multi_ireq;
-	__u8		accept_mode;
-	unsigned long		seg_total; /* Running total of current segment */
+	__u8 nonagle;
+	__u8 multi_ireq;
+	__u8 accept_mode;
+	unsigned long seg_total;	/* Running total of current segment */
 
-	struct optdata_dn     conndata_in;
-	struct optdata_dn     conndata_out;
-	struct optdata_dn     discdata_in;
-	struct optdata_dn     discdata_out;
-        struct accessdata_dn  accessdata;
+	struct optdata_dn conndata_in;
+	struct optdata_dn conndata_out;
+	struct optdata_dn discdata_in;
+	struct optdata_dn discdata_out;
+	struct accessdata_dn accessdata;
 
-        struct sockaddr_dn addr; /* Local address  */
-	struct sockaddr_dn peer; /* Remote address */
+	struct sockaddr_dn addr;	/* Local address  */
+	struct sockaddr_dn peer;	/* Remote address */
 
 	/*
 	 * In this case the RTT estimation is not specified in the
@@ -115,18 +114,18 @@ struct dn_scp                                   /* Session Control Port */
 	/*
 	 * Stuff to do with the slow timer
 	 */
-	unsigned long stamp;          /* time of last transmit */
+	unsigned long stamp;	/* time of last transmit */
 	unsigned long persist;
-	int (*persist_fxn)(struct sock *sk);
+	int (*persist_fxn) (struct sock * sk);
 	unsigned long keepalive;
-	void (*keepalive_fxn)(struct sock *sk);
+	void (*keepalive_fxn) (struct sock * sk);
 
 	/*
 	 * This stuff is for the fast timer for delayed acks
 	 */
 	struct timer_list delack_timer;
 	int delack_pending;
-	void (*delack_fxn)(struct sock *sk);
+	void (*delack_fxn) (struct sock * sk);
 
 };
 
@@ -173,12 +172,12 @@ struct dn_skb_cb {
 
 static inline __le16 dn_eth2dn(unsigned char *ethaddr)
 {
-	return get_unaligned((__le16 *)(ethaddr + 4));
+	return get_unaligned((__le16 *) (ethaddr + 4));
 }
 
 static inline __le16 dn_saddr2dn(struct sockaddr_dn *saddr)
 {
-	return *(__le16 *)saddr->sdn_nodeaddr;
+	return *(__le16 *) saddr->sdn_nodeaddr;
 }
 
 static inline void dn_dn2eth(unsigned char *ethaddr, __le16 addr)
@@ -188,8 +187,8 @@ static inline void dn_dn2eth(unsigned char *ethaddr, __le16 addr)
 	ethaddr[1] = 0x00;
 	ethaddr[2] = 0x04;
 	ethaddr[3] = 0x00;
-	ethaddr[4] = (__u8)(a & 0xff);
-	ethaddr[5] = (__u8)(a >> 8);
+	ethaddr[4] = (__u8) (a & 0xff);
+	ethaddr[5] = (__u8) (a >> 8);
 }
 
 static inline void dn_sk_ports_copy(struct flowi *fl, struct dn_scp *scp)
@@ -211,8 +210,10 @@ extern struct sock *dn_find_by_skb(struct sk_buff *skb);
 extern char *dn_addr2asc(__u16, char *);
 extern int dn_destroy_timer(struct sock *sk);
 
-extern int dn_sockaddr2username(struct sockaddr_dn *addr, unsigned char *buf, unsigned char type);
-extern int dn_username2sockaddr(unsigned char *data, int len, struct sockaddr_dn *addr, unsigned char *type);
+extern int dn_sockaddr2username(struct sockaddr_dn *addr, unsigned char *buf,
+				unsigned char type);
+extern int dn_username2sockaddr(unsigned char *data, int len,
+				struct sockaddr_dn *addr, unsigned char *type);
 
 extern void dn_start_slow_timer(struct sock *sk);
 extern void dn_stop_slow_timer(struct sock *sk);

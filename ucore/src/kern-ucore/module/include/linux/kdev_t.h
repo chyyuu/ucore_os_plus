@@ -69,7 +69,7 @@ static inline dev_t huge_decode_dev(u64 dev)
 
 static inline int sysv_valid_dev(dev_t dev)
 {
-	return MAJOR(dev) < (1<<14) && MINOR(dev) < (1<<18);
+	return MAJOR(dev) < (1 << 14) && MINOR(dev) < (1 << 18);
 }
 
 static inline u32 sysv_encode_dev(dev_t dev)

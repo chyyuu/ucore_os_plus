@@ -31,13 +31,13 @@
  */
 
 #define OMAP2_L3_IO_OFFSET	0x90000000
-#define OMAP2_L3_IO_ADDRESS(pa)	IOMEM((pa) + OMAP2_L3_IO_OFFSET) /* L3 */
+#define OMAP2_L3_IO_ADDRESS(pa)	IOMEM((pa) + OMAP2_L3_IO_OFFSET)	/* L3 */
 
 #define OMAP2_L4_IO_OFFSET	0xb2000000
-#define OMAP2_L4_IO_ADDRESS(pa)	IOMEM((pa) + OMAP2_L4_IO_OFFSET) /* L4 */
+#define OMAP2_L4_IO_ADDRESS(pa)	IOMEM((pa) + OMAP2_L4_IO_OFFSET)	/* L4 */
 
 #define OMAP4_L3_IO_OFFSET	0xb4000000
-#define OMAP4_L3_IO_ADDRESS(pa)	IOMEM((pa) + OMAP4_L3_IO_OFFSET) /* L3 */
+#define OMAP4_L3_IO_ADDRESS(pa)	IOMEM((pa) + OMAP4_L3_IO_OFFSET)	/* L3 */
 
 #define AM33XX_L4_WK_IO_OFFSET	0xb5000000
 #define AM33XX_L4_WK_IO_ADDRESS(pa)	IOMEM((pa) + AM33XX_L4_WK_IO_OFFSET)
@@ -55,12 +55,12 @@
  */
 
 /* We map both L3 and L4 on OMAP2 */
-#define L3_24XX_PHYS	L3_24XX_BASE	/* 0x68000000 --> 0xf8000000*/
+#define L3_24XX_PHYS	L3_24XX_BASE	/* 0x68000000 --> 0xf8000000 */
 #define L3_24XX_VIRT	(L3_24XX_PHYS + OMAP2_L3_IO_OFFSET)
-#define L3_24XX_SIZE	SZ_1M		/* 44kB of 128MB used, want 1MB sect */
+#define L3_24XX_SIZE	SZ_1M	/* 44kB of 128MB used, want 1MB sect */
 #define L4_24XX_PHYS	L4_24XX_BASE	/* 0x48000000 --> 0xfa000000 */
 #define L4_24XX_VIRT	(L4_24XX_PHYS + OMAP2_L4_IO_OFFSET)
-#define L4_24XX_SIZE	SZ_1M		/* 1MB of 128MB used, want 1MB sect */
+#define L4_24XX_SIZE	SZ_1M	/* 1MB of 128MB used, want 1MB sect */
 
 #define L4_WK_243X_PHYS		L4_WK_243X_BASE	/* 0x49000000 --> 0xfb000000 */
 #define L4_WK_243X_VIRT		(L4_WK_243X_PHYS + OMAP2_L4_IO_OFFSET)
@@ -103,11 +103,11 @@
 /* We map both L3 and L4 on OMAP3 */
 #define L3_34XX_PHYS		L3_34XX_BASE	/* 0x68000000 --> 0xf8000000 */
 #define L3_34XX_VIRT		(L3_34XX_PHYS + OMAP2_L3_IO_OFFSET)
-#define L3_34XX_SIZE		SZ_1M   /* 44kB of 128MB used, want 1MB sect */
+#define L3_34XX_SIZE		SZ_1M	/* 44kB of 128MB used, want 1MB sect */
 
 #define L4_34XX_PHYS		L4_34XX_BASE	/* 0x48000000 --> 0xfa000000 */
 #define L4_34XX_VIRT		(L4_34XX_PHYS + OMAP2_L4_IO_OFFSET)
-#define L4_34XX_SIZE		SZ_4M   /* 1MB of 128MB used, want 1MB sect */
+#define L4_34XX_SIZE		SZ_4M	/* 1MB of 128MB used, want 1MB sect */
 
 /*
  * ----------------------------------------------------------------------------
@@ -116,7 +116,7 @@
  */
 #define L4_WK_AM33XX_PHYS	L4_WK_AM33XX_BASE
 #define L4_WK_AM33XX_VIRT	(L4_WK_AM33XX_PHYS + AM33XX_L4_WK_IO_OFFSET)
-#define L4_WK_AM33XX_SIZE	SZ_4M   /* 1MB of 128MB used, want 1MB sect */
+#define L4_WK_AM33XX_SIZE	SZ_4M	/* 1MB of 128MB used, want 1MB sect */
 
 /*
  * Need to look at the Size 4M for L4.
@@ -191,6 +191,6 @@
 #define L4_WK_54XX_VIRT		(L4_WK_54XX_PHYS + OMAP2_L4_IO_OFFSET)
 #define L4_WK_54XX_SIZE		SZ_2M
 
-#define L4_PER_54XX_PHYS	L4_PER_54XX_BASE /* 0x48000000 --> 0xfa000000 */
+#define L4_PER_54XX_PHYS	L4_PER_54XX_BASE	/* 0x48000000 --> 0xfa000000 */
 #define L4_PER_54XX_VIRT	(L4_PER_54XX_PHYS + OMAP2_L4_IO_OFFSET)
 #define L4_PER_54XX_SIZE	SZ_4M

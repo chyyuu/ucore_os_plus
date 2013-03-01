@@ -418,4 +418,4 @@ typedef struct _i2o_status_block {
 #define I2O_DPT_FLASH_READ			0x0101
 #define I2O_DPT_FLASH_WRITE			0x0102
 
-#endif				/* _I2O_DEV_H */
+#endif /* _I2O_DEV_H */

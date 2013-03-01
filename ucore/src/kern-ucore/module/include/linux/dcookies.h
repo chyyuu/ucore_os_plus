@@ -8,22 +8,21 @@
 
 #ifndef DCOOKIES_H
 #define DCOOKIES_H
- 
 
 #ifdef CONFIG_PROFILING
- 
+
 #include <linux/dcache.h>
 #include <linux/path.h>
 #include <linux/types.h>
- 
+
 struct dcookie_user;
- 
+
 /**
  * dcookie_register - register a user of dcookies
  *
  * Register as a dcookie user. Returns %NULL on failure.
  */
-struct dcookie_user * dcookie_register(void);
+struct dcookie_user *dcookie_register(void);
 
 /**
  * dcookie_unregister - unregister a user of dcookies
@@ -31,8 +30,8 @@ struct dcookie_user * dcookie_register(void);
  * Unregister as a dcookie user. This may invalidate
  * any dcookie values returned from get_dcookie().
  */
-void dcookie_unregister(struct dcookie_user * user);
-  
+void dcookie_unregister(struct dcookie_user *user);
+
 /**
  * get_dcookie - acquire a dcookie
  *
@@ -48,12 +47,12 @@ int get_dcookie(struct path *path, unsigned long *cookie);
 
 #else
 
-static inline struct dcookie_user * dcookie_register(void)
+static inline struct dcookie_user *dcookie_register(void)
 {
 	return NULL;
 }
 
-static inline void dcookie_unregister(struct dcookie_user * user)
+static inline void dcookie_unregister(struct dcookie_user *user)
 {
 	return;
 }

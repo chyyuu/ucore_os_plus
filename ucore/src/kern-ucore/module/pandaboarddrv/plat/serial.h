@@ -96,7 +96,7 @@
 #define OMAP3UART1		OMAP2UART1
 #define OMAP3UART2		OMAP2UART2
 #define OMAP3UART3		33
-#define OMAP3UART4		34		/* Only on 36xx */
+#define OMAP3UART4		34	/* Only on 36xx */
 #define OMAP4UART1		OMAP2UART1
 #define OMAP4UART2		OMAP2UART2
 #define OMAP4UART3		43
@@ -107,7 +107,7 @@
 #define AM33XXUART1		84
 #define OMAP5UART3		OMAP4UART3
 #define OMAP5UART4		OMAP4UART4
-#define ZOOM_UART		95		/* Only on zoom2/3 */
+#define ZOOM_UART		95	/* Only on zoom2/3 */
 
 /* This is only used by 8250.c for omap1510 */
 #define is_omap_port(pt)	({int __ret = 0;			\
@@ -126,7 +126,7 @@ struct omap_uart_port_info;
 extern void omap_serial_init(void);
 extern void omap_serial_board_init(struct omap_uart_port_info *platform_data);
 extern void omap_serial_init_port(struct omap_board_data *bdata,
-		struct omap_uart_port_info *platform_data);
+				  struct omap_uart_port_info *platform_data);
 #endif
 
 #endif

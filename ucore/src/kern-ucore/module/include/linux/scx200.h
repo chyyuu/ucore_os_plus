@@ -28,7 +28,7 @@ extern unsigned scx200_cb_base;
 #define SCx200_WDT_WDTO 0x00	/* Time-Out Register */
 #define SCx200_WDT_WDCNFG 0x02	/* Configuration Register */
 #define SCx200_WDT_WDSTS 0x04	/* Status Register */
-#define SCx200_WDT_WDSTS_WDOVF (1<<0) /* Overflow bit */
+#define SCx200_WDT_WDSTS_WDOVF (1<<0)	/* Overflow bit */
 
 /* High Resolution Timer */
 #define SCx200_TIMER_OFFSET 0x08

@@ -20,29 +20,30 @@
 #include <serial.h>
 #include <clock.h>
 
-static const char* message = "Initializing VersatilePB Board...\n";
+static const char *message = "Initializing VersatilePB Board...\n";
 
-static void put_string(const char* str)
+static void put_string(const char *str)
 {
-  while(*str)
-    serial_putc(*str++);
+	while (*str)
+		serial_putc(*str++);
 }
 
-void 
-board_init(){
-  put_string(message);
-  pic_init();                 // init interrupt controller
-  extern void serial_init();
-  serial_init();
+void board_init()
+{
+	put_string(message);
+	pic_init();		// init interrupt controller
+	extern void serial_init();
+	serial_init();
 
 }
 
 /* no nand */
-int check_nandflash(){
-  return 0;
+int check_nandflash()
+{
+	return 0;
 }
 
-struct nand_chip* get_nand_chip(){
-  return NULL;
+struct nand_chip *get_nand_chip()
+{
+	return NULL;
 }
-

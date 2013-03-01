@@ -4,27 +4,27 @@
 #include <linux/types.h>
 
 #ifdef __KERNEL__
-# include <linux/cache.h>
-# include <linux/seqlock.h>
-# include <linux/math64.h>
+#include <linux/cache.h>
+#include <linux/seqlock.h>
+#include <linux/math64.h>
 #endif
 
 #ifndef _STRUCT_TIMESPEC
 #define _STRUCT_TIMESPEC
 struct timespec {
-	time_t	tv_sec;		/* seconds */
-	long	tv_nsec;	/* nanoseconds */
+	time_t tv_sec;		/* seconds */
+	long tv_nsec;		/* nanoseconds */
 };
 #endif
 
 struct timeval {
-	time_t		tv_sec;		/* seconds */
-	suseconds_t	tv_usec;	/* microseconds */
+	time_t tv_sec;		/* seconds */
+	suseconds_t tv_usec;	/* microseconds */
 };
 
 struct timezone {
-	int	tz_minuteswest;	/* minutes west of Greenwich */
-	int	tz_dsttime;	/* type of dst correction */
+	int tz_minuteswest;	/* minutes west of Greenwich */
+	int tz_dsttime;		/* type of dst correction */
 };
 
 #ifdef __KERNEL__
@@ -43,7 +43,7 @@ extern struct timezone sys_tz;
 #define TIME_T_MAX	(time_t)((1UL << ((sizeof(time_t) << 3) - 1)) - 1)
 
 static inline int timespec_equal(const struct timespec *a,
-                                 const struct timespec *b)
+				 const struct timespec *b)
 {
 	return (a->tv_sec == b->tv_sec) && (a->tv_nsec == b->tv_nsec);
 }
@@ -53,7 +53,8 @@ static inline int timespec_equal(const struct timespec *a,
  * lhs == rhs: return 0
  * lhs > rhs:  return >0
  */
-static inline int timespec_compare(const struct timespec *lhs, const struct timespec *rhs)
+static inline int timespec_compare(const struct timespec *lhs,
+				   const struct timespec *rhs)
 {
 	if (lhs->tv_sec < rhs->tv_sec)
 		return -1;
@@ -62,7 +63,8 @@ static inline int timespec_compare(const struct timespec *lhs, const struct time
 	return lhs->tv_nsec - rhs->tv_nsec;
 }
 
-static inline int timeval_compare(const struct timeval *lhs, const struct timeval *rhs)
+static inline int timeval_compare(const struct timeval *lhs,
+				  const struct timeval *rhs)
 {
 	if (lhs->tv_sec < rhs->tv_sec)
 		return -1;
@@ -83,7 +85,7 @@ extern struct timespec timespec_add_safe(const struct timespec lhs,
  * sub = lhs - rhs, in normalized form
  */
 static inline struct timespec timespec_sub(struct timespec lhs,
-						struct timespec rhs)
+					   struct timespec rhs)
 {
 	struct timespec ts_delta;
 	set_normalized_timespec(&ts_delta, lhs.tv_sec - rhs.tv_sec,
@@ -117,7 +119,8 @@ extern void do_gettimeofday(struct timeval *tv);
 extern int do_settimeofday(struct timespec *tv);
 extern int do_sys_settimeofday(struct timespec *tv, struct timezone *tz);
 #define do_posix_clock_monotonic_gettime(ts) ktime_get_ts(ts)
-extern long do_utimes(int dfd, char __user *filename, struct timespec *times, int flags);
+extern long do_utimes(int dfd, char __user * filename, struct timespec *times,
+		      int flags);
 struct itimerval;
 extern int do_setitimer(int which, struct itimerval *value,
 			struct itimerval *ovalue);
@@ -157,8 +160,7 @@ static inline s64 timespec_to_ns(const struct timespec *ts)
  */
 static inline s64 timeval_to_ns(const struct timeval *tv)
 {
-	return ((s64) tv->tv_sec * NSEC_PER_SEC) +
-		tv->tv_usec * NSEC_PER_USEC;
+	return ((s64) tv->tv_sec * NSEC_PER_SEC) + tv->tv_usec * NSEC_PER_USEC;
 }
 
 /**

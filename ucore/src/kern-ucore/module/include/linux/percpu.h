@@ -2,7 +2,7 @@
 #define __LINUX_PERCPU_H
 
 #include <linux/preempt.h>
-#include <linux/slab.h> /* For kmalloc() */
+#include <linux/slab.h>		/* For kmalloc() */
 #include <linux/smp.h>
 #include <linux/cpumask.h>
 
@@ -51,7 +51,7 @@
 
 #define PERCPU_ENOUGH_ROOM						\
 	(__per_cpu_end - __per_cpu_start + PERCPU_MODULE_RESERVE)
-#endif	/* PERCPU_ENOUGH_ROOM */
+#endif /* PERCPU_ENOUGH_ROOM */
 
 /*
  * Must be an lvalue. Since @var must be a simple identifier,
@@ -74,21 +74,22 @@ struct percpu_data {
  * Use this to get to a cpu's version of the per-cpu object dynamically
  * allocated. Non-atomic access to the current CPU's version should
  * probably be combined with get_cpu()/put_cpu().
- */ 
+ */
 #define percpu_ptr(ptr, cpu)                              \
 ({                                                        \
         struct percpu_data *__p = __percpu_disguise(ptr); \
         (__typeof__(ptr))__p->ptrs[(cpu)];	          \
 })
 
-extern void *__percpu_alloc_mask(size_t size, gfp_t gfp, cpumask_t *mask);
+extern void *__percpu_alloc_mask(size_t size, gfp_t gfp, cpumask_t * mask);
 extern void percpu_free(void *__pdata);
 
 #else /* CONFIG_SMP */
 
 #define percpu_ptr(ptr, cpu) ({ (void)(cpu); (ptr); })
 
-static __always_inline void *__percpu_alloc_mask(size_t size, gfp_t gfp, cpumask_t *mask)
+static __always_inline void *__percpu_alloc_mask(size_t size, gfp_t gfp,
+						 cpumask_t * mask)
 {
 	return kzalloc(size, gfp);
 }

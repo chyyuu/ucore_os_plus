@@ -3,71 +3,71 @@
 
 #include <types.h>
 
-#define ELF_MAGIC   0x464C457FU         // "\x7FELF" in little endian
+#define ELF_MAGIC   0x464C457FU	// "\x7FELF" in little endian
 
 #if defined(__UCORE_64__) || defined(__ARCH_X86_64__)
 
 /* file header */
 struct elfhdr {
-    uint32_t e_magic;     // must equal ELF_MAGIC
-    uint8_t e_elf[12];
-    uint16_t e_type;
-    uint16_t e_machine;
-    uint32_t e_version;
-    uint64_t e_entry;
-    uint64_t e_phoff;
-    uint64_t e_shoff;
-    uint32_t e_flags;
-    uint16_t e_ehsize;
-    uint16_t e_phentsize;
-    uint16_t e_phnum;
-    uint16_t e_shentsize;
-    uint16_t e_shnum;
-    uint16_t e_shstrndx;
+	uint32_t e_magic;	// must equal ELF_MAGIC
+	uint8_t e_elf[12];
+	uint16_t e_type;
+	uint16_t e_machine;
+	uint32_t e_version;
+	uint64_t e_entry;
+	uint64_t e_phoff;
+	uint64_t e_shoff;
+	uint32_t e_flags;
+	uint16_t e_ehsize;
+	uint16_t e_phentsize;
+	uint16_t e_phnum;
+	uint16_t e_shentsize;
+	uint16_t e_shnum;
+	uint16_t e_shstrndx;
 };
 
 /* program section header */
 struct proghdr {
-    uint32_t p_type;
-    uint32_t p_flags;
-    uint64_t p_offset;
-    uint64_t p_va;
-    uint64_t p_pa;
-    uint64_t p_filesz;
-    uint64_t p_memsz;
-    uint64_t p_align;
+	uint32_t p_type;
+	uint32_t p_flags;
+	uint64_t p_offset;
+	uint64_t p_va;
+	uint64_t p_pa;
+	uint64_t p_filesz;
+	uint64_t p_memsz;
+	uint64_t p_align;
 };
 
 #else /* __UCORE_64__ not defined */
 
 struct elfhdr {
-    uint32_t e_magic;     // must equal ELF_MAGIC
-    uint8_t e_elf[12];
-    uint16_t e_type;
-    uint16_t e_machine;
-    uint32_t e_version;
-    uint32_t e_entry;
-    uint32_t e_phoff;
-    uint32_t e_shoff;
-    uint32_t e_flags;
-    uint16_t e_ehsize;
-    uint16_t e_phentsize;
-    uint16_t e_phnum;
-    uint16_t e_shentsize;
-    uint16_t e_shnum;
-    uint16_t e_shstrndx;
+	uint32_t e_magic;	// must equal ELF_MAGIC
+	uint8_t e_elf[12];
+	uint16_t e_type;
+	uint16_t e_machine;
+	uint32_t e_version;
+	uint32_t e_entry;
+	uint32_t e_phoff;
+	uint32_t e_shoff;
+	uint32_t e_flags;
+	uint16_t e_ehsize;
+	uint16_t e_phentsize;
+	uint16_t e_phnum;
+	uint16_t e_shentsize;
+	uint16_t e_shnum;
+	uint16_t e_shstrndx;
 };
 
 /* program section header */
 struct proghdr {
-    uint32_t p_type;
-    uint32_t p_offset;
-    uint32_t p_va;
-    uint32_t p_pa;
-    uint32_t p_filesz;
-    uint32_t p_memsz;
-    uint32_t p_flags;
-    uint32_t p_align;
+	uint32_t p_type;
+	uint32_t p_offset;
+	uint32_t p_va;
+	uint32_t p_pa;
+	uint32_t p_filesz;
+	uint32_t p_memsz;
+	uint32_t p_flags;
+	uint32_t p_align;
 };
 
 #endif /* __UCORE_64__ */
@@ -81,4 +81,3 @@ struct proghdr {
 #define ELF_PF_R                        4
 
 #endif /* !__LIBS_ELF_H__ */
-

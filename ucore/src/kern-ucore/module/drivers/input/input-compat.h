@@ -20,15 +20,15 @@
 /* Note to the author of this code: did it ever occur to
    you why the ifdefs are needed? Think about it again. -AK */
 #ifdef CONFIG_X86_64
-#  define INPUT_COMPAT_TEST is_compat_task()
+#define INPUT_COMPAT_TEST is_compat_task()
 #elif defined(CONFIG_IA64)
-#  define INPUT_COMPAT_TEST IS_IA32_PROCESS(task_pt_regs(current))
+#define INPUT_COMPAT_TEST IS_IA32_PROCESS(task_pt_regs(current))
 #elif defined(CONFIG_S390)
-#  define INPUT_COMPAT_TEST test_thread_flag(TIF_31BIT)
+#define INPUT_COMPAT_TEST test_thread_flag(TIF_31BIT)
 #elif defined(CONFIG_MIPS)
-#  define INPUT_COMPAT_TEST test_thread_flag(TIF_32BIT_ADDR)
+#define INPUT_COMPAT_TEST test_thread_flag(TIF_32BIT_ADDR)
 #else
-#  define INPUT_COMPAT_TEST test_thread_flag(TIF_32BIT)
+#define INPUT_COMPAT_TEST test_thread_flag(TIF_32BIT)
 #endif
 
 struct input_event_compat {
@@ -62,7 +62,7 @@ struct ff_effect_compat {
 		struct ff_constant_effect constant;
 		struct ff_ramp_effect ramp;
 		struct ff_periodic_effect_compat periodic;
-		struct ff_condition_effect condition[2]; /* One for each axis */
+		struct ff_condition_effect condition[2];	/* One for each axis */
 		struct ff_rumble_effect rumble;
 	} u;
 };
@@ -70,7 +70,7 @@ struct ff_effect_compat {
 static inline size_t input_event_size(void)
 {
 	return INPUT_COMPAT_TEST ?
-		sizeof(struct input_event_compat) : sizeof(struct input_event);
+	    sizeof(struct input_event_compat) : sizeof(struct input_event);
 }
 
 #else
@@ -82,13 +82,12 @@ static inline size_t input_event_size(void)
 
 #endif /* CONFIG_COMPAT */
 
-int input_event_from_user(const char __user *buffer,
-			 struct input_event *event);
+int input_event_from_user(const char __user * buffer,
+			  struct input_event *event);
 
-int input_event_to_user(char __user *buffer,
-			const struct input_event *event);
+int input_event_to_user(char __user * buffer, const struct input_event *event);
 
-int input_ff_effect_from_user(const char __user *buffer, size_t size,
+int input_ff_effect_from_user(const char __user * buffer, size_t size,
 			      struct ff_effect *effect);
 
 #endif /* _INPUT_COMPAT_H */

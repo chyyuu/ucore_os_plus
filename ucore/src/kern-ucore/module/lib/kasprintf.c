@@ -9,7 +9,6 @@
 #include <linux/types.h>
 #include <linux/string.h>
 
-
 /* Simplified asprintf. */
 char *kvasprintf(gfp_t gfp, const char *fmt, va_list ap)
 {
@@ -21,14 +20,15 @@ char *kvasprintf(gfp_t gfp, const char *fmt, va_list ap)
 	len = vsnprintf(NULL, 0, fmt, aq);
 	va_end(aq);
 
-	p = kmalloc(len+1, gfp);
+	p = kmalloc(len + 1, gfp);
 	if (!p)
 		return NULL;
 
-	vsnprintf(p, len+1, fmt, ap);
+	vsnprintf(p, len + 1, fmt, ap);
 
 	return p;
 }
+
 EXPORT_SYMBOL(kvasprintf);
 
 char *kasprintf(gfp_t gfp, const char *fmt, ...)
@@ -42,4 +42,5 @@ char *kasprintf(gfp_t gfp, const char *fmt, ...)
 
 	return p;
 }
+
 EXPORT_SYMBOL(kasprintf);

@@ -21,22 +21,22 @@
 #include "mmc_ops.h"
 
 static const unsigned int tran_exp[] = {
-	10000,		100000,		1000000,	10000000,
-	0,		0,		0,		0
+	10000, 100000, 1000000, 10000000,
+	0, 0, 0, 0
 };
 
 static const unsigned char tran_mant[] = {
-	0,	10,	12,	13,	15,	20,	25,	30,
-	35,	40,	45,	50,	55,	60,	70,	80,
+	0, 10, 12, 13, 15, 20, 25, 30,
+	35, 40, 45, 50, 55, 60, 70, 80,
 };
 
 static const unsigned int tacc_exp[] = {
-	1,	10,	100,	1000,	10000,	100000,	1000000, 10000000,
+	1, 10, 100, 1000, 10000, 100000, 1000000, 10000000,
 };
 
 static const unsigned int tacc_mant[] = {
-	0,	10,	12,	13,	15,	20,	25,	30,
-	35,	40,	45,	50,	55,	60,	70,	80,
+	0, 10, 12, 13, 15, 20, 25, 30,
+	35, 40, 45, 50, 55, 60, 70, 80,
 };
 
 #define UNSTUFF_BITS(resp,start,size)					\
@@ -65,42 +65,42 @@ static int mmc_decode_cid(struct mmc_card *card)
 	 * specs from sandisk and from what people have reported.
 	 */
 	switch (card->csd.mmca_vsn) {
-	case 0: /* MMC v1.0 - v1.2 */
-	case 1: /* MMC v1.4 */
-		card->cid.manfid	= UNSTUFF_BITS(resp, 104, 24);
-		card->cid.prod_name[0]	= UNSTUFF_BITS(resp, 96, 8);
-		card->cid.prod_name[1]	= UNSTUFF_BITS(resp, 88, 8);
-		card->cid.prod_name[2]	= UNSTUFF_BITS(resp, 80, 8);
-		card->cid.prod_name[3]	= UNSTUFF_BITS(resp, 72, 8);
-		card->cid.prod_name[4]	= UNSTUFF_BITS(resp, 64, 8);
-		card->cid.prod_name[5]	= UNSTUFF_BITS(resp, 56, 8);
-		card->cid.prod_name[6]	= UNSTUFF_BITS(resp, 48, 8);
-		card->cid.hwrev		= UNSTUFF_BITS(resp, 44, 4);
-		card->cid.fwrev		= UNSTUFF_BITS(resp, 40, 4);
-		card->cid.serial	= UNSTUFF_BITS(resp, 16, 24);
-		card->cid.month		= UNSTUFF_BITS(resp, 12, 4);
-		card->cid.year		= UNSTUFF_BITS(resp, 8, 4) + 1997;
+	case 0:		/* MMC v1.0 - v1.2 */
+	case 1:		/* MMC v1.4 */
+		card->cid.manfid = UNSTUFF_BITS(resp, 104, 24);
+		card->cid.prod_name[0] = UNSTUFF_BITS(resp, 96, 8);
+		card->cid.prod_name[1] = UNSTUFF_BITS(resp, 88, 8);
+		card->cid.prod_name[2] = UNSTUFF_BITS(resp, 80, 8);
+		card->cid.prod_name[3] = UNSTUFF_BITS(resp, 72, 8);
+		card->cid.prod_name[4] = UNSTUFF_BITS(resp, 64, 8);
+		card->cid.prod_name[5] = UNSTUFF_BITS(resp, 56, 8);
+		card->cid.prod_name[6] = UNSTUFF_BITS(resp, 48, 8);
+		card->cid.hwrev = UNSTUFF_BITS(resp, 44, 4);
+		card->cid.fwrev = UNSTUFF_BITS(resp, 40, 4);
+		card->cid.serial = UNSTUFF_BITS(resp, 16, 24);
+		card->cid.month = UNSTUFF_BITS(resp, 12, 4);
+		card->cid.year = UNSTUFF_BITS(resp, 8, 4) + 1997;
 		break;
 
-	case 2: /* MMC v2.0 - v2.2 */
-	case 3: /* MMC v3.1 - v3.3 */
-	case 4: /* MMC v4 */
-		card->cid.manfid	= UNSTUFF_BITS(resp, 120, 8);
-		card->cid.oemid		= UNSTUFF_BITS(resp, 104, 16);
-		card->cid.prod_name[0]	= UNSTUFF_BITS(resp, 96, 8);
-		card->cid.prod_name[1]	= UNSTUFF_BITS(resp, 88, 8);
-		card->cid.prod_name[2]	= UNSTUFF_BITS(resp, 80, 8);
-		card->cid.prod_name[3]	= UNSTUFF_BITS(resp, 72, 8);
-		card->cid.prod_name[4]	= UNSTUFF_BITS(resp, 64, 8);
-		card->cid.prod_name[5]	= UNSTUFF_BITS(resp, 56, 8);
-		card->cid.serial	= UNSTUFF_BITS(resp, 16, 32);
-		card->cid.month		= UNSTUFF_BITS(resp, 12, 4);
-		card->cid.year		= UNSTUFF_BITS(resp, 8, 4) + 1997;
+	case 2:		/* MMC v2.0 - v2.2 */
+	case 3:		/* MMC v3.1 - v3.3 */
+	case 4:		/* MMC v4 */
+		card->cid.manfid = UNSTUFF_BITS(resp, 120, 8);
+		card->cid.oemid = UNSTUFF_BITS(resp, 104, 16);
+		card->cid.prod_name[0] = UNSTUFF_BITS(resp, 96, 8);
+		card->cid.prod_name[1] = UNSTUFF_BITS(resp, 88, 8);
+		card->cid.prod_name[2] = UNSTUFF_BITS(resp, 80, 8);
+		card->cid.prod_name[3] = UNSTUFF_BITS(resp, 72, 8);
+		card->cid.prod_name[4] = UNSTUFF_BITS(resp, 64, 8);
+		card->cid.prod_name[5] = UNSTUFF_BITS(resp, 56, 8);
+		card->cid.serial = UNSTUFF_BITS(resp, 16, 32);
+		card->cid.month = UNSTUFF_BITS(resp, 12, 4);
+		card->cid.year = UNSTUFF_BITS(resp, 8, 4) + 1997;
 		break;
 
 	default:
 		printk(KERN_ERR "%s: card has unknown MMCA version %d\n",
-			mmc_hostname(card->host), card->csd.mmca_vsn);
+		       mmc_hostname(card->host), card->csd.mmca_vsn);
 		return -EINVAL;
 	}
 
@@ -123,24 +123,24 @@ static int mmc_decode_csd(struct mmc_card *card)
 	csd_struct = UNSTUFF_BITS(resp, 126, 2);
 	if (csd_struct != 1 && csd_struct != 2) {
 		printk(KERN_ERR "%s: unrecognised CSD structure version %d\n",
-			mmc_hostname(card->host), csd_struct);
+		       mmc_hostname(card->host), csd_struct);
 		return -EINVAL;
 	}
 
-	csd->mmca_vsn	 = UNSTUFF_BITS(resp, 122, 4);
+	csd->mmca_vsn = UNSTUFF_BITS(resp, 122, 4);
 	m = UNSTUFF_BITS(resp, 115, 4);
 	e = UNSTUFF_BITS(resp, 112, 3);
-	csd->tacc_ns	 = (tacc_exp[e] * tacc_mant[m] + 9) / 10;
-	csd->tacc_clks	 = UNSTUFF_BITS(resp, 104, 8) * 100;
+	csd->tacc_ns = (tacc_exp[e] * tacc_mant[m] + 9) / 10;
+	csd->tacc_clks = UNSTUFF_BITS(resp, 104, 8) * 100;
 
 	m = UNSTUFF_BITS(resp, 99, 4);
 	e = UNSTUFF_BITS(resp, 96, 3);
-	csd->max_dtr	  = tran_exp[e] * tran_mant[m];
-	csd->cmdclass	  = UNSTUFF_BITS(resp, 84, 12);
+	csd->max_dtr = tran_exp[e] * tran_mant[m];
+	csd->cmdclass = UNSTUFF_BITS(resp, 84, 12);
 
 	e = UNSTUFF_BITS(resp, 47, 3);
 	m = UNSTUFF_BITS(resp, 62, 12);
-	csd->capacity	  = (1 + m) << (e + 2);
+	csd->capacity = (1 + m) << (e + 2);
 
 	csd->read_blkbits = UNSTUFF_BITS(resp, 80, 4);
 	csd->read_partial = UNSTUFF_BITS(resp, 79, 1);
@@ -174,7 +174,7 @@ static int mmc_read_ext_csd(struct mmc_card *card)
 	ext_csd = kmalloc(512, GFP_KERNEL);
 	if (!ext_csd) {
 		printk(KERN_ERR "%s: could not allocate a buffer to "
-			"receive the ext_csd.\n", mmc_hostname(card->host));
+		       "receive the ext_csd.\n", mmc_hostname(card->host));
 		return -ENOMEM;
 	}
 
@@ -193,14 +193,13 @@ static int mmc_read_ext_csd(struct mmc_card *card)
 		 */
 		if (card->csd.capacity == (4096 * 512)) {
 			printk(KERN_ERR "%s: unable to read EXT_CSD "
-				"on a possible high capacity card. "
-				"Card will be ignored.\n",
-				mmc_hostname(card->host));
+			       "on a possible high capacity card. "
+			       "Card will be ignored.\n",
+			       mmc_hostname(card->host));
 		} else {
 			printk(KERN_WARNING "%s: unable to read "
-				"EXT_CSD, performance might "
-				"suffer.\n",
-				mmc_hostname(card->host));
+			       "EXT_CSD, performance might "
+			       "suffer.\n", mmc_hostname(card->host));
 			err = 0;
 		}
 
@@ -210,18 +209,18 @@ static int mmc_read_ext_csd(struct mmc_card *card)
 	ext_csd_struct = ext_csd[EXT_CSD_REV];
 	if (ext_csd_struct > 2) {
 		printk(KERN_ERR "%s: unrecognised EXT_CSD structure "
-			"version %d\n", mmc_hostname(card->host),
-			ext_csd_struct);
+		       "version %d\n", mmc_hostname(card->host),
+		       ext_csd_struct);
 		err = -EINVAL;
 		goto out;
 	}
 
 	if (ext_csd_struct >= 2) {
 		card->ext_csd.sectors =
-			ext_csd[EXT_CSD_SEC_CNT + 0] << 0 |
-			ext_csd[EXT_CSD_SEC_CNT + 1] << 8 |
-			ext_csd[EXT_CSD_SEC_CNT + 2] << 16 |
-			ext_csd[EXT_CSD_SEC_CNT + 3] << 24;
+		    ext_csd[EXT_CSD_SEC_CNT + 0] << 0 |
+		    ext_csd[EXT_CSD_SEC_CNT + 1] << 8 |
+		    ext_csd[EXT_CSD_SEC_CNT + 2] << 16 |
+		    ext_csd[EXT_CSD_SEC_CNT + 3] << 24;
 		if (card->ext_csd.sectors)
 			mmc_card_set_blockaddr(card);
 	}
@@ -236,8 +235,8 @@ static int mmc_read_ext_csd(struct mmc_card *card)
 	default:
 		/* MMC v4 spec says this cannot happen */
 		printk(KERN_WARNING "%s: card is mmc v4 but doesn't "
-			"support any high-speed modes.\n",
-			mmc_hostname(card->host));
+		       "support any high-speed modes.\n",
+		       mmc_hostname(card->host));
 		goto out;
 	}
 
@@ -248,9 +247,9 @@ out:
 }
 
 MMC_DEV_ATTR(cid, "%08x%08x%08x%08x\n", card->raw_cid[0], card->raw_cid[1],
-	card->raw_cid[2], card->raw_cid[3]);
+	     card->raw_cid[2], card->raw_cid[3]);
 MMC_DEV_ATTR(csd, "%08x%08x%08x%08x\n", card->raw_csd[0], card->raw_csd[1],
-	card->raw_csd[2], card->raw_csd[3]);
+	     card->raw_csd[2], card->raw_csd[3]);
 MMC_DEV_ATTR(date, "%02d/%04d\n", card->cid.month, card->cid.year);
 MMC_DEV_ATTR(fwrev, "0x%x\n", card->cid.fwrev);
 MMC_DEV_ATTR(hwrev, "0x%x\n", card->cid.hwrev);
@@ -292,7 +291,7 @@ static struct device_type mmc_type = {
  * we're trying to reinitialise.
  */
 static int mmc_init_card(struct mmc_host *host, u32 ocr,
-	struct mmc_card *oldcard)
+			 struct mmc_card *oldcard)
 {
 	struct mmc_card *card;
 	int err;
@@ -405,9 +404,9 @@ static int mmc_init_card(struct mmc_host *host, u32 ocr,
 	 * Activate high speed (if supported)
 	 */
 	if ((card->ext_csd.hs_max_dtr != 0) &&
-		(host->caps & MMC_CAP_MMC_HIGHSPEED)) {
+	    (host->caps & MMC_CAP_MMC_HIGHSPEED)) {
 		err = mmc_switch(card, EXT_CSD_CMD_SET_NORMAL,
-			EXT_CSD_HS_TIMING, 1);
+				 EXT_CSD_HS_TIMING, 1);
 		if (err)
 			goto free_card;
 
@@ -631,7 +630,7 @@ err:
 	mmc_release_host(host);
 
 	printk(KERN_ERR "%s: error %d whilst initialising MMC card\n",
-		mmc_hostname(host), err);
+	       mmc_hostname(host), err);
 
 	return err;
 }

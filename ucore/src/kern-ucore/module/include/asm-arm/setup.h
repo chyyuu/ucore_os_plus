@@ -39,32 +39,32 @@ struct tag_core {
 #define ATAG_MEM	0x54410002
 
 struct tag_mem32 {
-	__u32	size;
-	__u32	start;	/* physical start address */
+	__u32 size;
+	__u32 start;		/* physical start address */
 };
 
 /* VGA text type displays */
 #define ATAG_VIDEOTEXT	0x54410003
 
 struct tag_videotext {
-	__u8		x;
-	__u8		y;
-	__u16		video_page;
-	__u8		video_mode;
-	__u8		video_cols;
-	__u16		video_ega_bx;
-	__u8		video_lines;
-	__u8		video_isvga;
-	__u16		video_points;
+	__u8 x;
+	__u8 y;
+	__u16 video_page;
+	__u8 video_mode;
+	__u8 video_cols;
+	__u16 video_ega_bx;
+	__u8 video_lines;
+	__u8 video_isvga;
+	__u16 video_points;
 };
 
 /* describes how the ramdisk will be used in kernel */
 #define ATAG_RAMDISK	0x54410004
 
 struct tag_ramdisk {
-	__u32 flags;	/* bit 0 = load, bit 1 = prompt */
-	__u32 size;	/* decompressed ramdisk size in _kilo_ bytes */
-	__u32 start;	/* starting block of floppy-based RAM disk image */
+	__u32 flags;		/* bit 0 = load, bit 1 = prompt */
+	__u32 size;		/* decompressed ramdisk size in _kilo_ bytes */
+	__u32 start;		/* starting block of floppy-based RAM disk image */
 };
 
 /* describes where the compressed ramdisk image lives (virtual address) */
@@ -78,8 +78,8 @@ struct tag_ramdisk {
 #define ATAG_INITRD2	0x54420005
 
 struct tag_initrd {
-	__u32 start;	/* physical start address */
-	__u32 size;	/* size of compressed ramdisk image in bytes */
+	__u32 start;		/* physical start address */
+	__u32 size;		/* size of compressed ramdisk image in bytes */
 };
 
 /* board serial number. "64 bits should be enough for everybody" */
@@ -103,27 +103,27 @@ struct tag_revision {
 #define ATAG_VIDEOLFB	0x54410008
 
 struct tag_videolfb {
-	__u16		lfb_width;
-	__u16		lfb_height;
-	__u16		lfb_depth;
-	__u16		lfb_linelength;
-	__u32		lfb_base;
-	__u32		lfb_size;
-	__u8		red_size;
-	__u8		red_pos;
-	__u8		green_size;
-	__u8		green_pos;
-	__u8		blue_size;
-	__u8		blue_pos;
-	__u8		rsvd_size;
-	__u8		rsvd_pos;
+	__u16 lfb_width;
+	__u16 lfb_height;
+	__u16 lfb_depth;
+	__u16 lfb_linelength;
+	__u32 lfb_base;
+	__u32 lfb_size;
+	__u8 red_size;
+	__u8 red_pos;
+	__u8 green_size;
+	__u8 green_pos;
+	__u8 blue_size;
+	__u8 blue_pos;
+	__u8 rsvd_size;
+	__u8 rsvd_pos;
 };
 
 /* command line: \0 terminated string */
 #define ATAG_CMDLINE	0x54410009
 
 struct tag_cmdline {
-	char	cmdline[1];	/* this is the minimum size */
+	char cmdline[1];	/* this is the minimum size */
 };
 
 /* acorn RiscPC specific information */
@@ -146,31 +146,31 @@ struct tag_memclk {
 struct tag {
 	struct tag_header hdr;
 	union {
-		struct tag_core		core;
-		struct tag_mem32	mem;
-		struct tag_videotext	videotext;
-		struct tag_ramdisk	ramdisk;
-		struct tag_initrd	initrd;
-		struct tag_serialnr	serialnr;
-		struct tag_revision	revision;
-		struct tag_videolfb	videolfb;
-		struct tag_cmdline	cmdline;
+		struct tag_core core;
+		struct tag_mem32 mem;
+		struct tag_videotext videotext;
+		struct tag_ramdisk ramdisk;
+		struct tag_initrd initrd;
+		struct tag_serialnr serialnr;
+		struct tag_revision revision;
+		struct tag_videolfb videolfb;
+		struct tag_cmdline cmdline;
 
 		/*
 		 * Acorn specific
 		 */
-		struct tag_acorn	acorn;
+		struct tag_acorn acorn;
 
 		/*
 		 * DC21285 specific
 		 */
-		struct tag_memclk	memclk;
+		struct tag_memclk memclk;
 	} u;
 };
 
 struct tagtable {
 	__u32 tag;
-	int (*parse)(const struct tag *);
+	int (*parse) (const struct tag *);
 };
 
 #define tag_member_present(tag,member)				\
@@ -193,15 +193,15 @@ static struct tagtable __tagtable_##fn __tag = { tag, fn }
  * Memory map description
  */
 #ifdef CONFIG_ARCH_LH7A40X
-# define NR_BANKS 16
+#define NR_BANKS 16
 #else
-# define NR_BANKS 8
+#define NR_BANKS 8
 #endif
 
 struct membank {
 	unsigned long start;
 	unsigned long size;
-	int           node;
+	int node;
 };
 
 struct meminfo {
@@ -227,13 +227,13 @@ extern struct meminfo meminfo;
  */
 struct early_params {
 	const char *arg;
-	void (*fn)(char **p);
+	void (*fn) (char **p);
 };
 
 #define __early_param(name,fn)					\
 static struct early_params __early_##fn __used			\
 __attribute__((__section__(".early_param.init"))) = { name, fn }
 
-#endif  /*  __KERNEL__  */
+#endif /*  __KERNEL__  */
 
 #endif

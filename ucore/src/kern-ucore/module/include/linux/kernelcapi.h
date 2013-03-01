@@ -14,18 +14,17 @@
 #define CAPI_MAXCONTR	32	/* maximum number of controller    */
 #define CAPI_MAXDATAWINDOW	8
 
-
 typedef struct kcapi_flagdef {
 	int contr;
 	int flag;
 } kcapi_flagdef;
 
 typedef struct kcapi_carddef {
-	char		driver[32];
-	unsigned int	port;
-	unsigned	irq;
-	unsigned int	membase;
-	int		cardnr;
+	char driver[32];
+	unsigned int port;
+	unsigned irq;
+	unsigned int membase;
+	int cardnr;
 } kcapi_carddef;
 
 /* new ioctls >= 10 */
@@ -42,7 +41,6 @@ typedef struct kcapi_carddef {
 #define KCAPI_TRACE_SHORT		3
 #define KCAPI_TRACE_FULL		4
 
-
 #ifdef __KERNEL__
 
 #include <linux/list.h>
@@ -55,7 +53,7 @@ typedef struct kcapi_carddef {
 struct capi20_appl {
 	u16 applid;
 	capi_register_params rparam;
-	void (*recv_message)(struct capi20_appl *ap, struct sk_buff *skb);
+	void (*recv_message) (struct capi20_appl * ap, struct sk_buff * skb);
 	void *private;
 
 	/* internal to kernelcapi.o */
@@ -82,13 +80,12 @@ u16 capi20_get_manufacturer(u32 contr, u8 buf[CAPI_MANUFACTURER_LEN]);
 u16 capi20_get_version(u32 contr, struct capi_version *verp);
 u16 capi20_get_serial(u32 contr, u8 serial[CAPI_SERIAL_LEN]);
 u16 capi20_get_profile(u32 contr, struct capi_profile *profp);
-int capi20_manufacturer(unsigned int cmd, void __user *data);
+int capi20_manufacturer(unsigned int cmd, void __user * data);
 
 /* temporary hack XXX */
-void capi20_set_callback(struct capi20_appl *ap, 
-			 void (*callback) (unsigned int cmd, __u32 contr, void *data));
-
-
+void capi20_set_callback(struct capi20_appl *ap,
+			 void (*callback) (unsigned int cmd, __u32 contr,
+					   void *data));
 
 #define CAPI_NOERROR                      0x0000
 
@@ -117,46 +114,46 @@ void capi20_set_callback(struct capi20_appl *ap,
 #define CAPI_MSGCTRLERONLYSUPPORTEXTEQUIP 0x110b
 
 typedef enum {
-        CapiMessageNotSupportedInCurrentState = 0x2001,
-        CapiIllContrPlciNcci                  = 0x2002,
-        CapiNoPlciAvailable                   = 0x2003,
-        CapiNoNcciAvailable                   = 0x2004,
-        CapiNoListenResourcesAvailable        = 0x2005,
-        CapiNoFaxResourcesAvailable           = 0x2006,
-        CapiIllMessageParmCoding              = 0x2007,
+	CapiMessageNotSupportedInCurrentState = 0x2001,
+	CapiIllContrPlciNcci = 0x2002,
+	CapiNoPlciAvailable = 0x2003,
+	CapiNoNcciAvailable = 0x2004,
+	CapiNoListenResourcesAvailable = 0x2005,
+	CapiNoFaxResourcesAvailable = 0x2006,
+	CapiIllMessageParmCoding = 0x2007,
 } RESOURCE_CODING_PROBLEM;
 
 typedef enum {
-        CapiB1ProtocolNotSupported                      = 0x3001,
-        CapiB2ProtocolNotSupported                      = 0x3002,
-        CapiB3ProtocolNotSupported                      = 0x3003,
-        CapiB1ProtocolParameterNotSupported             = 0x3004,
-        CapiB2ProtocolParameterNotSupported             = 0x3005,
-        CapiB3ProtocolParameterNotSupported             = 0x3006,
-        CapiBProtocolCombinationNotSupported            = 0x3007,
-        CapiNcpiNotSupported                            = 0x3008,
-        CapiCipValueUnknown                             = 0x3009,
-        CapiFlagsNotSupported                           = 0x300a,
-        CapiFacilityNotSupported                        = 0x300b,
-        CapiDataLengthNotSupportedByCurrentProtocol     = 0x300c,
-        CapiResetProcedureNotSupportedByCurrentProtocol = 0x300d,
-        CapiTeiAssignmentFailed                         = 0x300e,
+	CapiB1ProtocolNotSupported = 0x3001,
+	CapiB2ProtocolNotSupported = 0x3002,
+	CapiB3ProtocolNotSupported = 0x3003,
+	CapiB1ProtocolParameterNotSupported = 0x3004,
+	CapiB2ProtocolParameterNotSupported = 0x3005,
+	CapiB3ProtocolParameterNotSupported = 0x3006,
+	CapiBProtocolCombinationNotSupported = 0x3007,
+	CapiNcpiNotSupported = 0x3008,
+	CapiCipValueUnknown = 0x3009,
+	CapiFlagsNotSupported = 0x300a,
+	CapiFacilityNotSupported = 0x300b,
+	CapiDataLengthNotSupportedByCurrentProtocol = 0x300c,
+	CapiResetProcedureNotSupportedByCurrentProtocol = 0x300d,
+	CapiTeiAssignmentFailed = 0x300e,
 } REQUESTED_SERVICES_PROBLEM;
 
 typedef enum {
-	CapiSuccess                                     = 0x0000,
-	CapiSupplementaryServiceNotSupported            = 0x300e,
-	CapiRequestNotAllowedInThisState                = 0x3010,
+	CapiSuccess = 0x0000,
+	CapiSupplementaryServiceNotSupported = 0x300e,
+	CapiRequestNotAllowedInThisState = 0x3010,
 } SUPPLEMENTARY_SERVICE_INFO;
 
 typedef enum {
-	CapiProtocolErrorLayer1                         = 0x3301,
-	CapiProtocolErrorLayer2                         = 0x3302,
-	CapiProtocolErrorLayer3                         = 0x3303,
-	CapiTimeOut                                     = 0x3303, // SuppServiceReason
-	CapiCallGivenToOtherApplication                 = 0x3304,
+	CapiProtocolErrorLayer1 = 0x3301,
+	CapiProtocolErrorLayer2 = 0x3302,
+	CapiProtocolErrorLayer3 = 0x3303,
+	CapiTimeOut = 0x3303,	// SuppServiceReason
+	CapiCallGivenToOtherApplication = 0x3304,
 } CAPI_REASON;
 
-#endif				/* __KERNEL__ */
+#endif /* __KERNEL__ */
 
-#endif				/* __KERNELCAPI_H__ */
+#endif /* __KERNELCAPI_H__ */

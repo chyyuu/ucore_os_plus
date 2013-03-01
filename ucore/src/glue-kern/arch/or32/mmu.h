@@ -1,24 +1,24 @@
 #ifndef __KERN_MM_MMU_H__
 #define __KERN_MM_MMU_H__
 
-#define NR_SETS         64                      // 64 set TLB for both data and instruction
+#define NR_SETS         64	// 64 set TLB for both data and instruction
 
 /* page directory and page table constants */
-#define NPDEENTRY       512                     // page directory entries per page directory
-#define NPTEENTRY       2048                    // page table entries per page table
+#define NPDEENTRY       512	// page directory entries per page directory
+#define NPTEENTRY       2048	// page table entries per page table
 
-#define PGSIZE          8192                    // bytes mapped by a page
-#define PGSHIFT         13                      // log2(PGSIZE)
-#define PTSIZE          (PGSIZE * NPTEENTRY)    // bytes mapped by a page directory entry
+#define PGSIZE          8192	// bytes mapped by a page
+#define PGSHIFT         13	// log2(PGSIZE)
+#define PTSIZE          (PGSIZE * NPTEENTRY)	// bytes mapped by a page directory entry
 #define PMSIZE			PTSIZE
 #define PUSIZE			PTSIZE
-#define PTSHIFT         24                      // log2(PTSIZE)
+#define PTSHIFT         24	// log2(PTSIZE)
 
-#define SECTSIZE        512                     // bytes of a sector
-#define PAGE_NSECT      (PGSIZE / SECTSIZE)     // sectors per page
+#define SECTSIZE        512	// bytes of a sector
+#define PAGE_NSECT      (PGSIZE / SECTSIZE)	// sectors per page
 
-#define PTXSHIFT        13                      // offset of PTX in a linear address
-#define PDXSHIFT        24                      // offset of PDX in a linear address
+#define PTXSHIFT        13	// offset of PTX in a linear address
+#define PDXSHIFT        24	// offset of PDX in a linear address
 #define PMXSHIFT		PDXSHIFT
 #define PUXSHIFT		PDXSHIFT
 #define PGXSHIFT		PDXSHIFT
@@ -85,9 +85,8 @@ extern uintptr_t boot_pgdir_pa;
 #define PUD_ADDR(pud)   PTE_ADDR(pud)
 #define PGD_ADDR(pgd)   PTE_ADDR(pgd)
 
-void tlb_invalidate_all ();
+void tlb_invalidate_all();
 
-#endif  /* !__ASSEMBLER */
+#endif /* !__ASSEMBLER */
 
 #endif /* !__KERN_MM_MMU_H__ */
-

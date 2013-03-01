@@ -34,14 +34,14 @@
  * tables, and efficiently handle the TLB issues.
  */
 struct mmu_gather {
-	struct mm_struct	*mm;
-	unsigned int		fullmm;
+	struct mm_struct *mm;
+	unsigned int fullmm;
 };
 
 DECLARE_PER_CPU(struct mmu_gather, mmu_gathers);
 
-static inline struct mmu_gather *
-tlb_gather_mmu(struct mm_struct *mm, unsigned int full_mm_flush)
+static inline struct mmu_gather *tlb_gather_mmu(struct mm_struct *mm,
+						unsigned int full_mm_flush)
 {
 	struct mmu_gather *tlb = &get_cpu_var(mmu_gathers);
 

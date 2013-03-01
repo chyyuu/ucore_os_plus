@@ -33,9 +33,9 @@ struct kfifo {
 };
 
 extern struct kfifo *kfifo_init(unsigned char *buffer, unsigned int size,
-				gfp_t gfp_mask, spinlock_t *lock);
+				gfp_t gfp_mask, spinlock_t * lock);
 extern struct kfifo *kfifo_alloc(unsigned int size, gfp_t gfp_mask,
-				 spinlock_t *lock);
+				 spinlock_t * lock);
 extern void kfifo_free(struct kfifo *fifo);
 extern unsigned int __kfifo_put(struct kfifo *fifo,
 				unsigned char *buffer, unsigned int len);

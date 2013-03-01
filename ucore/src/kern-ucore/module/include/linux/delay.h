@@ -38,6 +38,7 @@ static inline void ndelay(unsigned long x)
 {
 	udelay(DIV_ROUND_UP(x, 1000));
 }
+
 #define ndelay(x) ndelay(x)
 #endif
 

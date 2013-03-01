@@ -33,7 +33,7 @@
 
 struct device;
 
-struct miscdevice  {
+struct miscdevice {
 	int minor;
 	const char *name;
 	const struct file_operations *fops;
@@ -42,7 +42,7 @@ struct miscdevice  {
 	struct device *this_device;
 };
 
-extern int misc_register(struct miscdevice * misc);
+extern int misc_register(struct miscdevice *misc);
 extern int misc_deregister(struct miscdevice *misc);
 
 #define MODULE_ALIAS_MISCDEV(minor)				\

@@ -8,7 +8,8 @@
 #include <asm/cacheflush.h>
 
 #ifndef ARCH_HAS_FLUSH_ANON_PAGE
-static inline void flush_anon_page(struct vm_area_struct *vma, struct page *page, unsigned long vmaddr)
+static inline void flush_anon_page(struct vm_area_struct *vma,
+				   struct page *page, unsigned long vmaddr)
 {
 }
 #endif
@@ -31,7 +32,10 @@ void kmap_flush_unused(void);
 
 #else /* CONFIG_HIGHMEM */
 
-static inline unsigned int nr_free_highpages(void) { return 0; }
+static inline unsigned int nr_free_highpages(void)
+{
+	return 0;
+}
 
 #define totalhigh_pages 0
 
@@ -51,6 +55,7 @@ static inline void *kmap_atomic(struct page *page, enum km_type idx)
 	pagefault_disable();
 	return page_address(page);
 }
+
 #define kmap_atomic_prot(page, idx, prot)	kmap_atomic(page, idx)
 
 #define kunmap_atomic(addr, idx)	do { pagefault_enable(); } while (0)
@@ -87,13 +92,12 @@ static inline void clear_user_highpage(struct page *page, unsigned long vaddr)
  * __HAVE_ARCH_ALLOC_ZEROED_USER_HIGHPAGE and providing their own
  * implementation.
  */
-static inline struct page *
-__alloc_zeroed_user_highpage(gfp_t movableflags,
-			struct vm_area_struct *vma,
-			unsigned long vaddr)
+static inline struct page *__alloc_zeroed_user_highpage(gfp_t movableflags, struct vm_area_struct
+							*vma,
+							unsigned long vaddr)
 {
 	struct page *page = alloc_page_vma(GFP_HIGHUSER | movableflags,
-			vma, vaddr);
+					   vma, vaddr);
 
 	if (page)
 		clear_user_highpage(page, vaddr);
@@ -110,9 +114,11 @@ __alloc_zeroed_user_highpage(gfp_t movableflags,
  * This function will allocate a page for a VMA that the caller knows will
  * be able to migrate in the future using move_pages() or reclaimed
  */
-static inline struct page *
-alloc_zeroed_user_highpage_movable(struct vm_area_struct *vma,
-					unsigned long vaddr)
+static inline struct page *alloc_zeroed_user_highpage_movable(struct
+							      vm_area_struct
+							      *vma,
+							      unsigned long
+							      vaddr)
 {
 	return __alloc_zeroed_user_highpage(__GFP_MOVABLE, vma, vaddr);
 }
@@ -125,8 +131,8 @@ static inline void clear_highpage(struct page *page)
 }
 
 static inline void zero_user_segments(struct page *page,
-	unsigned start1, unsigned end1,
-	unsigned start2, unsigned end2)
+				      unsigned start1, unsigned end1,
+				      unsigned start2, unsigned end2)
 {
 	void *kaddr = kmap_atomic(page, KM_USER0);
 
@@ -143,19 +149,19 @@ static inline void zero_user_segments(struct page *page,
 }
 
 static inline void zero_user_segment(struct page *page,
-	unsigned start, unsigned end)
+				     unsigned start, unsigned end)
 {
 	zero_user_segments(page, start, end, 0, 0);
 }
 
-static inline void zero_user(struct page *page,
-	unsigned start, unsigned size)
+static inline void zero_user(struct page *page, unsigned start, unsigned size)
 {
 	zero_user_segments(page, start, start + size, 0, 0);
 }
 
 static inline void __deprecated memclear_highpage_flush(struct page *page,
-			unsigned int offset, unsigned int size)
+							unsigned int offset,
+							unsigned int size)
 {
 	zero_user(page, offset, size);
 }
@@ -163,7 +169,8 @@ static inline void __deprecated memclear_highpage_flush(struct page *page,
 #ifndef __HAVE_ARCH_COPY_USER_HIGHPAGE
 
 static inline void copy_user_highpage(struct page *to, struct page *from,
-	unsigned long vaddr, struct vm_area_struct *vma)
+				      unsigned long vaddr,
+				      struct vm_area_struct *vma)
 {
 	char *vfrom, *vto;
 

@@ -50,9 +50,9 @@ struct request;
 
 struct nbd_device {
 	int flags;
-	int harderror;		/* Code of hard error			*/
-	struct socket * sock;
-	struct file * file; 	/* If == NULL, device is not ready, yet	*/
+	int harderror;		/* Code of hard error                   */
+	struct socket *sock;
+	struct file *file;	/* If == NULL, device is not ready, yet */
 	int magic;
 
 	spinlock_t queue_lock;
@@ -66,7 +66,7 @@ struct nbd_device {
 	struct gendisk *disk;
 	int blksize;
 	u64 bytesize;
-	pid_t pid; /* pid of nbd-client, if attached */
+	pid_t pid;		/* pid of nbd-client, if attached */
 	int xmit_timeout;
 };
 
@@ -84,7 +84,7 @@ struct nbd_device {
  */
 struct nbd_request {
 	__be32 magic;
-	__be32 type;	/* == READ || == WRITE 	*/
+	__be32 type;		/* == READ || == WRITE  */
 	char handle[8];
 	__be64 from;
 	__be32 len;
@@ -96,7 +96,7 @@ struct nbd_request {
  */
 struct nbd_reply {
 	__be32 magic;
-	__be32 error;		/* 0 = ok, else error	*/
-	char handle[8];		/* handle you got from request	*/
+	__be32 error;		/* 0 = ok, else error   */
+	char handle[8];		/* handle you got from request  */
 };
 #endif

@@ -11,4 +11,3 @@ void print_regs(struct pushregs *regs);
 bool trap_in_kernel(struct trapframe *tf);
 
 #endif
-

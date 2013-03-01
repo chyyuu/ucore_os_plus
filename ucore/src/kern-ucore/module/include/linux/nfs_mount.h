@@ -24,31 +24,31 @@
 #define NFS_MAX_CONTEXT_LEN	256
 
 struct nfs_mount_data {
-	int		version;		/* 1 */
-	int		fd;			/* 1 */
-	struct nfs2_fh	old_root;		/* 1 */
-	int		flags;			/* 1 */
-	int		rsize;			/* 1 */
-	int		wsize;			/* 1 */
-	int		timeo;			/* 1 */
-	int		retrans;		/* 1 */
-	int		acregmin;		/* 1 */
-	int		acregmax;		/* 1 */
-	int		acdirmin;		/* 1 */
-	int		acdirmax;		/* 1 */
-	struct sockaddr_in addr;		/* 1 */
-	char		hostname[NFS_MAXNAMLEN + 1];		/* 1 */
-	int		namlen;			/* 2 */
-	unsigned int	bsize;			/* 3 */
-	struct nfs3_fh	root;			/* 4 */
-	int		pseudoflavor;		/* 5 */
-	char		context[NFS_MAX_CONTEXT_LEN + 1];	/* 6 */
+	int version;		/* 1 */
+	int fd;			/* 1 */
+	struct nfs2_fh old_root;	/* 1 */
+	int flags;		/* 1 */
+	int rsize;		/* 1 */
+	int wsize;		/* 1 */
+	int timeo;		/* 1 */
+	int retrans;		/* 1 */
+	int acregmin;		/* 1 */
+	int acregmax;		/* 1 */
+	int acdirmin;		/* 1 */
+	int acdirmax;		/* 1 */
+	struct sockaddr_in addr;	/* 1 */
+	char hostname[NFS_MAXNAMLEN + 1];	/* 1 */
+	int namlen;		/* 2 */
+	unsigned int bsize;	/* 3 */
+	struct nfs3_fh root;	/* 4 */
+	int pseudoflavor;	/* 5 */
+	char context[NFS_MAX_CONTEXT_LEN + 1];	/* 6 */
 };
 
 /* bits in the flags field visible to user space */
 
 #define NFS_MOUNT_SOFT		0x0001	/* 1 */
-#define NFS_MOUNT_INTR		0x0002	/* 1 */ /* now unused, but ABI */
+#define NFS_MOUNT_INTR		0x0002	/* 1 */	/* now unused, but ABI */
 #define NFS_MOUNT_SECURE	0x0004	/* 1 */
 #define NFS_MOUNT_POSIX		0x0008	/* 1 */
 #define NFS_MOUNT_NOCTO		0x0010	/* 1 */

@@ -95,7 +95,7 @@ struct hiddev_field_info {
 	__u32 flags;
 	__u32 physical;		/* physical usage for this field */
 	__u32 logical;		/* logical usage for this field */
-	__u32 application;		/* application usage for this field */
+	__u32 application;	/* application usage for this field */
 	__s32 logical_minimum;
 	__s32 logical_maximum;
 	__s32 physical_minimum;
@@ -110,7 +110,7 @@ struct hiddev_field_info {
 #define HID_FIELD_CONSTANT		0x001
 #define HID_FIELD_VARIABLE		0x002
 #define HID_FIELD_RELATIVE		0x004
-#define HID_FIELD_WRAP			0x008	
+#define HID_FIELD_WRAP			0x008
 #define HID_FIELD_NONLINEAR		0x010
 #define HID_FIELD_NO_PREFERRED		0x020
 #define HID_FIELD_NULL_STATE		0x040
@@ -208,7 +208,6 @@ struct hiddev_usage_ref_multi {
  * }
  */
 
-
 #ifdef __KERNEL__
 
 /*
@@ -229,15 +228,34 @@ void hiddev_report_event(struct hid_device *hid, struct hid_report *report);
 int __init hiddev_init(void);
 void hiddev_exit(void);
 #else
-static inline int hiddev_connect(struct hid_device *hid,
-		unsigned int force)
-{ return -1; }
-static inline void hiddev_disconnect(struct hid_device *hid) { }
-static inline void hiddev_hid_event(struct hid_device *hid, struct hid_field *field,
-		      struct hid_usage *usage, __s32 value) { }
-static inline void hiddev_report_event(struct hid_device *hid, struct hid_report *report) { }
-static inline int hiddev_init(void) { return 0; }
-static inline void hiddev_exit(void) { }
+static inline int hiddev_connect(struct hid_device *hid, unsigned int force)
+{
+	return -1;
+}
+
+static inline void hiddev_disconnect(struct hid_device *hid)
+{
+}
+
+static inline void hiddev_hid_event(struct hid_device *hid,
+				    struct hid_field *field,
+				    struct hid_usage *usage, __s32 value)
+{
+}
+
+static inline void hiddev_report_event(struct hid_device *hid,
+				       struct hid_report *report)
+{
+}
+
+static inline int hiddev_init(void)
+{
+	return 0;
+}
+
+static inline void hiddev_exit(void)
+{
+}
 #endif
 
 #endif

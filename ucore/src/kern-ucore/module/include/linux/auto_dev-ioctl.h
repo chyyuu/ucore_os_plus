@@ -27,55 +27,55 @@
  */
 
 struct args_protover {
-	__u32	version;
+	__u32 version;
 };
 
 struct args_protosubver {
-	__u32	sub_version;
+	__u32 sub_version;
 };
 
 struct args_openmount {
-	__u32	devid;
+	__u32 devid;
 };
 
 struct args_ready {
-	__u32	token;
+	__u32 token;
 };
 
 struct args_fail {
-	__u32	token;
-	__s32	status;
+	__u32 token;
+	__s32 status;
 };
 
 struct args_setpipefd {
-	__s32	pipefd;
+	__s32 pipefd;
 };
 
 struct args_timeout {
-	__u64	timeout;
+	__u64 timeout;
 };
 
 struct args_requester {
-	__u32	uid;
-	__u32	gid;
+	__u32 uid;
+	__u32 gid;
 };
 
 struct args_expire {
-	__u32	how;
+	__u32 how;
 };
 
 struct args_askumount {
-	__u32	may_umount;
+	__u32 may_umount;
 };
 
 struct args_ismountpoint {
 	union {
 		struct args_in {
-			__u32	type;
+			__u32 type;
 		} in;
 		struct args_out {
-			__u32	devid;
-			__u32	magic;
+			__u32 devid;
+			__u32 magic;
 		} out;
 	};
 };
@@ -97,17 +97,17 @@ struct autofs_dev_ioctl {
 	/* Command parameters */
 
 	union {
-		struct args_protover		protover;
-		struct args_protosubver		protosubver;
-		struct args_openmount		openmount;
-		struct args_ready		ready;
-		struct args_fail		fail;
-		struct args_setpipefd		setpipefd;
-		struct args_timeout		timeout;
-		struct args_requester		requester;
-		struct args_expire		expire;
-		struct args_askumount		askumount;
-		struct args_ismountpoint	ismountpoint;
+		struct args_protover protover;
+		struct args_protosubver protosubver;
+		struct args_openmount openmount;
+		struct args_ready ready;
+		struct args_fail fail;
+		struct args_setpipefd setpipefd;
+		struct args_timeout timeout;
+		struct args_requester requester;
+		struct args_expire expire;
+		struct args_askumount askumount;
+		struct args_ismountpoint ismountpoint;
 	};
 
 	char path[0];
@@ -221,4 +221,4 @@ enum {
 	_IOWR(AUTOFS_IOCTL, \
 	      AUTOFS_DEV_IOCTL_ISMOUNTPOINT_CMD, struct autofs_dev_ioctl)
 
-#endif	/* _LINUX_AUTO_DEV_IOCTL_H */
+#endif /* _LINUX_AUTO_DEV_IOCTL_H */

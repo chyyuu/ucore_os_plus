@@ -17,34 +17,31 @@ extern struct proto tcpv6_prot;
 struct flowi;
 
 /* extention headers */
-extern int				ipv6_exthdrs_init(void);
-extern void				ipv6_exthdrs_exit(void);
-extern int				ipv6_frag_init(void);
-extern void				ipv6_frag_exit(void);
+extern int ipv6_exthdrs_init(void);
+extern void ipv6_exthdrs_exit(void);
+extern int ipv6_frag_init(void);
+extern void ipv6_frag_exit(void);
 
 /* transport protocols */
-extern int				rawv6_init(void);
-extern void				rawv6_exit(void);
-extern int				udpv6_init(void);
-extern void				udpv6_exit(void);
-extern int 				udplitev6_init(void);
-extern void 				udplitev6_exit(void);
-extern int				tcpv6_init(void);
-extern void				tcpv6_exit(void);
+extern int rawv6_init(void);
+extern void rawv6_exit(void);
+extern int udpv6_init(void);
+extern void udpv6_exit(void);
+extern int udplitev6_init(void);
+extern void udplitev6_exit(void);
+extern int tcpv6_init(void);
+extern void tcpv6_exit(void);
 
-extern int				udpv6_connect(struct sock *sk,
-						      struct sockaddr *uaddr,
-						      int addr_len);
+extern int udpv6_connect(struct sock *sk, struct sockaddr *uaddr, int addr_len);
 
-extern int			datagram_recv_ctl(struct sock *sk,
-						  struct msghdr *msg,
-						  struct sk_buff *skb);
+extern int datagram_recv_ctl(struct sock *sk,
+			     struct msghdr *msg, struct sk_buff *skb);
 
-extern int			datagram_send_ctl(struct net *net,
-						  struct msghdr *msg,
-						  struct flowi *fl,
-						  struct ipv6_txoptions *opt,
-						  int *hlimit, int *tclass);
+extern int datagram_send_ctl(struct net *net,
+			     struct msghdr *msg,
+			     struct flowi *fl,
+			     struct ipv6_txoptions *opt,
+			     int *hlimit, int *tclass);
 
 #define		LOOPBACK4_IPV6		__constant_htonl(0x7f000006)
 

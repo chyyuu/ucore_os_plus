@@ -7,17 +7,18 @@
 struct kmmio_probe;
 struct pt_regs;
 
-typedef void (*kmmio_pre_handler_t)(struct kmmio_probe *,
-				struct pt_regs *, unsigned long addr);
-typedef void (*kmmio_post_handler_t)(struct kmmio_probe *,
-				unsigned long condition, struct pt_regs *);
+typedef void (*kmmio_pre_handler_t) (struct kmmio_probe *,
+				     struct pt_regs *, unsigned long addr);
+typedef void (*kmmio_post_handler_t) (struct kmmio_probe *,
+				      unsigned long condition,
+				      struct pt_regs *);
 
 struct kmmio_probe {
-	struct list_head list; /* kmmio internal list */
-	unsigned long addr; /* start location of the probe point */
-	unsigned long len; /* length of the probe region */
-	kmmio_pre_handler_t pre_handler; /* Called before addr is executed. */
-	kmmio_post_handler_t post_handler; /* Called after addr is executed */
+	struct list_head list;	/* kmmio internal list */
+	unsigned long addr;	/* start location of the probe point */
+	unsigned long len;	/* length of the probe region */
+	kmmio_pre_handler_t pre_handler;	/* Called before addr is executed. */
+	kmmio_post_handler_t post_handler;	/* Called after addr is executed */
 	void *private;
 };
 
@@ -37,24 +38,24 @@ extern int kmmio_handler(struct pt_regs *regs, unsigned long addr);
 #ifdef CONFIG_MMIOTRACE
 /* Called from ioremap.c */
 extern void mmiotrace_ioremap(resource_size_t offset, unsigned long size,
-							void __iomem *addr);
-extern void mmiotrace_iounmap(volatile void __iomem *addr);
+			      void __iomem * addr);
+extern void mmiotrace_iounmap(volatile void __iomem * addr);
 
 /* For anyone to insert markers. Remember trailing newline. */
 extern int mmiotrace_printk(const char *fmt, ...)
-				__attribute__ ((format (printf, 1, 2)));
+    __attribute__ ((format(printf, 1, 2)));
 #else
 static inline void mmiotrace_ioremap(resource_size_t offset,
-					unsigned long size, void __iomem *addr)
+				     unsigned long size, void __iomem * addr)
 {
 }
 
-static inline void mmiotrace_iounmap(volatile void __iomem *addr)
+static inline void mmiotrace_iounmap(volatile void __iomem * addr)
 {
 }
 
 static inline int mmiotrace_printk(const char *fmt, ...)
-				__attribute__ ((format (printf, 1, 0)));
+    __attribute__ ((format(printf, 1, 0)));
 
 static inline int mmiotrace_printk(const char *fmt, ...)
 {
@@ -63,11 +64,11 @@ static inline int mmiotrace_printk(const char *fmt, ...)
 #endif /* CONFIG_MMIOTRACE */
 
 enum mm_io_opcode {
-	MMIO_READ = 0x1,     /* struct mmiotrace_rw */
-	MMIO_WRITE = 0x2,    /* struct mmiotrace_rw */
-	MMIO_PROBE = 0x3,    /* struct mmiotrace_map */
-	MMIO_UNPROBE = 0x4,  /* struct mmiotrace_map */
-	MMIO_UNKNOWN_OP = 0x5, /* struct mmiotrace_rw */
+	MMIO_READ = 0x1,	/* struct mmiotrace_rw */
+	MMIO_WRITE = 0x2,	/* struct mmiotrace_rw */
+	MMIO_PROBE = 0x3,	/* struct mmiotrace_map */
+	MMIO_UNPROBE = 0x4,	/* struct mmiotrace_map */
+	MMIO_UNKNOWN_OP = 0x5,	/* struct mmiotrace_rw */
 };
 
 struct mmiotrace_rw {

@@ -76,20 +76,23 @@
 #define PT_BLOCKSTEP_BIT	30
 #define PT_BLOCKSTEP		(1<<PT_BLOCKSTEP_BIT)
 
-#include <linux/compiler.h>		/* For unlikely.  */
-#include <linux/sched.h>		/* For struct task_struct.  */
+#include <linux/compiler.h>	/* For unlikely.  */
+#include <linux/sched.h>	/* For struct task_struct.  */
 
-
-extern long arch_ptrace(struct task_struct *child, long request, long addr, long data);
+extern long arch_ptrace(struct task_struct *child, long request, long addr,
+			long data);
 extern struct task_struct *ptrace_get_task_struct(pid_t pid);
 extern int ptrace_traceme(void);
-extern int ptrace_readdata(struct task_struct *tsk, unsigned long src, char __user *dst, int len);
-extern int ptrace_writedata(struct task_struct *tsk, char __user *src, unsigned long dst, int len);
+extern int ptrace_readdata(struct task_struct *tsk, unsigned long src,
+			   char __user * dst, int len);
+extern int ptrace_writedata(struct task_struct *tsk, char __user * src,
+			    unsigned long dst, int len);
 extern int ptrace_attach(struct task_struct *tsk);
 extern int ptrace_detach(struct task_struct *, unsigned int);
 extern void ptrace_disable(struct task_struct *);
 extern int ptrace_check_attach(struct task_struct *task, int kill);
-extern int ptrace_request(struct task_struct *child, long request, long addr, long data);
+extern int ptrace_request(struct task_struct *child, long request, long addr,
+			  long data);
 extern void ptrace_notify(int exit_code);
 extern void __ptrace_link(struct task_struct *child,
 			  struct task_struct *new_parent);
@@ -106,12 +109,14 @@ static inline int ptrace_reparented(struct task_struct *child)
 {
 	return child->real_parent != child->parent;
 }
+
 static inline void ptrace_link(struct task_struct *child,
 			       struct task_struct *new_parent)
 {
 	if (unlikely(child->ptrace))
 		__ptrace_link(child, new_parent);
 }
+
 static inline void ptrace_unlink(struct task_struct *child)
 {
 	if (unlikely(child->ptrace))
@@ -250,7 +255,7 @@ static inline void user_enable_single_step(struct task_struct *task)
 static inline void user_disable_single_step(struct task_struct *task)
 {
 }
-#endif	/* arch_has_single_step */
+#endif /* arch_has_single_step */
 
 #ifndef arch_has_block_step
 /**
@@ -277,7 +282,7 @@ static inline void user_enable_block_step(struct task_struct *task)
 {
 	BUG();			/* This can never be called.  */
 }
-#endif	/* arch_has_block_step */
+#endif /* arch_has_block_step */
 
 #ifndef arch_ptrace_stop_needed
 /**

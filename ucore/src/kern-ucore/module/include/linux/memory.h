@@ -30,16 +30,16 @@ struct memory_block {
 	 * initialization.
 	 */
 	struct mutex state_mutex;
-	int phys_device;		/* to which fru does this belong? */
-	void *hw;			/* optional pointer to fw/hw data */
-	int (*phys_callback)(struct memory_block *);
+	int phys_device;	/* to which fru does this belong? */
+	void *hw;		/* optional pointer to fw/hw data */
+	int (*phys_callback) (struct memory_block *);
 	struct sys_device sysdev;
 };
 
 /* These states are exposed to userspace as text strings in sysfs */
-#define	MEM_ONLINE		(1<<0) /* exposed to userspace */
-#define	MEM_GOING_OFFLINE	(1<<1) /* exposed to userspace */
-#define	MEM_OFFLINE		(1<<2) /* exposed to userspace */
+#define	MEM_ONLINE		(1<<0)	/* exposed to userspace */
+#define	MEM_GOING_OFFLINE	(1<<1)	/* exposed to userspace */
+#define	MEM_OFFLINE		(1<<2)	/* exposed to userspace */
 #define	MEM_GOING_ONLINE	(1<<3)
 #define	MEM_CANCEL_ONLINE	(1<<4)
 #define	MEM_CANCEL_OFFLINE	(1<<5)
@@ -65,13 +65,16 @@ static inline int memory_dev_init(void)
 {
 	return 0;
 }
+
 static inline int register_memory_notifier(struct notifier_block *nb)
 {
 	return 0;
 }
+
 static inline void unregister_memory_notifier(struct notifier_block *nb)
 {
 }
+
 static inline int memory_notify(unsigned long val, void *v)
 {
 	return 0;

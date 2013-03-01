@@ -21,30 +21,30 @@
 #define UART_TX		0	/* Out: Transmit buffer */
 
 #define UART_IER	1	/* Out: Interrupt Enable Register */
-#define UART_IER_MSI		0x08 /* Enable Modem status interrupt */
-#define UART_IER_RLSI		0x04 /* Enable receiver line status interrupt */
-#define UART_IER_THRI		0x02 /* Enable Transmitter holding register int. */
-#define UART_IER_RDI		0x01 /* Enable receiver data interrupt */
+#define UART_IER_MSI		0x08	/* Enable Modem status interrupt */
+#define UART_IER_RLSI		0x04	/* Enable receiver line status interrupt */
+#define UART_IER_THRI		0x02	/* Enable Transmitter holding register int. */
+#define UART_IER_RDI		0x01	/* Enable receiver data interrupt */
 /*
  * Sleep mode for ST16650 and TI16750.  For the ST16650, EFR[4]=1
  */
-#define UART_IERX_SLEEP		0x10 /* Enable sleep mode */
+#define UART_IERX_SLEEP		0x10	/* Enable sleep mode */
 
 #define UART_IIR	2	/* In:  Interrupt ID Register */
-#define UART_IIR_NO_INT		0x01 /* No interrupts pending */
-#define UART_IIR_ID		0x06 /* Mask for the interrupt ID */
-#define UART_IIR_MSI		0x00 /* Modem status interrupt */
-#define UART_IIR_THRI		0x02 /* Transmitter holding register empty */
-#define UART_IIR_RDI		0x04 /* Receiver data interrupt */
-#define UART_IIR_RLSI		0x06 /* Receiver line status interrupt */
+#define UART_IIR_NO_INT		0x01	/* No interrupts pending */
+#define UART_IIR_ID		0x06	/* Mask for the interrupt ID */
+#define UART_IIR_MSI		0x00	/* Modem status interrupt */
+#define UART_IIR_THRI		0x02	/* Transmitter holding register empty */
+#define UART_IIR_RDI		0x04	/* Receiver data interrupt */
+#define UART_IIR_RLSI		0x06	/* Receiver line status interrupt */
 
-#define UART_IIR_BUSY		0x07 /* DesignWare APB Busy Detect */
+#define UART_IIR_BUSY		0x07	/* DesignWare APB Busy Detect */
 
 #define UART_FCR	2	/* Out: FIFO Control Register */
-#define UART_FCR_ENABLE_FIFO	0x01 /* Enable the FIFO */
-#define UART_FCR_CLEAR_RCVR	0x02 /* Clear the RCVR FIFO */
-#define UART_FCR_CLEAR_XMIT	0x04 /* Clear the XMIT FIFO */
-#define UART_FCR_DMA_SELECT	0x08 /* For DMA applications */
+#define UART_FCR_ENABLE_FIFO	0x01	/* Enable the FIFO */
+#define UART_FCR_CLEAR_RCVR	0x02	/* Clear the RCVR FIFO */
+#define UART_FCR_CLEAR_XMIT	0x04	/* Clear the XMIT FIFO */
+#define UART_FCR_DMA_SELECT	0x08	/* For DMA applications */
 /*
  * Note: The FIFO trigger levels are chip specific:
  *	RX:76 = 00  01  10  11	TX:54 = 00  01  10  11
@@ -67,69 +67,69 @@
 #define UART_FCR_T_TRIG_10	0x20
 #define UART_FCR_T_TRIG_11	0x30
 
-#define UART_FCR_TRIGGER_MASK	0xC0 /* Mask for the FIFO trigger range */
-#define UART_FCR_TRIGGER_1	0x00 /* Mask for trigger set at 1 */
-#define UART_FCR_TRIGGER_4	0x40 /* Mask for trigger set at 4 */
-#define UART_FCR_TRIGGER_8	0x80 /* Mask for trigger set at 8 */
-#define UART_FCR_TRIGGER_14	0xC0 /* Mask for trigger set at 14 */
+#define UART_FCR_TRIGGER_MASK	0xC0	/* Mask for the FIFO trigger range */
+#define UART_FCR_TRIGGER_1	0x00	/* Mask for trigger set at 1 */
+#define UART_FCR_TRIGGER_4	0x40	/* Mask for trigger set at 4 */
+#define UART_FCR_TRIGGER_8	0x80	/* Mask for trigger set at 8 */
+#define UART_FCR_TRIGGER_14	0xC0	/* Mask for trigger set at 14 */
 /* 16650 definitions */
-#define UART_FCR6_R_TRIGGER_8	0x00 /* Mask for receive trigger set at 1 */
-#define UART_FCR6_R_TRIGGER_16	0x40 /* Mask for receive trigger set at 4 */
-#define UART_FCR6_R_TRIGGER_24  0x80 /* Mask for receive trigger set at 8 */
-#define UART_FCR6_R_TRIGGER_28	0xC0 /* Mask for receive trigger set at 14 */
-#define UART_FCR6_T_TRIGGER_16	0x00 /* Mask for transmit trigger set at 16 */
-#define UART_FCR6_T_TRIGGER_8	0x10 /* Mask for transmit trigger set at 8 */
-#define UART_FCR6_T_TRIGGER_24  0x20 /* Mask for transmit trigger set at 24 */
-#define UART_FCR6_T_TRIGGER_30	0x30 /* Mask for transmit trigger set at 30 */
-#define UART_FCR7_64BYTE	0x20 /* Go into 64 byte mode (TI16C750) */
+#define UART_FCR6_R_TRIGGER_8	0x00	/* Mask for receive trigger set at 1 */
+#define UART_FCR6_R_TRIGGER_16	0x40	/* Mask for receive trigger set at 4 */
+#define UART_FCR6_R_TRIGGER_24  0x80	/* Mask for receive trigger set at 8 */
+#define UART_FCR6_R_TRIGGER_28	0xC0	/* Mask for receive trigger set at 14 */
+#define UART_FCR6_T_TRIGGER_16	0x00	/* Mask for transmit trigger set at 16 */
+#define UART_FCR6_T_TRIGGER_8	0x10	/* Mask for transmit trigger set at 8 */
+#define UART_FCR6_T_TRIGGER_24  0x20	/* Mask for transmit trigger set at 24 */
+#define UART_FCR6_T_TRIGGER_30	0x30	/* Mask for transmit trigger set at 30 */
+#define UART_FCR7_64BYTE	0x20	/* Go into 64 byte mode (TI16C750) */
 
 #define UART_LCR	3	/* Out: Line Control Register */
 /*
  * Note: if the word length is 5 bits (UART_LCR_WLEN5), then setting 
  * UART_LCR_STOP will select 1.5 stop bits, not 2 stop bits.
  */
-#define UART_LCR_DLAB		0x80 /* Divisor latch access bit */
-#define UART_LCR_SBC		0x40 /* Set break control */
-#define UART_LCR_SPAR		0x20 /* Stick parity (?) */
-#define UART_LCR_EPAR		0x10 /* Even parity select */
-#define UART_LCR_PARITY		0x08 /* Parity Enable */
-#define UART_LCR_STOP		0x04 /* Stop bits: 0=1 bit, 1=2 bits */
-#define UART_LCR_WLEN5		0x00 /* Wordlength: 5 bits */
-#define UART_LCR_WLEN6		0x01 /* Wordlength: 6 bits */
-#define UART_LCR_WLEN7		0x02 /* Wordlength: 7 bits */
-#define UART_LCR_WLEN8		0x03 /* Wordlength: 8 bits */
+#define UART_LCR_DLAB		0x80	/* Divisor latch access bit */
+#define UART_LCR_SBC		0x40	/* Set break control */
+#define UART_LCR_SPAR		0x20	/* Stick parity (?) */
+#define UART_LCR_EPAR		0x10	/* Even parity select */
+#define UART_LCR_PARITY		0x08	/* Parity Enable */
+#define UART_LCR_STOP		0x04	/* Stop bits: 0=1 bit, 1=2 bits */
+#define UART_LCR_WLEN5		0x00	/* Wordlength: 5 bits */
+#define UART_LCR_WLEN6		0x01	/* Wordlength: 6 bits */
+#define UART_LCR_WLEN7		0x02	/* Wordlength: 7 bits */
+#define UART_LCR_WLEN8		0x03	/* Wordlength: 8 bits */
 
 #define UART_MCR	4	/* Out: Modem Control Register */
-#define UART_MCR_CLKSEL		0x80 /* Divide clock by 4 (TI16C752, EFR[4]=1) */
-#define UART_MCR_TCRTLR		0x40 /* Access TCR/TLR (TI16C752, EFR[4]=1) */
-#define UART_MCR_XONANY		0x20 /* Enable Xon Any (TI16C752, EFR[4]=1) */
-#define UART_MCR_AFE		0x20 /* Enable auto-RTS/CTS (TI16C550C/TI16C750) */
-#define UART_MCR_LOOP		0x10 /* Enable loopback test mode */
-#define UART_MCR_OUT2		0x08 /* Out2 complement */
-#define UART_MCR_OUT1		0x04 /* Out1 complement */
-#define UART_MCR_RTS		0x02 /* RTS complement */
-#define UART_MCR_DTR		0x01 /* DTR complement */
+#define UART_MCR_CLKSEL		0x80	/* Divide clock by 4 (TI16C752, EFR[4]=1) */
+#define UART_MCR_TCRTLR		0x40	/* Access TCR/TLR (TI16C752, EFR[4]=1) */
+#define UART_MCR_XONANY		0x20	/* Enable Xon Any (TI16C752, EFR[4]=1) */
+#define UART_MCR_AFE		0x20	/* Enable auto-RTS/CTS (TI16C550C/TI16C750) */
+#define UART_MCR_LOOP		0x10	/* Enable loopback test mode */
+#define UART_MCR_OUT2		0x08	/* Out2 complement */
+#define UART_MCR_OUT1		0x04	/* Out1 complement */
+#define UART_MCR_RTS		0x02	/* RTS complement */
+#define UART_MCR_DTR		0x01	/* DTR complement */
 
 #define UART_LSR	5	/* In:  Line Status Register */
-#define UART_LSR_TEMT		0x40 /* Transmitter empty */
-#define UART_LSR_THRE		0x20 /* Transmit-hold-register empty */
-#define UART_LSR_BI		0x10 /* Break interrupt indicator */
-#define UART_LSR_FE		0x08 /* Frame error indicator */
-#define UART_LSR_PE		0x04 /* Parity error indicator */
-#define UART_LSR_OE		0x02 /* Overrun error indicator */
-#define UART_LSR_DR		0x01 /* Receiver data ready */
-#define UART_LSR_BRK_ERROR_BITS	0x1E /* BI, FE, PE, OE bits */
+#define UART_LSR_TEMT		0x40	/* Transmitter empty */
+#define UART_LSR_THRE		0x20	/* Transmit-hold-register empty */
+#define UART_LSR_BI		0x10	/* Break interrupt indicator */
+#define UART_LSR_FE		0x08	/* Frame error indicator */
+#define UART_LSR_PE		0x04	/* Parity error indicator */
+#define UART_LSR_OE		0x02	/* Overrun error indicator */
+#define UART_LSR_DR		0x01	/* Receiver data ready */
+#define UART_LSR_BRK_ERROR_BITS	0x1E	/* BI, FE, PE, OE bits */
 
 #define UART_MSR	6	/* In:  Modem Status Register */
-#define UART_MSR_DCD		0x80 /* Data Carrier Detect */
-#define UART_MSR_RI		0x40 /* Ring Indicator */
-#define UART_MSR_DSR		0x20 /* Data Set Ready */
-#define UART_MSR_CTS		0x10 /* Clear to Send */
-#define UART_MSR_DDCD		0x08 /* Delta DCD */
-#define UART_MSR_TERI		0x04 /* Trailing edge ring indicator */
-#define UART_MSR_DDSR		0x02 /* Delta DSR */
-#define UART_MSR_DCTS		0x01 /* Delta CTS */
-#define UART_MSR_ANY_DELTA	0x0F /* Any of the delta bits! */
+#define UART_MSR_DCD		0x80	/* Data Carrier Detect */
+#define UART_MSR_RI		0x40	/* Ring Indicator */
+#define UART_MSR_DSR		0x20	/* Data Set Ready */
+#define UART_MSR_CTS		0x10	/* Clear to Send */
+#define UART_MSR_DDCD		0x08	/* Delta DCD */
+#define UART_MSR_TERI		0x04	/* Trailing edge ring indicator */
+#define UART_MSR_DDSR		0x02	/* Delta DSR */
+#define UART_MSR_DCTS		0x01	/* Delta CTS */
+#define UART_MSR_ANY_DELTA	0x0F	/* Any of the delta bits! */
 
 #define UART_SCR	7	/* I/O: Scratch Register */
 
@@ -143,10 +143,10 @@
  * LCR=0xBF (or DLAB=1 for 16C660)
  */
 #define UART_EFR	2	/* I/O: Extended Features Register */
-#define UART_EFR_CTS		0x80 /* CTS flow control */
-#define UART_EFR_RTS		0x40 /* RTS flow control */
-#define UART_EFR_SCD		0x20 /* Special character detect */
-#define UART_EFR_ECB		0x10 /* Enhanced control bit */
+#define UART_EFR_CTS		0x80	/* CTS flow control */
+#define UART_EFR_RTS		0x40	/* RTS flow control */
+#define UART_EFR_SCD		0x20	/* Special character detect */
+#define UART_EFR_ECB		0x10	/* Enhanced control bit */
 /*
  * the low four bits control software flow control
  */
@@ -185,26 +185,26 @@
 #define UART_TRG_128		0x80
 
 #define UART_FCTR	1	/* Feature Control Register */
-#define UART_FCTR_RTS_NODELAY	0x00  /* RTS flow control delay */
+#define UART_FCTR_RTS_NODELAY	0x00	/* RTS flow control delay */
 #define UART_FCTR_RTS_4DELAY	0x01
 #define UART_FCTR_RTS_6DELAY	0x02
 #define UART_FCTR_RTS_8DELAY	0x03
-#define UART_FCTR_IRDA		0x04  /* IrDa data encode select */
-#define UART_FCTR_TX_INT	0x08  /* Tx interrupt type select */
-#define UART_FCTR_TRGA		0x00  /* Tx/Rx 550 trigger table select */
-#define UART_FCTR_TRGB		0x10  /* Tx/Rx 650 trigger table select */
-#define UART_FCTR_TRGC		0x20  /* Tx/Rx 654 trigger table select */
-#define UART_FCTR_TRGD		0x30  /* Tx/Rx 850 programmable trigger select */
-#define UART_FCTR_SCR_SWAP	0x40  /* Scratch pad register swap */
-#define UART_FCTR_RX		0x00  /* Programmable trigger mode select */
-#define UART_FCTR_TX		0x80  /* Programmable trigger mode select */
+#define UART_FCTR_IRDA		0x04	/* IrDa data encode select */
+#define UART_FCTR_TX_INT	0x08	/* Tx interrupt type select */
+#define UART_FCTR_TRGA		0x00	/* Tx/Rx 550 trigger table select */
+#define UART_FCTR_TRGB		0x10	/* Tx/Rx 650 trigger table select */
+#define UART_FCTR_TRGC		0x20	/* Tx/Rx 654 trigger table select */
+#define UART_FCTR_TRGD		0x30	/* Tx/Rx 850 programmable trigger select */
+#define UART_FCTR_SCR_SWAP	0x40	/* Scratch pad register swap */
+#define UART_FCTR_RX		0x00	/* Programmable trigger mode select */
+#define UART_FCTR_TX		0x80	/* Programmable trigger mode select */
 
 /*
  * LCR=0xBF, FCTR[6]=1
  */
 #define UART_EMSR	7	/* Extended Mode Select Register */
-#define UART_EMSR_FIFO_COUNT	0x01  /* Rx/Tx select */
-#define UART_EMSR_ALT_COUNT	0x02  /* Alternating count select */
+#define UART_EMSR_FIFO_COUNT	0x01	/* Rx/Tx select */
+#define UART_EMSR_ALT_COUNT	0x02	/* Alternating count select */
 
 /*
  * The Intel XScale on-chip UARTs define these bits
@@ -220,9 +220,6 @@
 #define UART_FCR_PXAR8	0x40	/* receive FIFO treshold = 8 */
 #define UART_FCR_PXAR16	0x80	/* receive FIFO treshold = 16 */
 #define UART_FCR_PXAR32	0xc0	/* receive FIFO treshold = 32 */
-
-
-
 
 /*
  * These register definitions are for the 16C950
@@ -259,8 +256,6 @@
 #define UART_ACR_ICRRD	0x40	/* ICR Read enable */
 #define UART_ACR_ASREN	0x80	/* Additional status enable */
 
-
-
 /*
  * These definitions are for the RSA-DV II/S card, from
  *
@@ -269,39 +264,39 @@
 
 #define UART_RSA_BASE (-8)
 
-#define UART_RSA_MSR ((UART_RSA_BASE) + 0) /* I/O: Mode Select Register */
+#define UART_RSA_MSR ((UART_RSA_BASE) + 0)	/* I/O: Mode Select Register */
 
-#define UART_RSA_MSR_SWAP (1 << 0) /* Swap low/high 8 bytes in I/O port addr */
-#define UART_RSA_MSR_FIFO (1 << 2) /* Enable the external FIFO */
-#define UART_RSA_MSR_FLOW (1 << 3) /* Enable the auto RTS/CTS flow control */
-#define UART_RSA_MSR_ITYP (1 << 4) /* Level (1) / Edge triger (0) */
+#define UART_RSA_MSR_SWAP (1 << 0)	/* Swap low/high 8 bytes in I/O port addr */
+#define UART_RSA_MSR_FIFO (1 << 2)	/* Enable the external FIFO */
+#define UART_RSA_MSR_FLOW (1 << 3)	/* Enable the auto RTS/CTS flow control */
+#define UART_RSA_MSR_ITYP (1 << 4)	/* Level (1) / Edge triger (0) */
 
-#define UART_RSA_IER ((UART_RSA_BASE) + 1) /* I/O: Interrupt Enable Register */
+#define UART_RSA_IER ((UART_RSA_BASE) + 1)	/* I/O: Interrupt Enable Register */
 
-#define UART_RSA_IER_Rx_FIFO_H (1 << 0) /* Enable Rx FIFO half full int. */
-#define UART_RSA_IER_Tx_FIFO_H (1 << 1) /* Enable Tx FIFO half full int. */
-#define UART_RSA_IER_Tx_FIFO_E (1 << 2) /* Enable Tx FIFO empty int. */
-#define UART_RSA_IER_Rx_TOUT (1 << 3) /* Enable char receive timeout int */
-#define UART_RSA_IER_TIMER (1 << 4) /* Enable timer interrupt */
+#define UART_RSA_IER_Rx_FIFO_H (1 << 0)	/* Enable Rx FIFO half full int. */
+#define UART_RSA_IER_Tx_FIFO_H (1 << 1)	/* Enable Tx FIFO half full int. */
+#define UART_RSA_IER_Tx_FIFO_E (1 << 2)	/* Enable Tx FIFO empty int. */
+#define UART_RSA_IER_Rx_TOUT (1 << 3)	/* Enable char receive timeout int */
+#define UART_RSA_IER_TIMER (1 << 4)	/* Enable timer interrupt */
 
-#define UART_RSA_SRR ((UART_RSA_BASE) + 2) /* IN: Status Read Register */
+#define UART_RSA_SRR ((UART_RSA_BASE) + 2)	/* IN: Status Read Register */
 
-#define UART_RSA_SRR_Tx_FIFO_NEMP (1 << 0) /* Tx FIFO is not empty (1) */
-#define UART_RSA_SRR_Tx_FIFO_NHFL (1 << 1) /* Tx FIFO is not half full (1) */
-#define UART_RSA_SRR_Tx_FIFO_NFUL (1 << 2) /* Tx FIFO is not full (1) */
-#define UART_RSA_SRR_Rx_FIFO_NEMP (1 << 3) /* Rx FIFO is not empty (1) */
-#define UART_RSA_SRR_Rx_FIFO_NHFL (1 << 4) /* Rx FIFO is not half full (1) */
-#define UART_RSA_SRR_Rx_FIFO_NFUL (1 << 5) /* Rx FIFO is not full (1) */
-#define UART_RSA_SRR_Rx_TOUT (1 << 6) /* Character reception timeout occurred (1) */
-#define UART_RSA_SRR_TIMER (1 << 7) /* Timer interrupt occurred */
+#define UART_RSA_SRR_Tx_FIFO_NEMP (1 << 0)	/* Tx FIFO is not empty (1) */
+#define UART_RSA_SRR_Tx_FIFO_NHFL (1 << 1)	/* Tx FIFO is not half full (1) */
+#define UART_RSA_SRR_Tx_FIFO_NFUL (1 << 2)	/* Tx FIFO is not full (1) */
+#define UART_RSA_SRR_Rx_FIFO_NEMP (1 << 3)	/* Rx FIFO is not empty (1) */
+#define UART_RSA_SRR_Rx_FIFO_NHFL (1 << 4)	/* Rx FIFO is not half full (1) */
+#define UART_RSA_SRR_Rx_FIFO_NFUL (1 << 5)	/* Rx FIFO is not full (1) */
+#define UART_RSA_SRR_Rx_TOUT (1 << 6)	/* Character reception timeout occurred (1) */
+#define UART_RSA_SRR_TIMER (1 << 7)	/* Timer interrupt occurred */
 
-#define UART_RSA_FRR ((UART_RSA_BASE) + 2) /* OUT: FIFO Reset Register */
+#define UART_RSA_FRR ((UART_RSA_BASE) + 2)	/* OUT: FIFO Reset Register */
 
-#define UART_RSA_TIVSR ((UART_RSA_BASE) + 3) /* I/O: Timer Interval Value Set Register */
+#define UART_RSA_TIVSR ((UART_RSA_BASE) + 3)	/* I/O: Timer Interval Value Set Register */
 
-#define UART_RSA_TCR ((UART_RSA_BASE) + 4) /* OUT: Timer Control Register */
+#define UART_RSA_TCR ((UART_RSA_BASE) + 4)	/* OUT: Timer Control Register */
 
-#define UART_RSA_TCR_SWITCH (1 << 0) /* Timer on */
+#define UART_RSA_TCR_SWITCH (1 << 0)	/* Timer on */
 
 /*
  * The RSA DSV/II board has two fixed clock frequencies.  One is the
@@ -325,4 +320,3 @@
 #define UART_OMAP_SYSS		0x16	/* System status register */
 
 #endif /* _LINUX_SERIAL_REG_H */
-

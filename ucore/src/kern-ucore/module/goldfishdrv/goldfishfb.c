@@ -37,18 +37,18 @@
 #endif
 
 enum {
-	FB_GET_WIDTH        = 0x00,
-	FB_GET_HEIGHT       = 0x04,
-	FB_INT_STATUS       = 0x08,
-	FB_INT_ENABLE       = 0x0c,
-	FB_SET_BASE         = 0x10,
-	FB_SET_ROTATION     = 0x14,
-	FB_SET_BLANK        = 0x18,
-	FB_GET_PHYS_WIDTH   = 0x1c,
-	FB_GET_PHYS_HEIGHT  = 0x20,
+	FB_GET_WIDTH = 0x00,
+	FB_GET_HEIGHT = 0x04,
+	FB_INT_STATUS = 0x08,
+	FB_INT_ENABLE = 0x0c,
+	FB_SET_BASE = 0x10,
+	FB_SET_ROTATION = 0x14,
+	FB_SET_BLANK = 0x18,
+	FB_GET_PHYS_WIDTH = 0x1c,
+	FB_GET_PHYS_HEIGHT = 0x20,
 
-	FB_INT_VSYNC             = 1U << 0,
-	FB_INT_BASE_UPDATE_DONE  = 1U << 1
+	FB_INT_VSYNC = 1U << 0,
+	FB_INT_BASE_UPDATE_DONE = 1U << 1
 };
 
 struct goldfish_fb {
@@ -59,22 +59,21 @@ struct goldfish_fb {
 	int base_update_count;
 	int rotation;
 	struct fb_info fb;
-	u32			cmap[16];
+	u32 cmap[16];
 #ifdef CONFIG_ANDROID_POWER
-        android_early_suspend_t early_suspend;
+	android_early_suspend_t early_suspend;
 #endif
 };
 
-static irqreturn_t
-goldfish_fb_interrupt(int irq, void *dev_id)
+static irqreturn_t goldfish_fb_interrupt(int irq, void *dev_id)
 {
 	unsigned long irq_flags;
-	struct goldfish_fb	*fb = dev_id;
+	struct goldfish_fb *fb = dev_id;
 	uint32_t status;
 
 	spin_lock_irqsave(&fb->lock, irq_flags);
 	status = readl(fb->reg_base + FB_INT_STATUS);
-	if(status & FB_INT_BASE_UPDATE_DONE) {
+	if (status & FB_INT_BASE_UPDATE_DONE) {
 		fb->base_update_count++;
 		wake_up(&fb->wait);
 	}
@@ -91,45 +90,45 @@ static inline u32 convert_bitfield(int val, struct fb_bitfield *bf)
 
 static int
 goldfish_fb_setcolreg(unsigned int regno, unsigned int red, unsigned int green,
-		 unsigned int blue, unsigned int transp, struct fb_info *info)
+		      unsigned int blue, unsigned int transp,
+		      struct fb_info *info)
 {
 	struct goldfish_fb *fb = container_of(info, struct goldfish_fb, fb);
 
 	if (regno < 16) {
 		fb->cmap[regno] = convert_bitfield(transp, &fb->fb.var.transp) |
-				  convert_bitfield(blue, &fb->fb.var.blue) |
-				  convert_bitfield(green, &fb->fb.var.green) |
-				  convert_bitfield(red, &fb->fb.var.red);
+		    convert_bitfield(blue, &fb->fb.var.blue) |
+		    convert_bitfield(green, &fb->fb.var.green) |
+		    convert_bitfield(red, &fb->fb.var.red);
 		return 0;
-	}
-	else {
+	} else {
 		return 1;
 	}
 }
 
-static int goldfish_fb_check_var(struct fb_var_screeninfo *var, struct fb_info *info)
+static int goldfish_fb_check_var(struct fb_var_screeninfo *var,
+				 struct fb_info *info)
 {
-	if((var->rotate & 1) != (info->var.rotate & 1)) {
-		if((var->xres != info->var.yres) ||
-		   (var->yres != info->var.xres) ||
-		   (var->xres_virtual != info->var.yres) ||
-		   (var->yres_virtual > info->var.xres * 2) ||
-		   (var->yres_virtual < info->var.xres )) {
+	if ((var->rotate & 1) != (info->var.rotate & 1)) {
+		if ((var->xres != info->var.yres) ||
+		    (var->yres != info->var.xres) ||
+		    (var->xres_virtual != info->var.yres) ||
+		    (var->yres_virtual > info->var.xres * 2) ||
+		    (var->yres_virtual < info->var.xres)) {
+			return -EINVAL;
+		}
+	} else {
+		if ((var->xres != info->var.xres) ||
+		    (var->yres != info->var.yres) ||
+		    (var->xres_virtual != info->var.xres) ||
+		    (var->yres_virtual > info->var.yres * 2) ||
+		    (var->yres_virtual < info->var.yres)) {
 			return -EINVAL;
 		}
 	}
-	else {
-		if((var->xres != info->var.xres) ||
-		   (var->yres != info->var.yres) ||
-		   (var->xres_virtual != info->var.xres) ||
-		   (var->yres_virtual > info->var.yres * 2) ||
-		   (var->yres_virtual < info->var.yres )) {
-			return -EINVAL;
-		}
-	}
-	if((var->xoffset != info->var.xoffset) ||
-	   (var->bits_per_pixel != info->var.bits_per_pixel) ||
-	   (var->grayscale != info->var.grayscale)) {
+	if ((var->xoffset != info->var.xoffset) ||
+	    (var->bits_per_pixel != info->var.bits_per_pixel) ||
+	    (var->grayscale != info->var.grayscale)) {
 		return -EINVAL;
 	}
 	return 0;
@@ -138,7 +137,7 @@ static int goldfish_fb_check_var(struct fb_var_screeninfo *var, struct fb_info *
 static int goldfish_fb_set_par(struct fb_info *info)
 {
 	struct goldfish_fb *fb = container_of(info, struct goldfish_fb, fb);
-	if(fb->rotation != fb->fb.var.rotate) {
+	if (fb->rotation != fb->fb.var.rotate) {
 		info->fix.line_length = info->var.xres * 2;
 		fb->rotation = fb->fb.var.rotate;
 		writel(fb->rotation, fb->reg_base + FB_SET_ROTATION);
@@ -146,8 +145,8 @@ static int goldfish_fb_set_par(struct fb_info *info)
 	return 0;
 }
 
-
-static int goldfish_fb_pan_display(struct fb_var_screeninfo *var, struct fb_info *info)
+static int goldfish_fb_pan_display(struct fb_var_screeninfo *var,
+				   struct fb_info *info)
 {
 	unsigned long irq_flags;
 	int base_update_count;
@@ -155,39 +154,43 @@ static int goldfish_fb_pan_display(struct fb_var_screeninfo *var, struct fb_info
 
 	spin_lock_irqsave(&fb->lock, irq_flags);
 	base_update_count = fb->base_update_count;
-	writel(fb->fb.fix.smem_start + fb->fb.var.xres * 2 * var->yoffset, fb->reg_base + FB_SET_BASE);
+	writel(fb->fb.fix.smem_start + fb->fb.var.xres * 2 * var->yoffset,
+	       fb->reg_base + FB_SET_BASE);
 	spin_unlock_irqrestore(&fb->lock, irq_flags);
-	wait_event_timeout(fb->wait, fb->base_update_count != base_update_count, HZ / 15);
-	if(fb->base_update_count == base_update_count)
-		printk("goldfish_fb_pan_display: timeout wating for base update\n");
+	wait_event_timeout(fb->wait, fb->base_update_count != base_update_count,
+			   HZ / 15);
+	if (fb->base_update_count == base_update_count)
+		printk
+		    ("goldfish_fb_pan_display: timeout wating for base update\n");
 	return 0;
 }
 
 #ifdef CONFIG_ANDROID_POWER
-static void goldfish_fb_early_suspend(android_early_suspend_t *h)
+static void goldfish_fb_early_suspend(android_early_suspend_t * h)
 {
-	struct goldfish_fb *fb = container_of(h, struct goldfish_fb, early_suspend);
+	struct goldfish_fb *fb =
+	    container_of(h, struct goldfish_fb, early_suspend);
 	writel(1, fb->reg_base + FB_SET_BLANK);
 }
 
-static void goldfish_fb_late_resume(android_early_suspend_t *h)
+static void goldfish_fb_late_resume(android_early_suspend_t * h)
 {
-	struct goldfish_fb *fb = container_of(h, struct goldfish_fb, early_suspend);
-        writel(0, fb->reg_base + FB_SET_BLANK);
+	struct goldfish_fb *fb =
+	    container_of(h, struct goldfish_fb, early_suspend);
+	writel(0, fb->reg_base + FB_SET_BLANK);
 }
 #endif
 
 static struct fb_ops goldfish_fb_ops = {
-	.owner          = THIS_MODULE,
-	.fb_check_var   = goldfish_fb_check_var,
-	.fb_set_par     = goldfish_fb_set_par,
-	.fb_setcolreg   = goldfish_fb_setcolreg,
+	.owner = THIS_MODULE,
+	.fb_check_var = goldfish_fb_check_var,
+	.fb_set_par = goldfish_fb_set_par,
+	.fb_setcolreg = goldfish_fb_setcolreg,
 	.fb_pan_display = goldfish_fb_pan_display,
-	.fb_fillrect    = cfb_fillrect,
-	.fb_copyarea    = cfb_copyarea,
-	.fb_imageblit   = cfb_imageblit,
+	.fb_fillrect = cfb_fillrect,
+	.fb_copyarea = cfb_copyarea,
+	.fb_imageblit = cfb_imageblit,
 };
-
 
 static int goldfish_fb_probe(struct platform_device *pdev)
 {
@@ -199,7 +202,7 @@ static int goldfish_fb_probe(struct platform_device *pdev)
 	dma_addr_t fbpaddr;
 
 	fb = kzalloc(sizeof(*fb), GFP_KERNEL);
-	if(fb == NULL) {
+	if (fb == NULL) {
 		ret = -ENOMEM;
 		goto err_fb_alloc_failed;
 	}
@@ -208,7 +211,7 @@ static int goldfish_fb_probe(struct platform_device *pdev)
 	platform_set_drvdata(pdev, fb);
 
 	r = platform_get_resource(pdev, IORESOURCE_MEM, 0);
-	if(r == NULL) {
+	if (r == NULL) {
 		ret = -ENODEV;
 		goto err_no_io_base;
 	}
@@ -219,7 +222,7 @@ static int goldfish_fb_probe(struct platform_device *pdev)
 #endif
 
 	fb->irq = platform_get_irq(pdev, 0);
-	if(fb->irq < 0) {
+	if (fb->irq < 0) {
 		ret = -ENODEV;
 		goto err_no_irq;
 	}
@@ -227,25 +230,25 @@ static int goldfish_fb_probe(struct platform_device *pdev)
 	width = readl(fb->reg_base + FB_GET_WIDTH);
 	height = readl(fb->reg_base + FB_GET_HEIGHT);
 
-	fb->fb.fbops		= &goldfish_fb_ops;
-	fb->fb.flags		= FBINFO_FLAG_DEFAULT;
-	fb->fb.pseudo_palette	= fb->cmap;
+	fb->fb.fbops = &goldfish_fb_ops;
+	fb->fb.flags = FBINFO_FLAG_DEFAULT;
+	fb->fb.pseudo_palette = fb->cmap;
 	//strncpy(fb->fb.fix.id, clcd_name, sizeof(fb->fb.fix.id));
-	fb->fb.fix.type		= FB_TYPE_PACKED_PIXELS;
+	fb->fb.fix.type = FB_TYPE_PACKED_PIXELS;
 	fb->fb.fix.visual = FB_VISUAL_TRUECOLOR;
 	fb->fb.fix.line_length = width * 2;
-	fb->fb.fix.accel	= FB_ACCEL_NONE;
+	fb->fb.fix.accel = FB_ACCEL_NONE;
 	fb->fb.fix.ypanstep = 1;
 
-	fb->fb.var.xres		= width;
-	fb->fb.var.yres		= height;
-	fb->fb.var.xres_virtual	= width;
-	fb->fb.var.yres_virtual	= height * 2;
+	fb->fb.var.xres = width;
+	fb->fb.var.yres = height;
+	fb->fb.var.xres_virtual = width;
+	fb->fb.var.yres_virtual = height * 2;
 	fb->fb.var.bits_per_pixel = 16;
-	fb->fb.var.activate	= FB_ACTIVATE_NOW;
-	fb->fb.var.height	= readl(fb->reg_base + FB_GET_PHYS_HEIGHT);
-	fb->fb.var.width	= readl(fb->reg_base + FB_GET_PHYS_WIDTH);
-	fb->fb.var.pixclock	= 10000;
+	fb->fb.var.activate = FB_ACTIVATE_NOW;
+	fb->fb.var.height = readl(fb->reg_base + FB_GET_PHYS_HEIGHT);
+	fb->fb.var.width = readl(fb->reg_base + FB_GET_PHYS_WIDTH);
+	fb->fb.var.pixclock = 10000;
 
 	fb->fb.var.red.offset = 11;
 	fb->fb.var.red.length = 5;
@@ -257,13 +260,14 @@ static int goldfish_fb_probe(struct platform_device *pdev)
 	framesize = width * height * 2 * 2;
 #ifdef CONFIG_ARM
 	fb->fb.screen_base = dma_alloc_writecombine(&pdev->dev, framesize,
-	                                            &fbpaddr, GFP_KERNEL);
+						    &fbpaddr, GFP_KERNEL);
 #elif	CONFIG_X86
 	fb->fb.screen_base = dma_alloc_coherent(NULL, framesize,
 						&fbpaddr, GFP_KERNEL);
 #endif
-	printk("allocating frame buffer %d * %d, got %p\n", width, height, fb->fb.screen_base);
-	if(fb->fb.screen_base == 0) {
+	printk("allocating frame buffer %d * %d, got %p\n", width, height,
+	       fb->fb.screen_base);
+	if (fb->fb.screen_base == 0) {
 		ret = -ENOMEM;
 		goto err_alloc_screen_base_failed;
 	}
@@ -274,18 +278,20 @@ static int goldfish_fb_probe(struct platform_device *pdev)
 	fb->fb.fix.smem_len = framesize;
 
 	ret = fb_set_var(&fb->fb, &fb->fb.var);
-	if(ret)
+	if (ret)
 		goto err_fb_set_var_failed;
 
-	ret = request_irq(fb->irq, goldfish_fb_interrupt, IRQF_SHARED, pdev->name, fb);
-	if(ret)
+	ret =
+	    request_irq(fb->irq, goldfish_fb_interrupt, IRQF_SHARED, pdev->name,
+			fb);
+	if (ret)
 		goto err_request_irq_failed;
 
 	writel(FB_INT_BASE_UPDATE_DONE, fb->reg_base + FB_INT_ENABLE);
-	goldfish_fb_pan_display(&fb->fb.var, &fb->fb); // updates base
+	goldfish_fb_pan_display(&fb->fb.var, &fb->fb);	// updates base
 
 	ret = register_framebuffer(&fb->fb);
-	if(ret)
+	if (ret)
 		goto err_register_framebuffer_failed;
 
 #ifdef CONFIG_ANDROID_POWER
@@ -296,15 +302,16 @@ static int goldfish_fb_probe(struct platform_device *pdev)
 
 	return 0;
 
-
 err_register_framebuffer_failed:
 	free_irq(fb->irq, fb);
 err_request_irq_failed:
 err_fb_set_var_failed:
 #ifdef	CONFIG_ARM
-	dma_free_writecombine(&pdev->dev, framesize, fb->fb.screen_base, fb->fb.fix.smem_start);
+	dma_free_writecombine(&pdev->dev, framesize, fb->fb.screen_base,
+			      fb->fb.fix.smem_start);
 #elif	CONFIG_X86
-	dma_free_coherent(NULL, framesize, fb->fb.screen_base, fb->fb.fix.smem_start);
+	dma_free_coherent(NULL, framesize, fb->fb.screen_base,
+			  fb->fb.fix.smem_start);
 #endif
 err_alloc_screen_base_failed:
 err_no_irq:
@@ -321,31 +328,31 @@ static int goldfish_fb_remove(struct platform_device *pdev)
 {
 	size_t framesize;
 	struct goldfish_fb *fb = platform_get_drvdata(pdev);
-	
+
 	framesize = fb->fb.var.xres_virtual * fb->fb.var.yres_virtual * 2;
 
 #ifdef CONFIG_ANDROID_POWER
-        android_unregister_early_suspend(&fb->early_suspend);
+	android_unregister_early_suspend(&fb->early_suspend);
 #endif
 	unregister_framebuffer(&fb->fb);
 	free_irq(fb->irq, fb);
 #ifdef	CONFIG_ARM
-	dma_free_writecombine(&pdev->dev, framesize, fb->fb.screen_base, fb->fb.fix.smem_start);
+	dma_free_writecombine(&pdev->dev, framesize, fb->fb.screen_base,
+			      fb->fb.fix.smem_start);
 	kfree(fb);
 #elif	CONFIG_X86
-	dma_free_coherent(NULL, framesize, fb->fb.screen_base, fb->fb.fix.smem_start);
+	dma_free_coherent(NULL, framesize, fb->fb.screen_base,
+			  fb->fb.fix.smem_start);
 	iounmap(fb->reg_base);
 #endif
 	return 0;
 }
 
-
 static struct platform_driver goldfish_fb_driver = {
-	.probe		= goldfish_fb_probe,
-	.remove		= goldfish_fb_remove,
+	.probe = goldfish_fb_probe,
+	.remove = goldfish_fb_remove,
 	.driver = {
-		.name = "goldfish_fb"
-	}
+		   .name = "goldfish_fb"}
 };
 
 static int __init goldfish_fb_init(void)
@@ -360,4 +367,3 @@ static void __exit goldfish_fb_exit(void)
 
 module_init(goldfish_fb_init);
 module_exit(goldfish_fb_exit);
-

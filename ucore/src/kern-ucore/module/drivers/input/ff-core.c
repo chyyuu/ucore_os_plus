@@ -35,7 +35,7 @@
  * is the owner
  */
 static int check_effect_access(struct ff_device *ff, int effect_id,
-				struct file *file)
+			       struct file *file)
 {
 	if (effect_id < 0 || effect_id >= ff->max_effects ||
 	    !ff->effect_owners[effect_id])
@@ -54,8 +54,8 @@ static inline int check_effects_compatible(struct ff_effect *e1,
 					   struct ff_effect *e2)
 {
 	return e1->type == e2->type &&
-	       (e1->type != FF_PERIODIC ||
-		e1->u.periodic.waveform == e2->u.periodic.waveform);
+	    (e1->type != FF_PERIODIC ||
+	     e1->u.periodic.waveform == e2->u.periodic.waveform);
 }
 
 /*
@@ -75,7 +75,7 @@ static int compat_effect(struct ff_device *ff, struct ff_effect *effect)
 		 * 2/3 of strong magnitude and 1/3 of weak magnitude
 		 */
 		magnitude = effect->u.rumble.strong_magnitude / 3 +
-			    effect->u.rumble.weak_magnitude / 6;
+		    effect->u.rumble.weak_magnitude / 6;
 
 		effect->type = FF_PERIODIC;
 		effect->u.periodic.waveform = FF_SINE;
@@ -137,8 +137,8 @@ int input_ff_upload(struct input_dev *dev, struct ff_effect *effect,
 
 	if (effect->id == -1) {
 		for (id = 0; id < ff->max_effects; id++)
-		     if (!ff->effect_owners[id])
-			break;
+			if (!ff->effect_owners[id])
+				break;
 
 		if (id >= ff->max_effects) {
 			ret = -ENOSPC;
@@ -172,18 +172,18 @@ int input_ff_upload(struct input_dev *dev, struct ff_effect *effect,
 	ff->effect_owners[id] = file;
 	spin_unlock_irq(&dev->event_lock);
 
- out:
+out:
 	mutex_unlock(&ff->mutex);
 	return ret;
 }
+
 EXPORT_SYMBOL_GPL(input_ff_upload);
 
 /*
  * Erases the effect if the requester is also the effect owner. The mutex
  * should already be locked before calling this function.
  */
-static int erase_effect(struct input_dev *dev, int effect_id,
-			struct file *file)
+static int erase_effect(struct input_dev *dev, int effect_id, struct file *file)
 {
 	struct ff_device *ff = dev->ff;
 	int error;
@@ -235,6 +235,7 @@ int input_ff_erase(struct input_dev *dev, int effect_id, struct file *file)
 
 	return ret;
 }
+
 EXPORT_SYMBOL_GPL(input_ff_erase);
 
 /*
@@ -295,6 +296,7 @@ int input_ff_event(struct input_dev *dev, unsigned int type,
 
 	return 0;
 }
+
 EXPORT_SYMBOL_GPL(input_ff_event);
 
 /**
@@ -350,6 +352,7 @@ int input_ff_create(struct input_dev *dev, int max_effects)
 
 	return 0;
 }
+
 EXPORT_SYMBOL_GPL(input_ff_create);
 
 /**
@@ -371,4 +374,5 @@ void input_ff_destroy(struct input_dev *dev)
 		dev->ff = NULL;
 	}
 }
+
 EXPORT_SYMBOL_GPL(input_ff_destroy);

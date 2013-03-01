@@ -48,7 +48,6 @@
 #define BIT30	0x40000000
 #define BIT31	0x80000000
 
-
 #define HDLC_MAX_FRAME_SIZE	65535
 #define MAX_ASYNC_TRANSMIT	4096
 #define MAX_ASYNC_BUFFER_SIZE	4096
@@ -140,29 +139,28 @@
 #define MGSL_INTERFACE_RL       0x40
 #define MGSL_INTERFACE_MSB_FIRST 0x80
 
-typedef struct _MGSL_PARAMS
-{
+typedef struct _MGSL_PARAMS {
 	/* Common */
 
-	unsigned long	mode;		/* Asynchronous or HDLC */
-	unsigned char	loopback;	/* internal loopback mode */
+	unsigned long mode;	/* Asynchronous or HDLC */
+	unsigned char loopback;	/* internal loopback mode */
 
 	/* HDLC Only */
 
-	unsigned short	flags;
-	unsigned char	encoding;	/* NRZ, NRZI, etc. */
-	unsigned long	clock_speed;	/* external clock speed in bits per second */
-	unsigned char	addr_filter;	/* receive HDLC address filter, 0xFF = disable */
-	unsigned short	crc_type;	/* None, CRC16-CCITT, or CRC32-CCITT */
-	unsigned char	preamble_length;
-	unsigned char	preamble;
+	unsigned short flags;
+	unsigned char encoding;	/* NRZ, NRZI, etc. */
+	unsigned long clock_speed;	/* external clock speed in bits per second */
+	unsigned char addr_filter;	/* receive HDLC address filter, 0xFF = disable */
+	unsigned short crc_type;	/* None, CRC16-CCITT, or CRC32-CCITT */
+	unsigned char preamble_length;
+	unsigned char preamble;
 
 	/* Async Only */
 
-	unsigned long	data_rate;	/* bits per second */
-	unsigned char	data_bits;	/* 7 or 8 data bits */
-	unsigned char	stop_bits;	/* 1 or 2 stop bits */
-	unsigned char	parity;		/* none, even, or odd */
+	unsigned long data_rate;	/* bits per second */
+	unsigned char data_bits;	/* 7 or 8 data bits */
+	unsigned char stop_bits;	/* 1 or 2 stop bits */
+	unsigned char parity;	/* none, even, or odd */
 
 } MGSL_PARAMS, *PMGSL_PARAMS;
 
@@ -194,35 +192,34 @@ typedef struct _MGSL_PARAMS
 #define DiagStatus_CantAssignPciIrq		11
 #define DiagStatus_MemoryError			12
 
-#define SerialSignal_DCD            0x01     /* Data Carrier Detect */
-#define SerialSignal_TXD            0x02     /* Transmit Data */
-#define SerialSignal_RI             0x04     /* Ring Indicator */
-#define SerialSignal_RXD            0x08     /* Receive Data */
-#define SerialSignal_CTS            0x10     /* Clear to Send */
-#define SerialSignal_RTS            0x20     /* Request to Send */
-#define SerialSignal_DSR            0x40     /* Data Set Ready */
-#define SerialSignal_DTR            0x80     /* Data Terminal Ready */
-
+#define SerialSignal_DCD            0x01	/* Data Carrier Detect */
+#define SerialSignal_TXD            0x02	/* Transmit Data */
+#define SerialSignal_RI             0x04	/* Ring Indicator */
+#define SerialSignal_RXD            0x08	/* Receive Data */
+#define SerialSignal_CTS            0x10	/* Clear to Send */
+#define SerialSignal_RTS            0x20	/* Request to Send */
+#define SerialSignal_DSR            0x40	/* Data Set Ready */
+#define SerialSignal_DTR            0x80	/* Data Terminal Ready */
 
 /*
  * Counters of the input lines (CTS, DSR, RI, CD) interrupts
  */
 struct mgsl_icount {
-	__u32	cts, dsr, rng, dcd, tx, rx;
-	__u32	frame, parity, overrun, brk;
-	__u32	buf_overrun;
-	__u32	txok;
-	__u32	txunder;
-	__u32	txabort;
-	__u32	txtimeout;
-	__u32	rxshort;
-	__u32	rxlong;
-	__u32	rxabort;
-	__u32	rxover;
-	__u32	rxcrc;
-	__u32	rxok;
-	__u32	exithunt;
-	__u32	rxidle;
+	__u32 cts, dsr, rng, dcd, tx, rx;
+	__u32 frame, parity, overrun, brk;
+	__u32 buf_overrun;
+	__u32 txok;
+	__u32 txunder;
+	__u32 txabort;
+	__u32 txtimeout;
+	__u32 rxshort;
+	__u32 rxlong;
+	__u32 rxabort;
+	__u32 rxover;
+	__u32 rxcrc;
+	__u32 rxok;
+	__u32 exithunt;
+	__u32 rxidle;
 };
 
 struct gpio_desc {
@@ -295,19 +292,19 @@ struct gpio_desc {
 #ifdef CONFIG_COMPAT
 #include <linux/compat.h>
 struct MGSL_PARAMS32 {
-	compat_ulong_t	mode;
-	unsigned char	loopback;
-	unsigned short	flags;
-	unsigned char	encoding;
-	compat_ulong_t	clock_speed;
-	unsigned char	addr_filter;
-	unsigned short	crc_type;
-	unsigned char	preamble_length;
-	unsigned char	preamble;
-	compat_ulong_t	data_rate;
-	unsigned char	data_bits;
-	unsigned char	stop_bits;
-	unsigned char	parity;
+	compat_ulong_t mode;
+	unsigned char loopback;
+	unsigned short flags;
+	unsigned char encoding;
+	compat_ulong_t clock_speed;
+	unsigned char addr_filter;
+	unsigned short crc_type;
+	unsigned char preamble_length;
+	unsigned char preamble;
+	compat_ulong_t data_rate;
+	unsigned char data_bits;
+	unsigned char stop_bits;
+	unsigned char parity;
 };
 #define MGSL_IOCSPARAMS32 _IOW(MGSL_MAGIC_IOC,0,struct MGSL_PARAMS32)
 #define MGSL_IOCGPARAMS32 _IOR(MGSL_MAGIC_IOC,1,struct MGSL_PARAMS32)

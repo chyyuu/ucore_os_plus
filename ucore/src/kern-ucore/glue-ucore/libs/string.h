@@ -26,4 +26,3 @@ int memcmp(const void *v1, const void *v2, size_t n);
 
 int stricmp(const char *s1, const char *s2);
 #endif /* !__LIBS_STRING_H__ */
-

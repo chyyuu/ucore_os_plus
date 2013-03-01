@@ -1,8 +1,8 @@
 #ifndef _LAPB_H
-#define _LAPB_H 
+#define _LAPB_H
 #include <linux/lapb.h>
 
-#define	LAPB_HEADER_LEN	20		/* LAPB over Ethernet + a bit more */
+#define	LAPB_HEADER_LEN	20	/* LAPB over Ethernet + a bit more */
 
 #define	LAPB_ACK_PENDING_CONDITION	0x01
 #define	LAPB_REJECT_CONDITION		0x02
@@ -29,10 +29,10 @@
 #define	LAPB_SPF	0x10	/* Poll/final bit for standard LAPB */
 #define	LAPB_EPF	0x01	/* Poll/final bit for extended LAPB */
 
-#define	LAPB_FRMR_W	0x01	/* Control field invalid	*/
-#define	LAPB_FRMR_X	0x02	/* I field invalid		*/
-#define	LAPB_FRMR_Y	0x04	/* I field too long		*/
-#define	LAPB_FRMR_Z	0x08	/* Invalid N(R)			*/
+#define	LAPB_FRMR_W	0x01	/* Control field invalid        */
+#define	LAPB_FRMR_X	0x02	/* I field invalid              */
+#define	LAPB_FRMR_Y	0x04	/* I field too long             */
+#define	LAPB_FRMR_Z	0x08	/* Invalid N(R)                 */
 
 #define	LAPB_POLLOFF	0
 #define	LAPB_POLLON	1
@@ -48,18 +48,18 @@
 
 /* Define Link State constants. */
 enum {
-	LAPB_STATE_0,	/* Disconnected State		*/
-	LAPB_STATE_1,	/* Awaiting Connection State	*/
-	LAPB_STATE_2,	/* Awaiting Disconnection State	*/
-	LAPB_STATE_3,	/* Data Transfer State		*/
-	LAPB_STATE_4	/* Frame Reject State		*/
+	LAPB_STATE_0,		/* Disconnected State           */
+	LAPB_STATE_1,		/* Awaiting Connection State    */
+	LAPB_STATE_2,		/* Awaiting Disconnection State */
+	LAPB_STATE_3,		/* Data Transfer State          */
+	LAPB_STATE_4		/* Frame Reject State           */
 };
 
 #define	LAPB_DEFAULT_MODE		(LAPB_STANDARD | LAPB_SLP | LAPB_DTE)
-#define	LAPB_DEFAULT_WINDOW		7		/* Window=7 */
+#define	LAPB_DEFAULT_WINDOW		7	/* Window=7 */
 #define	LAPB_DEFAULT_T1			(5 * HZ)	/* T1=5s    */
 #define	LAPB_DEFAULT_T2			(1 * HZ)	/* T2=1s    */
-#define	LAPB_DEFAULT_N2			20		/* N2=20    */
+#define	LAPB_DEFAULT_N2			20	/* N2=20    */
 
 #define	LAPB_SMODULUS	8
 #define	LAPB_EMODULUS	128
@@ -68,40 +68,40 @@ enum {
  *	Information about the current frame.
  */
 struct lapb_frame {
-	unsigned short		type;		/* Parsed type		*/
-	unsigned short		nr, ns;		/* N(R), N(S)		*/
-	unsigned char		cr;		/* Command/Response	*/
-	unsigned char		pf;		/* Poll/Final		*/
-	unsigned char		control[2];	/* Original control data*/
+	unsigned short type;	/* Parsed type          */
+	unsigned short nr, ns;	/* N(R), N(S)           */
+	unsigned char cr;	/* Command/Response     */
+	unsigned char pf;	/* Poll/Final           */
+	unsigned char control[2];	/* Original control data */
 };
 
 /*
  *	The per LAPB connection control structure.
  */
 struct lapb_cb {
-	struct list_head	node;
-	struct net_device	*dev;
+	struct list_head node;
+	struct net_device *dev;
 
 	/* Link status fields */
-	unsigned int		mode;
-	unsigned char		state;
-	unsigned short		vs, vr, va;
-	unsigned char		condition;
-	unsigned short		n2, n2count;
-	unsigned short		t1, t2;
-	struct timer_list	t1timer, t2timer;
+	unsigned int mode;
+	unsigned char state;
+	unsigned short vs, vr, va;
+	unsigned char condition;
+	unsigned short n2, n2count;
+	unsigned short t1, t2;
+	struct timer_list t1timer, t2timer;
 
 	/* Internal control information */
-	struct sk_buff_head	write_queue;
-	struct sk_buff_head	ack_queue;
-	unsigned char		window;
+	struct sk_buff_head write_queue;
+	struct sk_buff_head ack_queue;
+	unsigned char window;
 	struct lapb_register_struct callbacks;
 
 	/* FRMR control information */
-	struct lapb_frame	frmr_data;
-	unsigned char		frmr_type;
+	struct lapb_frame frmr_data;
+	unsigned char frmr_type;
 
-	atomic_t		refcnt;
+	atomic_t refcnt;
 };
 
 /* lapb_iface.c */
@@ -109,8 +109,8 @@ extern void lapb_connect_confirmation(struct lapb_cb *lapb, int);
 extern void lapb_connect_indication(struct lapb_cb *lapb, int);
 extern void lapb_disconnect_confirmation(struct lapb_cb *lapb, int);
 extern void lapb_disconnect_indication(struct lapb_cb *lapb, int);
-extern int  lapb_data_indication(struct lapb_cb *lapb, struct sk_buff *);
-extern int  lapb_data_transmit(struct lapb_cb *lapb, struct sk_buff *);
+extern int lapb_data_indication(struct lapb_cb *lapb, struct sk_buff *);
+extern int lapb_data_transmit(struct lapb_cb *lapb, struct sk_buff *);
 
 /* lapb_in.c */
 extern void lapb_data_input(struct lapb_cb *lapb, struct sk_buff *);
@@ -128,8 +128,9 @@ extern void lapb_check_need_response(struct lapb_cb *lapb, int, int);
 extern void lapb_clear_queues(struct lapb_cb *lapb);
 extern void lapb_frames_acked(struct lapb_cb *lapb, unsigned short);
 extern void lapb_requeue_frames(struct lapb_cb *lapb);
-extern int  lapb_validate_nr(struct lapb_cb *lapb, unsigned short);
-extern int lapb_decode(struct lapb_cb *lapb, struct sk_buff *, struct lapb_frame *);
+extern int lapb_validate_nr(struct lapb_cb *lapb, unsigned short);
+extern int lapb_decode(struct lapb_cb *lapb, struct sk_buff *,
+		       struct lapb_frame *);
 extern void lapb_send_control(struct lapb_cb *lapb, int, int, int);
 extern void lapb_transmit_frmr(struct lapb_cb *lapb);
 
@@ -138,7 +139,7 @@ extern void lapb_start_t1timer(struct lapb_cb *lapb);
 extern void lapb_start_t2timer(struct lapb_cb *lapb);
 extern void lapb_stop_t1timer(struct lapb_cb *lapb);
 extern void lapb_stop_t2timer(struct lapb_cb *lapb);
-extern int  lapb_t1timer_running(struct lapb_cb *lapb);
+extern int lapb_t1timer_running(struct lapb_cb *lapb);
 
 /*
  * Debug levels.

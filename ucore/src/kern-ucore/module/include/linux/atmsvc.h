@@ -1,7 +1,6 @@
 /* atmsvc.h - ATM signaling kernel-demon interface definitions */
- 
+
 /* Written 1995-2000 by Werner Almesberger, EPFL LRC/ICA */
- 
 
 #ifndef _LINUX_ATMSVC_H
 #define _LINUX_ATMSVC_H
@@ -10,30 +9,30 @@
 #include <linux/atm.h>
 #include <linux/atmioc.h>
 
-
 #define ATMSIGD_CTRL _IO('a',ATMIOC_SPECIAL)
 				/* become ATM signaling demon control socket */
 
 enum atmsvc_msg_type { as_catch_null, as_bind, as_connect, as_accept, as_reject,
-		       as_listen, as_okay, as_error, as_indicate, as_close,
-		       as_itf_notify, as_modify, as_identify, as_terminate,
-		       as_addparty, as_dropparty };
+	as_listen, as_okay, as_error, as_indicate, as_close,
+	as_itf_notify, as_modify, as_identify, as_terminate,
+	as_addparty, as_dropparty
+};
 
 struct atmsvc_msg {
 	enum atmsvc_msg_type type;
 	atm_kptr_t vcc;
-	atm_kptr_t listen_vcc;		/* indicate */
-	int reply;			/* for okay and close:		   */
-					/*   < 0: error before active	   */
-					/*        (sigd has discarded ctx) */
-					/*   ==0: success		   */
-				        /*   > 0: error when active (still */
-					/*        need to close)	   */
+	atm_kptr_t listen_vcc;	/* indicate */
+	int reply;		/* for okay and close:             */
+	/*   < 0: error before active      */
+	/*        (sigd has discarded ctx) */
+	/*   ==0: success                  */
+	/*   > 0: error when active (still */
+	/*        need to close)           */
 	struct sockaddr_atmpvc pvc;	/* indicate, okay (connect) */
 	struct sockaddr_atmsvc local;	/* local SVC address */
-	struct atm_qos qos;		/* QOS parameters */
-	struct atm_sap sap;		/* SAP */
-	unsigned int session;		/* for p2pm */
+	struct atm_qos qos;	/* QOS parameters */
+	struct atm_sap sap;	/* SAP */
+	unsigned int session;	/* for p2pm */
 	struct sockaddr_atmsvc svc;	/* SVC address */
 } __ATM_API_ALIGN;
 

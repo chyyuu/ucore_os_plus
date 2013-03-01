@@ -19,23 +19,23 @@
 #define RLIMIT_CORE		4	/* max core file size */
 
 #ifndef RLIMIT_RSS
-# define RLIMIT_RSS		5	/* max resident set size */
+#define RLIMIT_RSS		5	/* max resident set size */
 #endif
 
 #ifndef RLIMIT_NPROC
-# define RLIMIT_NPROC		6	/* max number of processes */
+#define RLIMIT_NPROC		6	/* max number of processes */
 #endif
 
 #ifndef RLIMIT_NOFILE
-# define RLIMIT_NOFILE		7	/* max number of open files */
+#define RLIMIT_NOFILE		7	/* max number of open files */
 #endif
 
 #ifndef RLIMIT_MEMLOCK
-# define RLIMIT_MEMLOCK		8	/* max locked-in-memory address space */
+#define RLIMIT_MEMLOCK		8	/* max locked-in-memory address space */
 #endif
 
 #ifndef RLIMIT_AS
-# define RLIMIT_AS		9	/* address space limit */
+#define RLIMIT_AS		9	/* address space limit */
 #endif
 
 #define RLIMIT_LOCKS		10	/* maximum file locks held */
@@ -54,14 +54,14 @@
  * Some architectures override this (for compatibility reasons):
  */
 #ifndef RLIM_INFINITY
-# define RLIM_INFINITY		(~0UL)
+#define RLIM_INFINITY		(~0UL)
 #endif
 
 /*
  * RLIMIT_STACK default maximum - some architectures override it:
  */
 #ifndef _STK_LIM_MAX
-# define _STK_LIM_MAX		RLIM_INFINITY
+#define _STK_LIM_MAX		RLIM_INFINITY
 #endif
 
 #ifdef __KERNEL__
@@ -89,6 +89,6 @@
 	[RLIMIT_RTTIME]		= {  RLIM_INFINITY,  RLIM_INFINITY },	\
 }
 
-#endif	/* __KERNEL__ */
+#endif /* __KERNEL__ */
 
 #endif

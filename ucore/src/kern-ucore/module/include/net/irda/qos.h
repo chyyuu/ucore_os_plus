@@ -62,20 +62,20 @@
 /* Quality of Service information */
 typedef struct {
 	__u32 value;
-	__u16 bits; /* LSB is first byte, MSB is second byte */
+	__u16 bits;		/* LSB is first byte, MSB is second byte */
 } qos_value_t;
 
 struct qos_info {
 	magic_t magic;
 
-	qos_value_t baud_rate;       /* IR_11520O | ... */
+	qos_value_t baud_rate;	/* IR_11520O | ... */
 	qos_value_t max_turn_time;
 	qos_value_t data_size;
 	qos_value_t window_size;
 	qos_value_t additional_bofs;
 	qos_value_t min_turn_time;
 	qos_value_t link_disc_time;
-	
+
 	qos_value_t power;
 };
 
@@ -100,4 +100,3 @@ void irda_qos_bits_to_value(struct qos_info *qos);
 )
 
 #endif
-

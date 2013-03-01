@@ -11,11 +11,11 @@
 #include <linux/list.h>
 
 #if defined(CONFIG_DEBUG_PREEMPT) || defined(CONFIG_PREEMPT_TRACER)
-  extern void add_preempt_count(int val);
-  extern void sub_preempt_count(int val);
+extern void add_preempt_count(int val);
+extern void sub_preempt_count(int val);
 #else
-# define add_preempt_count(val)	do { preempt_count() += (val); } while (0)
-# define sub_preempt_count(val)	do { preempt_count() -= (val); } while (0)
+#define add_preempt_count(val)	do { preempt_count() += (val); } while (0)
+#define sub_preempt_count(val)	do { preempt_count() -= (val); } while (0)
 #endif
 
 #define inc_preempt_count() add_preempt_count(1)
@@ -107,9 +107,9 @@ struct preempt_notifier;
  *    next: the task that's kicking us out
  */
 struct preempt_ops {
-	void (*sched_in)(struct preempt_notifier *notifier, int cpu);
-	void (*sched_out)(struct preempt_notifier *notifier,
-			  struct task_struct *next);
+	void (*sched_in) (struct preempt_notifier * notifier, int cpu);
+	void (*sched_out) (struct preempt_notifier * notifier,
+			   struct task_struct * next);
 };
 
 /**
@@ -128,7 +128,7 @@ void preempt_notifier_register(struct preempt_notifier *notifier);
 void preempt_notifier_unregister(struct preempt_notifier *notifier);
 
 static inline void preempt_notifier_init(struct preempt_notifier *notifier,
-				     struct preempt_ops *ops)
+					 struct preempt_ops *ops)
 {
 	INIT_HLIST_NODE(&notifier->link);
 	notifier->ops = ops;

@@ -16,7 +16,6 @@
  * =====================================================================================
  */
 
-
 #ifndef  BOOTLOADER_MACH_BOARD_H
 #define  BOOTLOADER_MACH_BOARD_H
 
@@ -32,5 +31,4 @@
 #error Unknown platform
 #endif
 
-
-#endif  
+#endif

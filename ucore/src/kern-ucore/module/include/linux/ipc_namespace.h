@@ -9,12 +9,11 @@
 /*
  * ipc namespace events
  */
-#define IPCNS_MEMCHANGED   0x00000001   /* Notify lowmem size changed */
-#define IPCNS_CREATED  0x00000002   /* Notify new ipc namespace created */
-#define IPCNS_REMOVED  0x00000003   /* Notify ipc namespace removed */
+#define IPCNS_MEMCHANGED   0x00000001	/* Notify lowmem size changed */
+#define IPCNS_CREATED  0x00000002	/* Notify new ipc namespace created */
+#define IPCNS_REMOVED  0x00000003	/* Notify ipc namespace removed */
 
 #define IPCNS_CALLBACK_PRI 0
-
 
 struct ipc_ids {
 	int in_use;
@@ -25,23 +24,23 @@ struct ipc_ids {
 };
 
 struct ipc_namespace {
-	struct kref	kref;
-	struct ipc_ids	ids[3];
+	struct kref kref;
+	struct ipc_ids ids[3];
 
-	int		sem_ctls[4];
-	int		used_sems;
+	int sem_ctls[4];
+	int used_sems;
 
-	int		msg_ctlmax;
-	int		msg_ctlmnb;
-	int		msg_ctlmni;
-	atomic_t	msg_bytes;
-	atomic_t	msg_hdrs;
-	int		auto_msgmni;
+	int msg_ctlmax;
+	int msg_ctlmnb;
+	int msg_ctlmni;
+	atomic_t msg_bytes;
+	atomic_t msg_hdrs;
+	int auto_msgmni;
 
-	size_t		shm_ctlmax;
-	size_t		shm_ctlall;
-	int		shm_ctlmni;
-	int		shm_tot;
+	size_t shm_ctlmax;
+	size_t shm_ctlall;
+	int shm_ctlmni;
+	int shm_tot;
 
 	struct notifier_block ipcns_nb;
 };
@@ -66,8 +65,8 @@ extern void free_ipc_ns(struct kref *kref);
 extern struct ipc_namespace *copy_ipcs(unsigned long flags,
 				       struct ipc_namespace *ns);
 extern void free_ipcs(struct ipc_namespace *ns, struct ipc_ids *ids,
-		      void (*free)(struct ipc_namespace *,
-				   struct kern_ipc_perm *));
+		      void (*free) (struct ipc_namespace *,
+				    struct kern_ipc_perm *));
 
 static inline struct ipc_namespace *get_ipc_ns(struct ipc_namespace *ns)
 {
@@ -82,7 +81,7 @@ static inline void put_ipc_ns(struct ipc_namespace *ns)
 }
 #else
 static inline struct ipc_namespace *copy_ipcs(unsigned long flags,
-		struct ipc_namespace *ns)
+					      struct ipc_namespace *ns)
 {
 	if (flags & CLONE_NEWIPC)
 		return ERR_PTR(-EINVAL);

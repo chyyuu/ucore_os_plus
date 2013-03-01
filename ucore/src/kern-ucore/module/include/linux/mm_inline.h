@@ -39,8 +39,7 @@ del_page_from_lru_list(struct zone *zone, struct page *page, enum lru_list l)
 	mem_cgroup_del_lru_list(page, l);
 }
 
-static inline void
-del_page_from_lru(struct zone *zone, struct page *page)
+static inline void del_page_from_lru(struct zone *zone, struct page *page)
 {
 	enum lru_list l = LRU_BASE;
 

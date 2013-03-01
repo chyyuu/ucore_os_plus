@@ -26,11 +26,11 @@
 #define _LINUX_I2C_ALGO_PCF_H
 
 struct i2c_algo_pcf_data {
-	void *data;		/* private data for lolevel routines	*/
+	void *data;		/* private data for lolevel routines    */
 	void (*setpcf) (void *data, int ctl, int val);
-	int  (*getpcf) (void *data, int ctl);
-	int  (*getown) (void *data);
-	int  (*getclock) (void *data);
+	int (*getpcf) (void *data, int ctl);
+	int (*getown) (void *data);
+	int (*getclock) (void *data);
 	void (*waitforpin) (void *data);
 
 	void (*xfer_begin) (void *data);

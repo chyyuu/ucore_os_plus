@@ -27,7 +27,7 @@
 #define PCIE_PORT_MSIX_MODE		2
 
 struct pcie_port_service_id {
-	__u32 vendor, device;		/* Vendor and device ID or PCI_ANY_ID*/
+	__u32 vendor, device;	/* Vendor and device ID or PCI_ANY_ID */
 	__u32 subvendor, subdevice;	/* Subsystem ID's or PCI_ANY_ID */
 	__u32 class, class_mask;	/* (class,subclass,prog-if) triplet */
 	__u32 port_type, service_type;	/* Port Entity */
@@ -35,12 +35,12 @@ struct pcie_port_service_id {
 };
 
 struct pcie_device {
-	int 		irq;	    /* Service IRQ/MSI/MSI-X Vector */
-	int 		interrupt_mode;	/* [0:INTx | 1:MSI | 2:MSI-X] */	
+	int irq;		/* Service IRQ/MSI/MSI-X Vector */
+	int interrupt_mode;	/* [0:INTx | 1:MSI | 2:MSI-X] */
 	struct pcie_port_service_id id;	/* Service ID */
-	struct pci_dev	*port;	    /* Root/Upstream/Downstream Port */
-	void		*priv_data; /* Service Private Data */
-	struct device	device;     /* Generic Device Interface */
+	struct pci_dev *port;	/* Root/Upstream/Downstream Port */
+	void *priv_data;	/* Service Private Data */
+	struct device device;	/* Generic Device Interface */
 };
 #define to_pcie_device(d) container_of(d, struct pcie_device, device)
 
@@ -49,24 +49,24 @@ static inline void set_service_data(struct pcie_device *dev, void *data)
 	dev->priv_data = data;
 }
 
-static inline void* get_service_data(struct pcie_device *dev)
+static inline void *get_service_data(struct pcie_device *dev)
 {
 	return dev->priv_data;
 }
 
 struct pcie_port_service_driver {
 	const char *name;
-	int (*probe) (struct pcie_device *dev, 
-		const struct pcie_port_service_id *id);
-	void (*remove) (struct pcie_device *dev);
-	int (*suspend) (struct pcie_device *dev, pm_message_t state);
-	int (*resume) (struct pcie_device *dev);
+	int (*probe) (struct pcie_device * dev,
+		      const struct pcie_port_service_id * id);
+	void (*remove) (struct pcie_device * dev);
+	int (*suspend) (struct pcie_device * dev, pm_message_t state);
+	int (*resume) (struct pcie_device * dev);
 
 	/* Service Error Recovery Handler */
 	struct pci_error_handlers *err_handler;
 
 	/* Link Reset Capability - AER service driver specific */
-	pci_ers_result_t (*reset_link) (struct pci_dev *dev);
+	 pci_ers_result_t(*reset_link) (struct pci_dev * dev);
 
 	const struct pcie_port_service_id *id_table;
 	struct device_driver driver;

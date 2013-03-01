@@ -79,4 +79,3 @@ typedef size_t ppn_t;
     ((type *)((char *)(ptr) - offsetof(type, member)))
 
 #endif /* !__LIBS_TYPES_H__ */
-

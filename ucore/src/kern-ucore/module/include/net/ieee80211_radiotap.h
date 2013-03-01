@@ -251,9 +251,9 @@ enum ieee80211_radiotap_type {
 static inline int ieee80211_get_radiotap_len(unsigned char *data)
 {
 	struct ieee80211_radiotap_header *hdr =
-		(struct ieee80211_radiotap_header *)data;
+	    (struct ieee80211_radiotap_header *)data;
 
 	return get_unaligned_le16(&hdr->it_len);
 }
 
-#endif				/* IEEE80211_RADIOTAP_H */
+#endif /* IEEE80211_RADIOTAP_H */

@@ -4,6 +4,4 @@
 //board specific layout
 #include <memlayout.h>
 
-
 #endif /* !__ARCH_TEMPLATE_INCLUDE_MEMLAYOUT_H__ */
-

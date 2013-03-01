@@ -62,8 +62,6 @@
  *   and will continue to evolve.
  */
 
-
-
 #ifdef TEST_FRAME
 #undef CONFIG_SCTP_DBG_OBJCNT
 #undef CONFIG_SYSCTL
@@ -90,7 +88,6 @@
 #include <net/sctp/structs.h>
 #include <net/sctp/constants.h>
 
-
 /* Set SCTP_DEBUG flag via config if not already set. */
 #ifndef SCTP_DEBUG
 #ifdef CONFIG_SCTP_DBG_MSG
@@ -105,7 +102,6 @@
 #else /* static! */
 #define SCTP_PROTOSW_FLAG INET_PROTOSW_PERMANENT
 #endif
-
 
 /* Certain internal static functions need to be exported when
  * compiled into the test frame.
@@ -124,8 +120,7 @@
 extern struct sock *sctp_get_ctl_sock(void);
 extern void sctp_local_addr_free(struct rcu_head *head);
 extern int sctp_copy_local_addr_list(struct sctp_bind_addr *,
-				     sctp_scope_t, gfp_t gfp,
-				     int flags);
+				     sctp_scope_t, gfp_t gfp, int flags);
 extern struct sctp_pf *sctp_get_pf_specific(sa_family_t family);
 extern int sctp_register_pf(struct sctp_pf *, sa_family_t);
 
@@ -136,7 +131,7 @@ int sctp_backlog_rcv(struct sock *sk, struct sk_buff *skb);
 int sctp_inet_listen(struct socket *sock, int backlog);
 void sctp_write_space(struct sock *sk);
 unsigned int sctp_poll(struct file *file, struct socket *sock,
-		poll_table *wait);
+		       poll_table * wait);
 void sctp_sock_rfree(struct sk_buff *skb);
 extern struct percpu_counter sctp_sockets_allocated;
 
@@ -183,7 +178,6 @@ void sctp_assocs_proc_exit(void);
 int sctp_remaddr_proc_init(void);
 void sctp_remaddr_proc_exit(void);
 
-
 /*
  * Module global variables
  */
@@ -197,7 +191,6 @@ extern struct kmem_cache *sctp_bucket_cachep __read_mostly;
 /*
  *  Section:  Macros, externs, and inlines
  */
-
 
 #ifdef TEST_FRAME
 #include <test_frame.h>
@@ -232,26 +225,25 @@ DECLARE_SNMP_STAT(struct sctp_mib, sctp_statistics);
 #endif /* !TEST_FRAME */
 
 /* sctp mib definitions */
-enum
-{
+enum {
 	SCTP_MIB_NUM = 0,
-	SCTP_MIB_CURRESTAB,			/* CurrEstab */
-	SCTP_MIB_ACTIVEESTABS,			/* ActiveEstabs */
-	SCTP_MIB_PASSIVEESTABS,			/* PassiveEstabs */
-	SCTP_MIB_ABORTEDS,			/* Aborteds */
-	SCTP_MIB_SHUTDOWNS,			/* Shutdowns */
-	SCTP_MIB_OUTOFBLUES,			/* OutOfBlues */
-	SCTP_MIB_CHECKSUMERRORS,		/* ChecksumErrors */
-	SCTP_MIB_OUTCTRLCHUNKS,			/* OutCtrlChunks */
-	SCTP_MIB_OUTORDERCHUNKS,		/* OutOrderChunks */
-	SCTP_MIB_OUTUNORDERCHUNKS,		/* OutUnorderChunks */
-	SCTP_MIB_INCTRLCHUNKS,			/* InCtrlChunks */
-	SCTP_MIB_INORDERCHUNKS,			/* InOrderChunks */
-	SCTP_MIB_INUNORDERCHUNKS,		/* InUnorderChunks */
-	SCTP_MIB_FRAGUSRMSGS,			/* FragUsrMsgs */
-	SCTP_MIB_REASMUSRMSGS,			/* ReasmUsrMsgs */
-	SCTP_MIB_OUTSCTPPACKS,			/* OutSCTPPacks */
-	SCTP_MIB_INSCTPPACKS,			/* InSCTPPacks */
+	SCTP_MIB_CURRESTAB,	/* CurrEstab */
+	SCTP_MIB_ACTIVEESTABS,	/* ActiveEstabs */
+	SCTP_MIB_PASSIVEESTABS,	/* PassiveEstabs */
+	SCTP_MIB_ABORTEDS,	/* Aborteds */
+	SCTP_MIB_SHUTDOWNS,	/* Shutdowns */
+	SCTP_MIB_OUTOFBLUES,	/* OutOfBlues */
+	SCTP_MIB_CHECKSUMERRORS,	/* ChecksumErrors */
+	SCTP_MIB_OUTCTRLCHUNKS,	/* OutCtrlChunks */
+	SCTP_MIB_OUTORDERCHUNKS,	/* OutOrderChunks */
+	SCTP_MIB_OUTUNORDERCHUNKS,	/* OutUnorderChunks */
+	SCTP_MIB_INCTRLCHUNKS,	/* InCtrlChunks */
+	SCTP_MIB_INORDERCHUNKS,	/* InOrderChunks */
+	SCTP_MIB_INUNORDERCHUNKS,	/* InUnorderChunks */
+	SCTP_MIB_FRAGUSRMSGS,	/* FragUsrMsgs */
+	SCTP_MIB_REASMUSRMSGS,	/* ReasmUsrMsgs */
+	SCTP_MIB_OUTSCTPPACKS,	/* OutSCTPPacks */
+	SCTP_MIB_INSCTPPACKS,	/* InSCTPPacks */
 	SCTP_MIB_T1_INIT_EXPIREDS,
 	SCTP_MIB_T1_COOKIE_EXPIREDS,
 	SCTP_MIB_T2_SHUTDOWN_EXPIREDS,
@@ -273,9 +265,8 @@ enum
 
 #define SCTP_MIB_MAX    __SCTP_MIB_MAX
 struct sctp_mib {
-        unsigned long   mibs[SCTP_MIB_MAX];
+	unsigned long mibs[SCTP_MIB_MAX];
 } __SNMP_MIB_ALIGN__;
-
 
 /* Print debugging messages.  */
 #if SCTP_DEBUG
@@ -308,7 +299,7 @@ extern int sctp_debug_flag;
 		func; \
 	}
 
-#else	/* SCTP_DEBUG */
+#else /* SCTP_DEBUG */
 
 #define SCTP_DEBUG_PRINTK(whatever...)
 #define SCTP_DEBUG_PRINTK_IPADDR(whatever...)
@@ -317,7 +308,6 @@ extern int sctp_debug_flag;
 #define SCTP_ASSERT(expr, str, func)
 
 #endif /* SCTP_DEBUG */
-
 
 /*
  * Macros for keeping a global reference of object allocations.
@@ -358,8 +348,15 @@ void sctp_dbg_objcnt_exit(void);
 #define SCTP_DBG_OBJCNT_INC(name)
 #define SCTP_DBG_OBJCNT_DEC(name)
 
-static inline void sctp_dbg_objcnt_init(void) { return; }
-static inline void sctp_dbg_objcnt_exit(void) { return; }
+static inline void sctp_dbg_objcnt_init(void)
+{
+	return;
+}
+
+static inline void sctp_dbg_objcnt_exit(void)
+{
+	return;
+}
 
 #endif /* CONFIG_SCTP_DBG_OBJCOUNT */
 
@@ -367,8 +364,15 @@ static inline void sctp_dbg_objcnt_exit(void) { return; }
 void sctp_sysctl_register(void);
 void sctp_sysctl_unregister(void);
 #else
-static inline void sctp_sysctl_register(void) { return; }
-static inline void sctp_sysctl_unregister(void) { return; }
+static inline void sctp_sysctl_register(void)
+{
+	return;
+}
+
+static inline void sctp_sysctl_unregister(void)
+{
+	return;
+}
 #endif
 
 /* Size of Supported Address Parameter for 'x' address types. */
@@ -385,25 +389,46 @@ void sctp_v6_del_protocol(void);
 
 #else /* #ifdef defined(CONFIG_IPV6) */
 
-static inline void sctp_v6_pf_init(void) { return; }
-static inline void sctp_v6_pf_exit(void) { return; }
-static inline int sctp_v6_protosw_init(void) { return 0; }
-static inline void sctp_v6_protosw_exit(void) { return; }
-static inline int sctp_v6_add_protocol(void) { return 0; }
-static inline void sctp_v6_del_protocol(void) { return; }
+static inline void sctp_v6_pf_init(void)
+{
+	return;
+}
+
+static inline void sctp_v6_pf_exit(void)
+{
+	return;
+}
+
+static inline int sctp_v6_protosw_init(void)
+{
+	return 0;
+}
+
+static inline void sctp_v6_protosw_exit(void)
+{
+	return;
+}
+
+static inline int sctp_v6_add_protocol(void)
+{
+	return 0;
+}
+
+static inline void sctp_v6_del_protocol(void)
+{
+	return;
+}
 
 #endif /* #if defined(CONFIG_IPV6) */
-
 
 /* Map an association to an assoc_id. */
 static inline sctp_assoc_t sctp_assoc2id(const struct sctp_association *asoc)
 {
-	return (asoc?asoc->assoc_id:0);
+	return (asoc ? asoc->assoc_id : 0);
 }
 
 /* Look up the association by its id.  */
 struct sctp_association *sctp_id2assoc(struct sock *sk, sctp_assoc_t id);
-
 
 /* A macro to walk a list of skbs.  */
 #define sctp_skb_for_each(pos, head, tmp) \
@@ -587,7 +612,7 @@ static inline int ipver2af(__u8 ipver)
 {
 	switch (ipver) {
 	case 4:
-	        return  AF_INET;
+		return AF_INET;
 	case 6:
 		return AF_INET6;
 	default:
@@ -600,7 +625,7 @@ static inline int param_type2af(__be16 type)
 {
 	switch (type) {
 	case SCTP_PARAM_IPV4_ADDRESS:
-	        return  AF_INET;
+		return AF_INET;
 	case SCTP_PARAM_IPV6_ADDRESS:
 		return AF_INET6;
 	default:
@@ -612,7 +637,7 @@ static inline int param_type2af(__be16 type)
 static inline int sctp_sanity_check(void)
 {
 	SCTP_ASSERT(sizeof(struct sctp_ulpevent) <=
-		    sizeof(((struct sk_buff *)0)->cb),
+		    sizeof(((struct sk_buff *) 0)->cb),
 		    "SCTP: ulpevent does not fit in skb!\n", return 0);
 
 	return 1;
@@ -635,7 +660,7 @@ static inline int sctp_ep_hashfn(__u16 lport)
 static inline int sctp_assoc_hashfn(__u16 lport, __u16 rport)
 {
 	int h = (lport << 16) + rport;
-	h ^= h>>8;
+	h ^= h >> 8;
 	return (h & (sctp_assoc_hashsize - 1));
 }
 
@@ -647,7 +672,7 @@ static inline int sctp_vtag_hashfn(__u16 lport, __u16 rport, __u32 vtag)
 {
 	int h = (lport << 16) + rport;
 	h ^= vtag;
-	return (h & (sctp_assoc_hashsize-1));
+	return (h & (sctp_assoc_hashsize - 1));
 }
 
 #define sctp_for_each_hentry(epb, node, head) \

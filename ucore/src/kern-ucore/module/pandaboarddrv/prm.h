@@ -26,7 +26,6 @@
  */
 #define OMAP_INTRANSITION_MASK				(1 << 20)
 
-
 /*
  * 24XX: PM_PWSTST_GFX, PM_PWSTST_DSP
  *
@@ -51,6 +50,5 @@
  */
 #define OMAP_POWERSTATE_SHIFT				0
 #define OMAP_POWERSTATE_MASK				(0x3 << 0)
-
 
 #endif

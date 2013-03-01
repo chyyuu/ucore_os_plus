@@ -43,7 +43,7 @@ struct omap_gpio_switch {
 	u16 debounce_falling;
 
 	/* notify board-specific code about state changes */
-	void (* notify)(void *data, int state);
+	void (*notify) (void *data, int state);
 	void *notify_data;
 };
 

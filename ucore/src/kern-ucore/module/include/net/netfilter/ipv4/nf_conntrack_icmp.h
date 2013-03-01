@@ -3,8 +3,7 @@
 /* ICMP tracking. */
 #include <asm/atomic.h>
 
-struct ip_ct_icmp
-{
+struct ip_ct_icmp {
 	/* Optimization: when number in == number out, forget immediately. */
 	atomic_t count;
 };

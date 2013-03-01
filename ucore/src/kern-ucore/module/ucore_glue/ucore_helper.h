@@ -20,10 +20,12 @@
 #define __MODULE_UCORE_HELPER_H
 
 /* timer_helper.c */
-void __ucore_add_timer(void *linux_timer, int expires, unsigned long data, void (*function)(unsigned long));
+void __ucore_add_timer(void *linux_timer, int expires, unsigned long data,
+		       void (*function) (unsigned long));
 
 /* kthread_helper.c */
-int __ucore_kernel_thread(int (*fn)(void *), const char* name, void *arg, unsigned int clone_flags);
+int __ucore_kernel_thread(int (*fn) (void *), const char *name, void *arg,
+			  unsigned int clone_flags);
 
 /* wait_helper.c */
 void __ucore_wait_self();

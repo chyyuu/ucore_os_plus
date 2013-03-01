@@ -29,7 +29,6 @@
 #define WKUP_MOD					0x400
 #define PLL_MOD						0x500
 
-
 /* Chip-specific module offsets */
 #define OMAP24XX_GR_MOD					OCP_MOD
 #define OMAP24XX_DSP_MOD				0x800
@@ -185,7 +184,6 @@
 /* CM_IDLEST_MDM and PM_WKST_MDM shared bits */
 #define OMAP2430_ST_MDM_SHIFT				0
 #define OMAP2430_ST_MDM_MASK				(1 << 0)
-
 
 /* 3430 register bits shared between CM & PRM registers */
 
@@ -403,7 +401,6 @@
 #define OMAP3430_EN_CORE_SHIFT				0
 #define OMAP3430_EN_CORE_MASK				(1 << 0)
 
-
 /*
  * MAX_MODULE_HARDRESET_WAIT: Maximum microseconds to wait for an OMAP
  * submodule to exit hardreset
@@ -418,7 +415,7 @@
  */
 #define MAX_IOPAD_LATCH_TIME			100
 
-# ifndef __ASSEMBLER__
+#ifndef __ASSEMBLER__
 extern void __iomem *prm_base;
 extern void __iomem *cm_base;
 extern void __iomem *cm2_base;
@@ -431,6 +428,7 @@ extern void omap_cm_base_init(void);
 static inline void omap_prm_base_init(void)
 {
 }
+
 static inline void omap_cm_base_init(void)
 {
 }
@@ -483,10 +481,10 @@ struct omap_prcm_irq_setup {
 	u8 nr_irqs;
 	const struct omap_prcm_irq *irqs;
 	int irq;
-	void (*read_pending_irqs)(unsigned long *events);
-	void (*ocp_barrier)(void);
-	void (*save_and_clear_irqen)(u32 *saved_mask);
-	void (*restore_irqen)(u32 *saved_mask);
+	void (*read_pending_irqs) (unsigned long *events);
+	void (*ocp_barrier) (void);
+	void (*save_and_clear_irqen) (u32 * saved_mask);
+	void (*restore_irqen) (u32 * saved_mask);
 	u32 *saved_mask;
 	u32 *priority_mask;
 	int base_irq;
@@ -502,13 +500,12 @@ struct omap_prcm_irq_setup {
 	}
 
 extern void omap_prcm_irq_cleanup(void);
-extern int omap_prcm_register_chain_handler(
-	struct omap_prcm_irq_setup *irq_setup);
+extern int omap_prcm_register_chain_handler(struct omap_prcm_irq_setup
+					    *irq_setup);
 extern int omap_prcm_event_to_irq(const char *event);
 extern void omap_prcm_irq_prepare(void);
 extern void omap_prcm_irq_complete(void);
 
-# endif
-
 #endif
 
+#endif

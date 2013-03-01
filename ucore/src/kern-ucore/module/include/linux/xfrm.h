@@ -10,29 +10,27 @@
 /* Structure to encapsulate addresses. I do not want to use
  * "standard" structure. My apologies.
  */
-typedef union
-{
-	__be32		a4;
-	__be32		a6[4];
+typedef union {
+	__be32 a4;
+	__be32 a6[4];
 } xfrm_address_t;
 
 /* Ident of a specific xfrm_state. It is used on input to lookup
  * the state by (spi,daddr,ah/esp) or to store information about
  * spi, protocol and tunnel address on output.
  */
-struct xfrm_id
-{
-	xfrm_address_t	daddr;
-	__be32		spi;
-	__u8		proto;
+struct xfrm_id {
+	xfrm_address_t daddr;
+	__be32 spi;
+	__u8 proto;
 };
 
 struct xfrm_sec_ctx {
-	__u8	ctx_doi;
-	__u8	ctx_alg;
-	__u16	ctx_len;
-	__u32	ctx_sid;
-	char	ctx_str[0];
+	__u8 ctx_doi;
+	__u8 ctx_alg;
+	__u16 ctx_len;
+	__u32 ctx_sid;
+	char ctx_str[0];
 };
 
 /* Security Context Domains of Interpretation */
@@ -45,89 +43,82 @@ struct xfrm_sec_ctx {
 
 /* Selector, used as selector both on policy rules (SPD) and SAs. */
 
-struct xfrm_selector
-{
-	xfrm_address_t	daddr;
-	xfrm_address_t	saddr;
-	__be16	dport;
-	__be16	dport_mask;
-	__be16	sport;
-	__be16	sport_mask;
-	__u16	family;
-	__u8	prefixlen_d;
-	__u8	prefixlen_s;
-	__u8	proto;
-	int	ifindex;
-	uid_t	user;
+struct xfrm_selector {
+	xfrm_address_t daddr;
+	xfrm_address_t saddr;
+	__be16 dport;
+	__be16 dport_mask;
+	__be16 sport;
+	__be16 sport_mask;
+	__u16 family;
+	__u8 prefixlen_d;
+	__u8 prefixlen_s;
+	__u8 proto;
+	int ifindex;
+	uid_t user;
 };
 
 #define XFRM_INF (~(__u64)0)
 
-struct xfrm_lifetime_cfg
-{
-	__u64	soft_byte_limit;
-	__u64	hard_byte_limit;
-	__u64	soft_packet_limit;
-	__u64	hard_packet_limit;
-	__u64	soft_add_expires_seconds;
-	__u64	hard_add_expires_seconds;
-	__u64	soft_use_expires_seconds;
-	__u64	hard_use_expires_seconds;
+struct xfrm_lifetime_cfg {
+	__u64 soft_byte_limit;
+	__u64 hard_byte_limit;
+	__u64 soft_packet_limit;
+	__u64 hard_packet_limit;
+	__u64 soft_add_expires_seconds;
+	__u64 hard_add_expires_seconds;
+	__u64 soft_use_expires_seconds;
+	__u64 hard_use_expires_seconds;
 };
 
-struct xfrm_lifetime_cur
-{
-	__u64	bytes;
-	__u64	packets;
-	__u64	add_time;
-	__u64	use_time;
+struct xfrm_lifetime_cur {
+	__u64 bytes;
+	__u64 packets;
+	__u64 add_time;
+	__u64 use_time;
 };
 
-struct xfrm_replay_state
-{
-	__u32	oseq;
-	__u32	seq;
-	__u32	bitmap;
+struct xfrm_replay_state {
+	__u32 oseq;
+	__u32 seq;
+	__u32 bitmap;
 };
 
 struct xfrm_algo {
-	char		alg_name[64];
-	unsigned int	alg_key_len;    /* in bits */
-	char		alg_key[0];
+	char alg_name[64];
+	unsigned int alg_key_len;	/* in bits */
+	char alg_key[0];
 };
 
 struct xfrm_algo_aead {
-	char		alg_name[64];
-	unsigned int	alg_key_len;	/* in bits */
-	unsigned int	alg_icv_len;	/* in bits */
-	char		alg_key[0];
+	char alg_name[64];
+	unsigned int alg_key_len;	/* in bits */
+	unsigned int alg_icv_len;	/* in bits */
+	char alg_key[0];
 };
 
 struct xfrm_stats {
-	__u32	replay_window;
-	__u32	replay;
-	__u32	integrity_failed;
+	__u32 replay_window;
+	__u32 replay;
+	__u32 integrity_failed;
 };
 
-enum
-{
-	XFRM_POLICY_TYPE_MAIN	= 0,
-	XFRM_POLICY_TYPE_SUB	= 1,
-	XFRM_POLICY_TYPE_MAX	= 2,
-	XFRM_POLICY_TYPE_ANY	= 255
+enum {
+	XFRM_POLICY_TYPE_MAIN = 0,
+	XFRM_POLICY_TYPE_SUB = 1,
+	XFRM_POLICY_TYPE_MAX = 2,
+	XFRM_POLICY_TYPE_ANY = 255
 };
 
-enum
-{
-	XFRM_POLICY_IN	= 0,
-	XFRM_POLICY_OUT	= 1,
-	XFRM_POLICY_FWD	= 2,
+enum {
+	XFRM_POLICY_IN = 0,
+	XFRM_POLICY_OUT = 1,
+	XFRM_POLICY_FWD = 2,
 	XFRM_POLICY_MASK = 3,
-	XFRM_POLICY_MAX	= 3
+	XFRM_POLICY_MAX = 3
 };
 
-enum
-{
+enum {
 	XFRM_SHARE_ANY,		/* No limitations */
 	XFRM_SHARE_SESSION,	/* For this session only */
 	XFRM_SHARE_USER,	/* For this user only */
@@ -213,52 +204,51 @@ enum {
  * NOTE: Same format as sadb_x_sec_ctx
  */
 struct xfrm_user_sec_ctx {
-	__u16			len;
-	__u16			exttype;
-	__u8			ctx_alg;  /* LSMs: e.g., selinux == 1 */
-	__u8			ctx_doi;
-	__u16			ctx_len;
+	__u16 len;
+	__u16 exttype;
+	__u8 ctx_alg;		/* LSMs: e.g., selinux == 1 */
+	__u8 ctx_doi;
+	__u16 ctx_len;
 };
 
 struct xfrm_user_tmpl {
-	struct xfrm_id		id;
-	__u16			family;
-	xfrm_address_t		saddr;
-	__u32			reqid;
-	__u8			mode;
-	__u8			share;
-	__u8			optional;
-	__u32			aalgos;
-	__u32			ealgos;
-	__u32			calgos;
+	struct xfrm_id id;
+	__u16 family;
+	xfrm_address_t saddr;
+	__u32 reqid;
+	__u8 mode;
+	__u8 share;
+	__u8 optional;
+	__u32 aalgos;
+	__u32 ealgos;
+	__u32 calgos;
 };
 
 struct xfrm_encap_tmpl {
-	__u16		encap_type;
-	__be16		encap_sport;
-	__be16		encap_dport;
-	xfrm_address_t	encap_oa;
+	__u16 encap_type;
+	__be16 encap_sport;
+	__be16 encap_dport;
+	xfrm_address_t encap_oa;
 };
 
 /* AEVENT flags  */
 enum xfrm_ae_ftype_t {
 	XFRM_AE_UNSPEC,
-	XFRM_AE_RTHR=1,	/* replay threshold*/
-	XFRM_AE_RVAL=2, /* replay value */
-	XFRM_AE_LVAL=4, /* lifetime value */
-	XFRM_AE_ETHR=8, /* expiry timer threshold */
-	XFRM_AE_CR=16, /* Event cause is replay update */
-	XFRM_AE_CE=32, /* Event cause is timer expiry */
-	XFRM_AE_CU=64, /* Event cause is policy update */
+	XFRM_AE_RTHR = 1,	/* replay threshold */
+	XFRM_AE_RVAL = 2,	/* replay value */
+	XFRM_AE_LVAL = 4,	/* lifetime value */
+	XFRM_AE_ETHR = 8,	/* expiry timer threshold */
+	XFRM_AE_CR = 16,	/* Event cause is replay update */
+	XFRM_AE_CE = 32,	/* Event cause is timer expiry */
+	XFRM_AE_CU = 64,	/* Event cause is policy update */
 	__XFRM_AE_MAX
-
 #define XFRM_AE_MAX (__XFRM_AE_MAX - 1)
 };
 
 struct xfrm_userpolicy_type {
-	__u8		type;
-	__u16		reserved1;
-	__u8		reserved2;
+	__u8 type;
+	__u16 reserved1;
+	__u8 reserved2;
 };
 
 /* Netlink message attributes.  */
@@ -282,9 +272,8 @@ enum xfrm_attr_type_t {
 	XFRMA_POLICY_TYPE,	/* struct xfrm_userpolicy_type */
 	XFRMA_MIGRATE,
 	XFRMA_ALG_AEAD,		/* struct xfrm_algo_aead */
-	XFRMA_KMADDRESS,        /* struct xfrm_user_kmaddress */
+	XFRMA_KMADDRESS,	/* struct xfrm_user_kmaddress */
 	__XFRMA_MAX
-
 #define XFRMA_MAX (__XFRMA_MAX - 1)
 };
 
@@ -293,13 +282,12 @@ enum xfrm_sadattr_type_t {
 	XFRMA_SAD_CNT,
 	XFRMA_SAD_HINFO,
 	__XFRMA_SAD_MAX
-
 #define XFRMA_SAD_MAX (__XFRMA_SAD_MAX - 1)
 };
 
 struct xfrmu_sadhinfo {
-	__u32 sadhcnt; /* current hash bkts */
-	__u32 sadhmcnt; /* max allowed hash bkts */
+	__u32 sadhcnt;		/* current hash bkts */
+	__u32 sadhmcnt;		/* max allowed hash bkts */
 };
 
 enum xfrm_spdattr_type_t {
@@ -307,7 +295,6 @@ enum xfrm_spdattr_type_t {
 	XFRMA_SPD_INFO,
 	XFRMA_SPD_HINFO,
 	__XFRMA_SPD_MAX
-
 #define XFRMA_SPD_MAX (__XFRMA_SPD_MAX - 1)
 };
 
@@ -326,18 +313,18 @@ struct xfrmu_spdhinfo {
 };
 
 struct xfrm_usersa_info {
-	struct xfrm_selector		sel;
-	struct xfrm_id			id;
-	xfrm_address_t			saddr;
-	struct xfrm_lifetime_cfg	lft;
-	struct xfrm_lifetime_cur	curlft;
-	struct xfrm_stats		stats;
-	__u32				seq;
-	__u32				reqid;
-	__u16				family;
-	__u8				mode;		/* XFRM_MODE_xxx */
-	__u8				replay_window;
-	__u8				flags;
+	struct xfrm_selector sel;
+	struct xfrm_id id;
+	xfrm_address_t saddr;
+	struct xfrm_lifetime_cfg lft;
+	struct xfrm_lifetime_cur curlft;
+	struct xfrm_stats stats;
+	__u32 seq;
+	__u32 reqid;
+	__u16 family;
+	__u8 mode;		/* XFRM_MODE_xxx */
+	__u8 replay_window;
+	__u8 flags;
 #define XFRM_STATE_NOECN	1
 #define XFRM_STATE_DECAP_DSCP	2
 #define XFRM_STATE_NOPMTUDISC	4
@@ -347,107 +334,107 @@ struct xfrm_usersa_info {
 };
 
 struct xfrm_usersa_id {
-	xfrm_address_t			daddr;
-	__be32				spi;
-	__u16				family;
-	__u8				proto;
+	xfrm_address_t daddr;
+	__be32 spi;
+	__u16 family;
+	__u8 proto;
 };
 
 struct xfrm_aevent_id {
-	struct xfrm_usersa_id		sa_id;
-	xfrm_address_t			saddr;
-	__u32				flags;
-	__u32				reqid;
+	struct xfrm_usersa_id sa_id;
+	xfrm_address_t saddr;
+	__u32 flags;
+	__u32 reqid;
 };
 
 struct xfrm_userspi_info {
-	struct xfrm_usersa_info		info;
-	__u32				min;
-	__u32				max;
+	struct xfrm_usersa_info info;
+	__u32 min;
+	__u32 max;
 };
 
 struct xfrm_userpolicy_info {
-	struct xfrm_selector		sel;
-	struct xfrm_lifetime_cfg	lft;
-	struct xfrm_lifetime_cur	curlft;
-	__u32				priority;
-	__u32				index;
-	__u8				dir;
-	__u8				action;
+	struct xfrm_selector sel;
+	struct xfrm_lifetime_cfg lft;
+	struct xfrm_lifetime_cur curlft;
+	__u32 priority;
+	__u32 index;
+	__u8 dir;
+	__u8 action;
 #define XFRM_POLICY_ALLOW	0
 #define XFRM_POLICY_BLOCK	1
-	__u8				flags;
+	__u8 flags;
 #define XFRM_POLICY_LOCALOK	1	/* Allow user to override global policy */
 	/* Automatically expand selector to include matching ICMP payloads. */
 #define XFRM_POLICY_ICMP	2
-	__u8				share;
+	__u8 share;
 };
 
 struct xfrm_userpolicy_id {
-	struct xfrm_selector		sel;
-	__u32				index;
-	__u8				dir;
+	struct xfrm_selector sel;
+	__u32 index;
+	__u8 dir;
 };
 
 struct xfrm_user_acquire {
-	struct xfrm_id			id;
-	xfrm_address_t			saddr;
-	struct xfrm_selector		sel;
-	struct xfrm_userpolicy_info	policy;
-	__u32				aalgos;
-	__u32				ealgos;
-	__u32				calgos;
-	__u32				seq;
+	struct xfrm_id id;
+	xfrm_address_t saddr;
+	struct xfrm_selector sel;
+	struct xfrm_userpolicy_info policy;
+	__u32 aalgos;
+	__u32 ealgos;
+	__u32 calgos;
+	__u32 seq;
 };
 
 struct xfrm_user_expire {
-	struct xfrm_usersa_info		state;
-	__u8				hard;
+	struct xfrm_usersa_info state;
+	__u8 hard;
 };
 
 struct xfrm_user_polexpire {
-	struct xfrm_userpolicy_info	pol;
-	__u8				hard;
+	struct xfrm_userpolicy_info pol;
+	__u8 hard;
 };
 
 struct xfrm_usersa_flush {
-	__u8				proto;
+	__u8 proto;
 };
 
 struct xfrm_user_report {
-	__u8				proto;
-	struct xfrm_selector		sel;
+	__u8 proto;
+	struct xfrm_selector sel;
 };
 
 /* Used by MIGRATE to pass addresses IKE should use to perform
  * SA negotiation with the peer */
 struct xfrm_user_kmaddress {
-	xfrm_address_t                  local;
-	xfrm_address_t                  remote;
-	__u32				reserved;
-	__u16				family;
+	xfrm_address_t local;
+	xfrm_address_t remote;
+	__u32 reserved;
+	__u16 family;
 };
 
 struct xfrm_user_migrate {
-	xfrm_address_t			old_daddr;
-	xfrm_address_t			old_saddr;
-	xfrm_address_t			new_daddr;
-	xfrm_address_t			new_saddr;
-	__u8				proto;
-	__u8				mode;
-	__u16				reserved;
-	__u32				reqid;
-	__u16				old_family;
-	__u16				new_family;
+	xfrm_address_t old_daddr;
+	xfrm_address_t old_saddr;
+	xfrm_address_t new_daddr;
+	xfrm_address_t new_saddr;
+	__u8 proto;
+	__u8 mode;
+	__u16 reserved;
+	__u32 reqid;
+	__u16 old_family;
+	__u16 new_family;
 };
 
 struct xfrm_user_mapping {
-	struct xfrm_usersa_id		id;
-	__u32				reqid;
-	xfrm_address_t			old_saddr;
-	xfrm_address_t			new_saddr;
-	__be16				old_sport;
-	__be16				new_sport;
+	struct xfrm_usersa_id id;
+	__u32 reqid;
+	xfrm_address_t old_saddr;
+	xfrm_address_t new_saddr;
+	__be16 old_sport;
+	__be16 new_sport;
 };
 
 #ifndef __KERNEL__

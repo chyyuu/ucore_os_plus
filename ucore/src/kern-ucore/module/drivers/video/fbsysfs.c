@@ -51,7 +51,7 @@ struct fb_info *framebuffer_alloc(size_t size, struct device *dev)
 	if (!p)
 		return NULL;
 
-	info = (struct fb_info *) p;
+	info = (struct fb_info *)p;
 
 	if (size)
 		info->par = p + fb_info_size;
@@ -66,6 +66,7 @@ struct fb_info *framebuffer_alloc(size_t size, struct device *dev)
 #undef PADDING
 #undef BYTES_PER_LONG
 }
+
 EXPORT_SYMBOL(framebuffer_alloc);
 
 /**
@@ -81,6 +82,7 @@ void framebuffer_release(struct fb_info *info)
 {
 	kfree(info);
 }
+
 EXPORT_SYMBOL(framebuffer_release);
 
 static int activate(struct fb_info *fb_info, struct fb_var_screeninfo *var)
@@ -117,7 +119,7 @@ static int mode_string(char *buf, unsigned int offset,
 		v = 'd';
 
 	return snprintf(&buf[offset], PAGE_SIZE - offset, "%c:%dx%d%c-%d\n",
-	                m, mode->xres, mode->yres, v, mode->refresh);
+			m, mode->xres, mode->yres, v, mode->refresh);
 }
 
 static ssize_t store_mode(struct device *device, struct device_attribute *attr,
@@ -211,7 +213,7 @@ static ssize_t store_bpp(struct device *device, struct device_attribute *attr,
 {
 	struct fb_info *fb_info = dev_get_drvdata(device);
 	struct fb_var_screeninfo var;
-	char ** last = NULL;
+	char **last = NULL;
 	int err;
 
 	var = fb_info->var;
@@ -245,7 +247,6 @@ static ssize_t store_rotate(struct device *device,
 
 	return count;
 }
-
 
 static ssize_t show_rotate(struct device *device,
 			   struct device_attribute *attr, char *buf)
@@ -312,7 +313,7 @@ static ssize_t store_blank(struct device *device,
 static ssize_t show_blank(struct device *device,
 			  struct device_attribute *attr, char *buf)
 {
-//	struct fb_info *fb_info = dev_get_drvdata(device);
+//      struct fb_info *fb_info = dev_get_drvdata(device);
 	return 0;
 }
 
@@ -320,14 +321,14 @@ static ssize_t store_console(struct device *device,
 			     struct device_attribute *attr,
 			     const char *buf, size_t count)
 {
-//	struct fb_info *fb_info = dev_get_drvdata(device);
+//      struct fb_info *fb_info = dev_get_drvdata(device);
 	return 0;
 }
 
 static ssize_t show_console(struct device *device,
 			    struct device_attribute *attr, char *buf)
 {
-//	struct fb_info *fb_info = dev_get_drvdata(device);
+//      struct fb_info *fb_info = dev_get_drvdata(device);
 	return 0;
 }
 
@@ -335,14 +336,14 @@ static ssize_t store_cursor(struct device *device,
 			    struct device_attribute *attr,
 			    const char *buf, size_t count)
 {
-//	struct fb_info *fb_info = dev_get_drvdata(device);
+//      struct fb_info *fb_info = dev_get_drvdata(device);
 	return 0;
 }
 
 static ssize_t show_cursor(struct device *device,
 			   struct device_attribute *attr, char *buf)
 {
-//	struct fb_info *fb_info = dev_get_drvdata(device);
+//      struct fb_info *fb_info = dev_get_drvdata(device);
 	return 0;
 }
 
@@ -431,15 +432,14 @@ static ssize_t store_bl_curve(struct device *device,
 
 	for (i = 0; i < (FB_BACKLIGHT_LEVELS / 8); ++i)
 		if (sscanf(&buf[i * 24],
-			"%2hhx %2hhx %2hhx %2hhx %2hhx %2hhx %2hhx %2hhx\n",
-			&tmp_curve[i * 8 + 0],
-			&tmp_curve[i * 8 + 1],
-			&tmp_curve[i * 8 + 2],
-			&tmp_curve[i * 8 + 3],
-			&tmp_curve[i * 8 + 4],
-			&tmp_curve[i * 8 + 5],
-			&tmp_curve[i * 8 + 6],
-			&tmp_curve[i * 8 + 7]) != 8)
+			   "%2hhx %2hhx %2hhx %2hhx %2hhx %2hhx %2hhx %2hhx\n",
+			   &tmp_curve[i * 8 + 0],
+			   &tmp_curve[i * 8 + 1],
+			   &tmp_curve[i * 8 + 2],
+			   &tmp_curve[i * 8 + 3],
+			   &tmp_curve[i * 8 + 4],
+			   &tmp_curve[i * 8 + 5],
+			   &tmp_curve[i * 8 + 6], &tmp_curve[i * 8 + 7]) != 8)
 			return -EINVAL;
 
 	/* If there has been an error in the input data, we won't
@@ -488,20 +488,20 @@ static ssize_t show_bl_curve(struct device *device,
  * not a text one. Consideration should also be given to converting
  * fbdev to use configfs instead of sysfs */
 static struct device_attribute device_attrs[] = {
-	__ATTR(bits_per_pixel, S_IRUGO|S_IWUSR, show_bpp, store_bpp),
-	__ATTR(blank, S_IRUGO|S_IWUSR, show_blank, store_blank),
-	__ATTR(console, S_IRUGO|S_IWUSR, show_console, store_console),
-	__ATTR(cursor, S_IRUGO|S_IWUSR, show_cursor, store_cursor),
-	__ATTR(mode, S_IRUGO|S_IWUSR, show_mode, store_mode),
-	__ATTR(modes, S_IRUGO|S_IWUSR, show_modes, store_modes),
-	__ATTR(pan, S_IRUGO|S_IWUSR, show_pan, store_pan),
-	__ATTR(virtual_size, S_IRUGO|S_IWUSR, show_virtual, store_virtual),
+	__ATTR(bits_per_pixel, S_IRUGO | S_IWUSR, show_bpp, store_bpp),
+	__ATTR(blank, S_IRUGO | S_IWUSR, show_blank, store_blank),
+	__ATTR(console, S_IRUGO | S_IWUSR, show_console, store_console),
+	__ATTR(cursor, S_IRUGO | S_IWUSR, show_cursor, store_cursor),
+	__ATTR(mode, S_IRUGO | S_IWUSR, show_mode, store_mode),
+	__ATTR(modes, S_IRUGO | S_IWUSR, show_modes, store_modes),
+	__ATTR(pan, S_IRUGO | S_IWUSR, show_pan, store_pan),
+	__ATTR(virtual_size, S_IRUGO | S_IWUSR, show_virtual, store_virtual),
 	__ATTR(name, S_IRUGO, show_name, NULL),
 	__ATTR(stride, S_IRUGO, show_stride, NULL),
-	__ATTR(rotate, S_IRUGO|S_IWUSR, show_rotate, store_rotate),
-	__ATTR(state, S_IRUGO|S_IWUSR, show_fbstate, store_fbstate),
+	__ATTR(rotate, S_IRUGO | S_IWUSR, show_rotate, store_rotate),
+	__ATTR(state, S_IRUGO | S_IWUSR, show_fbstate, store_fbstate),
 #ifdef CONFIG_FB_BACKLIGHT
-	__ATTR(bl_curve, S_IRUGO|S_IWUSR, show_bl_curve, store_bl_curve),
+	__ATTR(bl_curve, S_IRUGO | S_IWUSR, show_bl_curve, store_bl_curve),
 #endif
 };
 
@@ -565,5 +565,6 @@ void fb_bl_default_curve(struct fb_info *fb_info, u8 off, u8 min, u8 max)
 
 	mutex_unlock(&fb_info->bl_curve_mutex);
 }
+
 EXPORT_SYMBOL_GPL(fb_bl_default_curve);
 #endif

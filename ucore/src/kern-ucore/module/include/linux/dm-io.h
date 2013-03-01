@@ -25,13 +25,13 @@ struct page_list {
 	struct page *page;
 };
 
-typedef void (*io_notify_fn)(unsigned long error, void *context);
+typedef void (*io_notify_fn) (unsigned long error, void *context);
 
 enum dm_io_mem_type {
-	DM_IO_PAGE_LIST,/* Page list */
-	DM_IO_BVEC,	/* Bio vector */
-	DM_IO_VMA,	/* Virtual memory area */
-	DM_IO_KMEM,	/* Kernel memory */
+	DM_IO_PAGE_LIST,	/* Page list */
+	DM_IO_BVEC,		/* Bio vector */
+	DM_IO_VMA,		/* Virtual memory area */
+	DM_IO_KMEM,		/* Kernel memory */
 };
 
 struct dm_io_memory {
@@ -57,7 +57,7 @@ struct dm_io_notify {
  */
 struct dm_io_client;
 struct dm_io_request {
-	int bi_rw;			/* READ|WRITE - not READA */
+	int bi_rw;		/* READ|WRITE - not READA */
 	struct dm_io_memory mem;	/* Memory to use for io */
 	struct dm_io_notify notify;	/* Synchronous if notify.fn is NULL */
 	struct dm_io_client *client;	/* Client memory handler */
@@ -81,5 +81,5 @@ void dm_io_client_destroy(struct dm_io_client *client);
 int dm_io(struct dm_io_request *io_req, unsigned num_regions,
 	  struct dm_io_region *region, unsigned long *sync_error_bits);
 
-#endif	/* __KERNEL__ */
-#endif	/* _LINUX_DM_IO_H */
+#endif /* __KERNEL__ */
+#endif /* _LINUX_DM_IO_H */

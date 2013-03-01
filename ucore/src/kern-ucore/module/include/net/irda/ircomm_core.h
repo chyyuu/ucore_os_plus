@@ -38,19 +38,19 @@
 #define IRCOMM_MAGIC 0x98347298
 #define IRCOMM_HEADER_SIZE 1
 
-struct ircomm_cb;   /* Forward decl. */
+struct ircomm_cb;		/* Forward decl. */
 
 /*
  * A small call-table, so we don't have to check the service-type whenever
  * we want to do something
  */
 typedef struct {
-	int (*data_request)(struct ircomm_cb *, struct sk_buff *, int clen);
-	int (*connect_request)(struct ircomm_cb *, struct sk_buff *, 
-			       struct ircomm_info *);
-	int (*connect_response)(struct ircomm_cb *, struct sk_buff *);
-	int (*disconnect_request)(struct ircomm_cb *, struct sk_buff *, 
-				  struct ircomm_info *);	
+	int (*data_request) (struct ircomm_cb *, struct sk_buff *, int clen);
+	int (*connect_request) (struct ircomm_cb *, struct sk_buff *,
+				struct ircomm_info *);
+	int (*connect_response) (struct ircomm_cb *, struct sk_buff *);
+	int (*disconnect_request) (struct ircomm_cb *, struct sk_buff *,
+				   struct ircomm_info *);
 } call_t;
 
 struct ircomm_cb {
@@ -58,39 +58,39 @@ struct ircomm_cb {
 	magic_t magic;
 
 	notify_t notify;
-	call_t   issue;
+	call_t issue;
 
 	int state;
-	int line;            /* Which TTY line we are using */
+	int line;		/* Which TTY line we are using */
 
 	struct tsap_cb *tsap;
 	struct lsap_cb *lsap;
-	
-	__u8 dlsap_sel;      /* Destination LSAP/TSAP selector */
-	__u8 slsap_sel;      /* Source LSAP/TSAP selector */
 
-	__u32 saddr;         /* Source device address (link we are using) */
-	__u32 daddr;         /* Destination device address */
+	__u8 dlsap_sel;		/* Destination LSAP/TSAP selector */
+	__u8 slsap_sel;		/* Source LSAP/TSAP selector */
 
-	int max_header_size; /* Header space we must reserve for each frame */
-	int max_data_size;   /* The amount of data we can fill in each frame */
+	__u32 saddr;		/* Source device address (link we are using) */
+	__u32 daddr;		/* Destination device address */
 
-	LOCAL_FLOW flow_status; /* Used by ircomm_lmp */
-	int pkt_count;          /* Number of frames we have sent to IrLAP */
+	int max_header_size;	/* Header space we must reserve for each frame */
+	int max_data_size;	/* The amount of data we can fill in each frame */
+
+	LOCAL_FLOW flow_status;	/* Used by ircomm_lmp */
+	int pkt_count;		/* Number of frames we have sent to IrLAP */
 
 	__u8 service_type;
 };
 
 extern hashbin_t *ircomm;
 
-struct ircomm_cb *ircomm_open(notify_t *notify, __u8 service_type, int line);
+struct ircomm_cb *ircomm_open(notify_t * notify, __u8 service_type, int line);
 int ircomm_close(struct ircomm_cb *self);
 
 int ircomm_data_request(struct ircomm_cb *self, struct sk_buff *skb);
 void ircomm_data_indication(struct ircomm_cb *self, struct sk_buff *skb);
 void ircomm_process_data(struct ircomm_cb *self, struct sk_buff *skb);
 int ircomm_control_request(struct ircomm_cb *self, struct sk_buff *skb);
-int ircomm_connect_request(struct ircomm_cb *self, __u8 dlsap_sel, 
+int ircomm_connect_request(struct ircomm_cb *self, __u8 dlsap_sel,
 			   __u32 saddr, __u32 daddr, struct sk_buff *skb,
 			   __u8 service_type);
 void ircomm_connect_indication(struct ircomm_cb *self, struct sk_buff *skb,

@@ -113,7 +113,8 @@ static void mmc_request(struct request_queue *q)
  *
  * Initialise a MMC card request queue.
  */
-int mmc_init_queue(struct mmc_queue *mq, struct mmc_card *card, spinlock_t *lock)
+int mmc_init_queue(struct mmc_queue *mq, struct mmc_card *card,
+		   spinlock_t * lock)
 {
 	struct mmc_host *host = card->host;
 	u64 limit = BLK_BOUNCE_HIGH;
@@ -151,8 +152,8 @@ int mmc_init_queue(struct mmc_queue *mq, struct mmc_card *card, spinlock_t *lock
 			mq->bounce_buf = kmalloc(bouncesz, GFP_KERNEL);
 			if (!mq->bounce_buf) {
 				printk(KERN_WARNING "%s: unable to "
-					"allocate bounce buffer\n",
-					mmc_card_name(card));
+				       "allocate bounce buffer\n",
+				       mmc_card_name(card));
 			}
 		}
 
@@ -164,7 +165,7 @@ int mmc_init_queue(struct mmc_queue *mq, struct mmc_card *card, spinlock_t *lock
 			blk_queue_max_segment_size(mq->queue, bouncesz);
 
 			mq->sg = kmalloc(sizeof(struct scatterlist),
-				GFP_KERNEL);
+					 GFP_KERNEL);
 			if (!mq->sg) {
 				ret = -ENOMEM;
 				goto cleanup_queue;
@@ -172,7 +173,7 @@ int mmc_init_queue(struct mmc_queue *mq, struct mmc_card *card, spinlock_t *lock
 			sg_init_table(mq->sg, 1);
 
 			mq->bounce_sg = kmalloc(sizeof(struct scatterlist) *
-				bouncesz / 512, GFP_KERNEL);
+						bouncesz / 512, GFP_KERNEL);
 			if (!mq->bounce_sg) {
 				ret = -ENOMEM;
 				goto cleanup_queue;
@@ -185,13 +186,14 @@ int mmc_init_queue(struct mmc_queue *mq, struct mmc_card *card, spinlock_t *lock
 	if (!mq->bounce_buf) {
 		blk_queue_bounce_limit(mq->queue, limit);
 		blk_queue_max_sectors(mq->queue,
-			min(host->max_blk_count, host->max_req_size / 512));
+				      min(host->max_blk_count,
+					  host->max_req_size / 512));
 		blk_queue_max_phys_segments(mq->queue, host->max_phys_segs);
 		blk_queue_max_hw_segments(mq->queue, host->max_hw_segs);
 		blk_queue_max_segment_size(mq->queue, host->max_seg_size);
 
 		mq->sg = kmalloc(sizeof(struct scatterlist) *
-			host->max_phys_segs, GFP_KERNEL);
+				 host->max_phys_segs, GFP_KERNEL);
 		if (!mq->sg) {
 			ret = -ENOMEM;
 			goto cleanup_queue;
@@ -208,12 +210,12 @@ int mmc_init_queue(struct mmc_queue *mq, struct mmc_card *card, spinlock_t *lock
 	}
 
 	return 0;
- free_bounce_sg:
- 	if (mq->bounce_sg)
- 		kfree(mq->bounce_sg);
- 	mq->bounce_sg = NULL;
- cleanup_queue:
- 	if (mq->sg)
+free_bounce_sg:
+	if (mq->bounce_sg)
+		kfree(mq->bounce_sg);
+	mq->bounce_sg = NULL;
+cleanup_queue:
+	if (mq->sg)
 		kfree(mq->sg);
 	mq->sg = NULL;
 	if (mq->bounce_buf)
@@ -239,9 +241,9 @@ void mmc_cleanup_queue(struct mmc_queue *mq)
 	/* Then terminate our worker thread */
 	kthread_stop(mq->thread);
 
- 	if (mq->bounce_sg)
- 		kfree(mq->bounce_sg);
- 	mq->bounce_sg = NULL;
+	if (mq->bounce_sg)
+		kfree(mq->bounce_sg);
+	mq->bounce_sg = NULL;
 
 	kfree(mq->sg);
 	mq->sg = NULL;
@@ -254,6 +256,7 @@ void mmc_cleanup_queue(struct mmc_queue *mq)
 
 	mq->card = NULL;
 }
+
 EXPORT_SYMBOL(mmc_cleanup_queue);
 
 /**
@@ -321,7 +324,7 @@ unsigned int mmc_queue_map_sg(struct mmc_queue *mq)
 
 	buflen = 0;
 	for_each_sg(mq->bounce_sg, sg, sg_len, i)
-		buflen += sg->length;
+	    buflen += sg->length;
 
 	sg_init_one(mq->sg, mq->bounce_buf, buflen);
 
@@ -344,7 +347,7 @@ void mmc_queue_bounce_pre(struct mmc_queue *mq)
 
 	local_irq_save(flags);
 	sg_copy_to_buffer(mq->bounce_sg, mq->bounce_sg_len,
-		mq->bounce_buf, mq->sg[0].length);
+			  mq->bounce_buf, mq->sg[0].length);
 	local_irq_restore(flags);
 }
 
@@ -364,7 +367,6 @@ void mmc_queue_bounce_post(struct mmc_queue *mq)
 
 	local_irq_save(flags);
 	sg_copy_from_buffer(mq->bounce_sg, mq->bounce_sg_len,
-		mq->bounce_buf, mq->sg[0].length);
+			    mq->bounce_buf, mq->sg[0].length);
 	local_irq_restore(flags);
 }
-

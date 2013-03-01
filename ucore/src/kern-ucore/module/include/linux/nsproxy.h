@@ -27,7 +27,7 @@ struct nsproxy {
 	struct ipc_namespace *ipc_ns;
 	struct mnt_namespace *mnt_ns;
 	struct pid_namespace *pid_ns;
-	struct net 	     *net_ns;
+	struct net *net_ns;
 };
 extern struct nsproxy init_nsproxy;
 
@@ -66,7 +66,7 @@ void exit_task_namespaces(struct task_struct *tsk);
 void switch_task_namespaces(struct task_struct *tsk, struct nsproxy *new);
 void free_nsproxy(struct nsproxy *ns);
 int unshare_nsproxy_namespaces(unsigned long, struct nsproxy **,
-	struct fs_struct *);
+			       struct fs_struct *);
 
 static inline void put_nsproxy(struct nsproxy *ns)
 {

@@ -15,23 +15,22 @@
 #define nr_irqs			NR_IRQS
 #define irq_to_desc(irq)	(&irq_desc[irq])
 
-# define for_each_irq_desc(irq, desc)		\
+#define for_each_irq_desc(irq, desc)		\
 	for (irq = 0; irq < nr_irqs; irq++)
 
-# define for_each_irq_desc_reverse(irq, desc)                          \
+#define for_each_irq_desc_reverse(irq, desc)                          \
 	for (irq = nr_irqs - 1; irq >= 0; irq--)
 #else /* CONFIG_GENERIC_HARDIRQS */
 
 extern int nr_irqs;
 extern struct irq_desc *irq_to_desc(unsigned int irq);
 
-# define for_each_irq_desc(irq, desc)					\
+#define for_each_irq_desc(irq, desc)					\
 	for (irq = 0, desc = irq_to_desc(irq); irq < nr_irqs;		\
 	     irq++, desc = irq_to_desc(irq))				\
 		if (desc)
 
-
-# define for_each_irq_desc_reverse(irq, desc)				\
+#define for_each_irq_desc_reverse(irq, desc)				\
 	for (irq = nr_irqs - 1, desc = irq_to_desc(irq); irq >= 0;	\
 	     irq--, desc = irq_to_desc(irq))				\
 		if (desc)

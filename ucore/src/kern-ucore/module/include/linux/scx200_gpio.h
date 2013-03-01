@@ -16,28 +16,31 @@ extern struct nsc_gpio_ops scx200_gpio_ops;
 
 /* returns the value of the GPIO pin */
 
-static inline int scx200_gpio_get(unsigned index) {
+static inline int scx200_gpio_get(unsigned index)
+{
 	__SCx200_GPIO_BANK;
 	__SCx200_GPIO_IOADDR + 0x04;
 	__SCx200_GPIO_INDEX;
-		
-	return (inl(ioaddr) & (1<<index)) ? 1 : 0;
+
+	return (inl(ioaddr) & (1 << index)) ? 1 : 0;
 }
 
 /* return the value driven on the GPIO signal (the value that will be
    driven if the GPIO is configured as an output, it might not be the
    state of the GPIO right now if the GPIO is configured as an input) */
 
-static inline int scx200_gpio_current(unsigned index) {
-        __SCx200_GPIO_BANK;
+static inline int scx200_gpio_current(unsigned index)
+{
+	__SCx200_GPIO_BANK;
 	__SCx200_GPIO_INDEX;
-		
-	return (scx200_gpio_shadow[bank] & (1<<index)) ? 1 : 0;
+
+	return (scx200_gpio_shadow[bank] & (1 << index)) ? 1 : 0;
 }
 
 /* drive the GPIO signal high */
 
-static inline void scx200_gpio_set_high(unsigned index) {
+static inline void scx200_gpio_set_high(unsigned index)
+{
 	__SCx200_GPIO_BANK;
 	__SCx200_GPIO_IOADDR;
 	__SCx200_GPIO_SHADOW;
@@ -48,18 +51,20 @@ static inline void scx200_gpio_set_high(unsigned index) {
 
 /* drive the GPIO signal low */
 
-static inline void scx200_gpio_set_low(unsigned index) {
+static inline void scx200_gpio_set_low(unsigned index)
+{
 	__SCx200_GPIO_BANK;
 	__SCx200_GPIO_IOADDR;
 	__SCx200_GPIO_SHADOW;
 	__SCx200_GPIO_INDEX;
-	clear_bit(index, shadow); /* __clear_bit()? */
+	clear_bit(index, shadow);	/* __clear_bit()? */
 	__SCx200_GPIO_OUT;
 }
 
 /* drive the GPIO signal to state */
 
-static inline void scx200_gpio_set(unsigned index, int state) {
+static inline void scx200_gpio_set(unsigned index, int state)
+{
 	__SCx200_GPIO_BANK;
 	__SCx200_GPIO_IOADDR;
 	__SCx200_GPIO_SHADOW;
@@ -72,7 +77,8 @@ static inline void scx200_gpio_set(unsigned index, int state) {
 }
 
 /* toggle the GPIO signal */
-static inline void scx200_gpio_change(unsigned index) {
+static inline void scx200_gpio_change(unsigned index)
+{
 	__SCx200_GPIO_BANK;
 	__SCx200_GPIO_IOADDR;
 	__SCx200_GPIO_SHADOW;

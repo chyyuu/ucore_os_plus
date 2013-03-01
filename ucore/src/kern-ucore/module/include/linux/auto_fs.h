@@ -10,7 +10,6 @@
  *
  * ----------------------------------------------------------------------- */
 
-
 #ifndef _LINUX_AUTO_FS_H
 #define _LINUX_AUTO_FS_H
 
@@ -56,22 +55,22 @@ typedef unsigned long autofs_wqt_t;
 #define autofs_ptype_expire	1	/* Expire entry (umount request) */
 
 struct autofs_packet_hdr {
-	int proto_version;		/* Protocol version */
-	int type;			/* Type of packet */
+	int proto_version;	/* Protocol version */
+	int type;		/* Type of packet */
 };
 
 struct autofs_packet_missing {
 	struct autofs_packet_hdr hdr;
-        autofs_wqt_t wait_queue_token;
+	autofs_wqt_t wait_queue_token;
 	int len;
-	char name[NAME_MAX+1];
-};	
+	char name[NAME_MAX + 1];
+};
 
 /* v3 expire (via ioctl) */
 struct autofs_packet_expire {
 	struct autofs_packet_hdr hdr;
 	int len;
-	char name[NAME_MAX+1];
+	char name[NAME_MAX + 1];
 };
 
 #define AUTOFS_IOC_READY      _IO(0x93,0x60)

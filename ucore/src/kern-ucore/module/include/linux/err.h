@@ -21,12 +21,12 @@
 
 static inline void *ERR_PTR(long error)
 {
-	return (void *) error;
+	return (void *)error;
 }
 
 static inline long PTR_ERR(const void *ptr)
 {
-	return (long) ptr;
+	return (long)ptr;
 }
 
 static inline long IS_ERR(const void *ptr)
@@ -44,7 +44,7 @@ static inline long IS_ERR(const void *ptr)
 static inline void *ERR_CAST(const void *ptr)
 {
 	/* cast away the const */
-	return (void *) ptr;
+	return (void *)ptr;
 }
 
 #endif

@@ -16,23 +16,22 @@ static void controlSet(uint32_t value, uint32_t mask);
 
 /* mmuInitPT
  * Initialize a page table by filling it with fault PTE */
-int
-mmu_init_pdt(Pagetable *pt) {
+int mmu_init_pdt(Pagetable * pt)
+{
 	uint32_t PTE, *PTEptr;
 	PTEptr = (uint32_t *) pt->ptAddress;
-	
+
 	//kprintf("Pagetable type %d\n", pt->type);
-	switch(pt->type)
-	{
-		case COARSE:
-      memset(PTEptr, 0, NPTEENTRY*4);
-      return 0;
-		case MASTER:
-      memset(PTEptr, 0, NPDEENTRY*4);
-      return 0;
-		default:
-			kprintf("Pagetage type incorrect: %d\n", pt->type);
-			return -1;
+	switch (pt->type) {
+	case COARSE:
+		memset(PTEptr, 0, NPTEENTRY * 4);
+		return 0;
+	case MASTER:
+		memset(PTEptr, 0, NPDEENTRY * 4);
+		return 0;
+	default:
+		kprintf("Pagetage type incorrect: %d\n", pt->type);
+		return -1;
 	}
 /*  	
 	asm volatile (
@@ -60,42 +59,33 @@ mmu_init_pdt(Pagetable *pt) {
 	return -1;
 }
 
-
-
-
 /* 16 domains */
-static void 
-domainAccessSet(uint32_t value, uint32_t mask)
+static void domainAccessSet(uint32_t value, uint32_t mask)
 {
 	uint32_t c3format;
-	asm volatile (
-		"MRC p15, 0, %0, c3, c0, 0" /* read domain register */
-		: "=r" (c3format)
-	);
-	c3format &= ~mask; /* clear bits that change */
-	c3format |= value; /* set bits that change */
-	asm volatile (
-		"MCR p15, 0, %0, c3, c0, 0" /* write domain register */
-		::"r" (c3format)
-	);
+	asm volatile ("MRC p15, 0, %0, c3, c0, 0"	/* read domain register */
+		      :"=r" (c3format)
+	    );
+	c3format &= ~mask;	/* clear bits that change */
+	c3format |= value;	/* set bits that change */
+	asm volatile ("MCR p15, 0, %0, c3, c0, 0"	/* write domain register */
+		      ::"r" (c3format)
+	    );
 }
 
 /* controlSet
  * sets the control bits register in CP15:c1 */
-static void 
-controlSet(uint32_t value, uint32_t mask)
+static void controlSet(uint32_t value, uint32_t mask)
 {
 	uint32_t c1format;
-	asm volatile (
-		"MRC p15, 0, %0, c1, c0, 0" /* read control register */
-		: "=r" (c1format)
-	); 
-	c1format &= ~mask; /* clear bits that change */
-	c1format |= value; /* set bits that change */
-	asm volatile (
-		"MCR p15, 0, %0, c1, c0, 0" /* write control register */
-		::"r" (c1format)
-	); 
+	asm volatile ("MRC p15, 0, %0, c1, c0, 0"	/* read control register */
+		      :"=r" (c1format)
+	    );
+	c1format &= ~mask;	/* clear bits that change */
+	c1format |= value;	/* set bits that change */
+	asm volatile ("MCR p15, 0, %0, c1, c0, 0"	/* write control register */
+		      ::"r" (c1format)
+	    );
 }
 
 /* mmu_init - initialize the virtual memory management */
@@ -106,21 +96,21 @@ controlSet(uint32_t value, uint32_t mask)
  * 4. Assign domain access rights.
  * 5. Enable the memory management unit and cache hardware.
  * */
-void
-mmu_init(void) {
+void mmu_init(void)
+{
 	uint32_t enable, change;
-	
+
 	/* Part 4 Set Domain Access */
-	domainAccessSet(DOM3CLT, CHANGEALLDOM); /* set Domain Access */
-	
+	domainAccessSet(DOM3CLT, CHANGEALLDOM);	/* set Domain Access */
+
 	/* Part 5 Enable MMU, caches and write buffer */
 	enable = ENABLEMMU | ENABLEICACHE | ENABLEDCACHE | ENABLEHIGHEVT;
 	change = CHANGEMMU | CHANGEICACHE | CHANGEDCACHE | CHANGEHIGHEVT;
 #ifdef __MACH_ARM_ARMV6
-  enable |= ENABLENEWPT;
-  change |= CHANGENEWPT;
+	enable |= ENABLENEWPT;
+	change |= CHANGENEWPT;
 #endif
-	
+
 	/* enable cache and MMU */
-	controlSet(enable, change); 
+	controlSet(enable, change);
 }

@@ -5,20 +5,18 @@
 
 /* User visible stuff. Glibc provides its own but libc5 folk will use these */
 
-struct ec_addr
-{
-  unsigned char station;		/* Station number.  */
-  unsigned char net;			/* Network number.  */
+struct ec_addr {
+	unsigned char station;	/* Station number.  */
+	unsigned char net;	/* Network number.  */
 };
 
-struct sockaddr_ec
-{
-  unsigned short sec_family;
-  unsigned char port;			/* Port number.  */
-  unsigned char cb;			/* Control/flag byte.  */
-  unsigned char type;			/* Type of message.  */
-  struct ec_addr addr;
-  unsigned long cookie;
+struct sockaddr_ec {
+	unsigned short sec_family;
+	unsigned char port;	/* Port number.  */
+	unsigned char cb;	/* Control/flag byte.  */
+	unsigned char type;	/* Type of message.  */
+	struct ec_addr addr;
+	unsigned long cookie;
 };
 
 #define ECTYPE_PACKET_RECEIVED		0	/* Packet received */
@@ -37,24 +35,23 @@ struct sockaddr_ec
 #define EC_HLEN				6
 
 /* This is what an Econet frame looks like on the wire. */
-struct ec_framehdr 
-{
-  unsigned char dst_stn;
-  unsigned char dst_net;
-  unsigned char src_stn;
-  unsigned char src_net;
-  unsigned char cb;
-  unsigned char port;
+struct ec_framehdr {
+	unsigned char dst_stn;
+	unsigned char dst_net;
+	unsigned char src_stn;
+	unsigned char src_net;
+	unsigned char cb;
+	unsigned char port;
 };
 
 struct econet_sock {
-  /* struct sock has to be the first member of econet_sock */
-  struct sock	sk;
-  unsigned char cb;
-  unsigned char port;
-  unsigned char station;
-  unsigned char net;
-  unsigned short num;
+	/* struct sock has to be the first member of econet_sock */
+	struct sock sk;
+	unsigned char cb;
+	unsigned char port;
+	unsigned char station;
+	unsigned char net;
+	unsigned short num;
 };
 
 static inline struct econet_sock *ec_sk(const struct sock *sk)
@@ -62,9 +59,8 @@ static inline struct econet_sock *ec_sk(const struct sock *sk)
 	return (struct econet_sock *)sk;
 }
 
-struct ec_device
-{
-  unsigned char station, net;		/* Econet protocol address */
+struct ec_device {
+	unsigned char station, net;	/* Econet protocol address */
 };
 
 #endif

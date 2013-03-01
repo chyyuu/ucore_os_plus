@@ -25,8 +25,8 @@
  */
 #define XDR_MAX_NETOBJ		1024
 struct xdr_netobj {
-	unsigned int		len;
-	u8 *			data;
+	unsigned int len;
+	u8 *data;
 };
 
 /*
@@ -34,7 +34,7 @@ struct xdr_netobj {
  * side) or svc_rqst pointer (server side).
  * Encode functions always assume there's enough room in the buffer.
  */
-typedef int	(*kxdrproc_t)(void *rqstp, __be32 *data, void *obj);
+typedef int (*kxdrproc_t) (void *rqstp, __be32 * data, void *obj);
 
 /*
  * Basic structure for transmission/reception of a client XDR message.
@@ -50,18 +50,18 @@ typedef int	(*kxdrproc_t)(void *rqstp, __be32 *data, void *obj);
  * operations and/or has a need for scatter/gather involving pages.
  */
 struct xdr_buf {
-	struct kvec	head[1],	/* RPC header + non-page data */
-			tail[1];	/* Appended after page data */
+	struct kvec head[1],	/* RPC header + non-page data */
+	 tail[1];		/* Appended after page data */
 
-	struct page **	pages;		/* Array of contiguous pages */
-	unsigned int	page_base,	/* Start of page data */
-			page_len,	/* Length of page data */
-			flags;		/* Flags for data disposition */
-#define XDRBUF_READ		0x01		/* target of file read */
-#define XDRBUF_WRITE		0x02		/* source of file write */
+	struct page **pages;	/* Array of contiguous pages */
+	unsigned int page_base,	/* Start of page data */
+	 page_len,		/* Length of page data */
+	 flags;			/* Flags for data disposition */
+#define XDRBUF_READ		0x01	/* target of file read */
+#define XDRBUF_WRITE		0x02	/* source of file write */
 
-	unsigned int	buflen,		/* Total length of storage buffer */
-			len;		/* Length of XDR encoded message */
+	unsigned int buflen,	/* Total length of storage buffer */
+	 len;			/* Length of XDR encoded message */
 
 };
 
@@ -94,20 +94,21 @@ struct xdr_buf {
 /*
  * Miscellaneous XDR helper functions
  */
-__be32 *xdr_encode_opaque_fixed(__be32 *p, const void *ptr, unsigned int len);
-__be32 *xdr_encode_opaque(__be32 *p, const void *ptr, unsigned int len);
-__be32 *xdr_encode_string(__be32 *p, const char *s);
-__be32 *xdr_decode_string_inplace(__be32 *p, char **sp, unsigned int *lenp,
-			unsigned int maxlen);
-__be32 *xdr_encode_netobj(__be32 *p, const struct xdr_netobj *);
-__be32 *xdr_decode_netobj(__be32 *p, struct xdr_netobj *);
+__be32 *xdr_encode_opaque_fixed(__be32 * p, const void *ptr, unsigned int len);
+__be32 *xdr_encode_opaque(__be32 * p, const void *ptr, unsigned int len);
+__be32 *xdr_encode_string(__be32 * p, const char *s);
+__be32 *xdr_decode_string_inplace(__be32 * p, char **sp, unsigned int *lenp,
+				  unsigned int maxlen);
+__be32 *xdr_encode_netobj(__be32 * p, const struct xdr_netobj *);
+__be32 *xdr_decode_netobj(__be32 * p, struct xdr_netobj *);
 
-void	xdr_encode_pages(struct xdr_buf *, struct page **, unsigned int,
-			 unsigned int);
-void	xdr_inline_pages(struct xdr_buf *, unsigned int,
-			 struct page **, unsigned int, unsigned int);
+void xdr_encode_pages(struct xdr_buf *, struct page **, unsigned int,
+		      unsigned int);
+void xdr_inline_pages(struct xdr_buf *, unsigned int,
+		      struct page **, unsigned int, unsigned int);
 
-static inline __be32 *xdr_encode_array(__be32 *p, const void *s, unsigned int len)
+static inline __be32 *xdr_encode_array(__be32 * p, const void *s,
+				       unsigned int len)
 {
 	return xdr_encode_opaque(p, s, len);
 }
@@ -115,18 +116,16 @@ static inline __be32 *xdr_encode_array(__be32 *p, const void *s, unsigned int le
 /*
  * Decode 64bit quantities (NFSv3 support)
  */
-static inline __be32 *
-xdr_encode_hyper(__be32 *p, __u64 val)
+static inline __be32 *xdr_encode_hyper(__be32 * p, __u64 val)
 {
 	*p++ = htonl(val >> 32);
 	*p++ = htonl(val & 0xFFFFFFFF);
 	return p;
 }
 
-static inline __be32 *
-xdr_decode_hyper(__be32 *p, __u64 *valp)
+static inline __be32 *xdr_decode_hyper(__be32 * p, __u64 * valp)
 {
-	*valp  = ((__u64) ntohl(*p++)) << 32;
+	*valp = ((__u64) ntohl(*p++)) << 32;
 	*valp |= ntohl(*p++);
 	return p;
 }
@@ -134,8 +133,7 @@ xdr_decode_hyper(__be32 *p, __u64 *valp)
 /*
  * Adjust kvec to reflect end of xdr'ed data (RPC client XDR)
  */
-static inline int
-xdr_adjust_iovec(struct kvec *iov, __be32 *p)
+static inline int xdr_adjust_iovec(struct kvec *iov, __be32 * p)
 {
 	return iov->iov_len = ((u8 *) p - (u8 *) iov->iov_base);
 }
@@ -145,33 +143,39 @@ xdr_adjust_iovec(struct kvec *iov, __be32 *p)
  */
 extern void xdr_shift_buf(struct xdr_buf *, size_t);
 extern void xdr_buf_from_iov(struct kvec *, struct xdr_buf *);
-extern int xdr_buf_subsegment(struct xdr_buf *, struct xdr_buf *, unsigned int, unsigned int);
-extern int xdr_buf_read_netobj(struct xdr_buf *, struct xdr_netobj *, unsigned int);
-extern int read_bytes_from_xdr_buf(struct xdr_buf *, unsigned int, void *, unsigned int);
-extern int write_bytes_to_xdr_buf(struct xdr_buf *, unsigned int, void *, unsigned int);
+extern int xdr_buf_subsegment(struct xdr_buf *, struct xdr_buf *, unsigned int,
+			      unsigned int);
+extern int xdr_buf_read_netobj(struct xdr_buf *, struct xdr_netobj *,
+			       unsigned int);
+extern int read_bytes_from_xdr_buf(struct xdr_buf *, unsigned int, void *,
+				   unsigned int);
+extern int write_bytes_to_xdr_buf(struct xdr_buf *, unsigned int, void *,
+				  unsigned int);
 
 /*
  * Helper structure for copying from an sk_buff.
  */
 struct xdr_skb_reader {
-	struct sk_buff	*skb;
-	unsigned int	offset;
-	size_t		count;
-	__wsum		csum;
+	struct sk_buff *skb;
+	unsigned int offset;
+	size_t count;
+	__wsum csum;
 };
 
-typedef size_t (*xdr_skb_read_actor)(struct xdr_skb_reader *desc, void *to, size_t len);
+typedef size_t(*xdr_skb_read_actor) (struct xdr_skb_reader * desc, void *to,
+				     size_t len);
 
 size_t xdr_skb_read_bits(struct xdr_skb_reader *desc, void *to, size_t len);
 extern int csum_partial_copy_to_xdr(struct xdr_buf *, struct sk_buff *);
 extern ssize_t xdr_partial_copy_from_skb(struct xdr_buf *, unsigned int,
-		struct xdr_skb_reader *, xdr_skb_read_actor);
+					 struct xdr_skb_reader *,
+					 xdr_skb_read_actor);
 
 extern int xdr_encode_word(struct xdr_buf *, unsigned int, u32);
 extern int xdr_decode_word(struct xdr_buf *, unsigned int, u32 *);
 
 struct xdr_array2_desc;
-typedef int (*xdr_xcode_elem_t)(struct xdr_array2_desc *desc, void *elem);
+typedef int (*xdr_xcode_elem_t) (struct xdr_array2_desc * desc, void *elem);
 struct xdr_array2_desc {
 	unsigned int elem_size;
 	unsigned int array_len;
@@ -180,7 +184,7 @@ struct xdr_array2_desc {
 };
 
 extern int xdr_decode_array2(struct xdr_buf *buf, unsigned int base,
-                             struct xdr_array2_desc *desc);
+			     struct xdr_array2_desc *desc);
 extern int xdr_encode_array2(struct xdr_buf *buf, unsigned int base,
 			     struct xdr_array2_desc *desc);
 
@@ -195,15 +199,19 @@ struct xdr_stream {
 	struct kvec *iov;	/* pointer to the current kvec */
 };
 
-extern void xdr_init_encode(struct xdr_stream *xdr, struct xdr_buf *buf, __be32 *p);
+extern void xdr_init_encode(struct xdr_stream *xdr, struct xdr_buf *buf,
+			    __be32 * p);
 extern __be32 *xdr_reserve_space(struct xdr_stream *xdr, size_t nbytes);
 extern void xdr_write_pages(struct xdr_stream *xdr, struct page **pages,
-		unsigned int base, unsigned int len);
-extern void xdr_init_decode(struct xdr_stream *xdr, struct xdr_buf *buf, __be32 *p);
+			    unsigned int base, unsigned int len);
+extern void xdr_init_decode(struct xdr_stream *xdr, struct xdr_buf *buf,
+			    __be32 * p);
 extern __be32 *xdr_inline_decode(struct xdr_stream *xdr, size_t nbytes);
 extern void xdr_read_pages(struct xdr_stream *xdr, unsigned int len);
 extern void xdr_enter_page(struct xdr_stream *xdr, unsigned int len);
-extern int xdr_process_buf(struct xdr_buf *buf, unsigned int offset, unsigned int len, int (*actor)(struct scatterlist *, void *), void *data);
+extern int xdr_process_buf(struct xdr_buf *buf, unsigned int offset,
+			   unsigned int len, int (*actor) (struct scatterlist *,
+							   void *), void *data);
 
 #endif /* __KERNEL__ */
 

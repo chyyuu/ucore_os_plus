@@ -15,12 +15,11 @@ typedef unsigned long kernel_ulong_t;
 #define PCI_ANY_ID (~0)
 
 struct pci_device_id {
-	__u32 vendor, device;		/* Vendor and device ID or PCI_ANY_ID*/
+	__u32 vendor, device;	/* Vendor and device ID or PCI_ANY_ID */
 	__u32 subvendor, subdevice;	/* Subsystem ID's or PCI_ANY_ID */
 	__u32 class, class_mask;	/* (class,subclass,prog-if) triplet */
 	kernel_ulong_t driver_data;	/* Data private to the driver */
 };
-
 
 #define IEEE1394_MATCH_VENDOR_ID	0x0001
 #define IEEE1394_MATCH_MODEL_ID		0x0002
@@ -34,9 +33,8 @@ struct ieee1394_device_id {
 	__u32 specifier_id;
 	__u32 version;
 	kernel_ulong_t driver_data
-		__attribute__((aligned(sizeof(kernel_ulong_t))));
+	    __attribute__ ((aligned(sizeof(kernel_ulong_t))));
 };
-
 
 /*
  * Device table entry for "new style" table-driven USB drivers.
@@ -97,26 +95,26 @@ struct ieee1394_device_id {
  */
 struct usb_device_id {
 	/* which fields to match against? */
-	__u16		match_flags;
+	__u16 match_flags;
 
 	/* Used for product specific matches; range is inclusive */
-	__u16		idVendor;
-	__u16		idProduct;
-	__u16		bcdDevice_lo;
-	__u16		bcdDevice_hi;
+	__u16 idVendor;
+	__u16 idProduct;
+	__u16 bcdDevice_lo;
+	__u16 bcdDevice_hi;
 
 	/* Used for device class matches */
-	__u8		bDeviceClass;
-	__u8		bDeviceSubClass;
-	__u8		bDeviceProtocol;
+	__u8 bDeviceClass;
+	__u8 bDeviceSubClass;
+	__u8 bDeviceProtocol;
 
 	/* Used for interface class matches */
-	__u8		bInterfaceClass;
-	__u8		bInterfaceSubClass;
-	__u8		bInterfaceProtocol;
+	__u8 bInterfaceClass;
+	__u8 bInterfaceSubClass;
+	__u8 bInterfaceProtocol;
 
 	/* not matched against */
-	kernel_ulong_t	driver_info;
+	kernel_ulong_t driver_info;
 };
 
 /* Some useful macros to use to create struct usb_device_id */
@@ -139,17 +137,17 @@ struct hid_device_id {
 	__u32 vendor;
 	__u32 product;
 	kernel_ulong_t driver_data
-		__attribute__((aligned(sizeof(kernel_ulong_t))));
+	    __attribute__ ((aligned(sizeof(kernel_ulong_t))));
 };
 
 /* s390 CCW devices */
 struct ccw_device_id {
-	__u16	match_flags;	/* which fields to match against */
+	__u16 match_flags;	/* which fields to match against */
 
-	__u16	cu_type;	/* control unit type     */
-	__u16	dev_type;	/* device type           */
-	__u8	cu_model;	/* control unit model    */
-	__u8	dev_model;	/* device model          */
+	__u16 cu_type;		/* control unit type     */
+	__u16 dev_type;		/* device type           */
+	__u8 cu_model;		/* control unit model    */
+	__u8 dev_model;		/* device model          */
 
 	kernel_ulong_t driver_info;
 };
@@ -173,13 +171,13 @@ struct ap_device_id {
 /* s390 css bus devices (subchannels) */
 struct css_device_id {
 	__u8 match_flags;
-	__u8 type; /* subchannel type */
+	__u8 type;		/* subchannel type */
 	__u16 pad2;
 	__u32 pad3;
 	kernel_ulong_t driver_data;
 };
 
-#define ACPI_ID_LEN	16 /* only 9 bytes needed here, 16 bytes are used */
+#define ACPI_ID_LEN	16	/* only 9 bytes needed here, 16 bytes are used */
 			   /* to workaround crosscompile issues */
 
 struct acpi_device_id {
@@ -203,7 +201,6 @@ struct pnp_card_device_id {
 	} devs[PNP_MAX_DEVICES];
 };
 
-
 #define SERIO_ANY	0xff
 
 struct serio_device_id {
@@ -216,13 +213,12 @@ struct serio_device_id {
 /*
  * Struct used for matching a device
  */
-struct of_device_id
-{
-	char	name[32];
-	char	type[32];
-	char	compatible[128];
+struct of_device_id {
+	char name[32];
+	char type[32];
+	char compatible[128];
 #ifdef __KERNEL__
-	void	*data;
+	void *data;
 #else
 	kernel_ulong_t data;
 #endif
@@ -237,36 +233,36 @@ struct vio_device_id {
 /* PCMCIA */
 
 struct pcmcia_device_id {
-	__u16		match_flags;
+	__u16 match_flags;
 
-	__u16		manf_id;
-	__u16 		card_id;
+	__u16 manf_id;
+	__u16 card_id;
 
-	__u8  		func_id;
+	__u8 func_id;
 
 	/* for real multi-function devices */
-	__u8  		function;
+	__u8 function;
 
 	/* for pseudo multi-function devices */
-	__u8  		device_no;
+	__u8 device_no;
 
-	__u32 		prod_id_hash[4]
-		__attribute__((aligned(sizeof(__u32))));
+	__u32 prod_id_hash[4]
+	    __attribute__ ((aligned(sizeof(__u32))));
 
-	/* not matched against in kernelspace*/
+	/* not matched against in kernelspace */
 #ifdef __KERNEL__
-	const char *	prod_id[4];
+	const char *prod_id[4];
 #else
-	kernel_ulong_t	prod_id[4]
-		__attribute__((aligned(sizeof(kernel_ulong_t))));
+	kernel_ulong_t prod_id[4]
+	    __attribute__ ((aligned(sizeof(kernel_ulong_t))));
 #endif
 
 	/* not matched against */
-	kernel_ulong_t	driver_info;
+	kernel_ulong_t driver_info;
 #ifdef __KERNEL__
-	char *		cisfile;
+	char *cisfile;
 #else
-	kernel_ulong_t	cisfile;
+	kernel_ulong_t cisfile;
 #endif
 };
 
@@ -337,17 +333,17 @@ struct input_device_id {
 
 /* The EISA signature, in ASCII form, null terminated */
 struct eisa_device_id {
-	char          sig[EISA_SIG_LEN];
+	char sig[EISA_SIG_LEN];
 	kernel_ulong_t driver_data;
 };
 
 #define EISA_DEVICE_MODALIAS_FMT "eisa:s%s"
 
 struct parisc_device_id {
-	__u8	hw_type;	/* 5 bits used */
-	__u8	hversion_rev;	/* 4 bits */
-	__u16	hversion;	/* 12 bits */
-	__u32	sversion;	/* 20 bits */
+	__u8 hw_type;		/* 5 bits used */
+	__u8 hversion_rev;	/* 4 bits */
+	__u16 hversion;		/* 12 bits */
+	__u32 sversion;		/* 20 bits */
 };
 
 #define PA_HWTYPE_ANY_ID	0xff
@@ -360,18 +356,18 @@ struct parisc_device_id {
 #define SDIO_ANY_ID (~0)
 
 struct sdio_device_id {
-	__u8	class;			/* Standard interface or SDIO_ANY_ID */
-	__u16	vendor;			/* Vendor or SDIO_ANY_ID */
-	__u16	device;			/* Device ID or SDIO_ANY_ID */
+	__u8 class;		/* Standard interface or SDIO_ANY_ID */
+	__u16 vendor;		/* Vendor or SDIO_ANY_ID */
+	__u16 device;		/* Device ID or SDIO_ANY_ID */
 	kernel_ulong_t driver_data	/* Data private to the driver */
-		__attribute__((aligned(sizeof(kernel_ulong_t))));
+	    __attribute__ ((aligned(sizeof(kernel_ulong_t))));
 };
 
 /* SSB core, see drivers/ssb/ */
 struct ssb_device_id {
-	__u16	vendor;
-	__u16	coreid;
-	__u8	revision;
+	__u16 vendor;
+	__u16 coreid;
+	__u8 revision;
 };
 #define SSB_DEVICE(_vendor, _coreid, _revision)  \
 	{ .vendor = _vendor, .coreid = _coreid, .revision = _revision, }
@@ -396,7 +392,7 @@ struct virtio_device_id {
 struct i2c_device_id {
 	char name[I2C_NAME_SIZE];
 	kernel_ulong_t driver_data	/* Data private to the driver */
-			__attribute__((aligned(sizeof(kernel_ulong_t))));
+	    __attribute__ ((aligned(sizeof(kernel_ulong_t))));
 };
 
 /* dmi */
@@ -434,11 +430,11 @@ struct dmi_system_id {
 	kernel_ulong_t ident;
 	struct dmi_strmatch matches[4];
 	kernel_ulong_t driver_data
-			__attribute__((aligned(sizeof(kernel_ulong_t))));
+	    __attribute__ ((aligned(sizeof(kernel_ulong_t))));
 };
 #else
 struct dmi_system_id {
-	int (*callback)(const struct dmi_system_id *);
+	int (*callback) (const struct dmi_system_id *);
 	const char *ident;
 	struct dmi_strmatch matches[4];
 	void *driver_data;

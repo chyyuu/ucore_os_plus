@@ -95,35 +95,65 @@ void isapnp_write_byte(unsigned char idx, unsigned char val);
 int isapnp_proc_init(void);
 int isapnp_proc_done(void);
 #else
-static inline int isapnp_proc_init(void) { return 0; }
-static inline int isapnp_proc_done(void) { return 0; }
+static inline int isapnp_proc_init(void)
+{
+	return 0;
+}
+
+static inline int isapnp_proc_done(void)
+{
+	return 0;
+}
 #endif
 
 /* compat */
 struct pnp_card *pnp_find_card(unsigned short vendor,
-			       unsigned short device,
-			       struct pnp_card *from);
+			       unsigned short device, struct pnp_card *from);
 struct pnp_dev *pnp_find_dev(struct pnp_card *card,
 			     unsigned short vendor,
-			     unsigned short function,
-			     struct pnp_dev *from);
+			     unsigned short function, struct pnp_dev *from);
 
 #else /* !CONFIG_ISAPNP */
 
 /* lowlevel configuration */
-static inline int isapnp_present(void) { return 0; }
-static inline int isapnp_cfg_begin(int csn, int device) { return -ENODEV; }
-static inline int isapnp_cfg_end(void) { return -ENODEV; }
-static inline unsigned char isapnp_read_byte(unsigned char idx) { return 0xff; }
-static inline void isapnp_write_byte(unsigned char idx, unsigned char val) { ; }
+static inline int isapnp_present(void)
+{
+	return 0;
+}
+
+static inline int isapnp_cfg_begin(int csn, int device)
+{
+	return -ENODEV;
+}
+
+static inline int isapnp_cfg_end(void)
+{
+	return -ENODEV;
+}
+
+static inline unsigned char isapnp_read_byte(unsigned char idx)
+{
+	return 0xff;
+}
+
+static inline void isapnp_write_byte(unsigned char idx, unsigned char val)
+{;
+}
 
 static inline struct pnp_card *pnp_find_card(unsigned short vendor,
 					     unsigned short device,
-					     struct pnp_card *from) { return NULL; }
+					     struct pnp_card *from)
+{
+	return NULL;
+}
+
 static inline struct pnp_dev *pnp_find_dev(struct pnp_card *card,
 					   unsigned short vendor,
 					   unsigned short function,
-					   struct pnp_dev *from) { return NULL; }
+					   struct pnp_dev *from)
+{
+	return NULL;
+}
 
 #endif /* CONFIG_ISAPNP */
 

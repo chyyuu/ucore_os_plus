@@ -81,8 +81,7 @@ static inline void check_context(struct mm_struct *mm)
  *
  * tsk->mm will be NULL
  */
-static inline void
-enter_lazy_tlb(struct mm_struct *mm, struct task_struct *tsk)
+static inline void enter_lazy_tlb(struct mm_struct *mm, struct task_struct *tsk)
 {
 }
 
@@ -101,7 +100,8 @@ switch_mm(struct mm_struct *prev, struct mm_struct *next,
 
 #ifdef CONFIG_SMP
 	/* check for possible thread migration */
-	if (!cpus_empty(next->cpu_vm_mask) && !cpu_isset(cpu, next->cpu_vm_mask))
+	if (!cpus_empty(next->cpu_vm_mask)
+	    && !cpu_isset(cpu, next->cpu_vm_mask))
 		__flush_icache_all();
 #endif
 	if (!cpu_test_and_set(cpu, next->cpu_vm_mask) || prev != next) {

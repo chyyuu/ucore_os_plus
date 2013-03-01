@@ -15,4 +15,3 @@ void kfree(void *objp);
 size_t slab_allocated(void);
 
 #endif /* !__KERN_MM_SLAB_H__ */
-

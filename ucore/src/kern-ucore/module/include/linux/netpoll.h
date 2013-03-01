@@ -16,7 +16,7 @@ struct netpoll {
 	struct net_device *dev;
 	char dev_name[IFNAMSIZ];
 	const char *name;
-	void (*rx_hook)(struct netpoll *, int, char *, int);
+	void (*rx_hook) (struct netpoll *, int, char *, int);
 
 	u32 local_ip, remote_ip;
 	u16 local_port, remote_port;
@@ -27,8 +27,8 @@ struct netpoll_info {
 	atomic_t refcnt;
 	int rx_flags;
 	spinlock_t rx_lock;
-	struct netpoll *rx_np; /* netpoll that registered an rx_hook */
-	struct sk_buff_head arp_tx; /* list of arp requests to reply to */
+	struct netpoll *rx_np;	/* netpoll that registered an rx_hook */
+	struct sk_buff_head arp_tx;	/* list of arp requests to reply to */
 	struct sk_buff_head txq;
 	struct delayed_work tx_work;
 };
@@ -42,7 +42,6 @@ int netpoll_trap(void);
 void netpoll_set_trap(int trap);
 void netpoll_cleanup(struct netpoll *np);
 int __netpoll_rx(struct sk_buff *skb);
-
 
 #ifdef CONFIG_NETPOLL
 static inline int netpoll_rx(struct sk_buff *skb)
@@ -74,7 +73,7 @@ static inline void *netpoll_poll_lock(struct napi_struct *napi)
 {
 	struct net_device *dev = napi->dev;
 
-	rcu_read_lock(); /* deal with race on ->npinfo */
+	rcu_read_lock();	/* deal with race on ->npinfo */
 	if (dev && dev->npinfo) {
 		spin_lock(&napi->poll_lock);
 		napi->poll_owner = smp_processor_id();
@@ -99,17 +98,21 @@ static inline int netpoll_rx(struct sk_buff *skb)
 {
 	return 0;
 }
+
 static inline int netpoll_receive_skb(struct sk_buff *skb)
 {
 	return 0;
 }
+
 static inline void *netpoll_poll_lock(struct napi_struct *napi)
 {
 	return NULL;
 }
+
 static inline void netpoll_poll_unlock(void *have)
 {
 }
+
 static inline void netpoll_netdev_init(struct net_device *dev)
 {
 }

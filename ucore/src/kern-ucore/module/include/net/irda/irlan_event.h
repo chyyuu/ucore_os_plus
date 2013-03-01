@@ -33,12 +33,12 @@
 typedef enum {
 	IRLAN_IDLE,
 	IRLAN_QUERY,
-	IRLAN_CONN, 
+	IRLAN_CONN,
 	IRLAN_INFO,
 	IRLAN_MEDIA,
 	IRLAN_OPEN,
 	IRLAN_WAIT,
-	IRLAN_ARB, 
+	IRLAN_ARB,
 	IRLAN_DATA,
 	IRLAN_CLOSE,
 	IRLAN_SYNC
@@ -69,10 +69,10 @@ typedef enum {
 
 extern char *irlan_state[];
 
-void irlan_do_client_event(struct irlan_cb *self, IRLAN_EVENT event, 
+void irlan_do_client_event(struct irlan_cb *self, IRLAN_EVENT event,
 			   struct sk_buff *skb);
 
-void irlan_do_provider_event(struct irlan_cb *self, IRLAN_EVENT event, 
+void irlan_do_provider_event(struct irlan_cb *self, IRLAN_EVENT event,
 			     struct sk_buff *skb);
 
 void irlan_next_client_state(struct irlan_cb *self, IRLAN_STATE state);

@@ -28,4 +28,3 @@ typedef u32 dma64_addr_t;
 #endif /* __KERNEL__ */
 
 #endif
-

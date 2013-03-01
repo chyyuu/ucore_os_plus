@@ -6,11 +6,11 @@
 #include <linux/videodev2.h>
 
 struct matroxioc_output_mode {
-	__u32	output;		/* which output */
+	__u32 output;		/* which output */
 #define MATROXFB_OUTPUT_PRIMARY		0x0000
 #define MATROXFB_OUTPUT_SECONDARY	0x0001
 #define MATROXFB_OUTPUT_DFP		0x0002
-	__u32	mode;		/* which mode */
+	__u32 mode;		/* which mode */
 #define MATROXFB_OUTPUT_MODE_PAL	0x0001
 #define MATROXFB_OUTPUT_MODE_NTSC	0x0002
 #define MATROXFB_OUTPUT_MODE_MONITOR	0x0080
@@ -32,12 +32,11 @@ struct matroxioc_output_mode {
 #define MATROXFB_GET_ALL_OUTPUTS	_IOR('n',0xFB,size_t)
 
 enum matroxfb_ctrl_id {
-  MATROXFB_CID_TESTOUT	 = V4L2_CID_PRIVATE_BASE,
-  MATROXFB_CID_DEFLICKER,
-  MATROXFB_CID_LAST
+	MATROXFB_CID_TESTOUT = V4L2_CID_PRIVATE_BASE,
+	MATROXFB_CID_DEFLICKER,
+	MATROXFB_CID_LAST
 };
 
 #define FBIO_WAITFORVSYNC	_IOW('F', 0x20, u_int32_t)
 
 #endif
-

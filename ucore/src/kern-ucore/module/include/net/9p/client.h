@@ -136,7 +136,7 @@ struct p9_req_t {
  */
 
 struct p9_client {
-	spinlock_t lock; /* protect client structure */
+	spinlock_t lock;	/* protect client structure */
 	int msize;
 	unsigned char dotu;
 	struct p9_trans_module *trans_mod;
@@ -187,20 +187,20 @@ struct p9_client *p9_client_create(const char *dev_name, char *options);
 void p9_client_destroy(struct p9_client *clnt);
 void p9_client_disconnect(struct p9_client *clnt);
 struct p9_fid *p9_client_attach(struct p9_client *clnt, struct p9_fid *afid,
-					char *uname, u32 n_uname, char *aname);
+				char *uname, u32 n_uname, char *aname);
 struct p9_fid *p9_client_auth(struct p9_client *clnt, char *uname,
-						u32 n_uname, char *aname);
+			      u32 n_uname, char *aname);
 struct p9_fid *p9_client_walk(struct p9_fid *oldfid, int nwname, char **wnames,
-								int clone);
+			      int clone);
 int p9_client_open(struct p9_fid *fid, int mode);
 int p9_client_fcreate(struct p9_fid *fid, char *name, u32 perm, int mode,
-							char *extension);
+		      char *extension);
 int p9_client_clunk(struct p9_fid *fid);
 int p9_client_remove(struct p9_fid *fid);
-int p9_client_read(struct p9_fid *fid, char *data, char __user *udata,
-							u64 offset, u32 count);
-int p9_client_write(struct p9_fid *fid, char *data, const char __user *udata,
-							u64 offset, u32 count);
+int p9_client_read(struct p9_fid *fid, char *data, char __user * udata,
+		   u64 offset, u32 count);
+int p9_client_write(struct p9_fid *fid, char *data, const char __user * udata,
+		    u64 offset, u32 count);
 struct p9_wstat *p9_client_stat(struct p9_fid *fid);
 int p9_client_wstat(struct p9_fid *fid, struct p9_wstat *wst);
 
@@ -210,6 +210,5 @@ void p9_client_cb(struct p9_client *c, struct p9_req_t *req);
 int p9_parse_header(struct p9_fcall *, int32_t *, int8_t *, int16_t *, int);
 int p9stat_read(char *, int, struct p9_wstat *, int);
 void p9stat_free(struct p9_wstat *);
-
 
 #endif /* NET_9P_CLIENT_H */

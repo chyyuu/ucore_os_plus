@@ -45,8 +45,8 @@ struct scoop_config {
 
 /* Structure for linking scoop devices to PCMCIA sockets */
 struct scoop_pcmcia_dev {
-	struct device *dev;     /* Pointer to this socket's scoop device */
-	int	irq;                /* irq for socket */
+	struct device *dev;	/* Pointer to this socket's scoop device */
+	int irq;		/* irq for socket */
 	int cd_irq;
 	const char *cd_irq_str;
 	unsigned char keep_vs;
@@ -56,14 +56,17 @@ struct scoop_pcmcia_dev {
 struct scoop_pcmcia_config {
 	struct scoop_pcmcia_dev *devs;
 	int num_devs;
-	void (*pcmcia_init)(void);
-	void (*power_ctrl)(struct device *scoop, unsigned short cpr, int nr);
+	void (*pcmcia_init) (void);
+	void (*power_ctrl) (struct device * scoop, unsigned short cpr, int nr);
 };
 
 extern struct scoop_pcmcia_config *platform_scoop_config;
 
 void reset_scoop(struct device *dev);
-unsigned short __deprecated set_scoop_gpio(struct device *dev, unsigned short bit);
-unsigned short __deprecated reset_scoop_gpio(struct device *dev, unsigned short bit);
+unsigned short __deprecated set_scoop_gpio(struct device *dev,
+					   unsigned short bit);
+unsigned short __deprecated reset_scoop_gpio(struct device *dev,
+					     unsigned short bit);
 unsigned short read_scoop_reg(struct device *dev, unsigned short reg);
-void write_scoop_reg(struct device *dev, unsigned short reg, unsigned short data);
+void write_scoop_reg(struct device *dev, unsigned short reg,
+		     unsigned short data);

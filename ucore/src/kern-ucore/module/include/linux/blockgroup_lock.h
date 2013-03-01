@@ -29,9 +29,9 @@
 #define NR_BG_LOCKS	4
 #endif
 
-#else	/* CONFIG_SMP */
+#else /* CONFIG_SMP */
 #define NR_BG_LOCKS	1
-#endif	/* CONFIG_SMP */
+#endif /* CONFIG_SMP */
 
 struct bgl_lock {
 	spinlock_t lock;
@@ -53,10 +53,10 @@ static inline void bgl_lock_init(struct blockgroup_lock *bgl)
  * The accessor is a macro so we can embed a blockgroup_lock into different
  * superblock types
  */
-static inline spinlock_t *
-bgl_lock_ptr(struct blockgroup_lock *bgl, unsigned int block_group)
+static inline spinlock_t *bgl_lock_ptr(struct blockgroup_lock *bgl,
+				       unsigned int block_group)
 {
-	return &bgl->locks[(block_group) & (NR_BG_LOCKS-1)].lock;
+	return &bgl->locks[(block_group) & (NR_BG_LOCKS - 1)].lock;
 }
 
 #endif

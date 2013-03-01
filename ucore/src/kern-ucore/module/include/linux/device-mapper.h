@@ -27,14 +27,14 @@ union map_info {
  * In the constructor the target parameter will already have the
  * table, type, begin and len fields filled in.
  */
-typedef int (*dm_ctr_fn) (struct dm_target *target,
+typedef int (*dm_ctr_fn) (struct dm_target * target,
 			  unsigned int argc, char **argv);
 
 /*
  * The destructor doesn't need to free the dm_target, just
  * anything hidden ti->private.
  */
-typedef void (*dm_dtr_fn) (struct dm_target *ti);
+typedef void (*dm_dtr_fn) (struct dm_target * ti);
 
 /*
  * The map function must return:
@@ -43,10 +43,10 @@ typedef void (*dm_dtr_fn) (struct dm_target *ti);
  * = 1: simple remap complete
  * = 2: The target wants to push back the io
  */
-typedef int (*dm_map_fn) (struct dm_target *ti, struct bio *bio,
-			  union map_info *map_context);
-typedef int (*dm_map_request_fn) (struct dm_target *ti, struct request *clone,
-				  union map_info *map_context);
+typedef int (*dm_map_fn) (struct dm_target * ti, struct bio * bio,
+			  union map_info * map_context);
+typedef int (*dm_map_request_fn) (struct dm_target * ti, struct request * clone,
+				  union map_info * map_context);
 
 /*
  * Returns:
@@ -56,36 +56,37 @@ typedef int (*dm_map_request_fn) (struct dm_target *ti, struct request *clone,
  *       multipath target might want to requeue a failed io).
  * 2   : The target wants to push back the io
  */
-typedef int (*dm_endio_fn) (struct dm_target *ti,
-			    struct bio *bio, int error,
-			    union map_info *map_context);
-typedef int (*dm_request_endio_fn) (struct dm_target *ti,
-				    struct request *clone, int error,
-				    union map_info *map_context);
+typedef int (*dm_endio_fn) (struct dm_target * ti,
+			    struct bio * bio, int error,
+			    union map_info * map_context);
+typedef int (*dm_request_endio_fn) (struct dm_target * ti,
+				    struct request * clone, int error,
+				    union map_info * map_context);
 
-typedef void (*dm_flush_fn) (struct dm_target *ti);
-typedef void (*dm_presuspend_fn) (struct dm_target *ti);
-typedef void (*dm_postsuspend_fn) (struct dm_target *ti);
-typedef int (*dm_preresume_fn) (struct dm_target *ti);
-typedef void (*dm_resume_fn) (struct dm_target *ti);
+typedef void (*dm_flush_fn) (struct dm_target * ti);
+typedef void (*dm_presuspend_fn) (struct dm_target * ti);
+typedef void (*dm_postsuspend_fn) (struct dm_target * ti);
+typedef int (*dm_preresume_fn) (struct dm_target * ti);
+typedef void (*dm_resume_fn) (struct dm_target * ti);
 
-typedef int (*dm_status_fn) (struct dm_target *ti, status_type_t status_type,
+typedef int (*dm_status_fn) (struct dm_target * ti, status_type_t status_type,
 			     char *result, unsigned int maxlen);
 
-typedef int (*dm_message_fn) (struct dm_target *ti, unsigned argc, char **argv);
+typedef int (*dm_message_fn) (struct dm_target * ti, unsigned argc,
+			      char **argv);
 
-typedef int (*dm_ioctl_fn) (struct dm_target *ti, unsigned int cmd,
+typedef int (*dm_ioctl_fn) (struct dm_target * ti, unsigned int cmd,
 			    unsigned long arg);
 
-typedef int (*dm_merge_fn) (struct dm_target *ti, struct bvec_merge_data *bvm,
-			    struct bio_vec *biovec, int max_size);
+typedef int (*dm_merge_fn) (struct dm_target * ti, struct bvec_merge_data * bvm,
+			    struct bio_vec * biovec, int max_size);
 
 /*
  * Returns:
  *    0: The target can handle the next I/O immediately.
  *    1: The target can't handle the next I/O immediately.
  */
-typedef int (*dm_busy_fn) (struct dm_target *ti);
+typedef int (*dm_busy_fn) (struct dm_target * ti);
 
 void dm_error(const char *message);
 
@@ -150,7 +151,7 @@ struct io_restrictions {
 	unsigned short hardsect_size;
 	unsigned short max_hw_segments;
 	unsigned short max_phys_segments;
-	unsigned char no_cluster; /* inverted so that 0 is default */
+	unsigned char no_cluster;	/* inverted so that 0 is default */
 };
 
 struct dm_target {
@@ -234,7 +235,6 @@ union map_info *dm_get_mapinfo(struct bio *bio);
  */
 int dm_get_geometry(struct mapped_device *md, struct hd_geometry *geo);
 int dm_set_geometry(struct mapped_device *md, struct hd_geometry *geo);
-
 
 /*-----------------------------------------------------------------
  * Functions for manipulating device-mapper tables.
@@ -328,17 +328,17 @@ void *dm_vcalloc(unsigned long nmemb, unsigned long elem_size);
 	} while (0)
 
 #ifdef CONFIG_DM_DEBUG
-#  define DMDEBUG(f, arg...) \
+#define DMDEBUG(f, arg...) \
 	printk(KERN_DEBUG DM_NAME ": " DM_MSG_PREFIX " DEBUG: " f "\n", ## arg)
-#  define DMDEBUG_LIMIT(f, arg...) \
+#define DMDEBUG_LIMIT(f, arg...) \
 	do { \
 		if (printk_ratelimit())	\
 			printk(KERN_DEBUG DM_NAME ": " DM_MSG_PREFIX ": " f \
 			       "\n", ## arg); \
 	} while (0)
 #else
-#  define DMDEBUG(f, arg...) do {} while (0)
-#  define DMDEBUG_LIMIT(f, arg...) do {} while (0)
+#define DMDEBUG(f, arg...) do {} while (0)
+#define DMDEBUG_LIMIT(f, arg...) do {} while (0)
 #endif
 
 #define DMEMIT(x...) sz += ((sz >= maxlen) ? \
@@ -390,4 +390,4 @@ static inline unsigned long to_bytes(sector_t n)
 	return (n << SECTOR_SHIFT);
 }
 
-#endif	/* _LINUX_DEVICE_MAPPER_H */
+#endif /* _LINUX_DEVICE_MAPPER_H */

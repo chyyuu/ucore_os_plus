@@ -65,10 +65,11 @@ struct res_counter {
 u64 res_counter_read_u64(struct res_counter *counter, int member);
 
 ssize_t res_counter_read(struct res_counter *counter, int member,
-		const char __user *buf, size_t nbytes, loff_t *pos,
-		int (*read_strategy)(unsigned long long val, char *s));
+			 const char __user * buf, size_t nbytes, loff_t * pos,
+			 int (*read_strategy) (unsigned long long val,
+					       char *s));
 
-typedef int (*write_strategy_fn)(const char *buf, unsigned long long *val);
+typedef int (*write_strategy_fn) (const char *buf, unsigned long long *val);
 
 int res_counter_memparse_write_strategy(const char *buf,
 					unsigned long long *res);
@@ -105,9 +106,10 @@ void res_counter_init(struct res_counter *counter, struct res_counter *parent);
  */
 
 int __must_check res_counter_charge_locked(struct res_counter *counter,
-		unsigned long val);
+					   unsigned long val);
 int __must_check res_counter_charge(struct res_counter *counter,
-		unsigned long val, struct res_counter **limit_fail_at);
+				    unsigned long val,
+				    struct res_counter **limit_fail_at);
 
 /*
  * uncharge - tell that some portion of the resource is released
@@ -119,7 +121,8 @@ int __must_check res_counter_charge(struct res_counter *counter,
  * _locked call expects the counter->lock to be taken
  */
 
-void res_counter_uncharge_locked(struct res_counter *counter, unsigned long val);
+void res_counter_uncharge_locked(struct res_counter *counter,
+				 unsigned long val);
 void res_counter_uncharge(struct res_counter *counter, unsigned long val);
 
 static inline bool res_counter_limit_check_locked(struct res_counter *cnt)
@@ -164,7 +167,7 @@ static inline void res_counter_reset_failcnt(struct res_counter *cnt)
 }
 
 static inline int res_counter_set_limit(struct res_counter *cnt,
-		unsigned long long limit)
+					unsigned long long limit)
 {
 	unsigned long flags;
 	int ret = -EBUSY;

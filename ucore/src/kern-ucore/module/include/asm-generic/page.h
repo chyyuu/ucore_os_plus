@@ -19,6 +19,6 @@ static __inline__ __attribute_const__ int get_order(unsigned long size)
 	return order;
 }
 
-#endif	/* __ASSEMBLY__ */
+#endif /* __ASSEMBLY__ */
 
-#endif	/* _ASM_GENERIC_PAGE_H */
+#endif /* _ASM_GENERIC_PAGE_H */

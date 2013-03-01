@@ -72,7 +72,7 @@ struct st_proto_s {
 	long (*recv) (void *, struct sk_buff *);
 	unsigned char (*match_packet) (const unsigned char *data);
 	void (*reg_complete_cb) (void *, char data);
-	long (*write) (struct sk_buff *skb);
+	long (*write) (struct sk_buff * skb);
 	void *priv_data;
 
 	unsigned char chnl_id;
@@ -85,7 +85,6 @@ struct st_proto_s {
 
 extern long st_register(struct st_proto_s *);
 extern long st_unregister(struct st_proto_s *);
-
 
 /*
  * header information used by st_core.c
@@ -154,7 +153,7 @@ struct st_data_s {
 	unsigned char rx_chnl;
 	struct sk_buff_head txq, tx_waitq;
 	spinlock_t lock;
-	unsigned char	protos_registered;
+	unsigned char protos_registered;
 	unsigned long ll_state;
 	void *kim_data;
 	struct tty_struct *tty;
@@ -170,7 +169,7 @@ int st_get_uart_wr_room(struct st_data_s *st_gdata);
  * point this to tty->driver->write or tty->ops->write
  * depending upon the kernel version
  */
-int st_int_write(struct st_data_s*, const unsigned char*, int);
+int st_int_write(struct st_data_s *, const unsigned char *, int);
 
 /**
  * st_write -
@@ -194,7 +193,7 @@ void st_kim_ref(struct st_data_s **, int);
 
 #define GPS_STUB_TEST
 #ifdef GPS_STUB_TEST
-int gps_chrdrv_stub_write(const unsigned char*, int);
+int gps_chrdrv_stub_write(const unsigned char *, int);
 void gps_chrdrv_stub_init(void);
 #endif
 
@@ -436,11 +435,11 @@ struct gps_event_hdr {
  */
 struct ti_st_plat_data {
 	long nshutdown_gpio;
-	unsigned char dev_name[UART_DEV_NAME_LEN]; /* uart name */
-	unsigned char flow_cntrl; /* flow control flag */
+	unsigned char dev_name[UART_DEV_NAME_LEN];	/* uart name */
+	unsigned char flow_cntrl;	/* flow control flag */
 	unsigned long baud_rate;
-	int (*suspend)(struct platform_device *, pm_message_t);
-	int (*resume)(struct platform_device *);
+	int (*suspend) (struct platform_device *, pm_message_t);
+	int (*resume) (struct platform_device *);
 	int (*chip_enable) (struct kim_data_s *);
 	int (*chip_disable) (struct kim_data_s *);
 	int (*chip_asleep) (struct kim_data_s *);

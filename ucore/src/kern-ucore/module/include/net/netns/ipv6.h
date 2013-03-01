@@ -28,43 +28,43 @@ struct netns_sysctl_ipv6 {
 
 struct netns_ipv6 {
 	struct netns_sysctl_ipv6 sysctl;
-	struct ipv6_devconf	*devconf_all;
-	struct ipv6_devconf	*devconf_dflt;
-	struct netns_frags	frags;
+	struct ipv6_devconf *devconf_all;
+	struct ipv6_devconf *devconf_dflt;
+	struct netns_frags frags;
 #ifdef CONFIG_NETFILTER
-	struct xt_table		*ip6table_filter;
-	struct xt_table		*ip6table_mangle;
-	struct xt_table		*ip6table_raw;
-	struct xt_table		*ip6table_security;
+	struct xt_table *ip6table_filter;
+	struct xt_table *ip6table_mangle;
+	struct xt_table *ip6table_raw;
+	struct xt_table *ip6table_security;
 #endif
-	struct rt6_info         *ip6_null_entry;
-	struct rt6_statistics   *rt6_stats;
-	struct timer_list       ip6_fib_timer;
-	struct hlist_head       *fib_table_hash;
-	struct fib6_table       *fib6_main_tbl;
-	struct dst_ops		*ip6_dst_ops;
-	unsigned int		 ip6_rt_gc_expire;
-	unsigned long		 ip6_rt_last_gc;
+	struct rt6_info *ip6_null_entry;
+	struct rt6_statistics *rt6_stats;
+	struct timer_list ip6_fib_timer;
+	struct hlist_head *fib_table_hash;
+	struct fib6_table *fib6_main_tbl;
+	struct dst_ops *ip6_dst_ops;
+	unsigned int ip6_rt_gc_expire;
+	unsigned long ip6_rt_last_gc;
 #ifdef CONFIG_IPV6_MULTIPLE_TABLES
-	struct rt6_info         *ip6_prohibit_entry;
-	struct rt6_info         *ip6_blk_hole_entry;
-	struct fib6_table       *fib6_local_tbl;
-	struct fib_rules_ops    *fib6_rules_ops;
+	struct rt6_info *ip6_prohibit_entry;
+	struct rt6_info *ip6_blk_hole_entry;
+	struct fib6_table *fib6_local_tbl;
+	struct fib_rules_ops *fib6_rules_ops;
 #endif
-	struct sock		**icmp_sk;
-	struct sock             *ndisc_sk;
-	struct sock             *tcp_sk;
-	struct sock             *igmp_sk;
+	struct sock **icmp_sk;
+	struct sock *ndisc_sk;
+	struct sock *tcp_sk;
+	struct sock *igmp_sk;
 #ifdef CONFIG_IPV6_MROUTE
-	struct sock		*mroute6_sk;
-	struct mfc6_cache	**mfc6_cache_array;
-	struct mif_device	*vif6_table;
-	int			maxvif;
-	atomic_t		cache_resolve_queue_len;
-	int			mroute_do_assert;
-	int			mroute_do_pim;
+	struct sock *mroute6_sk;
+	struct mfc6_cache **mfc6_cache_array;
+	struct mif_device *vif6_table;
+	int maxvif;
+	atomic_t cache_resolve_queue_len;
+	int mroute_do_assert;
+	int mroute_do_pim;
 #ifdef CONFIG_IPV6_PIMSM_V2
-	int			mroute_reg_vif_num;
+	int mroute_reg_vif_num;
 #endif
 #endif
 };

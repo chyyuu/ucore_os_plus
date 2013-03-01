@@ -10,53 +10,36 @@
 #ifdef CONFIG_CPUSETS
 SUBSYS(cpuset)
 #endif
-
 /* */
-
 #ifdef CONFIG_CGROUP_DEBUG
-SUBSYS(debug)
+    SUBSYS(debug)
 #endif
-
 /* */
-
 #ifdef CONFIG_CGROUP_NS
-SUBSYS(ns)
+    SUBSYS(ns)
 #endif
-
 /* */
-
 #ifdef CONFIG_CGROUP_SCHED
-SUBSYS(cpu_cgroup)
+    SUBSYS(cpu_cgroup)
 #endif
-
 /* */
-
 #ifdef CONFIG_CGROUP_CPUACCT
-SUBSYS(cpuacct)
+    SUBSYS(cpuacct)
 #endif
-
 /* */
-
 #ifdef CONFIG_CGROUP_MEM_RES_CTLR
-SUBSYS(mem_cgroup)
+    SUBSYS(mem_cgroup)
 #endif
-
 /* */
-
 #ifdef CONFIG_CGROUP_DEVICE
-SUBSYS(devices)
+    SUBSYS(devices)
 #endif
-
 /* */
-
 #ifdef CONFIG_CGROUP_FREEZER
-SUBSYS(freezer)
+    SUBSYS(freezer)
 #endif
-
 /* */
-
 #ifdef CONFIG_NET_CLS_CGROUP
-SUBSYS(net_cls)
+    SUBSYS(net_cls)
 #endif
-
 /* */

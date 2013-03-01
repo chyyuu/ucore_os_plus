@@ -14,7 +14,6 @@
 #ifndef _INET6_HASHTABLES_H
 #define _INET6_HASHTABLES_H
 
-
 #if defined(CONFIG_IPV6) || defined (CONFIG_IPV6_MODULE)
 #include <linux/in6.h>
 #include <linux/ipv6.h>
@@ -30,13 +29,15 @@ struct inet_hashinfo;
 
 /* I have no idea if this is a good hash for v6 or not. -DaveM */
 static inline unsigned int inet6_ehashfn(struct net *net,
-				const struct in6_addr *laddr, const u16 lport,
-				const struct in6_addr *faddr, const __be16 fport)
+					 const struct in6_addr *laddr,
+					 const u16 lport,
+					 const struct in6_addr *faddr,
+					 const __be16 fport)
 {
-	u32 ports = (lport ^ (__force u16)fport);
+	u32 ports = (lport ^ (__force u16) fport);
 
-	return jhash_3words((__force u32)laddr->s6_addr32[3],
-			    (__force u32)faddr->s6_addr32[3],
+	return jhash_3words((__force u32) laddr->s6_addr32[3],
+			    (__force u32) faddr->s6_addr32[3],
 			    ports, inet_ehash_secret + net_hash_mix(net));
 }
 
@@ -62,12 +63,11 @@ extern void __inet6_hash(struct sock *sk);
  * The sockhash lock must be held as a reader here.
  */
 extern struct sock *__inet6_lookup_established(struct net *net,
-					   struct inet_hashinfo *hashinfo,
-					   const struct in6_addr *saddr,
-					   const __be16 sport,
-					   const struct in6_addr *daddr,
-					   const u16 hnum,
-					   const int dif);
+					       struct inet_hashinfo *hashinfo,
+					       const struct in6_addr *saddr,
+					       const __be16 sport,
+					       const struct in6_addr *daddr,
+					       const u16 hnum, const int dif);
 
 extern struct sock *inet6_lookup_listener(struct net *net,
 					  struct inet_hashinfo *hashinfo,
@@ -80,11 +80,10 @@ static inline struct sock *__inet6_lookup(struct net *net,
 					  const struct in6_addr *saddr,
 					  const __be16 sport,
 					  const struct in6_addr *daddr,
-					  const u16 hnum,
-					  const int dif)
+					  const u16 hnum, const int dif)
 {
 	struct sock *sk = __inet6_lookup_established(net, hashinfo, saddr,
-						sport, daddr, hnum, dif);
+						     sport, daddr, hnum, dif);
 	if (sk)
 		return sk;
 
@@ -100,15 +99,18 @@ static inline struct sock *__inet6_lookup_skb(struct inet_hashinfo *hashinfo,
 
 	if (unlikely(sk = skb_steal_sock(skb)))
 		return sk;
-	else return __inet6_lookup(dev_net(skb->dst->dev), hashinfo,
-				   &ipv6_hdr(skb)->saddr, sport,
-				   &ipv6_hdr(skb)->daddr, ntohs(dport),
-				   inet6_iif(skb));
+	else
+		return __inet6_lookup(dev_net(skb->dst->dev), hashinfo,
+				      &ipv6_hdr(skb)->saddr, sport,
+				      &ipv6_hdr(skb)->daddr, ntohs(dport),
+				      inet6_iif(skb));
 }
 
-extern struct sock *inet6_lookup(struct net *net, struct inet_hashinfo *hashinfo,
-				 const struct in6_addr *saddr, const __be16 sport,
-				 const struct in6_addr *daddr, const __be16 dport,
-				 const int dif);
+extern struct sock *inet6_lookup(struct net *net,
+				 struct inet_hashinfo *hashinfo,
+				 const struct in6_addr *saddr,
+				 const __be16 sport,
+				 const struct in6_addr *daddr,
+				 const __be16 dport, const int dif);
 #endif /* defined(CONFIG_IPV6) || defined (CONFIG_IPV6_MODULE) */
 #endif /* _INET6_HASHTABLES_H */

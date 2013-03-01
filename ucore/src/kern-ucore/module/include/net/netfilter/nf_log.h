@@ -33,13 +33,12 @@ typedef void nf_logfn(u_int8_t pf,
 		      const struct sk_buff *skb,
 		      const struct net_device *in,
 		      const struct net_device *out,
-		      const struct nf_loginfo *li,
-		      const char *prefix);
+		      const struct nf_loginfo *li, const char *prefix);
 
 struct nf_logger {
-	struct module	*me;
-	nf_logfn 	*logfn;
-	char		*name;
+	struct module *me;
+	nf_logfn *logfn;
+	char *name;
 };
 
 /* Function to register/unregister log function. */
@@ -54,6 +53,6 @@ void nf_log_packet(u_int8_t pf,
 		   const struct net_device *in,
 		   const struct net_device *out,
 		   const struct nf_loginfo *li,
-		   const char *fmt, ...) __attribute__ ((format(printf,7,8)));
+		   const char *fmt, ...) __attribute__ ((format(printf, 7, 8)));
 
 #endif /* _NF_LOG_H */

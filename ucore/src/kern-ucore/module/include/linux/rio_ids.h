@@ -21,4 +21,4 @@
 #define RIO_VID_TUNDRA			0x000d
 #define RIO_DID_TSI500			0x0500
 
-#endif				/* LINUX_RIO_IDS_H */
+#endif /* LINUX_RIO_IDS_H */

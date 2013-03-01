@@ -121,7 +121,8 @@ struct crypto_type;
 struct aead_givcrypt_request;
 struct skcipher_givcrypt_request;
 
-typedef void (*crypto_completion_t)(struct crypto_async_request *req, int err);
+typedef void (*crypto_completion_t) (struct crypto_async_request * req,
+				     int err);
 
 struct crypto_async_request {
 	struct list_head list;
@@ -150,7 +151,7 @@ struct ahash_request {
 
 	unsigned int nbytes;
 	struct scatterlist *src;
-	u8		   *result;
+	u8 *result;
 
 	void *__ctx[] CRYPTO_MINALIGN_ATTR;
 };
@@ -189,9 +190,9 @@ struct blkcipher_desc {
 
 struct cipher_desc {
 	struct crypto_tfm *tfm;
-	void (*crfn)(struct crypto_tfm *tfm, u8 *dst, const u8 *src);
-	unsigned int (*prfn)(const struct cipher_desc *desc, u8 *dst,
-			     const u8 *src, unsigned int nbytes);
+	void (*crfn) (struct crypto_tfm * tfm, u8 * dst, const u8 * src);
+	unsigned int (*prfn) (const struct cipher_desc * desc, u8 * dst,
+			      const u8 * src, unsigned int nbytes);
 	void *info;
 };
 
@@ -205,12 +206,12 @@ struct hash_desc {
  * via crypto_register_alg() and crypto_unregister_alg().
  */
 struct ablkcipher_alg {
-	int (*setkey)(struct crypto_ablkcipher *tfm, const u8 *key,
-	              unsigned int keylen);
-	int (*encrypt)(struct ablkcipher_request *req);
-	int (*decrypt)(struct ablkcipher_request *req);
-	int (*givencrypt)(struct skcipher_givcrypt_request *req);
-	int (*givdecrypt)(struct skcipher_givcrypt_request *req);
+	int (*setkey) (struct crypto_ablkcipher * tfm, const u8 * key,
+		       unsigned int keylen);
+	int (*encrypt) (struct ablkcipher_request * req);
+	int (*decrypt) (struct ablkcipher_request * req);
+	int (*givencrypt) (struct skcipher_givcrypt_request * req);
+	int (*givdecrypt) (struct skcipher_givcrypt_request * req);
 
 	const char *geniv;
 
@@ -220,25 +221,25 @@ struct ablkcipher_alg {
 };
 
 struct ahash_alg {
-	int (*init)(struct ahash_request *req);
-	int (*reinit)(struct ahash_request *req);
-	int (*update)(struct ahash_request *req);
-	int (*final)(struct ahash_request *req);
-	int (*digest)(struct ahash_request *req);
-	int (*setkey)(struct crypto_ahash *tfm, const u8 *key,
-			unsigned int keylen);
+	int (*init) (struct ahash_request * req);
+	int (*reinit) (struct ahash_request * req);
+	int (*update) (struct ahash_request * req);
+	int (*final) (struct ahash_request * req);
+	int (*digest) (struct ahash_request * req);
+	int (*setkey) (struct crypto_ahash * tfm, const u8 * key,
+		       unsigned int keylen);
 
 	unsigned int digestsize;
 };
 
 struct aead_alg {
-	int (*setkey)(struct crypto_aead *tfm, const u8 *key,
-	              unsigned int keylen);
-	int (*setauthsize)(struct crypto_aead *tfm, unsigned int authsize);
-	int (*encrypt)(struct aead_request *req);
-	int (*decrypt)(struct aead_request *req);
-	int (*givencrypt)(struct aead_givcrypt_request *req);
-	int (*givdecrypt)(struct aead_givcrypt_request *req);
+	int (*setkey) (struct crypto_aead * tfm, const u8 * key,
+		       unsigned int keylen);
+	int (*setauthsize) (struct crypto_aead * tfm, unsigned int authsize);
+	int (*encrypt) (struct aead_request * req);
+	int (*decrypt) (struct aead_request * req);
+	int (*givencrypt) (struct aead_givcrypt_request * req);
+	int (*givdecrypt) (struct aead_givcrypt_request * req);
 
 	const char *geniv;
 
@@ -247,14 +248,14 @@ struct aead_alg {
 };
 
 struct blkcipher_alg {
-	int (*setkey)(struct crypto_tfm *tfm, const u8 *key,
-	              unsigned int keylen);
-	int (*encrypt)(struct blkcipher_desc *desc,
-		       struct scatterlist *dst, struct scatterlist *src,
-		       unsigned int nbytes);
-	int (*decrypt)(struct blkcipher_desc *desc,
-		       struct scatterlist *dst, struct scatterlist *src,
-		       unsigned int nbytes);
+	int (*setkey) (struct crypto_tfm * tfm, const u8 * key,
+		       unsigned int keylen);
+	int (*encrypt) (struct blkcipher_desc * desc,
+			struct scatterlist * dst, struct scatterlist * src,
+			unsigned int nbytes);
+	int (*decrypt) (struct blkcipher_desc * desc,
+			struct scatterlist * dst, struct scatterlist * src,
+			unsigned int nbytes);
 
 	const char *geniv;
 
@@ -266,50 +267,50 @@ struct blkcipher_alg {
 struct cipher_alg {
 	unsigned int cia_min_keysize;
 	unsigned int cia_max_keysize;
-	int (*cia_setkey)(struct crypto_tfm *tfm, const u8 *key,
-	                  unsigned int keylen);
-	void (*cia_encrypt)(struct crypto_tfm *tfm, u8 *dst, const u8 *src);
-	void (*cia_decrypt)(struct crypto_tfm *tfm, u8 *dst, const u8 *src);
+	int (*cia_setkey) (struct crypto_tfm * tfm, const u8 * key,
+			   unsigned int keylen);
+	void (*cia_encrypt) (struct crypto_tfm * tfm, u8 * dst, const u8 * src);
+	void (*cia_decrypt) (struct crypto_tfm * tfm, u8 * dst, const u8 * src);
 };
 
 struct digest_alg {
 	unsigned int dia_digestsize;
-	void (*dia_init)(struct crypto_tfm *tfm);
-	void (*dia_update)(struct crypto_tfm *tfm, const u8 *data,
-			   unsigned int len);
-	void (*dia_final)(struct crypto_tfm *tfm, u8 *out);
-	int (*dia_setkey)(struct crypto_tfm *tfm, const u8 *key,
-	                  unsigned int keylen);
+	void (*dia_init) (struct crypto_tfm * tfm);
+	void (*dia_update) (struct crypto_tfm * tfm, const u8 * data,
+			    unsigned int len);
+	void (*dia_final) (struct crypto_tfm * tfm, u8 * out);
+	int (*dia_setkey) (struct crypto_tfm * tfm, const u8 * key,
+			   unsigned int keylen);
 };
 
 struct hash_alg {
-	int (*init)(struct hash_desc *desc);
-	int (*update)(struct hash_desc *desc, struct scatterlist *sg,
-		      unsigned int nbytes);
-	int (*final)(struct hash_desc *desc, u8 *out);
-	int (*digest)(struct hash_desc *desc, struct scatterlist *sg,
-		      unsigned int nbytes, u8 *out);
-	int (*setkey)(struct crypto_hash *tfm, const u8 *key,
-		      unsigned int keylen);
+	int (*init) (struct hash_desc * desc);
+	int (*update) (struct hash_desc * desc, struct scatterlist * sg,
+		       unsigned int nbytes);
+	int (*final) (struct hash_desc * desc, u8 * out);
+	int (*digest) (struct hash_desc * desc, struct scatterlist * sg,
+		       unsigned int nbytes, u8 * out);
+	int (*setkey) (struct crypto_hash * tfm, const u8 * key,
+		       unsigned int keylen);
 
 	unsigned int digestsize;
 };
 
 struct compress_alg {
-	int (*coa_compress)(struct crypto_tfm *tfm, const u8 *src,
-			    unsigned int slen, u8 *dst, unsigned int *dlen);
-	int (*coa_decompress)(struct crypto_tfm *tfm, const u8 *src,
-			      unsigned int slen, u8 *dst, unsigned int *dlen);
+	int (*coa_compress) (struct crypto_tfm * tfm, const u8 * src,
+			     unsigned int slen, u8 * dst, unsigned int *dlen);
+	int (*coa_decompress) (struct crypto_tfm * tfm, const u8 * src,
+			       unsigned int slen, u8 * dst, unsigned int *dlen);
 };
 
 struct rng_alg {
-	int (*rng_make_random)(struct crypto_rng *tfm, u8 *rdata,
-			       unsigned int dlen);
-	int (*rng_reset)(struct crypto_rng *tfm, u8 *seed, unsigned int slen);
+	int (*rng_make_random) (struct crypto_rng * tfm, u8 * rdata,
+				unsigned int dlen);
+	int (*rng_reset) (struct crypto_rng * tfm, u8 * seed,
+			  unsigned int slen);
 
 	unsigned int seedsize;
 };
-
 
 #define cra_ablkcipher	cra_u.ablkcipher
 #define cra_aead	cra_u.aead
@@ -350,10 +351,10 @@ struct crypto_alg {
 		struct rng_alg rng;
 	} cra_u;
 
-	int (*cra_init)(struct crypto_tfm *tfm);
-	void (*cra_exit)(struct crypto_tfm *tfm);
-	void (*cra_destroy)(struct crypto_alg *alg);
-	
+	int (*cra_init) (struct crypto_tfm * tfm);
+	void (*cra_exit) (struct crypto_tfm * tfm);
+	void (*cra_destroy) (struct crypto_alg * alg);
+
 	struct module *cra_module;
 };
 
@@ -375,12 +376,12 @@ int crypto_has_alg(const char *name, u32 type, u32 mask);
  */
 
 struct ablkcipher_tfm {
-	int (*setkey)(struct crypto_ablkcipher *tfm, const u8 *key,
-	              unsigned int keylen);
-	int (*encrypt)(struct ablkcipher_request *req);
-	int (*decrypt)(struct ablkcipher_request *req);
-	int (*givencrypt)(struct skcipher_givcrypt_request *req);
-	int (*givdecrypt)(struct skcipher_givcrypt_request *req);
+	int (*setkey) (struct crypto_ablkcipher * tfm, const u8 * key,
+		       unsigned int keylen);
+	int (*encrypt) (struct ablkcipher_request * req);
+	int (*decrypt) (struct ablkcipher_request * req);
+	int (*givencrypt) (struct skcipher_givcrypt_request * req);
+	int (*givdecrypt) (struct skcipher_givcrypt_request * req);
 
 	struct crypto_ablkcipher *base;
 
@@ -389,12 +390,12 @@ struct ablkcipher_tfm {
 };
 
 struct aead_tfm {
-	int (*setkey)(struct crypto_aead *tfm, const u8 *key,
-	              unsigned int keylen);
-	int (*encrypt)(struct aead_request *req);
-	int (*decrypt)(struct aead_request *req);
-	int (*givencrypt)(struct aead_givcrypt_request *req);
-	int (*givdecrypt)(struct aead_givcrypt_request *req);
+	int (*setkey) (struct crypto_aead * tfm, const u8 * key,
+		       unsigned int keylen);
+	int (*encrypt) (struct aead_request * req);
+	int (*decrypt) (struct aead_request * req);
+	int (*givencrypt) (struct aead_givcrypt_request * req);
+	int (*givdecrypt) (struct aead_givcrypt_request * req);
 
 	struct crypto_aead *base;
 
@@ -405,58 +406,61 @@ struct aead_tfm {
 
 struct blkcipher_tfm {
 	void *iv;
-	int (*setkey)(struct crypto_tfm *tfm, const u8 *key,
-		      unsigned int keylen);
-	int (*encrypt)(struct blkcipher_desc *desc, struct scatterlist *dst,
-		       struct scatterlist *src, unsigned int nbytes);
-	int (*decrypt)(struct blkcipher_desc *desc, struct scatterlist *dst,
-		       struct scatterlist *src, unsigned int nbytes);
+	int (*setkey) (struct crypto_tfm * tfm, const u8 * key,
+		       unsigned int keylen);
+	int (*encrypt) (struct blkcipher_desc * desc, struct scatterlist * dst,
+			struct scatterlist * src, unsigned int nbytes);
+	int (*decrypt) (struct blkcipher_desc * desc, struct scatterlist * dst,
+			struct scatterlist * src, unsigned int nbytes);
 };
 
 struct cipher_tfm {
-	int (*cit_setkey)(struct crypto_tfm *tfm,
-	                  const u8 *key, unsigned int keylen);
-	void (*cit_encrypt_one)(struct crypto_tfm *tfm, u8 *dst, const u8 *src);
-	void (*cit_decrypt_one)(struct crypto_tfm *tfm, u8 *dst, const u8 *src);
+	int (*cit_setkey) (struct crypto_tfm * tfm,
+			   const u8 * key, unsigned int keylen);
+	void (*cit_encrypt_one) (struct crypto_tfm * tfm, u8 * dst,
+				 const u8 * src);
+	void (*cit_decrypt_one) (struct crypto_tfm * tfm, u8 * dst,
+				 const u8 * src);
 };
 
 struct hash_tfm {
-	int (*init)(struct hash_desc *desc);
-	int (*update)(struct hash_desc *desc,
-		      struct scatterlist *sg, unsigned int nsg);
-	int (*final)(struct hash_desc *desc, u8 *out);
-	int (*digest)(struct hash_desc *desc, struct scatterlist *sg,
-		      unsigned int nsg, u8 *out);
-	int (*setkey)(struct crypto_hash *tfm, const u8 *key,
-		      unsigned int keylen);
+	int (*init) (struct hash_desc * desc);
+	int (*update) (struct hash_desc * desc,
+		       struct scatterlist * sg, unsigned int nsg);
+	int (*final) (struct hash_desc * desc, u8 * out);
+	int (*digest) (struct hash_desc * desc, struct scatterlist * sg,
+		       unsigned int nsg, u8 * out);
+	int (*setkey) (struct crypto_hash * tfm, const u8 * key,
+		       unsigned int keylen);
 	unsigned int digestsize;
 };
 
 struct ahash_tfm {
-	int (*init)(struct ahash_request *req);
-	int (*update)(struct ahash_request *req);
-	int (*final)(struct ahash_request *req);
-	int (*digest)(struct ahash_request *req);
-	int (*setkey)(struct crypto_ahash *tfm, const u8 *key,
-			unsigned int keylen);
+	int (*init) (struct ahash_request * req);
+	int (*update) (struct ahash_request * req);
+	int (*final) (struct ahash_request * req);
+	int (*digest) (struct ahash_request * req);
+	int (*setkey) (struct crypto_ahash * tfm, const u8 * key,
+		       unsigned int keylen);
 
 	unsigned int digestsize;
 	unsigned int reqsize;
 };
 
 struct compress_tfm {
-	int (*cot_compress)(struct crypto_tfm *tfm,
-	                    const u8 *src, unsigned int slen,
-	                    u8 *dst, unsigned int *dlen);
-	int (*cot_decompress)(struct crypto_tfm *tfm,
-	                      const u8 *src, unsigned int slen,
-	                      u8 *dst, unsigned int *dlen);
+	int (*cot_compress) (struct crypto_tfm * tfm,
+			     const u8 * src, unsigned int slen,
+			     u8 * dst, unsigned int *dlen);
+	int (*cot_decompress) (struct crypto_tfm * tfm,
+			       const u8 * src, unsigned int slen,
+			       u8 * dst, unsigned int *dlen);
 };
 
 struct rng_tfm {
-	int (*rng_gen_random)(struct crypto_rng *tfm, u8 *rdata,
-			      unsigned int dlen);
-	int (*rng_reset)(struct crypto_rng *tfm, u8 *seed, unsigned int slen);
+	int (*rng_gen_random) (struct crypto_rng * tfm, u8 * rdata,
+			       unsigned int dlen);
+	int (*rng_reset) (struct crypto_rng * tfm, u8 * seed,
+			  unsigned int slen);
 };
 
 #define crt_ablkcipher	crt_u.ablkcipher
@@ -471,7 +475,7 @@ struct rng_tfm {
 struct crypto_tfm {
 
 	u32 crt_flags;
-	
+
 	union {
 		struct ablkcipher_tfm ablkcipher;
 		struct aead_tfm aead;
@@ -483,8 +487,8 @@ struct crypto_tfm {
 		struct rng_tfm rng;
 	} crt_u;
 
-	void (*exit)(struct crypto_tfm *tfm);
-	
+	void (*exit) (struct crypto_tfm * tfm);
+
 	struct crypto_alg *__crt_alg;
 
 	void *__crt_ctx[] CRYPTO_MINALIGN_ATTR;
@@ -547,7 +551,7 @@ struct crypto_attr_u32 {
 /* 
  * Transform user interface.
  */
- 
+
 struct crypto_tfm *crypto_alloc_tfm(const char *alg_name,
 				    const struct crypto_type *frontend,
 				    u32 type, u32 mask);
@@ -628,8 +632,9 @@ static inline unsigned int crypto_tfm_ctx_alignment(void)
 /*
  * API wrappers.
  */
-static inline struct crypto_ablkcipher *__crypto_ablkcipher_cast(
-	struct crypto_tfm *tfm)
+static inline struct crypto_ablkcipher *__crypto_ablkcipher_cast(struct
+								 crypto_tfm
+								 *tfm)
 {
 	return (struct crypto_ablkcipher *)tfm;
 }
@@ -651,8 +656,8 @@ static inline u32 crypto_skcipher_mask(u32 mask)
 struct crypto_ablkcipher *crypto_alloc_ablkcipher(const char *alg_name,
 						  u32 type, u32 mask);
 
-static inline struct crypto_tfm *crypto_ablkcipher_tfm(
-	struct crypto_ablkcipher *tfm)
+static inline struct crypto_tfm *crypto_ablkcipher_tfm(struct crypto_ablkcipher
+						       *tfm)
 {
 	return &tfm->base;
 }
@@ -669,26 +674,27 @@ static inline int crypto_has_ablkcipher(const char *alg_name, u32 type,
 			      crypto_skcipher_mask(mask));
 }
 
-static inline struct ablkcipher_tfm *crypto_ablkcipher_crt(
-	struct crypto_ablkcipher *tfm)
+static inline struct ablkcipher_tfm *crypto_ablkcipher_crt(struct
+							   crypto_ablkcipher
+							   *tfm)
 {
 	return &crypto_ablkcipher_tfm(tfm)->crt_ablkcipher;
 }
 
-static inline unsigned int crypto_ablkcipher_ivsize(
-	struct crypto_ablkcipher *tfm)
+static inline unsigned int crypto_ablkcipher_ivsize(struct crypto_ablkcipher
+						    *tfm)
 {
 	return crypto_ablkcipher_crt(tfm)->ivsize;
 }
 
-static inline unsigned int crypto_ablkcipher_blocksize(
-	struct crypto_ablkcipher *tfm)
+static inline unsigned int crypto_ablkcipher_blocksize(struct crypto_ablkcipher
+						       *tfm)
 {
 	return crypto_tfm_alg_blocksize(crypto_ablkcipher_tfm(tfm));
 }
 
-static inline unsigned int crypto_ablkcipher_alignmask(
-	struct crypto_ablkcipher *tfm)
+static inline unsigned int crypto_ablkcipher_alignmask(struct crypto_ablkcipher
+						       *tfm)
 {
 	return crypto_tfm_alg_alignmask(crypto_ablkcipher_tfm(tfm));
 }
@@ -711,15 +717,16 @@ static inline void crypto_ablkcipher_clear_flags(struct crypto_ablkcipher *tfm,
 }
 
 static inline int crypto_ablkcipher_setkey(struct crypto_ablkcipher *tfm,
-					   const u8 *key, unsigned int keylen)
+					   const u8 * key, unsigned int keylen)
 {
 	struct ablkcipher_tfm *crt = crypto_ablkcipher_crt(tfm);
 
 	return crt->setkey(crt->base, key, keylen);
 }
 
-static inline struct crypto_ablkcipher *crypto_ablkcipher_reqtfm(
-	struct ablkcipher_request *req)
+static inline struct crypto_ablkcipher *crypto_ablkcipher_reqtfm(struct
+								 ablkcipher_request
+								 *req)
 {
 	return __crypto_ablkcipher_cast(req->base.tfm);
 }
@@ -727,37 +734,40 @@ static inline struct crypto_ablkcipher *crypto_ablkcipher_reqtfm(
 static inline int crypto_ablkcipher_encrypt(struct ablkcipher_request *req)
 {
 	struct ablkcipher_tfm *crt =
-		crypto_ablkcipher_crt(crypto_ablkcipher_reqtfm(req));
+	    crypto_ablkcipher_crt(crypto_ablkcipher_reqtfm(req));
 	return crt->encrypt(req);
 }
 
 static inline int crypto_ablkcipher_decrypt(struct ablkcipher_request *req)
 {
 	struct ablkcipher_tfm *crt =
-		crypto_ablkcipher_crt(crypto_ablkcipher_reqtfm(req));
+	    crypto_ablkcipher_crt(crypto_ablkcipher_reqtfm(req));
 	return crt->decrypt(req);
 }
 
-static inline unsigned int crypto_ablkcipher_reqsize(
-	struct crypto_ablkcipher *tfm)
+static inline unsigned int crypto_ablkcipher_reqsize(struct crypto_ablkcipher
+						     *tfm)
 {
 	return crypto_ablkcipher_crt(tfm)->reqsize;
 }
 
-static inline void ablkcipher_request_set_tfm(
-	struct ablkcipher_request *req, struct crypto_ablkcipher *tfm)
+static inline void ablkcipher_request_set_tfm(struct ablkcipher_request *req,
+					      struct crypto_ablkcipher *tfm)
 {
 	req->base.tfm = crypto_ablkcipher_tfm(crypto_ablkcipher_crt(tfm)->base);
 }
 
-static inline struct ablkcipher_request *ablkcipher_request_cast(
-	struct crypto_async_request *req)
+static inline struct ablkcipher_request *ablkcipher_request_cast(struct
+								 crypto_async_request
+								 *req)
 {
 	return container_of(req, struct ablkcipher_request, base);
 }
 
-static inline struct ablkcipher_request *ablkcipher_request_alloc(
-	struct crypto_ablkcipher *tfm, gfp_t gfp)
+static inline struct ablkcipher_request *ablkcipher_request_alloc(struct
+								  crypto_ablkcipher
+								  *tfm,
+								  gfp_t gfp)
 {
 	struct ablkcipher_request *req;
 
@@ -775,19 +785,20 @@ static inline void ablkcipher_request_free(struct ablkcipher_request *req)
 	kfree(req);
 }
 
-static inline void ablkcipher_request_set_callback(
-	struct ablkcipher_request *req,
-	u32 flags, crypto_completion_t complete, void *data)
+static inline void ablkcipher_request_set_callback(struct ablkcipher_request
+						   *req, u32 flags,
+						   crypto_completion_t complete,
+						   void *data)
 {
 	req->base.complete = complete;
 	req->base.data = data;
 	req->base.flags = flags;
 }
 
-static inline void ablkcipher_request_set_crypt(
-	struct ablkcipher_request *req,
-	struct scatterlist *src, struct scatterlist *dst,
-	unsigned int nbytes, void *iv)
+static inline void ablkcipher_request_set_crypt(struct ablkcipher_request *req,
+						struct scatterlist *src,
+						struct scatterlist *dst,
+						unsigned int nbytes, void *iv)
 {
 	req->src = src;
 	req->dst = dst;
@@ -852,7 +863,7 @@ static inline void crypto_aead_clear_flags(struct crypto_aead *tfm, u32 flags)
 	crypto_tfm_clear_flags(crypto_aead_tfm(tfm), flags);
 }
 
-static inline int crypto_aead_setkey(struct crypto_aead *tfm, const u8 *key,
+static inline int crypto_aead_setkey(struct crypto_aead *tfm, const u8 * key,
 				     unsigned int keylen)
 {
 	struct aead_tfm *crt = crypto_aead_crt(tfm);
@@ -919,7 +930,7 @@ static inline void aead_request_set_callback(struct aead_request *req,
 static inline void aead_request_set_crypt(struct aead_request *req,
 					  struct scatterlist *src,
 					  struct scatterlist *dst,
-					  unsigned int cryptlen, u8 *iv)
+					  unsigned int cryptlen, u8 * iv)
 {
 	req->src = src;
 	req->dst = dst;
@@ -935,21 +946,23 @@ static inline void aead_request_set_assoc(struct aead_request *req,
 	req->assoclen = assoclen;
 }
 
-static inline struct crypto_blkcipher *__crypto_blkcipher_cast(
-	struct crypto_tfm *tfm)
+static inline struct crypto_blkcipher *__crypto_blkcipher_cast(struct crypto_tfm
+							       *tfm)
 {
 	return (struct crypto_blkcipher *)tfm;
 }
 
-static inline struct crypto_blkcipher *crypto_blkcipher_cast(
-	struct crypto_tfm *tfm)
+static inline struct crypto_blkcipher *crypto_blkcipher_cast(struct crypto_tfm
+							     *tfm)
 {
 	BUG_ON(crypto_tfm_alg_type(tfm) != CRYPTO_ALG_TYPE_BLKCIPHER);
 	return __crypto_blkcipher_cast(tfm);
 }
 
-static inline struct crypto_blkcipher *crypto_alloc_blkcipher(
-	const char *alg_name, u32 type, u32 mask)
+static inline struct crypto_blkcipher *crypto_alloc_blkcipher(const char
+							      *alg_name,
+							      u32 type,
+							      u32 mask)
 {
 	type &= ~CRYPTO_ALG_TYPE_MASK;
 	type |= CRYPTO_ALG_TYPE_BLKCIPHER;
@@ -958,8 +971,8 @@ static inline struct crypto_blkcipher *crypto_alloc_blkcipher(
 	return __crypto_blkcipher_cast(crypto_alloc_base(alg_name, type, mask));
 }
 
-static inline struct crypto_tfm *crypto_blkcipher_tfm(
-	struct crypto_blkcipher *tfm)
+static inline struct crypto_tfm *crypto_blkcipher_tfm(struct crypto_blkcipher
+						      *tfm)
 {
 	return &tfm->base;
 }
@@ -983,14 +996,14 @@ static inline const char *crypto_blkcipher_name(struct crypto_blkcipher *tfm)
 	return crypto_tfm_alg_name(crypto_blkcipher_tfm(tfm));
 }
 
-static inline struct blkcipher_tfm *crypto_blkcipher_crt(
-	struct crypto_blkcipher *tfm)
+static inline struct blkcipher_tfm *crypto_blkcipher_crt(struct crypto_blkcipher
+							 *tfm)
 {
 	return &crypto_blkcipher_tfm(tfm)->crt_blkcipher;
 }
 
-static inline struct blkcipher_alg *crypto_blkcipher_alg(
-	struct crypto_blkcipher *tfm)
+static inline struct blkcipher_alg *crypto_blkcipher_alg(struct crypto_blkcipher
+							 *tfm)
 {
 	return &crypto_blkcipher_tfm(tfm)->__crt_alg->cra_blkcipher;
 }
@@ -1000,14 +1013,14 @@ static inline unsigned int crypto_blkcipher_ivsize(struct crypto_blkcipher *tfm)
 	return crypto_blkcipher_alg(tfm)->ivsize;
 }
 
-static inline unsigned int crypto_blkcipher_blocksize(
-	struct crypto_blkcipher *tfm)
+static inline unsigned int crypto_blkcipher_blocksize(struct crypto_blkcipher
+						      *tfm)
 {
 	return crypto_tfm_alg_blocksize(crypto_blkcipher_tfm(tfm));
 }
 
-static inline unsigned int crypto_blkcipher_alignmask(
-	struct crypto_blkcipher *tfm)
+static inline unsigned int crypto_blkcipher_alignmask(struct crypto_blkcipher
+						      *tfm)
 {
 	return crypto_tfm_alg_alignmask(crypto_blkcipher_tfm(tfm));
 }
@@ -1030,7 +1043,7 @@ static inline void crypto_blkcipher_clear_flags(struct crypto_blkcipher *tfm,
 }
 
 static inline int crypto_blkcipher_setkey(struct crypto_blkcipher *tfm,
-					  const u8 *key, unsigned int keylen)
+					  const u8 * key, unsigned int keylen)
 {
 	return crypto_blkcipher_crt(tfm)->setkey(crypto_blkcipher_tfm(tfm),
 						 key, keylen);
@@ -1071,13 +1084,13 @@ static inline int crypto_blkcipher_decrypt_iv(struct blkcipher_desc *desc,
 }
 
 static inline void crypto_blkcipher_set_iv(struct crypto_blkcipher *tfm,
-					   const u8 *src, unsigned int len)
+					   const u8 * src, unsigned int len)
 {
 	memcpy(crypto_blkcipher_crt(tfm)->iv, src, len);
 }
 
 static inline void crypto_blkcipher_get_iv(struct crypto_blkcipher *tfm,
-					   u8 *dst, unsigned int len)
+					   u8 * dst, unsigned int len)
 {
 	memcpy(dst, crypto_blkcipher_crt(tfm)->iv, len);
 }
@@ -1142,8 +1155,7 @@ static inline u32 crypto_cipher_get_flags(struct crypto_cipher *tfm)
 	return crypto_tfm_get_flags(crypto_cipher_tfm(tfm));
 }
 
-static inline void crypto_cipher_set_flags(struct crypto_cipher *tfm,
-					   u32 flags)
+static inline void crypto_cipher_set_flags(struct crypto_cipher *tfm, u32 flags)
 {
 	crypto_tfm_set_flags(crypto_cipher_tfm(tfm), flags);
 }
@@ -1155,21 +1167,21 @@ static inline void crypto_cipher_clear_flags(struct crypto_cipher *tfm,
 }
 
 static inline int crypto_cipher_setkey(struct crypto_cipher *tfm,
-                                       const u8 *key, unsigned int keylen)
+				       const u8 * key, unsigned int keylen)
 {
 	return crypto_cipher_crt(tfm)->cit_setkey(crypto_cipher_tfm(tfm),
 						  key, keylen);
 }
 
 static inline void crypto_cipher_encrypt_one(struct crypto_cipher *tfm,
-					     u8 *dst, const u8 *src)
+					     u8 * dst, const u8 * src)
 {
 	crypto_cipher_crt(tfm)->cit_encrypt_one(crypto_cipher_tfm(tfm),
 						dst, src);
 }
 
 static inline void crypto_cipher_decrypt_one(struct crypto_cipher *tfm,
-					     u8 *dst, const u8 *src)
+					     u8 * dst, const u8 * src)
 {
 	crypto_cipher_crt(tfm)->cit_decrypt_one(crypto_cipher_tfm(tfm),
 						dst, src);
@@ -1265,20 +1277,20 @@ static inline int crypto_hash_update(struct hash_desc *desc,
 	return crypto_hash_crt(desc->tfm)->update(desc, sg, nbytes);
 }
 
-static inline int crypto_hash_final(struct hash_desc *desc, u8 *out)
+static inline int crypto_hash_final(struct hash_desc *desc, u8 * out)
 {
 	return crypto_hash_crt(desc->tfm)->final(desc, out);
 }
 
 static inline int crypto_hash_digest(struct hash_desc *desc,
 				     struct scatterlist *sg,
-				     unsigned int nbytes, u8 *out)
+				     unsigned int nbytes, u8 * out)
 {
 	return crypto_hash_crt(desc->tfm)->digest(desc, sg, nbytes, out);
 }
 
 static inline int crypto_hash_setkey(struct crypto_hash *hash,
-				     const u8 *key, unsigned int keylen)
+				     const u8 * key, unsigned int keylen)
 {
 	return crypto_hash_crt(hash)->setkey(hash, key, keylen);
 }
@@ -1335,20 +1347,19 @@ static inline struct compress_tfm *crypto_comp_crt(struct crypto_comp *tfm)
 }
 
 static inline int crypto_comp_compress(struct crypto_comp *tfm,
-                                       const u8 *src, unsigned int slen,
-                                       u8 *dst, unsigned int *dlen)
+				       const u8 * src, unsigned int slen,
+				       u8 * dst, unsigned int *dlen)
 {
 	return crypto_comp_crt(tfm)->cot_compress(crypto_comp_tfm(tfm),
 						  src, slen, dst, dlen);
 }
 
 static inline int crypto_comp_decompress(struct crypto_comp *tfm,
-                                         const u8 *src, unsigned int slen,
-                                         u8 *dst, unsigned int *dlen)
+					 const u8 * src, unsigned int slen,
+					 u8 * dst, unsigned int *dlen)
 {
 	return crypto_comp_crt(tfm)->cot_decompress(crypto_comp_tfm(tfm),
 						    src, slen, dst, dlen);
 }
 
-#endif	/* _LINUX_CRYPTO_H */
-
+#endif /* _LINUX_CRYPTO_H */

@@ -265,7 +265,6 @@
 	MEM_KEEP(exit.text)						\
 		*(.text.unlikely)
 
-
 /* sched.text is aling to function alignment to secure we have same
  * address even at second ld pass when generating System.map */
 #define SCHED_TEXT							\
@@ -341,8 +340,8 @@
 	MEM_DISCARD(exit.text)
 
 		/* DWARF debug sections.
-		Symbols in the DWARF debugging sections are relative to
-		the beginning of the section so we begin them at 0.  */
+		   Symbols in the DWARF debugging sections are relative to
+		   the beginning of the section so we begin them at 0.  */
 #define DWARF_DEBUG							\
 		/* DWARF 1 */						\
 		.debug          0 : { *(.debug) }			\

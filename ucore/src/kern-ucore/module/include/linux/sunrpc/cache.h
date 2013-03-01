@@ -45,104 +45,95 @@
  * 
  */
 struct cache_head {
-	struct cache_head * next;
-	time_t		expiry_time;	/* After time time, don't use the data */
-	time_t		last_refresh;   /* If CACHE_PENDING, this is when upcall 
-					 * was sent, else this is when update was received
-					 */
-	struct kref	ref;
-	unsigned long	flags;
+	struct cache_head *next;
+	time_t expiry_time;	/* After time time, don't use the data */
+	time_t last_refresh;	/* If CACHE_PENDING, this is when upcall 
+				 * was sent, else this is when update was received
+				 */
+	struct kref ref;
+	unsigned long flags;
 };
 #define	CACHE_VALID	0	/* Entry contains valid data */
 #define	CACHE_NEGATIVE	1	/* Negative entry - there is no match for the key */
-#define	CACHE_PENDING	2	/* An upcall has been sent but no reply received yet*/
+#define	CACHE_PENDING	2	/* An upcall has been sent but no reply received yet */
 
 #define	CACHE_NEW_EXPIRY 120	/* keep new things pending confirmation for 120 seconds */
 
 struct cache_detail {
-	struct module *		owner;
-	int			hash_size;
-	struct cache_head **	hash_table;
-	rwlock_t		hash_lock;
+	struct module *owner;
+	int hash_size;
+	struct cache_head **hash_table;
+	rwlock_t hash_lock;
 
-	atomic_t		inuse; /* active user-space update or lookup */
+	atomic_t inuse;		/* active user-space update or lookup */
 
-	char			*name;
-	void			(*cache_put)(struct kref *);
+	char *name;
+	void (*cache_put) (struct kref *);
 
-	void			(*cache_request)(struct cache_detail *cd,
-						 struct cache_head *h,
-						 char **bpp, int *blen);
-	int			(*cache_parse)(struct cache_detail *,
-					       char *buf, int len);
+	void (*cache_request) (struct cache_detail * cd,
+			       struct cache_head * h, char **bpp, int *blen);
+	int (*cache_parse) (struct cache_detail *, char *buf, int len);
 
-	int			(*cache_show)(struct seq_file *m,
-					      struct cache_detail *cd,
-					      struct cache_head *h);
+	int (*cache_show) (struct seq_file * m,
+			   struct cache_detail * cd, struct cache_head * h);
 
-	struct cache_head *	(*alloc)(void);
-	int			(*match)(struct cache_head *orig, struct cache_head *new);
-	void			(*init)(struct cache_head *orig, struct cache_head *new);
-	void			(*update)(struct cache_head *orig, struct cache_head *new);
+	struct cache_head *(*alloc) (void);
+	int (*match) (struct cache_head * orig, struct cache_head * new);
+	void (*init) (struct cache_head * orig, struct cache_head * new);
+	void (*update) (struct cache_head * orig, struct cache_head * new);
 
 	/* fields below this comment are for internal use
 	 * and should not be touched by cache owners
 	 */
-	time_t			flush_time;		/* flush all cache items with last_refresh
-							 * earlier than this */
-	struct list_head	others;
-	time_t			nextcheck;
-	int			entries;
+	time_t flush_time;	/* flush all cache items with last_refresh
+				 * earlier than this */
+	struct list_head others;
+	time_t nextcheck;
+	int entries;
 
 	/* fields for communication over channel */
-	struct list_head	queue;
-	struct proc_dir_entry	*proc_ent;
-	struct proc_dir_entry   *flush_ent, *channel_ent, *content_ent;
+	struct list_head queue;
+	struct proc_dir_entry *proc_ent;
+	struct proc_dir_entry *flush_ent, *channel_ent, *content_ent;
 
-	atomic_t		readers;		/* how many time is /chennel open */
-	time_t			last_close;		/* if no readers, when did last close */
-	time_t			last_warn;		/* when we last warned about no readers */
-	void			(*warn_no_listener)(struct cache_detail *cd);
+	atomic_t readers;	/* how many time is /chennel open */
+	time_t last_close;	/* if no readers, when did last close */
+	time_t last_warn;	/* when we last warned about no readers */
+	void (*warn_no_listener) (struct cache_detail * cd);
 };
-
 
 /* this must be embedded in any request structure that
  * identifies an object that will want a callback on
  * a cache fill
  */
 struct cache_req {
-	struct cache_deferred_req *(*defer)(struct cache_req *req);
+	struct cache_deferred_req *(*defer) (struct cache_req * req);
 };
 /* this must be embedded in a deferred_request that is being
  * delayed awaiting cache-fill
  */
 struct cache_deferred_req {
-	struct list_head	hash;	/* on hash chain */
-	struct list_head	recent; /* on fifo */
-	struct cache_head	*item;  /* cache item we wait on */
-	void			*owner; /* we might need to discard all defered requests
-					 * owned by someone */
-	void			(*revisit)(struct cache_deferred_req *req,
-					   int too_many);
+	struct list_head hash;	/* on hash chain */
+	struct list_head recent;	/* on fifo */
+	struct cache_head *item;	/* cache item we wait on */
+	void *owner;		/* we might need to discard all defered requests
+				 * owned by someone */
+	void (*revisit) (struct cache_deferred_req * req, int too_many);
 };
 
-
-extern struct cache_head *
-sunrpc_cache_lookup(struct cache_detail *detail,
-		    struct cache_head *key, int hash);
-extern struct cache_head *
-sunrpc_cache_update(struct cache_detail *detail,
-		    struct cache_head *new, struct cache_head *old, int hash);
-
+extern struct cache_head *sunrpc_cache_lookup(struct cache_detail *detail,
+					      struct cache_head *key, int hash);
+extern struct cache_head *sunrpc_cache_update(struct cache_detail *detail,
+					      struct cache_head *new,
+					      struct cache_head *old, int hash);
 
 extern void cache_clean_deferred(void *owner);
 
-static inline struct cache_head  *cache_get(struct cache_head *h)
+static inline struct cache_head *cache_get(struct cache_head *h)
 {
 	kref_get(&h->ref);
 	return h;
 }
-
 
 static inline void cache_put(struct cache_head *h, struct cache_detail *cd)
 {
@@ -181,10 +172,13 @@ static inline int get_int(char **bpp, int *anint)
 	char *ep;
 	int rv;
 	int len = qword_get(bpp, buf, 50);
-	if (len < 0) return -EINVAL;
-	if (len ==0) return -ENOENT;
+	if (len < 0)
+		return -EINVAL;
+	if (len == 0)
+		return -ENOENT;
 	rv = simple_strtol(buf, &ep, 0);
-	if (*ep) return -EINVAL;
+	if (*ep)
+		return -EINVAL;
 	*anint = rv;
 	return 0;
 }

@@ -63,7 +63,7 @@ static int mmc_app_cmd(struct mmc_host *host, struct mmc_card *card)
  *	parse the response.
  */
 int mmc_wait_for_app_cmd(struct mmc_host *host, struct mmc_card *card,
-	struct mmc_command *cmd, int retries)
+			 struct mmc_command *cmd, int retries)
 {
 	struct mmc_request mrq;
 
@@ -78,7 +78,7 @@ int mmc_wait_for_app_cmd(struct mmc_host *host, struct mmc_card *card,
 	 * We have to resend MMC_APP_CMD for each attempt so
 	 * we cannot use the retries field in mmc_command.
 	 */
-	for (i = 0;i <= retries;i++) {
+	for (i = 0; i <= retries; i++) {
 		memset(&mrq, 0, sizeof(struct mmc_request));
 
 		err = mmc_app_cmd(host, card);
@@ -148,7 +148,7 @@ int mmc_app_set_bus_width(struct mmc_card *card, int width)
 	return 0;
 }
 
-int mmc_send_app_op_cond(struct mmc_host *host, u32 ocr, u32 *rocr)
+int mmc_send_app_op_cond(struct mmc_host *host, u32 ocr, u32 * rocr)
 {
 	struct mmc_command cmd;
 	int i, err = 0;
@@ -159,7 +159,7 @@ int mmc_send_app_op_cond(struct mmc_host *host, u32 ocr, u32 *rocr)
 
 	cmd.opcode = SD_APP_OP_COND;
 	if (mmc_host_is_spi(host))
-		cmd.arg = ocr & (1 << 30); /* SPI only defines one bit */
+		cmd.arg = ocr & (1 << 30);	/* SPI only defines one bit */
 	else
 		cmd.arg = ocr;
 	cmd.flags = MMC_RSP_SPI_R1 | MMC_RSP_R3 | MMC_CMD_BCR;
@@ -247,7 +247,7 @@ int mmc_send_relative_addr(struct mmc_host *host, unsigned int *rca)
 	return 0;
 }
 
-int mmc_app_send_scr(struct mmc_card *card, u32 *scr)
+int mmc_app_send_scr(struct mmc_card *card, u32 * scr)
 {
 	int err;
 	struct mmc_request mrq;
@@ -300,7 +300,7 @@ int mmc_app_send_scr(struct mmc_card *card, u32 *scr)
 }
 
 int mmc_sd_switch(struct mmc_card *card, int mode, int group,
-	u8 value, u8 *resp)
+		  u8 value, u8 * resp)
 {
 	struct mmc_request mrq;
 	struct mmc_command cmd;
@@ -312,7 +312,7 @@ int mmc_sd_switch(struct mmc_card *card, int mode, int group,
 
 	/* NOTE: caller guarantees resp is heap-allocated */
 
-	mode = !!mode;
+	mode = ! !mode;
 	value &= 0xF;
 
 	memset(&mrq, 0, sizeof(struct mmc_request));
@@ -347,4 +347,3 @@ int mmc_sd_switch(struct mmc_card *card, int mode, int group,
 
 	return 0;
 }
-

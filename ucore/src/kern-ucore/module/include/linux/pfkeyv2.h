@@ -12,81 +12,81 @@
 #define PFKEYV2_REVISION	199806L
 
 struct sadb_msg {
-	uint8_t		sadb_msg_version;
-	uint8_t		sadb_msg_type;
-	uint8_t		sadb_msg_errno;
-	uint8_t		sadb_msg_satype;
-	uint16_t	sadb_msg_len;
-	uint16_t	sadb_msg_reserved;
-	uint32_t	sadb_msg_seq;
-	uint32_t	sadb_msg_pid;
-} __attribute__((packed));
+	uint8_t sadb_msg_version;
+	uint8_t sadb_msg_type;
+	uint8_t sadb_msg_errno;
+	uint8_t sadb_msg_satype;
+	uint16_t sadb_msg_len;
+	uint16_t sadb_msg_reserved;
+	uint32_t sadb_msg_seq;
+	uint32_t sadb_msg_pid;
+} __attribute__ ((packed));
 /* sizeof(struct sadb_msg) == 16 */
 
 struct sadb_ext {
-	uint16_t	sadb_ext_len;
-	uint16_t	sadb_ext_type;
-} __attribute__((packed));
+	uint16_t sadb_ext_len;
+	uint16_t sadb_ext_type;
+} __attribute__ ((packed));
 /* sizeof(struct sadb_ext) == 4 */
 
 struct sadb_sa {
-	uint16_t	sadb_sa_len;
-	uint16_t	sadb_sa_exttype;
-	__be32		sadb_sa_spi;
-	uint8_t		sadb_sa_replay;
-	uint8_t		sadb_sa_state;
-	uint8_t		sadb_sa_auth;
-	uint8_t		sadb_sa_encrypt;
-	uint32_t	sadb_sa_flags;
-} __attribute__((packed));
+	uint16_t sadb_sa_len;
+	uint16_t sadb_sa_exttype;
+	__be32 sadb_sa_spi;
+	uint8_t sadb_sa_replay;
+	uint8_t sadb_sa_state;
+	uint8_t sadb_sa_auth;
+	uint8_t sadb_sa_encrypt;
+	uint32_t sadb_sa_flags;
+} __attribute__ ((packed));
 /* sizeof(struct sadb_sa) == 16 */
 
 struct sadb_lifetime {
-	uint16_t	sadb_lifetime_len;
-	uint16_t	sadb_lifetime_exttype;
-	uint32_t	sadb_lifetime_allocations;
-	uint64_t	sadb_lifetime_bytes;
-	uint64_t	sadb_lifetime_addtime;
-	uint64_t	sadb_lifetime_usetime;
-} __attribute__((packed));
+	uint16_t sadb_lifetime_len;
+	uint16_t sadb_lifetime_exttype;
+	uint32_t sadb_lifetime_allocations;
+	uint64_t sadb_lifetime_bytes;
+	uint64_t sadb_lifetime_addtime;
+	uint64_t sadb_lifetime_usetime;
+} __attribute__ ((packed));
 /* sizeof(struct sadb_lifetime) == 32 */
 
 struct sadb_address {
-	uint16_t	sadb_address_len;
-	uint16_t	sadb_address_exttype;
-	uint8_t		sadb_address_proto;
-	uint8_t		sadb_address_prefixlen;
-	uint16_t	sadb_address_reserved;
-} __attribute__((packed));
+	uint16_t sadb_address_len;
+	uint16_t sadb_address_exttype;
+	uint8_t sadb_address_proto;
+	uint8_t sadb_address_prefixlen;
+	uint16_t sadb_address_reserved;
+} __attribute__ ((packed));
 /* sizeof(struct sadb_address) == 8 */
 
 struct sadb_key {
-	uint16_t	sadb_key_len;
-	uint16_t	sadb_key_exttype;
-	uint16_t	sadb_key_bits;
-	uint16_t	sadb_key_reserved;
-} __attribute__((packed));
+	uint16_t sadb_key_len;
+	uint16_t sadb_key_exttype;
+	uint16_t sadb_key_bits;
+	uint16_t sadb_key_reserved;
+} __attribute__ ((packed));
 /* sizeof(struct sadb_key) == 8 */
 
 struct sadb_ident {
-	uint16_t	sadb_ident_len;
-	uint16_t	sadb_ident_exttype;
-	uint16_t	sadb_ident_type;
-	uint16_t	sadb_ident_reserved;
-	uint64_t	sadb_ident_id;
-} __attribute__((packed));
+	uint16_t sadb_ident_len;
+	uint16_t sadb_ident_exttype;
+	uint16_t sadb_ident_type;
+	uint16_t sadb_ident_reserved;
+	uint64_t sadb_ident_id;
+} __attribute__ ((packed));
 /* sizeof(struct sadb_ident) == 16 */
 
 struct sadb_sens {
-	uint16_t	sadb_sens_len;
-	uint16_t	sadb_sens_exttype;
-	uint32_t	sadb_sens_dpd;
-	uint8_t		sadb_sens_sens_level;
-	uint8_t		sadb_sens_sens_len;
-	uint8_t		sadb_sens_integ_level;
-	uint8_t		sadb_sens_integ_len;
-	uint32_t	sadb_sens_reserved;
-} __attribute__((packed));
+	uint16_t sadb_sens_len;
+	uint16_t sadb_sens_exttype;
+	uint32_t sadb_sens_dpd;
+	uint8_t sadb_sens_sens_level;
+	uint8_t sadb_sens_sens_len;
+	uint8_t sadb_sens_integ_level;
+	uint8_t sadb_sens_integ_len;
+	uint32_t sadb_sens_reserved;
+} __attribute__ ((packed));
 /* sizeof(struct sadb_sens) == 16 */
 
 /* followed by:
@@ -94,11 +94,11 @@ struct sadb_sens {
 	uint64_t	sadb_integ_bitmap[integ_len];  */
 
 struct sadb_prop {
-	uint16_t	sadb_prop_len;
-	uint16_t	sadb_prop_exttype;
-	uint8_t		sadb_prop_replay;
-	uint8_t		sadb_prop_reserved[3];
-} __attribute__((packed));
+	uint16_t sadb_prop_len;
+	uint16_t sadb_prop_exttype;
+	uint8_t sadb_prop_replay;
+	uint8_t sadb_prop_reserved[3];
+} __attribute__ ((packed));
 /* sizeof(struct sadb_prop) == 8 */
 
 /* followed by:
@@ -107,30 +107,30 @@ struct sadb_prop {
 		sizeof(struct sadb_comb)]; */
 
 struct sadb_comb {
-	uint8_t		sadb_comb_auth;
-	uint8_t		sadb_comb_encrypt;
-	uint16_t	sadb_comb_flags;
-	uint16_t	sadb_comb_auth_minbits;
-	uint16_t	sadb_comb_auth_maxbits;
-	uint16_t	sadb_comb_encrypt_minbits;
-	uint16_t	sadb_comb_encrypt_maxbits;
-	uint32_t	sadb_comb_reserved;
-	uint32_t	sadb_comb_soft_allocations;
-	uint32_t	sadb_comb_hard_allocations;
-	uint64_t	sadb_comb_soft_bytes;
-	uint64_t	sadb_comb_hard_bytes;
-	uint64_t	sadb_comb_soft_addtime;
-	uint64_t	sadb_comb_hard_addtime;
-	uint64_t	sadb_comb_soft_usetime;
-	uint64_t	sadb_comb_hard_usetime;
-} __attribute__((packed));
+	uint8_t sadb_comb_auth;
+	uint8_t sadb_comb_encrypt;
+	uint16_t sadb_comb_flags;
+	uint16_t sadb_comb_auth_minbits;
+	uint16_t sadb_comb_auth_maxbits;
+	uint16_t sadb_comb_encrypt_minbits;
+	uint16_t sadb_comb_encrypt_maxbits;
+	uint32_t sadb_comb_reserved;
+	uint32_t sadb_comb_soft_allocations;
+	uint32_t sadb_comb_hard_allocations;
+	uint64_t sadb_comb_soft_bytes;
+	uint64_t sadb_comb_hard_bytes;
+	uint64_t sadb_comb_soft_addtime;
+	uint64_t sadb_comb_hard_addtime;
+	uint64_t sadb_comb_soft_usetime;
+	uint64_t sadb_comb_hard_usetime;
+} __attribute__ ((packed));
 /* sizeof(struct sadb_comb) == 72 */
 
 struct sadb_supported {
-	uint16_t	sadb_supported_len;
-	uint16_t	sadb_supported_exttype;
-	uint32_t	sadb_supported_reserved;
-} __attribute__((packed));
+	uint16_t sadb_supported_len;
+	uint16_t sadb_supported_exttype;
+	uint32_t sadb_supported_reserved;
+} __attribute__ ((packed));
 /* sizeof(struct sadb_supported) == 8 */
 
 /* followed by:
@@ -139,100 +139,100 @@ struct sadb_supported {
 		sizeof(struct sadb_alg)]; */
 
 struct sadb_alg {
-	uint8_t		sadb_alg_id;
-	uint8_t		sadb_alg_ivlen;
-	uint16_t	sadb_alg_minbits;
-	uint16_t	sadb_alg_maxbits;
-	uint16_t	sadb_alg_reserved;
-} __attribute__((packed));
+	uint8_t sadb_alg_id;
+	uint8_t sadb_alg_ivlen;
+	uint16_t sadb_alg_minbits;
+	uint16_t sadb_alg_maxbits;
+	uint16_t sadb_alg_reserved;
+} __attribute__ ((packed));
 /* sizeof(struct sadb_alg) == 8 */
 
 struct sadb_spirange {
-	uint16_t	sadb_spirange_len;
-	uint16_t	sadb_spirange_exttype;
-	uint32_t	sadb_spirange_min;
-	uint32_t	sadb_spirange_max;
-	uint32_t	sadb_spirange_reserved;
-} __attribute__((packed));
+	uint16_t sadb_spirange_len;
+	uint16_t sadb_spirange_exttype;
+	uint32_t sadb_spirange_min;
+	uint32_t sadb_spirange_max;
+	uint32_t sadb_spirange_reserved;
+} __attribute__ ((packed));
 /* sizeof(struct sadb_spirange) == 16 */
 
 struct sadb_x_kmprivate {
-	uint16_t	sadb_x_kmprivate_len;
-	uint16_t	sadb_x_kmprivate_exttype;
-	uint32_t	sadb_x_kmprivate_reserved;
-} __attribute__((packed));
+	uint16_t sadb_x_kmprivate_len;
+	uint16_t sadb_x_kmprivate_exttype;
+	uint32_t sadb_x_kmprivate_reserved;
+} __attribute__ ((packed));
 /* sizeof(struct sadb_x_kmprivate) == 8 */
 
 struct sadb_x_sa2 {
-	uint16_t	sadb_x_sa2_len;
-	uint16_t	sadb_x_sa2_exttype;
-	uint8_t		sadb_x_sa2_mode;
-	uint8_t		sadb_x_sa2_reserved1;
-	uint16_t	sadb_x_sa2_reserved2;
-	uint32_t	sadb_x_sa2_sequence;
-	uint32_t	sadb_x_sa2_reqid;
-} __attribute__((packed));
+	uint16_t sadb_x_sa2_len;
+	uint16_t sadb_x_sa2_exttype;
+	uint8_t sadb_x_sa2_mode;
+	uint8_t sadb_x_sa2_reserved1;
+	uint16_t sadb_x_sa2_reserved2;
+	uint32_t sadb_x_sa2_sequence;
+	uint32_t sadb_x_sa2_reqid;
+} __attribute__ ((packed));
 /* sizeof(struct sadb_x_sa2) == 16 */
 
 struct sadb_x_policy {
-	uint16_t	sadb_x_policy_len;
-	uint16_t	sadb_x_policy_exttype;
-	uint16_t	sadb_x_policy_type;
-	uint8_t		sadb_x_policy_dir;
-	uint8_t		sadb_x_policy_reserved;
-	uint32_t	sadb_x_policy_id;
-	uint32_t	sadb_x_policy_priority;
-} __attribute__((packed));
+	uint16_t sadb_x_policy_len;
+	uint16_t sadb_x_policy_exttype;
+	uint16_t sadb_x_policy_type;
+	uint8_t sadb_x_policy_dir;
+	uint8_t sadb_x_policy_reserved;
+	uint32_t sadb_x_policy_id;
+	uint32_t sadb_x_policy_priority;
+} __attribute__ ((packed));
 /* sizeof(struct sadb_x_policy) == 16 */
 
 struct sadb_x_ipsecrequest {
-	uint16_t	sadb_x_ipsecrequest_len;
-	uint16_t	sadb_x_ipsecrequest_proto;
-	uint8_t		sadb_x_ipsecrequest_mode;
-	uint8_t		sadb_x_ipsecrequest_level;
-	uint16_t	sadb_x_ipsecrequest_reserved1;
-	uint32_t	sadb_x_ipsecrequest_reqid;
-	uint32_t	sadb_x_ipsecrequest_reserved2;
-} __attribute__((packed));
+	uint16_t sadb_x_ipsecrequest_len;
+	uint16_t sadb_x_ipsecrequest_proto;
+	uint8_t sadb_x_ipsecrequest_mode;
+	uint8_t sadb_x_ipsecrequest_level;
+	uint16_t sadb_x_ipsecrequest_reserved1;
+	uint32_t sadb_x_ipsecrequest_reqid;
+	uint32_t sadb_x_ipsecrequest_reserved2;
+} __attribute__ ((packed));
 /* sizeof(struct sadb_x_ipsecrequest) == 16 */
 
 /* This defines the TYPE of Nat Traversal in use.  Currently only one
  * type of NAT-T is supported, draft-ietf-ipsec-udp-encaps-06
  */
 struct sadb_x_nat_t_type {
-	uint16_t	sadb_x_nat_t_type_len;
-	uint16_t	sadb_x_nat_t_type_exttype;
-	uint8_t		sadb_x_nat_t_type_type;
-	uint8_t		sadb_x_nat_t_type_reserved[3];
-} __attribute__((packed));
+	uint16_t sadb_x_nat_t_type_len;
+	uint16_t sadb_x_nat_t_type_exttype;
+	uint8_t sadb_x_nat_t_type_type;
+	uint8_t sadb_x_nat_t_type_reserved[3];
+} __attribute__ ((packed));
 /* sizeof(struct sadb_x_nat_t_type) == 8 */
 
 /* Pass a NAT Traversal port (Source or Dest port) */
 struct sadb_x_nat_t_port {
-	uint16_t	sadb_x_nat_t_port_len;
-	uint16_t	sadb_x_nat_t_port_exttype;
-	__be16		sadb_x_nat_t_port_port;
-	uint16_t	sadb_x_nat_t_port_reserved;
-} __attribute__((packed));
+	uint16_t sadb_x_nat_t_port_len;
+	uint16_t sadb_x_nat_t_port_exttype;
+	__be16 sadb_x_nat_t_port_port;
+	uint16_t sadb_x_nat_t_port_reserved;
+} __attribute__ ((packed));
 /* sizeof(struct sadb_x_nat_t_port) == 8 */
 
 /* Generic LSM security context */
 struct sadb_x_sec_ctx {
-	uint16_t	sadb_x_sec_len;
-	uint16_t	sadb_x_sec_exttype;
-	uint8_t		sadb_x_ctx_alg;  /* LSMs: e.g., selinux == 1 */
-	uint8_t		sadb_x_ctx_doi;
-	uint16_t	sadb_x_ctx_len;
-} __attribute__((packed));
+	uint16_t sadb_x_sec_len;
+	uint16_t sadb_x_sec_exttype;
+	uint8_t sadb_x_ctx_alg;	/* LSMs: e.g., selinux == 1 */
+	uint8_t sadb_x_ctx_doi;
+	uint16_t sadb_x_ctx_len;
+} __attribute__ ((packed));
 /* sizeof(struct sadb_sec_ctx) = 8 */
 
 /* Used by MIGRATE to pass addresses IKE will use to perform
  * negotiation with the peer */
 struct sadb_x_kmaddress {
-	uint16_t	sadb_x_kmaddress_len;
-	uint16_t	sadb_x_kmaddress_exttype;
-	uint32_t	sadb_x_kmaddress_reserved;
-} __attribute__((packed));
+	uint16_t sadb_x_kmaddress_len;
+	uint16_t sadb_x_kmaddress_exttype;
+	uint32_t sadb_x_kmaddress_reserved;
+} __attribute__ ((packed));
 /* sizeof(struct sadb_x_kmaddress) == 8 */
 
 /* Message types */
@@ -315,10 +315,10 @@ struct sadb_x_kmaddress {
 #define SADB_X_EALG_AES_GCM_ICV12	19
 #define SADB_X_EALG_AES_GCM_ICV16	20
 #define SADB_X_EALG_CAMELLIACBC		22
-#define SADB_EALG_MAX                   253 /* last EALG */
+#define SADB_EALG_MAX                   253	/* last EALG */
 /* private allocations should use 249-255 (RFC2407) */
-#define SADB_X_EALG_SERPENTCBC  252     /* draft-ietf-ipsec-ciph-aes-cbc-00 */
-#define SADB_X_EALG_TWOFISHCBC  253     /* draft-ietf-ipsec-ciph-aes-cbc-00 */
+#define SADB_X_EALG_SERPENTCBC  252	/* draft-ietf-ipsec-ciph-aes-cbc-00 */
+#define SADB_X_EALG_TWOFISHCBC  253	/* draft-ietf-ipsec-ciph-aes-cbc-00 */
 
 /* Compression algorithms */
 #define SADB_X_CALG_NONE		0

@@ -61,23 +61,23 @@
  * IrCOMM TTY driver state
  */
 struct ircomm_tty_cb {
-	irda_queue_t queue;            /* Must be first */
+	irda_queue_t queue;	/* Must be first */
 	magic_t magic;
 
-	int state;                /* Connect state */
+	int state;		/* Connect state */
 
 	struct tty_struct *tty;
-	struct ircomm_cb *ircomm; /* IrCOMM layer instance */
+	struct ircomm_cb *ircomm;	/* IrCOMM layer instance */
 
-	struct sk_buff *tx_skb;   /* Transmit buffer */
-	struct sk_buff *ctrl_skb; /* Control data buffer */
+	struct sk_buff *tx_skb;	/* Transmit buffer */
+	struct sk_buff *ctrl_skb;	/* Control data buffer */
 
 	/* Parameters */
 	struct ircomm_params settings;
 
-	__u8 service_type;        /* The service that we support */
-	int client;               /* True if we are a client */
-	LOCAL_FLOW flow;          /* IrTTP flow status */
+	__u8 service_type;	/* The service that we support */
+	int client;		/* True if we are a client */
+	LOCAL_FLOW flow;	/* IrTTP flow status */
 
 	int line;
 	unsigned long flags;
@@ -88,30 +88,30 @@ struct ircomm_tty_cb {
 	__u32 saddr;
 	__u32 daddr;
 
-	__u32 max_data_size;   /* Max data we can transmit in one packet */
-	__u32 max_header_size; /* The amount of header space we must reserve */
+	__u32 max_data_size;	/* Max data we can transmit in one packet */
+	__u32 max_header_size;	/* The amount of header space we must reserve */
 	__u32 tx_data_size;	/* Max data size of current tx_skb */
 
-	struct iriap_cb *iriap; /* Instance used for querying remote IAS */
-	struct ias_object* obj;
+	struct iriap_cb *iriap;	/* Instance used for querying remote IAS */
+	struct ias_object *obj;
 	void *skey;
 	void *ckey;
 
 	wait_queue_head_t open_wait;
 	wait_queue_head_t close_wait;
 	struct timer_list watchdog_timer;
-	struct work_struct  tqueue;
+	struct work_struct tqueue;
 
-        unsigned short    close_delay;
-        unsigned short    closing_wait; /* time to wait before closing */
+	unsigned short close_delay;
+	unsigned short closing_wait;	/* time to wait before closing */
 
-	int  open_count;
-	int  blocked_open;	/* # of blocked opens */
+	int open_count;
+	int blocked_open;	/* # of blocked opens */
 
 	/* Protect concurent access to :
-	 *	o self->open_count
-	 *	o self->ctrl_skb
-	 *	o self->tx_skb
+	 *      o self->open_count
+	 *      o self->ctrl_skb
+	 *      o self->tx_skb
 	 * Maybe other things may gain to be protected as well...
 	 * Jean II */
 	spinlock_t spinlock;
@@ -123,16 +123,9 @@ void ircomm_tty_check_modem_status(struct ircomm_tty_cb *self);
 extern int ircomm_tty_tiocmget(struct tty_struct *tty, struct file *file);
 extern int ircomm_tty_tiocmset(struct tty_struct *tty, struct file *file,
 			       unsigned int set, unsigned int clear);
-extern int ircomm_tty_ioctl(struct tty_struct *tty, struct file *file, 
+extern int ircomm_tty_ioctl(struct tty_struct *tty, struct file *file,
 			    unsigned int cmd, unsigned long arg);
-extern void ircomm_tty_set_termios(struct tty_struct *tty, 
+extern void ircomm_tty_set_termios(struct tty_struct *tty,
 				   struct ktermios *old_termios);
 
 #endif
-
-
-
-
-
-
-

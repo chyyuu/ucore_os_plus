@@ -88,19 +88,18 @@
 #endif
 
 int
-ext3_mark_iloc_dirty(handle_t *handle,
-		     struct inode *inode,
-		     struct ext3_iloc *iloc);
+ext3_mark_iloc_dirty(handle_t * handle,
+		     struct inode *inode, struct ext3_iloc *iloc);
 
 /*
  * On success, We end up with an outstanding reference count against
  * iloc->bh.  This _must_ be cleaned up later.
  */
 
-int ext3_reserve_inode_write(handle_t *handle, struct inode *inode,
-			struct ext3_iloc *iloc);
+int ext3_reserve_inode_write(handle_t * handle, struct inode *inode,
+			     struct ext3_iloc *iloc);
 
-int ext3_mark_inode_dirty(handle_t *handle, struct inode *inode);
+int ext3_mark_inode_dirty(handle_t * handle, struct inode *inode);
 
 /*
  * Wrapper functions with which ext3 calls into JBD.  The intent here is
@@ -109,32 +108,33 @@ int ext3_mark_inode_dirty(handle_t *handle, struct inode *inode);
  * been done yet.
  */
 
-static inline void ext3_journal_release_buffer(handle_t *handle,
-						struct buffer_head *bh)
+static inline void ext3_journal_release_buffer(handle_t * handle,
+					       struct buffer_head *bh)
 {
 	journal_release_buffer(handle, bh);
 }
 
 void ext3_journal_abort_handle(const char *caller, const char *err_fn,
-		struct buffer_head *bh, handle_t *handle, int err);
+			       struct buffer_head *bh, handle_t * handle,
+			       int err);
 
-int __ext3_journal_get_undo_access(const char *where, handle_t *handle,
-				struct buffer_head *bh);
+int __ext3_journal_get_undo_access(const char *where, handle_t * handle,
+				   struct buffer_head *bh);
 
-int __ext3_journal_get_write_access(const char *where, handle_t *handle,
-				struct buffer_head *bh);
+int __ext3_journal_get_write_access(const char *where, handle_t * handle,
+				    struct buffer_head *bh);
 
-int __ext3_journal_forget(const char *where, handle_t *handle,
-				struct buffer_head *bh);
+int __ext3_journal_forget(const char *where, handle_t * handle,
+			  struct buffer_head *bh);
 
-int __ext3_journal_revoke(const char *where, handle_t *handle,
-				unsigned long blocknr, struct buffer_head *bh);
+int __ext3_journal_revoke(const char *where, handle_t * handle,
+			  unsigned long blocknr, struct buffer_head *bh);
 
 int __ext3_journal_get_create_access(const char *where,
-				handle_t *handle, struct buffer_head *bh);
+				     handle_t * handle, struct buffer_head *bh);
 
 int __ext3_journal_dirty_metadata(const char *where,
-				handle_t *handle, struct buffer_head *bh);
+				  handle_t * handle, struct buffer_head *bh);
 
 #define ext3_journal_get_undo_access(handle, bh) \
 	__ext3_journal_get_undo_access(__func__, (handle), (bh))
@@ -149,10 +149,10 @@ int __ext3_journal_dirty_metadata(const char *where,
 #define ext3_journal_forget(handle, bh) \
 	__ext3_journal_forget(__func__, (handle), (bh))
 
-int ext3_journal_dirty_data(handle_t *handle, struct buffer_head *bh);
+int ext3_journal_dirty_data(handle_t * handle, struct buffer_head *bh);
 
 handle_t *ext3_journal_start_sb(struct super_block *sb, int nblocks);
-int __ext3_journal_stop(const char *where, handle_t *handle);
+int __ext3_journal_stop(const char *where, handle_t * handle);
 
 static inline handle_t *ext3_journal_start(struct inode *inode, int nblocks)
 {
@@ -167,12 +167,12 @@ static inline handle_t *ext3_journal_current_handle(void)
 	return journal_current_handle();
 }
 
-static inline int ext3_journal_extend(handle_t *handle, int nblocks)
+static inline int ext3_journal_extend(handle_t * handle, int nblocks)
 {
 	return journal_extend(handle, nblocks);
 }
 
-static inline int ext3_journal_restart(handle_t *handle, int nblocks)
+static inline int ext3_journal_restart(handle_t * handle, int nblocks)
 {
 	return journal_restart(handle, nblocks);
 }
@@ -182,7 +182,7 @@ static inline int ext3_journal_blocks_per_page(struct inode *inode)
 	return journal_blocks_per_page(inode);
 }
 
-static inline int ext3_journal_force_commit(journal_t *journal)
+static inline int ext3_journal_force_commit(journal_t * journal)
 {
 	return journal_force_commit(journal);
 }
@@ -223,4 +223,4 @@ static inline int ext3_should_writeback_data(struct inode *inode)
 	return 0;
 }
 
-#endif	/* _LINUX_EXT3_JBD_H */
+#endif /* _LINUX_EXT3_JBD_H */

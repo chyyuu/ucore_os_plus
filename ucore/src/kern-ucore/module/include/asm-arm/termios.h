@@ -13,11 +13,11 @@ struct winsize {
 
 #define NCC 8
 struct termio {
-	unsigned short c_iflag;		/* input mode flags */
-	unsigned short c_oflag;		/* output mode flags */
-	unsigned short c_cflag;		/* control mode flags */
-	unsigned short c_lflag;		/* local mode flags */
-	unsigned char c_line;		/* line discipline */
+	unsigned short c_iflag;	/* input mode flags */
+	unsigned short c_oflag;	/* output mode flags */
+	unsigned short c_cflag;	/* control mode flags */
+	unsigned short c_lflag;	/* local mode flags */
+	unsigned char c_line;	/* line discipline */
 	unsigned char c_cc[NCC];	/* control characters */
 };
 
@@ -87,6 +87,6 @@ struct termio {
 #define user_termios_to_kernel_termios_1(k, u) copy_from_user(k, u, sizeof(struct termios))
 #define kernel_termios_to_user_termios_1(u, k) copy_to_user(u, k, sizeof(struct termios))
 
-#endif	/* __KERNEL__ */
+#endif /* __KERNEL__ */
 
-#endif	/* __ASM_ARM_TERMIOS_H */
+#endif /* __ASM_ARM_TERMIOS_H */

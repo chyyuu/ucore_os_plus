@@ -27,5 +27,4 @@ bool check_initrd();
 #define CHECK_INITRD_EXIST() (_initrd_end != _initrd_begin)
 #define INITRD_SIZE() (_initrd_end - _initrd_begin)
 
-void ramdisk_init_struct(struct ide_device* dev);
-
+void ramdisk_init_struct(struct ide_device *dev);

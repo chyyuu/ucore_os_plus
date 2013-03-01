@@ -41,7 +41,6 @@
  * essentially no allocation space overhead.
  */
 
-
 //some helper
 #define spin_lock_irqsave(l, f) local_intr_save(f)
 #define spin_unlock_irqrestore(l, f) local_intr_restore(f)
@@ -55,9 +54,8 @@ typedef unsigned int gfp_t;
 #endif
 
 #ifndef ALIGN
-#define ALIGN(addr,size)   (((addr)+(size)-1)&(~((size)-1))) 
+#define ALIGN(addr,size)   (((addr)+(size)-1)&(~((size)-1)))
 #endif
-
 
 struct slob_block {
 	int units;
@@ -76,31 +74,31 @@ struct bigblock {
 };
 typedef struct bigblock bigblock_t;
 
-static slob_t arena = { .next = &arena, .units = 1 };
+static slob_t arena = {.next = &arena,.units = 1 };
+
 static slob_t *slobfree = &arena;
 static bigblock_t *bigblocks;
 
-
-static void* __slob_get_free_pages(gfp_t gfp, int order)
+static void *__slob_get_free_pages(gfp_t gfp, int order)
 {
-  struct Page * page = alloc_pages(1 << order);
-  if(!page)
-    return NULL;
-  return page2kva(page);
+	struct Page *page = alloc_pages(1 << order);
+	if (!page)
+		return NULL;
+	return page2kva(page);
 }
 
 #define __slob_get_free_page(gfp) __slob_get_free_pages(gfp, 0)
 
 static inline void __slob_free_pages(unsigned long kva, int order)
 {
-  free_pages(kva2page(kva), 1 << order);
+	free_pages(kva2page(kva), 1 << order);
 }
 
 static void slob_free(void *b, int size);
 
 static void *slob_alloc(size_t size, gfp_t gfp, int align)
 {
-  assert( (size + SLOB_UNIT) < PAGE_SIZE );
+	assert((size + SLOB_UNIT) < PAGE_SIZE);
 
 	slob_t *prev, *cur, *aligned = 0;
 	int delta = 0, units = SLOB_UNITS(size);
@@ -108,13 +106,13 @@ static void *slob_alloc(size_t size, gfp_t gfp, int align)
 
 	spin_lock_irqsave(&slob_lock, flags);
 	prev = slobfree;
-	for (cur = prev->next; ; prev = cur, cur = cur->next) {
+	for (cur = prev->next;; prev = cur, cur = cur->next) {
 		if (align) {
-			aligned = (slob_t *)ALIGN((unsigned long)cur, align);
+			aligned = (slob_t *) ALIGN((unsigned long)cur, align);
 			delta = aligned - cur;
 		}
-		if (cur->units >= units + delta) { /* room enough? */
-			if (delta) { /* need to fragment head to align? */
+		if (cur->units >= units + delta) {	/* room enough? */
+			if (delta) {	/* need to fragment head to align? */
 				aligned->units = cur->units - delta;
 				aligned->next = cur->next;
 				cur->next = aligned;
@@ -123,9 +121,9 @@ static void *slob_alloc(size_t size, gfp_t gfp, int align)
 				cur = aligned;
 			}
 
-			if (cur->units == units) /* exact fit? */
-				prev->next = cur->next; /* unlink */
-			else { /* fragment */
+			if (cur->units == units)	/* exact fit? */
+				prev->next = cur->next;	/* unlink */
+			else {	/* fragment */
 				prev->next = cur + units;
 				prev->next->units = cur->units - units;
 				prev->next->next = cur->next;
@@ -139,10 +137,10 @@ static void *slob_alloc(size_t size, gfp_t gfp, int align)
 		if (cur == slobfree) {
 			spin_unlock_irqrestore(&slob_lock, flags);
 
-			if (size == PAGE_SIZE) /* trying to shrink arena? */
+			if (size == PAGE_SIZE)	/* trying to shrink arena? */
 				return 0;
 
-			cur = (slob_t *)__slob_get_free_page(gfp);
+			cur = (slob_t *) __slob_get_free_page(gfp);
 			if (!cur)
 				return 0;
 
@@ -155,7 +153,7 @@ static void *slob_alloc(size_t size, gfp_t gfp, int align)
 
 static void slob_free(void *block, int size)
 {
-	slob_t *cur, *b = (slob_t *)block;
+	slob_t *cur, *b = (slob_t *) block;
 	unsigned long flags;
 
 	if (!block)
@@ -187,22 +185,21 @@ static void slob_free(void *block, int size)
 	spin_unlock_irqrestore(&slob_lock, flags);
 }
 
- 
-void
-slab_init(void) {
-  kprintf("use SLOB allocator\n");
-  check_slab();
+void slab_init(void)
+{
+	kprintf("use SLOB allocator\n");
+	check_slab();
 }
 
-size_t
-slab_allocated(void) {
-  return 0;
+size_t slab_allocated(void)
+{
+	return 0;
 }
 
 static int find_order(int size)
 {
 	int order = 0;
-	for ( ; size > 4096 ; size >>=1)
+	for (; size > 4096; size >>= 1)
 		order++;
 	return order;
 }
@@ -237,12 +234,10 @@ static void *__kmalloc(size_t size, gfp_t gfp)
 	return 0;
 }
 
-void *
-kmalloc(size_t size)
+void *kmalloc(size_t size)
 {
-  return __kmalloc(size, 0);
+	return __kmalloc(size, 0);
 }
-
 
 void kfree(void *block)
 {
@@ -252,14 +247,15 @@ void kfree(void *block)
 	if (!block)
 		return;
 
-	if (!((unsigned long)block & (PAGE_SIZE-1))) {
+	if (!((unsigned long)block & (PAGE_SIZE - 1))) {
 		/* might be on the big block list */
 		spin_lock_irqsave(&block_lock, flags);
 		for (bb = bigblocks; bb; last = &bb->next, bb = bb->next) {
 			if (bb->pages == block) {
 				*last = bb->next;
 				spin_unlock_irqrestore(&block_lock, flags);
-				__slob_free_pages((unsigned long)block, bb->order);
+				__slob_free_pages((unsigned long)block,
+						  bb->order);
 				slob_free(bb, sizeof(bigblock_t));
 				return;
 			}
@@ -267,10 +263,9 @@ void kfree(void *block)
 		spin_unlock_irqrestore(&block_lock, flags);
 	}
 
-	slob_free((slob_t *)block - 1, 0);
+	slob_free((slob_t *) block - 1, 0);
 	return;
 }
-
 
 unsigned int ksize(const void *block)
 {
@@ -280,7 +275,7 @@ unsigned int ksize(const void *block)
 	if (!block)
 		return 0;
 
-	if (!((unsigned long)block & (PAGE_SIZE-1))) {
+	if (!((unsigned long)block & (PAGE_SIZE - 1))) {
 		spin_lock_irqsave(&block_lock, flags);
 		for (bb = bigblocks; bb; bb = bb->next)
 			if (bb->pages == block) {
@@ -290,11 +285,10 @@ unsigned int ksize(const void *block)
 		spin_unlock_irqrestore(&block_lock, flags);
 	}
 
-	return ((slob_t *)block - 1)->units * SLOB_UNIT;
+	return ((slob_t *) block - 1)->units * SLOB_UNIT;
 }
 
-
-void check_slab(void) {
-  kprintf("check_slab() success\n");
+void check_slab(void)
+{
+	kprintf("check_slab() success\n");
 }
-

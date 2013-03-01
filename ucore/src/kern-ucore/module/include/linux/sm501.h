@@ -43,9 +43,7 @@ extern int sm501_misc_control(struct device *dev,
 
 extern unsigned long sm501_modify_reg(struct device *dev,
 				      unsigned long reg,
-				      unsigned long set,
-				      unsigned long clear);
-
+				      unsigned long set, unsigned long clear);
 
 /* Platform data definitions */
 
@@ -59,15 +57,15 @@ extern unsigned long sm501_modify_reg(struct device *dev,
 #define SM501FB_FLAG_PANEL_INV_VBIASEN	(1<<7)
 
 struct sm501_platdata_fbsub {
-	struct fb_videomode	*def_mode;
-	unsigned int		 def_bpp;
-	unsigned long		 max_mem;
-	unsigned int		 flags;
+	struct fb_videomode *def_mode;
+	unsigned int def_bpp;
+	unsigned long max_mem;
+	unsigned int flags;
 };
 
 enum sm501_fb_routing {
-	SM501_FB_OWN		= 0,	/* CRT=>CRT, Panel=>Panel */
-	SM501_FB_CRT_PANEL	= 1,	/* Panel=>CRT, Panel=>Panel */
+	SM501_FB_OWN = 0,	/* CRT=>CRT, Panel=>Panel */
+	SM501_FB_CRT_PANEL = 1,	/* Panel=>CRT, Panel=>Panel */
 };
 
 /* sm501_platdata_fb flag field bit definitions */
@@ -80,10 +78,10 @@ enum sm501_fb_routing {
 */
 
 struct sm501_platdata_fb {
-	enum sm501_fb_routing		 fb_route;
-	unsigned int			 flags;
-	struct sm501_platdata_fbsub	*fb_crt;
-	struct sm501_platdata_fbsub	*fb_pnl;
+	enum sm501_fb_routing fb_route;
+	unsigned int flags;
+	struct sm501_platdata_fbsub *fb_crt;
+	struct sm501_platdata_fbsub *fb_pnl;
 };
 
 /* gpio i2c
@@ -94,11 +92,11 @@ struct sm501_platdata_fb {
 */
 
 struct sm501_platdata_gpio_i2c {
-	unsigned int		bus_num;
-	unsigned int		pin_sda;
-	unsigned int		pin_scl;
-	int			udelay;
-	int			timeout;
+	unsigned int bus_num;
+	unsigned int pin_sda;
+	unsigned int pin_scl;
+	int udelay;
+	int timeout;
 };
 
 /* sm501_initdata
@@ -108,8 +106,8 @@ struct sm501_platdata_gpio_i2c {
 */
 
 struct sm501_reg_init {
-	unsigned long		set;
-	unsigned long		mask;
+	unsigned long set;
+	unsigned long mask;
 };
 
 #define SM501_USE_USB_HOST	(1<<0)
@@ -126,14 +124,14 @@ struct sm501_reg_init {
 #define SM501_USE_ALL		(0xffffffff)
 
 struct sm501_initdata {
-	struct sm501_reg_init	gpio_low;
-	struct sm501_reg_init	gpio_high;
-	struct sm501_reg_init	misc_timing;
-	struct sm501_reg_init	misc_control;
+	struct sm501_reg_init gpio_low;
+	struct sm501_reg_init gpio_high;
+	struct sm501_reg_init misc_timing;
+	struct sm501_reg_init misc_control;
 
-	unsigned long		devices;
-	unsigned long		mclk;		/* non-zero to modify */
-	unsigned long		m1xclk;		/* non-zero to modify */
+	unsigned long devices;
+	unsigned long mclk;	/* non-zero to modify */
+	unsigned long m1xclk;	/* non-zero to modify */
 };
 
 /* sm501_init_gpio
@@ -142,10 +140,10 @@ struct sm501_initdata {
 */
 
 struct sm501_init_gpio {
-	struct sm501_reg_init	gpio_data_low;
-	struct sm501_reg_init	gpio_data_high;
-	struct sm501_reg_init	gpio_ddr_low;
-	struct sm501_reg_init	gpio_ddr_high;
+	struct sm501_reg_init gpio_data_low;
+	struct sm501_reg_init gpio_data_high;
+	struct sm501_reg_init gpio_ddr_low;
+	struct sm501_reg_init gpio_ddr_high;
 };
 
 #define SM501_FLAG_SUSPEND_OFF		(1<<4)
@@ -159,16 +157,16 @@ struct sm501_init_gpio {
 */
 
 struct sm501_platdata {
-	struct sm501_initdata		*init;
-	struct sm501_init_gpio		*init_gpiop;
-	struct sm501_platdata_fb	*fb;
+	struct sm501_initdata *init;
+	struct sm501_init_gpio *init_gpiop;
+	struct sm501_platdata_fb *fb;
 
-	int				 flags;
-	int				 gpio_base;
+	int flags;
+	int gpio_base;
 
-	int	(*get_power)(struct device *dev);
-	int	(*set_power)(struct device *dev, unsigned int on);
+	int (*get_power) (struct device * dev);
+	int (*set_power) (struct device * dev, unsigned int on);
 
-	struct sm501_platdata_gpio_i2c	*gpio_i2c;
-	unsigned int			 gpio_i2c_nr;
+	struct sm501_platdata_gpio_i2c *gpio_i2c;
+	unsigned int gpio_i2c_nr;
 };

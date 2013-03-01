@@ -57,13 +57,13 @@ enum kobject_action {
 };
 
 struct kobject {
-	const char		*name;
-	struct list_head	entry;
-	struct kobject		*parent;
-	struct kset		*kset;
-	struct kobj_type	*ktype;
-	struct sysfs_dirent	*sd;
-	struct kref		kref;
+	const char *name;
+	struct list_head entry;
+	struct kobject *parent;
+	struct kset *kset;
+	struct kobj_type *ktype;
+	struct sysfs_dirent *sd;
+	struct kref kref;
 	unsigned int state_initialized:1;
 	unsigned int state_in_sysfs:1;
 	unsigned int state_add_uevent_sent:1;
@@ -71,7 +71,7 @@ struct kobject {
 };
 
 extern int kobject_set_name(struct kobject *kobj, const char *name, ...)
-			    __attribute__((format(printf, 2, 3)));
+    __attribute__ ((format(printf, 2, 3)));
 
 static inline const char *kobject_name(const struct kobject *kobj)
 {
@@ -89,9 +89,9 @@ extern int __must_check kobject_init_and_add(struct kobject *kobj,
 
 extern void kobject_del(struct kobject *kobj);
 
-extern struct kobject * __must_check kobject_create(void);
-extern struct kobject * __must_check kobject_create_and_add(const char *name,
-						struct kobject *parent);
+extern struct kobject *__must_check kobject_create(void);
+extern struct kobject *__must_check kobject_create_and_add(const char *name, struct kobject
+							   *parent);
 
 extern int __must_check kobject_rename(struct kobject *, const char *new_name);
 extern int __must_check kobject_move(struct kobject *, struct kobject *);
@@ -102,7 +102,7 @@ extern void kobject_put(struct kobject *kobj);
 extern char *kobject_get_path(struct kobject *kobj, gfp_t flag);
 
 struct kobj_type {
-	void (*release)(struct kobject *kobj);
+	void (*release) (struct kobject * kobj);
 	struct sysfs_ops *sysfs_ops;
 	struct attribute **default_attrs;
 };
@@ -115,18 +115,18 @@ struct kobj_uevent_env {
 };
 
 struct kset_uevent_ops {
-	int (*filter)(struct kset *kset, struct kobject *kobj);
-	const char *(*name)(struct kset *kset, struct kobject *kobj);
-	int (*uevent)(struct kset *kset, struct kobject *kobj,
-		      struct kobj_uevent_env *env);
+	int (*filter) (struct kset * kset, struct kobject * kobj);
+	const char *(*name) (struct kset * kset, struct kobject * kobj);
+	int (*uevent) (struct kset * kset, struct kobject * kobj,
+		       struct kobj_uevent_env * env);
 };
 
 struct kobj_attribute {
 	struct attribute attr;
-	ssize_t (*show)(struct kobject *kobj, struct kobj_attribute *attr,
-			char *buf);
-	ssize_t (*store)(struct kobject *kobj, struct kobj_attribute *attr,
-			 const char *buf, size_t count);
+	 ssize_t(*show) (struct kobject * kobj, struct kobj_attribute * attr,
+			 char *buf);
+	 ssize_t(*store) (struct kobject * kobj, struct kobj_attribute * attr,
+			  const char *buf, size_t count);
 };
 
 extern struct sysfs_ops kobj_sysfs_ops;
@@ -158,9 +158,10 @@ struct kset {
 extern void kset_init(struct kset *kset);
 extern int __must_check kset_register(struct kset *kset);
 extern void kset_unregister(struct kset *kset);
-extern struct kset * __must_check kset_create_and_add(const char *name,
-						struct kset_uevent_ops *u,
-						struct kobject *parent_kobj);
+extern struct kset *__must_check kset_create_and_add(const char *name,
+						     struct kset_uevent_ops *u,
+						     struct kobject
+						     *parent_kobj);
 
 static inline struct kset *to_kset(struct kobject *kobj)
 {
@@ -198,29 +199,37 @@ extern struct kobject *firmware_kobj;
 #if defined(CONFIG_HOTPLUG)
 int kobject_uevent(struct kobject *kobj, enum kobject_action action);
 int kobject_uevent_env(struct kobject *kobj, enum kobject_action action,
-			char *envp[]);
+		       char *envp[]);
 
 int add_uevent_var(struct kobj_uevent_env *env, const char *format, ...)
-	__attribute__((format (printf, 2, 3)));
+    __attribute__ ((format(printf, 2, 3)));
 
 int kobject_action_type(const char *buf, size_t count,
 			enum kobject_action *type);
 #else
 static inline int kobject_uevent(struct kobject *kobj,
 				 enum kobject_action action)
-{ return 0; }
+{
+	return 0;
+}
+
 static inline int kobject_uevent_env(struct kobject *kobj,
-				      enum kobject_action action,
-				      char *envp[])
-{ return 0; }
+				     enum kobject_action action, char *envp[])
+{
+	return 0;
+}
 
 static inline int add_uevent_var(struct kobj_uevent_env *env,
 				 const char *format, ...)
-{ return 0; }
+{
+	return 0;
+}
 
 static inline int kobject_action_type(const char *buf, size_t count,
 				      enum kobject_action *type)
-{ return -EINVAL; }
+{
+	return -EINVAL;
+}
 #endif
 
 #endif /* _KOBJECT_H_ */

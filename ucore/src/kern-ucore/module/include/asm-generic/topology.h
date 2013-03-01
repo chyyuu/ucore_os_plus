@@ -63,7 +63,7 @@
 				 cpumask_of_node(pcibus_to_node(bus)))
 #endif
 
-#endif	/* CONFIG_NUMA */
+#endif /* CONFIG_NUMA */
 
 /*
  * returns pointer to cpumask for specified node

@@ -72,10 +72,12 @@ static inline void reiserfs_write_lock_xattrs(struct super_block *sb)
 {
 	down_write(&REISERFS_XATTR_DIR_SEM(sb));
 }
+
 static inline void reiserfs_write_unlock_xattrs(struct super_block *sb)
 {
 	up_write(&REISERFS_XATTR_DIR_SEM(sb));
 }
+
 static inline void reiserfs_read_lock_xattrs(struct super_block *sb)
 {
 	down_read(&REISERFS_XATTR_DIR_SEM(sb));
@@ -90,10 +92,12 @@ static inline void reiserfs_write_lock_xattr_i(struct inode *inode)
 {
 	down_write(&REISERFS_I(inode)->xattr_sem);
 }
+
 static inline void reiserfs_write_unlock_xattr_i(struct inode *inode)
 {
 	up_write(&REISERFS_I(inode)->xattr_sem);
 }
+
 static inline void reiserfs_read_lock_xattr_i(struct inode *inode)
 {
 	down_read(&REISERFS_I(inode)->xattr_sem);
@@ -136,21 +140,24 @@ static inline int reiserfs_delete_xattrs(struct inode *inode)
 {
 	return 0;
 };
+
 static inline int reiserfs_chown_xattrs(struct inode *inode,
 					struct iattr *attrs)
 {
 	return 0;
 };
+
 static inline int reiserfs_xattr_init(struct super_block *sb, int mount_flags)
 {
 	sb->s_flags = (sb->s_flags & ~MS_POSIXACL);	/* to be sure */
 	return 0;
 };
+
 static inline void reiserfs_init_xattr_rwsem(struct inode *inode)
 {
 }
-#endif  /*  CONFIG_REISERFS_FS_XATTR  */
+#endif /*  CONFIG_REISERFS_FS_XATTR  */
 
-#endif  /*  __KERNEL__  */
+#endif /*  __KERNEL__  */
 
-#endif  /*  _LINUX_REISERFS_XATTR_H  */
+#endif /*  _LINUX_REISERFS_XATTR_H  */

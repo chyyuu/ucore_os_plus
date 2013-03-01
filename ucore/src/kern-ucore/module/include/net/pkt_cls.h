@@ -7,12 +7,11 @@
 
 /* Basic packet classifier frontend definitions. */
 
-struct tcf_walker
-{
-	int	stop;
-	int	skip;
-	int	count;
-	int	(*fn)(struct tcf_proto *, unsigned long node, struct tcf_walker *);
+struct tcf_walker {
+	int stop;
+	int skip;
+	int count;
+	int (*fn) (struct tcf_proto *, unsigned long node, struct tcf_walker *);
 };
 
 extern int register_tcf_proto_ops(struct tcf_proto_ops *ops);
@@ -22,22 +21,21 @@ static inline unsigned long
 __cls_set_class(unsigned long *clp, unsigned long cl)
 {
 	unsigned long old_cl;
- 
+
 	old_cl = *clp;
 	*clp = cl;
 	return old_cl;
 }
 
 static inline unsigned long
-cls_set_class(struct tcf_proto *tp, unsigned long *clp, 
-	unsigned long cl)
+cls_set_class(struct tcf_proto *tp, unsigned long *clp, unsigned long cl)
 {
 	unsigned long old_cl;
-	
+
 	tcf_tree_lock(tp);
 	old_cl = __cls_set_class(clp, cl);
 	tcf_tree_unlock(tp);
- 
+
 	return old_cl;
 }
 
@@ -52,8 +50,7 @@ tcf_bind_filter(struct tcf_proto *tp, struct tcf_result *r, unsigned long base)
 		tp->q->ops->cl_ops->unbind_tcf(tp->q, cl);
 }
 
-static inline void
-tcf_unbind_filter(struct tcf_proto *tp, struct tcf_result *r)
+static inline void tcf_unbind_filter(struct tcf_proto *tp, struct tcf_result *r)
 {
 	unsigned long cl;
 
@@ -61,8 +58,7 @@ tcf_unbind_filter(struct tcf_proto *tp, struct tcf_result *r)
 		tp->q->ops->cl_ops->unbind_tcf(tp->q, cl);
 }
 
-struct tcf_exts
-{
+struct tcf_exts {
 #ifdef CONFIG_NET_CLS_ACT
 	struct tc_action *action;
 #endif
@@ -71,8 +67,7 @@ struct tcf_exts
 /* Map to export classifier specific extension TLV types to the
  * generic extensions API. Unsupported extensions must be set to 0.
  */
-struct tcf_ext_map
-{
+struct tcf_ext_map {
 	int action;
 	int police;
 };
@@ -84,11 +79,10 @@ struct tcf_ext_map
  * Returns 1 if a predicative extension is present, i.e. an extension which
  * might cause further actions and thus overrule the regular tcf_result.
  */
-static inline int
-tcf_exts_is_predicative(struct tcf_exts *exts)
+static inline int tcf_exts_is_predicative(struct tcf_exts *exts)
 {
 #ifdef CONFIG_NET_CLS_ACT
-	return !!exts->action;
+	return ! !exts->action;
 #else
 	return 0;
 #endif
@@ -100,8 +94,7 @@ tcf_exts_is_predicative(struct tcf_exts *exts)
  *
  * Returns 1 if at least one extension is present.
  */
-static inline int
-tcf_exts_is_available(struct tcf_exts *exts)
+static inline int tcf_exts_is_available(struct tcf_exts *exts)
 {
 	/* All non-predicative extensions must be added here. */
 	return tcf_exts_is_predicative(exts);
@@ -120,7 +113,7 @@ tcf_exts_is_available(struct tcf_exts *exts)
  */
 static inline int
 tcf_exts_exec(struct sk_buff *skb, struct tcf_exts *exts,
-	       struct tcf_result *res)
+	      struct tcf_result *res)
 {
 #ifdef CONFIG_NET_CLS_ACT
 	if (exts->action)
@@ -130,23 +123,22 @@ tcf_exts_exec(struct sk_buff *skb, struct tcf_exts *exts,
 }
 
 extern int tcf_exts_validate(struct tcf_proto *tp, struct nlattr **tb,
-	                     struct nlattr *rate_tlv, struct tcf_exts *exts,
-	                     const struct tcf_ext_map *map);
+			     struct nlattr *rate_tlv, struct tcf_exts *exts,
+			     const struct tcf_ext_map *map);
 extern void tcf_exts_destroy(struct tcf_proto *tp, struct tcf_exts *exts);
 extern void tcf_exts_change(struct tcf_proto *tp, struct tcf_exts *dst,
-	                     struct tcf_exts *src);
+			    struct tcf_exts *src);
 extern int tcf_exts_dump(struct sk_buff *skb, struct tcf_exts *exts,
-	                 const struct tcf_ext_map *map);
+			 const struct tcf_ext_map *map);
 extern int tcf_exts_dump_stats(struct sk_buff *skb, struct tcf_exts *exts,
-	                       const struct tcf_ext_map *map);
+			       const struct tcf_ext_map *map);
 
 /**
  * struct tcf_pkt_info - packet information
  */
-struct tcf_pkt_info
-{
-	unsigned char *		ptr;
-	int			nexthdr;
+struct tcf_pkt_info {
+	unsigned char *ptr;
+	int nexthdr;
 };
 
 #ifdef CONFIG_NET_EMATCH
@@ -162,13 +154,12 @@ struct tcf_ematch_ops;
  * @datalen: length of the ematch specific configuration data
  * @data: ematch specific data
  */
-struct tcf_ematch
-{
-	struct tcf_ematch_ops * ops;
-	unsigned long		data;
-	unsigned int		datalen;
-	u16			matchid;
-	u16			flags;
+struct tcf_ematch {
+	struct tcf_ematch_ops *ops;
+	unsigned long data;
+	unsigned int datalen;
+	u16 matchid;
+	u16 flags;
 };
 
 static inline int tcf_em_is_container(struct tcf_ematch *em)
@@ -204,18 +195,17 @@ static inline int tcf_em_early_end(struct tcf_ematch *em, int result)
 
 	return 0;
 }
-	
+
 /**
  * struct tcf_ematch_tree - ematch tree handle
  *
  * @hdr: ematch tree header supplied by userspace
  * @matches: array of ematches
  */
-struct tcf_ematch_tree
-{
+struct tcf_ematch_tree {
 	struct tcf_ematch_tree_hdr hdr;
-	struct tcf_ematch *	matches;
-	
+	struct tcf_ematch *matches;
+
 };
 
 /**
@@ -230,19 +220,16 @@ struct tcf_ematch_tree
  * @owner: owner, must be set to THIS_MODULE
  * @link: link to previous/next ematch module (internal use)
  */
-struct tcf_ematch_ops
-{
-	int			kind;
-	int			datalen;
-	int			(*change)(struct tcf_proto *, void *,
-					  int, struct tcf_ematch *);
-	int			(*match)(struct sk_buff *, struct tcf_ematch *,
-					 struct tcf_pkt_info *);
-	void			(*destroy)(struct tcf_proto *,
-					   struct tcf_ematch *);
-	int			(*dump)(struct sk_buff *, struct tcf_ematch *);
-	struct module		*owner;
-	struct list_head	link;
+struct tcf_ematch_ops {
+	int kind;
+	int datalen;
+	int (*change) (struct tcf_proto *, void *, int, struct tcf_ematch *);
+	int (*match) (struct sk_buff *, struct tcf_ematch *,
+		      struct tcf_pkt_info *);
+	void (*destroy) (struct tcf_proto *, struct tcf_ematch *);
+	int (*dump) (struct sk_buff *, struct tcf_ematch *);
+	struct module *owner;
+	struct list_head link;
 };
 
 extern int tcf_em_register(struct tcf_ematch_ops *);
@@ -302,8 +289,7 @@ static inline int tcf_em_tree_match(struct sk_buff *skb,
 
 #else /* CONFIG_NET_EMATCH */
 
-struct tcf_ematch_tree
-{
+struct tcf_ematch_tree {
 };
 
 #define tcf_em_tree_validate(tp, tb, t) ((void)(t), 0)
@@ -314,15 +300,15 @@ struct tcf_ematch_tree
 
 #endif /* CONFIG_NET_EMATCH */
 
-static inline unsigned char * tcf_get_base_ptr(struct sk_buff *skb, int layer)
+static inline unsigned char *tcf_get_base_ptr(struct sk_buff *skb, int layer)
 {
 	switch (layer) {
-		case TCF_LAYER_LINK:
-			return skb->data;
-		case TCF_LAYER_NETWORK:
-			return skb_network_header(skb);
-		case TCF_LAYER_TRANSPORT:
-			return skb_transport_header(skb);
+	case TCF_LAYER_LINK:
+		return skb->data;
+	case TCF_LAYER_NETWORK:
+		return skb_network_header(skb);
+	case TCF_LAYER_TRANSPORT:
+		return skb_transport_header(skb);
 	}
 
 	return NULL;
@@ -345,13 +331,12 @@ tcf_change_indev(struct tcf_proto *tp, char *indev, struct nlattr *indev_tlv)
 	return 0;
 }
 
-static inline int
-tcf_match_indev(struct sk_buff *skb, char *indev)
+static inline int tcf_match_indev(struct sk_buff *skb, char *indev)
 {
 	struct net_device *dev;
 
 	if (indev[0]) {
-		if  (!skb->iif)
+		if (!skb->iif)
 			return 0;
 		dev = __dev_get_by_index(dev_net(skb->dev), skb->iif);
 		if (!dev || strcmp(indev, dev->name))

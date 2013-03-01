@@ -31,24 +31,25 @@
 *                                                                             *
 * Altera does not recommend, suggest or require that this reference design    *
 * file be used in conjunction or combination with any other product.          *
-******************************************************************************/
-
+******************************************************************************/ 
+    
 /* 
  * Don't declare these typedefs if this file is included by assembly source.
- */
+ */ 
 #ifndef ALT_ASM_SRC
-typedef signed char  alt_8;
-typedef unsigned char  alt_u8;
-typedef signed short alt_16;
-typedef unsigned short alt_u16;
-typedef signed long alt_32;
-typedef unsigned long alt_u32;
-typedef long long alt_64;
-typedef unsigned long long alt_u64;
-#endif
+typedef signed char alt_8;
+typedef unsigned char alt_u8;
+typedef signed short alt_16;
+typedef unsigned short alt_u16;
+typedef signed long alt_32;
+typedef unsigned long alt_u32;
+typedef long long alt_64;
+typedef unsigned long long alt_u64;
 
+#endif /*  */
+    
 #define ALT_INLINE        __inline__
 #define ALT_ALWAYS_INLINE __attribute__ ((always_inline))
 #define ALT_WEAK          __attribute__((weak))
-
-#endif /* __ALT_TYPES_H__ */
+    
+#endif	/* __ALT_TYPES_H__ */

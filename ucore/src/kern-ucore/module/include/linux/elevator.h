@@ -8,30 +8,37 @@
 typedef int (elevator_merge_fn) (struct request_queue *, struct request **,
 				 struct bio *);
 
-typedef void (elevator_merge_req_fn) (struct request_queue *, struct request *, struct request *);
+typedef void (elevator_merge_req_fn) (struct request_queue *, struct request *,
+				      struct request *);
 
-typedef void (elevator_merged_fn) (struct request_queue *, struct request *, int);
+typedef void (elevator_merged_fn) (struct request_queue *, struct request *,
+				   int);
 
-typedef int (elevator_allow_merge_fn) (struct request_queue *, struct request *, struct bio *);
+typedef int (elevator_allow_merge_fn) (struct request_queue *, struct request *,
+				       struct bio *);
 
 typedef int (elevator_dispatch_fn) (struct request_queue *, int);
 
 typedef void (elevator_add_req_fn) (struct request_queue *, struct request *);
 typedef int (elevator_queue_empty_fn) (struct request_queue *);
-typedef struct request *(elevator_request_list_fn) (struct request_queue *, struct request *);
-typedef void (elevator_completed_req_fn) (struct request_queue *, struct request *);
+typedef struct request *(elevator_request_list_fn) (struct request_queue *,
+						    struct request *);
+typedef void (elevator_completed_req_fn) (struct request_queue *,
+					  struct request *);
 typedef int (elevator_may_queue_fn) (struct request_queue *, int);
 
-typedef int (elevator_set_req_fn) (struct request_queue *, struct request *, gfp_t);
+typedef int (elevator_set_req_fn) (struct request_queue *, struct request *,
+				   gfp_t);
 typedef void (elevator_put_req_fn) (struct request *);
-typedef void (elevator_activate_req_fn) (struct request_queue *, struct request *);
-typedef void (elevator_deactivate_req_fn) (struct request_queue *, struct request *);
+typedef void (elevator_activate_req_fn) (struct request_queue *,
+					 struct request *);
+typedef void (elevator_deactivate_req_fn) (struct request_queue *,
+					   struct request *);
 
 typedef void *(elevator_init_fn) (struct request_queue *);
 typedef void (elevator_exit_fn) (struct elevator_queue *);
 
-struct elevator_ops
-{
+struct elevator_ops {
 	elevator_merge_fn *elevator_merge_fn;
 	elevator_merged_fn *elevator_merged_fn;
 	elevator_merge_req_fn *elevator_merge_req_fn;
@@ -55,22 +62,21 @@ struct elevator_ops
 
 	elevator_init_fn *elevator_init_fn;
 	elevator_exit_fn *elevator_exit_fn;
-	void (*trim)(struct io_context *);
+	void (*trim) (struct io_context *);
 };
 
 #define ELV_NAME_MAX	(16)
 
 struct elv_fs_entry {
 	struct attribute attr;
-	ssize_t (*show)(struct elevator_queue *, char *);
-	ssize_t (*store)(struct elevator_queue *, const char *, size_t);
+	 ssize_t(*show) (struct elevator_queue *, char *);
+	 ssize_t(*store) (struct elevator_queue *, const char *, size_t);
 };
 
 /*
  * identifies an elevator type, such as AS or deadline
  */
-struct elevator_type
-{
+struct elevator_type {
 	struct list_head list;
 	struct elevator_ops ops;
 	struct elv_fs_entry *elevator_attrs;
@@ -81,8 +87,7 @@ struct elevator_type
 /*
  * each queue has an elevator_queue associated with it
  */
-struct elevator_queue
-{
+struct elevator_queue {
 	struct elevator_ops *ops;
 	void *elevator_data;
 	struct kobject kobj;
@@ -97,7 +102,8 @@ struct elevator_queue
 extern void elv_dispatch_sort(struct request_queue *, struct request *);
 extern void elv_dispatch_add_tail(struct request_queue *, struct request *);
 extern void elv_add_request(struct request_queue *, struct request *, int, int);
-extern void __elv_add_request(struct request_queue *, struct request *, int, int);
+extern void __elv_add_request(struct request_queue *, struct request *, int,
+			      int);
 extern void elv_insert(struct request_queue *, struct request *, int);
 extern int elv_merge(struct request_queue *, struct request **, struct bio *);
 extern void elv_merge_requests(struct request_queue *, struct request *,
@@ -107,8 +113,10 @@ extern void elv_dequeue_request(struct request_queue *, struct request *);
 extern void elv_requeue_request(struct request_queue *, struct request *);
 extern int elv_queue_empty(struct request_queue *);
 extern struct request *elv_next_request(struct request_queue *q);
-extern struct request *elv_former_request(struct request_queue *, struct request *);
-extern struct request *elv_latter_request(struct request_queue *, struct request *);
+extern struct request *elv_former_request(struct request_queue *,
+					  struct request *);
+extern struct request *elv_latter_request(struct request_queue *,
+					  struct request *);
 extern int elv_register_queue(struct request_queue *q);
 extern void elv_unregister_queue(struct request_queue *q);
 extern int elv_may_queue(struct request_queue *, int);
@@ -136,8 +144,10 @@ extern int elv_rq_merge_ok(struct request *, struct bio *);
 /*
  * Helper functions.
  */
-extern struct request *elv_rb_former_request(struct request_queue *, struct request *);
-extern struct request *elv_rb_latter_request(struct request_queue *, struct request *);
+extern struct request *elv_rb_former_request(struct request_queue *,
+					     struct request *);
+extern struct request *elv_rb_latter_request(struct request_queue *,
+					     struct request *);
 
 /*
  * rb support functions.

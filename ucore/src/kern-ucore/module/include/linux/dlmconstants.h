@@ -21,7 +21,6 @@
 #define DLM_LOCKSPACE_LEN       64
 #define DLM_RESNAME_MAXLEN      64
 
-
 /*
  * Lock Modes
  */
@@ -33,7 +32,6 @@
 #define DLM_LOCK_PR		3	/* protected read */
 #define DLM_LOCK_PW		4	/* protected write */
 #define DLM_LOCK_EX		5	/* exclusive */
-
 
 /*
  * Flags to dlm_lock
@@ -160,4 +158,4 @@
 #define DLM_ECANCEL		0x10001
 #define DLM_EUNLOCK		0x10002
 
-#endif  /* __DLMCONSTANTS_DOT_H__ */
+#endif /* __DLMCONSTANTS_DOT_H__ */

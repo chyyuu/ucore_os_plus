@@ -14,4 +14,3 @@ bool trap_in_kernel(struct trapframe *tf);
 #endif /* !__ASSEMBLER__ */
 
 #endif
-

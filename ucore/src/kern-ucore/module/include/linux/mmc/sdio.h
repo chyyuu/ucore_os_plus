@@ -13,9 +13,9 @@
 #define MMC_SDIO_H
 
 /* SDIO commands                         type  argument     response */
-#define SD_IO_SEND_OP_COND          5 /* bcr  [23:0] OCR         R4  */
-#define SD_IO_RW_DIRECT            52 /* ac   [31:0] See below   R5  */
-#define SD_IO_RW_EXTENDED          53 /* adtc [31:0] See below   R5  */
+#define SD_IO_SEND_OP_COND          5	/* bcr  [23:0] OCR         R4  */
+#define SD_IO_RW_DIRECT            52	/* ac   [31:0] See below   R5  */
+#define SD_IO_RW_EXTENDED          53	/* adtc [31:0] See below   R5  */
 
 /*
  * SD_IO_RW_DIRECT argument format:
@@ -59,7 +59,7 @@
 #define R5_FUNCTION_NUMBER	(1 << 9)	/* er, c */
 #define R5_OUT_OF_RANGE		(1 << 8)	/* er, c */
 #define R5_STATUS(x)		(x & 0xCB00)
-#define R5_IO_CURRENT_STATE(x)	((x & 0x3000) >> 12) /* s, b */
+#define R5_IO_CURRENT_STATE(x)	((x & 0x3000) >> 12)	/* s, b */
 
 /*
  * Card Common Control Registers (CCCR)
@@ -132,7 +132,7 @@
  * Function Basic Registers (FBR)
  */
 
-#define SDIO_FBR_BASE(f)	((f) * 0x100) /* base of function f's FBRs */
+#define SDIO_FBR_BASE(f)	((f) * 0x100)	/* base of function f's FBRs */
 
 #define SDIO_FBR_STD_IF		0x00
 
@@ -148,7 +148,6 @@
 
 #define SDIO_FBR_CIS		0x09	/* CIS pointer (3 bytes) */
 
-
 #define SDIO_FBR_CSA		0x0C	/* CSA pointer (3 bytes) */
 
 #define SDIO_FBR_CSA_DATA	0x0F
@@ -156,4 +155,3 @@
 #define SDIO_FBR_BLKSIZE	0x10	/* block size (2 bytes) */
 
 #endif
-

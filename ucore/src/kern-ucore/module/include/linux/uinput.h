@@ -45,14 +45,14 @@
 enum uinput_state { UIST_NEW_DEVICE, UIST_SETUP_COMPLETE, UIST_CREATED };
 
 struct uinput_request {
-	int			id;
-	int			code;	/* UI_FF_UPLOAD, UI_FF_ERASE */
+	int id;
+	int code;		/* UI_FF_UPLOAD, UI_FF_ERASE */
 
-	int			retval;
-	struct completion	done;
+	int retval;
+	struct completion done;
 
 	union {
-		int		effect_id;
+		int effect_id;
 		struct {
 			struct ff_effect *effect;
 			struct ff_effect *old;
@@ -61,33 +61,33 @@ struct uinput_request {
 };
 
 struct uinput_device {
-	struct input_dev	*dev;
-	struct mutex		mutex;
-	enum uinput_state	state;
-	wait_queue_head_t	waitq;
-	unsigned char		ready;
-	unsigned char		head;
-	unsigned char		tail;
-	struct input_event	buff[UINPUT_BUFFER_SIZE];
-	int			ff_effects_max;
+	struct input_dev *dev;
+	struct mutex mutex;
+	enum uinput_state state;
+	wait_queue_head_t waitq;
+	unsigned char ready;
+	unsigned char head;
+	unsigned char tail;
+	struct input_event buff[UINPUT_BUFFER_SIZE];
+	int ff_effects_max;
 
-	struct uinput_request	*requests[UINPUT_NUM_REQUESTS];
-	wait_queue_head_t	requests_waitq;
-	spinlock_t		requests_lock;
+	struct uinput_request *requests[UINPUT_NUM_REQUESTS];
+	wait_queue_head_t requests_waitq;
+	spinlock_t requests_lock;
 };
-#endif	/* __KERNEL__ */
+#endif /* __KERNEL__ */
 
 struct uinput_ff_upload {
-	int			request_id;
-	int			retval;
-	struct ff_effect	effect;
-	struct ff_effect	old;
+	int request_id;
+	int retval;
+	struct ff_effect effect;
+	struct ff_effect old;
 };
 
 struct uinput_ff_erase {
-	int			request_id;
-	int			retval;
-	int			effect_id;
+	int request_id;
+	int retval;
+	int effect_id;
 };
 
 /* ioctl */
@@ -166,11 +166,10 @@ struct uinput_ff_erase {
 struct uinput_user_dev {
 	char name[UINPUT_MAX_NAME_SIZE];
 	struct input_id id;
-        int ff_effects_max;
-        int absmax[ABS_MAX + 1];
-        int absmin[ABS_MAX + 1];
-        int absfuzz[ABS_MAX + 1];
-        int absflat[ABS_MAX + 1];
+	int ff_effects_max;
+	int absmax[ABS_MAX + 1];
+	int absmin[ABS_MAX + 1];
+	int absfuzz[ABS_MAX + 1];
+	int absflat[ABS_MAX + 1];
 };
-#endif	/* __UINPUT_H_ */
-
+#endif /* __UINPUT_H_ */

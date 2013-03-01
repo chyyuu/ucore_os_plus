@@ -5,15 +5,15 @@
 #include <linux/list.h>
 
 struct ssc_device {
-	struct list_head	list;
-	void __iomem		*regs;
-	struct platform_device	*pdev;
-	struct clk		*clk;
-	int			user;
-	int			irq;
+	struct list_head list;
+	void __iomem *regs;
+	struct platform_device *pdev;
+	struct clk *clk;
+	int user;
+	int irq;
 };
 
-struct ssc_device * __must_check ssc_request(unsigned int ssc_num);
+struct ssc_device *__must_check ssc_request(unsigned int ssc_num);
 void ssc_free(struct ssc_device *ssc);
 
 /* SSC register offsets */

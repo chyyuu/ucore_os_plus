@@ -22,15 +22,15 @@ struct device;
  */
 
 enum led_brightness {
-	LED_OFF		= 0,
-	LED_HALF	= 127,
-	LED_FULL	= 255,
+	LED_OFF = 0,
+	LED_HALF = 127,
+	LED_FULL = 255,
 };
 
 struct led_classdev {
-	const char		*name;
-	int			 brightness;
-	int			 flags;
+	const char *name;
+	int brightness;
+	int flags;
 
 	/* Lower 16 bits reflect status */
 #define LED_SUSPENDED		(1 << 0)
@@ -39,27 +39,26 @@ struct led_classdev {
 
 	/* Set LED brightness level */
 	/* Must not sleep, use a workqueue if needed */
-	void		(*brightness_set)(struct led_classdev *led_cdev,
-					  enum led_brightness brightness);
+	void (*brightness_set) (struct led_classdev * led_cdev,
+				enum led_brightness brightness);
 	/* Get LED brightness level */
-	enum led_brightness (*brightness_get)(struct led_classdev *led_cdev);
+	enum led_brightness (*brightness_get) (struct led_classdev * led_cdev);
 
 	/* Activate hardware accelerated blink */
-	int		(*blink_set)(struct led_classdev *led_cdev,
-				     unsigned long *delay_on,
-				     unsigned long *delay_off);
+	int (*blink_set) (struct led_classdev * led_cdev,
+			  unsigned long *delay_on, unsigned long *delay_off);
 
-	struct device		*dev;
-	struct list_head	 node;			/* LED Device list */
-	const char		*default_trigger;	/* Trigger to use */
+	struct device *dev;
+	struct list_head node;	/* LED Device list */
+	const char *default_trigger;	/* Trigger to use */
 
 #ifdef CONFIG_LEDS_TRIGGERS
 	/* Protects the trigger data below */
-	struct rw_semaphore	 trigger_lock;
+	struct rw_semaphore trigger_lock;
 
-	struct led_trigger	*trigger;
-	struct list_head	 trig_list;
-	void			*trigger_data;
+	struct led_trigger *trigger;
+	struct list_head trig_list;
+	void *trigger_data;
 #endif
 };
 
@@ -78,16 +77,16 @@ extern void led_classdev_resume(struct led_classdev *led_cdev);
 
 struct led_trigger {
 	/* Trigger Properties */
-	const char	 *name;
-	void		(*activate)(struct led_classdev *led_cdev);
-	void		(*deactivate)(struct led_classdev *led_cdev);
+	const char *name;
+	void (*activate) (struct led_classdev * led_cdev);
+	void (*deactivate) (struct led_classdev * led_cdev);
 
 	/* LEDs under control by this trigger (for simple triggers) */
-	rwlock_t	  leddev_list_lock;
-	struct list_head  led_cdevs;
+	rwlock_t leddev_list_lock;
+	struct list_head led_cdevs;
 
 	/* Link to next registered trigger */
-	struct list_head  next_trig;
+	struct list_head next_trig;
 };
 
 /* Registration functions for complex triggers */
@@ -98,10 +97,10 @@ extern void led_trigger_unregister(struct led_trigger *trigger);
 #define DEFINE_LED_TRIGGER(x)		static struct led_trigger *x;
 #define DEFINE_LED_TRIGGER_GLOBAL(x)	struct led_trigger *x;
 extern void led_trigger_register_simple(const char *name,
-				struct led_trigger **trigger);
+					struct led_trigger **trigger);
 extern void led_trigger_unregister_simple(struct led_trigger *trigger);
 extern void led_trigger_event(struct led_trigger *trigger,
-				enum led_brightness event);
+			      enum led_brightness event);
 
 #else
 
@@ -125,31 +124,30 @@ extern void ledtrig_ide_activity(void);
  * Generic LED platform data for describing LED names and default triggers.
  */
 struct led_info {
-	const char	*name;
-	const char	*default_trigger;
-	int		flags;
+	const char *name;
+	const char *default_trigger;
+	int flags;
 };
 
 struct led_platform_data {
-	int		num_leds;
-	struct led_info	*leds;
+	int num_leds;
+	struct led_info *leds;
 };
 
 /* For the leds-gpio driver */
 struct gpio_led {
 	const char *name;
 	const char *default_trigger;
-	unsigned 	gpio;
-	u8 		active_low;
+	unsigned gpio;
+	u8 active_low;
 };
 
 struct gpio_led_platform_data {
-	int 		num_leds;
+	int num_leds;
 	struct gpio_led *leds;
-	int		(*gpio_blink_set)(unsigned gpio,
-					unsigned long *delay_on,
-					unsigned long *delay_off);
+	int (*gpio_blink_set) (unsigned gpio,
+			       unsigned long *delay_on,
+			       unsigned long *delay_off);
 };
 
-
-#endif		/* __LINUX_LEDS_H_INCLUDED */
+#endif /* __LINUX_LEDS_H_INCLUDED */

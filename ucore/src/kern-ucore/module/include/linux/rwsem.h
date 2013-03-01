@@ -17,9 +17,9 @@
 struct rw_semaphore;
 
 #ifdef CONFIG_RWSEM_GENERIC_SPINLOCK
-#include <linux/rwsem-spinlock.h> /* use a generic implementation */
+#include <linux/rwsem-spinlock.h>	/* use a generic implementation */
 #else
-#include <asm/rwsem.h> /* use an arch-specific implementation */
+#include <asm/rwsem.h>		/* use an arch-specific implementation */
 #endif
 
 /*
@@ -82,10 +82,10 @@ extern void down_write_nested(struct rw_semaphore *sem, int subclass);
 extern void down_read_non_owner(struct rw_semaphore *sem);
 extern void up_read_non_owner(struct rw_semaphore *sem);
 #else
-# define down_read_nested(sem, subclass)		down_read(sem)
-# define down_write_nested(sem, subclass)	down_write(sem)
-# define down_read_non_owner(sem)		down_read(sem)
-# define up_read_non_owner(sem)			up_read(sem)
+#define down_read_nested(sem, subclass)		down_read(sem)
+#define down_write_nested(sem, subclass)	down_write(sem)
+#define down_read_non_owner(sem)		down_read(sem)
+#define up_read_non_owner(sem)			up_read(sem)
 #endif
 
 #endif /* _LINUX_RWSEM_H */

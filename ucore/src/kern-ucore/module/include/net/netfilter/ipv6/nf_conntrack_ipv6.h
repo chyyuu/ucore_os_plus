@@ -13,11 +13,11 @@ extern struct sk_buff *nf_ct_frag6_gather(struct sk_buff *skb);
 extern void nf_ct_frag6_output(unsigned int hooknum, struct sk_buff *skb,
 			       struct net_device *in,
 			       struct net_device *out,
-			       int (*okfn)(struct sk_buff *));
+			       int (*okfn) (struct sk_buff *));
 
 struct inet_frags_ctl;
 
 #include <linux/sysctl.h>
 extern struct ctl_table nf_ct_ipv6_sysctl_table[];
 
-#endif /* _NF_CONNTRACK_IPV6_H*/
+#endif /* _NF_CONNTRACK_IPV6_H */

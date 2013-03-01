@@ -28,8 +28,8 @@ static inline int task_is_pdflush(struct task_struct *task)
  * fs/fs-writeback.c
  */
 enum writeback_sync_modes {
-	WB_SYNC_NONE,	/* Don't wait on anything */
-	WB_SYNC_ALL,	/* Wait on every mapping */
+	WB_SYNC_NONE,		/* Don't wait on anything */
+	WB_SYNC_ALL,		/* Wait on every mapping */
 };
 
 /*
@@ -43,9 +43,9 @@ struct writeback_control {
 	enum writeback_sync_modes sync_mode;
 	unsigned long *older_than_this;	/* If !NULL, only write back inodes
 					   older than this */
-	long nr_to_write;		/* Write this many pages, and decrement
-					   this for each page written */
-	long pages_skipped;		/* Pages which were not written */
+	long nr_to_write;	/* Write this many pages, and decrement
+				   this for each page written */
+	long pages_skipped;	/* Pages which were not written */
 
 	/*
 	 * For a_ops->writepages(): is start or end are non-zero then this is
@@ -55,13 +55,13 @@ struct writeback_control {
 	loff_t range_start;
 	loff_t range_end;
 
-	unsigned nonblocking:1;		/* Don't get stuck on request queues */
-	unsigned encountered_congestion:1; /* An output: a queue is full */
-	unsigned for_kupdate:1;		/* A kupdate writeback */
-	unsigned for_reclaim:1;		/* Invoked from the page allocator */
+	unsigned nonblocking:1;	/* Don't get stuck on request queues */
+	unsigned encountered_congestion:1;	/* An output: a queue is full */
+	unsigned for_kupdate:1;	/* A kupdate writeback */
+	unsigned for_reclaim:1;	/* Invoked from the page allocator */
 	unsigned for_writepages:1;	/* This is a writepages() call */
 	unsigned range_cyclic:1;	/* range_start is cyclic */
-	unsigned more_io:1;		/* more io to be dispatched */
+	unsigned more_io:1;	/* more io to be dispatched */
 	/*
 	 * write_cache_pages() won't update wbc->nr_to_write and
 	 * mapping->writeback_index if no_nrwrite_index_update
@@ -75,7 +75,7 @@ struct writeback_control {
 
 /*
  * fs/fs-writeback.c
- */	
+ */
 void writeback_inodes(struct writeback_control *wbc);
 int inode_wait(void *);
 void sync_inodes_sb(struct super_block *, int wait);
@@ -86,15 +86,15 @@ static inline void wait_on_inode(struct inode *inode)
 {
 	might_sleep();
 	wait_on_bit(&inode->i_state, __I_LOCK, inode_wait,
-							TASK_UNINTERRUPTIBLE);
+		    TASK_UNINTERRUPTIBLE);
 }
+
 static inline void inode_sync_wait(struct inode *inode)
 {
 	might_sleep();
 	wait_on_bit(&inode->i_state, __I_SYNC, inode_wait,
-							TASK_UNINTERRUPTIBLE);
+		    TASK_UNINTERRUPTIBLE);
 }
-
 
 /*
  * mm/page-writeback.c
@@ -118,17 +118,19 @@ extern int laptop_mode;
 extern unsigned long determine_dirtyable_memory(void);
 
 extern int dirty_background_ratio_handler(struct ctl_table *table, int write,
-		struct file *filp, void __user *buffer, size_t *lenp,
-		loff_t *ppos);
+					  struct file *filp,
+					  void __user * buffer, size_t * lenp,
+					  loff_t * ppos);
 extern int dirty_background_bytes_handler(struct ctl_table *table, int write,
-		struct file *filp, void __user *buffer, size_t *lenp,
-		loff_t *ppos);
+					  struct file *filp,
+					  void __user * buffer, size_t * lenp,
+					  loff_t * ppos);
 extern int dirty_ratio_handler(struct ctl_table *table, int write,
-		struct file *filp, void __user *buffer, size_t *lenp,
-		loff_t *ppos);
+			       struct file *filp, void __user * buffer,
+			       size_t * lenp, loff_t * ppos);
 extern int dirty_bytes_handler(struct ctl_table *table, int write,
-		struct file *filp, void __user *buffer, size_t *lenp,
-		loff_t *ppos);
+			       struct file *filp, void __user * buffer,
+			       size_t * lenp, loff_t * ppos);
 
 struct ctl_table;
 struct file;
@@ -148,10 +150,10 @@ balance_dirty_pages_ratelimited(struct address_space *mapping)
 	balance_dirty_pages_ratelimited_nr(mapping, 1);
 }
 
-typedef int (*writepage_t)(struct page *page, struct writeback_control *wbc,
-				void *data);
+typedef int (*writepage_t) (struct page * page, struct writeback_control * wbc,
+			    void *data);
 
-int pdflush_operation(void (*fn)(unsigned long), unsigned long arg0);
+int pdflush_operation(void (*fn) (unsigned long), unsigned long arg0);
 int generic_writepages(struct address_space *mapping,
 		       struct writeback_control *wbc);
 int write_cache_pages(struct address_space *mapping,
@@ -159,7 +161,7 @@ int write_cache_pages(struct address_space *mapping,
 		      void *data);
 int do_writepages(struct address_space *mapping, struct writeback_control *wbc);
 int sync_page_range(struct inode *inode, struct address_space *mapping,
-			loff_t pos, loff_t count);
+		    loff_t pos, loff_t count);
 int sync_page_range_nolock(struct inode *inode, struct address_space *mapping,
 			   loff_t pos, loff_t count);
 void set_page_dirty_balance(struct page *page, int page_mkwrite);
@@ -169,5 +171,4 @@ void writeback_set_ratelimit(void);
 extern int nr_pdflush_threads;	/* Global so it can be exported to sysctl
 				   read-only. */
 
-
-#endif		/* WRITEBACK_H */
+#endif /* WRITEBACK_H */

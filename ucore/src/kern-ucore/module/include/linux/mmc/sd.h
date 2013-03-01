@@ -15,17 +15,17 @@
 /* SD commands                           type  argument     response */
   /* class 0 */
 /* This is basically the same command as for MMC with some quirks. */
-#define SD_SEND_RELATIVE_ADDR     3   /* bcr                     R6  */
-#define SD_SEND_IF_COND           8   /* bcr  [11:0] See below   R7  */
+#define SD_SEND_RELATIVE_ADDR     3	/* bcr                     R6  */
+#define SD_SEND_IF_COND           8	/* bcr  [11:0] See below   R7  */
 
   /* class 10 */
-#define SD_SWITCH                 6   /* adtc [31:0] See below   R1  */
+#define SD_SWITCH                 6	/* adtc [31:0] See below   R1  */
 
   /* Application commands */
-#define SD_APP_SET_BUS_WIDTH      6   /* ac   [1:0] bus width    R1  */
-#define SD_APP_SEND_NUM_WR_BLKS  22   /* adtc                    R1  */
-#define SD_APP_OP_COND           41   /* bcr  [31:0] OCR         R3  */
-#define SD_APP_SEND_SCR          51   /* adtc                    R1  */
+#define SD_APP_SET_BUS_WIDTH      6	/* ac   [1:0] bus width    R1  */
+#define SD_APP_SEND_NUM_WR_BLKS  22	/* adtc                    R1  */
+#define SD_APP_OP_COND           41	/* bcr  [31:0] OCR         R3  */
+#define SD_APP_SEND_SCR          51	/* adtc                    R1  */
 
 /*
  * SD_SWITCH argument format:
@@ -80,4 +80,3 @@
 #define SD_SWITCH_ACCESS_HS	1
 
 #endif
-

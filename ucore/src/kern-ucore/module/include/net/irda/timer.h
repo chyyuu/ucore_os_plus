@@ -30,7 +30,7 @@
 #include <linux/timer.h>
 #include <linux/jiffies.h>
 
-#include <asm/param.h>  /* for HZ */
+#include <asm/param.h>		/* for HZ */
 
 #include <net/irda/irda.h>
 
@@ -43,8 +43,8 @@ struct lap_cb;
 /* 
  *  Timeout definitions, some defined in IrLAP 6.13.5 - p. 92
  */
-#define POLL_TIMEOUT        (450*HZ/1000)    /* Must never exceed 500 ms */
-#define FINAL_TIMEOUT       (500*HZ/1000)    /* Must never exceed 500 ms */
+#define POLL_TIMEOUT        (450*HZ/1000)	/* Must never exceed 500 ms */
+#define FINAL_TIMEOUT       (500*HZ/1000)	/* Must never exceed 500 ms */
 
 /* 
  *  Normally twice of p-timer. Note 3, IrLAP 6.3.11.2 - p. 60 suggests
@@ -52,8 +52,8 @@ struct lap_cb;
  */
 #define WD_TIMEOUT          (POLL_TIMEOUT*2)
 
-#define MEDIABUSY_TIMEOUT   (500*HZ/1000)    /* 500 msec */
-#define SMALLBUSY_TIMEOUT   (100*HZ/1000)    /* 100 msec - IrLAP 6.13.4 */
+#define MEDIABUSY_TIMEOUT   (500*HZ/1000)	/* 500 msec */
+#define SMALLBUSY_TIMEOUT   (100*HZ/1000)	/* 100 msec - IrLAP 6.13.4 */
 
 /*
  *  Slot timer must never exceed 85 ms, and must always be at least 25 ms, 
@@ -68,24 +68,23 @@ struct lap_cb;
  *  information (hints, device name...). This is its extra length.
  *  We use that when setting the query timeout. Jean II
  */
-#define XIDEXTRA_TIMEOUT        (34*HZ/1000)  /* 34 msec */
+#define XIDEXTRA_TIMEOUT        (34*HZ/1000)	/* 34 msec */
 
-#define WATCHDOG_TIMEOUT        (20*HZ)       /* 20 sec */
+#define WATCHDOG_TIMEOUT        (20*HZ)	/* 20 sec */
 
-typedef void (*TIMER_CALLBACK)(void *);
+typedef void (*TIMER_CALLBACK) (void *);
 
-static inline void irda_start_timer(struct timer_list *ptimer, int timeout, 
-				    void* data, TIMER_CALLBACK callback)
+static inline void irda_start_timer(struct timer_list *ptimer, int timeout,
+				    void *data, TIMER_CALLBACK callback)
 {
-	ptimer->function = (void (*)(unsigned long)) callback;
-	ptimer->data = (unsigned long) data;
-	
+	ptimer->function = (void (*)(unsigned long))callback;
+	ptimer->data = (unsigned long)data;
+
 	/* Set new value for timer (update or add timer).
 	 * We use mod_timer() because it's more efficient and also
 	 * safer with respect to race conditions - Jean II */
 	mod_timer(ptimer, jiffies + timeout);
 }
-
 
 void irlap_start_slot_timer(struct irlap_cb *self, int timeout);
 void irlap_start_query_timer(struct irlap_cb *self, int S, int s);
@@ -102,4 +101,3 @@ void irlmp_start_idle_timer(struct lap_cb *, int timeout);
 void irlmp_stop_idle_timer(struct lap_cb *self);
 
 #endif
-

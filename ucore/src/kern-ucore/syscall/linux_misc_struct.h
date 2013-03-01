@@ -22,13 +22,13 @@
 #include <types.h>
 
 struct linux_timeval {
-  long tv_sec;     /* seconds */
-  long tv_usec;    /* microseconds */
+	long tv_sec;		/* seconds */
+	long tv_usec;		/* microseconds */
 };
 
 struct linux_timezone {
-  int tz_minuteswest;     /* minutes west of Greenwich */
-  int tz_dsttime;         /* type of DST correction */
+	int tz_minuteswest;	/* minutes west of Greenwich */
+	int tz_dsttime;		/* type of DST correction */
 };
 
 int ucore_gettimeofday(struct linux_timeval *tv, struct linux_timezone *tz);

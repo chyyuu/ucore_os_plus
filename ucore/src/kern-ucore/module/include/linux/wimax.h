@@ -65,7 +65,6 @@ enum {
 	WIMAX_GNL_ATTR_MAX = 10,
 };
 
-
 /*
  * Generic NetLink operations
  *
@@ -80,14 +79,12 @@ enum {
 	WIMAX_GNL_RE_STATE_CHANGE,	/* Report: status change */
 };
 
-
 /* Message from user / to user */
 enum {
 	WIMAX_GNL_MSG_IFIDX = 1,
 	WIMAX_GNL_MSG_PIPE_NAME,
 	WIMAX_GNL_MSG_DATA,
 };
-
 
 /*
  * wimax_rfkill()
@@ -107,12 +104,10 @@ enum {
 	WIMAX_GNL_RFKILL_STATE,
 };
 
-
 /* Attributes for wimax_reset() */
 enum {
 	WIMAX_GNL_RESET_IFIDX = 1,
 };
-
 
 /*
  * Attributes for the Report State Change
@@ -125,7 +120,6 @@ enum {
 	WIMAX_GNL_STCH_STATE_OLD,
 	WIMAX_GNL_STCH_STATE_NEW,
 };
-
 
 /**
  * enum wimax_st - The different states of a WiMAX device
@@ -217,7 +211,7 @@ enum {
  *
  * This table not available in kernel-doc because the formatting messes it up.
  */
- enum wimax_st {
+enum wimax_st {
 	__WIMAX_ST_NULL = 0,
 	WIMAX_ST_DOWN,
 	__WIMAX_ST_QUIESCING,
@@ -227,8 +221,7 @@ enum {
 	WIMAX_ST_SCANNING,
 	WIMAX_ST_CONNECTING,
 	WIMAX_ST_CONNECTED,
-	__WIMAX_ST_INVALID			/* Always keep last */
+	__WIMAX_ST_INVALID	/* Always keep last */
 };
-
 
 #endif /* #ifndef __LINUX__WIMAX_H__ */

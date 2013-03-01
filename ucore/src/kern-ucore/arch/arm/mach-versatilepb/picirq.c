@@ -17,7 +17,6 @@
  */
 #include <stdlib.h>
 
-
 #include <types.h>
 #include <arm.h>
 #include <picirq.h>
@@ -26,7 +25,6 @@
 #include <intr.h>
 #include <kio.h>
 #include <memlayout.h>
-
 
 #define VICINTENABLE (0x010)
 #define VICINTENCLEAR (0x014)
@@ -41,60 +39,59 @@ volatile size_t ticks = 0;
 static bool did_init = 0;
 #define VIC_VBASE __io_address(VERSATILE_VIC_BASE)
 
-void
-pic_disable(unsigned int irq) {
-  outw(VIC_VBASE+VICINTENCLEAR, (1<<irq));
+void pic_disable(unsigned int irq)
+{
+	outw(VIC_VBASE + VICINTENCLEAR, (1 << irq));
 }
 
-
-void
-pic_enable(unsigned int irq) {
-  outw(VIC_VBASE+VICINTENABLE, (1<<irq));
+void pic_enable(unsigned int irq)
+{
+	outw(VIC_VBASE + VICINTENABLE, (1 << irq));
 }
 
 /* pic_init
  * initialize the interrupt, but doesn't enable them */
-void
-pic_init(void) {
-  if(did_init)
-    return ;
+void pic_init(void)
+{
+	if (did_init)
+		return;
 
-  did_init = 1;
-  //disable all
-  outw(VIC_VBASE+VICINTENCLEAR, ~0);
-  kprintf("pic_init()\n");
+	did_init = 1;
+	//disable all
+	outw(VIC_VBASE + VICINTENCLEAR, ~0);
+	kprintf("pic_init()\n");
 
 }
 
-void irq_handler(){
-  uint32_t status = inw(VIC_VBASE+VICIRQSTATUS);
+void irq_handler()
+{
+	uint32_t status = inw(VIC_VBASE + VICIRQSTATUS);
 //  kprintf(".. %08x\n", status);
-  if(status & (1<<TIMER0_IRQ)){
-    //kprintf("@");
-    ticks++;
+	if (status & (1 << TIMER0_IRQ)) {
+		//kprintf("@");
+		ticks++;
 		//assert(pls_read(current) != NULL);
-    run_timer_list();
-    clock_clear();
-  }
-  if( status & (1<<UART_IRQ) ){
-    //if ((c = cons_getc()) == 13) {
-    //  debug_monitor(tf);
-    //}
-    //else {
-      extern void dev_stdin_write(char c);
-      char c = cons_getc();
-      dev_stdin_write(c);
-    //}
-    //kprintf("#");
-    serial_clear();
-  }
+		run_timer_list();
+		clock_clear();
+	}
+	if (status & (1 << UART_IRQ)) {
+		//if ((c = cons_getc()) == 13) {
+		//  debug_monitor(tf);
+		//}
+		//else {
+		extern void dev_stdin_write(char c);
+		char c = cons_getc();
+		dev_stdin_write(c);
+		//}
+		//kprintf("#");
+		serial_clear();
+	}
 
 }
 
 /* irq_clear
  * 	Clear a pending interrupt request
  *  necessary when handling an irq */
-void
-irq_clear(unsigned int source) {
+void irq_clear(unsigned int source)
+{
 }
-

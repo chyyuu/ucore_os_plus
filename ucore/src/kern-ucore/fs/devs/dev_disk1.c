@@ -35,54 +35,53 @@
 #include <assert.h>
 
 /* For open() */
-static int
-disk1_open(struct device *dev, uint32_t open_flags) {
-    return 0;
+static int disk1_open(struct device *dev, uint32_t open_flags)
+{
+	return 0;
 }
 
 /* For close() */
-static int
-disk1_close(struct device *dev) {
-    return 0;
+static int disk1_close(struct device *dev)
+{
+	return 0;
 }
 
 /* For dop_io() */
-static int
-disk1_io(struct device *dev, struct iobuf *iob, bool write) {
-    return -E_INVAL;
+static int disk1_io(struct device *dev, struct iobuf *iob, bool write)
+{
+	return -E_INVAL;
 }
 
 /* For ioctl() */
-static int
-disk1_ioctl(struct device *dev, int op, void *data) {
-    return -E_INVAL;
+static int disk1_ioctl(struct device *dev, int op, void *data)
+{
+	return -E_INVAL;
 }
 
-static void
-disk1_device_init(struct device *dev) {
-    memset(dev, 0, sizeof(*dev));
-    dev->d_blocks = 0;
-    dev->d_blocksize = 1;
-    dev->d_open = disk1_open;
-    dev->d_close = disk1_close;
-    dev->d_io = disk1_io;
-    dev->d_ioctl = disk1_ioctl;
+static void disk1_device_init(struct device *dev)
+{
+	memset(dev, 0, sizeof(*dev));
+	dev->d_blocks = 0;
+	dev->d_blocksize = 1;
+	dev->d_open = disk1_open;
+	dev->d_close = disk1_close;
+	dev->d_io = disk1_io;
+	dev->d_ioctl = disk1_ioctl;
 }
 
 /*
  * Function to create and attach disk1:
  */
-void
-dev_init_disk1(void) {
-    struct inode *node;
-    if ((node = dev_create_inode()) == NULL) {
-        panic("disk1: dev_create_node.\n");
-    }
-    disk1_device_init(vop_info(node, device));
+void dev_init_disk1(void)
+{
+	struct inode *node;
+	if ((node = dev_create_inode()) == NULL) {
+		panic("disk1: dev_create_node.\n");
+	}
+	disk1_device_init(vop_info(node, device));
 
-    int ret;
-    if ((ret = vfs_add_dev("disk1", node, 1)) != 0) {
-        panic("disk1: vfs_add_dev: %e.\n", ret);
-    }
+	int ret;
+	if ((ret = vfs_add_dev("disk1", node, 1)) != 0) {
+		panic("disk1: vfs_add_dev: %e.\n", ret);
+	}
 }
-

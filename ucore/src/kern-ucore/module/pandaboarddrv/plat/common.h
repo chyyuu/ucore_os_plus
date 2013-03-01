@@ -33,7 +33,7 @@
 #define IOMEM(x)        ((void __force __iomem *)(x))
 #endif
 
-extern int __init omap_init_clocksource_32k(void __iomem *vbase);
+extern int __init omap_init_clocksource_32k(void __iomem * vbase);
 
 extern void __init omap_check_revision(void);
 

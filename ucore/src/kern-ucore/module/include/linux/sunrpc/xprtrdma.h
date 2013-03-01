@@ -64,7 +64,7 @@
 
 #define RPCRDMA_DEF_INLINE  (1024)	/* default inline max */
 
-#define RPCRDMA_INLINE_PAD_THRESH  (512)/* payload threshold to pad (bytes) */
+#define RPCRDMA_INLINE_PAD_THRESH  (512)	/* payload threshold to pad (bytes) */
 
 /* memory registration strategies */
 #define RPCRDMA_PERSISTENT_REGISTRATION (1)

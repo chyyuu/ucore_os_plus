@@ -10,11 +10,12 @@
 struct device;
 
 struct menelaus_platform_data {
-	int (* late_init)(struct device *dev);
+	int (*late_init) (struct device * dev);
 };
 
-extern int menelaus_register_mmc_callback(void (*callback)(void *data, u8 card_mask),
-					  void *data);
+extern int
+menelaus_register_mmc_callback(void (*callback) (void *data, u8 card_mask),
+			       void *data);
 extern void menelaus_unregister_mmc_callback(void);
 extern int menelaus_set_mmc_opendrain(int slot, int enable);
 extern int menelaus_set_mmc_slot(int slot, int enable, int power, int cd_on);

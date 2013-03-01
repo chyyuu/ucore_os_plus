@@ -32,7 +32,7 @@ static struct device *next_device(struct klist_iter *i)
  * Iterate over the @drv's list of devices calling @fn for each one.
  */
 int driver_for_each_device(struct device_driver *drv, struct device *start,
-			   void *data, int (*fn)(struct device *, void *))
+			   void *data, int (*fn) (struct device *, void *))
 {
 	struct klist_iter i;
 	struct device *dev;
@@ -48,6 +48,7 @@ int driver_for_each_device(struct device_driver *drv, struct device *start,
 	klist_iter_exit(&i);
 	return error;
 }
+
 EXPORT_SYMBOL_GPL(driver_for_each_device);
 
 /**
@@ -67,7 +68,8 @@ EXPORT_SYMBOL_GPL(driver_for_each_device);
  */
 struct device *driver_find_device(struct device_driver *drv,
 				  struct device *start, void *data,
-				  int (*match)(struct device *dev, void *data))
+				  int (*match) (struct device * dev,
+						void *data))
 {
 	struct klist_iter i;
 	struct device *dev;
@@ -83,6 +85,7 @@ struct device *driver_find_device(struct device_driver *drv,
 	klist_iter_exit(&i);
 	return dev;
 }
+
 EXPORT_SYMBOL_GPL(driver_find_device);
 
 /**
@@ -90,8 +93,7 @@ EXPORT_SYMBOL_GPL(driver_find_device);
  * @drv: driver.
  * @attr: driver attribute descriptor.
  */
-int driver_create_file(struct device_driver *drv,
-		       struct driver_attribute *attr)
+int driver_create_file(struct device_driver *drv, struct driver_attribute *attr)
 {
 	int error;
 	if (drv)
@@ -100,6 +102,7 @@ int driver_create_file(struct device_driver *drv,
 		error = -EINVAL;
 	return error;
 }
+
 EXPORT_SYMBOL_GPL(driver_create_file);
 
 /**
@@ -113,6 +116,7 @@ void driver_remove_file(struct device_driver *drv,
 	if (drv)
 		sysfs_remove_file(&drv->p->kobj, &attr->attr);
 }
+
 EXPORT_SYMBOL_GPL(driver_remove_file);
 
 /**
@@ -143,6 +147,7 @@ int driver_add_kobj(struct device_driver *drv, struct kobject *kobj,
 	kfree(name);
 	return ret;
 }
+
 EXPORT_SYMBOL_GPL(driver_add_kobj);
 
 /**
@@ -161,6 +166,7 @@ struct device_driver *get_driver(struct device_driver *drv)
 	}
 	return NULL;
 }
+
 EXPORT_SYMBOL_GPL(get_driver);
 
 /**
@@ -171,6 +177,7 @@ void put_driver(struct device_driver *drv)
 {
 	kobject_put(&drv->p->kobj);
 }
+
 EXPORT_SYMBOL_GPL(put_driver);
 
 static int driver_add_groups(struct device_driver *drv,
@@ -220,13 +227,13 @@ int driver_register(struct device_driver *drv)
 	    (drv->bus->remove && drv->remove) ||
 	    (drv->bus->shutdown && drv->shutdown))
 		printk(KERN_WARNING "Driver '%s' needs updating - please use "
-			"bus_type methods\n", drv->name);
+		       "bus_type methods\n", drv->name);
 
 	other = driver_find(drv->name, drv->bus);
 	if (other) {
 		put_driver(other);
 		printk(KERN_ERR "Error: Driver '%s' is already registered, "
-			"aborting...\n", drv->name);
+		       "aborting...\n", drv->name);
 		return -EEXIST;
 	}
 
@@ -238,6 +245,7 @@ int driver_register(struct device_driver *drv)
 		bus_remove_driver(drv);
 	return ret;
 }
+
 EXPORT_SYMBOL_GPL(driver_register);
 
 /**
@@ -251,6 +259,7 @@ void driver_unregister(struct device_driver *drv)
 	driver_remove_groups(drv, drv->groups);
 	bus_remove_driver(drv);
 }
+
 EXPORT_SYMBOL_GPL(driver_unregister);
 
 /**
@@ -274,4 +283,5 @@ struct device_driver *driver_find(const char *name, struct bus_type *bus)
 	}
 	return NULL;
 }
+
 EXPORT_SYMBOL_GPL(driver_find);

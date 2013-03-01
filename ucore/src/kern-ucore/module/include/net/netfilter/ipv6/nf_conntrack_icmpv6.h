@@ -18,8 +18,7 @@
 #define ICMPV6_NI_REPLY 140
 #endif
 
-struct nf_ct_icmpv6
-{
+struct nf_ct_icmpv6 {
 	/* Optimization: when number in == number out, forget immediately. */
 	atomic_t count;
 };

@@ -21,10 +21,10 @@ struct module;
 struct tracepoint;
 
 struct tracepoint {
-	const char *name;		/* Tracepoint name */
-	int state;			/* State. */
+	const char *name;	/* Tracepoint name */
+	int state;		/* State. */
 	void **funcs;
-} __attribute__((aligned(32)));		/*
+} __attribute__ ((aligned(32)));	/*
 					 * Aligned on 32 bytes because it is
 					 * globally visible and gcc happily
 					 * align these on the structure size.
@@ -89,7 +89,7 @@ struct tracepoint {
 	EXPORT_SYMBOL(__tracepoint_##name)
 
 extern void tracepoint_update_probe_range(struct tracepoint *begin,
-	struct tracepoint *end);
+					  struct tracepoint *end);
 
 #else /* !CONFIG_TRACEPOINTS */
 #define DECLARE_TRACE(name, proto, args)				\
@@ -111,8 +111,9 @@ extern void tracepoint_update_probe_range(struct tracepoint *begin,
 #define EXPORT_TRACEPOINT_SYMBOL(name)
 
 static inline void tracepoint_update_probe_range(struct tracepoint *begin,
-	struct tracepoint *end)
-{ }
+						 struct tracepoint *end)
+{
+}
 #endif /* CONFIG_TRACEPOINTS */
 
 /*
@@ -141,7 +142,8 @@ extern void tracepoint_iter_next(struct tracepoint_iter *iter);
 extern void tracepoint_iter_stop(struct tracepoint_iter *iter);
 extern void tracepoint_iter_reset(struct tracepoint_iter *iter);
 extern int tracepoint_get_iter_range(struct tracepoint **tracepoint,
-	struct tracepoint *begin, struct tracepoint *end);
+				     struct tracepoint *begin,
+				     struct tracepoint *end);
 
 /*
  * tracepoint_synchronize_unregister must be called between the last tracepoint

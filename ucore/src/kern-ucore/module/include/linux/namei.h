@@ -8,19 +8,19 @@
 struct vfsmount;
 
 struct open_intent {
-	int	flags;
-	int	create_mode;
+	int flags;
+	int create_mode;
 	struct file *file;
 };
 
 enum { MAX_NESTED_LINKS = 8 };
 
 struct nameidata {
-	struct path	path;
-	struct qstr	last;
-	unsigned int	flags;
-	int		last_type;
-	unsigned	depth;
+	struct path path;
+	struct qstr last;
+	unsigned int flags;
+	int last_type;
+	unsigned depth;
 	char *saved_names[MAX_NESTED_LINKS + 1];
 
 	/* Intent data */
@@ -32,7 +32,7 @@ struct nameidata {
 /*
  * Type of the last component on LOOKUP_PARENT
  */
-enum {LAST_NORM, LAST_ROOT, LAST_DOT, LAST_DOTDOT, LAST_BIND};
+enum { LAST_NORM, LAST_ROOT, LAST_DOT, LAST_DOTDOT, LAST_BIND };
 
 /*
  * The bitmask for a lookup event:
@@ -69,9 +69,12 @@ extern int path_lookup(const char *, unsigned, struct nameidata *);
 extern int vfs_path_lookup(struct dentry *, struct vfsmount *,
 			   const char *, unsigned int, struct nameidata *);
 
-extern int path_lookup_open(int dfd, const char *name, unsigned lookup_flags, struct nameidata *, int open_flags);
-extern struct file *lookup_instantiate_filp(struct nameidata *nd, struct dentry *dentry,
-		int (*open)(struct inode *, struct file *));
+extern int path_lookup_open(int dfd, const char *name, unsigned lookup_flags,
+			    struct nameidata *, int open_flags);
+extern struct file *lookup_instantiate_filp(struct nameidata *nd,
+					    struct dentry *dentry,
+					    int (*open) (struct inode *,
+							 struct file *));
 extern struct file *nameidata_to_filp(struct nameidata *nd, int flags);
 extern void release_open_intent(struct nameidata *);
 
@@ -96,7 +99,7 @@ static inline char *nd_get_link(struct nameidata *nd)
 
 static inline void nd_terminate_link(void *name, size_t len, size_t maxlen)
 {
-	((char *) name)[min(len, maxlen)] = '\0';
+	((char *)name)[min(len, maxlen)] = '\0';
 }
 
 #endif /* _LINUX_NAMEI_H */

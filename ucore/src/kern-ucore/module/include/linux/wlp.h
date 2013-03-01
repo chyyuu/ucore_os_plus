@@ -73,7 +73,6 @@
  */
 #define WLP_WSS_NONCE_STRSIZE 48
 
-
 /**
  * Size used for WLP name size
  *
@@ -171,49 +170,49 @@ enum wlp_assoc_type {
  * WLP Draft 0.99 [6.6.1 Table 6]
  */
 enum wlp_attr_type {
-	WLP_ATTR_AUTH		= 0x1005, /* Authenticator */
-	WLP_ATTR_DEV_NAME 	= 0x1011, /* Device Name */
-	WLP_ATTR_DEV_PWD_ID 	= 0x1012, /* Device Password ID */
-	WLP_ATTR_E_HASH1	= 0x1014, /* E-Hash1 */
-	WLP_ATTR_E_HASH2	= 0x1015, /* E-Hash2 */
-	WLP_ATTR_E_SNONCE1	= 0x1016, /* E-SNonce1 */
-	WLP_ATTR_E_SNONCE2	= 0x1017, /* E-SNonce2 */
-	WLP_ATTR_ENCR_SET	= 0x1018, /* Encrypted Settings */
-	WLP_ATTR_ENRL_NONCE	= 0x101A, /* Enrollee Nonce */
-	WLP_ATTR_KEYWRAP_AUTH	= 0x101E, /* Key Wrap Authenticator */
-	WLP_ATTR_MANUF		= 0x1021, /* Manufacturer */
-	WLP_ATTR_MSG_TYPE	= 0x1022, /* Message Type */
-	WLP_ATTR_MODEL_NAME	= 0x1023, /* Model Name */
-	WLP_ATTR_MODEL_NR	= 0x1024, /* Model Number */
-	WLP_ATTR_PUB_KEY	= 0x1032, /* Public Key */
-	WLP_ATTR_REG_NONCE	= 0x1039, /* Registrar Nonce */
-	WLP_ATTR_R_HASH1	= 0x103D, /* R-Hash1 */
-	WLP_ATTR_R_HASH2	= 0x103E, /* R-Hash2 */
-	WLP_ATTR_R_SNONCE1	= 0x103F, /* R-SNonce1 */
-	WLP_ATTR_R_SNONCE2	= 0x1040, /* R-SNonce2 */
-	WLP_ATTR_SERIAL		= 0x1042, /* Serial number */
-	WLP_ATTR_UUID_E		= 0x1047, /* UUID-E */
-	WLP_ATTR_UUID_R		= 0x1048, /* UUID-R */
-	WLP_ATTR_PRI_DEV_TYPE	= 0x1054, /* Primary Device Type */
-	WLP_ATTR_SEC_DEV_TYPE	= 0x1055, /* Secondary Device Type */
-	WLP_ATTR_PORT_DEV	= 0x1056, /* Portable Device */
-	WLP_ATTR_APP_EXT	= 0x1058, /* Application Extension */
-	WLP_ATTR_WLP_VER	= 0x2000, /* WLP Version */
-	WLP_ATTR_WSSID		= 0x2001, /* WSSID */
-	WLP_ATTR_WSS_NAME	= 0x2002, /* WSS Name */
-	WLP_ATTR_WSS_SEC_STAT	= 0x2003, /* WSS Secure Status */
-	WLP_ATTR_WSS_BCAST	= 0x2004, /* WSS Broadcast Address */
-	WLP_ATTR_WSS_M_KEY	= 0x2005, /* WSS Master Key */
-	WLP_ATTR_ACC_ENRL	= 0x2006, /* Accepting Enrollment */
-	WLP_ATTR_WSS_INFO	= 0x2007, /* WSS Information */
-	WLP_ATTR_WSS_SEL_MTHD	= 0x2008, /* WSS Selection Method */
-	WLP_ATTR_ASSC_MTHD_LIST	= 0x2009, /* Association Methods List */
-	WLP_ATTR_SEL_ASSC_MTHD	= 0x200A, /* Selected Association Method */
-	WLP_ATTR_ENRL_HASH_COMM	= 0x200B, /* Enrollee Hash Commitment */
-	WLP_ATTR_WSS_TAG	= 0x200C, /* WSS Tag */
-	WLP_ATTR_WSS_VIRT	= 0x200D, /* WSS Virtual EUI-48 */
-	WLP_ATTR_WLP_ASSC_ERR	= 0x200E, /* WLP Association Error */
-	WLP_ATTR_VNDR_EXT	= 0x200F, /* Vendor Extension */
+	WLP_ATTR_AUTH = 0x1005,	/* Authenticator */
+	WLP_ATTR_DEV_NAME = 0x1011,	/* Device Name */
+	WLP_ATTR_DEV_PWD_ID = 0x1012,	/* Device Password ID */
+	WLP_ATTR_E_HASH1 = 0x1014,	/* E-Hash1 */
+	WLP_ATTR_E_HASH2 = 0x1015,	/* E-Hash2 */
+	WLP_ATTR_E_SNONCE1 = 0x1016,	/* E-SNonce1 */
+	WLP_ATTR_E_SNONCE2 = 0x1017,	/* E-SNonce2 */
+	WLP_ATTR_ENCR_SET = 0x1018,	/* Encrypted Settings */
+	WLP_ATTR_ENRL_NONCE = 0x101A,	/* Enrollee Nonce */
+	WLP_ATTR_KEYWRAP_AUTH = 0x101E,	/* Key Wrap Authenticator */
+	WLP_ATTR_MANUF = 0x1021,	/* Manufacturer */
+	WLP_ATTR_MSG_TYPE = 0x1022,	/* Message Type */
+	WLP_ATTR_MODEL_NAME = 0x1023,	/* Model Name */
+	WLP_ATTR_MODEL_NR = 0x1024,	/* Model Number */
+	WLP_ATTR_PUB_KEY = 0x1032,	/* Public Key */
+	WLP_ATTR_REG_NONCE = 0x1039,	/* Registrar Nonce */
+	WLP_ATTR_R_HASH1 = 0x103D,	/* R-Hash1 */
+	WLP_ATTR_R_HASH2 = 0x103E,	/* R-Hash2 */
+	WLP_ATTR_R_SNONCE1 = 0x103F,	/* R-SNonce1 */
+	WLP_ATTR_R_SNONCE2 = 0x1040,	/* R-SNonce2 */
+	WLP_ATTR_SERIAL = 0x1042,	/* Serial number */
+	WLP_ATTR_UUID_E = 0x1047,	/* UUID-E */
+	WLP_ATTR_UUID_R = 0x1048,	/* UUID-R */
+	WLP_ATTR_PRI_DEV_TYPE = 0x1054,	/* Primary Device Type */
+	WLP_ATTR_SEC_DEV_TYPE = 0x1055,	/* Secondary Device Type */
+	WLP_ATTR_PORT_DEV = 0x1056,	/* Portable Device */
+	WLP_ATTR_APP_EXT = 0x1058,	/* Application Extension */
+	WLP_ATTR_WLP_VER = 0x2000,	/* WLP Version */
+	WLP_ATTR_WSSID = 0x2001,	/* WSSID */
+	WLP_ATTR_WSS_NAME = 0x2002,	/* WSS Name */
+	WLP_ATTR_WSS_SEC_STAT = 0x2003,	/* WSS Secure Status */
+	WLP_ATTR_WSS_BCAST = 0x2004,	/* WSS Broadcast Address */
+	WLP_ATTR_WSS_M_KEY = 0x2005,	/* WSS Master Key */
+	WLP_ATTR_ACC_ENRL = 0x2006,	/* Accepting Enrollment */
+	WLP_ATTR_WSS_INFO = 0x2007,	/* WSS Information */
+	WLP_ATTR_WSS_SEL_MTHD = 0x2008,	/* WSS Selection Method */
+	WLP_ATTR_ASSC_MTHD_LIST = 0x2009,	/* Association Methods List */
+	WLP_ATTR_SEL_ASSC_MTHD = 0x200A,	/* Selected Association Method */
+	WLP_ATTR_ENRL_HASH_COMM = 0x200B,	/* Enrollee Hash Commitment */
+	WLP_ATTR_WSS_TAG = 0x200C,	/* WSS Tag */
+	WLP_ATTR_WSS_VIRT = 0x200D,	/* WSS Virtual EUI-48 */
+	WLP_ATTR_WLP_ASSC_ERR = 0x200E,	/* WLP Association Error */
+	WLP_ATTR_VNDR_EXT = 0x200F,	/* Vendor Extension */
 };
 
 /**
@@ -240,7 +239,7 @@ enum wlp_dev_category_id {
  */
 enum wlp_wss_sel_mthd {
 	WLP_WSS_ENRL_SELECT = 1,	/* Enrollee selects */
-	WLP_WSS_REG_SELECT,		/* Registrar selects */
+	WLP_WSS_REG_SELECT,	/* Registrar selects */
 };
 
 /**
@@ -249,20 +248,20 @@ enum wlp_wss_sel_mthd {
  */
 enum wlp_assc_error {
 	WLP_ASSOC_ERROR_NONE,
-	WLP_ASSOC_ERROR_AUTH,		/* Authenticator Failure */
-	WLP_ASSOC_ERROR_ROGUE,		/* Rogue activity suspected */
-	WLP_ASSOC_ERROR_BUSY,		/* Device busy */
-	WLP_ASSOC_ERROR_LOCK,		/* Setup Locked */
+	WLP_ASSOC_ERROR_AUTH,	/* Authenticator Failure */
+	WLP_ASSOC_ERROR_ROGUE,	/* Rogue activity suspected */
+	WLP_ASSOC_ERROR_BUSY,	/* Device busy */
+	WLP_ASSOC_ERROR_LOCK,	/* Setup Locked */
 	WLP_ASSOC_ERROR_NOT_READY,	/* Registrar not ready */
-	WLP_ASSOC_ERROR_INV,		/* Invalid WSS selection */
+	WLP_ASSOC_ERROR_INV,	/* Invalid WSS selection */
 	WLP_ASSOC_ERROR_MSG_TIME,	/* Message timeout */
 	WLP_ASSOC_ERROR_ENR_TIME,	/* Enrollment session timeout */
-	WLP_ASSOC_ERROR_PW,		/* Device password invalid */
-	WLP_ASSOC_ERROR_VER,		/* Unsupported version */
-	WLP_ASSOC_ERROR_INT,		/* Internal error */
-	WLP_ASSOC_ERROR_UNDEF,		/* Undefined error */
-	WLP_ASSOC_ERROR_NUM,		/* Numeric comparison failure */
-	WLP_ASSOC_ERROR_WAIT,		/* Waiting for user input */
+	WLP_ASSOC_ERROR_PW,	/* Device password invalid */
+	WLP_ASSOC_ERROR_VER,	/* Unsupported version */
+	WLP_ASSOC_ERROR_INT,	/* Internal error */
+	WLP_ASSOC_ERROR_UNDEF,	/* Undefined error */
+	WLP_ASSOC_ERROR_NUM,	/* Numeric comparison failure */
+	WLP_ASSOC_ERROR_WAIT,	/* Waiting for user input */
 };
 
 /**
@@ -300,7 +299,7 @@ struct wlp_ie {
 	__le16 cycle_param;
 	__le16 acw_anchor_addr;
 	u8 wssid_hash_list[];
-} __attribute__((packed));
+} __attribute__ ((packed));
 
 static inline int wlp_ie_hash_length(struct wlp_ie *ie)
 {
@@ -324,7 +323,7 @@ static inline void wlp_ie_set_hash_length(struct wlp_ie *ie, int hash_length)
  */
 struct wlp_nonce {
 	u8 data[16];
-} __attribute__((packed));
+} __attribute__ ((packed));
 
 /**
  * WLP UUID
@@ -336,8 +335,7 @@ struct wlp_nonce {
  */
 struct wlp_uuid {
 	u8 data[16];
-} __attribute__((packed));
-
+} __attribute__ ((packed));
 
 /**
  * Primary and secondary device type attributes
@@ -348,16 +346,16 @@ struct wlp_dev_type {
 	u8 OUI[3];
 	u8 OUIsubdiv;
 	__le16 subID;
-} __attribute__((packed));
+} __attribute__ ((packed));
 
 /**
  * WLP frame header
  * WLP Draft 0.99 [6.2]
  */
 struct wlp_frame_hdr {
-	__le16 mux_hdr;			/* WLP_PROTOCOL_ID */
+	__le16 mux_hdr;		/* WLP_PROTOCOL_ID */
 	enum wlp_frame_type type:8;
-} __attribute__((packed));
+} __attribute__ ((packed));
 
 /**
  * WLP attribute field header
@@ -368,7 +366,7 @@ struct wlp_frame_hdr {
 struct wlp_attr_hdr {
 	__le16 type;
 	__le16 length;
-} __attribute__((packed));
+} __attribute__ ((packed));
 
 /**
  * Device information commonly used together
@@ -422,7 +420,7 @@ wlp_attr_array(u8, dev_name)
 
 /* Enrollee Nonce: Random number generated by enrollee for an enrollment
  * session */
-wlp_attr(struct wlp_nonce, enonce)
+    wlp_attr(struct wlp_nonce, enonce)
 
 /* Manufacturer name: Name of manufacturer of the sending device */
 wlp_attr_array(u8, manufacturer)
@@ -483,7 +481,7 @@ struct wlp_wss_info {
 	struct wlp_attr_accept_enrl accept;
 	struct wlp_attr_wss_sec_status sec_stat;
 	struct wlp_attr_wss_bcast bcast;
-} __attribute__((packed));
+} __attribute__ ((packed));
 
 /* WLP WSS Information */
 wlp_attr_array(struct wlp_wss_info, wss_info)
@@ -520,7 +518,7 @@ wlp_attr(u8, wlp_assc_err)
 struct wlp_frame_std_abbrv_hdr {
 	struct wlp_frame_hdr hdr;
 	u8 tag;
-} __attribute__((packed));
+} __attribute__ ((packed));
 
 /**
  * WLP association frames
@@ -533,7 +531,7 @@ struct wlp_frame_assoc {
 	struct wlp_attr_version version;
 	struct wlp_attr_msg_type msg_type;
 	u8 attr[];
-} __attribute__((packed));
+} __attribute__ ((packed));
 
 /* Ethernet to dev address mapping */
 struct wlp_eda {
@@ -577,7 +575,7 @@ struct wlp_neighbor_e {
 	struct list_head node;
 	struct wlp_uuid uuid;
 	struct uwb_dev *uwb_dev;
-	struct list_head wssid; /* Elements are wlp_wssid_e */
+	struct list_head wssid;	/* Elements are wlp_wssid_e */
 	struct wlp_device_info *info;
 };
 
@@ -598,7 +596,7 @@ struct wlp;
  */
 struct wlp_session {
 	enum wlp_assoc_type exp_message;
-	void (*cb)(struct wlp *);
+	void (*cb) (struct wlp *);
 	void *cb_priv;
 	void *data;
 	struct uwb_dev_addr neighbor_addr;
@@ -645,31 +643,31 @@ struct wlp_wss {
  */
 struct wlp {
 	struct mutex mutex;
-	struct uwb_rc *rc;		/* UWB radio controller */
+	struct uwb_rc *rc;	/* UWB radio controller */
 	struct net_device *ndev;
 	struct uwb_pal pal;
 	struct wlp_eda eda;
 	struct wlp_uuid uuid;
 	struct wlp_session *session;
 	struct wlp_wss wss;
-	struct mutex nbmutex; /* Neighbor mutex protects neighbors list */
-	struct list_head neighbors; /* Elements are wlp_neighbor_e */
+	struct mutex nbmutex;	/* Neighbor mutex protects neighbors list */
+	struct list_head neighbors;	/* Elements are wlp_neighbor_e */
 	struct uwb_notifs_handler uwb_notifs_handler;
 	struct wlp_device_info *dev_info;
-	void (*fill_device_info)(struct wlp *wlp, struct wlp_device_info *info);
-	int (*xmit_frame)(struct wlp *, struct sk_buff *,
-			  struct uwb_dev_addr *);
-	void (*stop_queue)(struct wlp *);
-	void (*start_queue)(struct wlp *);
+	void (*fill_device_info) (struct wlp * wlp,
+				  struct wlp_device_info * info);
+	int (*xmit_frame) (struct wlp *, struct sk_buff *,
+			   struct uwb_dev_addr *);
+	void (*stop_queue) (struct wlp *);
+	void (*start_queue) (struct wlp *);
 };
 
 /* sysfs */
 
-
 struct wlp_wss_attribute {
 	struct attribute attr;
-	ssize_t (*show)(struct wlp_wss *wss, char *buf);
-	ssize_t (*store)(struct wlp_wss *wss, const char *buf, size_t count);
+	 ssize_t(*show) (struct wlp_wss * wss, char *buf);
+	 ssize_t(*store) (struct wlp_wss * wss, const char *buf, size_t count);
 };
 
 #define WSS_ATTR(_name, _mode, _show, _store) \
@@ -698,39 +696,33 @@ extern ssize_t wlp_dev_model_nr_store(struct wlp *, const char *, size_t);
 extern ssize_t wlp_dev_serial_show(struct wlp *, char *);
 extern ssize_t wlp_dev_serial_store(struct wlp *, const char *, size_t);
 extern ssize_t wlp_dev_prim_category_show(struct wlp *, char *);
-extern ssize_t wlp_dev_prim_category_store(struct wlp *, const char *,
-					   size_t);
+extern ssize_t wlp_dev_prim_category_store(struct wlp *, const char *, size_t);
 extern ssize_t wlp_dev_prim_OUI_show(struct wlp *, char *);
 extern ssize_t wlp_dev_prim_OUI_store(struct wlp *, const char *, size_t);
 extern ssize_t wlp_dev_prim_OUI_sub_show(struct wlp *, char *);
-extern ssize_t wlp_dev_prim_OUI_sub_store(struct wlp *, const char *,
-					  size_t);
+extern ssize_t wlp_dev_prim_OUI_sub_store(struct wlp *, const char *, size_t);
 extern ssize_t wlp_dev_prim_subcat_show(struct wlp *, char *);
-extern ssize_t wlp_dev_prim_subcat_store(struct wlp *, const char *,
-					 size_t);
+extern ssize_t wlp_dev_prim_subcat_store(struct wlp *, const char *, size_t);
 extern int wlp_receive_frame(struct device *, struct wlp *, struct sk_buff *,
 			     struct uwb_dev_addr *);
 extern int wlp_prepare_tx_frame(struct device *, struct wlp *,
-			       struct sk_buff *, struct uwb_dev_addr *);
+				struct sk_buff *, struct uwb_dev_addr *);
 void wlp_reset_all(struct wlp *wlp);
 
 /**
  * Initialize WSS
  */
-static inline
-void wlp_wss_init(struct wlp_wss *wss)
+static inline void wlp_wss_init(struct wlp_wss *wss)
 {
 	mutex_init(&wss->mutex);
 }
 
-static inline
-void wlp_init(struct wlp *wlp)
+static inline void wlp_init(struct wlp *wlp)
 {
 	INIT_LIST_HEAD(&wlp->neighbors);
 	mutex_init(&wlp->mutex);
 	mutex_init(&wlp->nbmutex);
 	wlp_wss_init(&wlp->wss);
 }
-
 
 #endif /* #ifndef __LINUX__WLP_H_ */

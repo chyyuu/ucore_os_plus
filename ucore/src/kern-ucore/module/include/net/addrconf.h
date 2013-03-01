@@ -21,28 +21,23 @@
 #include <linux/in6.h>
 
 struct prefix_info {
-	__u8			type;
-	__u8			length;
-	__u8			prefix_len;
+	__u8 type;
+	__u8 length;
+	__u8 prefix_len;
 
 #if defined(__BIG_ENDIAN_BITFIELD)
-	__u8			onlink : 1,
-			 	autoconf : 1,
-				reserved : 6;
+	__u8 onlink:1, autoconf:1, reserved:6;
 #elif defined(__LITTLE_ENDIAN_BITFIELD)
-	__u8			reserved : 6,
-				autoconf : 1,
-				onlink : 1;
+	__u8 reserved:6, autoconf:1, onlink:1;
 #else
 #error "Please fix <asm/byteorder.h>"
 #endif
-	__be32			valid;
-	__be32			prefered;
-	__be32			reserved2;
+	__be32 valid;
+	__be32 prefered;
+	__be32 reserved2;
 
-	struct in6_addr		prefix;
+	struct in6_addr prefix;
 };
-
 
 #ifdef __KERNEL__
 
@@ -52,51 +47,39 @@ struct prefix_info {
 
 #define IN6_ADDR_HSIZE		16
 
-extern int			addrconf_init(void);
-extern void			addrconf_cleanup(void);
+extern int addrconf_init(void);
+extern void addrconf_cleanup(void);
 
-extern int			addrconf_add_ifaddr(struct net *net,
-						    void __user *arg);
-extern int			addrconf_del_ifaddr(struct net *net,
-						    void __user *arg);
-extern int			addrconf_set_dstaddr(struct net *net,
-						     void __user *arg);
+extern int addrconf_add_ifaddr(struct net *net, void __user * arg);
+extern int addrconf_del_ifaddr(struct net *net, void __user * arg);
+extern int addrconf_set_dstaddr(struct net *net, void __user * arg);
 
-extern int			ipv6_chk_addr(struct net *net,
-					      struct in6_addr *addr,
-					      struct net_device *dev,
-					      int strict);
+extern int ipv6_chk_addr(struct net *net,
+			 struct in6_addr *addr,
+			 struct net_device *dev, int strict);
 
 #if defined(CONFIG_IPV6_MIP6) || defined(CONFIG_IPV6_MIP6_MODULE)
-extern int			ipv6_chk_home_addr(struct net *net,
-						   struct in6_addr *addr);
+extern int ipv6_chk_home_addr(struct net *net, struct in6_addr *addr);
 #endif
 
-extern int			ipv6_chk_prefix(struct in6_addr *addr,
-						struct net_device *dev);
+extern int ipv6_chk_prefix(struct in6_addr *addr, struct net_device *dev);
 
-extern struct inet6_ifaddr      *ipv6_get_ifaddr(struct net *net,
-						 const struct in6_addr *addr,
-						 struct net_device *dev,
-						 int strict);
+extern struct inet6_ifaddr *ipv6_get_ifaddr(struct net *net,
+					    const struct in6_addr *addr,
+					    struct net_device *dev, int strict);
 
-extern int			ipv6_dev_get_saddr(struct net *net,
-					       struct net_device *dev,
-					       const struct in6_addr *daddr,
-					       unsigned int srcprefs,
-					       struct in6_addr *saddr);
-extern int			ipv6_get_lladdr(struct net_device *dev,
-						struct in6_addr *addr,
-						unsigned char banned_flags);
-extern int			ipv6_rcv_saddr_equal(const struct sock *sk, 
-						      const struct sock *sk2);
-extern void			addrconf_join_solict(struct net_device *dev,
-					struct in6_addr *addr);
-extern void			addrconf_leave_solict(struct inet6_dev *idev,
-					struct in6_addr *addr);
+extern int ipv6_dev_get_saddr(struct net *net,
+			      struct net_device *dev,
+			      const struct in6_addr *daddr,
+			      unsigned int srcprefs, struct in6_addr *saddr);
+extern int ipv6_get_lladdr(struct net_device *dev,
+			   struct in6_addr *addr, unsigned char banned_flags);
+extern int ipv6_rcv_saddr_equal(const struct sock *sk, const struct sock *sk2);
+extern void addrconf_join_solict(struct net_device *dev, struct in6_addr *addr);
+extern void addrconf_leave_solict(struct inet6_dev *idev,
+				  struct in6_addr *addr);
 
-static inline unsigned long addrconf_timeout_fixup(u32 timeout,
-						    unsigned unit)
+static inline unsigned long addrconf_timeout_fixup(u32 timeout, unsigned unit)
 {
 	if (timeout == 0xffffffff)
 		return ~0UL;
@@ -120,11 +103,10 @@ static inline int addrconf_finite_timeout(unsigned long timeout)
 /*
  *	IPv6 Address Label subsystem (addrlabel.c)
  */
-extern int			ipv6_addr_label_init(void);
-extern void			ipv6_addr_label_rtnl_register(void);
-extern u32			ipv6_addr_label(struct net *net,
-						const struct in6_addr *addr,
-						int type, int ifindex);
+extern int ipv6_addr_label_init(void);
+extern void ipv6_addr_label_rtnl_register(void);
+extern u32 ipv6_addr_label(struct net *net,
+			   const struct in6_addr *addr, int type, int ifindex);
 
 /*
  *	multicast prototypes (mcast.c)
@@ -139,7 +121,8 @@ extern int inet6_mc_check(struct sock *sk,
 			  const struct in6_addr *src_addr);
 
 extern int ipv6_dev_mc_inc(struct net_device *dev, const struct in6_addr *addr);
-extern int __ipv6_dev_mc_dec(struct inet6_dev *idev, const struct in6_addr *addr);
+extern int __ipv6_dev_mc_dec(struct inet6_dev *idev,
+			     const struct in6_addr *addr);
 extern int ipv6_dev_mc_dec(struct net_device *dev, const struct in6_addr *addr);
 extern void ipv6_mc_up(struct inet6_dev *idev);
 extern void ipv6_mc_down(struct inet6_dev *idev);
@@ -152,13 +135,15 @@ extern int ipv6_chk_mcast_addr(struct net_device *dev,
 			       const struct in6_addr *src_addr);
 extern int ipv6_is_mld(struct sk_buff *skb, int nexthdr);
 
-extern void addrconf_prefix_rcv(struct net_device *dev, u8 *opt, int len);
+extern void addrconf_prefix_rcv(struct net_device *dev, u8 * opt, int len);
 
 /*
  *	anycast prototypes (anycast.c)
  */
-extern int ipv6_sock_ac_join(struct sock *sk,int ifindex,struct in6_addr *addr);
-extern int ipv6_sock_ac_drop(struct sock *sk,int ifindex,struct in6_addr *addr);
+extern int ipv6_sock_ac_join(struct sock *sk, int ifindex,
+			     struct in6_addr *addr);
+extern int ipv6_sock_ac_drop(struct sock *sk, int ifindex,
+			     struct in6_addr *addr);
 extern void ipv6_sock_ac_close(struct sock *sk);
 extern int inet6_ac_check(struct sock *sk, struct in6_addr *addr, int ifindex);
 
@@ -167,19 +152,16 @@ extern int __ipv6_dev_ac_dec(struct inet6_dev *idev, struct in6_addr *addr);
 extern int ipv6_chk_acast_addr(struct net *net, struct net_device *dev,
 			       struct in6_addr *addr);
 
-
 /* Device notifier */
 extern int register_inet6addr_notifier(struct notifier_block *nb);
 extern int unregister_inet6addr_notifier(struct notifier_block *nb);
 
-static inline struct inet6_dev *
-__in6_dev_get(struct net_device *dev)
+static inline struct inet6_dev *__in6_dev_get(struct net_device *dev)
 {
 	return rcu_dereference(dev->ip6_ptr);
 }
 
-static inline struct inet6_dev *
-in6_dev_get(struct net_device *dev)
+static inline struct inet6_dev *in6_dev_get(struct net_device *dev)
 {
 	struct inet6_dev *idev = NULL;
 	rcu_read_lock();
@@ -192,8 +174,7 @@ in6_dev_get(struct net_device *dev)
 
 extern void in6_dev_finish_destroy(struct inet6_dev *idev);
 
-static inline void
-in6_dev_put(struct inet6_dev *idev)
+static inline void in6_dev_put(struct inet6_dev *idev)
 {
 	if (atomic_dec_and_test(&idev->refcnt))
 		in6_dev_finish_destroy(idev);
@@ -201,7 +182,6 @@ in6_dev_put(struct inet6_dev *idev)
 
 #define __in6_dev_put(idev)  atomic_dec(&(idev)->refcnt)
 #define in6_dev_hold(idev)   atomic_inc(&(idev)->refcnt)
-
 
 extern void inet6_ifa_finish_destroy(struct inet6_ifaddr *ifp);
 
@@ -214,8 +194,6 @@ static inline void in6_ifa_put(struct inet6_ifaddr *ifp)
 #define __in6_ifa_put(ifp)	atomic_dec(&(ifp)->refcnt)
 #define in6_ifa_hold(ifp)	atomic_inc(&(ifp)->refcnt)
 
-
-
 /*
  *	compute link-local solicited-node multicast address
  */
@@ -225,8 +203,7 @@ static inline void addrconf_addr_solict_mult(const struct in6_addr *addr,
 {
 	ipv6_addr_set(solicited,
 		      htonl(0xFF020000), 0,
-		      htonl(0x1),
-		      htonl(0xFF000000) | addr->s6_addr32[3]);
+		      htonl(0x1), htonl(0xFF000000) | addr->s6_addr32[3]);
 }
 
 static inline int ipv6_addr_is_multicast(const struct in6_addr *addr)
@@ -237,18 +214,18 @@ static inline int ipv6_addr_is_multicast(const struct in6_addr *addr)
 static inline int ipv6_addr_is_ll_all_nodes(const struct in6_addr *addr)
 {
 	return (((addr->s6_addr32[0] ^ htonl(0xff020000)) |
-		addr->s6_addr32[1] | addr->s6_addr32[2] |
-		(addr->s6_addr32[3] ^ htonl(0x00000001))) == 0);
+		 addr->s6_addr32[1] | addr->s6_addr32[2] |
+		 (addr->s6_addr32[3] ^ htonl(0x00000001))) == 0);
 }
 
 static inline int ipv6_addr_is_ll_all_routers(const struct in6_addr *addr)
 {
 	return (((addr->s6_addr32[0] ^ htonl(0xff020000)) |
-		addr->s6_addr32[1] | addr->s6_addr32[2] |
-		(addr->s6_addr32[3] ^ htonl(0x00000002))) == 0);
+		 addr->s6_addr32[1] | addr->s6_addr32[2] |
+		 (addr->s6_addr32[3] ^ htonl(0x00000002))) == 0);
 }
 
-extern int __ipv6_isatap_ifid(u8 *eui, __be32 addr);
+extern int __ipv6_isatap_ifid(u8 * eui, __be32 addr);
 
 static inline int ipv6_addr_is_isatap(const struct in6_addr *addr)
 {

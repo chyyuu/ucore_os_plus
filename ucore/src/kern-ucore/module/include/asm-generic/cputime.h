@@ -30,7 +30,6 @@ typedef u64 cputime64_t;
 #define jiffies64_to_cputime64(__jif)	(__jif)
 #define cputime_to_cputime64(__ct)	((u64) __ct)
 
-
 /*
  * Convert cputime to milliseconds and back.
  */

@@ -116,6 +116,7 @@ char *kobject_get_path(struct kobject *kobj, gfp_t gfp_mask)
 
 	return path;
 }
+
 EXPORT_SYMBOL_GPL(kobject_get_path);
 
 /* add the kobject to its kset's list */
@@ -154,7 +155,6 @@ static void kobject_init_internal(struct kobject *kobj)
 	kobj->state_initialized = 1;
 }
 
-
 static int kobject_add_internal(struct kobject *kobj)
 {
 	int error = 0;
@@ -165,7 +165,7 @@ static int kobject_add_internal(struct kobject *kobj)
 
 	if (!kobj->name || !kobj->name[0]) {
 		WARN(1, "kobject: (%p): attempted to be registered with empty "
-			 "name!\n", kobj);
+		     "name!\n", kobj);
 		return -EINVAL;
 	}
 
@@ -250,6 +250,7 @@ int kobject_set_name(struct kobject *kobj, const char *fmt, ...)
 
 	return retval;
 }
+
 EXPORT_SYMBOL(kobject_set_name);
 
 /**
@@ -291,6 +292,7 @@ error:
 	printk(KERN_ERR "kobject (%p): %s\n", kobj, err_str);
 	dump_stack();
 }
+
 EXPORT_SYMBOL(kobject_init);
 
 static int kobject_add_varg(struct kobject *kobj, struct kobject *parent,
@@ -354,6 +356,7 @@ int kobject_add(struct kobject *kobj, struct kobject *parent,
 
 	return retval;
 }
+
 EXPORT_SYMBOL(kobject_add);
 
 /**
@@ -381,6 +384,7 @@ int kobject_init_and_add(struct kobject *kobj, struct kobj_type *ktype,
 
 	return retval;
 }
+
 EXPORT_SYMBOL_GPL(kobject_init_and_add);
 
 /**
@@ -448,6 +452,7 @@ out:
 
 	return error;
 }
+
 EXPORT_SYMBOL_GPL(kobject_rename);
 
 /**
@@ -588,8 +593,8 @@ void kobject_put(struct kobject *kobj)
 	if (kobj) {
 		if (!kobj->state_initialized)
 			WARN(1, KERN_WARNING "kobject: '%s' (%p): is not "
-			       "initialized, yet kobject_put() is being "
-			       "called.\n", kobject_name(kobj), kobj);
+			     "initialized, yet kobject_put() is being "
+			     "called.\n", kobject_name(kobj), kobj);
 		kref_put(&kobj->kref, kobject_release);
 	}
 }
@@ -601,8 +606,8 @@ static void dynamic_kobj_release(struct kobject *kobj)
 }
 
 static struct kobj_type dynamic_kobj_ktype = {
-	.release	= dynamic_kobj_release,
-	.sysfs_ops	= &kobj_sysfs_ops,
+	.release = dynamic_kobj_release,
+	.sysfs_ops = &kobj_sysfs_ops,
 };
 
 /**
@@ -659,6 +664,7 @@ struct kobject *kobject_create_and_add(const char *name, struct kobject *parent)
 	}
 	return kobj;
 }
+
 EXPORT_SYMBOL_GPL(kobject_create_and_add);
 
 /**
@@ -698,8 +704,8 @@ static ssize_t kobj_attr_store(struct kobject *kobj, struct attribute *attr,
 }
 
 struct sysfs_ops kobj_sysfs_ops = {
-	.show	= kobj_attr_show,
-	.store	= kobj_attr_store,
+	.show = kobj_attr_show,
+	.store = kobj_attr_store,
 };
 
 /**
@@ -766,7 +772,7 @@ static void kset_release(struct kobject *kobj)
 }
 
 static struct kobj_type kset_ktype = {
-	.sysfs_ops	= &kobj_sysfs_ops,
+	.sysfs_ops = &kobj_sysfs_ops,
 	.release = kset_release,
 };
 
@@ -840,6 +846,7 @@ struct kset *kset_create_and_add(const char *name,
 	}
 	return kset;
 }
+
 EXPORT_SYMBOL_GPL(kset_create_and_add);
 
 EXPORT_SYMBOL(kobject_get);

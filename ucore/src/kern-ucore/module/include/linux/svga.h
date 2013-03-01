@@ -58,12 +58,11 @@ struct svga_pll {
 	u16 n_min;
 	u16 n_max;
 	u16 r_min;
-	u16 r_max;  /* r_max < 32 */
+	u16 r_max;		/* r_max < 32 */
 	u32 f_vco_min;
 	u32 f_vco_max;
 	u32 f_base;
 };
-
 
 /* Write a value to the attribute register */
 
@@ -95,7 +94,6 @@ static inline int svga_primary_device(struct pci_dev *dev)
 	return (flags & PCI_COMMAND_IO);
 }
 
-
 void svga_wcrt_multi(const struct vga_regset *regset, u32 value);
 void svga_wseq_multi(const struct vga_regset *regset, u32 value);
 
@@ -114,11 +112,16 @@ int svga_get_tilemax(struct fb_info *info);
 void svga_get_caps(struct fb_info *info, struct fb_blit_caps *caps,
 		   struct fb_var_screeninfo *var);
 
-int svga_compute_pll(const struct svga_pll *pll, u32 f_wanted, u16 *m, u16 *n, u16 *r, int node);
-int svga_check_timings(const struct svga_timing_regs *tm, struct fb_var_screeninfo *var, int node);
-void svga_set_timings(const struct svga_timing_regs *tm, struct fb_var_screeninfo *var, u32 hmul, u32 hdiv, u32 vmul, u32 vdiv, u32 hborder, int node);
+int svga_compute_pll(const struct svga_pll *pll, u32 f_wanted, u16 * m, u16 * n,
+		     u16 * r, int node);
+int svga_check_timings(const struct svga_timing_regs *tm,
+		       struct fb_var_screeninfo *var, int node);
+void svga_set_timings(const struct svga_timing_regs *tm,
+		      struct fb_var_screeninfo *var, u32 hmul, u32 hdiv,
+		      u32 vmul, u32 vdiv, u32 hborder, int node);
 
-int svga_match_format(const struct svga_fb_format *frm, struct fb_var_screeninfo *var, struct fb_fix_screeninfo *fix);
+int svga_match_format(const struct svga_fb_format *frm,
+		      struct fb_var_screeninfo *var,
+		      struct fb_fix_screeninfo *fix);
 
 #endif /* _LINUX_SVGA_H */
-

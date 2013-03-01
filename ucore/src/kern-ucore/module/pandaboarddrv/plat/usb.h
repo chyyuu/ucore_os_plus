@@ -27,57 +27,57 @@ enum usbhs_omap_port_mode {
 };
 
 struct usbhs_omap_board_data {
-	enum usbhs_omap_port_mode	port_mode[OMAP3_HS_USB_PORTS];
+	enum usbhs_omap_port_mode port_mode[OMAP3_HS_USB_PORTS];
 
 	/* have to be valid if phy_reset is true and portx is in phy mode */
-	int	reset_gpio_port[OMAP3_HS_USB_PORTS];
+	int reset_gpio_port[OMAP3_HS_USB_PORTS];
 
 	/* Set this to true for ES2.x silicon */
-	unsigned			es2_compatibility:1;
+	unsigned es2_compatibility:1;
 
-	unsigned			phy_reset:1;
+	unsigned phy_reset:1;
 
 	/*
 	 * Regulators for USB PHYs.
 	 * Each PHY can have a separate regulator.
 	 */
-	struct regulator		*regulator[OMAP3_HS_USB_PORTS];
+	struct regulator *regulator[OMAP3_HS_USB_PORTS];
 };
 
 #ifdef CONFIG_ARCH_OMAP2PLUS
 
 struct ehci_hcd_omap_platform_data {
-	enum usbhs_omap_port_mode	port_mode[OMAP3_HS_USB_PORTS];
-	int				reset_gpio_port[OMAP3_HS_USB_PORTS];
-	struct regulator		*regulator[OMAP3_HS_USB_PORTS];
-	unsigned			phy_reset:1;
+	enum usbhs_omap_port_mode port_mode[OMAP3_HS_USB_PORTS];
+	int reset_gpio_port[OMAP3_HS_USB_PORTS];
+	struct regulator *regulator[OMAP3_HS_USB_PORTS];
+	unsigned phy_reset:1;
 };
 
 struct ohci_hcd_omap_platform_data {
-	enum usbhs_omap_port_mode	port_mode[OMAP3_HS_USB_PORTS];
-	unsigned			es2_compatibility:1;
+	enum usbhs_omap_port_mode port_mode[OMAP3_HS_USB_PORTS];
+	unsigned es2_compatibility:1;
 };
 
 struct usbhs_omap_platform_data {
-	enum usbhs_omap_port_mode		port_mode[OMAP3_HS_USB_PORTS];
+	enum usbhs_omap_port_mode port_mode[OMAP3_HS_USB_PORTS];
 
-	struct ehci_hcd_omap_platform_data	*ehci_data;
-	struct ohci_hcd_omap_platform_data	*ohci_data;
+	struct ehci_hcd_omap_platform_data *ehci_data;
+	struct ohci_hcd_omap_platform_data *ohci_data;
 };
 /*-------------------------------------------------------------------------*/
 
 struct omap_musb_board_data {
-	u8	interface_type;
-	u8	mode;
-	u16	power;
+	u8 interface_type;
+	u8 mode;
+	u16 power;
 	unsigned extvbus:1;
-	void	(*set_phy_power)(u8 on);
-	void	(*clear_irq)(void);
-	void	(*set_mode)(u8 mode);
-	void	(*reset)(void);
+	void (*set_phy_power) (u8 on);
+	void (*clear_irq) (void);
+	void (*set_mode) (u8 mode);
+	void (*reset) (void);
 };
 
-enum musb_interface    {MUSB_INTERFACE_ULPI, MUSB_INTERFACE_UTMI};
+enum musb_interface { MUSB_INTERFACE_ULPI, MUSB_INTERFACE_UTMI };
 
 extern void usb_musb_init(struct omap_musb_board_data *board_data);
 
@@ -159,15 +159,17 @@ static inline u32 omap1_usb0_init(unsigned nwires, unsigned is_device)
 {
 	return 0;
 }
+
 static inline u32 omap1_usb1_init(unsigned nwires)
 {
 	return 0;
 
 }
+
 static inline u32 omap1_usb2_init(unsigned nwires, unsigned alt_pingroup)
 {
 	return 0;
 }
 #endif
 
-#endif	/* __ASM_ARCH_OMAP_USB_H */
+#endif /* __ASM_ARCH_OMAP_USB_H */

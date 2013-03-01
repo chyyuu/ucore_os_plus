@@ -40,26 +40,25 @@
  */
 struct udp_skb_cb {
 	union {
-		struct inet_skb_parm	h4;
+		struct inet_skb_parm h4;
 #if defined(CONFIG_IPV6) || defined (CONFIG_IPV6_MODULE)
-		struct inet6_skb_parm	h6;
+		struct inet6_skb_parm h6;
 #endif
 	} header;
-	__u16		cscov;
-	__u8		partial_cov;
+	__u16 cscov;
+	__u8 partial_cov;
 };
 #define UDP_SKB_CB(__skb)	((struct udp_skb_cb *)((__skb)->cb))
 
 struct udp_hslot {
-	struct hlist_nulls_head	head;
-	spinlock_t		lock;
-} __attribute__((aligned(2 * sizeof(long))));
+	struct hlist_nulls_head head;
+	spinlock_t lock;
+} __attribute__ ((aligned(2 * sizeof(long))));
 struct udp_table {
-	struct udp_hslot	hash[UDP_HTABLE_SIZE];
+	struct udp_hslot hash[UDP_HTABLE_SIZE];
 };
 extern struct udp_table udp_table;
 extern void udp_table_init(struct udp_table *);
-
 
 /* Note: this must match 'valbool' in sock_setsockopt */
 #define UDP_CSUM_NOXMIT		1
@@ -91,8 +90,7 @@ static inline __sum16 __udp_lib_checksum_complete(struct sk_buff *skb)
 
 static inline int udp_lib_checksum_complete(struct sk_buff *skb)
 {
-	return !skb_csum_unnecessary(skb) &&
-		__udp_lib_checksum_complete(skb);
+	return !skb_csum_unnecessary(skb) && __udp_lib_checksum_complete(skb);
 }
 
 /**
@@ -124,32 +122,32 @@ static inline void udp_lib_close(struct sock *sk, long timeout)
 	sk_common_release(sk);
 }
 
-extern int	udp_lib_get_port(struct sock *sk, unsigned short snum,
-		int (*)(const struct sock*,const struct sock*));
+extern int udp_lib_get_port(struct sock *sk, unsigned short snum,
+			    int (*)(const struct sock *, const struct sock *));
 
 /* net/ipv4/udp.c */
-extern int	udp_get_port(struct sock *sk, unsigned short snum,
-			     int (*saddr_cmp)(const struct sock *, const struct sock *));
-extern void	udp_err(struct sk_buff *, u32);
+extern int udp_get_port(struct sock *sk, unsigned short snum,
+			int (*saddr_cmp) (const struct sock *,
+					  const struct sock *));
+extern void udp_err(struct sk_buff *, u32);
 
-extern int	udp_sendmsg(struct kiocb *iocb, struct sock *sk,
-			    struct msghdr *msg, size_t len);
-extern void	udp_flush_pending_frames(struct sock *sk);
+extern int udp_sendmsg(struct kiocb *iocb, struct sock *sk,
+		       struct msghdr *msg, size_t len);
+extern void udp_flush_pending_frames(struct sock *sk);
 
-extern int	udp_rcv(struct sk_buff *skb);
-extern int	udp_ioctl(struct sock *sk, int cmd, unsigned long arg);
-extern int	udp_disconnect(struct sock *sk, int flags);
+extern int udp_rcv(struct sk_buff *skb);
+extern int udp_ioctl(struct sock *sk, int cmd, unsigned long arg);
+extern int udp_disconnect(struct sock *sk, int flags);
 extern unsigned int udp_poll(struct file *file, struct socket *sock,
-			     poll_table *wait);
-extern int 	udp_lib_getsockopt(struct sock *sk, int level, int optname,
-			           char __user *optval, int __user *optlen);
-extern int 	udp_lib_setsockopt(struct sock *sk, int level, int optname,
-				   char __user *optval, int optlen,
-				   int (*push_pending_frames)(struct sock *));
+			     poll_table * wait);
+extern int udp_lib_getsockopt(struct sock *sk, int level, int optname,
+			      char __user * optval, int __user * optlen);
+extern int udp_lib_setsockopt(struct sock *sk, int level, int optname,
+			      char __user * optval, int optlen,
+			      int (*push_pending_frames) (struct sock *));
 
 extern struct sock *udp4_lib_lookup(struct net *net, __be32 saddr, __be16 sport,
-				    __be32 daddr, __be16 dport,
-				    int dif);
+				    __be32 daddr, __be16 dport, int dif);
 
 /*
  * 	SNMP statistics for UDP and UDP-Lite
@@ -184,27 +182,27 @@ extern struct sock *udp4_lib_lookup(struct net *net, __be32 saddr, __be16 sport,
 
 /* /proc */
 struct udp_seq_afinfo {
-	char			*name;
-	sa_family_t		family;
-	struct udp_table	*udp_table;
-	struct file_operations	seq_fops;
-	struct seq_operations	seq_ops;
+	char *name;
+	sa_family_t family;
+	struct udp_table *udp_table;
+	struct file_operations seq_fops;
+	struct seq_operations seq_ops;
 };
 
 struct udp_iter_state {
-	struct seq_net_private  p;
-	sa_family_t		family;
-	int			bucket;
-	struct udp_table	*udp_table;
+	struct seq_net_private p;
+	sa_family_t family;
+	int bucket;
+	struct udp_table *udp_table;
 };
 
 #ifdef CONFIG_PROC_FS
 extern int udp_proc_register(struct net *net, struct udp_seq_afinfo *afinfo);
 extern void udp_proc_unregister(struct net *net, struct udp_seq_afinfo *afinfo);
 
-extern int  udp4_proc_init(void);
+extern int udp4_proc_init(void);
 extern void udp4_proc_exit(void);
 #endif
 
 extern void udp_init(void);
-#endif	/* _UDP_H */
+#endif /* _UDP_H */

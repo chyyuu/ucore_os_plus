@@ -13,8 +13,8 @@
 #ifdef __KERNEL__
 
 enum {
-	false	= 0,
-	true	= 1
+	false = 0,
+	true = 1
 };
 
 #undef offsetof

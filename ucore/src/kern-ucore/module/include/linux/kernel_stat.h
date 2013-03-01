@@ -27,9 +27,9 @@ struct cpu_usage_stat {
 };
 
 struct kernel_stat {
-	struct cpu_usage_stat	cpustat;
+	struct cpu_usage_stat cpustat;
 #ifndef CONFIG_SPARSE_IRQ
-       unsigned int irqs[NR_IRQS];
+	unsigned int irqs[NR_IRQS];
 #endif
 };
 
@@ -54,11 +54,10 @@ static inline void kstat_incr_irqs_this_cpu(unsigned int irq,
 }
 #endif
 
-
 #ifndef CONFIG_SPARSE_IRQ
 static inline unsigned int kstat_irqs_cpu(unsigned int irq, int cpu)
 {
-       return kstat_cpu(cpu).irqs[irq];
+	return kstat_cpu(cpu).irqs[irq];
 }
 #else
 extern unsigned int kstat_irqs_cpu(unsigned int irq, int cpu);
@@ -73,14 +72,15 @@ static inline unsigned int kstat_irqs(unsigned int irq)
 	int cpu;
 
 	for_each_possible_cpu(cpu)
-		sum += kstat_irqs_cpu(irq, cpu);
+	    sum += kstat_irqs_cpu(irq, cpu);
 
 	return sum;
 }
 
 extern unsigned long long task_delta_exec(struct task_struct *);
 extern void account_user_time(struct task_struct *, cputime_t, cputime_t);
-extern void account_system_time(struct task_struct *, int, cputime_t, cputime_t);
+extern void account_system_time(struct task_struct *, int, cputime_t,
+				cputime_t);
 extern void account_steal_time(cputime_t);
 extern void account_idle_time(cputime_t);
 

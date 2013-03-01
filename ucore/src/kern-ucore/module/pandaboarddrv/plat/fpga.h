@@ -30,9 +30,9 @@ extern void omap1510_fpga_init_irq(void);
  * ---------------------------------------------------------------------------
  */
 /* maps in the FPGA registers and the ETHR registers */
-#define H2P2_DBG_FPGA_BASE		0xE8000000		/* VA */
-#define H2P2_DBG_FPGA_SIZE		SZ_4K			/* SIZE */
-#define H2P2_DBG_FPGA_START		0x04000000		/* PA */
+#define H2P2_DBG_FPGA_BASE		0xE8000000	/* VA */
+#define H2P2_DBG_FPGA_SIZE		SZ_4K	/* SIZE */
+#define H2P2_DBG_FPGA_START		0x04000000	/* PA */
 
 #define H2P2_DBG_FPGA_ETHR_START	(H2P2_DBG_FPGA_START + 0x300)
 #define H2P2_DBG_FPGA_FPGA_REV		IOMEM(H2P2_DBG_FPGA_BASE + 0x10)	/* FPGA Revision */
@@ -46,20 +46,20 @@ extern void omap1510_fpga_init_irq(void);
 /* NOTE:  most boards don't have a static mapping for the FPGA ... */
 struct h2p2_dbg_fpga {
 	/* offset 0x00 */
-	u16		smc91x[8];
+	u16 smc91x[8];
 	/* offset 0x10 */
-	u16		fpga_rev;
-	u16		board_rev;
-	u16		gpio_outputs;
-	u16		leds;
+	u16 fpga_rev;
+	u16 board_rev;
+	u16 gpio_outputs;
+	u16 leds;
 	/* offset 0x18 */
-	u16		misc_inputs;
-	u16		lan_status;
-	u16		lan_reset;
-	u16		reserved0;
+	u16 misc_inputs;
+	u16 lan_status;
+	u16 lan_reset;
+	u16 reserved0;
 	/* offset 0x20 */
-	u16		ps2_data;
-	u16		ps2_ctrl;
+	u16 ps2_data;
+	u16 ps2_ctrl;
 	/* plus also 4 rs232 ports ... */
 };
 
@@ -81,9 +81,9 @@ struct h2p2_dbg_fpga {
  *  OMAP-1510 FPGA
  * ---------------------------------------------------------------------------
  */
-#define OMAP1510_FPGA_BASE		0xE8000000		/* VA */
+#define OMAP1510_FPGA_BASE		0xE8000000	/* VA */
 #define OMAP1510_FPGA_SIZE		SZ_4K
-#define OMAP1510_FPGA_START		0x08000000		/* PA */
+#define OMAP1510_FPGA_START		0x08000000	/* PA */
 
 /* Revision */
 #define OMAP1510_FPGA_REV_LOW			IOMEM(OMAP1510_FPGA_BASE + 0x0)

@@ -30,8 +30,8 @@ extern int __devexit __pata_platform_remove(struct device *dev);
 struct mbus_dram_target_info;
 
 struct mv_sata_platform_data {
-	struct mbus_dram_target_info	*dram;
-	int	n_ports; /* number of sata ports */
+	struct mbus_dram_target_info *dram;
+	int n_ports;		/* number of sata ports */
 };
 
 #endif /* __LINUX_ATA_PLATFORM_H */

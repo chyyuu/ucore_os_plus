@@ -12,12 +12,11 @@
  * @list: list entry for linking
  * @family: pointer to family, need not be set before registering
  */
-struct genl_multicast_group
-{
-	struct genl_family	*family;	/* private */
-	struct list_head	list;		/* private */
-	char			name[GENL_NAMSIZ];
-	u32			id;
+struct genl_multicast_group {
+	struct genl_family *family;	/* private */
+	struct list_head list;	/* private */
+	char name[GENL_NAMSIZ];
+	u32 id;
 };
 
 /**
@@ -32,17 +31,16 @@ struct genl_multicast_group
  * @family_list: family list
  * @mcast_groups: multicast groups list
  */
-struct genl_family
-{
-	unsigned int		id;
-	unsigned int		hdrsize;
-	char			name[GENL_NAMSIZ];
-	unsigned int		version;
-	unsigned int		maxattr;
-	struct nlattr **	attrbuf;	/* private */
-	struct list_head	ops_list;	/* private */
-	struct list_head	family_list;	/* private */
-	struct list_head	mcast_groups;	/* private */
+struct genl_family {
+	unsigned int id;
+	unsigned int hdrsize;
+	char name[GENL_NAMSIZ];
+	unsigned int version;
+	unsigned int maxattr;
+	struct nlattr **attrbuf;	/* private */
+	struct list_head ops_list;	/* private */
+	struct list_head family_list;	/* private */
+	struct list_head mcast_groups;	/* private */
 };
 
 /**
@@ -54,14 +52,13 @@ struct genl_family
  * @userhdr: user specific header
  * @attrs: netlink attributes
  */
-struct genl_info
-{
-	u32			snd_seq;
-	u32			snd_pid;
-	struct nlmsghdr *	nlhdr;
-	struct genlmsghdr *	genlhdr;
-	void *			userhdr;
-	struct nlattr **	attrs;
+struct genl_info {
+	u32 snd_seq;
+	u32 snd_pid;
+	struct nlmsghdr *nlhdr;
+	struct genlmsghdr *genlhdr;
+	void *userhdr;
+	struct nlattr **attrs;
 };
 
 /**
@@ -74,17 +71,14 @@ struct genl_info
  * @done: completion callback for dumps
  * @ops_list: operations list
  */
-struct genl_ops
-{
-	u8			cmd;
-	unsigned int		flags;
-	const struct nla_policy	*policy;
-	int		       (*doit)(struct sk_buff *skb,
-				       struct genl_info *info);
-	int		       (*dumpit)(struct sk_buff *skb,
-					 struct netlink_callback *cb);
-	int		       (*done)(struct netlink_callback *cb);
-	struct list_head	ops_list;
+struct genl_ops {
+	u8 cmd;
+	unsigned int flags;
+	const struct nla_policy *policy;
+	int (*doit) (struct sk_buff * skb, struct genl_info * info);
+	int (*dumpit) (struct sk_buff * skb, struct netlink_callback * cb);
+	int (*done) (struct netlink_callback * cb);
+	struct list_head ops_list;
 };
 
 extern int genl_register_family(struct genl_family *family);
@@ -125,7 +119,7 @@ static inline void *genlmsg_put(struct sk_buff *skb, u32 pid, u32 seq,
 	hdr->version = family->version;
 	hdr->reserved = 0;
 
-	return (char *) hdr + GENL_HDRLEN;
+	return (char *)hdr + GENL_HDRLEN;
 }
 
 /**
@@ -206,7 +200,7 @@ static inline int genlmsg_reply(struct sk_buff *skb, struct genl_info *info)
  */
 static inline void *genlmsg_data(const struct genlmsghdr *gnlh)
 {
-	return ((unsigned char *) gnlh + GENL_HDRLEN);
+	return ((unsigned char *)gnlh + GENL_HDRLEN);
 }
 
 /**
@@ -216,7 +210,7 @@ static inline void *genlmsg_data(const struct genlmsghdr *gnlh)
 static inline int genlmsg_len(const struct genlmsghdr *gnlh)
 {
 	struct nlmsghdr *nlh = (struct nlmsghdr *)((unsigned char *)gnlh -
-							NLMSG_HDRLEN);
+						   NLMSG_HDRLEN);
 	return (nlh->nlmsg_len - GENL_HDRLEN - NLMSG_HDRLEN);
 }
 
@@ -248,5 +242,4 @@ static inline struct sk_buff *genlmsg_new(size_t payload, gfp_t flags)
 	return nlmsg_new(genlmsg_total_size(payload), flags);
 }
 
-
-#endif	/* __NET_GENERIC_NETLINK_H */
+#endif /* __NET_GENERIC_NETLINK_H */

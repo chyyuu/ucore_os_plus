@@ -24,26 +24,26 @@
 #define NET_PHONET_PEP_H
 
 struct pep_sock {
-	struct pn_sock		pn_sk;
+	struct pn_sock pn_sk;
 
 	/* XXX: union-ify listening vs connected stuff ? */
 	/* Listening socket stuff: */
-	struct hlist_head	ackq;
-	struct hlist_head	hlist;
+	struct hlist_head ackq;
+	struct hlist_head hlist;
 
 	/* Connected socket stuff: */
-	struct sock		*listener;
-	struct sk_buff_head	ctrlreq_queue;
+	struct sock *listener;
+	struct sk_buff_head ctrlreq_queue;
 #define PNPIPE_CTRLREQ_MAX	10
-	atomic_t		tx_credits;
-	int			ifindex;
-	u16			peer_type;	/* peer type/subtype */
-	u8			pipe_handle;
+	atomic_t tx_credits;
+	int ifindex;
+	u16 peer_type;		/* peer type/subtype */
+	u8 pipe_handle;
 
-	u8			rx_credits;
-	u8			rx_fc;	/* RX flow control */
-	u8			tx_fc;	/* TX flow control */
-	u8			init_enable;	/* auto-enable at creation */
+	u8 rx_credits;
+	u8 rx_fc;		/* RX flow control */
+	u8 tx_fc;		/* TX flow control */
+	u8 init_enable;		/* auto-enable at creation */
 };
 
 static inline struct pep_sock *pep_sk(struct sock *sk)
@@ -55,15 +55,15 @@ extern const struct proto_ops phonet_stream_ops;
 
 /* Pipe protocol definitions */
 struct pnpipehdr {
-	u8			utid; /* transaction ID */
-	u8			message_id;
-	u8			pipe_handle;
+	u8 utid;		/* transaction ID */
+	u8 message_id;
+	u8 pipe_handle;
 	union {
-		u8		state_after_connect;	/* connect request */
-		u8		state_after_reset;	/* reset request */
-		u8		error_code;		/* any response */
-		u8		pep_type;		/* status indication */
-		u8		data[1];
+		u8 state_after_connect;	/* connect request */
+		u8 state_after_reset;	/* reset request */
+		u8 error_code;	/* any response */
+		u8 pep_type;	/* status indication */
+		u8 data[1];
 	};
 };
 #define other_pep_type		data[1]

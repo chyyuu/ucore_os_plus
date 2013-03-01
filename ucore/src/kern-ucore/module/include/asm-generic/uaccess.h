@@ -12,7 +12,6 @@
 	(x) = __x;							\
 })
 
-
 /*
  * This macro should be used instead of __put_user() when accessing
  * values at locations that are not known to be aligned.

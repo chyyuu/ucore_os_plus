@@ -30,12 +30,12 @@ DECLARE_PER_CPU(struct quicklist, quicklist)[CONFIG_NR_QUICK];
  * The fast patch in quicklist_alloc touched only a per cpu cacheline and
  * the first cacheline of the page itself. There is minmal overhead involved.
  */
-static inline void *quicklist_alloc(int nr, gfp_t flags, void (*ctor)(void *))
+static inline void *quicklist_alloc(int nr, gfp_t flags, void (*ctor) (void *))
 {
 	struct quicklist *q;
 	void **p = NULL;
 
-	q =&get_cpu_var(quicklist)[nr];
+	q = &get_cpu_var(quicklist)[nr];
 	p = q->page;
 	if (likely(p)) {
 		q->page = p[0];
@@ -52,8 +52,8 @@ static inline void *quicklist_alloc(int nr, gfp_t flags, void (*ctor)(void *))
 	return p;
 }
 
-static inline void __quicklist_free(int nr, void (*dtor)(void *), void *p,
-	struct page *page)
+static inline void __quicklist_free(int nr, void (*dtor) (void *), void *p,
+				    struct page *page)
 {
 	struct quicklist *q;
 
@@ -64,19 +64,19 @@ static inline void __quicklist_free(int nr, void (*dtor)(void *), void *p,
 	put_cpu_var(quicklist);
 }
 
-static inline void quicklist_free(int nr, void (*dtor)(void *), void *pp)
+static inline void quicklist_free(int nr, void (*dtor) (void *), void *pp)
 {
 	__quicklist_free(nr, dtor, pp, virt_to_page(pp));
 }
 
-static inline void quicklist_free_page(int nr, void (*dtor)(void *),
-							struct page *page)
+static inline void quicklist_free_page(int nr, void (*dtor) (void *),
+				       struct page *page)
 {
 	__quicklist_free(nr, dtor, page_address(page), page);
 }
 
-void quicklist_trim(int nr, void (*dtor)(void *),
-	unsigned long min_pages, unsigned long max_free);
+void quicklist_trim(int nr, void (*dtor) (void *),
+		    unsigned long min_pages, unsigned long max_free);
 
 unsigned long quicklist_total_size(void);
 
@@ -90,4 +90,3 @@ static inline unsigned long quicklist_total_size(void)
 #endif
 
 #endif /* LINUX_QUICKLIST_H */
-

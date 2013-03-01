@@ -12,7 +12,7 @@
 #include <linux/types.h>
 
 typedef __le16 qnx4_nxtnt_t;
-typedef __u8  qnx4_ftype_t;
+typedef __u8 qnx4_ftype_t;
 
 typedef struct {
 	__le32 xtnt_blk;

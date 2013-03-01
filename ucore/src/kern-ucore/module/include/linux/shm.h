@@ -14,15 +14,15 @@
  * be increased by sysctl
  */
 
-#define SHMMAX 0x2000000		 /* max shared seg size (bytes) */
-#define SHMMIN 1			 /* min shared seg size (bytes) */
-#define SHMMNI 4096			 /* max num of segs system wide */
+#define SHMMAX 0x2000000	/* max shared seg size (bytes) */
+#define SHMMIN 1		/* min shared seg size (bytes) */
+#define SHMMNI 4096		/* max num of segs system wide */
 #ifdef __KERNEL__
-#define SHMALL (SHMMAX/PAGE_SIZE*(SHMMNI/16)) /* max shm system wide (pages) */
+#define SHMALL (SHMMAX/PAGE_SIZE*(SHMMNI/16))	/* max shm system wide (pages) */
 #else
 #define SHMALL (SHMMAX/getpagesize()*(SHMMNI/16))
 #endif
-#define SHMSEG SHMMNI			 /* max shared segs per process */
+#define SHMSEG SHMMNI		/* max shared segs per process */
 
 #ifdef __KERNEL__
 #include <asm/shmparam.h>
@@ -30,17 +30,17 @@
 
 /* Obsolete, used only for backwards compatibility and libc5 compiles */
 struct shmid_ds {
-	struct ipc_perm		shm_perm;	/* operation perms */
-	int			shm_segsz;	/* size of segment (bytes) */
-	__kernel_time_t		shm_atime;	/* last attach time */
-	__kernel_time_t		shm_dtime;	/* last detach time */
-	__kernel_time_t		shm_ctime;	/* last change time */
-	__kernel_ipc_pid_t	shm_cpid;	/* pid of creator */
-	__kernel_ipc_pid_t	shm_lpid;	/* pid of last operator */
-	unsigned short		shm_nattch;	/* no. of current attaches */
-	unsigned short 		shm_unused;	/* compatibility */
-	void 			*shm_unused2;	/* ditto - used by DIPC */
-	void			*shm_unused3;	/* unused */
+	struct ipc_perm shm_perm;	/* operation perms */
+	int shm_segsz;		/* size of segment (bytes) */
+	__kernel_time_t shm_atime;	/* last attach time */
+	__kernel_time_t shm_dtime;	/* last detach time */
+	__kernel_time_t shm_ctime;	/* last change time */
+	__kernel_ipc_pid_t shm_cpid;	/* pid of creator */
+	__kernel_ipc_pid_t shm_lpid;	/* pid of last operator */
+	unsigned short shm_nattch;	/* no. of current attaches */
+	unsigned short shm_unused;	/* compatibility */
+	void *shm_unused2;	/* ditto - used by DIPC */
+	void *shm_unused3;	/* unused */
 };
 
 /* Include the definition of shmid64_ds and shminfo64 */
@@ -65,7 +65,7 @@ struct shmid_ds {
 #define SHM_INFO 	14
 
 /* Obsolete, used only for backwards compatibility */
-struct	shminfo {
+struct shminfo {
 	int shmmax;
 	int shmmin;
 	int shmmni;
@@ -83,35 +83,36 @@ struct shm_info {
 };
 
 #ifdef __KERNEL__
-struct shmid_kernel /* private to the kernel */
-{	
-	struct kern_ipc_perm	shm_perm;
-	struct file *		shm_file;
-	unsigned long		shm_nattch;
-	unsigned long		shm_segsz;
-	time_t			shm_atim;
-	time_t			shm_dtim;
-	time_t			shm_ctim;
-	pid_t			shm_cprid;
-	pid_t			shm_lprid;
-	struct user_struct	*mlock_user;
+struct shmid_kernel {		/* private to the kernel */
+	struct kern_ipc_perm shm_perm;
+	struct file *shm_file;
+	unsigned long shm_nattch;
+	unsigned long shm_segsz;
+	time_t shm_atim;
+	time_t shm_dtim;
+	time_t shm_ctim;
+	pid_t shm_cprid;
+	pid_t shm_lprid;
+	struct user_struct *mlock_user;
 };
 
 /* shm_mode upper byte flags */
 #define	SHM_DEST	01000	/* segment will be destroyed on last detach */
-#define SHM_LOCKED      02000   /* segment will not be swapped */
-#define SHM_HUGETLB     04000   /* segment will use huge TLB pages */
-#define SHM_NORESERVE   010000  /* don't check for reservations */
+#define SHM_LOCKED      02000	/* segment will not be swapped */
+#define SHM_HUGETLB     04000	/* segment will use huge TLB pages */
+#define SHM_NORESERVE   010000	/* don't check for reservations */
 
 #ifdef CONFIG_SYSVIPC
-long do_shmat(int shmid, char __user *shmaddr, int shmflg, unsigned long *addr);
+long do_shmat(int shmid, char __user * shmaddr, int shmflg,
+	      unsigned long *addr);
 extern int is_file_shm_hugepages(struct file *file);
 #else
-static inline long do_shmat(int shmid, char __user *shmaddr,
-				int shmflg, unsigned long *addr)
+static inline long do_shmat(int shmid, char __user * shmaddr,
+			    int shmflg, unsigned long *addr)
 {
 	return -ENOSYS;
 }
+
 static inline int is_file_shm_hugepages(struct file *file)
 {
 	return 0;

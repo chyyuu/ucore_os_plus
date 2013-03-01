@@ -12,7 +12,7 @@ struct timer_list {
 	struct list_head entry;
 	unsigned long expires;
 
-	void (*function)(unsigned long);
+	void (*function) (unsigned long);
 	unsigned long data;
 
 	struct tvec_base *base;
@@ -44,16 +44,19 @@ void init_timer_deferrable(struct timer_list *timer);
 extern void init_timer_on_stack(struct timer_list *timer);
 extern void destroy_timer_on_stack(struct timer_list *timer);
 #else
-static inline void destroy_timer_on_stack(struct timer_list *timer) { }
+static inline void destroy_timer_on_stack(struct timer_list *timer)
+{
+}
+
 static inline void init_timer_on_stack(struct timer_list *timer)
 {
 	init_timer(timer);
 }
 #endif
 
-static inline void setup_timer(struct timer_list * timer,
-				void (*function)(unsigned long),
-				unsigned long data)
+static inline void setup_timer(struct timer_list *timer,
+			       void (*function) (unsigned long),
+			       unsigned long data)
 {
 	timer->function = function;
 	timer->data = data;
@@ -61,7 +64,7 @@ static inline void setup_timer(struct timer_list * timer,
 }
 
 static inline void setup_timer_on_stack(struct timer_list *timer,
-					void (*function)(unsigned long),
+					void (*function) (unsigned long),
 					unsigned long data)
 {
 	timer->function = function;
@@ -79,13 +82,13 @@ static inline void setup_timer_on_stack(struct timer_list *timer,
  *
  * return value: 1 if the timer is pending, 0 if not.
  */
-static inline int timer_pending(const struct timer_list * timer)
+static inline int timer_pending(const struct timer_list *timer)
 {
 	return timer->entry.next != NULL;
 }
 
 extern void add_timer_on(struct timer_list *timer, int cpu);
-extern int del_timer(struct timer_list * timer);
+extern int del_timer(struct timer_list *timer);
 extern int __mod_timer(struct timer_list *timer, unsigned long expires);
 extern int mod_timer(struct timer_list *timer, unsigned long expires);
 
@@ -167,11 +170,11 @@ static inline void add_timer(struct timer_list *timer)
 }
 
 #ifdef CONFIG_SMP
-  extern int try_to_del_timer_sync(struct timer_list *timer);
-  extern int del_timer_sync(struct timer_list *timer);
+extern int try_to_del_timer_sync(struct timer_list *timer);
+extern int del_timer_sync(struct timer_list *timer);
 #else
-# define try_to_del_timer_sync(t)	del_timer(t)
-# define del_timer_sync(t)		del_timer(t)
+#define try_to_del_timer_sync(t)	del_timer(t)
+#define del_timer_sync(t)		del_timer(t)
 #endif
 
 #define del_singleshot_timer_sync(t) del_timer_sync(t)

@@ -29,8 +29,7 @@
 #define ENABLEWB 		0x00000008
 #define CHANGEWB 		0x00000008
 
-#define DOM3CLT 		0x00000001 // Critical value
-
+#define DOM3CLT 		0x00000001	// Critical value
 
 /* type */
 #define FAULT 	0
@@ -56,18 +55,18 @@
 // use PGADDR(PDX(la), PTX(la), PGOFF(la)).
 
 /* page directory and page table constants */
-#define NPDEENTRY       4096                    // page directory entries per page directory (L1 MASTER)
-#define NPTEENTRY       256                     // page table entries per page table (L2 COARSE)
+#define NPDEENTRY       4096	// page directory entries per page directory (L1 MASTER)
+#define NPTEENTRY       256	// page table entries per page table (L2 COARSE)
 
-#define PGSIZE          4096                    // bytes mapped by a page (L2 SMALLPAGE)
-#define PGSHIFT         12                      // log2(PGSIZE)
-#define PTSIZE          (PGSIZE * NPTEENTRY)    // bytes mapped by a page directory entry (L2 COARSE SMALLPAGE)
+#define PGSIZE          4096	// bytes mapped by a page (L2 SMALLPAGE)
+#define PGSHIFT         12	// log2(PGSIZE)
+#define PTSIZE          (PGSIZE * NPTEENTRY)	// bytes mapped by a page directory entry (L2 COARSE SMALLPAGE)
 #define PMSIZE			PTSIZE
 #define PUSIZE			PTSIZE
-#define PTSHIFT         20                      // log2(PTSIZE)
+#define PTSHIFT         20	// log2(PTSIZE)
 
-#define PTXSHIFT        12                      // offset of PTX in a linear address
-#define PDXSHIFT        20                      // offset of PDX in a linear address
+#define PTXSHIFT        12	// offset of PTX in a linear address
+#define PDXSHIFT        20	// offset of PDX in a linear address
 
 #define PMXSHIFT		PDXSHIFT
 #define PUXSHIFT		PDXSHIFT
@@ -103,24 +102,24 @@
 #define PTE_STATUS(pte) (pte + 512)
 
 /* page table/directory entry flags used for the bit status PT */
-#define PTE_P           0x001                   // Present
-#define PTE_W           0x002                   // Writeable
-#define PTE_U           0x004                   // User
-#define PTE_PWT         0x008                   // Write-Through
-#define PTE_PCD         0x010                   // Cache-Disable
-#define PTE_A           0x020                   // Accessed
-#define PTE_D           0x040                   // Dirty
-#define PTE_PS          0x080                   // Page Size
-#define PTE_MBZ         0x180                   // Bits must be zero
-#define PTE_AVAIL       0xE00                   // Available for software use
-                                                // The PTE_AVAIL bits aren't used by the kernel or interpreted by the
-                                                // hardware, so user processes are allowed to set them arbitrarily.
+#define PTE_P           0x001	// Present
+#define PTE_W           0x002	// Writeable
+#define PTE_U           0x004	// User
+#define PTE_PWT         0x008	// Write-Through
+#define PTE_PCD         0x010	// Cache-Disable
+#define PTE_A           0x020	// Accessed
+#define PTE_D           0x040	// Dirty
+#define PTE_PS          0x080	// Page Size
+#define PTE_MBZ         0x180	// Bits must be zero
+#define PTE_AVAIL       0xE00	// Available for software use
+						// The PTE_AVAIL bits aren't used by the kernel or interpreted by the
+						// hardware, so user processes are allowed to set them arbitrarily.
 #define PTE_IOMEM       0x10000
 
 #define PTE_USER        (PTE_U | PTE_W | PTE_P)
 
 /* page directory (L1) / table (L2) entry flags */
-#define PTEX_P 0x3 /* Present (if one bit of [1:0] is set, page exists*/
+#define PTEX_P 0x3		/* Present (if one bit of [1:0] is set, page exists */
 /* PTE type */
 /* AP */
 /* NA = no access, RO = read only, RW = read/write */
@@ -129,30 +128,30 @@
 #define PTEX_RWRO 0x02
 #define PTEX_RWRW 0x03
 /* CB */
-#define PTEX_cb 0x0 /* cb = not cached/not buffered */
-#define PTEX_cB 0x1 /* cB = not cached/Buffered */
-#define PTEX_WT 0x2 /* WT = Write Through cache */
-#define PTEX_WB 0x3 /* WB = write back cache */
+#define PTEX_cb 0x0		/* cb = not cached/not buffered */
+#define PTEX_cB 0x1		/* cB = not cached/Buffered */
+#define PTEX_WT 0x2		/* WT = Write Through cache */
+#define PTEX_WB 0x3		/* WB = write back cache */
 /* Typical */
-#define PTEX_PWT (PTEX_WT << 2) // Write Through
-#define PTEX_PIO (PTEX_cb << 2) // Write Through
+#define PTEX_PWT (PTEX_WT << 2)	// Write Through
+#define PTEX_PIO (PTEX_cb << 2)	// Write Through
 
 #ifdef __MACH_ARM_ARMV5
-#define PTEX_R   0x000       // Supervisor/Readonly
-#define PTEX_W   0x550       // Supervisor/Write
-#define PTEX_U   0xAA0       // Supervisor/Write _ User/Read Only
-#define PTEX_UW  0xFF0       // Supervisor/Write _ User/Write
+#define PTEX_R   0x000		// Supervisor/Readonly
+#define PTEX_W   0x550		// Supervisor/Write
+#define PTEX_U   0xAA0		// Supervisor/Write _ User/Read Only
+#define PTEX_UW  0xFF0		// Supervisor/Write _ User/Write
 #elif defined __MACH_ARM_ARMV6
 // see section 5.5.2 and 5.11.2 in ARM11_MPCore_Processor_r2_p0.pdf
-#define PTEX_R   0x210       // supervisor ro, user no_access
-#define PTEX_W   0x010       // supervisor rw, user no_access
-#define PTEX_U   0x020       // supervisor rw, user ro
-#define PTEX_UW  0x030       // supervisor rw, user rw
+#define PTEX_R   0x210		// supervisor ro, user no_access
+#define PTEX_W   0x010		// supervisor rw, user no_access
+#define PTEX_U   0x020		// supervisor rw, user ro
+#define PTEX_UW  0x030		// supervisor rw, user rw
 #elif defined __MACH_ARM_ARMV7
-#define PTEX_R   0x210       // Supervisor/Readonly
-#define PTEX_W   0x010       // Supervisor/Write
-#define PTEX_U   0x020       // Supervisor/Write _ User/Read Only
-#define PTEX_UW  0x030       // Supervisor/Write _ User/Write
+#define PTEX_R   0x210		// Supervisor/Readonly
+#define PTEX_W   0x010		// Supervisor/Write
+#define PTEX_U   0x020		// Supervisor/Write _ User/Read Only
+#define PTEX_UW  0x030		// Supervisor/Write _ User/Write
 #else
 #error Unknown ARM CPU type
 #endif
@@ -160,9 +159,8 @@
 /* Chen Yuheng */
 #define PTEX_PROTECT_MASK 0xFF0
 #define PTEX_CB_MASK 0xC
-#define PTEX_L1_PDTYPE 0x1  //coarse
-#define PTEX_L2_PGTYPE 0x2  //small page
-
+#define PTEX_L1_PDTYPE 0x1	//coarse
+#define PTEX_L2_PGTYPE 0x2	//small page
 
 #ifndef __ASSEMBLER__
 
@@ -176,7 +174,6 @@ typedef struct {
 	uint32_t type;
 	uint32_t dom;
 } Pagetable;
-
 
 /* Region Descriptor
  * Segment equivalent of x86 */
@@ -193,17 +190,15 @@ typedef struct {
 
 /* General methods */
 //int mmuInitPT(Pagetable *pt);
-int mmu_init_pdt(Pagetable *pt);
+int mmu_init_pdt(Pagetable * pt);
 //int mmuMapRegion(Region *region);
 //int mmuAttachPT(Pagetable *pt);
 
 void mmu_init(void);
 
-
-void tlb_invalidate_all ();
+void tlb_invalidate_all();
 
 extern uintptr_t boot_pgdir_pa;
-  
 
 //XXX
 #define PTE_SWAP        (PTE_A | PTE_D)
@@ -212,4 +207,3 @@ extern uintptr_t boot_pgdir_pa;
 #endif /* !__ASSEMBLER__ */
 
 #endif /* !__KERN_MM_MMU_H__ */
-

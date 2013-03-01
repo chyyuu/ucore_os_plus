@@ -44,16 +44,16 @@
  */
 
 enum p9_debug_flags {
-	P9_DEBUG_ERROR = 	(1<<0),
-	P9_DEBUG_9P = 		(1<<2),
-	P9_DEBUG_VFS =		(1<<3),
-	P9_DEBUG_CONV =		(1<<4),
-	P9_DEBUG_MUX =		(1<<5),
-	P9_DEBUG_TRANS =	(1<<6),
-	P9_DEBUG_SLABS =      	(1<<7),
-	P9_DEBUG_FCALL =	(1<<8),
-	P9_DEBUG_FID =		(1<<9),
-	P9_DEBUG_PKT =		(1<<10),
+	P9_DEBUG_ERROR = (1 << 0),
+	P9_DEBUG_9P = (1 << 2),
+	P9_DEBUG_VFS = (1 << 3),
+	P9_DEBUG_CONV = (1 << 4),
+	P9_DEBUG_MUX = (1 << 5),
+	P9_DEBUG_TRANS = (1 << 6),
+	P9_DEBUG_SLABS = (1 << 7),
+	P9_DEBUG_FCALL = (1 << 8),
+	P9_DEBUG_FID = (1 << 9),
+	P9_DEBUG_PKT = (1 << 10),
 };
 
 #ifdef CONFIG_NET_9P_DEBUG

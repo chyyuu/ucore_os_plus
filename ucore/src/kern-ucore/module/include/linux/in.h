@@ -23,38 +23,37 @@
 
 /* Standard well-defined IP protocols.  */
 enum {
-  IPPROTO_IP = 0,		/* Dummy protocol for TCP		*/
-  IPPROTO_ICMP = 1,		/* Internet Control Message Protocol	*/
-  IPPROTO_IGMP = 2,		/* Internet Group Management Protocol	*/
-  IPPROTO_IPIP = 4,		/* IPIP tunnels (older KA9Q tunnels use 94) */
-  IPPROTO_TCP = 6,		/* Transmission Control Protocol	*/
-  IPPROTO_EGP = 8,		/* Exterior Gateway Protocol		*/
-  IPPROTO_PUP = 12,		/* PUP protocol				*/
-  IPPROTO_UDP = 17,		/* User Datagram Protocol		*/
-  IPPROTO_IDP = 22,		/* XNS IDP protocol			*/
-  IPPROTO_DCCP = 33,		/* Datagram Congestion Control Protocol */
-  IPPROTO_RSVP = 46,		/* RSVP protocol			*/
-  IPPROTO_GRE = 47,		/* Cisco GRE tunnels (rfc 1701,1702)	*/
+	IPPROTO_IP = 0,		/* Dummy protocol for TCP               */
+	IPPROTO_ICMP = 1,	/* Internet Control Message Protocol    */
+	IPPROTO_IGMP = 2,	/* Internet Group Management Protocol   */
+	IPPROTO_IPIP = 4,	/* IPIP tunnels (older KA9Q tunnels use 94) */
+	IPPROTO_TCP = 6,	/* Transmission Control Protocol        */
+	IPPROTO_EGP = 8,	/* Exterior Gateway Protocol            */
+	IPPROTO_PUP = 12,	/* PUP protocol                         */
+	IPPROTO_UDP = 17,	/* User Datagram Protocol               */
+	IPPROTO_IDP = 22,	/* XNS IDP protocol                     */
+	IPPROTO_DCCP = 33,	/* Datagram Congestion Control Protocol */
+	IPPROTO_RSVP = 46,	/* RSVP protocol                        */
+	IPPROTO_GRE = 47,	/* Cisco GRE tunnels (rfc 1701,1702)    */
 
-  IPPROTO_IPV6	 = 41,		/* IPv6-in-IPv4 tunnelling		*/
+	IPPROTO_IPV6 = 41,	/* IPv6-in-IPv4 tunnelling              */
 
-  IPPROTO_ESP = 50,            /* Encapsulation Security Payload protocol */
-  IPPROTO_AH = 51,             /* Authentication Header protocol       */
-  IPPROTO_BEETPH = 94,	       /* IP option pseudo header for BEET */
-  IPPROTO_PIM    = 103,		/* Protocol Independent Multicast	*/
+	IPPROTO_ESP = 50,	/* Encapsulation Security Payload protocol */
+	IPPROTO_AH = 51,	/* Authentication Header protocol       */
+	IPPROTO_BEETPH = 94,	/* IP option pseudo header for BEET */
+	IPPROTO_PIM = 103,	/* Protocol Independent Multicast       */
 
-  IPPROTO_COMP   = 108,                /* Compression Header protocol */
-  IPPROTO_SCTP   = 132,		/* Stream Control Transport Protocol	*/
-  IPPROTO_UDPLITE = 136,	/* UDP-Lite (RFC 3828)			*/
+	IPPROTO_COMP = 108,	/* Compression Header protocol */
+	IPPROTO_SCTP = 132,	/* Stream Control Transport Protocol    */
+	IPPROTO_UDPLITE = 136,	/* UDP-Lite (RFC 3828)                  */
 
-  IPPROTO_RAW	 = 255,		/* Raw IP packets			*/
-  IPPROTO_MAX
+	IPPROTO_RAW = 255,	/* Raw IP packets                       */
+	IPPROTO_MAX
 };
-
 
 /* Internet address. */
 struct in_addr {
-	__be32	s_addr;
+	__be32 s_addr;
 };
 
 #define IP_TOS		1
@@ -86,9 +85,9 @@ struct in_addr {
 
 /* IP_MTU_DISCOVER values */
 #define IP_PMTUDISC_DONT		0	/* Never send DF frames */
-#define IP_PMTUDISC_WANT		1	/* Use per route hints	*/
-#define IP_PMTUDISC_DO			2	/* Always DF		*/
-#define IP_PMTUDISC_PROBE		3       /* Ignore dst pmtu      */
+#define IP_PMTUDISC_WANT		1	/* Use per route hints  */
+#define IP_PMTUDISC_DO			2	/* Always DF            */
+#define IP_PMTUDISC_PROBE		3	/* Ignore dst pmtu      */
 
 #define IP_MULTICAST_IF			32
 #define IP_MULTICAST_TTL 		33
@@ -117,56 +116,51 @@ struct in_addr {
 
 /* Request struct for multicast socket ops */
 
-struct ip_mreq 
-{
+struct ip_mreq {
 	struct in_addr imr_multiaddr;	/* IP multicast address of group */
 	struct in_addr imr_interface;	/* local IP address of interface */
 };
 
-struct ip_mreqn
-{
-	struct in_addr	imr_multiaddr;		/* IP multicast address of group */
-	struct in_addr	imr_address;		/* local IP address of interface */
-	int		imr_ifindex;		/* Interface index */
+struct ip_mreqn {
+	struct in_addr imr_multiaddr;	/* IP multicast address of group */
+	struct in_addr imr_address;	/* local IP address of interface */
+	int imr_ifindex;	/* Interface index */
 };
 
 struct ip_mreq_source {
-	__be32		imr_multiaddr;
-	__be32		imr_interface;
-	__be32		imr_sourceaddr;
+	__be32 imr_multiaddr;
+	__be32 imr_interface;
+	__be32 imr_sourceaddr;
 };
 
 struct ip_msfilter {
-	__be32		imsf_multiaddr;
-	__be32		imsf_interface;
-	__u32		imsf_fmode;
-	__u32		imsf_numsrc;
-	__be32		imsf_slist[1];
+	__be32 imsf_multiaddr;
+	__be32 imsf_interface;
+	__u32 imsf_fmode;
+	__u32 imsf_numsrc;
+	__be32 imsf_slist[1];
 };
 
 #define IP_MSFILTER_SIZE(numsrc) \
 	(sizeof(struct ip_msfilter) - sizeof(__u32) \
 	+ (numsrc) * sizeof(__u32))
 
-struct group_req
-{
-	__u32				 gr_interface;	/* interface index */
+struct group_req {
+	__u32 gr_interface;	/* interface index */
 	struct __kernel_sockaddr_storage gr_group;	/* group address */
 };
 
-struct group_source_req
-{
-	__u32				 gsr_interface;	/* interface index */
+struct group_source_req {
+	__u32 gsr_interface;	/* interface index */
 	struct __kernel_sockaddr_storage gsr_group;	/* group address */
 	struct __kernel_sockaddr_storage gsr_source;	/* source address */
 };
 
-struct group_filter
-{
-	__u32				 gf_interface;	/* interface index */
+struct group_filter {
+	__u32 gf_interface;	/* interface index */
 	struct __kernel_sockaddr_storage gf_group;	/* multicast address */
-	__u32				 gf_fmode;	/* filter mode */
-	__u32				 gf_numsrc;	/* number of sources */
+	__u32 gf_fmode;		/* filter mode */
+	__u32 gf_numsrc;	/* number of sources */
 	struct __kernel_sockaddr_storage gf_slist[1];	/* interface index */
 };
 
@@ -174,26 +168,25 @@ struct group_filter
 	(sizeof(struct group_filter) - sizeof(struct __kernel_sockaddr_storage) \
 	+ (numsrc) * sizeof(struct __kernel_sockaddr_storage))
 
-struct in_pktinfo
-{
-	int		ipi_ifindex;
-	struct in_addr	ipi_spec_dst;
-	struct in_addr	ipi_addr;
+struct in_pktinfo {
+	int ipi_ifindex;
+	struct in_addr ipi_spec_dst;
+	struct in_addr ipi_addr;
 };
 
 /* Structure describing an Internet (IP) socket address. */
-#define __SOCK_SIZE__	16		/* sizeof(struct sockaddr)	*/
+#define __SOCK_SIZE__	16	/* sizeof(struct sockaddr)      */
 struct sockaddr_in {
-  sa_family_t		sin_family;	/* Address family		*/
-  __be16		sin_port;	/* Port number			*/
-  struct in_addr	sin_addr;	/* Internet address		*/
+	sa_family_t sin_family;	/* Address family               */
+	__be16 sin_port;	/* Port number                  */
+	struct in_addr sin_addr;	/* Internet address             */
 
-  /* Pad to size of `struct sockaddr'. */
-  unsigned char		__pad[__SOCK_SIZE__ - sizeof(short int) -
-			sizeof(unsigned short int) - sizeof(struct in_addr)];
+	/* Pad to size of `struct sockaddr'. */
+	unsigned char __pad[__SOCK_SIZE__ - sizeof(short int) -
+			    sizeof(unsigned short int) -
+			    sizeof(struct in_addr)];
 };
-#define sin_zero	__pad		/* for BSD UNIX comp. -FvK	*/
-
+#define sin_zero	__pad	/* for BSD UNIX comp. -FvK      */
 
 /*
  * Definitions of the bits in an Internet address integer.
@@ -246,9 +239,8 @@ struct sockaddr_in {
 #define INADDR_ALLRTRS_GROUP    0xe0000002U	/* 224.0.0.2 */
 #define INADDR_MAX_LOCAL_GROUP  0xe00000ffU	/* 224.0.0.255 */
 
-
 /* <asm/byteorder.h> contains the htonl type stuff.. */
-#include <asm/byteorder.h> 
+#include <asm/byteorder.h>
 
 #ifdef __KERNEL__
 
@@ -316,4 +308,4 @@ static inline bool ipv4_is_test_198(__be32 addr)
 }
 #endif
 
-#endif	/* _LINUX_IN_H */
+#endif /* _LINUX_IN_H */

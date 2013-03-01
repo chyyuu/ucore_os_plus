@@ -41,18 +41,21 @@ static inline void pagefault_enable(void)
 #ifndef ARCH_HAS_NOCACHE_UACCESS
 
 static inline unsigned long __copy_from_user_inatomic_nocache(void *to,
-				const void __user *from, unsigned long n)
+							      const void __user
+							      * from,
+							      unsigned long n)
 {
 	return __copy_from_user_inatomic(to, from, n);
 }
 
 static inline unsigned long __copy_from_user_nocache(void *to,
-				const void __user *from, unsigned long n)
+						     const void __user * from,
+						     unsigned long n)
 {
 	return __copy_from_user(to, from, n);
 }
 
-#endif		/* ARCH_HAS_NOCACHE_UACCESS */
+#endif /* ARCH_HAS_NOCACHE_UACCESS */
 
 /**
  * probe_kernel_address(): safely attempt to read from a location
@@ -106,4 +109,4 @@ extern long probe_kernel_read(void *dst, void *src, size_t size);
  */
 extern long probe_kernel_write(void *dst, void *src, size_t size);
 
-#endif		/* __LINUX_UACCESS_H__ */
+#endif /* __LINUX_UACCESS_H__ */

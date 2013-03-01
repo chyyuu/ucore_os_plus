@@ -6,19 +6,16 @@
 
 #define CCISS_IOC_MAGIC 'B'
 
+typedef struct _cciss_pci_info_struct {
+	unsigned char bus;
+	unsigned char dev_fn;
+	unsigned short domain;
+	__u32 board_id;
+} cciss_pci_info_struct;
 
-typedef struct _cciss_pci_info_struct
-{
-	unsigned char 	bus;
-	unsigned char 	dev_fn;
-	unsigned short	domain;
-	__u32 		board_id;
-} cciss_pci_info_struct; 
-
-typedef struct _cciss_coalint_struct
-{
-	__u32  delay;
-	__u32  count;
+typedef struct _cciss_coalint_struct {
+	__u32 delay;
+	__u32 count;
 } cciss_coalint_struct;
 
 typedef char NodeName_type[16];
@@ -40,7 +37,7 @@ typedef __u32 DriverVer_type;
 // This defines are duplicated in cciss_cmd.h in the driver directory 
 
 //general boundary defintions
-#define SENSEINFOBYTES          32//note that this value may vary between host implementations
+#define SENSEINFOBYTES          32	//note that this value may vary between host implementations
 
 //Command Status value
 #define CMD_SUCCESS             0x0000
@@ -82,109 +79,109 @@ typedef __u32 DriverVer_type;
 
 #define CISS_MAX_LUN	1024
 
-#define LEVEL2LUN   1   // index into Target(x) structure, due to byte swapping
+#define LEVEL2LUN   1		// index into Target(x) structure, due to byte swapping
 #define LEVEL3LUN   0
 
 #pragma pack(1)
 
 //Command List Structure
 typedef union _SCSI3Addr_struct {
-   struct {
-    BYTE Dev;
-    BYTE Bus:6;
-    BYTE Mode:2;        // b00
-  } PeripDev;
-   struct {
-    BYTE DevLSB;
-    BYTE DevMSB:6;
-    BYTE Mode:2;        // b01
-  } LogDev;
-   struct {
-    BYTE Dev:5;
-    BYTE Bus:3;
-    BYTE Targ:6;
-    BYTE Mode:2;        // b10
-  } LogUnit;
+	struct {
+		BYTE Dev;
+		BYTE Bus:6;
+		BYTE Mode:2;	// b00
+	} PeripDev;
+	struct {
+		BYTE DevLSB;
+		BYTE DevMSB:6;
+		BYTE Mode:2;	// b01
+	} LogDev;
+	struct {
+		BYTE Dev:5;
+		BYTE Bus:3;
+		BYTE Targ:6;
+		BYTE Mode:2;	// b10
+	} LogUnit;
 } SCSI3Addr_struct;
 
 typedef struct _PhysDevAddr_struct {
-  DWORD             TargetId:24;
-  DWORD             Bus:6;
-  DWORD             Mode:2;
-  SCSI3Addr_struct  Target[2]; //2 level target device addr
+	DWORD TargetId:24;
+	DWORD Bus:6;
+	DWORD Mode:2;
+	SCSI3Addr_struct Target[2];	//2 level target device addr
 } PhysDevAddr_struct;
-  
+
 typedef struct _LogDevAddr_struct {
-  DWORD            VolId:30;
-  DWORD            Mode:2;
-  BYTE             reserved[4];
+	DWORD VolId:30;
+	DWORD Mode:2;
+	BYTE reserved[4];
 } LogDevAddr_struct;
 
 typedef union _LUNAddr_struct {
-  BYTE               LunAddrBytes[8];
-  SCSI3Addr_struct   SCSI3Lun[4];
-  PhysDevAddr_struct PhysDev;
-  LogDevAddr_struct  LogDev;
+	BYTE LunAddrBytes[8];
+	SCSI3Addr_struct SCSI3Lun[4];
+	PhysDevAddr_struct PhysDev;
+	LogDevAddr_struct LogDev;
 } LUNAddr_struct;
 
 typedef struct _RequestBlock_struct {
-  BYTE   CDBLen;
-  struct {
-    BYTE Type:3;
-    BYTE Attribute:3;
-    BYTE Direction:2;
-  } Type;
-  HWORD  Timeout;
-  BYTE   CDB[16];
+	BYTE CDBLen;
+	struct {
+		BYTE Type:3;
+		BYTE Attribute:3;
+		BYTE Direction:2;
+	} Type;
+	HWORD Timeout;
+	BYTE CDB[16];
 } RequestBlock_struct;
 
-typedef union _MoreErrInfo_struct{
-  struct {
-    BYTE  Reserved[3];
-    BYTE  Type;
-    DWORD ErrorInfo;
-  }Common_Info;
-  struct{
-    BYTE  Reserved[2];
-    BYTE  offense_size;//size of offending entry
-    BYTE  offense_num; //byte # of offense 0-base
-    DWORD offense_value;
-  }Invalid_Cmd;
-}MoreErrInfo_struct;
+typedef union _MoreErrInfo_struct {
+	struct {
+		BYTE Reserved[3];
+		BYTE Type;
+		DWORD ErrorInfo;
+	} Common_Info;
+	struct {
+		BYTE Reserved[2];
+		BYTE offense_size;	//size of offending entry
+		BYTE offense_num;	//byte # of offense 0-base
+		DWORD offense_value;
+	} Invalid_Cmd;
+} MoreErrInfo_struct;
 typedef struct _ErrorInfo_struct {
-  BYTE               ScsiStatus;
-  BYTE               SenseLen;
-  HWORD              CommandStatus;
-  DWORD              ResidualCnt;
-  MoreErrInfo_struct MoreErrInfo;
-  BYTE               SenseInfo[SENSEINFOBYTES];
+	BYTE ScsiStatus;
+	BYTE SenseLen;
+	HWORD CommandStatus;
+	DWORD ResidualCnt;
+	MoreErrInfo_struct MoreErrInfo;
+	BYTE SenseInfo[SENSEINFOBYTES];
 } ErrorInfo_struct;
 
 #pragma pack()
-#endif /* CCISS_CMD_H */ 
+#endif /* CCISS_CMD_H */
 
 typedef struct _IOCTL_Command_struct {
-  LUNAddr_struct	   LUN_info;
-  RequestBlock_struct      Request;
-  ErrorInfo_struct  	   error_info; 
-  WORD			   buf_size;  /* size in bytes of the buf */
-  BYTE			   __user *buf;
+	LUNAddr_struct LUN_info;
+	RequestBlock_struct Request;
+	ErrorInfo_struct error_info;
+	WORD buf_size;		/* size in bytes of the buf */
+	BYTE __user *buf;
 } IOCTL_Command_struct;
 
 typedef struct _BIG_IOCTL_Command_struct {
-  LUNAddr_struct	   LUN_info;
-  RequestBlock_struct      Request;
-  ErrorInfo_struct  	   error_info;
-  DWORD			   malloc_size; /* < MAX_KMALLOC_SIZE in cciss.c */
-  DWORD			   buf_size;    /* size in bytes of the buf */
-  				        /* < malloc_size * MAXSGENTRIES */
-  BYTE			   __user *buf;
+	LUNAddr_struct LUN_info;
+	RequestBlock_struct Request;
+	ErrorInfo_struct error_info;
+	DWORD malloc_size;	/* < MAX_KMALLOC_SIZE in cciss.c */
+	DWORD buf_size;		/* size in bytes of the buf */
+	/* < malloc_size * MAXSGENTRIES */
+	BYTE __user *buf;
 } BIG_IOCTL_Command_struct;
 
-typedef struct _LogvolInfo_struct{
-	__u32	LunID;
-	int	num_opens;  /* number of opens on the logical volume */
-	int	num_parts;  /* number of partitions configured on logvol */
+typedef struct _LogvolInfo_struct {
+	__u32 LunID;
+	int num_opens;		/* number of opens on the logical volume */
+	int num_parts;		/* number of partitions configured on logvol */
 } LogvolInfo_struct;
 
 #define CCISS_GETPCIINFO _IOR(CCISS_IOC_MAGIC, 1, cciss_pci_info_struct)
@@ -203,7 +200,7 @@ typedef struct _LogvolInfo_struct{
 #define CCISS_PASSTHRU	   _IOWR(CCISS_IOC_MAGIC, 11, IOCTL_Command_struct)
 #define CCISS_DEREGDISK	   _IO(CCISS_IOC_MAGIC, 12)
 
-/* no longer used... use REGNEWD instead */ 
+/* no longer used... use REGNEWD instead */
 #define CCISS_REGNEWDISK  _IOW(CCISS_IOC_MAGIC, 13, int)
 
 #define CCISS_REGNEWD	   _IO(CCISS_IOC_MAGIC, 14)
@@ -216,21 +213,21 @@ typedef struct _LogvolInfo_struct{
 
 /* 32 bit compatible ioctl structs */
 typedef struct _IOCTL32_Command_struct {
-  LUNAddr_struct	   LUN_info;
-  RequestBlock_struct      Request;
-  ErrorInfo_struct  	   error_info;
-  WORD			   buf_size;  /* size in bytes of the buf */
-  __u32			   buf; /* 32 bit pointer to data buffer */
+	LUNAddr_struct LUN_info;
+	RequestBlock_struct Request;
+	ErrorInfo_struct error_info;
+	WORD buf_size;		/* size in bytes of the buf */
+	__u32 buf;		/* 32 bit pointer to data buffer */
 } IOCTL32_Command_struct;
 
 typedef struct _BIG_IOCTL32_Command_struct {
-  LUNAddr_struct	   LUN_info;
-  RequestBlock_struct      Request;
-  ErrorInfo_struct  	   error_info;
-  DWORD			   malloc_size; /* < MAX_KMALLOC_SIZE in cciss.c */
-  DWORD			   buf_size;    /* size in bytes of the buf */
-  				        /* < malloc_size * MAXSGENTRIES */
-  __u32 		buf;	/* 32 bit pointer to data buffer */
+	LUNAddr_struct LUN_info;
+	RequestBlock_struct Request;
+	ErrorInfo_struct error_info;
+	DWORD malloc_size;	/* < MAX_KMALLOC_SIZE in cciss.c */
+	DWORD buf_size;		/* size in bytes of the buf */
+	/* < malloc_size * MAXSGENTRIES */
+	__u32 buf;		/* 32 bit pointer to data buffer */
 } BIG_IOCTL32_Command_struct;
 
 #define CCISS_PASSTHRU32   _IOWR(CCISS_IOC_MAGIC, 11, IOCTL32_Command_struct)
@@ -238,4 +235,4 @@ typedef struct _BIG_IOCTL32_Command_struct {
 
 #endif /* CONFIG_COMPAT */
 #endif /* __KERNEL__ */
-#endif  
+#endif

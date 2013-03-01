@@ -6,7 +6,6 @@
  * Copyright (C) 1998 Paul Mackerras.
  */
 
-
 #define PMU_DRIVER_VERSION	2
 
 /*
@@ -82,7 +81,6 @@
 #define PMU_I2C_STATUS_DATAREAD	1
 #define PMU_I2C_STATUS_BUSY	0xfe
 
-
 /* Kind of PMU (model) */
 enum {
 	PMU_UNKNOWN,
@@ -91,28 +89,28 @@ enum {
 	PMU_PADDINGTON_BASED,	/* 1999 PowerBook G3 */
 	PMU_KEYLARGO_BASED,	/* Core99 motherboard (PMU99) */
 	PMU_68K_V1,		/* 68K PMU, version 1 */
-	PMU_68K_V2, 		/* 68K PMU, version 2 */
+	PMU_68K_V2,		/* 68K PMU, version 2 */
 };
 
 /* PMU PMU_POWER_EVENTS commands */
 enum {
-	PMU_PWR_GET_POWERUP_EVENTS	= 0x00,
-	PMU_PWR_SET_POWERUP_EVENTS	= 0x01,
-	PMU_PWR_CLR_POWERUP_EVENTS	= 0x02,
-	PMU_PWR_GET_WAKEUP_EVENTS	= 0x03,
-	PMU_PWR_SET_WAKEUP_EVENTS	= 0x04,
-	PMU_PWR_CLR_WAKEUP_EVENTS	= 0x05,
+	PMU_PWR_GET_POWERUP_EVENTS = 0x00,
+	PMU_PWR_SET_POWERUP_EVENTS = 0x01,
+	PMU_PWR_CLR_POWERUP_EVENTS = 0x02,
+	PMU_PWR_GET_WAKEUP_EVENTS = 0x03,
+	PMU_PWR_SET_WAKEUP_EVENTS = 0x04,
+	PMU_PWR_CLR_WAKEUP_EVENTS = 0x05,
 };
 
 /* Power events wakeup bits */
 enum {
-	PMU_PWR_WAKEUP_KEY		= 0x01,	/* Wake on key press */
-	PMU_PWR_WAKEUP_AC_INSERT	= 0x02, /* Wake on AC adapter plug */
-	PMU_PWR_WAKEUP_AC_CHANGE	= 0x04,
-	PMU_PWR_WAKEUP_LID_OPEN		= 0x08,
-	PMU_PWR_WAKEUP_RING		= 0x10,
+	PMU_PWR_WAKEUP_KEY = 0x01,	/* Wake on key press */
+	PMU_PWR_WAKEUP_AC_INSERT = 0x02,	/* Wake on AC adapter plug */
+	PMU_PWR_WAKEUP_AC_CHANGE = 0x04,
+	PMU_PWR_WAKEUP_LID_OPEN = 0x08,
+	PMU_PWR_WAKEUP_RING = 0x10,
 };
-	
+
 /*
  * Ioctl commands for the /dev/pmu device
  */
@@ -127,21 +125,21 @@ enum {
 /* out param: u32*	PMU model */
 #define PMU_IOC_GET_MODEL	_IOR('B', 3, size_t)
 /* out param: u32*	has_adb: 0 or 1 */
-#define PMU_IOC_HAS_ADB		_IOR('B', 4, size_t) 
+#define PMU_IOC_HAS_ADB		_IOR('B', 4, size_t)
 /* out param: u32*	can_sleep: 0 or 1 */
-#define PMU_IOC_CAN_SLEEP	_IOR('B', 5, size_t) 
+#define PMU_IOC_CAN_SLEEP	_IOR('B', 5, size_t)
 /* no param, but historically was _IOR('B', 6, 0), meaning 4 bytes */
-#define PMU_IOC_GRAB_BACKLIGHT	_IOR('B', 6, size_t) 
+#define PMU_IOC_GRAB_BACKLIGHT	_IOR('B', 6, size_t)
 
 #ifdef __KERNEL__
 
 extern int find_via_pmu(void);
 
 extern int pmu_request(struct adb_request *req,
-		void (*done)(struct adb_request *), int nbytes, ...);
+		       void (*done) (struct adb_request *), int nbytes, ...);
 extern int pmu_queue_request(struct adb_request *req);
 extern void pmu_poll(void);
-extern void pmu_poll_adb(void); /* For use by xmon */
+extern void pmu_poll_adb(void);	/* For use by xmon */
 extern void pmu_wait_complete(struct adb_request *req);
 
 /* For use before switching interrupts off for a long time;
@@ -152,9 +150,12 @@ extern void pmu_suspend(void);
 extern void pmu_resume(void);
 #else
 static inline void pmu_suspend(void)
-{}
+{
+}
+
 static inline void pmu_resume(void)
-{}
+{
+}
 #endif
 
 extern void pmu_enable_irled(int on);
@@ -177,18 +178,17 @@ extern void pmu_backlight_set_sleep(int sleep);
 #define PMU_BATT_PRESENT	0x00000001
 #define PMU_BATT_CHARGING	0x00000002
 #define PMU_BATT_TYPE_MASK	0x000000f0
-#define PMU_BATT_TYPE_SMART	0x00000010 /* Smart battery */
-#define PMU_BATT_TYPE_HOOPER	0x00000020 /* 3400/3500 */
-#define PMU_BATT_TYPE_COMET	0x00000030 /* 2400 */
+#define PMU_BATT_TYPE_SMART	0x00000010	/* Smart battery */
+#define PMU_BATT_TYPE_HOOPER	0x00000020	/* 3400/3500 */
+#define PMU_BATT_TYPE_COMET	0x00000030	/* 2400 */
 
-struct pmu_battery_info
-{
-	unsigned int	flags;
-	unsigned int	charge;		/* current charge */
-	unsigned int	max_charge;	/* maximum charge */
-	signed int	amperage;	/* current, positive if charging */
-	unsigned int	voltage;	/* voltage */
-	unsigned int	time_remaining;	/* remaining time */
+struct pmu_battery_info {
+	unsigned int flags;
+	unsigned int charge;	/* current charge */
+	unsigned int max_charge;	/* maximum charge */
+	signed int amperage;	/* current, positive if charging */
+	unsigned int voltage;	/* voltage */
+	unsigned int time_remaining;	/* remaining time */
 };
 
 extern int pmu_battery_count;
@@ -206,4 +206,4 @@ extern int pmu_sys_suspended;
 #define pmu_sys_suspended	0
 #endif
 
-#endif	/* __KERNEL__ */
+#endif /* __KERNEL__ */

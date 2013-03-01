@@ -52,56 +52,50 @@ struct ncp_fs_info_v2 {
 	__u32 dummy3;
 };
 
-struct ncp_sign_init
-{
+struct ncp_sign_init {
 	char sign_root[8];
 	char sign_last[16];
 };
 
-struct ncp_lock_ioctl
-{
+struct ncp_lock_ioctl {
 #define NCP_LOCK_LOG	0
 #define NCP_LOCK_SH	1
 #define NCP_LOCK_EX	2
 #define NCP_LOCK_CLEAR	256
-	int		cmd;
-	int		origin;
-	unsigned int	offset;
-	unsigned int	length;
+	int cmd;
+	int origin;
+	unsigned int offset;
+	unsigned int length;
 #define NCP_LOCK_DEFAULT_TIMEOUT	18
 #define NCP_LOCK_MAX_TIMEOUT		180
-	int		timeout;
+	int timeout;
 };
 
-struct ncp_setroot_ioctl
-{
-	int		volNumber;
-	int		namespace;
-	__le32		dirEntNum;
+struct ncp_setroot_ioctl {
+	int volNumber;
+	int namespace;
+	__le32 dirEntNum;
 };
 
-struct ncp_objectname_ioctl
-{
+struct ncp_objectname_ioctl {
 #define NCP_AUTH_NONE	0x00
 #define NCP_AUTH_BIND	0x31
 #define NCP_AUTH_NDS	0x32
-	int		auth_type;
-	size_t		object_name_len;
-	void __user *	object_name;	/* a userspace data, in most cases user name */
+	int auth_type;
+	size_t object_name_len;
+	void __user *object_name;	/* a userspace data, in most cases user name */
 };
 
-struct ncp_privatedata_ioctl
-{
-	size_t		len;
-	void __user *	data;		/* ~1000 for NDS */
+struct ncp_privatedata_ioctl {
+	size_t len;
+	void __user *data;	/* ~1000 for NDS */
 };
 
 /* NLS charsets by ioctl */
 #define NCP_IOCSNAME_LEN 20
-struct ncp_nls_ioctl
-{
-	unsigned char codepage[NCP_IOCSNAME_LEN+1];
-	unsigned char iocharset[NCP_IOCSNAME_LEN+1];
+struct ncp_nls_ioctl {
+	unsigned char codepage[NCP_IOCSNAME_LEN + 1];
+	unsigned char iocharset[NCP_IOCSNAME_LEN + 1];
 };
 
 #define	NCP_IOC_NCPREQUEST		_IOR('n', 1, struct ncp_ioctl_request)
@@ -174,14 +168,13 @@ struct ncp_nls_ioctl
 
 #define NCP_MAX_RPC_TIMEOUT (6*HZ)
 
-
 struct ncp_entry_info {
-	struct nw_info_struct	i;
-	ino_t			ino;
-	int			opened;
-	int			access;
-	unsigned int		volume;
-	__u8			file_handle[6];
+	struct nw_info_struct i;
+	ino_t ino;
+	int opened;
+	int access;
+	unsigned int volume;
+	__u8 file_handle[6];
 };
 
 static inline struct ncp_server *NCP_SBP(struct super_block *sb)
@@ -215,10 +208,13 @@ long ncp_compat_ioctl(struct file *, unsigned int, unsigned long);
 
 /* linux/fs/ncpfs/sock.c */
 int ncp_request2(struct ncp_server *server, int function,
-	void* reply, int max_reply_size);
-static inline int ncp_request(struct ncp_server *server, int function) {
-	return ncp_request2(server, function, server->packet, server->packet_size);
+		 void *reply, int max_reply_size);
+static inline int ncp_request(struct ncp_server *server, int function)
+{
+	return ncp_request2(server, function, server->packet,
+			    server->packet_size);
 }
+
 int ncp_connect(struct ncp_server *server);
 int ncp_disconnect(struct ncp_server *server);
 void ncp_lock_server(struct ncp_server *server);
@@ -227,7 +223,7 @@ void ncp_unlock_server(struct ncp_server *server);
 /* linux/fs/ncpfs/symlink.c */
 #if defined(CONFIG_NCPFS_EXTRAS) || defined(CONFIG_NCPFS_NFS_NS)
 extern const struct address_space_operations ncp_symlink_aops;
-int ncp_symlink(struct inode*, struct dentry*, const char*);
+int ncp_symlink(struct inode *, struct dentry *, const char *);
 #endif
 
 /* linux/fs/ncpfs/file.c */
@@ -250,9 +246,9 @@ static inline int ncp_preserve_entry_case(struct inode *i, __u32 nscreator)
 
 	if ((ns == NW_NS_DOS)
 #ifdef CONFIG_NCPFS_OS2_NS
-		|| ((ns == NW_NS_OS2) && (nscreator == NW_NS_DOS))
+	    || ((ns == NW_NS_OS2) && (nscreator == NW_NS_DOS))
 #endif /* CONFIG_NCPFS_OS2_NS */
-				)
+	    )
 		return 0;
 #endif /* CONFIG_NCPFS_SMALLDOS */
 	return 1;
@@ -266,9 +262,9 @@ static inline int ncp_case_sensitive(struct inode *i)
 	return ncp_namespace(i) == NW_NS_NFS;
 #else
 	return 0;
-#endif	/* CONFIG_NCPFS_NFS_NS */
-} 
+#endif /* CONFIG_NCPFS_NFS_NS */
+}
 
-#endif				/* __KERNEL__ */
+#endif /* __KERNEL__ */
 
-#endif				/* _LINUX_NCP_FS_H */
+#endif /* _LINUX_NCP_FS_H */

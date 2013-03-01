@@ -8,10 +8,9 @@
 /* These must be implemented by the specific architecture */
 
 /* Adjust arch-specific sections.  Return 0 on success.  */
-int module_frob_arch_sections(Elf_Ehdr *hdr,
-			      Elf_Shdr *sechdrs,
-			      char *secstrings,
-			      struct module *mod);
+int module_frob_arch_sections(Elf_Ehdr * hdr,
+			      Elf_Shdr * sechdrs,
+			      char *secstrings, struct module *mod);
 
 /* Additional bytes needed by arch in front of individual sections */
 unsigned int arch_mod_section_prepend(struct module *mod, unsigned int section);
@@ -25,24 +24,21 @@ void module_free(struct module *mod, void *module_region);
 
 /* Apply the given relocation to the (simplified) ELF.  Return -error
    or 0. */
-int apply_relocate(Elf_Shdr *sechdrs,
+int apply_relocate(Elf_Shdr * sechdrs,
 		   const char *strtab,
 		   unsigned int symindex,
-		   unsigned int relsec,
-		   struct module *mod);
+		   unsigned int relsec, struct module *mod);
 
 /* Apply the given add relocation to the (simplified) ELF.  Return
    -error or 0 */
-int apply_relocate_add(Elf_Shdr *sechdrs,
+int apply_relocate_add(Elf_Shdr * sechdrs,
 		       const char *strtab,
 		       unsigned int symindex,
-		       unsigned int relsec,
-		       struct module *mod);
+		       unsigned int relsec, struct module *mod);
 
 /* Any final processing of module before access.  Return -error or 0. */
-int module_finalize(const Elf_Ehdr *hdr,
-		    const Elf_Shdr *sechdrs,
-		    struct module *mod);
+int module_finalize(const Elf_Ehdr * hdr,
+		    const Elf_Shdr * sechdrs, struct module *mod);
 
 /* Any cleanup needed when module leaves. */
 void module_arch_cleanup(struct module *mod);

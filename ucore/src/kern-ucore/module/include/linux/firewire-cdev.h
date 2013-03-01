@@ -304,7 +304,7 @@ struct fw_cdev_deallocate {
  * introduced in 1394a-2000.
  */
 struct fw_cdev_initiate_bus_reset {
-	__u32 type;	/* FW_CDEV_SHORT_RESET or FW_CDEV_LONG_RESET */
+	__u32 type;		/* FW_CDEV_SHORT_RESET or FW_CDEV_LONG_RESET */
 };
 
 /**

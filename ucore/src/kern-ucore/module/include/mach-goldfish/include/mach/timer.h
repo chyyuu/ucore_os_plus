@@ -17,12 +17,12 @@
 #define __ASM_ARCH_TIMER_H
 
 enum {
-	TIMER_TIME_LOW          = 0x00, // get low bits of current time and update TIMER_TIME_HIGH
-	TIMER_TIME_HIGH         = 0x04, // get high bits of time at last TIMER_TIME_LOW read
-	TIMER_ALARM_LOW         = 0x08, // set low bits of alarm and activate it
-	TIMER_ALARM_HIGH        = 0x0c, // set high bits of next alarm
-	TIMER_CLEAR_INTERRUPT   = 0x10,
-	TIMER_CLEAR_ALARM       = 0x14
+	TIMER_TIME_LOW = 0x00,	// get low bits of current time and update TIMER_TIME_HIGH
+	TIMER_TIME_HIGH = 0x04,	// get high bits of time at last TIMER_TIME_LOW read
+	TIMER_ALARM_LOW = 0x08,	// set low bits of alarm and activate it
+	TIMER_ALARM_HIGH = 0x0c,	// set high bits of next alarm
+	TIMER_CLEAR_INTERRUPT = 0x10,
+	TIMER_CLEAR_ALARM = 0x14
 };
 
 #endif

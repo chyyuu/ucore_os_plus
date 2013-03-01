@@ -10,9 +10,9 @@
  */
 
 #if defined(CONFIG_SMP)
-# include <asm/spinlock_types.h>
+#include <asm/spinlock_types.h>
 #else
-# include <linux/spinlock_types_up.h>
+#include <linux/spinlock_types_up.h>
 #endif
 
 #include <linux/lockdep.h>
@@ -52,19 +52,19 @@ typedef struct {
 #define SPINLOCK_OWNER_INIT	((void *)-1L)
 
 #ifdef CONFIG_DEBUG_LOCK_ALLOC
-# define SPIN_DEP_MAP_INIT(lockname)	.dep_map = { .name = #lockname }
+#define SPIN_DEP_MAP_INIT(lockname)	.dep_map = { .name = #lockname }
 #else
-# define SPIN_DEP_MAP_INIT(lockname)
+#define SPIN_DEP_MAP_INIT(lockname)
 #endif
 
 #ifdef CONFIG_DEBUG_LOCK_ALLOC
-# define RW_DEP_MAP_INIT(lockname)	.dep_map = { .name = #lockname }
+#define RW_DEP_MAP_INIT(lockname)	.dep_map = { .name = #lockname }
 #else
-# define RW_DEP_MAP_INIT(lockname)
+#define RW_DEP_MAP_INIT(lockname)
 #endif
 
 #ifdef CONFIG_DEBUG_SPINLOCK
-# define __SPIN_LOCK_UNLOCKED(lockname)					\
+#define __SPIN_LOCK_UNLOCKED(lockname)					\
 	(spinlock_t)	{	.raw_lock = __RAW_SPIN_LOCK_UNLOCKED,	\
 				.magic = SPINLOCK_MAGIC,		\
 				.owner = SPINLOCK_OWNER_INIT,		\
@@ -77,7 +77,7 @@ typedef struct {
 				.owner_cpu = -1,			\
 				RW_DEP_MAP_INIT(lockname) }
 #else
-# define __SPIN_LOCK_UNLOCKED(lockname) \
+#define __SPIN_LOCK_UNLOCKED(lockname) \
 	(spinlock_t)	{	.raw_lock = __RAW_SPIN_LOCK_UNLOCKED,	\
 				SPIN_DEP_MAP_INIT(lockname) }
 #define __RW_LOCK_UNLOCKED(lockname) \

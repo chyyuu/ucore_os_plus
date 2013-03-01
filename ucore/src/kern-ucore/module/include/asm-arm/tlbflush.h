@@ -10,7 +10,6 @@
 #ifndef _ASMARM_TLBFLUSH_H
 #define _ASMARM_TLBFLUSH_H
 
-
 #ifndef CONFIG_MMU
 
 #define tlb_flush(tlb)	((void) tlb)
@@ -39,7 +38,7 @@
 #define TLB_V6_D_ASID	(1 << 17)
 #define TLB_V6_I_ASID	(1 << 18)
 
-#define TLB_L2CLEAN_FR	(1 << 29)		/* Feroceon */
+#define TLB_L2CLEAN_FR	(1 << 29)	/* Feroceon */
 #define TLB_DCLEAN	(1 << 30)
 #define TLB_WB		(1 << 31)
 
@@ -62,31 +61,31 @@
 #define v3_tlb_flags	(TLB_V3_FULL | TLB_V3_PAGE)
 
 #ifdef CONFIG_CPU_TLB_V3
-# define v3_possible_flags	v3_tlb_flags
-# define v3_always_flags	v3_tlb_flags
-# ifdef _TLB
-#  define MULTI_TLB 1
-# else
-#  define _TLB v3
-# endif
+#define v3_possible_flags	v3_tlb_flags
+#define v3_always_flags	v3_tlb_flags
+#ifdef _TLB
+#define MULTI_TLB 1
 #else
-# define v3_possible_flags	0
-# define v3_always_flags	(-1UL)
+#define _TLB v3
+#endif
+#else
+#define v3_possible_flags	0
+#define v3_always_flags	(-1UL)
 #endif
 
 #define v4_tlb_flags	(TLB_V4_U_FULL | TLB_V4_U_PAGE)
 
 #ifdef CONFIG_CPU_TLB_V4WT
-# define v4_possible_flags	v4_tlb_flags
-# define v4_always_flags	v4_tlb_flags
-# ifdef _TLB
-#  define MULTI_TLB 1
-# else
-#  define _TLB v4
-# endif
+#define v4_possible_flags	v4_tlb_flags
+#define v4_always_flags	v4_tlb_flags
+#ifdef _TLB
+#define MULTI_TLB 1
 #else
-# define v4_possible_flags	0
-# define v4_always_flags	(-1UL)
+#define _TLB v4
+#endif
+#else
+#define v4_possible_flags	0
+#define v4_always_flags	(-1UL)
 #endif
 
 #define v4wbi_tlb_flags	(TLB_WB | TLB_DCLEAN | \
@@ -94,16 +93,16 @@
 			 TLB_V4_I_PAGE | TLB_V4_D_PAGE)
 
 #ifdef CONFIG_CPU_TLB_V4WBI
-# define v4wbi_possible_flags	v4wbi_tlb_flags
-# define v4wbi_always_flags	v4wbi_tlb_flags
-# ifdef _TLB
-#  define MULTI_TLB 1
-# else
-#  define _TLB v4wbi
-# endif
+#define v4wbi_possible_flags	v4wbi_tlb_flags
+#define v4wbi_always_flags	v4wbi_tlb_flags
+#ifdef _TLB
+#define MULTI_TLB 1
 #else
-# define v4wbi_possible_flags	0
-# define v4wbi_always_flags	(-1UL)
+#define _TLB v4wbi
+#endif
+#else
+#define v4wbi_possible_flags	0
+#define v4wbi_always_flags	(-1UL)
 #endif
 
 #define fr_tlb_flags	(TLB_WB | TLB_DCLEAN | TLB_L2CLEAN_FR | \
@@ -111,16 +110,16 @@
 			 TLB_V4_I_PAGE | TLB_V4_D_PAGE)
 
 #ifdef CONFIG_CPU_TLB_FEROCEON
-# define fr_possible_flags	fr_tlb_flags
-# define fr_always_flags	fr_tlb_flags
-# ifdef _TLB
-#  define MULTI_TLB 1
-# else
-#  define _TLB v4wbi
-# endif
+#define fr_possible_flags	fr_tlb_flags
+#define fr_always_flags	fr_tlb_flags
+#ifdef _TLB
+#define MULTI_TLB 1
 #else
-# define fr_possible_flags	0
-# define fr_always_flags	(-1UL)
+#define _TLB v4wbi
+#endif
+#else
+#define fr_possible_flags	0
+#define fr_always_flags	(-1UL)
 #endif
 
 #define v4wb_tlb_flags	(TLB_WB | TLB_DCLEAN | \
@@ -128,16 +127,16 @@
 			 TLB_V4_D_PAGE)
 
 #ifdef CONFIG_CPU_TLB_V4WB
-# define v4wb_possible_flags	v4wb_tlb_flags
-# define v4wb_always_flags	v4wb_tlb_flags
-# ifdef _TLB
-#  define MULTI_TLB 1
-# else
-#  define _TLB v4wb
-# endif
+#define v4wb_possible_flags	v4wb_tlb_flags
+#define v4wb_always_flags	v4wb_tlb_flags
+#ifdef _TLB
+#define MULTI_TLB 1
 #else
-# define v4wb_possible_flags	0
-# define v4wb_always_flags	(-1UL)
+#define _TLB v4wb
+#endif
+#else
+#define v4wb_possible_flags	0
+#define v4wb_always_flags	(-1UL)
 #endif
 
 #define v6wbi_tlb_flags (TLB_WB | TLB_DCLEAN | \
@@ -146,29 +145,29 @@
 			 TLB_V6_I_ASID | TLB_V6_D_ASID)
 
 #ifdef CONFIG_CPU_TLB_V6
-# define v6wbi_possible_flags	v6wbi_tlb_flags
-# define v6wbi_always_flags	v6wbi_tlb_flags
-# ifdef _TLB
-#  define MULTI_TLB 1
-# else
-#  define _TLB v6wbi
-# endif
+#define v6wbi_possible_flags	v6wbi_tlb_flags
+#define v6wbi_always_flags	v6wbi_tlb_flags
+#ifdef _TLB
+#define MULTI_TLB 1
 #else
-# define v6wbi_possible_flags	0
-# define v6wbi_always_flags	(-1UL)
+#define _TLB v6wbi
+#endif
+#else
+#define v6wbi_possible_flags	0
+#define v6wbi_always_flags	(-1UL)
 #endif
 
 #ifdef CONFIG_CPU_TLB_V7
-# define v7wbi_possible_flags	v6wbi_tlb_flags
-# define v7wbi_always_flags	v6wbi_tlb_flags
-# ifdef _TLB
-#  define MULTI_TLB 1
-# else
-#  define _TLB v7wbi
-# endif
+#define v7wbi_possible_flags	v6wbi_tlb_flags
+#define v7wbi_always_flags	v6wbi_tlb_flags
+#ifdef _TLB
+#define MULTI_TLB 1
 #else
-# define v7wbi_possible_flags	0
-# define v7wbi_always_flags	(-1UL)
+#define _TLB v7wbi
+#endif
+#else
+#define v7wbi_possible_flags	0
+#define v7wbi_always_flags	(-1UL)
 #endif
 
 #ifndef _TLB
@@ -180,8 +179,9 @@
 #include <linux/sched.h>
 
 struct cpu_tlb_fns {
-	void (*flush_user_range)(unsigned long, unsigned long, struct vm_area_struct *);
-	void (*flush_kern_range)(unsigned long, unsigned long);
+	void (*flush_user_range) (unsigned long, unsigned long,
+				  struct vm_area_struct *);
+	void (*flush_kern_range) (unsigned long, unsigned long);
 	unsigned long tlb_flags;
 };
 
@@ -198,7 +198,8 @@ struct cpu_tlb_fns {
 #define __cpu_flush_user_tlb_range	__glue(_TLB,_flush_user_tlb_range)
 #define __cpu_flush_kern_tlb_range	__glue(_TLB,_flush_kern_tlb_range)
 
-extern void __cpu_flush_user_tlb_range(unsigned long, unsigned long, struct vm_area_struct *);
+extern void __cpu_flush_user_tlb_range(unsigned long, unsigned long,
+				       struct vm_area_struct *);
 extern void __cpu_flush_kern_tlb_range(unsigned long, unsigned long);
 
 #endif
@@ -289,19 +290,19 @@ static inline void local_flush_tlb_all(void)
 		dsb();
 
 	if (tlb_flag(TLB_V3_FULL))
-		asm("mcr p15, 0, %0, c6, c0, 0" : : "r" (zero) : "cc");
+asm("mcr p15, 0, %0, c6, c0, 0": : "r"(zero):"cc");
 	if (tlb_flag(TLB_V4_U_FULL | TLB_V6_U_FULL))
-		asm("mcr p15, 0, %0, c8, c7, 0" : : "r" (zero) : "cc");
+asm("mcr p15, 0, %0, c8, c7, 0": : "r"(zero):"cc");
 	if (tlb_flag(TLB_V4_D_FULL | TLB_V6_D_FULL))
-		asm("mcr p15, 0, %0, c8, c6, 0" : : "r" (zero) : "cc");
+asm("mcr p15, 0, %0, c8, c6, 0": : "r"(zero):"cc");
 	if (tlb_flag(TLB_V4_I_FULL | TLB_V6_I_FULL))
-		asm("mcr p15, 0, %0, c8, c5, 0" : : "r" (zero) : "cc");
+asm("mcr p15, 0, %0, c8, c5, 0": : "r"(zero):"cc");
 
 	if (tlb_flag(TLB_V6_I_FULL | TLB_V6_D_FULL |
 		     TLB_V6_I_PAGE | TLB_V6_D_PAGE |
 		     TLB_V6_I_ASID | TLB_V6_D_ASID)) {
 		/* flush the branch target cache */
-		asm("mcr p15, 0, %0, c7, c5, 6" : : "r" (zero) : "cc");
+asm("mcr p15, 0, %0, c7, c5, 6": : "r"(zero):"cc");
 		dsb();
 		isb();
 	}
@@ -318,27 +319,27 @@ static inline void local_flush_tlb_mm(struct mm_struct *mm)
 
 	if (cpu_isset(smp_processor_id(), mm->cpu_vm_mask)) {
 		if (tlb_flag(TLB_V3_FULL))
-			asm("mcr p15, 0, %0, c6, c0, 0" : : "r" (zero) : "cc");
+asm("mcr p15, 0, %0, c6, c0, 0": : "r"(zero):"cc");
 		if (tlb_flag(TLB_V4_U_FULL))
-			asm("mcr p15, 0, %0, c8, c7, 0" : : "r" (zero) : "cc");
+asm("mcr p15, 0, %0, c8, c7, 0": : "r"(zero):"cc");
 		if (tlb_flag(TLB_V4_D_FULL))
-			asm("mcr p15, 0, %0, c8, c6, 0" : : "r" (zero) : "cc");
+asm("mcr p15, 0, %0, c8, c6, 0": : "r"(zero):"cc");
 		if (tlb_flag(TLB_V4_I_FULL))
-			asm("mcr p15, 0, %0, c8, c5, 0" : : "r" (zero) : "cc");
+asm("mcr p15, 0, %0, c8, c5, 0": : "r"(zero):"cc");
 	}
 
 	if (tlb_flag(TLB_V6_U_ASID))
-		asm("mcr p15, 0, %0, c8, c7, 2" : : "r" (asid) : "cc");
+asm("mcr p15, 0, %0, c8, c7, 2": : "r"(asid):"cc");
 	if (tlb_flag(TLB_V6_D_ASID))
-		asm("mcr p15, 0, %0, c8, c6, 2" : : "r" (asid) : "cc");
+asm("mcr p15, 0, %0, c8, c6, 2": : "r"(asid):"cc");
 	if (tlb_flag(TLB_V6_I_ASID))
-		asm("mcr p15, 0, %0, c8, c5, 2" : : "r" (asid) : "cc");
+asm("mcr p15, 0, %0, c8, c5, 2": : "r"(asid):"cc");
 
 	if (tlb_flag(TLB_V6_I_FULL | TLB_V6_D_FULL |
 		     TLB_V6_I_PAGE | TLB_V6_D_PAGE |
 		     TLB_V6_I_ASID | TLB_V6_D_ASID)) {
 		/* flush the branch target cache */
-		asm("mcr p15, 0, %0, c7, c5, 6" : : "r" (zero) : "cc");
+asm("mcr p15, 0, %0, c7, c5, 6": : "r"(zero):"cc");
 		dsb();
 	}
 }
@@ -356,29 +357,29 @@ local_flush_tlb_page(struct vm_area_struct *vma, unsigned long uaddr)
 
 	if (cpu_isset(smp_processor_id(), vma->vm_mm->cpu_vm_mask)) {
 		if (tlb_flag(TLB_V3_PAGE))
-			asm("mcr p15, 0, %0, c6, c0, 0" : : "r" (uaddr) : "cc");
+asm("mcr p15, 0, %0, c6, c0, 0": : "r"(uaddr):"cc");
 		if (tlb_flag(TLB_V4_U_PAGE))
-			asm("mcr p15, 0, %0, c8, c7, 1" : : "r" (uaddr) : "cc");
+asm("mcr p15, 0, %0, c8, c7, 1": : "r"(uaddr):"cc");
 		if (tlb_flag(TLB_V4_D_PAGE))
-			asm("mcr p15, 0, %0, c8, c6, 1" : : "r" (uaddr) : "cc");
+asm("mcr p15, 0, %0, c8, c6, 1": : "r"(uaddr):"cc");
 		if (tlb_flag(TLB_V4_I_PAGE))
-			asm("mcr p15, 0, %0, c8, c5, 1" : : "r" (uaddr) : "cc");
+asm("mcr p15, 0, %0, c8, c5, 1": : "r"(uaddr):"cc");
 		if (!tlb_flag(TLB_V4_I_PAGE) && tlb_flag(TLB_V4_I_FULL))
-			asm("mcr p15, 0, %0, c8, c5, 0" : : "r" (zero) : "cc");
+asm("mcr p15, 0, %0, c8, c5, 0": : "r"(zero):"cc");
 	}
 
 	if (tlb_flag(TLB_V6_U_PAGE))
-		asm("mcr p15, 0, %0, c8, c7, 1" : : "r" (uaddr) : "cc");
+asm("mcr p15, 0, %0, c8, c7, 1": : "r"(uaddr):"cc");
 	if (tlb_flag(TLB_V6_D_PAGE))
-		asm("mcr p15, 0, %0, c8, c6, 1" : : "r" (uaddr) : "cc");
+asm("mcr p15, 0, %0, c8, c6, 1": : "r"(uaddr):"cc");
 	if (tlb_flag(TLB_V6_I_PAGE))
-		asm("mcr p15, 0, %0, c8, c5, 1" : : "r" (uaddr) : "cc");
+asm("mcr p15, 0, %0, c8, c5, 1": : "r"(uaddr):"cc");
 
 	if (tlb_flag(TLB_V6_I_FULL | TLB_V6_D_FULL |
 		     TLB_V6_I_PAGE | TLB_V6_D_PAGE |
 		     TLB_V6_I_ASID | TLB_V6_D_ASID)) {
 		/* flush the branch target cache */
-		asm("mcr p15, 0, %0, c7, c5, 6" : : "r" (zero) : "cc");
+asm("mcr p15, 0, %0, c7, c5, 6": : "r"(zero):"cc");
 		dsb();
 	}
 }
@@ -394,28 +395,28 @@ static inline void local_flush_tlb_kernel_page(unsigned long kaddr)
 		dsb();
 
 	if (tlb_flag(TLB_V3_PAGE))
-		asm("mcr p15, 0, %0, c6, c0, 0" : : "r" (kaddr) : "cc");
+asm("mcr p15, 0, %0, c6, c0, 0": : "r"(kaddr):"cc");
 	if (tlb_flag(TLB_V4_U_PAGE))
-		asm("mcr p15, 0, %0, c8, c7, 1" : : "r" (kaddr) : "cc");
+asm("mcr p15, 0, %0, c8, c7, 1": : "r"(kaddr):"cc");
 	if (tlb_flag(TLB_V4_D_PAGE))
-		asm("mcr p15, 0, %0, c8, c6, 1" : : "r" (kaddr) : "cc");
+asm("mcr p15, 0, %0, c8, c6, 1": : "r"(kaddr):"cc");
 	if (tlb_flag(TLB_V4_I_PAGE))
-		asm("mcr p15, 0, %0, c8, c5, 1" : : "r" (kaddr) : "cc");
+asm("mcr p15, 0, %0, c8, c5, 1": : "r"(kaddr):"cc");
 	if (!tlb_flag(TLB_V4_I_PAGE) && tlb_flag(TLB_V4_I_FULL))
-		asm("mcr p15, 0, %0, c8, c5, 0" : : "r" (zero) : "cc");
+asm("mcr p15, 0, %0, c8, c5, 0": : "r"(zero):"cc");
 
 	if (tlb_flag(TLB_V6_U_PAGE))
-		asm("mcr p15, 0, %0, c8, c7, 1" : : "r" (kaddr) : "cc");
+asm("mcr p15, 0, %0, c8, c7, 1": : "r"(kaddr):"cc");
 	if (tlb_flag(TLB_V6_D_PAGE))
-		asm("mcr p15, 0, %0, c8, c6, 1" : : "r" (kaddr) : "cc");
+asm("mcr p15, 0, %0, c8, c6, 1": : "r"(kaddr):"cc");
 	if (tlb_flag(TLB_V6_I_PAGE))
-		asm("mcr p15, 0, %0, c8, c5, 1" : : "r" (kaddr) : "cc");
+asm("mcr p15, 0, %0, c8, c5, 1": : "r"(kaddr):"cc");
 
 	if (tlb_flag(TLB_V6_I_FULL | TLB_V6_D_FULL |
 		     TLB_V6_I_PAGE | TLB_V6_D_PAGE |
 		     TLB_V6_I_ASID | TLB_V6_D_ASID)) {
 		/* flush the branch target cache */
-		asm("mcr p15, 0, %0, c7, c5, 6" : : "r" (zero) : "cc");
+asm("mcr p15, 0, %0, c7, c5, 6": : "r"(zero):"cc");
 		dsb();
 		isb();
 	}
@@ -434,33 +435,29 @@ static inline void local_flush_tlb_kernel_page(unsigned long kaddr)
  *	these operations.  This is typically used when we are removing
  *	PMD entries.
  */
-static inline void flush_pmd_entry(pmd_t *pmd)
+static inline void flush_pmd_entry(pmd_t * pmd)
 {
 	const unsigned int __tlb_flag = __cpu_tlb_flags;
 
 	if (tlb_flag(TLB_DCLEAN))
-		asm("mcr	p15, 0, %0, c7, c10, 1	@ flush_pmd"
-			: : "r" (pmd) : "cc");
+asm("mcr	p15, 0, %0, c7, c10, 1	@ flush_pmd": : "r"(pmd):"cc");
 
 	if (tlb_flag(TLB_L2CLEAN_FR))
-		asm("mcr	p15, 1, %0, c15, c9, 1  @ L2 flush_pmd"
-			: : "r" (pmd) : "cc");
+asm("mcr	p15, 1, %0, c15, c9, 1  @ L2 flush_pmd": : "r"(pmd):"cc");
 
 	if (tlb_flag(TLB_WB))
 		dsb();
 }
 
-static inline void clean_pmd_entry(pmd_t *pmd)
+static inline void clean_pmd_entry(pmd_t * pmd)
 {
 	const unsigned int __tlb_flag = __cpu_tlb_flags;
 
 	if (tlb_flag(TLB_DCLEAN))
-		asm("mcr	p15, 0, %0, c7, c10, 1	@ flush_pmd"
-			: : "r" (pmd) : "cc");
+asm("mcr	p15, 0, %0, c7, c10, 1	@ flush_pmd": : "r"(pmd):"cc");
 
 	if (tlb_flag(TLB_L2CLEAN_FR))
-		asm("mcr	p15, 1, %0, c15, c9, 1  @ L2 flush_pmd"
-			: : "r" (pmd) : "cc");
+asm("mcr	p15, 1, %0, c15, c9, 1  @ L2 flush_pmd": : "r"(pmd):"cc");
 }
 
 #undef tlb_flag
@@ -485,7 +482,8 @@ extern void flush_tlb_all(void);
 extern void flush_tlb_mm(struct mm_struct *mm);
 extern void flush_tlb_page(struct vm_area_struct *vma, unsigned long uaddr);
 extern void flush_tlb_kernel_page(unsigned long kaddr);
-extern void flush_tlb_range(struct vm_area_struct *vma, unsigned long start, unsigned long end);
+extern void flush_tlb_range(struct vm_area_struct *vma, unsigned long start,
+			    unsigned long end);
 extern void flush_tlb_kernel_range(unsigned long start, unsigned long end);
 #endif
 
@@ -494,7 +492,8 @@ extern void flush_tlb_kernel_range(unsigned long start, unsigned long end);
  * cache entries for the kernels virtual memory range are written
  * back to the page.
  */
-extern void update_mmu_cache(struct vm_area_struct *vma, unsigned long addr, pte_t pte);
+extern void update_mmu_cache(struct vm_area_struct *vma, unsigned long addr,
+			     pte_t pte);
 
 #endif
 

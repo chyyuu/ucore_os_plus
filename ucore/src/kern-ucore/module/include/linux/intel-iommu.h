@@ -55,7 +55,7 @@
 #define DMAR_IQT_REG	0x88	/* Invalidation queue tail register */
 #define DMAR_IQA_REG	0x90	/* Invalidation queue addr register */
 #define DMAR_ICS_REG	0x98	/* Invalidation complete status register */
-#define DMAR_IRTA_REG	0xb8    /* Interrupt remapping table addr register */
+#define DMAR_IRTA_REG	0xb8	/* Interrupt remapping table addr register */
 
 #define OFFSET_STRIDE		(9)
 /*
@@ -66,7 +66,7 @@
 		hi = readl(dmar + reg + 4); \
 		(((u64) hi) << 32) + lo; })
 */
-static inline u64 dmar_readq(void __iomem *addr)
+static inline u64 dmar_readq(void __iomem * addr)
 {
 	u32 lo, hi;
 	lo = readl(addr);
@@ -74,10 +74,10 @@ static inline u64 dmar_readq(void __iomem *addr)
 	return (((u64) hi) << 32) + lo;
 }
 
-static inline void dmar_writeq(void __iomem *addr, u64 val)
+static inline void dmar_writeq(void __iomem * addr, u64 val)
 {
-	writel((u32)val, addr);
-	writel((u32)(val >> 32), addr + 4);
+	writel((u32) val, addr);
+	writel((u32) (val >> 32), addr + 4);
 }
 
 #define DMAR_VER_MAJOR(v)		(((v) & 0xf0) >> 4)
@@ -123,7 +123,6 @@ static inline void dmar_writeq(void __iomem *addr, u64 val)
 #define ecap_eim_support(e)	((e >> 4) & 0x1)
 #define ecap_ir_support(e)	((e >> 3) & 0x1)
 #define ecap_max_handle_mask(e) ((e >> 20) & 0xf)
-
 
 /* IOTLB_REG */
 #define DMA_TLB_FLUSH_GRANU_OFFSET  60
@@ -257,12 +256,12 @@ struct qi_desc {
 };
 
 struct q_inval {
-	spinlock_t      q_lock;
-	struct qi_desc  *desc;          /* invalidation queue */
-	int             *desc_status;   /* desc status */
-	int             free_head;      /* first free entry */
-	int             free_tail;      /* last free entry */
-	int             free_cnt;
+	spinlock_t q_lock;
+	struct qi_desc *desc;	/* invalidation queue */
+	int *desc_status;	/* desc status */
+	int free_head;		/* first free entry */
+	int free_tail;		/* last free entry */
+	int free_cnt;
 };
 
 #ifdef CONFIG_INTR_REMAP
@@ -278,45 +277,46 @@ struct ir_table {
 #endif
 
 struct iommu_flush {
-	int (*flush_context)(struct intel_iommu *iommu, u16 did, u16 sid, u8 fm,
-		u64 type, int non_present_entry_flush);
-	int (*flush_iotlb)(struct intel_iommu *iommu, u16 did, u64 addr,
-		unsigned int size_order, u64 type, int non_present_entry_flush);
+	int (*flush_context) (struct intel_iommu * iommu, u16 did, u16 sid,
+			      u8 fm, u64 type, int non_present_entry_flush);
+	int (*flush_iotlb) (struct intel_iommu * iommu, u16 did, u64 addr,
+			    unsigned int size_order, u64 type,
+			    int non_present_entry_flush);
 };
 
 struct intel_iommu {
-	void __iomem	*reg; /* Pointer to hardware regs, virtual addr */
-	u64		cap;
-	u64		ecap;
-	u32		gcmd; /* Holds TE, EAFL. Don't need SRTP, SFL, WBF */
-	spinlock_t	register_lock; /* protect register handling */
-	int		seq_id;	/* sequence id of the iommu */
-	int		agaw; /* agaw of this iommu */
+	void __iomem *reg;	/* Pointer to hardware regs, virtual addr */
+	u64 cap;
+	u64 ecap;
+	u32 gcmd;		/* Holds TE, EAFL. Don't need SRTP, SFL, WBF */
+	spinlock_t register_lock;	/* protect register handling */
+	int seq_id;		/* sequence id of the iommu */
+	int agaw;		/* agaw of this iommu */
 
 #ifdef CONFIG_DMAR
-	unsigned long 	*domain_ids; /* bitmap of domains */
-	struct dmar_domain **domains; /* ptr to domains */
-	spinlock_t	lock; /* protect context, domain ids */
-	struct root_entry *root_entry; /* virtual address */
+	unsigned long *domain_ids;	/* bitmap of domains */
+	struct dmar_domain **domains;	/* ptr to domains */
+	spinlock_t lock;	/* protect context, domain ids */
+	struct root_entry *root_entry;	/* virtual address */
 
 	unsigned int irq;
-	unsigned char name[7];    /* Device Name */
+	unsigned char name[7];	/* Device Name */
 	struct iommu_flush flush;
 #endif
-	struct q_inval  *qi;            /* Queued invalidation info */
+	struct q_inval *qi;	/* Queued invalidation info */
 #ifdef CONFIG_INTR_REMAP
 	struct ir_table *ir_table;	/* Interrupt remapping info */
 #endif
 };
 
-static inline void __iommu_flush_cache(
-	struct intel_iommu *iommu, void *addr, int size)
+static inline void __iommu_flush_cache(struct intel_iommu *iommu, void *addr,
+				       int size)
 {
 	if (!ecap_coherent(iommu->ecap))
 		clflush_cache_range(addr, size);
 }
 
-extern struct dmar_drhd_unit * dmar_find_matched_drhd_unit(struct pci_dev *dev);
+extern struct dmar_drhd_unit *dmar_find_matched_drhd_unit(struct pci_dev *dev);
 
 extern int alloc_iommu(struct dmar_drhd_unit *drhd);
 extern void free_iommu(struct intel_iommu *iommu);
@@ -324,7 +324,7 @@ extern int dmar_enable_qi(struct intel_iommu *iommu);
 extern void qi_global_iec(struct intel_iommu *iommu);
 
 extern int qi_flush_context(struct intel_iommu *iommu, u16 did, u16 sid,
-			        u8 fm, u64 type, int non_present_entry_flush);
+			    u8 fm, u64 type, int non_present_entry_flush);
 extern int qi_flush_iotlb(struct intel_iommu *iommu, u16 did, u64 addr,
 			  unsigned int size_order, u64 type,
 			  int non_present_entry_flush);

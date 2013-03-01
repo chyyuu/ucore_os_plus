@@ -29,7 +29,7 @@ struct ibft_table_header {
 	char oem_id[6];
 	char oem_table_id[8];
 	char reserved[24];
-} __attribute__((__packed__));
+} __attribute__ ((__packed__));
 
 /*
  * Logical location of iSCSI Boot Format Table.
@@ -44,7 +44,9 @@ extern struct ibft_table_header *ibft_addr;
 #ifdef CONFIG_ISCSI_IBFT_FIND
 extern void __init reserve_ibft_region(void);
 #else
-static inline void reserve_ibft_region(void) { }
+static inline void reserve_ibft_region(void)
+{
+}
 #endif
 
 #endif /* ISCSI_IBFT_H */

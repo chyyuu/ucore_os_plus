@@ -53,44 +53,46 @@ void hex_dump_to_buffer(const void *buf, size_t len, int rowsize,
 
 	if (!len)
 		goto nil;
-	if (len > rowsize)		/* limit to one line at a time */
+	if (len > rowsize)	/* limit to one line at a time */
 		len = rowsize;
 	if ((len % groupsize) != 0)	/* no mixed size output */
 		groupsize = 1;
 
 	switch (groupsize) {
-	case 8: {
-		const u64 *ptr8 = buf;
-		int ngroups = len / groupsize;
+	case 8:{
+			const u64 *ptr8 = buf;
+			int ngroups = len / groupsize;
 
-		for (j = 0; j < ngroups; j++)
-			lx += scnprintf(linebuf + lx, linebuflen - lx,
-				"%16.16llx ", (unsigned long long)*(ptr8 + j));
-		ascii_column = 17 * ngroups + 2;
-		break;
-	}
+			for (j = 0; j < ngroups; j++)
+				lx += scnprintf(linebuf + lx, linebuflen - lx,
+						"%16.16llx ",
+						(unsigned long long)*(ptr8 +
+								      j));
+			ascii_column = 17 * ngroups + 2;
+			break;
+		}
 
-	case 4: {
-		const u32 *ptr4 = buf;
-		int ngroups = len / groupsize;
+	case 4:{
+			const u32 *ptr4 = buf;
+			int ngroups = len / groupsize;
 
-		for (j = 0; j < ngroups; j++)
-			lx += scnprintf(linebuf + lx, linebuflen - lx,
-				"%8.8x ", *(ptr4 + j));
-		ascii_column = 9 * ngroups + 2;
-		break;
-	}
+			for (j = 0; j < ngroups; j++)
+				lx += scnprintf(linebuf + lx, linebuflen - lx,
+						"%8.8x ", *(ptr4 + j));
+			ascii_column = 9 * ngroups + 2;
+			break;
+		}
 
-	case 2: {
-		const u16 *ptr2 = buf;
-		int ngroups = len / groupsize;
+	case 2:{
+			const u16 *ptr2 = buf;
+			int ngroups = len / groupsize;
 
-		for (j = 0; j < ngroups; j++)
-			lx += scnprintf(linebuf + lx, linebuflen - lx,
-				"%4.4x ", *(ptr2 + j));
-		ascii_column = 5 * ngroups + 2;
-		break;
-	}
+			for (j = 0; j < ngroups; j++)
+				lx += scnprintf(linebuf + lx, linebuflen - lx,
+						"%4.4x ", *(ptr2 + j));
+			ascii_column = 5 * ngroups + 2;
+			break;
+		}
 
 	default:
 		for (j = 0; (j < rowsize) && (j < len) && (lx + 4) < linebuflen;
@@ -110,10 +112,11 @@ void hex_dump_to_buffer(const void *buf, size_t len, int rowsize,
 		linebuf[lx++] = ' ';
 	for (j = 0; (j < rowsize) && (j < len) && (lx + 2) < linebuflen; j++)
 		linebuf[lx++] = (isascii(ptr[j]) && isprint(ptr[j])) ? ptr[j]
-				: '.';
+		    : '.';
 nil:
 	linebuf[lx++] = '\0';
 }
+
 EXPORT_SYMBOL(hex_dump_to_buffer);
 
 /**
@@ -148,8 +151,8 @@ EXPORT_SYMBOL(hex_dump_to_buffer);
  * ffffffff88089af0: 73727170 77767574 7b7a7978 7f7e7d7c  pqrstuvwxyz{|}~.
  */
 void print_hex_dump(const char *level, const char *prefix_str, int prefix_type,
-			int rowsize, int groupsize,
-			const void *buf, size_t len, bool ascii)
+		    int rowsize, int groupsize,
+		    const void *buf, size_t len, bool ascii)
 {
 	const u8 *ptr = buf;
 	int i, linelen, remaining = len;
@@ -162,12 +165,12 @@ void print_hex_dump(const char *level, const char *prefix_str, int prefix_type,
 		linelen = min(remaining, rowsize);
 		remaining -= rowsize;
 		hex_dump_to_buffer(ptr + i, linelen, rowsize, groupsize,
-				linebuf, sizeof(linebuf), ascii);
+				   linebuf, sizeof(linebuf), ascii);
 
 		switch (prefix_type) {
 		case DUMP_PREFIX_ADDRESS:
 			printk("%s%s%*p: %s\n", level, prefix_str,
-				(int)(2 * sizeof(void *)), ptr + i, linebuf);
+			       (int)(2 * sizeof(void *)), ptr + i, linebuf);
 			break;
 		case DUMP_PREFIX_OFFSET:
 			printk("%s%s%.8x: %s\n", level, prefix_str, i, linebuf);
@@ -178,6 +181,7 @@ void print_hex_dump(const char *level, const char *prefix_str, int prefix_type,
 		}
 	}
 }
+
 EXPORT_SYMBOL(print_hex_dump);
 
 /**
@@ -193,9 +197,9 @@ EXPORT_SYMBOL(print_hex_dump);
  * rowsize of 16, groupsize of 1, and ASCII output included.
  */
 void print_hex_dump_bytes(const char *prefix_str, int prefix_type,
-			const void *buf, size_t len)
+			  const void *buf, size_t len)
 {
-	print_hex_dump(KERN_DEBUG, prefix_str, prefix_type, 16, 1,
-			buf, len, 1);
+	print_hex_dump(KERN_DEBUG, prefix_str, prefix_type, 16, 1, buf, len, 1);
 }
+
 EXPORT_SYMBOL(print_hex_dump_bytes);

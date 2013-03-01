@@ -30,4 +30,4 @@ extern void omap_bus_sync(void);
 #define wmb()		do { dsb(); outer_sync(); omap_bus_sync(); } while (0)
 #define mb()		wmb()
 
-#endif	/* __MACH_BARRIERS_H */
+#endif /* __MACH_BARRIERS_H */

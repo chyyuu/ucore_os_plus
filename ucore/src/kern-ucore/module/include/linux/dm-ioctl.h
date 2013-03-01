@@ -123,7 +123,7 @@ struct dm_ioctl {
 	uint32_t target_count;	/* in/out */
 	int32_t open_count;	/* out */
 	uint32_t flags;		/* in/out */
-	uint32_t event_nr;      	/* in/out */
+	uint32_t event_nr;	/* in/out */
 	uint32_t padding;
 
 	uint64_t dev;		/* in/out */
@@ -168,7 +168,7 @@ struct dm_target_spec {
  * Used to retrieve the target dependencies.
  */
 struct dm_target_deps {
-	uint32_t count;	/* Array size */
+	uint32_t count;		/* Array size */
 	uint32_t padding;	/* unused */
 	uint64_t dev[0];	/* out */
 };
@@ -187,10 +187,10 @@ struct dm_name_list {
  * Used to retrieve the target versions
  */
 struct dm_target_versions {
-        uint32_t next;
-        uint32_t version[3];
+	uint32_t next;
+	uint32_t version[3];
 
-        char name[0];
+	char name[0];
 };
 
 /*
@@ -261,42 +261,42 @@ enum {
 #define DM_VERSION_EXTRA	"-ioctl (2008-04-23)"
 
 /* Status bits */
-#define DM_READONLY_FLAG	(1 << 0) /* In/Out */
-#define DM_SUSPEND_FLAG		(1 << 1) /* In/Out */
-#define DM_PERSISTENT_DEV_FLAG	(1 << 3) /* In */
+#define DM_READONLY_FLAG	(1 << 0)	/* In/Out */
+#define DM_SUSPEND_FLAG		(1 << 1)	/* In/Out */
+#define DM_PERSISTENT_DEV_FLAG	(1 << 3)	/* In */
 
 /*
  * Flag passed into ioctl STATUS command to get table information
  * rather than current status.
  */
-#define DM_STATUS_TABLE_FLAG	(1 << 4) /* In */
+#define DM_STATUS_TABLE_FLAG	(1 << 4)	/* In */
 
 /*
  * Flags that indicate whether a table is present in either of
  * the two table slots that a device has.
  */
-#define DM_ACTIVE_PRESENT_FLAG   (1 << 5) /* Out */
-#define DM_INACTIVE_PRESENT_FLAG (1 << 6) /* Out */
+#define DM_ACTIVE_PRESENT_FLAG   (1 << 5)	/* Out */
+#define DM_INACTIVE_PRESENT_FLAG (1 << 6)	/* Out */
 
 /*
  * Indicates that the buffer passed in wasn't big enough for the
  * results.
  */
-#define DM_BUFFER_FULL_FLAG	(1 << 8) /* Out */
+#define DM_BUFFER_FULL_FLAG	(1 << 8)	/* Out */
 
 /*
  * This flag is now ignored.
  */
-#define DM_SKIP_BDGET_FLAG	(1 << 9) /* In */
+#define DM_SKIP_BDGET_FLAG	(1 << 9)	/* In */
 
 /*
  * Set this to avoid attempting to freeze any filesystem when suspending.
  */
-#define DM_SKIP_LOCKFS_FLAG	(1 << 10) /* In */
+#define DM_SKIP_LOCKFS_FLAG	(1 << 10)	/* In */
 
 /*
  * Set this to suspend without flushing queued ios.
  */
-#define DM_NOFLUSH_FLAG		(1 << 11) /* In */
+#define DM_NOFLUSH_FLAG		(1 << 11)	/* In */
 
-#endif				/* _LINUX_DM_IOCTL_H */
+#endif /* _LINUX_DM_IOCTL_H */

@@ -63,7 +63,6 @@ typedef intptr_t off_t;
 /* ppn_t used for page numbers */
 typedef size_t ppn_t;
 
-
 /* *
  * Rounding operations (efficient when n is a power of 2)
  * Round down to the nearest multiple of n
@@ -100,10 +99,10 @@ typedef size_t ppn_t;
 
 #ifndef __mode_t_defined
 typedef uint32_t mode_t;
-# define __mode_t_defined
+#define __mode_t_defined
 #endif
 
-typedef uint32_t          dev_t;
+typedef uint32_t dev_t;
 
 #ifndef __user
 #define __user
@@ -115,4 +114,3 @@ typedef uint32_t          dev_t;
 typedef uintptr_t sem_t;
 
 #endif /* !__LIBS_TYPES_H__ */
-

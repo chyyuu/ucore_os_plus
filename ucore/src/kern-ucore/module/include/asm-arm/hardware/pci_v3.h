@@ -49,7 +49,7 @@
 #define V3_PCI_MAP0                     0x00000040
 #define V3_PCI_MAP1                     0x00000044
 #define V3_PCI_INT_STAT                 0x00000048
-#define V3_PCI_INT_CFG                  0x0000004C 
+#define V3_PCI_INT_CFG                  0x0000004C
 #define V3_LB_BASE0                     0x00000054
 #define V3_LB_BASE1                     0x00000058
 #define V3_LB_MAP0                      0x0000005E

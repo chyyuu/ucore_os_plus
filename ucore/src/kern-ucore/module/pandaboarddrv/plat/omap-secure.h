@@ -9,6 +9,7 @@ extern int omap_secure_ram_reserve_memblock(void);
 extern int omap_barrier_reserve_memblock(void);
 #else
 static inline void omap_barrier_reserve_memblock(void)
-{ }
+{
+}
 #endif
 #endif /* __OMAP_SECURE_H__ */

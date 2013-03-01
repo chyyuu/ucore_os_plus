@@ -99,7 +99,6 @@ typedef struct capi_manufacturer_cmd {
  */
 #define CAPI_INSTALLED		_IOR('C',0x22, __u16)
 
-
 /*
  * member contr is input for
  * CAPI_GET_MANUFACTURER, CAPI_VERSION, CAPI_GET_SERIAL
@@ -130,4 +129,4 @@ typedef union capi_ioctl_struct {
 
 #define CAPI_NCCI_GETUNIT	_IOR('C',0x27, unsigned)
 
-#endif				/* __LINUX_CAPI_H__ */
+#endif /* __LINUX_CAPI_H__ */

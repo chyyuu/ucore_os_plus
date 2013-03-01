@@ -19,7 +19,7 @@
 
 #define RPC_GSS_VERSION		1
 
-#define MAXSEQ 0x80000000 /* maximum legal sequence number, from rfc 2203 */
+#define MAXSEQ 0x80000000	/* maximum legal sequence number, from rfc 2203 */
 
 enum rpc_gss_proc {
 	RPC_GSS_PROC_DATA = 0,
@@ -36,26 +36,26 @@ enum rpc_gss_svc {
 
 /* on-the-wire gss cred: */
 struct rpc_gss_wire_cred {
-	u32			gc_v;		/* version */
-	u32			gc_proc;	/* control procedure */
-	u32			gc_seq;		/* sequence number */
-	u32			gc_svc;		/* service */
-	struct xdr_netobj	gc_ctx;		/* context handle */
+	u32 gc_v;		/* version */
+	u32 gc_proc;		/* control procedure */
+	u32 gc_seq;		/* sequence number */
+	u32 gc_svc;		/* service */
+	struct xdr_netobj gc_ctx;	/* context handle */
 };
 
 /* on-the-wire gss verifier: */
 struct rpc_gss_wire_verf {
-	u32			gv_flavor;
-	struct xdr_netobj	gv_verf;
+	u32 gv_flavor;
+	struct xdr_netobj gv_verf;
 };
 
 /* return from gss NULL PROC init sec context */
 struct rpc_gss_init_res {
-	struct xdr_netobj	gr_ctx;		/* context handle */
-	u32			gr_major;	/* major status */
-	u32			gr_minor;	/* minor status */
-	u32			gr_win;		/* sequence window */
-	struct xdr_netobj	gr_token;	/* token */
+	struct xdr_netobj gr_ctx;	/* context handle */
+	u32 gr_major;		/* major status */
+	u32 gr_minor;		/* minor status */
+	u32 gr_win;		/* sequence window */
+	struct xdr_netobj gr_token;	/* token */
 };
 
 /* The gss_cl_ctx struct holds all the information the rpcsec_gss client
@@ -65,26 +65,25 @@ struct rpc_gss_init_res {
  * the wire when communicating with a server. */
 
 struct gss_cl_ctx {
-	atomic_t		count;
-	enum rpc_gss_proc	gc_proc;
-	u32			gc_seq;
-	spinlock_t		gc_seq_lock;
-	struct gss_ctx		*gc_gss_ctx;
-	struct xdr_netobj	gc_wire_ctx;
-	u32			gc_win;
-	unsigned long		gc_expiry;
-	struct rcu_head		gc_rcu;
+	atomic_t count;
+	enum rpc_gss_proc gc_proc;
+	u32 gc_seq;
+	spinlock_t gc_seq_lock;
+	struct gss_ctx *gc_gss_ctx;
+	struct xdr_netobj gc_wire_ctx;
+	u32 gc_win;
+	unsigned long gc_expiry;
+	struct rcu_head gc_rcu;
 };
 
 struct gss_upcall_msg;
 struct gss_cred {
-	struct rpc_cred		gc_base;
-	enum rpc_gss_svc	gc_service;
-	struct gss_cl_ctx	*gc_ctx;
-	struct gss_upcall_msg	*gc_upcall;
-	unsigned char		gc_machine_cred : 1;
+	struct rpc_cred gc_base;
+	enum rpc_gss_svc gc_service;
+	struct gss_cl_ctx *gc_ctx;
+	struct gss_upcall_msg *gc_upcall;
+	unsigned char gc_machine_cred:1;
 };
 
 #endif /* __KERNEL__ */
 #endif /* _LINUX_SUNRPC_AUTH_GSS_H */
-

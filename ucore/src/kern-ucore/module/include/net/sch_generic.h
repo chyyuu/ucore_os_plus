@@ -15,167 +15,154 @@ struct qdisc_walker;
 struct tcf_walker;
 struct module;
 
-struct qdisc_rate_table
-{
+struct qdisc_rate_table {
 	struct tc_ratespec rate;
-	u32		data[256];
+	u32 data[256];
 	struct qdisc_rate_table *next;
-	int		refcnt;
+	int refcnt;
 };
 
-enum qdisc_state_t
-{
+enum qdisc_state_t {
 	__QDISC_STATE_RUNNING,
 	__QDISC_STATE_SCHED,
 	__QDISC_STATE_DEACTIVATED,
 };
 
 struct qdisc_size_table {
-	struct list_head	list;
-	struct tc_sizespec	szopts;
-	int			refcnt;
-	u16			data[];
+	struct list_head list;
+	struct tc_sizespec szopts;
+	int refcnt;
+	u16 data[];
 };
 
-struct Qdisc
-{
-	int 			(*enqueue)(struct sk_buff *skb, struct Qdisc *dev);
-	struct sk_buff *	(*dequeue)(struct Qdisc *dev);
-	unsigned		flags;
+struct Qdisc {
+	int (*enqueue) (struct sk_buff * skb, struct Qdisc * dev);
+	struct sk_buff *(*dequeue) (struct Qdisc * dev);
+	unsigned flags;
 #define TCQ_F_BUILTIN	1
 #define TCQ_F_THROTTLED	2
 #define TCQ_F_INGRESS	4
-	int			padded;
-	struct Qdisc_ops	*ops;
-	struct qdisc_size_table	*stab;
-	u32			handle;
-	u32			parent;
-	atomic_t		refcnt;
-	unsigned long		state;
-	struct sk_buff		*gso_skb;
-	struct sk_buff_head	q;
-	struct netdev_queue	*dev_queue;
-	struct Qdisc		*next_sched;
-	struct list_head	list;
+	int padded;
+	struct Qdisc_ops *ops;
+	struct qdisc_size_table *stab;
+	u32 handle;
+	u32 parent;
+	atomic_t refcnt;
+	unsigned long state;
+	struct sk_buff *gso_skb;
+	struct sk_buff_head q;
+	struct netdev_queue *dev_queue;
+	struct Qdisc *next_sched;
+	struct list_head list;
 
-	struct gnet_stats_basic	bstats;
-	struct gnet_stats_queue	qstats;
-	struct gnet_stats_rate_est	rate_est;
-	int			(*reshape_fail)(struct sk_buff *skb,
-					struct Qdisc *q);
+	struct gnet_stats_basic bstats;
+	struct gnet_stats_queue qstats;
+	struct gnet_stats_rate_est rate_est;
+	int (*reshape_fail) (struct sk_buff * skb, struct Qdisc * q);
 
-	void			*u32_node;
+	void *u32_node;
 
 	/* This field is deprecated, but it is still used by CBQ
 	 * and it will live until better solution will be invented.
 	 */
-	struct Qdisc		*__parent;
+	struct Qdisc *__parent;
 };
 
-struct Qdisc_class_ops
-{
+struct Qdisc_class_ops {
 	/* Child qdisc manipulation */
-	int			(*graft)(struct Qdisc *, unsigned long cl,
-					struct Qdisc *, struct Qdisc **);
-	struct Qdisc *		(*leaf)(struct Qdisc *, unsigned long cl);
-	void			(*qlen_notify)(struct Qdisc *, unsigned long);
+	int (*graft) (struct Qdisc *, unsigned long cl,
+		      struct Qdisc *, struct Qdisc **);
+	struct Qdisc *(*leaf) (struct Qdisc *, unsigned long cl);
+	void (*qlen_notify) (struct Qdisc *, unsigned long);
 
 	/* Class manipulation routines */
-	unsigned long		(*get)(struct Qdisc *, u32 classid);
-	void			(*put)(struct Qdisc *, unsigned long);
-	int			(*change)(struct Qdisc *, u32, u32,
-					struct nlattr **, unsigned long *);
-	int			(*delete)(struct Qdisc *, unsigned long);
-	void			(*walk)(struct Qdisc *, struct qdisc_walker * arg);
+	unsigned long (*get) (struct Qdisc *, u32 classid);
+	void (*put) (struct Qdisc *, unsigned long);
+	int (*change) (struct Qdisc *, u32, u32,
+		       struct nlattr **, unsigned long *);
+	int (*delete) (struct Qdisc *, unsigned long);
+	void (*walk) (struct Qdisc *, struct qdisc_walker * arg);
 
 	/* Filter manipulation */
-	struct tcf_proto **	(*tcf_chain)(struct Qdisc *, unsigned long);
-	unsigned long		(*bind_tcf)(struct Qdisc *, unsigned long,
-					u32 classid);
-	void			(*unbind_tcf)(struct Qdisc *, unsigned long);
+	struct tcf_proto **(*tcf_chain) (struct Qdisc *, unsigned long);
+	unsigned long (*bind_tcf) (struct Qdisc *, unsigned long, u32 classid);
+	void (*unbind_tcf) (struct Qdisc *, unsigned long);
 
 	/* rtnetlink specific */
-	int			(*dump)(struct Qdisc *, unsigned long,
-					struct sk_buff *skb, struct tcmsg*);
-	int			(*dump_stats)(struct Qdisc *, unsigned long,
-					struct gnet_dump *);
+	int (*dump) (struct Qdisc *, unsigned long,
+		     struct sk_buff * skb, struct tcmsg *);
+	int (*dump_stats) (struct Qdisc *, unsigned long, struct gnet_dump *);
 };
 
-struct Qdisc_ops
-{
-	struct Qdisc_ops	*next;
-	const struct Qdisc_class_ops	*cl_ops;
-	char			id[IFNAMSIZ];
-	int			priv_size;
+struct Qdisc_ops {
+	struct Qdisc_ops *next;
+	const struct Qdisc_class_ops *cl_ops;
+	char id[IFNAMSIZ];
+	int priv_size;
 
-	int 			(*enqueue)(struct sk_buff *, struct Qdisc *);
-	struct sk_buff *	(*dequeue)(struct Qdisc *);
-	struct sk_buff *	(*peek)(struct Qdisc *);
-	unsigned int		(*drop)(struct Qdisc *);
+	int (*enqueue) (struct sk_buff *, struct Qdisc *);
+	struct sk_buff *(*dequeue) (struct Qdisc *);
+	struct sk_buff *(*peek) (struct Qdisc *);
+	unsigned int (*drop) (struct Qdisc *);
 
-	int			(*init)(struct Qdisc *, struct nlattr *arg);
-	void			(*reset)(struct Qdisc *);
-	void			(*destroy)(struct Qdisc *);
-	int			(*change)(struct Qdisc *, struct nlattr *arg);
+	int (*init) (struct Qdisc *, struct nlattr * arg);
+	void (*reset) (struct Qdisc *);
+	void (*destroy) (struct Qdisc *);
+	int (*change) (struct Qdisc *, struct nlattr * arg);
 
-	int			(*dump)(struct Qdisc *, struct sk_buff *);
-	int			(*dump_stats)(struct Qdisc *, struct gnet_dump *);
+	int (*dump) (struct Qdisc *, struct sk_buff *);
+	int (*dump_stats) (struct Qdisc *, struct gnet_dump *);
 
-	struct module		*owner;
+	struct module *owner;
 };
 
-
-struct tcf_result
-{
-	unsigned long	class;
-	u32		classid;
+struct tcf_result {
+	unsigned long class;
+	u32 classid;
 };
 
-struct tcf_proto_ops
-{
-	struct tcf_proto_ops	*next;
-	char			kind[IFNAMSIZ];
+struct tcf_proto_ops {
+	struct tcf_proto_ops *next;
+	char kind[IFNAMSIZ];
 
-	int			(*classify)(struct sk_buff*, struct tcf_proto*,
-					struct tcf_result *);
-	int			(*init)(struct tcf_proto*);
-	void			(*destroy)(struct tcf_proto*);
+	int (*classify) (struct sk_buff *, struct tcf_proto *,
+			 struct tcf_result *);
+	int (*init) (struct tcf_proto *);
+	void (*destroy) (struct tcf_proto *);
 
-	unsigned long		(*get)(struct tcf_proto*, u32 handle);
-	void			(*put)(struct tcf_proto*, unsigned long);
-	int			(*change)(struct tcf_proto*, unsigned long,
-					u32 handle, struct nlattr **,
-					unsigned long *);
-	int			(*delete)(struct tcf_proto*, unsigned long);
-	void			(*walk)(struct tcf_proto*, struct tcf_walker *arg);
+	unsigned long (*get) (struct tcf_proto *, u32 handle);
+	void (*put) (struct tcf_proto *, unsigned long);
+	int (*change) (struct tcf_proto *, unsigned long,
+		       u32 handle, struct nlattr **, unsigned long *);
+	int (*delete) (struct tcf_proto *, unsigned long);
+	void (*walk) (struct tcf_proto *, struct tcf_walker * arg);
 
 	/* rtnetlink specific */
-	int			(*dump)(struct tcf_proto*, unsigned long,
-					struct sk_buff *skb, struct tcmsg*);
+	int (*dump) (struct tcf_proto *, unsigned long,
+		     struct sk_buff * skb, struct tcmsg *);
 
-	struct module		*owner;
+	struct module *owner;
 };
 
-struct tcf_proto
-{
+struct tcf_proto {
 	/* Fast access part */
-	struct tcf_proto	*next;
-	void			*root;
-	int			(*classify)(struct sk_buff*, struct tcf_proto*,
-					struct tcf_result *);
-	__be16			protocol;
+	struct tcf_proto *next;
+	void *root;
+	int (*classify) (struct sk_buff *, struct tcf_proto *,
+			 struct tcf_result *);
+	__be16 protocol;
 
 	/* All the rest */
-	u32			prio;
-	u32			classid;
-	struct Qdisc		*q;
-	void			*data;
-	struct tcf_proto_ops	*ops;
+	u32 prio;
+	u32 classid;
+	struct Qdisc *q;
+	void *data;
+	struct tcf_proto_ops *ops;
 };
 
 struct qdisc_skb_cb {
-	unsigned int		pkt_len;
-	char			data[];
+	unsigned int pkt_len;
+	char data[];
 };
 
 static inline struct qdisc_skb_cb *qdisc_skb_cb(struct sk_buff *skb)
@@ -246,18 +233,16 @@ static inline void sch_tree_unlock(struct Qdisc *q)
 extern struct Qdisc noop_qdisc;
 extern struct Qdisc_ops noop_qdisc_ops;
 
-struct Qdisc_class_common
-{
-	u32			classid;
-	struct hlist_node	hnode;
+struct Qdisc_class_common {
+	u32 classid;
+	struct hlist_node hnode;
 };
 
-struct Qdisc_class_hash
-{
-	struct hlist_head	*hash;
-	unsigned int		hashsize;
-	unsigned int		hashmask;
-	unsigned int		hashelems;
+struct Qdisc_class_hash {
+	struct hlist_head *hash;
+	unsigned int hashsize;
+	unsigned int hashmask;
+	unsigned int hashelems;
 };
 
 static inline unsigned int qdisc_class_hash(u32 id, u32 mask)
@@ -267,8 +252,9 @@ static inline unsigned int qdisc_class_hash(u32 id, u32 mask)
 	return id & mask;
 }
 
-static inline struct Qdisc_class_common *
-qdisc_class_find(struct Qdisc_class_hash *hash, u32 id)
+static inline struct Qdisc_class_common *qdisc_class_find(struct
+							  Qdisc_class_hash
+							  *hash, u32 id)
 {
 	struct Qdisc_class_common *cl;
 	struct hlist_node *n;
@@ -283,8 +269,10 @@ qdisc_class_find(struct Qdisc_class_hash *hash, u32 id)
 }
 
 extern int qdisc_class_hash_init(struct Qdisc_class_hash *);
-extern void qdisc_class_hash_insert(struct Qdisc_class_hash *, struct Qdisc_class_common *);
-extern void qdisc_class_hash_remove(struct Qdisc_class_hash *, struct Qdisc_class_common *);
+extern void qdisc_class_hash_insert(struct Qdisc_class_hash *,
+				    struct Qdisc_class_common *);
+extern void qdisc_class_hash_remove(struct Qdisc_class_hash *,
+				    struct Qdisc_class_common *);
 extern void qdisc_class_hash_grow(struct Qdisc *, struct Qdisc_class_hash *);
 extern void qdisc_class_hash_destroy(struct Qdisc_class_hash *);
 
@@ -301,7 +289,7 @@ extern struct Qdisc *qdisc_create_dflt(struct net_device *dev,
 				       struct netdev_queue *dev_queue,
 				       struct Qdisc_ops *ops, u32 parentid);
 extern void qdisc_calculate_pkt_len(struct sk_buff *skb,
-				   struct qdisc_size_table *stab);
+				    struct qdisc_size_table *stab);
 extern void tcf_destroy(struct tcf_proto *tp);
 extern void tcf_destroy_chain(struct tcf_proto **fl);
 
@@ -527,14 +515,15 @@ drop:
 /* Length to Time (L2T) lookup in a qdisc_rate_table, to determine how
    long it will take to send a packet given its size.
  */
-static inline u32 qdisc_l2t(struct qdisc_rate_table* rtab, unsigned int pktlen)
+static inline u32 qdisc_l2t(struct qdisc_rate_table *rtab, unsigned int pktlen)
 {
 	int slot = pktlen + rtab->rate.cell_align + rtab->rate.overhead;
 	if (slot < 0)
 		slot = 0;
 	slot >>= rtab->rate.cell_log;
 	if (slot > 255)
-		return (rtab->data[255]*(slot >> 8) + rtab->data[slot & 0xFF]);
+		return (rtab->data[255] * (slot >> 8) +
+			rtab->data[slot & 0xFF]);
 	return rtab->data[slot];
 }
 

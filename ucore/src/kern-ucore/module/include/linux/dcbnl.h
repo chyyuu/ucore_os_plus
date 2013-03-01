@@ -25,9 +25,9 @@
 #define DCB_PROTO_VERSION 1
 
 struct dcbmsg {
-	__u8               dcb_family;
-	__u8               cmd;
-	__u16              dcb_pad;
+	__u8 dcb_family;
+	__u8 cmd;
+	__u16 dcb_pad;
 };
 
 /**
@@ -294,7 +294,7 @@ enum dcbnl_numtcs_attrs {
 	DCB_NUMTCS_ATTR_MAX = __DCB_NUMTCS_ATTR_ENUM_MAX - 1,
 };
 
-enum dcbnl_bcn_attrs{
+enum dcbnl_bcn_attrs {
 	DCB_BCN_ATTR_UNDEFINED = 0,
 
 	DCB_BCN_ATTR_RP_0,
@@ -337,6 +337,5 @@ enum dcbnl_bcn_attrs{
 enum dcb_general_attr_values {
 	DCB_ATTR_VALUE_UNDEFINED = 0xff
 };
-
 
 #endif /* __LINUX_DCBNL_H__ */

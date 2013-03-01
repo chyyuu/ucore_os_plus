@@ -25,7 +25,7 @@ struct address_space;
 
 #if USE_SPLIT_PTLOCKS
 typedef atomic_long_t mm_counter_t;
-#else  /* !USE_SPLIT_PTLOCKS */
+#else /* !USE_SPLIT_PTLOCKS */
 typedef unsigned long mm_counter_t;
 #endif /* !USE_SPLIT_PTLOCKS */
 
@@ -37,49 +37,49 @@ typedef unsigned long mm_counter_t;
  * who is mapping it.
  */
 struct page {
-	unsigned long flags;		/* Atomic flags, some possibly
-					 * updated asynchronously */
-	atomic_t _count;		/* Usage count, see below. */
+	unsigned long flags;	/* Atomic flags, some possibly
+				 * updated asynchronously */
+	atomic_t _count;	/* Usage count, see below. */
 	union {
 		atomic_t _mapcount;	/* Count of ptes mapped in mms,
 					 * to show when page is mapped
 					 * & limit reverse map searches.
 					 */
-		struct {		/* SLUB */
+		struct {	/* SLUB */
 			u16 inuse;
 			u16 objects;
 		};
 	};
 	union {
-	    struct {
-		unsigned long private;		/* Mapping-private opaque data:
-					 	 * usually used for buffer_heads
+		struct {
+			unsigned long private;	/* Mapping-private opaque data:
+						 * usually used for buffer_heads
 						 * if PagePrivate set; used for
 						 * swp_entry_t if PageSwapCache;
 						 * indicates order in the buddy
 						 * system if PG_buddy is set.
 						 */
-		struct address_space *mapping;	/* If low bit clear, points to
-						 * inode address_space, or NULL.
-						 * If page mapped as anonymous
-						 * memory, low bit is set, and
-						 * it points to anon_vma object:
-						 * see PAGE_MAPPING_ANON below.
-						 */
-	    };
+			struct address_space *mapping;	/* If low bit clear, points to
+							 * inode address_space, or NULL.
+							 * If page mapped as anonymous
+							 * memory, low bit is set, and
+							 * it points to anon_vma object:
+							 * see PAGE_MAPPING_ANON below.
+							 */
+		};
 #if USE_SPLIT_PTLOCKS
-	    spinlock_t ptl;
+		spinlock_t ptl;
 #endif
-	    struct kmem_cache *slab;	/* SLUB: Pointer to slab */
-	    struct page *first_page;	/* Compound tail pages */
+		struct kmem_cache *slab;	/* SLUB: Pointer to slab */
+		struct page *first_page;	/* Compound tail pages */
 	};
 	union {
-		pgoff_t index;		/* Our offset within mapping. */
-		void *freelist;		/* SLUB: freelist req. slab lock */
+		pgoff_t index;	/* Our offset within mapping. */
+		void *freelist;	/* SLUB: freelist req. slab lock */
 	};
-	struct list_head lru;		/* Pageout list, eg. active_list
-					 * protected by zone->lru_lock !
-					 */
+	struct list_head lru;	/* Pageout list, eg. active_list
+				 * protected by zone->lru_lock !
+				 */
 	/*
 	 * On machines where all RAM is mapped into kernel address space,
 	 * we can simply calculate the virtual address. On machines with
@@ -91,9 +91,9 @@ struct page {
 	 * WANT_PAGE_VIRTUAL in asm/page.h
 	 */
 #if defined(WANT_PAGE_VIRTUAL)
-	void *virtual;			/* Kernel virtual address (NULL if
-					   not kmapped, ie. highmem) */
-#endif /* WANT_PAGE_VIRTUAL */
+	void *virtual;		/* Kernel virtual address (NULL if
+				   not kmapped, ie. highmem) */
+#endif				/* WANT_PAGE_VIRTUAL */
 };
 
 /*
@@ -102,15 +102,15 @@ struct page {
  * map parts of them.
  */
 struct vm_region {
-	struct rb_node	vm_rb;		/* link in global region tree */
-	unsigned long	vm_flags;	/* VMA vm_flags */
-	unsigned long	vm_start;	/* start address of region */
-	unsigned long	vm_end;		/* region initialised to here */
-	unsigned long	vm_top;		/* region allocated to here */
-	unsigned long	vm_pgoff;	/* the offset in vm_file corresponding to vm_start */
-	struct file	*vm_file;	/* the backing file or NULL */
+	struct rb_node vm_rb;	/* link in global region tree */
+	unsigned long vm_flags;	/* VMA vm_flags */
+	unsigned long vm_start;	/* start address of region */
+	unsigned long vm_end;	/* region initialised to here */
+	unsigned long vm_top;	/* region allocated to here */
+	unsigned long vm_pgoff;	/* the offset in vm_file corresponding to vm_start */
+	struct file *vm_file;	/* the backing file or NULL */
 
-	atomic_t	vm_usage;	/* region usage count */
+	atomic_t vm_usage;	/* region usage count */
 };
 
 /*
@@ -120,16 +120,16 @@ struct vm_region {
  * library, the executable area etc).
  */
 struct vm_area_struct {
-	struct mm_struct * vm_mm;	/* The address space we belong to. */
-	unsigned long vm_start;		/* Our start address within vm_mm. */
-	unsigned long vm_end;		/* The first byte after our end address
-					   within vm_mm. */
+	struct mm_struct *vm_mm;	/* The address space we belong to. */
+	unsigned long vm_start;	/* Our start address within vm_mm. */
+	unsigned long vm_end;	/* The first byte after our end address
+				   within vm_mm. */
 
 	/* linked list of VM areas per task, sorted by address */
 	struct vm_area_struct *vm_next;
 
-	pgprot_t vm_page_prot;		/* Access permissions of this VMA. */
-	unsigned long vm_flags;		/* Flags, see mm.h. */
+	pgprot_t vm_page_prot;	/* Access permissions of this VMA. */
+	unsigned long vm_flags;	/* Flags, see mm.h. */
 
 	struct rb_node vm_rb;
 
@@ -151,7 +151,7 @@ struct vm_area_struct {
 
 	/*
 	 * A file's MAP_PRIVATE vma can be in both i_mmap tree and anon_vma
-	 * list, after a COW of one of the file pages.	A MAP_SHARED vma
+	 * list, after a COW of one of the file pages.  A MAP_SHARED vma
 	 * can only be in the i_mmap tree.  An anonymous MAP_PRIVATE, stack
 	 * or brk vma (with NULL file) can only be in an anon_vma list.
 	 */
@@ -159,14 +159,14 @@ struct vm_area_struct {
 	struct anon_vma *anon_vma;	/* Serialized by page_table_lock */
 
 	/* Function pointers to deal with this struct. */
-	struct vm_operations_struct * vm_ops;
+	struct vm_operations_struct *vm_ops;
 
 	/* Information about our backing store: */
-	unsigned long vm_pgoff;		/* Offset (within vm_file) in PAGE_SIZE
-					   units, *not* PAGE_CACHE_SIZE */
-	struct file * vm_file;		/* File we map to (can be NULL). */
-	void * vm_private_data;		/* was vm_pte (shared mem) */
-	unsigned long vm_truncate_count;/* truncate_count or restart_addr */
+	unsigned long vm_pgoff;	/* Offset (within vm_file) in PAGE_SIZE
+				   units, *not* PAGE_CACHE_SIZE */
+	struct file *vm_file;	/* File we map to (can be NULL). */
+	void *vm_private_data;	/* was vm_pte (shared mem) */
+	unsigned long vm_truncate_count;	/* truncate_count or restart_addr */
 
 #ifndef CONFIG_MMU
 	struct vm_region *vm_region;	/* NOMMU mapping region */
@@ -188,28 +188,30 @@ struct core_state {
 };
 
 struct mm_struct {
-	struct vm_area_struct * mmap;		/* list of VMAs */
+	struct vm_area_struct *mmap;	/* list of VMAs */
 	struct rb_root mm_rb;
-	struct vm_area_struct * mmap_cache;	/* last find_vma result */
-	unsigned long (*get_unmapped_area) (struct file *filp,
-				unsigned long addr, unsigned long len,
-				unsigned long pgoff, unsigned long flags);
-	void (*unmap_area) (struct mm_struct *mm, unsigned long addr);
-	unsigned long mmap_base;		/* base of mmap area */
-	unsigned long task_size;		/* size of task vm space */
-	unsigned long cached_hole_size; 	/* if non-zero, the largest hole below free_area_cache */
-	unsigned long free_area_cache;		/* first hole of size cached_hole_size or larger */
-	pgd_t * pgd;
-	atomic_t mm_users;			/* How many users with user space? */
-	atomic_t mm_count;			/* How many references to "struct mm_struct" (users count as 1) */
-	int map_count;				/* number of VMAs */
+	struct vm_area_struct *mmap_cache;	/* last find_vma result */
+	unsigned long (*get_unmapped_area) (struct file * filp,
+					    unsigned long addr,
+					    unsigned long len,
+					    unsigned long pgoff,
+					    unsigned long flags);
+	void (*unmap_area) (struct mm_struct * mm, unsigned long addr);
+	unsigned long mmap_base;	/* base of mmap area */
+	unsigned long task_size;	/* size of task vm space */
+	unsigned long cached_hole_size;	/* if non-zero, the largest hole below free_area_cache */
+	unsigned long free_area_cache;	/* first hole of size cached_hole_size or larger */
+	pgd_t *pgd;
+	atomic_t mm_users;	/* How many users with user space? */
+	atomic_t mm_count;	/* How many references to "struct mm_struct" (users count as 1) */
+	int map_count;		/* number of VMAs */
 	struct rw_semaphore mmap_sem;
-	spinlock_t page_table_lock;		/* Protects page tables and some counters */
+	spinlock_t page_table_lock;	/* Protects page tables and some counters */
 
-	struct list_head mmlist;		/* List of maybe swapped mm's.	These are globally strung
-						 * together off init_mm.mmlist, and are protected
-						 * by mmlist_lock
-						 */
+	struct list_head mmlist;	/* List of maybe swapped mm's.  These are globally strung
+					 * together off init_mm.mmlist, and are protected
+					 * by mmlist_lock
+					 */
 
 	/* Special counters, in some configurations protected by the
 	 * page_table_lock, in other configurations by being atomic.
@@ -226,7 +228,7 @@ struct mm_struct {
 	unsigned long start_brk, brk, start_stack;
 	unsigned long arg_start, arg_end, env_start, env_end;
 
-	unsigned long saved_auxv[AT_VECTOR_SIZE]; /* for /proc/PID/auxv */
+	unsigned long saved_auxv[AT_VECTOR_SIZE];	/* for /proc/PID/auxv */
 
 	cpumask_t cpu_vm_mask;
 
@@ -244,13 +246,13 @@ struct mm_struct {
 	unsigned int token_priority;
 	unsigned int last_interval;
 
-	unsigned long flags; /* Must use atomic bitops to access the bits */
+	unsigned long flags;	/* Must use atomic bitops to access the bits */
 
-	struct core_state *core_state; /* coredumping support */
+	struct core_state *core_state;	/* coredumping support */
 
 	/* aio bits */
-	spinlock_t		ioctx_lock;
-	struct hlist_head	ioctx_list;
+	spinlock_t ioctx_lock;
+	struct hlist_head ioctx_list;
 
 #ifdef CONFIG_MM_OWNER
 	/*

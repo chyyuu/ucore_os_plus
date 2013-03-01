@@ -59,10 +59,10 @@ typedef void dlm_lockspace_t;
 #define DLM_SBF_ALTMODE		0x04
 
 struct dlm_lksb {
-	int 	 sb_status;
-	__u32	 sb_lkid;
-	char 	 sb_flags;
-	char *	 sb_lvbptr;
+	int sb_status;
+	__u32 sb_lkid;
+	char sb_flags;
+	char *sb_lvbptr;
 };
 
 /* dlm_new_lockspace() flags */
@@ -81,7 +81,7 @@ struct dlm_lksb {
  * the cluster, the calling node joins it.
  */
 
-int dlm_new_lockspace(char *name, int namelen, dlm_lockspace_t **lockspace,
+int dlm_new_lockspace(char *name, int namelen, dlm_lockspace_t ** lockspace,
 		      uint32_t flags, int lvblen);
 
 /*
@@ -90,7 +90,7 @@ int dlm_new_lockspace(char *name, int namelen, dlm_lockspace_t **lockspace,
  * Stop a lockspace.
  */
 
-int dlm_release_lockspace(dlm_lockspace_t *lockspace, int force);
+int dlm_release_lockspace(dlm_lockspace_t * lockspace, int force);
 
 /*
  * dlm_lock
@@ -129,7 +129,7 @@ int dlm_release_lockspace(dlm_lockspace_t *lockspace, int force);
  * any locking calls they please.
  */
 
-int dlm_lock(dlm_lockspace_t *lockspace,
+int dlm_lock(dlm_lockspace_t * lockspace,
 	     int mode,
 	     struct dlm_lksb *lksb,
 	     uint32_t flags,
@@ -137,8 +137,7 @@ int dlm_lock(dlm_lockspace_t *lockspace,
 	     unsigned int namelen,
 	     uint32_t parent_lkid,
 	     void (*lockast) (void *astarg),
-	     void *astarg,
-	     void (*bast) (void *astarg, int mode));
+	     void *astarg, void (*bast) (void *astarg, int mode));
 
 /*
  * dlm_unlock
@@ -160,13 +159,10 @@ int dlm_lock(dlm_lockspace_t *lockspace,
  * -ENOTCONN if there is a communication error
  */
 
-int dlm_unlock(dlm_lockspace_t *lockspace,
+int dlm_unlock(dlm_lockspace_t * lockspace,
 	       uint32_t lkid,
-	       uint32_t flags,
-	       struct dlm_lksb *lksb,
-	       void *astarg);
+	       uint32_t flags, struct dlm_lksb *lksb, void *astarg);
 
-#endif				/* __KERNEL__ */
+#endif /* __KERNEL__ */
 
-#endif				/* __DLM_DOT_H__ */
-
+#endif /* __DLM_DOT_H__ */

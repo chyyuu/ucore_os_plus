@@ -39,7 +39,7 @@
 #define MIGRATE_RECLAIMABLE   1
 #define MIGRATE_MOVABLE       2
 #define MIGRATE_RESERVE       3
-#define MIGRATE_ISOLATE       4 /* can't allocate from here */
+#define MIGRATE_ISOLATE       4	/* can't allocate from here */
 #define MIGRATE_TYPES         5
 
 #define for_each_migratetype_order(order, type) \
@@ -57,8 +57,8 @@ static inline int get_pageblock_migratetype(struct page *page)
 }
 
 struct free_area {
-	struct list_head	free_list[MIGRATE_TYPES];
-	unsigned long		nr_free;
+	struct list_head free_list[MIGRATE_TYPES];
+	unsigned long nr_free;
 };
 
 struct pglist_data;
@@ -82,7 +82,7 @@ enum zone_stat_item {
 	/* First 128 byte cacheline (assuming 64 bit words) */
 	NR_FREE_PAGES,
 	NR_LRU_BASE,
-	NR_INACTIVE_ANON = NR_LRU_BASE, /* must match order of LRU_[IN]ACTIVE */
+	NR_INACTIVE_ANON = NR_LRU_BASE,	/* must match order of LRU_[IN]ACTIVE */
 	NR_ACTIVE_ANON,		/*  "     "     "   "       "         */
 	NR_INACTIVE_FILE,	/*  "     "     "   "       "         */
 	NR_ACTIVE_FILE,		/*  "     "     "   "       "         */
@@ -90,12 +90,12 @@ enum zone_stat_item {
 	NR_UNEVICTABLE,		/*  "     "     "   "       "         */
 	NR_MLOCK,		/* mlock()ed pages found and moved off LRU */
 #else
-	NR_UNEVICTABLE = NR_ACTIVE_FILE, /* avoid compiler errors in dead code */
+	NR_UNEVICTABLE = NR_ACTIVE_FILE,	/* avoid compiler errors in dead code */
 	NR_MLOCK = NR_ACTIVE_FILE,
 #endif
-	NR_ANON_PAGES,	/* Mapped anonymous pages */
-	NR_FILE_MAPPED,	/* pagecache pages mapped into pagetables.
-			   only modified from process context */
+	NR_ANON_PAGES,		/* Mapped anonymous pages */
+	NR_FILE_MAPPED,		/* pagecache pages mapped into pagetables.
+				   only modified from process context */
 	NR_FILE_PAGES,
 	NR_FILE_DIRTY,
 	NR_WRITEBACK,
@@ -115,7 +115,8 @@ enum zone_stat_item {
 	NUMA_LOCAL,		/* allocation from local node */
 	NUMA_OTHER,		/* allocation from other node */
 #endif
-	NR_VM_ZONE_STAT_ITEMS };
+	NR_VM_ZONE_STAT_ITEMS
+};
 
 /*
  * We do arithmetic on the LRU lists in various places in the code,
@@ -138,7 +139,7 @@ enum lru_list {
 #ifdef CONFIG_UNEVICTABLE_LRU
 	LRU_UNEVICTABLE,
 #else
-	LRU_UNEVICTABLE = LRU_ACTIVE_FILE, /* avoid compiler errors in dead code */
+	LRU_UNEVICTABLE = LRU_ACTIVE_FILE,	/* avoid compiler errors in dead code */
 #endif
 	NR_LRU_LISTS
 };
@@ -202,15 +203,15 @@ enum zone_type {
 	 *
 	 * Some examples
 	 *
-	 * Architecture		Limit
+	 * Architecture         Limit
 	 * ---------------------------
-	 * parisc, ia64, sparc	<4G
-	 * s390			<2G
-	 * arm			Various
-	 * alpha		Unlimited or 0-16MB.
+	 * parisc, ia64, sparc  <4G
+	 * s390                 <2G
+	 * arm                  Various
+	 * alpha                Unlimited or 0-16MB.
 	 *
 	 * i386, x86_64 and multiple other arches
-	 * 			<16M.
+	 *                      <16M.
 	 */
 	ZONE_DMA,
 #endif
@@ -272,13 +273,13 @@ struct zone_reclaim_stat {
 	 *
 	 * The anon LRU stats live in [0], file LRU stats in [1]
 	 */
-	unsigned long		recent_rotated[2];
-	unsigned long		recent_scanned[2];
+	unsigned long recent_rotated[2];
+	unsigned long recent_scanned[2];
 };
 
 struct zone {
 	/* Fields commonly accessed by the page allocator */
-	unsigned long		pages_min, pages_low, pages_high;
+	unsigned long pages_min, pages_low, pages_high;
 	/*
 	 * We don't know if the memory that we're going to allocate will be freeable
 	 * or/and it will be released eventually, so to avoid totally wasting several
@@ -287,42 +288,41 @@ struct zone {
 	 * on the higher zones). This array is recalculated at runtime if the
 	 * sysctl_lowmem_reserve_ratio sysctl changes.
 	 */
-	unsigned long		lowmem_reserve[MAX_NR_ZONES];
+	unsigned long lowmem_reserve[MAX_NR_ZONES];
 
 #ifdef CONFIG_NUMA
 	int node;
 	/*
 	 * zone reclaim becomes active if more unmapped pages exist.
 	 */
-	unsigned long		min_unmapped_pages;
-	unsigned long		min_slab_pages;
-	struct per_cpu_pageset	*pageset[NR_CPUS];
+	unsigned long min_unmapped_pages;
+	unsigned long min_slab_pages;
+	struct per_cpu_pageset *pageset[NR_CPUS];
 #else
-	struct per_cpu_pageset	pageset[NR_CPUS];
+	struct per_cpu_pageset pageset[NR_CPUS];
 #endif
 	/*
 	 * free areas of different sizes
 	 */
-	spinlock_t		lock;
+	spinlock_t lock;
 #ifdef CONFIG_MEMORY_HOTPLUG
 	/* see spanned/present_pages for more description */
-	seqlock_t		span_seqlock;
+	seqlock_t span_seqlock;
 #endif
-	struct free_area	free_area[MAX_ORDER];
+	struct free_area free_area[MAX_ORDER];
 
 #ifndef CONFIG_SPARSEMEM
 	/*
 	 * Flags for a pageblock_nr_pages block. See pageblock-flags.h.
 	 * In SPARSEMEM, this map is stored in struct mem_section
 	 */
-	unsigned long		*pageblock_flags;
-#endif /* CONFIG_SPARSEMEM */
+	unsigned long *pageblock_flags;
+#endif				/* CONFIG_SPARSEMEM */
 
+	 ZONE_PADDING(_pad1_)
 
-	ZONE_PADDING(_pad1_)
-
-	/* Fields commonly accessed by the page reclaim scanner */
-	spinlock_t		lru_lock;	
+	    /* Fields commonly accessed by the page reclaim scanner */
+	spinlock_t lru_lock;
 	struct {
 		struct list_head list;
 		unsigned long nr_scan;
@@ -330,11 +330,11 @@ struct zone {
 
 	struct zone_reclaim_stat reclaim_stat;
 
-	unsigned long		pages_scanned;	   /* since last reclaim */
-	unsigned long		flags;		   /* zone flags, see below */
+	unsigned long pages_scanned;	/* since last reclaim */
+	unsigned long flags;	/* zone flags, see below */
 
 	/* Zone statistics */
-	atomic_long_t		vm_stat[NR_VM_ZONE_STAT_ITEMS];
+	atomic_long_t vm_stat[NR_VM_ZONE_STAT_ITEMS];
 
 	/*
 	 * prev_priority holds the scanning priority for this zone.  It is
@@ -357,44 +357,42 @@ struct zone {
 	 */
 	unsigned int inactive_ratio;
 
-
-	ZONE_PADDING(_pad2_)
-	/* Rarely used or read-mostly fields */
-
-	/*
-	 * wait_table		-- the array holding the hash table
-	 * wait_table_hash_nr_entries	-- the size of the hash table array
-	 * wait_table_bits	-- wait_table_size == (1 << wait_table_bits)
-	 *
-	 * The purpose of all these is to keep track of the people
-	 * waiting for a page to become available and make them
-	 * runnable again when possible. The trouble is that this
-	 * consumes a lot of space, especially when so few things
-	 * wait on pages at a given time. So instead of using
-	 * per-page waitqueues, we use a waitqueue hash table.
-	 *
-	 * The bucket discipline is to sleep on the same queue when
-	 * colliding and wake all in that wait queue when removing.
-	 * When something wakes, it must check to be sure its page is
-	 * truly available, a la thundering herd. The cost of a
-	 * collision is great, but given the expected load of the
-	 * table, they should be so rare as to be outweighed by the
-	 * benefits from the saved space.
-	 *
-	 * __wait_on_page_locked() and unlock_page() in mm/filemap.c, are the
-	 * primary users of these fields, and in mm/page_alloc.c
-	 * free_area_init_core() performs the initialization of them.
-	 */
-	wait_queue_head_t	* wait_table;
-	unsigned long		wait_table_hash_nr_entries;
-	unsigned long		wait_table_bits;
+	 ZONE_PADDING(_pad2_)
+	    /* Rarely used or read-mostly fields */
+	    /*
+	     * wait_table           -- the array holding the hash table
+	     * wait_table_hash_nr_entries   -- the size of the hash table array
+	     * wait_table_bits      -- wait_table_size == (1 << wait_table_bits)
+	     *
+	     * The purpose of all these is to keep track of the people
+	     * waiting for a page to become available and make them
+	     * runnable again when possible. The trouble is that this
+	     * consumes a lot of space, especially when so few things
+	     * wait on pages at a given time. So instead of using
+	     * per-page waitqueues, we use a waitqueue hash table.
+	     *
+	     * The bucket discipline is to sleep on the same queue when
+	     * colliding and wake all in that wait queue when removing.
+	     * When something wakes, it must check to be sure its page is
+	     * truly available, a la thundering herd. The cost of a
+	     * collision is great, but given the expected load of the
+	     * table, they should be so rare as to be outweighed by the
+	     * benefits from the saved space.
+	     *
+	     * __wait_on_page_locked() and unlock_page() in mm/filemap.c, are the
+	     * primary users of these fields, and in mm/page_alloc.c
+	     * free_area_init_core() performs the initialization of them.
+	     */
+	wait_queue_head_t *wait_table;
+	unsigned long wait_table_hash_nr_entries;
+	unsigned long wait_table_bits;
 
 	/*
 	 * Discontig memory support fields.
 	 */
-	struct pglist_data	*zone_pgdat;
+	struct pglist_data *zone_pgdat;
 	/* zone_start_pfn == zone_start_paddr >> PAGE_SHIFT */
-	unsigned long		zone_start_pfn;
+	unsigned long zone_start_pfn;
 
 	/*
 	 * zone_start_pfn, spanned_pages and present_pages are all
@@ -406,19 +404,19 @@ struct zone {
 	 * frequently read in proximity to zone->lock.  It's good to
 	 * give them a chance of being in the same cacheline.
 	 */
-	unsigned long		spanned_pages;	/* total size, including holes */
-	unsigned long		present_pages;	/* amount of memory (excluding holes) */
+	unsigned long spanned_pages;	/* total size, including holes */
+	unsigned long present_pages;	/* amount of memory (excluding holes) */
 
 	/*
 	 * rarely used fields:
 	 */
-	const char		*name;
+	const char *name;
 } ____cacheline_internodealigned_in_smp;
 
 typedef enum {
-	ZONE_ALL_UNRECLAIMABLE,		/* all pages pinned */
-	ZONE_RECLAIM_LOCKED,		/* prevents concurrent reclaim */
-	ZONE_OOM_LOCKED,		/* zone is in OOM killer zonelist */
+	ZONE_ALL_UNRECLAIMABLE,	/* all pages pinned */
+	ZONE_RECLAIM_LOCKED,	/* prevents concurrent reclaim */
+	ZONE_OOM_LOCKED,	/* zone is in OOM killer zonelist */
 } zone_flags_t;
 
 static inline void zone_set_flag(struct zone *zone, zone_flags_t flag)
@@ -471,7 +469,6 @@ static inline int zone_is_oom_locked(const struct zone *zone)
  * [1]	: No fallback (GFP_THISNODE)
  */
 #define MAX_ZONELISTS 2
-
 
 /*
  * We cache key information from each zonelist for smaller cache
@@ -531,11 +528,10 @@ static inline int zone_is_oom_locked(const struct zone *zone)
  * and then, the allocator will still function, perhaps a bit slower.
  */
 
-
 struct zonelist_cache {
-	unsigned short z_to_n[MAX_ZONES_PER_ZONELIST];		/* zone->nid */
-	DECLARE_BITMAP(fullzones, MAX_ZONES_PER_ZONELIST);	/* zone full? */
-	unsigned long last_full_zap;		/* when last zap'd (jiffies) */
+	unsigned short z_to_n[MAX_ZONES_PER_ZONELIST];	/* zone->nid */
+	 DECLARE_BITMAP(fullzones, MAX_ZONES_PER_ZONELIST);	/* zone full? */
+	unsigned long last_full_zap;	/* when last zap'd (jiffies) */
 };
 #else
 #define MAX_ZONELISTS 1
@@ -569,10 +565,10 @@ struct zoneref {
  * zonelist_node_idx()	- Return the index of the node for an entry
  */
 struct zonelist {
-	struct zonelist_cache *zlcache_ptr;		     // NULL or &zlcache
+	struct zonelist_cache *zlcache_ptr;	// NULL or &zlcache
 	struct zoneref _zonerefs[MAX_ZONES_PER_ZONELIST + 1];
 #ifdef CONFIG_NUMA
-	struct zonelist_cache zlcache;			     // optional ...
+	struct zonelist_cache zlcache;	// optional ...
 #endif
 };
 
@@ -623,9 +619,9 @@ typedef struct pglist_data {
 	spinlock_t node_size_lock;
 #endif
 	unsigned long node_start_pfn;
-	unsigned long node_present_pages; /* total number of physical pages */
-	unsigned long node_spanned_pages; /* total size of physical page
-					     range, including holes */
+	unsigned long node_present_pages;	/* total number of physical pages */
+	unsigned long node_spanned_pages;	/* total size of physical page
+						   range, including holes */
 	int node_id;
 	wait_queue_head_t kswapd_wait;
 	struct task_struct *kswapd;
@@ -644,11 +640,11 @@ typedef struct pglist_data {
 #include <linux/memory_hotplug.h>
 
 void get_zone_counts(unsigned long *active, unsigned long *inactive,
-			unsigned long *free);
+		     unsigned long *free);
 void build_all_zonelists(void);
 void wakeup_kswapd(struct zone *zone, int order);
 int zone_watermark_ok(struct zone *z, int order, unsigned long mark,
-		int classzone_idx, int alloc_flags);
+		      int classzone_idx, int alloc_flags);
 enum memmap_context {
 	MEMMAP_EARLY,
 	MEMMAP_HOTPLUG,
@@ -660,7 +656,10 @@ extern int init_currently_empty_zone(struct zone *zone, unsigned long start_pfn,
 #ifdef CONFIG_HAVE_MEMORY_PRESENT
 void memory_present(int nid, unsigned long start, unsigned long end);
 #else
-static inline void memory_present(int nid, unsigned long start, unsigned long end) {}
+static inline void memory_present(int nid, unsigned long start,
+				  unsigned long end)
+{
+}
 #endif
 
 #ifdef CONFIG_NEED_NODE_MEMMAP_SIZE
@@ -674,7 +673,7 @@ unsigned long __init node_memmap_size_bytes(int, unsigned long, unsigned long);
 
 static inline int populated_zone(struct zone *zone)
 {
-	return (!!zone->present_pages);
+	return (! !zone->present_pages);
 }
 
 extern int movable_zone;
@@ -714,8 +713,8 @@ static inline int is_highmem(struct zone *zone)
 #ifdef CONFIG_HIGHMEM
 	int zone_off = (char *)zone - (char *)zone->zone_pgdat->node_zones;
 	return zone_off == ZONE_HIGHMEM * sizeof(*zone) ||
-	       (zone_off == ZONE_MOVABLE * sizeof(*zone) &&
-		zone_movable_is_highmem());
+	    (zone_off == ZONE_MOVABLE * sizeof(*zone) &&
+	     zone_movable_is_highmem());
 #else
 	return 0;
 #endif
@@ -747,20 +746,23 @@ static inline int is_dma(struct zone *zone)
 /* These two functions are used to setup the per zone pages min values */
 struct ctl_table;
 struct file;
-int min_free_kbytes_sysctl_handler(struct ctl_table *, int, struct file *, 
-					void __user *, size_t *, loff_t *);
-extern int sysctl_lowmem_reserve_ratio[MAX_NR_ZONES-1];
+int min_free_kbytes_sysctl_handler(struct ctl_table *, int, struct file *,
+				   void __user *, size_t *, loff_t *);
+extern int sysctl_lowmem_reserve_ratio[MAX_NR_ZONES - 1];
 int lowmem_reserve_ratio_sysctl_handler(struct ctl_table *, int, struct file *,
 					void __user *, size_t *, loff_t *);
-int percpu_pagelist_fraction_sysctl_handler(struct ctl_table *, int, struct file *,
-					void __user *, size_t *, loff_t *);
+int percpu_pagelist_fraction_sysctl_handler(struct ctl_table *, int,
+					    struct file *, void __user *,
+					    size_t *, loff_t *);
 int sysctl_min_unmapped_ratio_sysctl_handler(struct ctl_table *, int,
-			struct file *, void __user *, size_t *, loff_t *);
-int sysctl_min_slab_ratio_sysctl_handler(struct ctl_table *, int,
-			struct file *, void __user *, size_t *, loff_t *);
+					     struct file *, void __user *,
+					     size_t *, loff_t *);
+int sysctl_min_slab_ratio_sysctl_handler(struct ctl_table *, int, struct file *,
+					 void __user *, size_t *, loff_t *);
 
 extern int numa_zonelist_order_handler(struct ctl_table *, int,
-			struct file *, void __user *, size_t *, loff_t *);
+				       struct file *, void __user *, size_t *,
+				       loff_t *);
 extern char numa_zonelist_order[];
 #define NUMA_ZONELIST_ORDER_LEN 16	/* string buffer size */
 
@@ -840,9 +842,8 @@ static inline int zonelist_node_idx(struct zoneref *zoneref)
  * next_zones_zonelist again.
  */
 struct zoneref *next_zones_zonelist(struct zoneref *z,
-					enum zone_type highest_zoneidx,
-					nodemask_t *nodes,
-					struct zone **zone);
+				    enum zone_type highest_zoneidx,
+				    nodemask_t * nodes, struct zone **zone);
 
 /**
  * first_zones_zonelist - Returns the first zone at or below highest_zoneidx within the allowed nodemask in a zonelist
@@ -857,12 +858,13 @@ struct zoneref *next_zones_zonelist(struct zoneref *z,
  * one before calling.
  */
 static inline struct zoneref *first_zones_zonelist(struct zonelist *zonelist,
-					enum zone_type highest_zoneidx,
-					nodemask_t *nodes,
-					struct zone **zone)
+						   enum zone_type
+						   highest_zoneidx,
+						   nodemask_t * nodes,
+						   struct zone **zone)
 {
 	return next_zones_zonelist(zonelist->_zonerefs, highest_zoneidx, nodes,
-								zone);
+				   zone);
 }
 
 /**
@@ -988,7 +990,8 @@ static inline struct mem_section *__nr_to_section(unsigned long nr)
 		return NULL;
 	return &mem_section[SECTION_NR_TO_ROOT(nr)][nr & SECTION_ROOT_MASK];
 }
-extern int __section_nr(struct mem_section* ms);
+
+extern int __section_nr(struct mem_section *ms);
 extern unsigned long usemap_size(void);
 
 /*

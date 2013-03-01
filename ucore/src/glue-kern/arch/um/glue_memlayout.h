@@ -53,9 +53,9 @@
  *
  */
 
-#define KERNBASE           0xB0000000                    /* this is the lowest address we can map */
+#define KERNBASE           0xB0000000	/* this is the lowest address we can map */
 #define PBASE              KERNBASE
-#define KMEMSIZE           0x8000000                     /* the maximum amount of physical memory */
+#define KMEMSIZE           0x8000000	/* the maximum amount of physical memory */
 #define KERNTOP            (KERNBASE + KMEMSIZE)
 #define HOSTBASE           0xC0000000
 
@@ -64,8 +64,8 @@
 #define BOOT_CODE          (KERNBASE + 0xFF000)
 
 #define USERBASE           0x00200000
-#define UTEXT              0x00800000                  // where user programs generally begin
-#define USTAB              USERBASE                    // the location of the user STABS data structure
+#define UTEXT              0x00800000	// where user programs generally begin
+#define USTAB              USERBASE	// the location of the user STABS data structure
 #define STUB_START         0x00100000
 #define STUB_CODE          STUB_START
 #define STUB_DATA          (STUB_CODE + PGSIZE)
@@ -73,11 +73,11 @@
 
 #define USERTOP            0xB0000000
 #define USTACKTOP          USERTOP
-#define USTACKPAGE         256                         // # of pages in user stack
-#define USTACKSIZE         (USTACKPAGE * PGSIZE)       // sizeof user stack
+#define USTACKPAGE         256	// # of pages in user stack
+#define USTACKSIZE         (USTACKPAGE * PGSIZE)	// sizeof user stack
 
-#define KSTACKPAGE         2                           // # of pages in kernel stack
-#define KSTACKSIZE         (KSTACKPAGE * PGSIZE)       // sizeof kernel stack
+#define KSTACKPAGE         2	// # of pages in kernel stack
+#define KSTACKSIZE         (KSTACKPAGE * PGSIZE)	// sizeof kernel stack
 #define KSTACKTOP          (RESERVED_END)
 #define KSTACK             (KSTACKTOP - KSTACKSIZE)
 
@@ -111,22 +111,22 @@ typedef pte_t swap_entry_t;
  * that convert Page to other data types, such as phyical address.
  * */
 struct Page {
-    atomic_t ref;                   // page frame's reference counter
-    uint32_t flags;                 // array of flags that describe the status of the page frame
-    unsigned int property;          // used in buddy system, stores the order (the X in 2^X) of the continuous memory block
-    int zone_num;                   // used in buddy system, the No. of zone which the page belongs to
-    list_entry_t page_link;         // free list link
-	swap_entry_t index;             // stores a swapped-out page identifier
-    list_entry_t swap_link;         // swap hash link
+	atomic_t ref;		// page frame's reference counter
+	uint32_t flags;		// array of flags that describe the status of the page frame
+	unsigned int property;	// used in buddy system, stores the order (the X in 2^X) of the continuous memory block
+	int zone_num;		// used in buddy system, the No. of zone which the page belongs to
+	list_entry_t page_link;	// free list link
+	swap_entry_t index;	// stores a swapped-out page identifier
+	list_entry_t swap_link;	// swap hash link
 };
 
 /* Flags describing the status of a page frame */
-#define PG_reserved					0		// the page descriptor is reserved for kernel or unusable
-#define PG_property					1		// the member 'property' is valid
-#define PG_slab                     2       // page frame is included in a slab
-#define PG_dirty                    3       // the page has been modified
-#define PG_swap                     4       // the page is in the active or inactive page list (and swap hash table)
-#define PG_active                   5       // the page is in the active page list
+#define PG_reserved					0	// the page descriptor is reserved for kernel or unusable
+#define PG_property					1	// the member 'property' is valid
+#define PG_slab                     2	// page frame is included in a slab
+#define PG_dirty                    3	// the page has been modified
+#define PG_swap                     4	// the page is in the active or inactive page list (and swap hash table)
+#define PG_active                   5	// the page is in the active page list
 
 #define SetPageReserved(page)		set_bit(PG_reserved, &((page)->flags))
 #define ClearPageReserved(page)		clear_bit(PG_reserved, &((page)->flags))
@@ -153,23 +153,23 @@ struct Page {
 
 /* free_area_t - maintains a doubly linked list to record free (unused) pages */
 typedef struct {
-	list_entry_t free_list;			// the list header
-	unsigned int nr_free;			// # of free pages in this free list
+	list_entry_t free_list;	// the list header
+	unsigned int nr_free;	// # of free pages in this free list
 } free_area_t;
 
-#endif  /* !__BOOT__ */
+#endif /* !__BOOT__ */
 
-#define E820MAX             20      // number of entries in E820MAP
-#define E820_ARM            1       // address range memory
-#define E820_ARR            2       // address range reserved
+#define E820MAX             20	// number of entries in E820MAP
+#define E820_ARM            1	// address range memory
+#define E820_ARR            2	// address range reserved
 
 struct E820MAP {
-    int nr_map;
-    struct {
-        uint64_t addr;
-        uint64_t size;
-        uint32_t type;
-    } __attribute__((packed)) map[E820MAX];
+	int nr_map;
+	struct {
+		uint64_t addr;
+		uint64_t size;
+		uint32_t type;
+	} __attribute__ ((packed)) map[E820MAX];
 
 };
 
@@ -178,18 +178,18 @@ struct E820MAP {
 
 struct global_info {
 	int mem_fd;
-	int disk_fd; 
-	int disk_size;				/* in sector */
+	int disk_fd;
+	int disk_size;		/* in sector */
 	int swap_fd;
-	int swap_size;				/* in sector */
+	int swap_size;		/* in sector */
 	struct E820MAP mem_map;
-	
+
 	int status;
 };
 
 #define ginfo              ((struct global_info*)GLOBL_INFO)
 #define e820map            (ginfo->mem_map)
 
-#endif  /* !__ASSEMBLER__ */
+#endif /* !__ASSEMBLER__ */
 
-#endif  /* !__ARCH_UM_INCLUDE_MEMLAYOUT_H__ */
+#endif /* !__ARCH_UM_INCLUDE_MEMLAYOUT_H__ */

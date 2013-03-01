@@ -63,7 +63,7 @@ struct iop_adma_device {
 struct iop_adma_chan {
 	int pending;
 	dma_cookie_t completed_cookie;
-	spinlock_t lock; /* protects the descriptor slot pool */
+	spinlock_t lock;	/* protects the descriptor slot pool */
 	void __iomem *mmr_base;
 	struct list_head chain;
 	struct iop_adma_device *device;

@@ -6,7 +6,7 @@
 #ifndef __ASM_ARM_DELAY_H
 #define __ASM_ARM_DELAY_H
 
-#include <asm/param.h>	/* HZ */
+#include <asm/param.h>		/* HZ */
 
 extern void __delay(int loops);
 
@@ -41,4 +41,3 @@ extern void __const_udelay(unsigned long);
 	  __udelay(n))
 
 #endif /* defined(_ARM_DELAY_H) */
-

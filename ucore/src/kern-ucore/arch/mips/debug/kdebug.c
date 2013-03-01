@@ -9,41 +9,39 @@
 
 #define STACKFRAME_DEPTH 20
 
-
-
 /* *
  * print_kerninfo - print the information about kernel, including the location
  * of kernel entry, the start addresses of data and text segements, the start
  * address of free memory and how many memory that kernel has used.
  * */
-void
-print_kerninfo(void) {
-    extern char etext[], edata[], end[], kern_init[];
-    kprintf("Special kernel symbols:\n");
-    kprintf("  entry  0x");
-    printhex((unsigned int)kern_init);
-    kprintf(" (phys)\n");
-    kprintf("  etext\t0x");
-    printhex((unsigned int)etext);
-    kprintf(" (phys)\n");
-    kprintf("  edata\t0x");
-    printhex((unsigned int)edata);
-    kprintf(" (phys)\n");
-    kprintf("  end\t0x");
-    printhex((unsigned int)end);
-    kprintf(" (phys)\n");
-    kprintf("Kernel executable memory footprint: ");
-    printbase10( (end - etext + 1023)>>10 );
-    kprintf("KB\n");
+void print_kerninfo(void)
+{
+	extern char etext[], edata[], end[], kern_init[];
+	kprintf("Special kernel symbols:\n");
+	kprintf("  entry  0x");
+	printhex((unsigned int)kern_init);
+	kprintf(" (phys)\n");
+	kprintf("  etext\t0x");
+	printhex((unsigned int)etext);
+	kprintf(" (phys)\n");
+	kprintf("  edata\t0x");
+	printhex((unsigned int)edata);
+	kprintf(" (phys)\n");
+	kprintf("  end\t0x");
+	printhex((unsigned int)end);
+	kprintf(" (phys)\n");
+	kprintf("Kernel executable memory footprint: ");
+	printbase10((end - etext + 1023) >> 10);
+	kprintf("KB\n");
 }
 
 /* *
  * print_debuginfo - read and print the stat information for the address @eip,
  * and info.eip_fn_addr should be the first address of the related function.
  * */
-void
-print_debuginfo(uintptr_t eip) {
-  panic("Unimpl");
+void print_debuginfo(uintptr_t eip)
+{
+	panic("Unimpl");
 
 }
 
@@ -81,8 +79,7 @@ print_debuginfo(uintptr_t eip) {
  * Note that, the length of ebp-chain is limited. In boot/bootasm.S, before jumping
  * to the kernel entry, the value of ebp has been set to zero, that's the boundary.
  * */
-void
-print_stackframe(void) {
-  panic("Unimpl");
+void print_stackframe(void)
+{
+	panic("Unimpl");
 }
-

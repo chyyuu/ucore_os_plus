@@ -30,8 +30,8 @@
 	__mod;														\
  })
 
-void host_exit (int sig);
+void host_exit(int sig);
 
-#endif  /* !__ASSEMBLER__ */
+#endif /* !__ASSEMBLER__ */
 
-#endif  /* !__ARCH_UM_INCLUDE_ARCH_H__ */
+#endif /* !__ARCH_UM_INCLUDE_ARCH_H__ */

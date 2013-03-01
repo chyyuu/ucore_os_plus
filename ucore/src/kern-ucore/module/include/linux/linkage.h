@@ -15,7 +15,7 @@
 #endif
 
 #ifndef asmregparm
-# define asmregparm
+#define asmregparm
 #endif
 
 #define __page_aligned_data	__section(.data.page_aligned) __aligned(PAGE_SIZE)
@@ -37,7 +37,7 @@
 /* Assembly files may be compiled with -traditional .. */
 #ifndef __ASSEMBLY__
 #ifndef asmlinkage_protect
-# define asmlinkage_protect(n, ret, args...)	do { } while (0)
+#define asmlinkage_protect(n, ret, args...)	do { } while (0)
 #endif
 #endif
 
@@ -81,8 +81,7 @@
 
 #endif
 
-#define NORET_TYPE    /**/
+#define NORET_TYPE /**/
 #define ATTRIB_NORET  __attribute__((noreturn))
 #define NORET_AND     noreturn,
-
 #endif

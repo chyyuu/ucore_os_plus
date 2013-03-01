@@ -148,20 +148,26 @@ struct clockdomain {
  * @clkdm_clk_disable: Put the clkdm in right state for a clock disable
  */
 struct clkdm_ops {
-	int	(*clkdm_add_wkdep)(struct clockdomain *clkdm1, struct clockdomain *clkdm2);
-	int	(*clkdm_del_wkdep)(struct clockdomain *clkdm1, struct clockdomain *clkdm2);
-	int	(*clkdm_read_wkdep)(struct clockdomain *clkdm1, struct clockdomain *clkdm2);
-	int	(*clkdm_clear_all_wkdeps)(struct clockdomain *clkdm);
-	int	(*clkdm_add_sleepdep)(struct clockdomain *clkdm1, struct clockdomain *clkdm2);
-	int	(*clkdm_del_sleepdep)(struct clockdomain *clkdm1, struct clockdomain *clkdm2);
-	int	(*clkdm_read_sleepdep)(struct clockdomain *clkdm1, struct clockdomain *clkdm2);
-	int	(*clkdm_clear_all_sleepdeps)(struct clockdomain *clkdm);
-	int	(*clkdm_sleep)(struct clockdomain *clkdm);
-	int	(*clkdm_wakeup)(struct clockdomain *clkdm);
-	void	(*clkdm_allow_idle)(struct clockdomain *clkdm);
-	void	(*clkdm_deny_idle)(struct clockdomain *clkdm);
-	int	(*clkdm_clk_enable)(struct clockdomain *clkdm);
-	int	(*clkdm_clk_disable)(struct clockdomain *clkdm);
+	int (*clkdm_add_wkdep) (struct clockdomain * clkdm1,
+				struct clockdomain * clkdm2);
+	int (*clkdm_del_wkdep) (struct clockdomain * clkdm1,
+				struct clockdomain * clkdm2);
+	int (*clkdm_read_wkdep) (struct clockdomain * clkdm1,
+				 struct clockdomain * clkdm2);
+	int (*clkdm_clear_all_wkdeps) (struct clockdomain * clkdm);
+	int (*clkdm_add_sleepdep) (struct clockdomain * clkdm1,
+				   struct clockdomain * clkdm2);
+	int (*clkdm_del_sleepdep) (struct clockdomain * clkdm1,
+				   struct clockdomain * clkdm2);
+	int (*clkdm_read_sleepdep) (struct clockdomain * clkdm1,
+				    struct clockdomain * clkdm2);
+	int (*clkdm_clear_all_sleepdeps) (struct clockdomain * clkdm);
+	int (*clkdm_sleep) (struct clockdomain * clkdm);
+	int (*clkdm_wakeup) (struct clockdomain * clkdm);
+	void (*clkdm_allow_idle) (struct clockdomain * clkdm);
+	void (*clkdm_deny_idle) (struct clockdomain * clkdm);
+	int (*clkdm_clk_enable) (struct clockdomain * clkdm);
+	int (*clkdm_clk_disable) (struct clockdomain * clkdm);
 };
 
 int clkdm_register_platform_funcs(struct clkdm_ops *co);
@@ -171,8 +177,8 @@ int clkdm_complete_init(void);
 
 struct clockdomain *clkdm_lookup(const char *name);
 
-int clkdm_for_each(int (*fn)(struct clockdomain *clkdm, void *user),
-			void *user);
+int clkdm_for_each(int (*fn) (struct clockdomain * clkdm, void *user),
+		   void *user);
 struct powerdomain *clkdm_get_pwrdm(struct clockdomain *clkdm);
 
 int clkdm_add_wkdep(struct clockdomain *clkdm1, struct clockdomain *clkdm2);

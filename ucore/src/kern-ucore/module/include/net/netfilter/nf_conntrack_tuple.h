@@ -25,8 +25,7 @@
 
 /* The protocol-specific manipulable parts of the tuple: always in
    network order! */
-union nf_conntrack_man_proto
-{
+union nf_conntrack_man_proto {
 	/* Add other protocols here. */
 	__be16 all;
 
@@ -51,8 +50,7 @@ union nf_conntrack_man_proto
 };
 
 /* The manipulable part of the tuple. */
-struct nf_conntrack_man
-{
+struct nf_conntrack_man {
 	union nf_inet_addr u3;
 	union nf_conntrack_man_proto u;
 	/* Layer 3 protocol */
@@ -60,8 +58,7 @@ struct nf_conntrack_man
 };
 
 /* This contains the information to distinguish a connection. */
-struct nf_conntrack_tuple
-{
+struct nf_conntrack_tuple {
 	struct nf_conntrack_man src;
 
 	/* These are the parts of the tuple which are fixed. */
@@ -99,8 +96,7 @@ struct nf_conntrack_tuple
 	} dst;
 };
 
-struct nf_conntrack_tuple_mask
-{
+struct nf_conntrack_tuple_mask {
 	struct {
 		union nf_inet_addr u3;
 		union nf_conntrack_man_proto u;
@@ -146,8 +142,7 @@ static inline void nf_ct_dump_tuple(const struct nf_conntrack_tuple *t)
 	((enum ip_conntrack_dir)(h)->tuple.dst.dir)
 
 /* Connections have two entries in the hash table: one for each way */
-struct nf_conntrack_tuple_hash
-{
+struct nf_conntrack_tuple_hash {
 	struct hlist_node hnode;
 	struct nf_conntrack_tuple tuple;
 };
@@ -156,7 +151,7 @@ struct nf_conntrack_tuple_hash
 
 static inline bool __nf_ct_tuple_src_equal(const struct nf_conntrack_tuple *t1,
 					   const struct nf_conntrack_tuple *t2)
-{ 
+{
 	return (nf_inet_addr_cmp(&t1->src.u3, &t2->src.u3) &&
 		t1->src.u.all == t2->src.u.all &&
 		t1->src.l3num == t2->src.l3num);
@@ -174,7 +169,7 @@ static inline bool nf_ct_tuple_equal(const struct nf_conntrack_tuple *t1,
 				     const struct nf_conntrack_tuple *t2)
 {
 	return __nf_ct_tuple_src_equal(t1, t2) &&
-	       __nf_ct_tuple_dst_equal(t1, t2);
+	    __nf_ct_tuple_dst_equal(t1, t2);
 }
 
 static inline bool
@@ -214,7 +209,7 @@ nf_ct_tuple_mask_cmp(const struct nf_conntrack_tuple *t,
 		     const struct nf_conntrack_tuple_mask *mask)
 {
 	return nf_ct_tuple_src_mask_cmp(t, tuple, mask) &&
-	       __nf_ct_tuple_dst_equal(t, tuple);
+	    __nf_ct_tuple_dst_equal(t, tuple);
 }
 
 #endif /* _NF_CONNTRACK_TUPLE_H */

@@ -43,8 +43,7 @@
 #define	PPP_MTU		1500	/* Default MTU (size of Info field) */
 #define PPP_MAXMRU	65000	/* Largest MRU we allow */
 #define PROTO_IPX	0x002b	/* protocol numbers */
-#define PROTO_DNA_RT    0x0027  /* DNA Routing */
-
+#define PROTO_DNA_RT    0x0027	/* DNA Routing */
 
 /*
  * Bit definitions for flags.
@@ -88,40 +87,40 @@
  */
 
 struct npioctl {
-	int		protocol;	/* PPP protocol, e.g. PPP_IP */
-	enum NPmode	mode;
+	int protocol;		/* PPP protocol, e.g. PPP_IP */
+	enum NPmode mode;
 };
 
 /* Structure describing a CCP configuration option, for PPPIOCSCOMPRESS */
 struct ppp_option_data {
-	__u8	__user *ptr;
-	__u32	length;
-	int	transmit;
+	__u8 __user *ptr;
+	__u32 length;
+	int transmit;
 };
 
 struct ifpppstatsreq {
-	struct ifreq	 b;
-	struct ppp_stats stats;			/* statistic information */
+	struct ifreq b;
+	struct ppp_stats stats;	/* statistic information */
 };
 
 struct ifpppcstatsreq {
-	struct ifreq	      b;
+	struct ifreq b;
 	struct ppp_comp_stats stats;
 };
 
 /* For PPPIOCGL2TPSTATS */
 struct pppol2tp_ioc_stats {
-	__u16		tunnel_id;	/* redundant */
-	__u16		session_id;	/* if zero, get tunnel stats */
-	__u32		using_ipsec:1;	/* valid only for session_id == 0 */
-	aligned_u64	tx_packets;
-	aligned_u64	tx_bytes;
-	aligned_u64	tx_errors;
-	aligned_u64	rx_packets;
-	aligned_u64	rx_bytes;
-	aligned_u64	rx_seq_discards;
-	aligned_u64	rx_oos_packets;
-	aligned_u64	rx_errors;
+	__u16 tunnel_id;	/* redundant */
+	__u16 session_id;	/* if zero, get tunnel stats */
+	__u32 using_ipsec:1;	/* valid only for session_id == 0 */
+	aligned_u64 tx_packets;
+	aligned_u64 tx_bytes;
+	aligned_u64 tx_errors;
+	aligned_u64 rx_packets;
+	aligned_u64 rx_bytes;
+	aligned_u64 rx_seq_discards;
+	aligned_u64 rx_oos_packets;
+	aligned_u64 rx_errors;
 };
 
 #define ifr__name       b.ifr_ifrn.ifrn_name
@@ -141,23 +140,23 @@ struct pppol2tp_ioc_stats {
 #define	PPPIOCGMRU	_IOR('t', 83, int)	/* get max receive unit */
 #define	PPPIOCSMRU	_IOW('t', 82, int)	/* set max receive unit */
 #define	PPPIOCSMAXCID	_IOW('t', 81, int)	/* set VJ max slot ID */
-#define PPPIOCGXASYNCMAP _IOR('t', 80, ext_accm) /* get extended ACCM */
-#define PPPIOCSXASYNCMAP _IOW('t', 79, ext_accm) /* set extended ACCM */
-#define PPPIOCXFERUNIT	_IO('t', 78)		/* transfer PPP unit */
+#define PPPIOCGXASYNCMAP _IOR('t', 80, ext_accm)	/* get extended ACCM */
+#define PPPIOCSXASYNCMAP _IOW('t', 79, ext_accm)	/* set extended ACCM */
+#define PPPIOCXFERUNIT	_IO('t', 78)	/* transfer PPP unit */
 #define PPPIOCSCOMPRESS	_IOW('t', 77, struct ppp_option_data)
-#define PPPIOCGNPMODE	_IOWR('t', 76, struct npioctl) /* get NP mode */
-#define PPPIOCSNPMODE	_IOW('t', 75, struct npioctl)  /* set NP mode */
-#define PPPIOCSPASS	_IOW('t', 71, struct sock_fprog) /* set pass filter */
-#define PPPIOCSACTIVE	_IOW('t', 70, struct sock_fprog) /* set active filt */
+#define PPPIOCGNPMODE	_IOWR('t', 76, struct npioctl)	/* get NP mode */
+#define PPPIOCSNPMODE	_IOW('t', 75, struct npioctl)	/* set NP mode */
+#define PPPIOCSPASS	_IOW('t', 71, struct sock_fprog)	/* set pass filter */
+#define PPPIOCSACTIVE	_IOW('t', 70, struct sock_fprog)	/* set active filt */
 #define PPPIOCGDEBUG	_IOR('t', 65, int)	/* Read debug level */
 #define PPPIOCSDEBUG	_IOW('t', 64, int)	/* Set debug level */
-#define PPPIOCGIDLE	_IOR('t', 63, struct ppp_idle) /* get idle time */
+#define PPPIOCGIDLE	_IOR('t', 63, struct ppp_idle)	/* get idle time */
 #define PPPIOCNEWUNIT	_IOWR('t', 62, int)	/* create new ppp unit */
 #define PPPIOCATTACH	_IOW('t', 61, int)	/* attach to ppp unit */
 #define PPPIOCDETACH	_IOW('t', 60, int)	/* detach from ppp unit/chan */
 #define PPPIOCSMRRU	_IOW('t', 59, int)	/* set multilink MRU */
 #define PPPIOCCONNECT	_IOW('t', 58, int)	/* connect channel to unit */
-#define PPPIOCDISCONN	_IO('t', 57)		/* disconnect channel */
+#define PPPIOCDISCONN	_IO('t', 57)	/* disconnect channel */
 #define PPPIOCATTCHAN	_IOW('t', 56, int)	/* attach to ppp channel */
 #define PPPIOCGCHAN	_IOR('t', 55, int)	/* get ppp channel number */
 #define PPPIOCGL2TPSTATS _IOR('t', 54, struct pppol2tp_ioc_stats)

@@ -138,7 +138,7 @@
 					/* 110 was sys_iopl */
 #define __NR_vhangup			(__NR_SYSCALL_BASE+111)
 					/* 112 was sys_idle */
-#define __NR_syscall			(__NR_SYSCALL_BASE+113) /* syscall to call a syscall! */
+#define __NR_syscall			(__NR_SYSCALL_BASE+113)	/* syscall to call a syscall! */
 #define __NR_wait4			(__NR_SYSCALL_BASE+114)
 #define __NR_swapoff			(__NR_SYSCALL_BASE+115)
 #define __NR_sysinfo			(__NR_SYSCALL_BASE+116)

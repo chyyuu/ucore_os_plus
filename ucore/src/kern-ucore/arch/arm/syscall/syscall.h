@@ -6,7 +6,7 @@ void syscall();
 
 #define __sys2(x) #x
 #define __sys1(x) __sys2(x)
- 
+
 #ifndef __syscall
 #define __syscall(name) "swi\t" __sys1(SYS_##name) "\n\t"
 #endif
@@ -52,6 +52,4 @@ type name(type1 arg1,type2 arg2,type3 arg3, type4 arg4) {                       
 
 //_syscall3(int, exec, const char*, name, int, argc, const char**, argv);
 
-
 #endif /* !__KERN_SYSCALL_SYSCALL_H__ */
-

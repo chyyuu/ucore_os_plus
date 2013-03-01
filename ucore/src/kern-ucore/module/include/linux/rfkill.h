@@ -37,7 +37,7 @@
  * RFKILL_TYPE_WWAN: switch is on a wireless WAN device.
  */
 enum rfkill_type {
-	RFKILL_TYPE_WLAN ,
+	RFKILL_TYPE_WLAN,
 	RFKILL_TYPE_BLUETOOTH,
 	RFKILL_TYPE_UWB,
 	RFKILL_TYPE_WIMAX,
@@ -47,9 +47,9 @@ enum rfkill_type {
 
 enum rfkill_state {
 	RFKILL_STATE_SOFT_BLOCKED = 0,	/* Radio output blocked */
-	RFKILL_STATE_UNBLOCKED    = 1,	/* Radio output allowed */
+	RFKILL_STATE_UNBLOCKED = 1,	/* Radio output allowed */
 	RFKILL_STATE_HARD_BLOCKED = 2,	/* Output blocked, non-overrideable */
-	RFKILL_STATE_MAX,		/* marker for last valid state */
+	RFKILL_STATE_MAX,	/* marker for last valid state */
 };
 
 /*
@@ -99,8 +99,8 @@ struct rfkill {
 	struct mutex mutex;
 	enum rfkill_state state;
 	void *data;
-	int (*toggle_radio)(void *data, enum rfkill_state state);
-	int (*get_state)(void *data, enum rfkill_state *state);
+	int (*toggle_radio) (void *data, enum rfkill_state state);
+	int (*get_state) (void *data, enum rfkill_state * state);
 
 #ifdef CONFIG_RFKILL_LEDS
 	struct led_trigger led_trigger;
@@ -112,8 +112,8 @@ struct rfkill {
 };
 #define to_rfkill(d)	container_of(d, struct rfkill, dev)
 
-struct rfkill * __must_check rfkill_allocate(struct device *parent,
-					     enum rfkill_type type);
+struct rfkill *__must_check rfkill_allocate(struct device *parent,
+					    enum rfkill_type type);
 void rfkill_free(struct rfkill *rfkill);
 int __must_check rfkill_register(struct rfkill *rfkill);
 void rfkill_unregister(struct rfkill *rfkill);
@@ -131,7 +131,7 @@ int rfkill_set_default(enum rfkill_type type, enum rfkill_state state);
 static inline enum rfkill_state rfkill_state_complement(enum rfkill_state state)
 {
 	return (state == RFKILL_STATE_UNBLOCKED) ?
-		RFKILL_STATE_SOFT_BLOCKED : RFKILL_STATE_UNBLOCKED;
+	    RFKILL_STATE_SOFT_BLOCKED : RFKILL_STATE_UNBLOCKED;
 }
 
 /**

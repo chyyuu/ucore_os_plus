@@ -14,7 +14,7 @@ struct siginfo;
 #define _NSIG_BPW	32
 #define _NSIG_WORDS	(_NSIG / _NSIG_BPW)
 
-typedef unsigned long old_sigset_t;		/* at least 32 bits */
+typedef unsigned long old_sigset_t;	/* at least 32 bits */
 
 typedef struct {
 	unsigned long sig[_NSIG_WORDS];
@@ -101,7 +101,6 @@ typedef unsigned long sigset_t;
 #define SA_NOMASK	SA_NODEFER
 #define SA_ONESHOT	SA_RESETHAND
 
-
 /* 
  * sigaltstack controls
  */
@@ -125,7 +124,7 @@ struct sigaction {
 	__sighandler_t sa_handler;
 	unsigned long sa_flags;
 	__sigrestore_t sa_restorer;
-	sigset_t sa_mask;		/* mask last for extensibility */
+	sigset_t sa_mask;	/* mask last for extensibility */
 };
 
 struct k_sigaction {
@@ -137,12 +136,12 @@ struct k_sigaction {
 
 struct sigaction {
 	union {
-	  __sighandler_t _sa_handler;
-	  void (*_sa_sigaction)(int, struct siginfo *, void *);
+		__sighandler_t _sa_handler;
+		void (*_sa_sigaction) (int, struct siginfo *, void *);
 	} _u;
 	sigset_t sa_mask;
 	unsigned long sa_flags;
-	void (*sa_restorer)(void);
+	void (*sa_restorer) (void);
 };
 
 #define sa_handler	_u._sa_handler

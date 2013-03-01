@@ -34,4 +34,4 @@ struct pollfd {
 	short revents;
 };
 
-#endif	/* __ASM_GENERIC_POLL_H */
+#endif /* __ASM_GENERIC_POLL_H */

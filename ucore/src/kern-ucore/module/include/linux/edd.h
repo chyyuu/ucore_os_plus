@@ -44,13 +44,12 @@
 #define EDDMAGIC1 0x55AA
 #define EDDMAGIC2 0xAA55
 
-
-#define READ_SECTORS 0x02         /* int13 AH=0x02 is READ_SECTORS command */
-#define EDD_MBR_SIG_OFFSET 0x1B8  /* offset of signature in the MBR */
-#define EDD_MBR_SIG_BUF    0x290  /* addr in boot params */
-#define EDD_MBR_SIG_MAX 16        /* max number of signatures to store */
-#define EDD_MBR_SIG_NR_BUF 0x1ea  /* addr of number of MBR signtaures at EDD_MBR_SIG_BUF
-				     in boot_params - treat this as 1 byte  */
+#define READ_SECTORS 0x02	/* int13 AH=0x02 is READ_SECTORS command */
+#define EDD_MBR_SIG_OFFSET 0x1B8	/* offset of signature in the MBR */
+#define EDD_MBR_SIG_BUF    0x290	/* addr in boot params */
+#define EDD_MBR_SIG_MAX 16	/* max number of signatures to store */
+#define EDD_MBR_SIG_NR_BUF 0x1ea	/* addr of number of MBR signtaures at EDD_MBR_SIG_BUF
+					   in boot_params - treat this as 1 byte  */
 
 #ifndef __ASSEMBLY__
 
@@ -189,6 +188,6 @@ struct edd {
 #ifdef __KERNEL__
 extern struct edd edd;
 #endif /* __KERNEL__ */
-#endif				/*!__ASSEMBLY__ */
+#endif /*!__ASSEMBLY__ */
 
-#endif				/* _LINUX_EDD_H */
+#endif /* _LINUX_EDD_H */

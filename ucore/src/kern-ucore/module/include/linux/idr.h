@@ -18,21 +18,21 @@
 #include <linux/rcupdate.h>
 
 #if BITS_PER_LONG == 32
-# define IDR_BITS 5
-# define IDR_FULL 0xfffffffful
+#define IDR_BITS 5
+#define IDR_FULL 0xfffffffful
 /* We can only use two of the bits in the top level because there is
    only one possible bit in the top level (5 bits * 7 levels = 35
    bits, but you only use 31 bits in the id). */
-# define TOP_LEVEL_FULL (IDR_FULL >> 30)
+#define TOP_LEVEL_FULL (IDR_FULL >> 30)
 #elif BITS_PER_LONG == 64
-# define IDR_BITS 6
-# define IDR_FULL 0xfffffffffffffffful
+#define IDR_BITS 6
+#define IDR_FULL 0xfffffffffffffffful
 /* We can only use two of the bits in the top level because there is
    only one possible bit in the top level (6 bits * 6 levels = 36
    bits, but you only use 31 bits in the id). */
-# define TOP_LEVEL_FULL (IDR_FULL >> 62)
+#define TOP_LEVEL_FULL (IDR_FULL >> 62)
 #else
-# error "BITS_PER_LONG is not 32 or 64"
+#error "BITS_PER_LONG is not 32 or 64"
 #endif
 
 #define IDR_SIZE (1 << IDR_BITS)
@@ -49,19 +49,19 @@
 #define IDR_FREE_MAX MAX_LEVEL + MAX_LEVEL
 
 struct idr_layer {
-	unsigned long		 bitmap; /* A zero bit means "space here" */
-	struct idr_layer	*ary[1<<IDR_BITS];
-	int			 count;	 /* When zero, we can release it */
-	int			 layer;	 /* distance from leaf */
-	struct rcu_head		 rcu_head;
+	unsigned long bitmap;	/* A zero bit means "space here" */
+	struct idr_layer *ary[1 << IDR_BITS];
+	int count;		/* When zero, we can release it */
+	int layer;		/* distance from leaf */
+	struct rcu_head rcu_head;
 };
 
 struct idr {
 	struct idr_layer *top;
 	struct idr_layer *id_free;
-	int		  layers; /* only valid without concurrent changes */
-	int		  id_free_cnt;
-	spinlock_t	  lock;
+	int layers;		/* only valid without concurrent changes */
+	int id_free_cnt;
+	spinlock_t lock;
 };
 
 #define IDR_INIT(name)						\
@@ -105,13 +105,12 @@ int idr_pre_get(struct idr *idp, gfp_t gfp_mask);
 int idr_get_new(struct idr *idp, void *ptr, int *id);
 int idr_get_new_above(struct idr *idp, void *ptr, int starting_id, int *id);
 int idr_for_each(struct idr *idp,
-		 int (*fn)(int id, void *p, void *data), void *data);
+		 int (*fn) (int id, void *p, void *data), void *data);
 void *idr_replace(struct idr *idp, void *ptr, int id);
 void idr_remove(struct idr *idp, int id);
 void idr_remove_all(struct idr *idp);
 void idr_destroy(struct idr *idp);
 void idr_init(struct idr *idp);
-
 
 /*
  * IDA - IDR based id allocator, use when translation from id to
@@ -122,13 +121,13 @@ void idr_init(struct idr *idp);
 #define IDA_BITMAP_BITS		(IDA_BITMAP_LONGS * sizeof(long) * 8)
 
 struct ida_bitmap {
-	long			nr_busy;
-	unsigned long		bitmap[IDA_BITMAP_LONGS];
+	long nr_busy;
+	unsigned long bitmap[IDA_BITMAP_LONGS];
 };
 
 struct ida {
-	struct idr		idr;
-	struct ida_bitmap	*free_bitmap;
+	struct idr idr;
+	struct ida_bitmap *free_bitmap;
 };
 
 #define IDA_INIT(name)		{ .idr = IDR_INIT(name), .free_bitmap = NULL, }

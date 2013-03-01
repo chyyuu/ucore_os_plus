@@ -55,12 +55,12 @@ static DECLARE_BITMAP(dev_use, MMC_NUM_MINORS);
  * There is one mmc_blk_data per slot.
  */
 struct mmc_blk_data {
-	spinlock_t	lock;
-	struct gendisk	*disk;
+	spinlock_t lock;
+	struct gendisk *disk;
 	struct mmc_queue queue;
 
-	unsigned int	usage;
-	unsigned int	read_only;
+	unsigned int usage;
+	unsigned int read_only;
 };
 
 static DEFINE_MUTEX(open_lock);
@@ -121,8 +121,7 @@ static int mmc_blk_release(struct gendisk *disk, fmode_t mode)
 	return 0;
 }
 
-static int
-mmc_blk_getgeo(struct block_device *bdev, struct hd_geometry *geo)
+static int mmc_blk_getgeo(struct block_device *bdev, struct hd_geometry *geo)
 {
 	geo->cylinders = get_capacity(bdev->bd_disk) / (4 * 16);
 	geo->heads = 4;
@@ -131,17 +130,17 @@ mmc_blk_getgeo(struct block_device *bdev, struct hd_geometry *geo)
 }
 
 static struct block_device_operations mmc_bdops = {
-	.open			= mmc_blk_open,
-	.release		= mmc_blk_release,
-	.getgeo			= mmc_blk_getgeo,
-	.owner			= THIS_MODULE,
+	.open = mmc_blk_open,
+	.release = mmc_blk_release,
+	.getgeo = mmc_blk_getgeo,
+	.owner = THIS_MODULE,
 };
 
 struct mmc_blk_request {
-	struct mmc_request	mrq;
-	struct mmc_command	cmd;
-	struct mmc_command	stop;
-	struct mmc_data		data;
+	struct mmc_request mrq;
+	struct mmc_command cmd;
+	struct mmc_command stop;
+	struct mmc_data data;
 };
 
 static u32 mmc_sd_num_wr_blocks(struct mmc_card *card)
@@ -165,9 +164,9 @@ static u32 mmc_sd_num_wr_blocks(struct mmc_card *card)
 
 	err = mmc_wait_for_cmd(card->host, &cmd, 0);
 	if (err)
-		return (u32)-1;
+		return (u32) - 1;
 	if (!mmc_host_is_spi(card->host) && !(cmd.resp[0] & R1_APP_CMD))
-		return (u32)-1;
+		return (u32) - 1;
 
 	memset(&cmd, 0, sizeof(struct mmc_command));
 
@@ -181,8 +180,7 @@ static u32 mmc_sd_num_wr_blocks(struct mmc_card *card)
 	data.timeout_clks = card->csd.tacc_clks * 100;
 
 	timeout_us = data.timeout_ns / 1000;
-	timeout_us += data.timeout_clks * 1000 /
-		(card->host->ios.clock / 1000);
+	timeout_us += data.timeout_clks * 1000 / (card->host->ios.clock / 1000);
 
 	if (timeout_us > 100000) {
 		data.timeout_ns = 100000000;
@@ -202,7 +200,7 @@ static u32 mmc_sd_num_wr_blocks(struct mmc_card *card)
 
 	blocks = kmalloc(4, GFP_KERNEL);
 	if (!blocks)
-		return (u32)-1;
+		return (u32) - 1;
 
 	sg_init_one(&sg, blocks, 4);
 
@@ -212,7 +210,7 @@ static u32 mmc_sd_num_wr_blocks(struct mmc_card *card)
 	kfree(blocks);
 
 	if (cmd.error || data.error)
-		result = (u32)-1;
+		result = (u32) - 1;
 
 	return result;
 }
@@ -234,8 +232,7 @@ static u32 get_card_status(struct mmc_card *card, struct request *req)
 	return cmd.resp[0];
 }
 
-static int
-mmc_blk_set_blksize(struct mmc_blk_data *md, struct mmc_card *card)
+static int mmc_blk_set_blksize(struct mmc_blk_data *md, struct mmc_card *card)
 {
 	struct mmc_command cmd;
 	int err;
@@ -253,13 +250,12 @@ mmc_blk_set_blksize(struct mmc_blk_data *md, struct mmc_card *card)
 
 	if (err) {
 		printk(KERN_ERR "%s: unable to set block size to %d: %d\n",
-			md->disk->disk_name, cmd.arg, err);
+		       md->disk->disk_name, cmd.arg, err);
 		return -EINVAL;
 	}
 
 	return 0;
 }
-
 
 static int mmc_blk_issue_rq(struct mmc_queue *mq, struct request *req)
 {
@@ -316,7 +312,7 @@ static int mmc_blk_issue_rq(struct mmc_queue *mq, struct request *req)
 			 * token, not a STOP_TRANSMISSION request.
 			 */
 			if (!mmc_host_is_spi(card->host)
-					|| rq_data_dir(req) == READ)
+			    || rq_data_dir(req) == READ)
 				brq.mrq.stop = &brq.stop;
 			readcmd = MMC_READ_MULTIPLE_BLOCK;
 			writecmd = MMC_WRITE_MULTIPLE_BLOCK;
@@ -416,7 +412,8 @@ static int mmc_blk_issue_rq(struct mmc_queue *mq, struct request *req)
 				cmd.flags = MMC_RSP_R1 | MMC_CMD_AC;
 				err = mmc_wait_for_cmd(card->host, &cmd, 5);
 				if (err) {
-					printk(KERN_ERR "%s: error %d requesting status\n",
+					printk(KERN_ERR
+					       "%s: error %d requesting status\n",
 					       req->rq_disk->disk_name, err);
 					goto cmd_err;
 				}
@@ -426,7 +423,7 @@ static int mmc_blk_issue_rq(struct mmc_queue *mq, struct request *req)
 				 * indication and the card state.
 				 */
 			} while (!(cmd.resp[0] & R1_READY_FOR_DATA) ||
-				(R1_CURRENT_STATE(cmd.resp[0]) == 7));
+				 (R1_CURRENT_STATE(cmd.resp[0]) == 7));
 
 #if 0
 			if (cmd.resp[0] & ~0x00000900)
@@ -445,7 +442,9 @@ static int mmc_blk_issue_rq(struct mmc_queue *mq, struct request *req)
 				 * read a single sector.
 				 */
 				spin_lock_irq(&md->lock);
-				ret = __blk_end_request(req, -EIO, brq.data.blksz);
+				ret =
+				    __blk_end_request(req, -EIO,
+						      brq.data.blksz);
 				spin_unlock_irq(&md->lock);
 				continue;
 			}
@@ -464,11 +463,11 @@ static int mmc_blk_issue_rq(struct mmc_queue *mq, struct request *req)
 
 	return 1;
 
- cmd_err:
- 	/*
- 	 * If this is an SD card and we're writing, we can first
- 	 * mark the known good sectors as ok.
- 	 *
+cmd_err:
+	/*
+	 * If this is an SD card and we're writing, we can first
+	 * mark the known good sectors as ok.
+	 *
 	 * If the card is not SD, we can still ok written sectors
 	 * as reported by the controller (which might be less than
 	 * the real number of written sectors, but never more).
@@ -477,7 +476,7 @@ static int mmc_blk_issue_rq(struct mmc_queue *mq, struct request *req)
 		u32 blocks;
 
 		blocks = mmc_sd_num_wr_blocks(card);
-		if (blocks != (u32)-1) {
+		if (blocks != (u32) - 1) {
 			spin_lock_irq(&md->lock);
 			ret = __blk_end_request(req, 0, blocks << 9);
 			spin_unlock_irq(&md->lock);
@@ -498,11 +497,10 @@ static int mmc_blk_issue_rq(struct mmc_queue *mq, struct request *req)
 	return 0;
 }
 
-
 static inline int mmc_blk_readonly(struct mmc_card *card)
 {
 	return mmc_card_readonly(card) ||
-	       !(card->csd.cmdclass & CCC_BLOCK_WRITE);
+	    !(card->csd.cmdclass & CCC_BLOCK_WRITE);
 }
 
 static struct mmc_blk_data *mmc_blk_alloc(struct mmc_card *card)
@@ -520,7 +518,6 @@ static struct mmc_blk_data *mmc_blk_alloc(struct mmc_card *card)
 		ret = -ENOMEM;
 		goto out;
 	}
-
 
 	/*
 	 * Set the read-only status based on the supported commands
@@ -544,7 +541,7 @@ static struct mmc_blk_data *mmc_blk_alloc(struct mmc_card *card)
 	md->queue.issue_fn = mmc_blk_issue_rq;
 	md->queue.data = md;
 
-	md->disk->major	= MMC_BLOCK_MAJOR;
+	md->disk->major = MMC_BLOCK_MAJOR;
 	md->disk->first_minor = devidx << MMC_SHIFT;
 	md->disk->fops = &mmc_bdops;
 	md->disk->private_data = md;
@@ -579,15 +576,16 @@ static struct mmc_blk_data *mmc_blk_alloc(struct mmc_card *card)
 		 * set_capacity takes units of 512 bytes.
 		 */
 		set_capacity(md->disk,
-			card->csd.capacity << (card->csd.read_blkbits - 9));
+			     card->csd.capacity << (card->csd.read_blkbits -
+						    9));
 	}
 	return md;
 
- err_putdisk:
+err_putdisk:
 	put_disk(md->disk);
- err_kfree:
+err_kfree:
 	kfree(md);
- out:
+out:
 	return ERR_PTR(ret);
 }
 
@@ -612,11 +610,11 @@ static int mmc_blk_probe(struct mmc_card *card)
 	if (err)
 		goto out;
 
-	string_get_size((u64)get_capacity(md->disk) << 9, STRING_UNITS_2,
+	string_get_size((u64) get_capacity(md->disk) << 9, STRING_UNITS_2,
 			cap_str, sizeof(cap_str));
 	printk(KERN_INFO "%s: %s %s %s %s\n",
-		md->disk->disk_name, mmc_card_id(card), mmc_card_name(card),
-		cap_str, md->read_only ? "(ro)" : "");
+	       md->disk->disk_name, mmc_card_id(card), mmc_card_name(card),
+	       cap_str, md->read_only ? "(ro)" : "");
 
 	mmc_set_drvdata(card, md);
 #ifdef CONFIG_MMC_BLOCK_DEFERRED_RESUME
@@ -625,7 +623,7 @@ static int mmc_blk_probe(struct mmc_card *card)
 	add_disk(md->disk);
 	return 0;
 
- out:
+out:
 	mmc_blk_put(md);
 
 	return err;
@@ -679,13 +677,13 @@ static int mmc_blk_resume(struct mmc_card *card)
 #endif
 
 static struct mmc_driver mmc_driver = {
-	.drv		= {
-		.name	= "mmcblk",
-	},
-	.probe		= mmc_blk_probe,
-	.remove		= mmc_blk_remove,
-	.suspend	= mmc_blk_suspend,
-	.resume		= mmc_blk_resume,
+	.drv = {
+		.name = "mmcblk",
+		},
+	.probe = mmc_blk_probe,
+	.remove = mmc_blk_remove,
+	.suspend = mmc_blk_suspend,
+	.resume = mmc_blk_resume,
 };
 
 static int __init mmc_blk_init(void)
@@ -701,9 +699,9 @@ static int __init mmc_blk_init(void)
 		goto out2;
 
 	return 0;
- out2:
+out2:
 	unregister_blkdev(MMC_BLOCK_MAJOR, "mmc");
- out:
+out:
 	return res;
 }
 
@@ -718,4 +716,3 @@ module_exit(mmc_blk_exit);
 
 MODULE_LICENSE("GPL");
 MODULE_DESCRIPTION("Multimedia Card (MMC) block device driver");
-

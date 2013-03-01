@@ -13,7 +13,7 @@
 /* The v3020 has only one data pin but which one
  * is used depends on the board. */
 struct v3020_platform_data {
-	int leftshift; /* (1<<(leftshift)) & readl() */
+	int leftshift;		/* (1<<(leftshift)) & readl() */
 };
 
 #define V3020_STATUS_0	0x00

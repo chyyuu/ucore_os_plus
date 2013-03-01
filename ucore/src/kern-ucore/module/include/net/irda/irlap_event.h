@@ -42,18 +42,18 @@ struct irlap_info;
 
 /* IrLAP States */
 typedef enum {
-	LAP_NDM,         /* Normal disconnected mode */
+	LAP_NDM,		/* Normal disconnected mode */
 	LAP_QUERY,
 	LAP_REPLY,
-	LAP_CONN,        /* Connect indication */
-	LAP_SETUP,       /* Setting up connection */
-	LAP_OFFLINE,     /* A really boring state */
+	LAP_CONN,		/* Connect indication */
+	LAP_SETUP,		/* Setting up connection */
+	LAP_OFFLINE,		/* A really boring state */
 	LAP_XMIT_P,
 	LAP_PCLOSE,
-	LAP_NRM_P,       /* Normal response mode as primary */
+	LAP_NRM_P,		/* Normal response mode as primary */
 	LAP_RESET_WAIT,
 	LAP_RESET,
-	LAP_NRM_S,       /* Normal response mode as secondary */
+	LAP_NRM_S,		/* Normal response mode as secondary */
 	LAP_XMIT_S,
 	LAP_SCLOSE,
 	LAP_RESET_CHECK,
@@ -111,18 +111,18 @@ typedef enum {
 /*
  * Disconnect reason code
  */
-typedef enum { /* FIXME check the two first reason codes */
-	LAP_DISC_INDICATION=1, /* Received a disconnect request from peer */
-	LAP_NO_RESPONSE,       /* To many retransmits without response */
-	LAP_RESET_INDICATION,  /* To many retransmits, or invalid nr/ns */
-	LAP_FOUND_NONE,        /* No devices were discovered */
+typedef enum {			/* FIXME check the two first reason codes */
+	LAP_DISC_INDICATION = 1,	/* Received a disconnect request from peer */
+	LAP_NO_RESPONSE,	/* To many retransmits without response */
+	LAP_RESET_INDICATION,	/* To many retransmits, or invalid nr/ns */
+	LAP_FOUND_NONE,		/* No devices were discovered */
 	LAP_MEDIA_BUSY,
 	LAP_PRIMARY_CONFLICT,
 } LAP_REASON;
 
 extern const char *irlap_state[];
 
-void irlap_do_event(struct irlap_cb *self, IRLAP_EVENT event, 
+void irlap_do_event(struct irlap_cb *self, IRLAP_EVENT event,
 		    struct sk_buff *skb, struct irlap_info *info);
 void irlap_print_event(IRLAP_EVENT event);
 

@@ -13,23 +13,23 @@
  * */
 struct Page {
 	uintptr_t pa;
-    atomic_t ref;                   // page frame's reference counter
-    uint32_t flags;                 // array of flags that describe the status of the page frame
-    unsigned int property;          // used in buddy system, stores the order (the X in 2^X) of the continuous memory block
-    int zone_num;                   // used in buddy system, the No. of zone which the page belongs to
-    list_entry_t page_link;         // free list link
-    swap_entry_t index;             // stores a swapped-out page identifier
-    list_entry_t swap_link;         // swap hash link
+	atomic_t ref;		// page frame's reference counter
+	uint32_t flags;		// array of flags that describe the status of the page frame
+	unsigned int property;	// used in buddy system, stores the order (the X in 2^X) of the continuous memory block
+	int zone_num;		// used in buddy system, the No. of zone which the page belongs to
+	list_entry_t page_link;	// free list link
+	swap_entry_t index;	// stores a swapped-out page identifier
+	list_entry_t swap_link;	// swap hash link
 };
 
 /* Flags describing the status of a page frame */
-#define PG_reserved                 0       // the page descriptor is reserved for kernel or unusable
-#define PG_property                 1       // the member 'property' is valid
-#define PG_slab                     2       // page frame is included in a slab
-#define PG_dirty                    3       // the page has been modified
-#define PG_swap                     4       // the page is in the active or inactive page list (and swap hash table)
-#define PG_active                   5       // the page is in the active page list
-#define PG_IO                       6       // dma page, never free in unmap_page
+#define PG_reserved                 0	// the page descriptor is reserved for kernel or unusable
+#define PG_property                 1	// the member 'property' is valid
+#define PG_slab                     2	// page frame is included in a slab
+#define PG_dirty                    3	// the page has been modified
+#define PG_swap                     4	// the page is in the active or inactive page list (and swap hash table)
+#define PG_active                   5	// the page is in the active page list
+#define PG_IO                       6	// dma page, never free in unmap_page
 
 #define SetPageReserved(page)       set_bit(PG_reserved, &((page)->flags))
 #define ClearPageReserved(page)     clear_bit(PG_reserved, &((page)->flags))
@@ -59,8 +59,8 @@ struct Page {
 
 /* free_area_t - maintains a doubly linked list to record free (unused) pages */
 typedef struct {
-    list_entry_t free_list;         // the list header
-    unsigned int nr_free;           // # of free pages in this free list
+	list_entry_t free_list;	// the list header
+	unsigned int nr_free;	// # of free pages in this free list
 } free_area_t;
 
 #endif

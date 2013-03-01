@@ -138,4 +138,4 @@ void syscall_set_arguments(struct task_struct *task, struct pt_regs *regs,
 			   unsigned int i, unsigned int n,
 			   const unsigned long *args);
 
-#endif	/* _ASM_SYSCALL_H */
+#endif /* _ASM_SYSCALL_H */

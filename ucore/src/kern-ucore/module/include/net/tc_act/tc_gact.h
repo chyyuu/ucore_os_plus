@@ -4,11 +4,11 @@
 #include <net/act_api.h>
 
 struct tcf_gact {
-	struct tcf_common	common;
+	struct tcf_common common;
 #ifdef CONFIG_GACT_PROB
-        u16			tcfg_ptype;
-        u16			tcfg_pval;
-        int			tcfg_paction;
+	u16 tcfg_ptype;
+	u16 tcfg_pval;
+	int tcfg_paction;
 #endif
 };
 #define to_gact(pc) \

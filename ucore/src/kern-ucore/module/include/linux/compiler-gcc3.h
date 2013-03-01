@@ -3,13 +3,13 @@
 #endif
 
 #if __GNUC_MINOR__ < 2
-# error Sorry, your compiler is too old - please upgrade it.
+#error Sorry, your compiler is too old - please upgrade it.
 #endif
 
 #if __GNUC_MINOR__ >= 3
-# define __used			__attribute__((__used__))
+#define __used			__attribute__((__used__))
 #else
-# define __used			__attribute__((__unused__))
+#define __used			__attribute__((__unused__))
 #endif
 
 #if __GNUC_MINOR__ >= 4

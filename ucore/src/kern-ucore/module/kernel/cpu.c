@@ -28,7 +28,7 @@ static int cpu_hotplug_disabled;
 
 static struct {
 	struct task_struct *active_writer;
-	struct mutex lock; /* Synchronizes accesses to refcount, */
+	struct mutex lock;	/* Synchronizes accesses to refcount, */
 	/*
 	 * Also blocks the new readers during
 	 * an ongoing cpu hotplug operation.
@@ -55,6 +55,7 @@ void get_online_cpus(void)
 	mutex_unlock(&cpu_hotplug.lock);
 
 }
+
 EXPORT_SYMBOL_GPL(get_online_cpus);
 
 void put_online_cpus(void)
@@ -67,9 +68,10 @@ void put_online_cpus(void)
 	mutex_unlock(&cpu_hotplug.lock);
 
 }
+
 EXPORT_SYMBOL_GPL(put_online_cpus);
 
-#endif	/* CONFIG_HOTPLUG_CPU */
+#endif /* CONFIG_HOTPLUG_CPU */
 
 /*
  * The following two API's must be used when attempting
@@ -126,6 +128,7 @@ static void cpu_hotplug_done(void)
 	cpu_hotplug.active_writer = NULL;
 	mutex_unlock(&cpu_hotplug.lock);
 }
+
 /* Need to know about CPUs going up/down? */
 int __ref register_cpu_notifier(struct notifier_block *nb)
 {
@@ -146,6 +149,7 @@ void __ref unregister_cpu_notifier(struct notifier_block *nb)
 	raw_notifier_chain_unregister(&cpu_chain, nb);
 	cpu_maps_update_done();
 }
+
 EXPORT_SYMBOL(unregister_cpu_notifier);
 
 static inline void check_for_tasks(int cpu)
@@ -158,9 +162,7 @@ static inline void check_for_tasks(int cpu)
 		    (!cputime_eq(p->utime, cputime_zero) ||
 		     !cputime_eq(p->stime, cputime_zero)))
 			printk(KERN_WARNING "Task %s (pid = %d) is on cpu %d\
-				(state = %ld, flags = %x) \n",
-				 p->comm, task_pid_nr(p), cpu,
-				 p->state, p->flags);
+				(state = %ld, flags = %x) \n", p->comm, task_pid_nr(p), cpu, p->state, p->flags);
 	}
 	write_unlock_irq(&tasklist_lock);
 }
@@ -219,7 +221,7 @@ static int __ref _cpu_down(unsigned int cpu, int tasks_frozen)
 		__raw_notifier_call_chain(&cpu_chain, CPU_DOWN_FAILED | mod,
 					  hcpu, nr_calls, NULL);
 		printk("%s: attempt to take down CPU %u failed\n",
-				__func__, cpu);
+		       __func__, cpu);
 		err = -EINVAL;
 		goto out_release;
 	}
@@ -303,8 +305,9 @@ out:
 	stop_machine_destroy();
 	return err;
 }
+
 EXPORT_SYMBOL(cpu_down);
-#endif /*CONFIG_HOTPLUG_CPU*/
+#endif /*CONFIG_HOTPLUG_CPU */
 
 /* Requires cpu_add_remove_lock to be held */
 static int __cpuinit _cpu_up(unsigned int cpu, int tasks_frozen)
@@ -318,11 +321,11 @@ static int __cpuinit _cpu_up(unsigned int cpu, int tasks_frozen)
 
 	cpu_hotplug_begin();
 	ret = __raw_notifier_call_chain(&cpu_chain, CPU_UP_PREPARE | mod, hcpu,
-							-1, &nr_calls);
+					-1, &nr_calls);
 	if (ret == NOTIFY_BAD) {
 		nr_calls--;
 		printk("%s: attempt to bring up CPU %u failed\n",
-				__func__, cpu);
+		       __func__, cpu);
 		ret = -EINVAL;
 		goto out_notify;
 	}
@@ -341,7 +344,8 @@ static int __cpuinit _cpu_up(unsigned int cpu, int tasks_frozen)
 out_notify:
 	if (ret != 0)
 		__raw_notifier_call_chain(&cpu_chain,
-				CPU_UP_CANCELED | mod, hcpu, nr_calls, NULL);
+					  CPU_UP_CANCELED | mod, hcpu, nr_calls,
+					  NULL);
 	cpu_hotplug_done();
 
 	return ret;
@@ -352,10 +356,10 @@ int __cpuinit cpu_up(unsigned int cpu)
 	int err = 0;
 	if (!cpu_possible(cpu)) {
 		printk(KERN_ERR "can't online cpu %d because it is not "
-			"configured as may-hotadd at boot time\n", cpu);
+		       "configured as may-hotadd at boot time\n", cpu);
 #if defined(CONFIG_IA64) || defined(CONFIG_X86_64)
 		printk(KERN_ERR "please check additional_cpus= boot "
-				"parameter\n");
+		       "parameter\n");
 #endif
 		return -EINVAL;
 	}
@@ -400,7 +404,7 @@ int disable_nonboot_cpus(void)
 			printk("CPU%d is down\n", cpu);
 		} else {
 			printk(KERN_ERR "Error taking CPU%d down: %d\n",
-				cpu, error);
+			       cpu, error);
 			break;
 		}
 	}
@@ -442,10 +446,11 @@ out:
 
 static int alloc_frozen_cpus(void)
 {
-	if (!alloc_cpumask_var(&frozen_cpus, GFP_KERNEL|__GFP_ZERO))
+	if (!alloc_cpumask_var(&frozen_cpus, GFP_KERNEL | __GFP_ZERO))
 		return -ENOMEM;
 	return 0;
 }
+
 core_initcall(alloc_frozen_cpus);
 #endif /* CONFIG_PM_SLEEP_SMP */
 
@@ -484,15 +489,16 @@ void __cpuinit notify_cpu_starting(unsigned int cpu)
 #define MASK_DECLARE_4(x)	MASK_DECLARE_2(x), MASK_DECLARE_2(x+2)
 #define MASK_DECLARE_8(x)	MASK_DECLARE_4(x), MASK_DECLARE_4(x+4)
 
-const unsigned long cpu_bit_bitmap[BITS_PER_LONG+1][BITS_TO_LONGS(NR_CPUS)] = {
+const unsigned long cpu_bit_bitmap[BITS_PER_LONG + 1][BITS_TO_LONGS(NR_CPUS)] = {
 
-	MASK_DECLARE_8(0),	MASK_DECLARE_8(8),
-	MASK_DECLARE_8(16),	MASK_DECLARE_8(24),
+	MASK_DECLARE_8(0), MASK_DECLARE_8(8),
+	MASK_DECLARE_8(16), MASK_DECLARE_8(24),
 #if BITS_PER_LONG > 32
-	MASK_DECLARE_8(32),	MASK_DECLARE_8(40),
-	MASK_DECLARE_8(48),	MASK_DECLARE_8(56),
+	MASK_DECLARE_8(32), MASK_DECLARE_8(40),
+	MASK_DECLARE_8(48), MASK_DECLARE_8(56),
 #endif
 };
+
 EXPORT_SYMBOL_GPL(cpu_bit_bitmap);
 
 const DECLARE_BITMAP(cpu_all_bits, NR_CPUS) = CPU_BITS_ALL;
@@ -500,7 +506,7 @@ EXPORT_SYMBOL(cpu_all_bits);
 
 #ifdef CONFIG_INIT_ALL_POSSIBLE
 static DECLARE_BITMAP(cpu_possible_bits, CONFIG_NR_CPUS) __read_mostly
-	= CPU_BITS_ALL;
+    = CPU_BITS_ALL;
 #else
 static DECLARE_BITMAP(cpu_possible_bits, CONFIG_NR_CPUS) __read_mostly;
 #endif

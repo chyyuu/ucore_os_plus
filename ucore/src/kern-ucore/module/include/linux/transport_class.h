@@ -16,12 +16,12 @@ struct transport_container;
 
 struct transport_class {
 	struct class class;
-	int (*setup)(struct transport_container *, struct device *,
-		     struct device *);
-	int (*configure)(struct transport_container *, struct device *,
-			 struct device *);
-	int (*remove)(struct transport_container *, struct device *,
+	int (*setup) (struct transport_container *, struct device *,
 		      struct device *);
+	int (*configure) (struct transport_container *, struct device *,
+			  struct device *);
+	int (*remove) (struct transport_container *, struct device *,
+		       struct device *);
 };
 
 #define DECLARE_TRANSPORT_CLASS(cls, nm, su, rm, cfg)			\
@@ -33,7 +33,6 @@ struct transport_class cls = {						\
 	.remove = rm,							\
 	.configure = cfg,						\
 }
-
 
 struct anon_transport_class {
 	struct transport_class tclass;
@@ -67,15 +66,13 @@ void transport_setup_device(struct device *);
 void transport_configure_device(struct device *);
 void transport_destroy_device(struct device *);
 
-static inline void
-transport_register_device(struct device *dev)
+static inline void transport_register_device(struct device *dev)
 {
 	transport_setup_device(dev);
 	transport_add_device(dev);
 }
 
-static inline void
-transport_unregister_device(struct device *dev)
+static inline void transport_unregister_device(struct device *dev)
 {
 	transport_remove_device(dev);
 	transport_destroy_device(dev);
@@ -86,7 +83,8 @@ static inline int transport_container_register(struct transport_container *tc)
 	return attribute_container_register(&tc->ac);
 }
 
-static inline void transport_container_unregister(struct transport_container *tc)
+static inline void transport_container_unregister(struct transport_container
+						  *tc)
 {
 	if (unlikely(attribute_container_unregister(&tc->ac)))
 		BUG();
@@ -96,6 +94,5 @@ int transport_class_register(struct transport_class *);
 int anon_transport_class_register(struct anon_transport_class *);
 void transport_class_unregister(struct transport_class *);
 void anon_transport_class_unregister(struct anon_transport_class *);
-
 
 #endif

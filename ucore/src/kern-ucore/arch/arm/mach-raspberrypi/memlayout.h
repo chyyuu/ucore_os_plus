@@ -70,7 +70,7 @@
 
 /* All physical memory mapped at this address */
 #define KERNBASE            SDRAM0_START
-#define KMEMSIZE            SDRAM0_SIZE // the maximum amount of physical memory
+#define KMEMSIZE            SDRAM0_SIZE	// the maximum amount of physical memory
 #define KERNTOP             (KERNBASE + KMEMSIZE)
 
 /* IO addr space */
@@ -85,23 +85,22 @@
  * table, which maps all the PTEs (Page Table Entry) containing the page mappings
  * for the entire virtual address space into that 4 Meg region starting at VPT.
  * */
-#define VPT_BASE                 0xD0000000  //KERNBASE + 0x600000
-
+#define VPT_BASE                 0xD0000000	//KERNBASE + 0x600000
 
 /* For check routines */
 //#define TEST_PAGE 0xD0000000
 
-#define KSTACKPAGE          2                           // # of pages in kernel stack
-#define KSTACKSIZE          (KSTACKPAGE * PGSIZE)       // sizeof kernel stack
+#define KSTACKPAGE          2	// # of pages in kernel stack
+#define KSTACKSIZE          (KSTACKPAGE * PGSIZE)	// sizeof kernel stack
 
 #define USERTOP             0x70000000
 #define USTACKTOP           USERTOP
-#define USTACKPAGE          256                         // # of pages in user stack
-#define USTACKSIZE          (USTACKPAGE * PGSIZE)       // sizeof user stack
+#define USTACKPAGE          256	// # of pages in user stack
+#define USTACKSIZE          (USTACKPAGE * PGSIZE)	// sizeof user stack
 
 #define USERBASE            0x30000000
-#define UTEXT               0x30800000                  // where user programs generally begin
-#define USTAB               USERBASE                    // the location of the user STABS data structure
+#define UTEXT               0x30800000	// where user programs generally begin
+#define USTAB               USERBASE	// the location of the user STABS data structure
 
 #define USER_ACCESS(start, end)                     \
     (USERBASE <= (start) && (start) < (end) && (end) <= USERTOP)
@@ -109,13 +108,12 @@
 #define KERN_ACCESS(start, end)                     \
     (KERNBASE <= (start) && (start) < (end) && (end) <= KERNTOP)
 
-
 #ifdef UCONFIG_HAVE_RAMDISK
 #define DISK_FS_VBASE             0xB0000000
 #endif
 #ifdef HAS_SHARED_KERNMEM
 #define SHARED_KERNMEM_VBASE 0xD0008000
-#define SHARED_KERNMEM_PAGES 256 /* 1M */
+#define SHARED_KERNMEM_PAGES 256	/* 1M */
 #endif
 
 #define UCORE_IOREMAP_BASE 0xEF000000
@@ -127,4 +125,3 @@
 #endif
 
 #endif /* !__KERN_MACH_RASPBERRYPI_MEMLAYOUT_H__ */
-

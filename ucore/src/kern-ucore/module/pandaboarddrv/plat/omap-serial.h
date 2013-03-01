@@ -62,79 +62,79 @@
 #define UART_ERRATA_i291_DMA_FORCEIDLE	BIT(1)
 
 struct omap_uart_port_info {
-	bool			dma_enabled;	/* To specify DMA Mode */
-	unsigned int		uartclk;	/* UART clock rate */
-	upf_t			flags;		/* UPF_* flags */
-	unsigned int		dma_rx_buf_size;
-	unsigned int		dma_rx_timeout;
-	unsigned int		autosuspend_timeout;
-	unsigned int		dma_rx_poll_rate;
+	bool dma_enabled;	/* To specify DMA Mode */
+	unsigned int uartclk;	/* UART clock rate */
+	upf_t flags;		/* UPF_* flags */
+	unsigned int dma_rx_buf_size;
+	unsigned int dma_rx_timeout;
+	unsigned int autosuspend_timeout;
+	unsigned int dma_rx_poll_rate;
 
-	int (*get_context_loss_count)(struct device *);
-	void (*set_forceidle)(struct platform_device *);
-	void (*set_noidle)(struct platform_device *);
-	void (*enable_wakeup)(struct platform_device *, bool);
+	int (*get_context_loss_count) (struct device *);
+	void (*set_forceidle) (struct platform_device *);
+	void (*set_noidle) (struct platform_device *);
+	void (*enable_wakeup) (struct platform_device *, bool);
 };
 
 struct uart_omap_dma {
-	u8			uart_dma_tx;
-	u8			uart_dma_rx;
-	int			rx_dma_channel;
-	int			tx_dma_channel;
-	dma_addr_t		rx_buf_dma_phys;
-	dma_addr_t		tx_buf_dma_phys;
-	unsigned int		uart_base;
+	u8 uart_dma_tx;
+	u8 uart_dma_rx;
+	int rx_dma_channel;
+	int tx_dma_channel;
+	dma_addr_t rx_buf_dma_phys;
+	dma_addr_t tx_buf_dma_phys;
+	unsigned int uart_base;
 	/*
 	 * Buffer for rx dma.It is not required for tx because the buffer
 	 * comes from port structure.
 	 */
-	unsigned char		*rx_buf;
-	unsigned int		prev_rx_dma_pos;
-	int			tx_buf_size;
-	int			tx_dma_used;
-	int			rx_dma_used;
-	spinlock_t		tx_lock;
-	spinlock_t		rx_lock;
+	unsigned char *rx_buf;
+	unsigned int prev_rx_dma_pos;
+	int tx_buf_size;
+	int tx_dma_used;
+	int rx_dma_used;
+	spinlock_t tx_lock;
+	spinlock_t rx_lock;
 	/* timer to poll activity on rx dma */
-	struct timer_list	rx_timer;
-	unsigned int		rx_buf_size;
-	unsigned int		rx_poll_rate;
-	unsigned int		rx_timeout;
+	struct timer_list rx_timer;
+	unsigned int rx_buf_size;
+	unsigned int rx_poll_rate;
+	unsigned int rx_timeout;
 };
 
 struct uart_omap_port {
-	struct uart_port	port;
-	struct uart_omap_dma	uart_dma;
-	struct platform_device	*pdev;
+	struct uart_port port;
+	struct uart_omap_dma uart_dma;
+	struct platform_device *pdev;
 
-	unsigned char		ier;
-	unsigned char		lcr;
-	unsigned char		mcr;
-	unsigned char		fcr;
-	unsigned char		efr;
-	unsigned char		dll;
-	unsigned char		dlh;
-	unsigned char		mdr1;
-	unsigned char		scr;
+	unsigned char ier;
+	unsigned char lcr;
+	unsigned char mcr;
+	unsigned char fcr;
+	unsigned char efr;
+	unsigned char dll;
+	unsigned char dlh;
+	unsigned char mdr1;
+	unsigned char scr;
 
-	int			use_dma;
+	int use_dma;
 	/*
 	 * Some bits in registers are cleared on a read, so they must
 	 * be saved whenever the register is read but the bits will not
 	 * be immediately processed.
 	 */
-	unsigned int		lsr_break_flag;
-	unsigned char		msr_saved_flags;
-	char			name[20];
-	unsigned long		port_activity;
-	u32			context_loss_cnt;
-	u32			errata;
-	u8			wakeups_enabled;
+	unsigned int lsr_break_flag;
+	unsigned char msr_saved_flags;
+	char name[20];
+	unsigned long port_activity;
+	u32 context_loss_cnt;
+	u32 errata;
+	u8 wakeups_enabled;
 
-	struct pm_qos_request	pm_qos_request;
-	u32			latency;
-	u32			calc_latency;
-	struct work_struct	qos_work;
+	struct pm_qos_request pm_qos_request;
+	u32 latency;
+	u32 calc_latency;
+	struct work_struct qos_work;
 };
 
 #endif /* __OMAP_SERIAL_H__ */

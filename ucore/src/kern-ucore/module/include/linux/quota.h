@@ -135,16 +135,16 @@ struct if_dqinfo {
  * Definitions for quota netlink interface
  */
 #define QUOTA_NL_NOWARN 0
-#define QUOTA_NL_IHARDWARN 1		/* Inode hardlimit reached */
-#define QUOTA_NL_ISOFTLONGWARN 2 	/* Inode grace time expired */
-#define QUOTA_NL_ISOFTWARN 3		/* Inode softlimit reached */
-#define QUOTA_NL_BHARDWARN 4		/* Block hardlimit reached */
+#define QUOTA_NL_IHARDWARN 1	/* Inode hardlimit reached */
+#define QUOTA_NL_ISOFTLONGWARN 2	/* Inode grace time expired */
+#define QUOTA_NL_ISOFTWARN 3	/* Inode softlimit reached */
+#define QUOTA_NL_BHARDWARN 4	/* Block hardlimit reached */
 #define QUOTA_NL_BSOFTLONGWARN 5	/* Block grace time expired */
-#define QUOTA_NL_BSOFTWARN 6		/* Block softlimit reached */
-#define QUOTA_NL_IHARDBELOW 7		/* Usage got below inode hardlimit */
-#define QUOTA_NL_ISOFTBELOW 8		/* Usage got below inode softlimit */
-#define QUOTA_NL_BHARDBELOW 9		/* Usage got below block hardlimit */
-#define QUOTA_NL_BSOFTBELOW 10		/* Usage got below block softlimit */
+#define QUOTA_NL_BSOFTWARN 6	/* Block softlimit reached */
+#define QUOTA_NL_IHARDBELOW 7	/* Usage got below inode hardlimit */
+#define QUOTA_NL_ISOFTBELOW 8	/* Usage got below inode softlimit */
+#define QUOTA_NL_BHARDBELOW 9	/* Usage got below block hardlimit */
+#define QUOTA_NL_BSOFTBELOW 10	/* Usage got below block softlimit */
 
 enum {
 	QUOTA_NL_C_UNSPEC,
@@ -165,7 +165,6 @@ enum {
 };
 #define QUOTA_NL_A_MAX (__QUOTA_NL_A_MAX - 1)
 
-
 #ifdef __KERNEL__
 #include <linux/list.h>
 #include <linux/mutex.h>
@@ -179,7 +178,7 @@ enum {
 
 #include <asm/atomic.h>
 
-typedef __kernel_uid32_t qid_t; /* Type in which we store ids in memory */
+typedef __kernel_uid32_t qid_t;	/* Type in which we store ids in memory */
 typedef long long qsize_t;	/* Type in which we store sizes */
 
 extern spinlock_t dq_data_lock;
@@ -265,14 +264,14 @@ struct dquot {
 	struct list_head dq_inuse;	/* List of all quotas */
 	struct list_head dq_free;	/* Free list element */
 	struct list_head dq_dirty;	/* List of dirty dquots */
-	struct mutex dq_lock;		/* dquot IO lock */
-	atomic_t dq_count;		/* Use count */
+	struct mutex dq_lock;	/* dquot IO lock */
+	atomic_t dq_count;	/* Use count */
 	wait_queue_head_t dq_wait_unused;	/* Wait queue for dquot to become unused */
 	struct super_block *dq_sb;	/* superblock this applies to */
-	unsigned int dq_id;		/* ID this applies to (uid, gid) */
-	loff_t dq_off;			/* Offset of dquot on disk */
-	unsigned long dq_flags;		/* See DQ_* */
-	short dq_type;			/* Type of quota */
+	unsigned int dq_id;	/* ID this applies to (uid, gid) */
+	loff_t dq_off;		/* Offset of dquot on disk */
+	unsigned long dq_flags;	/* See DQ_* */
+	short dq_type;		/* Type of quota */
 	struct mem_dqblk dq_dqb;	/* Diskquota usage */
 };
 
@@ -283,13 +282,13 @@ struct dquot {
 
 /* Operations which must be implemented by each quota format */
 struct quota_format_ops {
-	int (*check_quota_file)(struct super_block *sb, int type);	/* Detect whether file is in our format */
-	int (*read_file_info)(struct super_block *sb, int type);	/* Read main info about file - called on quotaon() */
-	int (*write_file_info)(struct super_block *sb, int type);	/* Write main info about file */
-	int (*free_file_info)(struct super_block *sb, int type);	/* Called on quotaoff() */
-	int (*read_dqblk)(struct dquot *dquot);		/* Read structure for one user */
-	int (*commit_dqblk)(struct dquot *dquot);	/* Write structure for one user */
-	int (*release_dqblk)(struct dquot *dquot);	/* Called when last reference to dquot is being dropped */
+	int (*check_quota_file) (struct super_block * sb, int type);	/* Detect whether file is in our format */
+	int (*read_file_info) (struct super_block * sb, int type);	/* Read main info about file - called on quotaon() */
+	int (*write_file_info) (struct super_block * sb, int type);	/* Write main info about file */
+	int (*free_file_info) (struct super_block * sb, int type);	/* Called on quotaoff() */
+	int (*read_dqblk) (struct dquot * dquot);	/* Read structure for one user */
+	int (*commit_dqblk) (struct dquot * dquot);	/* Write structure for one user */
+	int (*release_dqblk) (struct dquot * dquot);	/* Called when last reference to dquot is being dropped */
 };
 
 /* Operations working with dquots */
@@ -301,44 +300,46 @@ struct dquot_operations {
 	int (*free_space) (struct inode *, qsize_t);
 	int (*free_inode) (const struct inode *, qsize_t);
 	int (*transfer) (struct inode *, struct iattr *);
-	int (*write_dquot) (struct dquot *);		/* Ordinary dquot write */
-	struct dquot *(*alloc_dquot)(struct super_block *, int);	/* Allocate memory for new dquot */
-	void (*destroy_dquot)(struct dquot *);		/* Free memory for dquot */
-	int (*acquire_dquot) (struct dquot *);		/* Quota is going to be created on disk */
-	int (*release_dquot) (struct dquot *);		/* Quota is going to be deleted from disk */
-	int (*mark_dirty) (struct dquot *);		/* Dquot is marked dirty */
+	int (*write_dquot) (struct dquot *);	/* Ordinary dquot write */
+	struct dquot *(*alloc_dquot) (struct super_block *, int);	/* Allocate memory for new dquot */
+	void (*destroy_dquot) (struct dquot *);	/* Free memory for dquot */
+	int (*acquire_dquot) (struct dquot *);	/* Quota is going to be created on disk */
+	int (*release_dquot) (struct dquot *);	/* Quota is going to be deleted from disk */
+	int (*mark_dirty) (struct dquot *);	/* Dquot is marked dirty */
 	int (*write_info) (struct super_block *, int);	/* Write of quota "superblock" */
 };
 
 /* Operations handling requests from userspace */
 struct quotactl_ops {
-	int (*quota_on)(struct super_block *, int, int, char *, int);
-	int (*quota_off)(struct super_block *, int, int);
-	int (*quota_sync)(struct super_block *, int);
-	int (*get_info)(struct super_block *, int, struct if_dqinfo *);
-	int (*set_info)(struct super_block *, int, struct if_dqinfo *);
-	int (*get_dqblk)(struct super_block *, int, qid_t, struct if_dqblk *);
-	int (*set_dqblk)(struct super_block *, int, qid_t, struct if_dqblk *);
-	int (*get_xstate)(struct super_block *, struct fs_quota_stat *);
-	int (*set_xstate)(struct super_block *, unsigned int, int);
-	int (*get_xquota)(struct super_block *, int, qid_t, struct fs_disk_quota *);
-	int (*set_xquota)(struct super_block *, int, qid_t, struct fs_disk_quota *);
+	int (*quota_on) (struct super_block *, int, int, char *, int);
+	int (*quota_off) (struct super_block *, int, int);
+	int (*quota_sync) (struct super_block *, int);
+	int (*get_info) (struct super_block *, int, struct if_dqinfo *);
+	int (*set_info) (struct super_block *, int, struct if_dqinfo *);
+	int (*get_dqblk) (struct super_block *, int, qid_t, struct if_dqblk *);
+	int (*set_dqblk) (struct super_block *, int, qid_t, struct if_dqblk *);
+	int (*get_xstate) (struct super_block *, struct fs_quota_stat *);
+	int (*set_xstate) (struct super_block *, unsigned int, int);
+	int (*get_xquota) (struct super_block *, int, qid_t,
+			   struct fs_disk_quota *);
+	int (*set_xquota) (struct super_block *, int, qid_t,
+			   struct fs_disk_quota *);
 };
 
 struct quota_format_type {
-	int qf_fmt_id;	/* Quota format id */
+	int qf_fmt_id;		/* Quota format id */
 	struct quota_format_ops *qf_ops;	/* Operations of format */
-	struct module *qf_owner;		/* Module implementing quota format */
+	struct module *qf_owner;	/* Module implementing quota format */
 	struct quota_format_type *qf_next;
 };
 
 /* Quota state flags - they actually come in two flavors - for users and groups */
 enum {
-	_DQUOT_USAGE_ENABLED = 0,		/* Track disk usage for users */
-	_DQUOT_LIMITS_ENABLED,			/* Enforce quota limits for users */
-	_DQUOT_SUSPENDED,			/* User diskquotas are off, but
-						 * we have necessary info in
-						 * memory to turn them on */
+	_DQUOT_USAGE_ENABLED = 0,	/* Track disk usage for users */
+	_DQUOT_LIMITS_ENABLED,	/* Enforce quota limits for users */
+	_DQUOT_SUSPENDED,	/* User diskquotas are off, but
+				 * we have necessary info in
+				 * memory to turn them on */
 	_DQUOT_STATE_FLAGS
 };
 #define DQUOT_USAGE_ENABLED	(1 << _DQUOT_USAGE_ENABLED)
@@ -370,11 +371,11 @@ static inline unsigned int dquot_generic_flag(unsigned int flags, int type)
 }
 
 struct quota_info {
-	unsigned int flags;			/* Flags for diskquotas on this device */
-	struct mutex dqio_mutex;		/* lock device while I/O in progress */
-	struct mutex dqonoff_mutex;		/* Serialize quotaon & quotaoff */
-	struct rw_semaphore dqptr_sem;		/* serialize ops using quota_info struct, pointers from inode to dquots */
-	struct inode *files[MAXQUOTAS];		/* inodes of quotafiles */
+	unsigned int flags;	/* Flags for diskquotas on this device */
+	struct mutex dqio_mutex;	/* lock device while I/O in progress */
+	struct mutex dqonoff_mutex;	/* Serialize quotaon & quotaoff */
+	struct rw_semaphore dqptr_sem;	/* serialize ops using quota_info struct, pointers from inode to dquots */
+	struct inode *files[MAXQUOTAS];	/* inodes of quotafiles */
 	struct mem_dqinfo info[MAXQUOTAS];	/* Information for each quota type */
 	struct quota_format_ops *ops[MAXQUOTAS];	/* Operations for each type */
 };
@@ -394,11 +395,9 @@ struct quota_module_name {
 
 #else
 
-# /* nodep */ include <sys/cdefs.h>
+#/* nodep */ include <sys/cdefs.h>
 
-__BEGIN_DECLS
-long quotactl __P ((unsigned int, const char *, int, caddr_t));
+__BEGIN_DECLS long quotactl __P((unsigned int, const char *, int, caddr_t));
 __END_DECLS
-
 #endif /* __KERNEL__ */
 #endif /* _QUOTA_ */

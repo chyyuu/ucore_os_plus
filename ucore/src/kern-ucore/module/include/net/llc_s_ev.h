@@ -19,7 +19,7 @@
 #define LLC_SAP_EV_TYPE_SIMPLE		1
 #define LLC_SAP_EV_TYPE_CONDITION	2
 #define LLC_SAP_EV_TYPE_PRIM		3
-#define LLC_SAP_EV_TYPE_PDU		4   /* command/response PDU */
+#define LLC_SAP_EV_TYPE_PDU		4	/* command/response PDU */
 #define LLC_SAP_EV_TYPE_ACK_TMR		5
 #define LLC_SAP_EV_TYPE_RPT_STATUS	6
 
@@ -35,11 +35,11 @@
 #define LLC_SAP_EV_DEACTIVATION_REQ	10
 
 struct llc_sap_state_ev {
-	u8		prim;
-	u8		prim_type;
-	u8		type;
-	u8		reason;
-	u8		ind_cfm_flag;
+	u8 prim;
+	u8 prim_type;
+	u8 type;
+	u8 reason;
+	u8 ind_cfm_flag;
 	struct llc_addr saddr;
 	struct llc_addr daddr;
 };
@@ -51,7 +51,7 @@ static __inline__ struct llc_sap_state_ev *llc_sap_ev(struct sk_buff *skb)
 
 struct llc_sap;
 
-typedef int (*llc_sap_ev_t)(struct llc_sap *sap, struct sk_buff *skb);
+typedef int (*llc_sap_ev_t) (struct llc_sap * sap, struct sk_buff * skb);
 
 extern int llc_sap_ev_activation_req(struct llc_sap *sap, struct sk_buff *skb);
 extern int llc_sap_ev_rx_ui(struct llc_sap *sap, struct sk_buff *skb);

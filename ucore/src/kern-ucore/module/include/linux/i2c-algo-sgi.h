@@ -11,11 +11,11 @@
 #include <linux/i2c.h>
 
 struct i2c_algo_sgi_data {
-	void *data;	/* private data for lowlevel routines */
-	unsigned (*getctrl)(void *data);
-	void (*setctrl)(void *data, unsigned val);
-	unsigned (*rdata)(void *data);
-	void (*wdata)(void *data, unsigned val);
+	void *data;		/* private data for lowlevel routines */
+	unsigned (*getctrl) (void *data);
+	void (*setctrl) (void *data, unsigned val);
+	unsigned (*rdata) (void *data);
+	void (*wdata) (void *data, unsigned val);
 
 	int xfer_timeout;
 	int ack_timeout;

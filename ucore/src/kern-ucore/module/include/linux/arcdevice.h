@@ -37,7 +37,6 @@
  */
 #define RECON_THRESHOLD 30
 
-
 /*
  * Define this to the minimum "timeout" value.  If a transmit takes longer
  * than TX_TIMEOUT jiffies, Linux will abort the TX and retry.  On a large
@@ -47,10 +46,8 @@
  */
 #define TX_TIMEOUT (HZ * 200 / 1000)
 
-
 /* Display warnings about the driver being an ALPHA version. */
 #undef ALPHA_WARNING
-
 
 /*
  * Debugging bitflags: each option can be enabled individually.
@@ -71,9 +68,9 @@
 #define D_TX	        256	/* show tx packets                        */
 #define D_RX		512	/* show rx packets                        */
 #define D_SKB		1024	/* show skb's                             */
-#define D_SKB_SIZE	2048	/* show skb sizes			  */
+#define D_SKB_SIZE	2048	/* show skb sizes                         */
 #define D_TIMING	4096	/* show time needed to copy buffers to card */
-#define D_DEBUG         8192    /* Very detailed debug line for line */
+#define D_DEBUG         8192	/* Very detailed debug line for line */
 
 #ifndef ARCNET_DEBUG_MAX
 #define ARCNET_DEBUG_MAX (127)	/* change to ~0 if you want detailed debugging */
@@ -109,7 +106,6 @@ extern int arcnet_debug;
 		    call;\
 	}
 
-
 /*
  * Time needed to reset the card - in ms (milliseconds).  This works on my
  * SMC PC100.  I can't find a reference that tells me just how long I
@@ -135,7 +131,7 @@ extern int arcnet_debug;
 #define TXACKflag       0x02	/* transmitted msg. ackd */
 #define RECONflag       0x04	/* network reconfigured */
 #define TESTflag        0x08	/* test flag */
-#define EXCNAKflag      0x08    /* excesive nak flag */
+#define EXCNAKflag      0x08	/* excesive nak flag */
 #define RESETflag       0x10	/* power-on-reset */
 #define RES1flag        0x20	/* reserved - usually set by jumper */
 #define RES2flag        0x40	/* reserved - usually set by jumper */
@@ -163,7 +159,7 @@ extern int arcnet_debug;
 #define RESETclear      0x08	/* power-on-reset */
 #define CONFIGclear     0x10	/* system reconfigured */
 
-#define EXCNAKclear     0x0E    /* Clear and acknowledge the excive nak bit */
+#define EXCNAKclear     0x0E	/* Clear and acknowledge the excive nak bit */
 
 /* flags for "load test flags" command */
 #define TESTload        0x08	/* test flag (diagnostic) */
@@ -181,32 +177,30 @@ extern int arcnet_debug;
 /* card feature flags, set during auto-detection.
  * (currently only used by com20020pci)
  */
-#define ARC_IS_5MBIT    1   /* card default speed is 5MBit */
-#define ARC_CAN_10MBIT  2   /* card uses COM20022, supporting 10MBit,
-				 but default is 2.5MBit. */
-
+#define ARC_IS_5MBIT    1	/* card default speed is 5MBit */
+#define ARC_CAN_10MBIT  2	/* card uses COM20022, supporting 10MBit,
+				   but default is 2.5MBit. */
 
 /* information needed to define an encapsulation driver */
 struct ArcProto {
 	char suffix;		/* a for RFC1201, e for ether-encap, etc. */
 	int mtu;		/* largest possible packet */
-	int is_ip;              /* This is a ip plugin - not a raw thing */
+	int is_ip;		/* This is a ip plugin - not a raw thing */
 
 	void (*rx) (struct net_device * dev, int bufnum,
 		    struct archdr * pkthdr, int length);
-	int (*build_header) (struct sk_buff * skb, struct net_device *dev,
+	int (*build_header) (struct sk_buff * skb, struct net_device * dev,
 			     unsigned short ethproto, uint8_t daddr);
 
 	/* these functions return '1' if the skb can now be freed */
-	int (*prepare_tx) (struct net_device * dev, struct archdr * pkt, int length,
-			   int bufnum);
+	int (*prepare_tx) (struct net_device * dev, struct archdr * pkt,
+			   int length, int bufnum);
 	int (*continue_tx) (struct net_device * dev, int bufnum);
 	int (*ack_tx) (struct net_device * dev, int acked);
 };
 
 extern struct ArcProto *arc_proto_map[256], *arc_proto_default,
-	*arc_bcast_proto, *arc_raw_proto;
-
+    *arc_bcast_proto, *arc_raw_proto;
 
 /*
  * "Incoming" is information needed for each address that could be sending
@@ -216,9 +210,8 @@ struct Incoming {
 	struct sk_buff *skb;	/* packet data buffer             */
 	__be16 sequence;	/* sequence number of assembly    */
 	uint8_t lastpacket,	/* number of last packet (from 1) */
-		numpackets;	/* number of packets in split     */
+	 numpackets;		/* number of packets in split     */
 };
-
 
 /* only needed for RFC1201 */
 struct Outgoing {
@@ -228,34 +221,32 @@ struct Outgoing {
 	struct sk_buff *skb;	/* buffer from upper levels */
 	struct archdr *pkt;	/* a pointer into the skb */
 	uint16_t length,	/* bytes total */
-		dataleft,	/* bytes left */
-		segnum,		/* segment being sent */
-		numsegs;	/* number of segments */
+	 dataleft,		/* bytes left */
+	 segnum,		/* segment being sent */
+	 numsegs;		/* number of segments */
 };
-
 
 struct arcnet_local {
 	struct net_device_stats stats;
 
 	uint8_t config,		/* current value of CONFIG register */
-		timeout,	/* Extended timeout for COM20020 */
-		backplane,	/* Backplane flag for COM20020 */
-		clockp,		/* COM20020 clock divider */
-		clockm,		/* COM20020 clock multiplier flag */
-		setup,		/* Contents of setup1 register */
-		setup2,		/* Contents of setup2 register */
-		intmask;	/* current value of INTMASK register */
+	 timeout,		/* Extended timeout for COM20020 */
+	 backplane,		/* Backplane flag for COM20020 */
+	 clockp,		/* COM20020 clock divider */
+	 clockm,		/* COM20020 clock multiplier flag */
+	 setup,			/* Contents of setup1 register */
+	 setup2,		/* Contents of setup2 register */
+	 intmask;		/* current value of INTMASK register */
 	uint8_t default_proto[256];	/* default encap to use for each host */
-	int	cur_tx,		/* buffer used by current transmit, or -1 */
-		next_tx,	/* buffer where a packet is ready to send */
-		cur_rx;		/* current receive buffer */
-	int	lastload_dest,	/* can last loaded packet be acked? */
-		lasttrans_dest;	/* can last TX'd packet be acked? */
-	int	timed_out;	/* need to process TX timeout and drop packet */
+	int cur_tx,		/* buffer used by current transmit, or -1 */
+	 next_tx,		/* buffer where a packet is ready to send */
+	 cur_rx;		/* current receive buffer */
+	int lastload_dest,	/* can last loaded packet be acked? */
+	 lasttrans_dest;	/* can last TX'd packet be acked? */
+	int timed_out;		/* need to process TX timeout and drop packet */
 	unsigned long last_timeout;	/* time of last reported timeout */
 	char *card_name;	/* card ident string */
 	int card_flags;		/* special card features */
-
 
 	/* On preemtive and SMB a lock is needed */
 	spinlock_t lock;
@@ -283,12 +274,12 @@ struct arcnet_local {
 	int next_buf, first_free_buf;
 
 	/* network "reconfiguration" handling */
-	unsigned long first_recon; /* time of "first" RECON message to count */
-	unsigned long last_recon;  /* time of most recent RECON */
+	unsigned long first_recon;	/* time of "first" RECON message to count */
+	unsigned long last_recon;	/* time of most recent RECON */
 	int num_recons;		/* number of RECONs between first and last. */
 	bool network_down;	/* do we think the network is down? */
 
-	bool excnak_pending;    /* We just got an excesive nak interrupt */
+	bool excnak_pending;	/* We just got an excesive nak interrupt */
 
 	struct {
 		uint16_t sequence;	/* sequence number (incs with each packet) */
@@ -306,26 +297,23 @@ struct arcnet_local {
 		void (*command) (struct net_device * dev, int cmd);
 		int (*status) (struct net_device * dev);
 		void (*intmask) (struct net_device * dev, int mask);
-		bool (*reset) (struct net_device * dev, bool really_reset);
+		 bool(*reset) (struct net_device * dev, bool really_reset);
 		void (*open) (struct net_device * dev);
 		void (*close) (struct net_device * dev);
 
-		void (*copy_to_card) (struct net_device * dev, int bufnum, int offset,
-				      void *buf, int count);
-		void (*copy_from_card) (struct net_device * dev, int bufnum, int offset,
-					void *buf, int count);
+		void (*copy_to_card) (struct net_device * dev, int bufnum,
+				      int offset, void *buf, int count);
+		void (*copy_from_card) (struct net_device * dev, int bufnum,
+					int offset, void *buf, int count);
 	} hw;
 
 	void __iomem *mem_start;	/* pointer to ioremap'ed MMIO */
 };
 
-
 #define ARCRESET(x)  (lp->hw.reset(dev, (x)))
 #define ACOMMAND(x)  (lp->hw.command(dev, (x)))
 #define ASTATUS()    (lp->hw.status(dev))
 #define AINTMASK(x)  (lp->hw.intmask(dev, (x)))
-
-
 
 #if ARCNET_DEBUG_MAX & D_SKB
 void arcnet_dump_skb(struct net_device *dev, struct sk_buff *skb, char *desc);
@@ -337,5 +325,5 @@ void arcnet_unregister_proto(struct ArcProto *proto);
 irqreturn_t arcnet_interrupt(int irq, void *dev_id);
 struct net_device *alloc_arcdev(char *name);
 
-#endif				/* __KERNEL__ */
-#endif				/* _LINUX_ARCDEVICE_H */
+#endif /* __KERNEL__ */
+#endif /* _LINUX_ARCDEVICE_H */

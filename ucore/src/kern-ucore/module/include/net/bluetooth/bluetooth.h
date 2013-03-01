@@ -70,7 +70,7 @@ struct bt_security {
 
 /* Connection and socket states */
 enum {
-	BT_CONNECTED = 1, /* Equal to TCP_ESTABLISHED to make net code happy */
+	BT_CONNECTED = 1,	/* Equal to TCP_ESTABLISHED to make net code happy */
 	BT_OPEN,
 	BT_BOUND,
 	BT_LISTEN,
@@ -90,23 +90,24 @@ enum {
 /* BD Address */
 typedef struct {
 	__u8 b[6];
-} __attribute__((packed)) bdaddr_t;
+} __attribute__ ((packed)) bdaddr_t;
 
 #define BDADDR_ANY   (&(bdaddr_t) {{0, 0, 0, 0, 0, 0}})
 #define BDADDR_LOCAL (&(bdaddr_t) {{0, 0, 0, 0xff, 0xff, 0xff}})
 
 /* Copy, swap, convert BD Address */
-static inline int bacmp(bdaddr_t *ba1, bdaddr_t *ba2)
+static inline int bacmp(bdaddr_t * ba1, bdaddr_t * ba2)
 {
 	return memcmp(ba1, ba2, sizeof(bdaddr_t));
 }
-static inline void bacpy(bdaddr_t *dst, bdaddr_t *src)
+
+static inline void bacpy(bdaddr_t * dst, bdaddr_t * src)
 {
 	memcpy(dst, src, sizeof(bdaddr_t));
 }
 
-void baswap(bdaddr_t *dst, bdaddr_t *src);
-char *batostr(bdaddr_t *ba);
+void baswap(bdaddr_t * dst, bdaddr_t * src);
+char *batostr(bdaddr_t * ba);
 bdaddr_t *strtoba(char *str);
 
 /* Common socket structures and functions */
@@ -115,8 +116,8 @@ bdaddr_t *strtoba(char *str);
 
 struct bt_sock {
 	struct sock sk;
-	bdaddr_t    src;
-	bdaddr_t    dst;
+	bdaddr_t src;
+	bdaddr_t dst;
 	struct list_head accept_q;
 	struct sock *parent;
 	u32 defer_setup;
@@ -124,17 +125,18 @@ struct bt_sock {
 
 struct bt_sock_list {
 	struct hlist_head head;
-	rwlock_t          lock;
+	rwlock_t lock;
 };
 
-int  bt_sock_register(int proto, struct net_proto_family *ops);
-int  bt_sock_unregister(int proto);
+int bt_sock_register(int proto, struct net_proto_family *ops);
+int bt_sock_unregister(int proto);
 void bt_sock_link(struct bt_sock_list *l, struct sock *s);
 void bt_sock_unlink(struct bt_sock_list *l, struct sock *s);
-int  bt_sock_recvmsg(struct kiocb *iocb, struct socket *sock, struct msghdr *msg, size_t len, int flags);
-uint bt_sock_poll(struct file * file, struct socket *sock, poll_table *wait);
-int  bt_sock_ioctl(struct socket *sock, unsigned int cmd, unsigned long arg);
-int  bt_sock_wait_state(struct sock *sk, int state, unsigned long timeo);
+int bt_sock_recvmsg(struct kiocb *iocb, struct socket *sock, struct msghdr *msg,
+		    size_t len, int flags);
+uint bt_sock_poll(struct file *file, struct socket *sock, poll_table * wait);
+int bt_sock_ioctl(struct socket *sock, unsigned int cmd, unsigned long arg);
+int bt_sock_wait_state(struct sock *sk, int state, unsigned long timeo);
 
 void bt_accept_enqueue(struct sock *parent, struct sock *sk);
 void bt_accept_unlink(struct sock *sk);
@@ -145,7 +147,7 @@ struct bt_skb_cb {
 	__u8 pkt_type;
 	__u8 incoming;
 };
-#define bt_cb(skb) ((struct bt_skb_cb *)(skb->cb)) 
+#define bt_cb(skb) ((struct bt_skb_cb *)(skb->cb))
 
 static inline struct sk_buff *bt_skb_alloc(unsigned int len, gfp_t how)
 {
@@ -153,19 +155,20 @@ static inline struct sk_buff *bt_skb_alloc(unsigned int len, gfp_t how)
 
 	if ((skb = alloc_skb(len + BT_SKB_RESERVE, how))) {
 		skb_reserve(skb, BT_SKB_RESERVE);
-		bt_cb(skb)->incoming  = 0;
+		bt_cb(skb)->incoming = 0;
 	}
 	return skb;
 }
 
-static inline struct sk_buff *bt_skb_send_alloc(struct sock *sk, unsigned long len, 
-							int nb, int *err)
+static inline struct sk_buff *bt_skb_send_alloc(struct sock *sk,
+						unsigned long len, int nb,
+						int *err)
 {
 	struct sk_buff *skb;
 
 	if ((skb = sock_alloc_send_skb(sk, len + BT_SKB_RESERVE, nb, err))) {
 		skb_reserve(skb, BT_SKB_RESERVE);
-		bt_cb(skb)->incoming  = 0;
+		bt_cb(skb)->incoming = 0;
 	}
 
 	return skb;
@@ -176,7 +179,7 @@ static inline int skb_frags_no(struct sk_buff *skb)
 	register struct sk_buff *frag = skb_shinfo(skb)->frag_list;
 	register int n = 1;
 
-	for (; frag; frag=frag->next, n++);
+	for (; frag; frag = frag->next, n++) ;
 	return n;
 }
 

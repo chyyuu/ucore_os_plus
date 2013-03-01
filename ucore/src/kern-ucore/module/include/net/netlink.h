@@ -203,8 +203,8 @@ enum {
  * };
  */
 struct nla_policy {
-	u16		type;
-	u16		len;
+	u16 type;
+	u16 len;
 };
 
 /**
@@ -213,46 +213,39 @@ struct nla_policy {
  * @pid: Netlink PID of requesting application
  */
 struct nl_info {
-	struct nlmsghdr		*nlh;
-	struct net		*nl_net;
-	u32			pid;
+	struct nlmsghdr *nlh;
+	struct net *nl_net;
+	u32 pid;
 };
 
-extern int		netlink_rcv_skb(struct sk_buff *skb,
-					int (*cb)(struct sk_buff *,
-						  struct nlmsghdr *));
-extern int		nlmsg_notify(struct sock *sk, struct sk_buff *skb,
-				     u32 pid, unsigned int group, int report,
-				     gfp_t flags);
+extern int netlink_rcv_skb(struct sk_buff *skb,
+			   int (*cb) (struct sk_buff *, struct nlmsghdr *));
+extern int nlmsg_notify(struct sock *sk, struct sk_buff *skb,
+			u32 pid, unsigned int group, int report, gfp_t flags);
 
-extern int		nla_validate(struct nlattr *head, int len, int maxtype,
-				     const struct nla_policy *policy);
-extern int		nla_parse(struct nlattr *tb[], int maxtype,
-				  struct nlattr *head, int len,
-				  const struct nla_policy *policy);
-extern struct nlattr *	nla_find(struct nlattr *head, int len, int attrtype);
-extern size_t		nla_strlcpy(char *dst, const struct nlattr *nla,
-				    size_t dstsize);
-extern int		nla_memcpy(void *dest, const struct nlattr *src, int count);
-extern int		nla_memcmp(const struct nlattr *nla, const void *data,
-				   size_t size);
-extern int		nla_strcmp(const struct nlattr *nla, const char *str);
-extern struct nlattr *	__nla_reserve(struct sk_buff *skb, int attrtype,
-				      int attrlen);
-extern void *		__nla_reserve_nohdr(struct sk_buff *skb, int attrlen);
-extern struct nlattr *	nla_reserve(struct sk_buff *skb, int attrtype,
+extern int nla_validate(struct nlattr *head, int len, int maxtype,
+			const struct nla_policy *policy);
+extern int nla_parse(struct nlattr *tb[], int maxtype,
+		     struct nlattr *head, int len,
+		     const struct nla_policy *policy);
+extern struct nlattr *nla_find(struct nlattr *head, int len, int attrtype);
+extern size_t nla_strlcpy(char *dst, const struct nlattr *nla, size_t dstsize);
+extern int nla_memcpy(void *dest, const struct nlattr *src, int count);
+extern int nla_memcmp(const struct nlattr *nla, const void *data, size_t size);
+extern int nla_strcmp(const struct nlattr *nla, const char *str);
+extern struct nlattr *__nla_reserve(struct sk_buff *skb, int attrtype,
 				    int attrlen);
-extern void *		nla_reserve_nohdr(struct sk_buff *skb, int attrlen);
-extern void		__nla_put(struct sk_buff *skb, int attrtype,
-				  int attrlen, const void *data);
-extern void		__nla_put_nohdr(struct sk_buff *skb, int attrlen,
-					const void *data);
-extern int		nla_put(struct sk_buff *skb, int attrtype,
-				int attrlen, const void *data);
-extern int		nla_put_nohdr(struct sk_buff *skb, int attrlen,
-				      const void *data);
-extern int		nla_append(struct sk_buff *skb, int attrlen,
-				   const void *data);
+extern void *__nla_reserve_nohdr(struct sk_buff *skb, int attrlen);
+extern struct nlattr *nla_reserve(struct sk_buff *skb, int attrtype,
+				  int attrlen);
+extern void *nla_reserve_nohdr(struct sk_buff *skb, int attrlen);
+extern void __nla_put(struct sk_buff *skb, int attrtype,
+		      int attrlen, const void *data);
+extern void __nla_put_nohdr(struct sk_buff *skb, int attrlen, const void *data);
+extern int nla_put(struct sk_buff *skb, int attrtype,
+		   int attrlen, const void *data);
+extern int nla_put_nohdr(struct sk_buff *skb, int attrlen, const void *data);
+extern int nla_append(struct sk_buff *skb, int attrlen, const void *data);
 
 /**************************************************************************
  * Netlink Messages
@@ -291,7 +284,7 @@ static inline int nlmsg_padlen(int payload)
  */
 static inline void *nlmsg_data(const struct nlmsghdr *nlh)
 {
-	return (unsigned char *) nlh + NLMSG_HDRLEN;
+	return (unsigned char *)nlh + NLMSG_HDRLEN;
 }
 
 /**
@@ -312,7 +305,7 @@ static inline struct nlattr *nlmsg_attrdata(const struct nlmsghdr *nlh,
 					    int hdrlen)
 {
 	unsigned char *data = nlmsg_data(nlh);
-	return (struct nlattr *) (data + NLMSG_ALIGN(hdrlen));
+	return (struct nlattr *)(data + NLMSG_ALIGN(hdrlen));
 }
 
 /**
@@ -332,7 +325,7 @@ static inline int nlmsg_attrlen(const struct nlmsghdr *nlh, int hdrlen)
  */
 static inline int nlmsg_ok(const struct nlmsghdr *nlh, int remaining)
 {
-	return (remaining >= (int) sizeof(struct nlmsghdr) &&
+	return (remaining >= (int)sizeof(struct nlmsghdr) &&
 		nlh->nlmsg_len >= sizeof(struct nlmsghdr) &&
 		nlh->nlmsg_len <= remaining);
 }
@@ -351,7 +344,7 @@ static inline struct nlmsghdr *nlmsg_next(struct nlmsghdr *nlh, int *remaining)
 
 	*remaining -= totlen;
 
-	return (struct nlmsghdr *) ((unsigned char *) nlh + totlen);
+	return (struct nlmsghdr *)((unsigned char *)nlh + totlen);
 }
 
 /**
@@ -415,7 +408,7 @@ static inline int nlmsg_validate(struct nlmsghdr *nlh, int hdrlen, int maxtype,
  */
 static inline int nlmsg_report(struct nlmsghdr *nlh)
 {
-	return !!(nlh->nlmsg_flags & NLM_F_ECHO);
+	return ! !(nlh->nlmsg_flags & NLM_F_ECHO);
 }
 
 /**
@@ -450,14 +443,14 @@ static inline struct nlmsghdr *__nlmsg_put(struct sk_buff *skb, u32 pid,
 {
 	struct nlmsghdr *nlh;
 
-	nlh = (struct nlmsghdr *) skb_put(skb, nlmsg_total_size(payload));
+	nlh = (struct nlmsghdr *)skb_put(skb, nlmsg_total_size(payload));
 	nlh->nlmsg_type = type;
 	nlh->nlmsg_len = nlmsg_msg_size(payload);
 	nlh->nlmsg_flags = flags;
 	nlh->nlmsg_pid = pid;
 	nlh->nlmsg_seq = seq;
 
-	memset((unsigned char *) nlmsg_data(nlh) + payload, 0,
+	memset((unsigned char *)nlmsg_data(nlh) + payload, 0,
 	       nlmsg_padlen(payload));
 
 	return nlh;
@@ -557,7 +550,7 @@ static inline void *nlmsg_get_pos(struct sk_buff *skb)
 static inline void nlmsg_trim(struct sk_buff *skb, const void *mark)
 {
 	if (mark)
-		skb_trim(skb, (unsigned char *) mark - skb->data);
+		skb_trim(skb, (unsigned char *)mark - skb->data);
 }
 
 /**
@@ -679,7 +672,7 @@ static inline int nla_type(const struct nlattr *nla)
  */
 static inline void *nla_data(const struct nlattr *nla)
 {
-	return (char *) nla + NLA_HDRLEN;
+	return (char *)nla + NLA_HDRLEN;
 }
 
 /**
@@ -698,9 +691,8 @@ static inline int nla_len(const struct nlattr *nla)
  */
 static inline int nla_ok(const struct nlattr *nla, int remaining)
 {
-	return remaining >= (int) sizeof(*nla) &&
-	       nla->nla_len >= sizeof(*nla) &&
-	       nla->nla_len <= remaining;
+	return remaining >= (int)sizeof(*nla) &&
+	    nla->nla_len >= sizeof(*nla) && nla->nla_len <= remaining;
 }
 
 /**
@@ -716,7 +708,7 @@ static inline struct nlattr *nla_next(const struct nlattr *nla, int *remaining)
 	int totlen = NLA_ALIGN(nla->nla_len);
 
 	*remaining -= totlen;
-	return (struct nlattr *) ((char *) nla + totlen);
+	return (struct nlattr *)((char *)nla + totlen);
 }
 
 /**
@@ -944,7 +936,7 @@ static inline u64 nla_get_u64(const struct nlattr *nla)
  */
 static inline int nla_get_flag(const struct nlattr *nla)
 {
-	return !!nla;
+	return ! !nla;
 }
 
 /**
@@ -957,7 +949,7 @@ static inline unsigned long nla_get_msecs(const struct nlattr *nla)
 {
 	u64 msecs = nla_get_u64(nla);
 
-	return msecs_to_jiffies((unsigned long) msecs);
+	return msecs_to_jiffies((unsigned long)msecs);
 }
 
 /**

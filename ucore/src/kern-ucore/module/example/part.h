@@ -22,9 +22,9 @@
 #include <ide.h>
 
 /* disk/part_dos.c */
-int get_partition_info_dos (struct ide_device * dev_desc, int part, ucore_disk_partition_t *info);
-void print_part_dos (struct ide_device *dev_desc);
-int   test_part_dos (struct ide_device *dev_desc);
+int get_partition_info_dos(struct ide_device *dev_desc, int part,
+			   ucore_disk_partition_t * info);
+void print_part_dos(struct ide_device *dev_desc);
+int test_part_dos(struct ide_device *dev_desc);
 
 #endif
-

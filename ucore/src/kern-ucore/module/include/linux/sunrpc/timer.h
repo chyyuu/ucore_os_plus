@@ -18,7 +18,6 @@ struct rpc_rtt {
 	int ntimeouts[5];	/* Number of timeouts for the last request */
 };
 
-
 extern void rpc_init_rtt(struct rpc_rtt *rt, unsigned long timeo);
 extern void rpc_update_rtt(struct rpc_rtt *rt, unsigned timer, long m);
 extern unsigned long rpc_calc_rto(struct rpc_rtt *rt, unsigned timer);
@@ -28,7 +27,7 @@ static inline void rpc_set_timeo(struct rpc_rtt *rt, int timer, int ntimeo)
 	int *t;
 	if (!timer)
 		return;
-	t = &rt->ntimeouts[timer-1];
+	t = &rt->ntimeouts[timer - 1];
 	if (ntimeo < *t) {
 		if (*t > 0)
 			(*t)--;
@@ -43,7 +42,7 @@ static inline int rpc_ntimeo(struct rpc_rtt *rt, int timer)
 {
 	if (!timer)
 		return 0;
-	return rt->ntimeouts[timer-1];
+	return rt->ntimeouts[timer - 1];
 }
 
 #endif /* _LINUX_SUNRPC_TIMER_H */

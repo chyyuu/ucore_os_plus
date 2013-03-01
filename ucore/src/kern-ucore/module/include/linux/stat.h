@@ -60,19 +60,19 @@
 #include <linux/time.h>
 
 struct kstat {
-	u64		ino;
-	dev_t		dev;
-	umode_t		mode;
-	unsigned int	nlink;
-	uid_t		uid;
-	gid_t		gid;
-	dev_t		rdev;
-	loff_t		size;
-	struct timespec  atime;
-	struct timespec	mtime;
-	struct timespec	ctime;
-	unsigned long	blksize;
-	unsigned long long	blocks;
+	u64 ino;
+	dev_t dev;
+	umode_t mode;
+	unsigned int nlink;
+	uid_t uid;
+	gid_t gid;
+	dev_t rdev;
+	loff_t size;
+	struct timespec atime;
+	struct timespec mtime;
+	struct timespec ctime;
+	unsigned long blksize;
+	unsigned long long blocks;
 };
 
 #endif

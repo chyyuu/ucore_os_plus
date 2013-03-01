@@ -9,8 +9,8 @@
  *     This is hacked only because 'do_fork' needs it...
  */
 struct trapframe {
-	int (*fn)(void*);
-	void* arg;
+	int (*fn) (void *);
+	void *arg;
 };
 
 #define local_intr_enable_hw  intr_enable()

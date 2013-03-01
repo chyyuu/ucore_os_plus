@@ -15,9 +15,8 @@
  * @vq_ops: the operations for this virtqueue (see below).
  * @priv: a pointer for the virtqueue implementation to use.
  */
-struct virtqueue
-{
-	void (*callback)(struct virtqueue *vq);
+struct virtqueue {
+	void (*callback) (struct virtqueue * vq);
 	struct virtio_device *vdev;
 	struct virtqueue_ops *vq_ops;
 	void *priv;
@@ -56,18 +55,16 @@ struct virtqueue
  * All operations can be called in any context.
  */
 struct virtqueue_ops {
-	int (*add_buf)(struct virtqueue *vq,
-		       struct scatterlist sg[],
-		       unsigned int out_num,
-		       unsigned int in_num,
-		       void *data);
+	int (*add_buf) (struct virtqueue * vq,
+			struct scatterlist sg[],
+			unsigned int out_num, unsigned int in_num, void *data);
 
-	void (*kick)(struct virtqueue *vq);
+	void (*kick) (struct virtqueue * vq);
 
-	void *(*get_buf)(struct virtqueue *vq, unsigned int *len);
+	void *(*get_buf) (struct virtqueue * vq, unsigned int *len);
 
-	void (*disable_cb)(struct virtqueue *vq);
-	bool (*enable_cb)(struct virtqueue *vq);
+	void (*disable_cb) (struct virtqueue * vq);
+	 bool(*enable_cb) (struct virtqueue * vq);
 };
 
 /**
@@ -79,8 +76,7 @@ struct virtqueue_ops {
  * @features: the features supported by both driver and device.
  * @priv: private pointer for the driver's use.
  */
-struct virtio_device
-{
+struct virtio_device {
 	int index;
 	struct device dev;
 	struct virtio_device_id id;
@@ -110,9 +106,9 @@ struct virtio_driver {
 	const struct virtio_device_id *id_table;
 	const unsigned int *feature_table;
 	unsigned int feature_table_size;
-	int (*probe)(struct virtio_device *dev);
-	void (*remove)(struct virtio_device *dev);
-	void (*config_changed)(struct virtio_device *dev);
+	int (*probe) (struct virtio_device * dev);
+	void (*remove) (struct virtio_device * dev);
+	void (*config_changed) (struct virtio_device * dev);
 };
 
 int register_virtio_driver(struct virtio_driver *drv);

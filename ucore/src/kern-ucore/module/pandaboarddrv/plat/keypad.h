@@ -24,7 +24,7 @@ struct omap_kp_platform_data {
 	bool rep;
 	unsigned long delay;
 	bool dbounce;
-	/* specific to OMAP242x*/
+	/* specific to OMAP242x */
 	unsigned int *row_gpios;
 	unsigned int *col_gpios;
 };
@@ -47,6 +47,4 @@ struct omap_kp_platform_data {
 #error Group bits in conflict with keynum bits
 #endif
 
-
 #endif
-

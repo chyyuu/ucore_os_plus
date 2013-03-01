@@ -15,21 +15,21 @@
 
 #include <linux/types.h>
 
-#define RTF_DEFAULT	0x00010000	/* default - learned via ND	*/
+#define RTF_DEFAULT	0x00010000	/* default - learned via ND     */
 #define RTF_ALLONLINK	0x00020000	/* (deprecated and will be removed)
 					   fallback, no routers on link */
-#define RTF_ADDRCONF	0x00040000	/* addrconf route - RA		*/
-#define RTF_PREFIX_RT	0x00080000	/* A prefix only route - RA	*/
-#define RTF_ANYCAST	0x00100000	/* Anycast			*/
+#define RTF_ADDRCONF	0x00040000	/* addrconf route - RA          */
+#define RTF_PREFIX_RT	0x00080000	/* A prefix only route - RA     */
+#define RTF_ANYCAST	0x00100000	/* Anycast                      */
 
-#define RTF_NONEXTHOP	0x00200000	/* route with no nexthop	*/
+#define RTF_NONEXTHOP	0x00200000	/* route with no nexthop        */
 #define RTF_EXPIRES	0x00400000
 
-#define RTF_ROUTEINFO	0x00800000	/* route information - RA	*/
+#define RTF_ROUTEINFO	0x00800000	/* route information - RA       */
 
-#define RTF_CACHE	0x01000000	/* cache entry			*/
-#define RTF_FLOW	0x02000000	/* flow significant route	*/
-#define RTF_POLICY	0x04000000	/* policy route			*/
+#define RTF_CACHE	0x01000000	/* cache entry                  */
+#define RTF_FLOW	0x02000000	/* flow significant route       */
+#define RTF_POLICY	0x04000000	/* policy route                 */
 
 #define RTF_PREF(pref)	((pref) << 27)
 #define RTF_PREF_MASK	0x18000000
@@ -42,16 +42,16 @@
 #endif
 
 struct in6_rtmsg {
-	struct in6_addr		rtmsg_dst;
-	struct in6_addr		rtmsg_src;
-	struct in6_addr		rtmsg_gateway;
-	__u32			rtmsg_type;
-	__u16			rtmsg_dst_len;
-	__u16			rtmsg_src_len;
-	__u32			rtmsg_metric;
-	unsigned long		rtmsg_info;
-        __u32			rtmsg_flags;
-	int			rtmsg_ifindex;
+	struct in6_addr rtmsg_dst;
+	struct in6_addr rtmsg_src;
+	struct in6_addr rtmsg_gateway;
+	__u32 rtmsg_type;
+	__u16 rtmsg_dst_len;
+	__u16 rtmsg_src_len;
+	__u32 rtmsg_metric;
+	unsigned long rtmsg_info;
+	__u32 rtmsg_flags;
+	int rtmsg_ifindex;
 };
 
 #define RTMSG_NEWDEVICE		0x11

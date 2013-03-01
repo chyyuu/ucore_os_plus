@@ -30,8 +30,8 @@ extern int omap_register_i2c_bus(int bus_id, u32 clkrate,
 				 unsigned len);
 #else
 static inline int omap_register_i2c_bus(int bus_id, u32 clkrate,
-				 struct i2c_board_info const *info,
-				 unsigned len)
+					struct i2c_board_info const *info,
+					unsigned len)
 {
 	return 0;
 }
@@ -46,8 +46,8 @@ static inline int omap_register_i2c_bus(int bus_id, u32 clkrate,
  * actually configured at runtime by the device driver.
  */
 struct omap_i2c_dev_attr {
-	u8	fifo_depth;
-	u32	flags;
+	u8 fifo_depth;
+	u32 flags;
 };
 
 void __init omap1_i2c_mux_pins(int bus_id);

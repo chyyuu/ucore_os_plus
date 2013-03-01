@@ -25,9 +25,9 @@
 #define PNX8XXX_NR_PORTS	2
 
 struct pnx8xxx_port {
-	struct uart_port	port;
-	struct timer_list	timer;
-	unsigned int		old_status;
+	struct uart_port port;
+	struct timer_list timer;
+	unsigned int old_status;
 };
 
 /* register offsets */

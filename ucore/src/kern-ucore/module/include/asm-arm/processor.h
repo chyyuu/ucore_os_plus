@@ -29,27 +29,27 @@
 #endif
 
 union debug_insn {
-	u32	arm;
-	u16	thumb;
+	u32 arm;
+	u16 thumb;
 };
 
 struct debug_entry {
-	u32			address;
-	union debug_insn	insn;
+	u32 address;
+	union debug_insn insn;
 };
 
 struct debug_info {
-	int			nsaved;
-	struct debug_entry	bp[2];
+	int nsaved;
+	struct debug_entry bp[2];
 };
 
 struct thread_struct {
-							/* fault info	  */
-	unsigned long		address;
-	unsigned long		trap_no;
-	unsigned long		error_code;
-							/* debugging	  */
-	struct debug_info	debug;
+	/* fault info     */
+	unsigned long address;
+	unsigned long trap_no;
+	unsigned long error_code;
+	/* debugging      */
+	struct debug_info debug;
 };
 
 #define INIT_THREAD  {	}
@@ -95,7 +95,7 @@ unsigned long get_wchan(struct task_struct *p);
 /*
  * Create a new kernel thread
  */
-extern int kernel_thread(int (*fn)(void *), void *arg, unsigned long flags);
+extern int kernel_thread(int (*fn) (void *), void *arg, unsigned long flags);
 
 #define task_pt_regs(p) \
 	((struct pt_regs *)(THREAD_START_SP + task_stack_page(p)) - 1)
@@ -111,11 +111,8 @@ extern int kernel_thread(int (*fn)(void *), void *arg, unsigned long flags);
 #define ARCH_HAS_PREFETCH
 static inline void prefetch(const void *ptr)
 {
-	__asm__ __volatile__(
-		"pld\t%a0"
-		:
-		: "p" (ptr)
-		: "cc");
+	__asm__ __volatile__("pld\t%a0"::"p"(ptr)
+			     :"cc");
 }
 
 #define ARCH_HAS_PREFETCHW

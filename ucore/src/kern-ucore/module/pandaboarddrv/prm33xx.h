@@ -24,7 +24,6 @@
 #define AM33XX_PRM_REGADDR(inst, reg)                         \
 	AM33XX_L4_WK_IO_ADDRESS(AM33XX_PRM_BASE + (inst) + (reg))
 
-
 /* PRM instances */
 #define AM33XX_PRM_OCP_SOCKET_MOD	0x0B00
 #define AM33XX_PRM_PER_MOD		0x0C00
@@ -122,8 +121,8 @@ extern void am33xx_prm_write_reg(u32 val, s16 inst, u16 idx);
 extern u32 am33xx_prm_rmw_reg_bits(u32 mask, u32 bits, s16 inst, s16 idx);
 extern void am33xx_prm_global_warm_sw_reset(void);
 extern int am33xx_prm_is_hardreset_asserted(u8 shift, s16 inst,
-		u16 rstctrl_offs);
+					    u16 rstctrl_offs);
 extern int am33xx_prm_assert_hardreset(u8 shift, s16 inst, u16 rstctrl_offs);
 extern int am33xx_prm_deassert_hardreset(u8 shift, s16 inst,
-		u16 rstctrl_offs, u16 rstst_offs);
+					 u16 rstctrl_offs, u16 rstst_offs);
 #endif

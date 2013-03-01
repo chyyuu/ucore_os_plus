@@ -33,8 +33,8 @@
 
 /* Platform specific configuration */
 struct omap_mcbsp_ops {
-	void (*request)(unsigned int);
-	void (*free)(unsigned int);
+	void (*request) (unsigned int);
+	void (*free) (unsigned int);
 };
 
 struct omap_mcbsp_platform_data {
@@ -44,11 +44,13 @@ struct omap_mcbsp_platform_data {
 	u8 reg_step;
 
 	/* McBSP platform and instance specific features */
-	bool has_wakeup; /* Wakeup capability */
-	bool has_ccr; /* Transceiver has configuration control registers */
-	int (*enable_st_clock)(unsigned int, bool);
-	int (*set_clk_src)(struct device *dev, struct clk *clk, const char *src);
-	int (*mux_signal)(struct device *dev, const char *signal, const char *src);
+	bool has_wakeup;	/* Wakeup capability */
+	bool has_ccr;		/* Transceiver has configuration control registers */
+	int (*enable_st_clock) (unsigned int, bool);
+	int (*set_clk_src) (struct device * dev, struct clk * clk,
+			    const char *src);
+	int (*mux_signal) (struct device * dev, const char *signal,
+			   const char *src);
 };
 
 /**

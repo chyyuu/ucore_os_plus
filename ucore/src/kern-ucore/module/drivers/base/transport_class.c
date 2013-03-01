@@ -48,6 +48,7 @@ int transport_class_register(struct transport_class *tclass)
 {
 	return class_register(&tclass->class);
 }
+
 EXPORT_SYMBOL_GPL(transport_class_register);
 
 /**
@@ -62,6 +63,7 @@ void transport_class_unregister(struct transport_class *tclass)
 {
 	class_unregister(&tclass->class);
 }
+
 EXPORT_SYMBOL_GPL(transport_class_unregister);
 
 static int anon_transport_dummy_function(struct transport_container *tc,
@@ -96,6 +98,7 @@ int anon_transport_class_register(struct anon_transport_class *atc)
 	atc->tclass.remove = anon_transport_dummy_function;
 	return 0;
 }
+
 EXPORT_SYMBOL_GPL(anon_transport_class_register);
 
 /**
@@ -111,14 +114,15 @@ void anon_transport_class_unregister(struct anon_transport_class *atc)
 	if (unlikely(attribute_container_unregister(&atc->container)))
 		BUG();
 }
+
 EXPORT_SYMBOL_GPL(anon_transport_class_unregister);
 
 static int transport_setup_classdev(struct attribute_container *cont,
-				    struct device *dev,
-				    struct device *classdev)
+				    struct device *dev, struct device *classdev)
 {
 	struct transport_class *tclass = class_to_transport_class(cont->class);
-	struct transport_container *tcont = attribute_container_to_transport_container(cont);
+	struct transport_container *tcont =
+	    attribute_container_to_transport_container(cont);
 
 	if (tclass->setup)
 		tclass->setup(tcont, dev, classdev);
@@ -145,6 +149,7 @@ void transport_setup_device(struct device *dev)
 {
 	attribute_container_add_device(dev, transport_setup_classdev);
 }
+
 EXPORT_SYMBOL_GPL(transport_setup_device);
 
 static int transport_add_class_device(struct attribute_container *cont,
@@ -152,15 +157,14 @@ static int transport_add_class_device(struct attribute_container *cont,
 				      struct device *classdev)
 {
 	int error = attribute_container_add_class_device(classdev);
-	struct transport_container *tcont = 
-		attribute_container_to_transport_container(cont);
+	struct transport_container *tcont =
+	    attribute_container_to_transport_container(cont);
 
 	if (!error && tcont->statistics)
 		error = sysfs_create_group(&classdev->kobj, tcont->statistics);
 
 	return error;
 }
-
 
 /**
  * transport_add_device - declare a new dev for transport class association
@@ -177,14 +181,15 @@ void transport_add_device(struct device *dev)
 {
 	attribute_container_device_trigger(dev, transport_add_class_device);
 }
+
 EXPORT_SYMBOL_GPL(transport_add_device);
 
 static int transport_configure(struct attribute_container *cont,
-			       struct device *dev,
-			       struct device *cdev)
+			       struct device *dev, struct device *cdev)
 {
 	struct transport_class *tclass = class_to_transport_class(cont->class);
-	struct transport_container *tcont = attribute_container_to_transport_container(cont);
+	struct transport_container *tcont =
+	    attribute_container_to_transport_container(cont);
 
 	if (tclass->configure)
 		tclass->configure(tcont, dev, cdev);
@@ -208,14 +213,15 @@ void transport_configure_device(struct device *dev)
 {
 	attribute_container_device_trigger(dev, transport_configure);
 }
+
 EXPORT_SYMBOL_GPL(transport_configure_device);
 
 static int transport_remove_classdev(struct attribute_container *cont,
 				     struct device *dev,
 				     struct device *classdev)
 {
-	struct transport_container *tcont = 
-		attribute_container_to_transport_container(cont);
+	struct transport_container *tcont =
+	    attribute_container_to_transport_container(cont);
 	struct transport_class *tclass = class_to_transport_class(cont->class);
 
 	if (tclass->remove)
@@ -229,7 +235,6 @@ static int transport_remove_classdev(struct attribute_container *cont,
 
 	return 0;
 }
-
 
 /**
  * transport_remove_device - remove the visibility of a device
@@ -247,18 +252,18 @@ void transport_remove_device(struct device *dev)
 {
 	attribute_container_device_trigger(dev, transport_remove_classdev);
 }
+
 EXPORT_SYMBOL_GPL(transport_remove_device);
 
 static void transport_destroy_classdev(struct attribute_container *cont,
-				      struct device *dev,
-				      struct device *classdev)
+				       struct device *dev,
+				       struct device *classdev)
 {
 	struct transport_class *tclass = class_to_transport_class(cont->class);
 
 	if (tclass->remove != anon_transport_dummy_function)
 		put_device(classdev);
 }
-
 
 /**
  * transport_destroy_device - destroy a removed device
@@ -276,4 +281,5 @@ void transport_destroy_device(struct device *dev)
 {
 	attribute_container_remove_device(dev, transport_destroy_classdev);
 }
+
 EXPORT_SYMBOL_GPL(transport_destroy_device);

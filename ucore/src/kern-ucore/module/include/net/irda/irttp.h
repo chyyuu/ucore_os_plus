@@ -32,8 +32,8 @@
 #include <linux/spinlock.h>
 
 #include <net/irda/irda.h>
-#include <net/irda/irlmp.h>		/* struct lsap_cb */
-#include <net/irda/qos.h>		/* struct qos_info */
+#include <net/irda/irlmp.h>	/* struct lsap_cb */
+#include <net/irda/qos.h>	/* struct qos_info */
 #include <net/irda/irqueue.h>
 
 #define TTP_MAX_CONNECTIONS    LM_MAX_CONNECTIONS
@@ -101,69 +101,69 @@
  *  connection.
  */
 struct tsap_cb {
-	irda_queue_t q;            /* Must be first */
-	magic_t magic;        /* Just in case */
+	irda_queue_t q;		/* Must be first */
+	magic_t magic;		/* Just in case */
 
-	__u8 stsap_sel;       /* Source TSAP */
-	__u8 dtsap_sel;       /* Destination TSAP */
+	__u8 stsap_sel;		/* Source TSAP */
+	__u8 dtsap_sel;		/* Destination TSAP */
 
-	struct lsap_cb *lsap; /* Corresponding LSAP to this TSAP */
+	struct lsap_cb *lsap;	/* Corresponding LSAP to this TSAP */
 
-	__u8 connected;       /* TSAP connected */
-	 
-	__u8 initial_credit;  /* Initial credit to give peer */
+	__u8 connected;		/* TSAP connected */
 
-        int avail_credit;    /* Available credit to return to peer */
-	int remote_credit;   /* Credit held by peer TTP entity */
-	int send_credit;     /* Credit held by local TTP entity */
-	
-	struct sk_buff_head tx_queue; /* Frames to be transmitted */
-	struct sk_buff_head rx_queue; /* Received frames */
+	__u8 initial_credit;	/* Initial credit to give peer */
+
+	int avail_credit;	/* Available credit to return to peer */
+	int remote_credit;	/* Credit held by peer TTP entity */
+	int send_credit;	/* Credit held by local TTP entity */
+
+	struct sk_buff_head tx_queue;	/* Frames to be transmitted */
+	struct sk_buff_head rx_queue;	/* Received frames */
 	struct sk_buff_head rx_fragments;
 	int tx_queue_lock;
 	int rx_queue_lock;
 	spinlock_t lock;
 
-	notify_t notify;       /* Callbacks to client layer */
+	notify_t notify;	/* Callbacks to client layer */
 
 	struct net_device_stats stats;
-	struct timer_list todo_timer; 
+	struct timer_list todo_timer;
 
-	__u32 max_seg_size;     /* Max data that fit into an IrLAP frame */
-	__u8  max_header_size;
+	__u32 max_seg_size;	/* Max data that fit into an IrLAP frame */
+	__u8 max_header_size;
 
-	int   rx_sdu_busy;     /* RxSdu.busy */
-	__u32 rx_sdu_size;     /* Current size of a partially received frame */
-	__u32 rx_max_sdu_size; /* Max receive user data size */
+	int rx_sdu_busy;	/* RxSdu.busy */
+	__u32 rx_sdu_size;	/* Current size of a partially received frame */
+	__u32 rx_max_sdu_size;	/* Max receive user data size */
 
-	int tx_sdu_busy;       /* TxSdu.busy */
-	__u32 tx_max_sdu_size; /* Max transmit user data size */
+	int tx_sdu_busy;	/* TxSdu.busy */
+	__u32 tx_max_sdu_size;	/* Max transmit user data size */
 
-	int close_pend;        /* Close, but disconnect_pend */
-	unsigned long disconnect_pend; /* Disconnect, but still data to send */
+	int close_pend;		/* Close, but disconnect_pend */
+	unsigned long disconnect_pend;	/* Disconnect, but still data to send */
 	struct sk_buff *disconnect_skb;
 };
 
 struct irttp_cb {
-	magic_t    magic;	
+	magic_t magic;
 	hashbin_t *tsaps;
 };
 
-int  irttp_init(void);
+int irttp_init(void);
 void irttp_cleanup(void);
 
-struct tsap_cb *irttp_open_tsap(__u8 stsap_sel, int credit, notify_t *notify);
+struct tsap_cb *irttp_open_tsap(__u8 stsap_sel, int credit, notify_t * notify);
 int irttp_close_tsap(struct tsap_cb *self);
 
 int irttp_data_request(struct tsap_cb *self, struct sk_buff *skb);
 int irttp_udata_request(struct tsap_cb *self, struct sk_buff *skb);
 
-int irttp_connect_request(struct tsap_cb *self, __u8 dtsap_sel, 
+int irttp_connect_request(struct tsap_cb *self, __u8 dtsap_sel,
 			  __u32 saddr, __u32 daddr,
-			  struct qos_info *qos, __u32 max_sdu_size, 
+			  struct qos_info *qos, __u32 max_sdu_size,
 			  struct sk_buff *userdata);
-int irttp_connect_response(struct tsap_cb *self, __u32 max_sdu_size, 
-			    struct sk_buff *userdata);
+int irttp_connect_response(struct tsap_cb *self, __u32 max_sdu_size,
+			   struct sk_buff *userdata);
 int irttp_disconnect_request(struct tsap_cb *self, struct sk_buff *skb,
 			     int priority);
 void irttp_flow_request(struct tsap_cb *self, LOCAL_FLOW flow);
@@ -201,10 +201,9 @@ static inline int irttp_is_primary(struct tsap_cb *self)
 {
 	if ((self == NULL) ||
 	    (self->lsap == NULL) ||
-	    (self->lsap->lap == NULL) ||
-	    (self->lsap->lap->irlap == NULL))
+	    (self->lsap->lap == NULL) || (self->lsap->lap->irlap == NULL))
 		return -2;
-	return(irlap_is_primary(self->lsap->lap->irlap));
+	return (irlap_is_primary(self->lsap->lap->irlap));
 }
 
 #endif /* IRTTP_H */

@@ -33,17 +33,16 @@ struct internal_container {
 static void internal_container_klist_get(struct klist_node *n)
 {
 	struct internal_container *ic =
-		container_of(n, struct internal_container, node);
+	    container_of(n, struct internal_container, node);
 	get_device(&ic->classdev);
 }
 
 static void internal_container_klist_put(struct klist_node *n)
 {
 	struct internal_container *ic =
-		container_of(n, struct internal_container, node);
+	    container_of(n, struct internal_container, node);
 	put_device(&ic->classdev);
 }
-
 
 /**
  * attribute_container_classdev_to_container - given a classdev, return the container
@@ -52,13 +51,15 @@ static void internal_container_klist_put(struct klist_node *n)
  *
  * Returns the container associated with this classdev.
  */
-struct attribute_container *
-attribute_container_classdev_to_container(struct device *classdev)
+struct attribute_container *attribute_container_classdev_to_container(struct
+								      device
+								      *classdev)
 {
 	struct internal_container *ic =
-		container_of(classdev, struct internal_container, classdev);
+	    container_of(classdev, struct internal_container, classdev);
 	return ic->cont;
 }
+
 EXPORT_SYMBOL_GPL(attribute_container_classdev_to_container);
 
 static LIST_HEAD(attribute_container_list);
@@ -71,19 +72,19 @@ static DEFINE_MUTEX(attribute_container_mutex);
  * @cont: The container to register.  This must be allocated by the
  *        callee and should also be zeroed by it.
  */
-int
-attribute_container_register(struct attribute_container *cont)
+int attribute_container_register(struct attribute_container *cont)
 {
 	INIT_LIST_HEAD(&cont->node);
-	klist_init(&cont->containers,internal_container_klist_get,
+	klist_init(&cont->containers, internal_container_klist_get,
 		   internal_container_klist_put);
-		
+
 	mutex_lock(&attribute_container_mutex);
 	list_add_tail(&cont->node, &attribute_container_list);
 	mutex_unlock(&attribute_container_mutex);
 
 	return 0;
 }
+
 EXPORT_SYMBOL_GPL(attribute_container_register);
 
 /**
@@ -91,8 +92,7 @@ EXPORT_SYMBOL_GPL(attribute_container_register);
  *
  * @cont: previously registered container to remove
  */
-int
-attribute_container_unregister(struct attribute_container *cont)
+int attribute_container_unregister(struct attribute_container *cont)
 {
 	int retval = -EBUSY;
 	mutex_lock(&attribute_container_mutex);
@@ -101,19 +101,20 @@ attribute_container_unregister(struct attribute_container *cont)
 		goto out;
 	retval = 0;
 	list_del(&cont->node);
- out:
+out:
 	spin_unlock(&cont->containers.k_lock);
 	mutex_unlock(&attribute_container_mutex);
 	return retval;
-		
+
 }
+
 EXPORT_SYMBOL_GPL(attribute_container_unregister);
 
 /* private function used as class release */
 static void attribute_container_release(struct device *classdev)
 {
-	struct internal_container *ic 
-		= container_of(classdev, struct internal_container, classdev);
+	struct internal_container *ic
+	    = container_of(classdev, struct internal_container, classdev);
 	struct device *dev = classdev->parent;
 
 	kfree(ic);
@@ -140,9 +141,8 @@ static void attribute_container_release(struct device *classdev)
  */
 void
 attribute_container_add_device(struct device *dev,
-			       int (*fn)(struct attribute_container *,
-					 struct device *,
-					 struct device *))
+			       int (*fn) (struct attribute_container *,
+					  struct device *, struct device *))
 {
 	struct attribute_container *cont;
 
@@ -158,7 +158,8 @@ attribute_container_add_device(struct device *dev,
 
 		ic = kzalloc(sizeof(*ic), GFP_KERNEL);
 		if (!ic) {
-			dev_printk(KERN_ERR, dev, "failed to allocate class container\n");
+			dev_printk(KERN_ERR, dev,
+				   "failed to allocate class container\n");
 			continue;
 		}
 
@@ -186,7 +187,6 @@ attribute_container_add_device(struct device *dev,
 		n ? container_of(n, typeof(*pos), member) : \
 			({ klist_iter_exit(iter) ; NULL; }); \
 	}) ) != NULL; )
-			
 
 /**
  * attribute_container_remove_device - make device eligible for removal.
@@ -205,9 +205,8 @@ attribute_container_add_device(struct device *dev,
  */
 void
 attribute_container_remove_device(struct device *dev,
-				  void (*fn)(struct attribute_container *,
-					     struct device *,
-					     struct device *))
+				  void (*fn) (struct attribute_container *,
+					      struct device *, struct device *))
 {
 	struct attribute_container *cont;
 
@@ -248,10 +247,9 @@ attribute_container_remove_device(struct device *dev,
  * container, then use attribute_container_trigger() instead.
  */
 void
-attribute_container_device_trigger(struct device *dev, 
-				   int (*fn)(struct attribute_container *,
-					     struct device *,
-					     struct device *))
+attribute_container_device_trigger(struct device *dev,
+				   int (*fn) (struct attribute_container *,
+					      struct device *, struct device *))
 {
 	struct attribute_container *cont;
 
@@ -290,8 +288,8 @@ attribute_container_device_trigger(struct device *dev,
  */
 void
 attribute_container_trigger(struct device *dev,
-			    int (*fn)(struct attribute_container *,
-				      struct device *))
+			    int (*fn) (struct attribute_container *,
+				       struct device *))
 {
 	struct attribute_container *cont;
 
@@ -311,11 +309,10 @@ attribute_container_trigger(struct device *dev,
  * This simply creates all the class device sysfs files from the
  * attributes listed in the container
  */
-int
-attribute_container_add_attrs(struct device *classdev)
+int attribute_container_add_attrs(struct device *classdev)
 {
 	struct attribute_container *cont =
-		attribute_container_classdev_to_container(classdev);
+	    attribute_container_classdev_to_container(classdev);
 	struct device_attribute **attrs = cont->attrs;
 	int i, error;
 
@@ -345,8 +342,7 @@ attribute_container_add_attrs(struct device *classdev)
  * attribute containers, namely add the classdev to the system and then
  * create the attribute files
  */
-int
-attribute_container_add_class_device(struct device *classdev)
+int attribute_container_add_class_device(struct device *classdev)
 {
 	int error = device_add(classdev);
 	if (error)
@@ -374,11 +370,10 @@ attribute_container_add_class_device_adapter(struct attribute_container *cont,
  * @classdev: The class device to remove the files from
  *
  */
-void
-attribute_container_remove_attrs(struct device *classdev)
+void attribute_container_remove_attrs(struct device *classdev)
 {
 	struct attribute_container *cont =
-		attribute_container_classdev_to_container(classdev);
+	    attribute_container_classdev_to_container(classdev);
 	struct device_attribute **attrs = cont->attrs;
 	int i;
 
@@ -387,7 +382,7 @@ attribute_container_remove_attrs(struct device *classdev)
 
 	if (cont->grp) {
 		sysfs_remove_group(&classdev->kobj, cont->grp);
-		return ;
+		return;
 	}
 
 	for (i = 0; attrs[i]; i++)
@@ -402,8 +397,7 @@ attribute_container_remove_attrs(struct device *classdev)
  * This function simply removes all the attribute files and then calls
  * device_del.
  */
-void
-attribute_container_class_device_del(struct device *classdev)
+void attribute_container_class_device_del(struct device *classdev)
 {
 	attribute_container_remove_attrs(classdev);
 	device_del(classdev);
@@ -418,9 +412,8 @@ attribute_container_class_device_del(struct device *classdev)
  * Looks up the device in the container's list of class devices and returns
  * the corresponding class_device.
  */
-struct device *
-attribute_container_find_class_device(struct attribute_container *cont,
-				      struct device *dev)
+struct device *attribute_container_find_class_device(struct attribute_container
+						     *cont, struct device *dev)
 {
 	struct device *cdev = NULL;
 	struct internal_container *ic;
@@ -437,4 +430,5 @@ attribute_container_find_class_device(struct attribute_container *cont,
 
 	return cdev;
 }
+
 EXPORT_SYMBOL_GPL(attribute_container_find_class_device);

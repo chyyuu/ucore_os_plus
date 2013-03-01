@@ -12,7 +12,7 @@
  * Translate a "termio" structure into a "termios". Ugh.
  */
 static inline int user_termio_to_kernel_termios(struct ktermios *termios,
-						struct termio __user *termio)
+						struct termio __user * termio)
 {
 	unsigned short tmp;
 
@@ -40,21 +40,21 @@ static inline int user_termio_to_kernel_termios(struct ktermios *termios,
 
 	return 0;
 
- fault:
+fault:
 	return -EFAULT;
 }
 
 /*
  * Translate a "termios" structure into a "termio". Ugh.
  */
-static inline int kernel_termios_to_user_termio(struct termio __user *termio,
+static inline int kernel_termios_to_user_termio(struct termio __user * termio,
 						struct ktermios *termios)
 {
 	if (put_user(termios->c_iflag, &termio->c_iflag) < 0 ||
 	    put_user(termios->c_oflag, &termio->c_oflag) < 0 ||
 	    put_user(termios->c_cflag, &termio->c_cflag) < 0 ||
 	    put_user(termios->c_lflag, &termio->c_lflag) < 0 ||
-	    put_user(termios->c_line,  &termio->c_line) < 0 ||
+	    put_user(termios->c_line, &termio->c_line) < 0 ||
 	    copy_to_user(termio->c_cc, termios->c_cc, NCC) != 0)
 		return -EFAULT;
 
@@ -72,6 +72,6 @@ static inline int kernel_termios_to_user_termio(struct termio __user *termio,
 #define user_termios_to_kernel_termios_1(k, u) copy_from_user(k, u, sizeof(struct termios))
 #define kernel_termios_to_user_termios_1(u, k) copy_to_user(u, k, sizeof(struct termios))
 
-#endif	/* __ARCH_TERMIO_GETPUT */
+#endif /* __ARCH_TERMIO_GETPUT */
 
 #endif /* _ASM_GENERIC_TERMIOS_H */

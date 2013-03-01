@@ -31,14 +31,14 @@
 #define AIP16MBDHB      0X1FAC
 #define AIPFID		0X1FBA
 
-#define ADAPTRESET      0x1     /* Control Adapter reset (add to base) */
-#define ADAPTRESETREL   0x2     /* Release Adapter from reset ( """)  */
-#define ADAPTINTREL	0x3 	/* Adapter interrupt release */
+#define ADAPTRESET      0x1	/* Control Adapter reset (add to base) */
+#define ADAPTRESETREL   0x2	/* Release Adapter from reset ( """)  */
+#define ADAPTINTREL	0x3	/* Adapter interrupt release */
 
 #define GLOBAL_INT_ENABLE 0x02f0
 
 /* MMIO bits 0-4 select register */
-#define RRR_EVEN       0x00 /* Shared RAM relocation registers - even and odd */
+#define RRR_EVEN       0x00	/* Shared RAM relocation registers - even and odd */
 /* Used to set the starting address of shared RAM  */
 /* Bits 1 through 7 of this register map to bits 13 through 19 of the shared
    RAM address.*/
@@ -46,56 +46,53 @@
 #define RRR_ODD         0x01
 /* Bits 2 and 3 of this register can be read to determine shared RAM size */
 /* 00 for 8k, 01 for 16k, 10 for 32k, 11 for 64k  */
-#define WRBR_EVEN       0x02    /* Write region base registers - even and odd */
+#define WRBR_EVEN       0x02	/* Write region base registers - even and odd */
 #define WRBR_ODD        0x03
-#define WWOR_EVEN       0x04    /* Write window open registers - even and odd */
+#define WWOR_EVEN       0x04	/* Write window open registers - even and odd */
 #define WWOR_ODD        0x05
-#define WWCR_EVEN       0x06   /* Write window close registers - even and odd */
+#define WWCR_EVEN       0x06	/* Write window close registers - even and odd */
 #define WWCR_ODD        0x07
 
 /* Interrupt status registers - PC system  - even and odd */
 #define ISRP_EVEN       0x08
 
-#define TCR_INT    0x10    /* Bit 4 - Timer interrupt.  The TVR_EVEN timer has
-                                                                   expired. */
-#define ERR_INT	   0x08    /* Bit 3 - Error interrupt.  The adapter has had an
-                                                            internal error. */
-#define ACCESS_INT 0x04    /* Bit 2 - Access interrupt.  You have attempted to
-				      write to an invalid area of shared RAM
-				      or an invalid register within the MMIO. */
+#define TCR_INT    0x10		/* Bit 4 - Timer interrupt.  The TVR_EVEN timer has
+				   expired. */
+#define ERR_INT	   0x08		/* Bit 3 - Error interrupt.  The adapter has had an
+				   internal error. */
+#define ACCESS_INT 0x04		/* Bit 2 - Access interrupt.  You have attempted to
+				   write to an invalid area of shared RAM
+				   or an invalid register within the MMIO. */
 /* In addition, the following bits within ISRP_EVEN can be turned on or off   */
 /* by you to control the interrupt processing:   */
-#define INT_ENABLE 0x40 /* Bit 6 - Interrupt enable.  If 0, no interrupts will
-                                   occur.  If 1, interrupts will occur normally.
-                                                         Normally set to 1.  */
+#define INT_ENABLE 0x40		/* Bit 6 - Interrupt enable.  If 0, no interrupts will
+				   occur.  If 1, interrupts will occur normally.
+				   Normally set to 1.  */
 /* Bit 0 - Primary or alternate adapter.  Set to zero if this adapter is the
 		primary adapter, 1 if this adapter is the alternate adapter. */
 
-
 #define ISRP_ODD        0x09
 
-#define ADAP_CHK_INT 0x40 /* Bit 6 - Adapter check.  the adapter has
-                             encountered a serious problem and has closed
-                             itself.  Whoa.  */
-#define SRB_RESP_INT 0x20 /* Bit 5 - SRB response.  The adapter has accepted
-                             an SRB request and set the return code within
-                             the SRB. */
-#define ASB_FREE_INT 0x10 /* Bit 4 - ASB free.  The adapter has read the ASB
-                             and this area can be safely reused. This interrupt
-                             is only used if your application has set the ASB
-                             free request bit in ISRA_ODD or if an error was
-                             detected in your response. */
-#define ARB_CMD_INT  0x08 /* Bit 3 - ARB command.  The adapter has given you a
-                             command for action.  The command is located in the
-                             ARB area of shared memory. */
-#define SSB_RESP_INT 0x04 /* Bit 2 - SSB response.  The adapter has posted a
-                             response to your SRB (the response is located in
-                             the SSB area of shared memory). */
+#define ADAP_CHK_INT 0x40	/* Bit 6 - Adapter check.  the adapter has
+				   encountered a serious problem and has closed
+				   itself.  Whoa.  */
+#define SRB_RESP_INT 0x20	/* Bit 5 - SRB response.  The adapter has accepted
+				   an SRB request and set the return code within
+				   the SRB. */
+#define ASB_FREE_INT 0x10	/* Bit 4 - ASB free.  The adapter has read the ASB
+				   and this area can be safely reused. This interrupt
+				   is only used if your application has set the ASB
+				   free request bit in ISRA_ODD or if an error was
+				   detected in your response. */
+#define ARB_CMD_INT  0x08	/* Bit 3 - ARB command.  The adapter has given you a
+				   command for action.  The command is located in the
+				   ARB area of shared memory. */
+#define SSB_RESP_INT 0x04	/* Bit 2 - SSB response.  The adapter has posted a
+				   response to your SRB (the response is located in
+				   the SSB area of shared memory). */
 /* Bit 1 - Bridge frame forward complete. */
 
-
-
-#define ISRA_EVEN 0x0A /*Interrupt status registers - adapter  - even and odd */
+#define ISRA_EVEN 0x0A		/*Interrupt status registers - adapter  - even and odd */
 /* Bit 7 - Internal parity error (on adapter's internal bus) */
 /* Bit 6 - Timer interrupt pending */
 /* Bit 5 - Access interrupt (attempt by adapter to access illegal address) */
@@ -106,12 +103,12 @@
 /* Bit 0 - Adapter software interrupt mask (prevents internal software ints) */
 
 #define ISRA_ODD        0x0B
-#define CMD_IN_SRB  0x20 /* Bit 5  - Indicates that you have placed a new
-                           command in the SRB and are ready for the adapter to
-                           process the command. */
-#define RESP_IN_ASB 0x10 /* Bit 4 - Indicates that you have placed a response
-                            (an ASB) in the shared RAM which is available for
-                            the adapter's use. */
+#define CMD_IN_SRB  0x20	/* Bit 5  - Indicates that you have placed a new
+				   command in the SRB and are ready for the adapter to
+				   process the command. */
+#define RESP_IN_ASB 0x10	/* Bit 4 - Indicates that you have placed a response
+				   (an ASB) in the shared RAM which is available for
+				   the adapter's use. */
 /* Bit 3 - Indicates that you are ready to put an SRB in the shared RAM, but
 	that a previous command is still pending.  The adapter will then
 	interrupt you when the previous command is completed */
@@ -121,11 +118,11 @@
 #define ARB_FREE 0x2
 #define SSB_FREE 0x1
 
-#define TCR_EVEN        0x0C    /* Timer control registers - even and odd */
+#define TCR_EVEN        0x0C	/* Timer control registers - even and odd */
 #define TCR_ODD         0x0D
-#define TVR_EVEN        0x0E    /* Timer value registers - even and odd */
+#define TVR_EVEN        0x0E	/* Timer value registers - even and odd */
 #define TVR_ODD         0x0F
-#define SRPR_EVEN       0x18    /* Shared RAM paging registers - even and odd */
+#define SRPR_EVEN       0x18	/* Shared RAM paging registers - even and odd */
 #define SRPR_ENABLE_PAGING 0xc0
 #define SRPR_ODD        0x19	/* Not used. */
 #define TOKREAD         0x60
@@ -164,7 +161,7 @@
 #define FIRST_INT 1
 #define NOT_FIRST 2
 
-typedef enum {	CLOSED,	OPEN } open_state;
+typedef enum { CLOSED, OPEN } open_state;
 //staic const char *printstate[] = { "CLOSED","OPEN"};
 
 struct tok_info {
@@ -176,7 +173,7 @@ struct tok_info {
 	unsigned char token_release;
 	unsigned char avail_shared_ram;
 	unsigned char shared_ram_paging;
-        unsigned char turbo;
+	unsigned char turbo;
 	unsigned short dhb_size4mb;
 	unsigned short rbuf_len4;
 	unsigned short rbuf_cnt4;
@@ -190,51 +187,51 @@ struct tok_info {
 	wait_queue_head_t wait_for_reset;
 	unsigned char sram_base;
 	/* Additions by Peter De Schrijver */
-	unsigned char page_mask;          /* mask to select RAM page to Map*/
-	unsigned char mapped_ram_size;    /* size of RAM page */
-	__u32 sram_phys;          /* Shared memory base address */
-	void __iomem *sram_virt;          /* Shared memory base address */
-	void __iomem *init_srb;   /* Initial System Request Block address */
-	void __iomem *srb;                /* System Request Block address */
-	void __iomem *ssb;                /* System Status Block address */
-	void __iomem *arb;                /* Adapter Request Block address */
-	void __iomem *asb;                /* Adapter Status Block address */
-        __u8  init_srb_page;
-        __u8  srb_page;
-        __u8  ssb_page;
-        __u8  arb_page;
-        __u8  asb_page;
+	unsigned char page_mask;	/* mask to select RAM page to Map */
+	unsigned char mapped_ram_size;	/* size of RAM page */
+	__u32 sram_phys;	/* Shared memory base address */
+	void __iomem *sram_virt;	/* Shared memory base address */
+	void __iomem *init_srb;	/* Initial System Request Block address */
+	void __iomem *srb;	/* System Request Block address */
+	void __iomem *ssb;	/* System Status Block address */
+	void __iomem *arb;	/* Adapter Request Block address */
+	void __iomem *asb;	/* Adapter Status Block address */
+	__u8 init_srb_page;
+	__u8 srb_page;
+	__u8 ssb_page;
+	__u8 arb_page;
+	__u8 asb_page;
 	unsigned short exsap_station_id;
 	unsigned short global_int_enable;
 	struct sk_buff *current_skb;
 	struct net_device_stats tr_stats;
 	unsigned char auto_speedsave;
-	open_state			open_status, sap_status;
-	enum {MANUAL, AUTOMATIC}	open_mode;
-	enum {FAIL, RESTART, REOPEN}	open_action;
-	enum {NO, YES}			open_failure;
+	open_state open_status, sap_status;
+	enum { MANUAL, AUTOMATIC } open_mode;
+	enum { FAIL, RESTART, REOPEN } open_action;
+	enum { NO, YES } open_failure;
 	unsigned char readlog_pending;
-	unsigned short adapter_int_enable; /* Adapter-specific int enable */
-        struct timer_list tr_timer;
+	unsigned short adapter_int_enable;	/* Adapter-specific int enable */
+	struct timer_list tr_timer;
 	unsigned char ring_speed;
-	spinlock_t lock;		/* SMP protection */
+	spinlock_t lock;	/* SMP protection */
 };
 
 /* token ring adapter commands */
-#define DIR_INTERRUPT 		0x00 /* struct srb_interrupt */
+#define DIR_INTERRUPT 		0x00	/* struct srb_interrupt */
 #define DIR_MOD_OPEN_PARAMS 	0x01
-#define DIR_OPEN_ADAPTER 	0x03 /* struct dir_open_adapter */
+#define DIR_OPEN_ADAPTER 	0x03	/* struct dir_open_adapter */
 #define DIR_CLOSE_ADAPTER   	0x04
 #define DIR_SET_GRP_ADDR    	0x06
-#define DIR_SET_FUNC_ADDR   	0x07 /* struct srb_set_funct_addr */
-#define DIR_READ_LOG 		0x08 /* struct srb_read_log */
-#define DLC_OPEN_SAP 		0x15 /* struct dlc_open_sap */
+#define DIR_SET_FUNC_ADDR   	0x07	/* struct srb_set_funct_addr */
+#define DIR_READ_LOG 		0x08	/* struct srb_read_log */
+#define DLC_OPEN_SAP 		0x15	/* struct dlc_open_sap */
 #define DLC_CLOSE_SAP       	0x16
-#define DATA_LOST 		0x20 /* struct asb_rec */
-#define REC_DATA 		0x81 /* struct arb_rec_req */
-#define XMIT_DATA_REQ 		0x82 /* struct arb_xmit_req */
-#define DLC_STATUS 		0x83 /* struct arb_dlc_status */
-#define RING_STAT_CHANGE    	0x84 /* struct dlc_open_sap ??? */
+#define DATA_LOST 		0x20	/* struct asb_rec */
+#define REC_DATA 		0x81	/* struct arb_rec_req */
+#define XMIT_DATA_REQ 		0x82	/* struct arb_xmit_req */
+#define DLC_STATUS 		0x83	/* struct arb_dlc_status */
+#define RING_STAT_CHANGE    	0x84	/* struct dlc_open_sap ??? */
 
 /* DIR_OPEN_ADAPTER options */
 #define OPEN_PASS_BCON_MAC 0x0100
@@ -354,7 +351,7 @@ struct asb_rec {
 };
 
 struct rec_buf {
-  	unsigned char reserved1[2];
+	unsigned char reserved1[2];
 	__u16 buf_ptr;
 	unsigned char reserved2;
 	unsigned char receive_fs;

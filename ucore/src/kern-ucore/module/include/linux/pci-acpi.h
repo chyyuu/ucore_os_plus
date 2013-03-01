@@ -58,7 +58,7 @@ static inline acpi_handle acpi_find_root_bridge_handle(struct pci_dev *pdev)
 		pdev = pdev->bus->self;
 
 	return acpi_get_pci_rootbridge_handle(pci_domain_nr(pdev->bus),
-			pdev->bus->number);
+					      pdev->bus->number);
 }
 
 static inline acpi_handle acpi_pci_get_bridge_handle(struct pci_bus *pbus)
@@ -71,13 +71,18 @@ static inline acpi_handle acpi_pci_get_bridge_handle(struct pci_bus *pbus)
 }
 #else
 #if !defined(AE_ERROR)
-typedef u32 		acpi_status;
+typedef u32 acpi_status;
 #define AE_ERROR      	(acpi_status) (0x0001)
-#endif    
+#endif
 static inline acpi_status pci_osc_control_set(acpi_handle handle, u32 flags)
-{return AE_ERROR;}
+{
+	return AE_ERROR;
+}
+
 static inline acpi_handle acpi_find_root_bridge_handle(struct pci_dev *pdev)
-{ return NULL; }
+{
+	return NULL;
+}
 #endif
 
-#endif	/* _PCI_ACPI_H_ */
+#endif /* _PCI_ACPI_H_ */

@@ -152,7 +152,6 @@ extern int tps65010_config_vregs1(unsigned value);
  */
 extern int tps65013_set_low_pwr(unsigned mode);
 
-
 struct i2c_client;
 
 /**
@@ -174,13 +173,12 @@ struct i2c_client;
  * devices in their initial states using these GPIOs.
  */
 struct tps65010_board {
-	int				base;
-	unsigned			outmask;
+	int base;
+	unsigned outmask;
 
-	int		(*setup)(struct i2c_client *client, void *context);
-	int		(*teardown)(struct i2c_client *client, void *context);
-	void		*context;
+	int (*setup) (struct i2c_client * client, void *context);
+	int (*teardown) (struct i2c_client * client, void *context);
+	void *context;
 };
 
 #endif /*  __LINUX_I2C_TPS65010_H */
-

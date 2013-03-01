@@ -8,14 +8,13 @@
  * Version 2.  See the file COPYING for more details.
  */
 
-
 /*
  *  General purpose special memory pool descriptor.
  */
 struct gen_pool {
 	rwlock_t lock;
 	struct list_head chunks;	/* list of chunks in this pool */
-	int min_alloc_order;		/* minimum allocation order */
+	int min_alloc_order;	/* minimum allocation order */
 };
 
 /*
@@ -25,8 +24,8 @@ struct gen_pool_chunk {
 	spinlock_t lock;
 	struct list_head next_chunk;	/* next chunk in pool */
 	unsigned long start_addr;	/* starting address of memory chunk */
-	unsigned long end_addr;		/* ending address of memory chunk */
-	unsigned long bits[0];		/* bitmap for allocating memory chunk */
+	unsigned long end_addr;	/* ending address of memory chunk */
+	unsigned long bits[0];	/* bitmap for allocating memory chunk */
 };
 
 extern struct gen_pool *gen_pool_create(int, int);

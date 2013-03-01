@@ -102,14 +102,14 @@ static inline u32 iotlb_init_entry(struct iotlb_entry *e, u32 da, u32 pa,
 {
 	memset(e, 0, sizeof(*e));
 
-	e->da		= da;
-	e->pa		= pa;
-	e->valid	= 1;
+	e->da = da;
+	e->pa = pa;
+	e->valid = 1;
 	/* FIXME: add OMAP1 support */
-	e->pgsz		= flags & MMU_CAM_PGSZ_MASK;
-	e->endian	= flags & MMU_RAM_ENDIAN_MASK;
-	e->elsz		= flags & MMU_RAM_ELSZ_MASK;
-	e->mixed	= flags & MMU_RAM_MIXED_MASK;
+	e->pgsz = flags & MMU_CAM_PGSZ_MASK;
+	e->endian = flags & MMU_RAM_ENDIAN_MASK;
+	e->elsz = flags & MMU_RAM_ELSZ_MASK;
+	e->mixed = flags & MMU_RAM_MIXED_MASK;
 
 	return iopgsz_to_bytes(e->pgsz);
 }

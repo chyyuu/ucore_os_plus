@@ -24,14 +24,14 @@
  * @owner:	the mutex owner
  */
 struct rt_mutex {
-	spinlock_t		wait_lock;
-	struct plist_head	wait_list;
-	struct task_struct	*owner;
+	spinlock_t wait_lock;
+	struct plist_head wait_list;
+	struct task_struct *owner;
 #ifdef CONFIG_DEBUG_RT_MUTEXES
-	int			save_state;
-	const char 		*name, *file;
-	int			line;
-	void			*magic;
+	int save_state;
+	const char *name, *file;
+	int line;
+	void *magic;
 #endif
 };
 
@@ -39,27 +39,28 @@ struct rt_mutex_waiter;
 struct hrtimer_sleeper;
 
 #ifdef CONFIG_DEBUG_RT_MUTEXES
- extern int rt_mutex_debug_check_no_locks_freed(const void *from,
-						unsigned long len);
- extern void rt_mutex_debug_check_no_locks_held(struct task_struct *task);
+extern int rt_mutex_debug_check_no_locks_freed(const void *from,
+					       unsigned long len);
+extern void rt_mutex_debug_check_no_locks_held(struct task_struct *task);
 #else
- static inline int rt_mutex_debug_check_no_locks_freed(const void *from,
-						       unsigned long len)
- {
+static inline int rt_mutex_debug_check_no_locks_freed(const void *from,
+						      unsigned long len)
+{
 	return 0;
- }
-# define rt_mutex_debug_check_no_locks_held(task)	do { } while (0)
+}
+
+#define rt_mutex_debug_check_no_locks_held(task)	do { } while (0)
 #endif
 
 #ifdef CONFIG_DEBUG_RT_MUTEXES
-# define __DEBUG_RT_MUTEX_INITIALIZER(mutexname) \
+#define __DEBUG_RT_MUTEX_INITIALIZER(mutexname) \
 	, .name = #mutexname, .file = __FILE__, .line = __LINE__
-# define rt_mutex_init(mutex)			__rt_mutex_init(mutex, __func__)
- extern void rt_mutex_debug_task_free(struct task_struct *tsk);
+#define rt_mutex_init(mutex)			__rt_mutex_init(mutex, __func__)
+extern void rt_mutex_debug_task_free(struct task_struct *tsk);
 #else
-# define __DEBUG_RT_MUTEX_INITIALIZER(mutexname)
-# define rt_mutex_init(mutex)			__rt_mutex_init(mutex, NULL)
-# define rt_mutex_debug_task_free(t)			do { } while (0)
+#define __DEBUG_RT_MUTEX_INITIALIZER(mutexname)
+#define rt_mutex_init(mutex)			__rt_mutex_init(mutex, NULL)
+#define rt_mutex_debug_task_free(t)			do { } while (0)
 #endif
 
 #define __RT_MUTEX_INITIALIZER(mutexname) \
@@ -87,21 +88,21 @@ extern void rt_mutex_destroy(struct rt_mutex *lock);
 
 extern void rt_mutex_lock(struct rt_mutex *lock);
 extern int rt_mutex_lock_interruptible(struct rt_mutex *lock,
-						int detect_deadlock);
+				       int detect_deadlock);
 extern int rt_mutex_timed_lock(struct rt_mutex *lock,
-					struct hrtimer_sleeper *timeout,
-					int detect_deadlock);
+			       struct hrtimer_sleeper *timeout,
+			       int detect_deadlock);
 
 extern int rt_mutex_trylock(struct rt_mutex *lock);
 
 extern void rt_mutex_unlock(struct rt_mutex *lock);
 
 #ifdef CONFIG_RT_MUTEXES
-# define INIT_RT_MUTEXES(tsk)						\
+#define INIT_RT_MUTEXES(tsk)						\
 	.pi_waiters	= PLIST_HEAD_INIT(tsk.pi_waiters, tsk.pi_lock),	\
 	INIT_RT_MUTEX_DEBUG(tsk)
 #else
-# define INIT_RT_MUTEXES(tsk)
+#define INIT_RT_MUTEXES(tsk)
 #endif
 
 #endif

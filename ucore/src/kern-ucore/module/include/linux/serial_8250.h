@@ -18,19 +18,19 @@
  * This is the platform device platform_data structure
  */
 struct plat_serial8250_port {
-	unsigned long	iobase;		/* io base address */
-	void __iomem	*membase;	/* ioremap cookie or NULL */
-	resource_size_t	mapbase;	/* resource base */
-	unsigned int	irq;		/* interrupt number */
-	unsigned int	uartclk;	/* UART clock rate */
-	void            *private_data;
-	unsigned char	regshift;	/* register shift */
-	unsigned char	iotype;		/* UPIO_* */
-	unsigned char	hub6;
-	upf_t		flags;		/* UPF_* flags */
-	unsigned int	type;		/* If UPF_FIXED_TYPE */
-	unsigned int	(*serial_in)(struct uart_port *, int);
-	void		(*serial_out)(struct uart_port *, int, int);
+	unsigned long iobase;	/* io base address */
+	void __iomem *membase;	/* ioremap cookie or NULL */
+	resource_size_t mapbase;	/* resource base */
+	unsigned int irq;	/* interrupt number */
+	unsigned int uartclk;	/* UART clock rate */
+	void *private_data;
+	unsigned char regshift;	/* register shift */
+	unsigned char iotype;	/* UPIO_* */
+	unsigned char hub6;
+	upf_t flags;		/* UPF_* flags */
+	unsigned int type;	/* If UPF_FIXED_TYPE */
+	unsigned int (*serial_in) (struct uart_port *, int);
+	void (*serial_out) (struct uart_port *, int, int);
 };
 
 /*

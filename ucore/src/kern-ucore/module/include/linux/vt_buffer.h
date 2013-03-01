@@ -13,7 +13,6 @@
 #ifndef _LINUX_VT_BUFFER_H_
 #define _LINUX_VT_BUFFER_H_
 
-
 #if defined(CONFIG_VGA_CONSOLE) || defined(CONFIG_MDA_CONSOLE)
 #include <asm/vga.h>
 #endif
@@ -28,7 +27,7 @@
 #endif
 
 #ifndef VT_BUF_HAVE_MEMSETW
-static inline void scr_memsetw(u16 *s, u16 c, unsigned int count)
+static inline void scr_memsetw(u16 * s, u16 c, unsigned int count)
 {
 	count /= 2;
 	while (count--)
@@ -37,7 +36,7 @@ static inline void scr_memsetw(u16 *s, u16 c, unsigned int count)
 #endif
 
 #ifndef VT_BUF_HAVE_MEMCPYW
-static inline void scr_memcpyw(u16 *d, const u16 *s, unsigned int count)
+static inline void scr_memcpyw(u16 * d, const u16 * s, unsigned int count)
 {
 	count /= 2;
 	while (count--)
@@ -46,7 +45,7 @@ static inline void scr_memcpyw(u16 *d, const u16 *s, unsigned int count)
 #endif
 
 #ifndef VT_BUF_HAVE_MEMMOVEW
-static inline void scr_memmovew(u16 *d, const u16 *s, unsigned int count)
+static inline void scr_memmovew(u16 * d, const u16 * s, unsigned int count)
 {
 	if (d < s)
 		scr_memcpyw(d, s, count);

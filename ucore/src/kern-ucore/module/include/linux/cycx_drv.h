@@ -54,11 +54,12 @@ struct cycx_hw {
 };
 
 /* Function Prototypes */
-extern int cycx_setup(struct cycx_hw *hw, void *sfm, u32 len, unsigned long base);
+extern int cycx_setup(struct cycx_hw *hw, void *sfm, u32 len,
+		      unsigned long base);
 extern int cycx_down(struct cycx_hw *hw);
 extern int cycx_peek(struct cycx_hw *hw, u32 addr, void *buf, u32 len);
 extern int cycx_poke(struct cycx_hw *hw, u32 addr, void *buf, u32 len);
-extern int cycx_exec(void __iomem *addr);
+extern int cycx_exec(void __iomem * addr);
 
 extern void cycx_intr(struct cycx_hw *hw);
-#endif	/* _CYCX_DRV_H */
+#endif /* _CYCX_DRV_H */

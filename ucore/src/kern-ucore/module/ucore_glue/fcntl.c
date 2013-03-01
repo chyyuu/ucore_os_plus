@@ -24,7 +24,7 @@
 
 void kill_fasync(struct fasync_struct **fp, int sig, int band)
 {
-  _TODO_();
+	_TODO_();
 }
 
 /*
@@ -33,9 +33,9 @@ void kill_fasync(struct fasync_struct **fp, int sig, int band)
  * lease code. It returns negative on error, 0 if it did no changes
  * and positive if it added/deleted the entry.
  */
-int fasync_helper(int fd, struct file * filp, int on, struct fasync_struct **fapp)
+int fasync_helper(int fd, struct file *filp, int on,
+		  struct fasync_struct **fapp)
 {
-  _TODO_();
-  return -EINVAL;
+	_TODO_();
+	return -EINVAL;
 }
-

@@ -24,10 +24,10 @@ struct debug_obj_descr;
  * @descr:	pointer to an object type specific debug description structure
  */
 struct debug_obj {
-	struct hlist_node	node;
-	enum debug_obj_state	state;
-	void			*object;
-	struct debug_obj_descr	*descr;
+	struct hlist_node node;
+	enum debug_obj_state state;
+	void *object;
+	struct debug_obj_descr *descr;
 };
 
 /**
@@ -43,48 +43,70 @@ struct debug_obj {
  *			fails
  */
 struct debug_obj_descr {
-	const char		*name;
+	const char *name;
 
-	int (*fixup_init)	(void *addr, enum debug_obj_state state);
-	int (*fixup_activate)	(void *addr, enum debug_obj_state state);
-	int (*fixup_destroy)	(void *addr, enum debug_obj_state state);
-	int (*fixup_free)	(void *addr, enum debug_obj_state state);
+	int (*fixup_init) (void *addr, enum debug_obj_state state);
+	int (*fixup_activate) (void *addr, enum debug_obj_state state);
+	int (*fixup_destroy) (void *addr, enum debug_obj_state state);
+	int (*fixup_free) (void *addr, enum debug_obj_state state);
 };
 
 #ifdef CONFIG_DEBUG_OBJECTS
-extern void debug_object_init      (void *addr, struct debug_obj_descr *descr);
+extern void debug_object_init(void *addr, struct debug_obj_descr *descr);
 extern void
 debug_object_init_on_stack(void *addr, struct debug_obj_descr *descr);
-extern void debug_object_activate  (void *addr, struct debug_obj_descr *descr);
+extern void debug_object_activate(void *addr, struct debug_obj_descr *descr);
 extern void debug_object_deactivate(void *addr, struct debug_obj_descr *descr);
-extern void debug_object_destroy   (void *addr, struct debug_obj_descr *descr);
-extern void debug_object_free      (void *addr, struct debug_obj_descr *descr);
+extern void debug_object_destroy(void *addr, struct debug_obj_descr *descr);
+extern void debug_object_free(void *addr, struct debug_obj_descr *descr);
 
 extern void debug_objects_early_init(void);
 extern void debug_objects_mem_init(void);
 #else
-static inline void
-debug_object_init      (void *addr, struct debug_obj_descr *descr) { }
-static inline void
-debug_object_init_on_stack(void *addr, struct debug_obj_descr *descr) { }
-static inline void
-debug_object_activate  (void *addr, struct debug_obj_descr *descr) { }
-static inline void
-debug_object_deactivate(void *addr, struct debug_obj_descr *descr) { }
-static inline void
-debug_object_destroy   (void *addr, struct debug_obj_descr *descr) { }
-static inline void
-debug_object_free      (void *addr, struct debug_obj_descr *descr) { }
+static inline void debug_object_init(void *addr, struct debug_obj_descr *descr)
+{
+}
 
-static inline void debug_objects_early_init(void) { }
-static inline void debug_objects_mem_init(void) { }
+static inline void
+debug_object_init_on_stack(void *addr, struct debug_obj_descr *descr)
+{
+}
+
+static inline void
+debug_object_activate(void *addr, struct debug_obj_descr *descr)
+{
+}
+
+static inline void
+debug_object_deactivate(void *addr, struct debug_obj_descr *descr)
+{
+}
+
+static inline void
+debug_object_destroy(void *addr, struct debug_obj_descr *descr)
+{
+}
+
+static inline void debug_object_free(void *addr, struct debug_obj_descr *descr)
+{
+}
+
+static inline void debug_objects_early_init(void)
+{
+}
+
+static inline void debug_objects_mem_init(void)
+{
+}
 #endif
 
 #ifdef CONFIG_DEBUG_OBJECTS_FREE
 extern void debug_check_no_obj_freed(const void *address, unsigned long size);
 #else
 static inline void
-debug_check_no_obj_freed(const void *address, unsigned long size) { }
+debug_check_no_obj_freed(const void *address, unsigned long size)
+{
+}
 #endif
 
 #endif

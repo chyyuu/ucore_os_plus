@@ -34,7 +34,7 @@ static inline __u8 INET_ECN_encapsulate(__u8 outer, __u8 inner)
 {
 	outer &= ~INET_ECN_MASK;
 	outer |= !INET_ECN_is_ce(inner) ? (inner & INET_ECN_MASK) :
-					  INET_ECN_ECT_0;
+	    INET_ECN_ECT_0;
 	return outer;
 }
 
@@ -53,7 +53,7 @@ static inline __u8 INET_ECN_encapsulate(__u8 outer, __u8 inner)
 
 static inline int IP_ECN_set_ce(struct iphdr *iph)
 {
-	u32 check = (__force u32)iph->check;
+	u32 check = (__force u32) iph->check;
 	u32 ecn = (iph->tos + 1) & INET_ECN_MASK;
 
 	/*
@@ -71,9 +71,9 @@ static inline int IP_ECN_set_ce(struct iphdr *iph)
 	 * INET_ECN_ECT_1 => check += htons(0xFFFD)
 	 * INET_ECN_ECT_0 => check += htons(0xFFFE)
 	 */
-	check += (__force u16)htons(0xFFFB) + (__force u16)htons(ecn);
+	check += (__force u16) htons(0xFFFB) + (__force u16) htons(ecn);
 
-	iph->check = (__force __sum16)(check + (check>=0xFFFF));
+	iph->check = (__force __sum16) (check + (check >= 0xFFFF));
 	iph->tos |= INET_ECN_CE;
 	return 1;
 }
@@ -95,13 +95,13 @@ static inline int IP6_ECN_set_ce(struct ipv6hdr *iph)
 {
 	if (INET_ECN_is_not_ect(ipv6_get_dsfield(iph)))
 		return 0;
-	*(__be32*)iph |= htonl(INET_ECN_CE << 20);
+	*(__be32 *) iph |= htonl(INET_ECN_CE << 20);
 	return 1;
 }
 
 static inline void IP6_ECN_clear(struct ipv6hdr *iph)
 {
-	*(__be32*)iph &= ~htonl(INET_ECN_MASK << 20);
+	*(__be32 *) iph &= ~htonl(INET_ECN_MASK << 20);
 }
 
 static inline void ipv6_copy_dscp(unsigned int dscp, struct ipv6hdr *inner)

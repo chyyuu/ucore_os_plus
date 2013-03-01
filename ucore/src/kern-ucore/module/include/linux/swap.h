@@ -58,17 +58,17 @@ static inline int current_is_kswapd(void)
 union swap_header {
 	struct {
 		char reserved[PAGE_SIZE - 10];
-		char magic[10];			/* SWAP-SPACE or SWAPSPACE2 */
+		char magic[10];	/* SWAP-SPACE or SWAPSPACE2 */
 	} magic;
 	struct {
-		char		bootbits[1024];	/* Space for disklabel etc. */
-		__u32		version;
-		__u32		last_page;
-		__u32		nr_badpages;
-		unsigned char	sws_uuid[16];
-		unsigned char	sws_volume[16];
-		__u32		padding[117];
-		__u32		badpages[1];
+		char bootbits[1024];	/* Space for disklabel etc. */
+		__u32 version;
+		__u32 last_page;
+		__u32 nr_badpages;
+		unsigned char sws_uuid[16];
+		unsigned char sws_volume[16];
+		__u32 padding[117];
+		__u32 badpages[1];
 	} info;
 };
 
@@ -118,13 +118,13 @@ struct swap_extent {
 	((__swapoffset(magic.magic) - __swapoffset(info.badpages)) / sizeof(int))
 
 enum {
-	SWP_USED	= (1 << 0),	/* is slot in swap_info[] used? */
-	SWP_WRITEOK	= (1 << 1),	/* ok to write to this swap?	*/
+	SWP_USED = (1 << 0),	/* is slot in swap_info[] used? */
+	SWP_WRITEOK = (1 << 1),	/* ok to write to this swap?    */
 	SWP_DISCARDABLE = (1 << 2),	/* blkdev supports discard */
-	SWP_DISCARDING	= (1 << 3),	/* now discarding a free cluster */
-	SWP_SOLIDSTATE	= (1 << 4),	/* blkdev seeks are cheap */
-					/* add others here before... */
-	SWP_SCANNING	= (1 << 8),	/* refcount in scan_swap_map */
+	SWP_DISCARDING = (1 << 3),	/* now discarding a free cluster */
+	SWP_SOLIDSTATE = (1 << 4),	/* blkdev seeks are cheap */
+	/* add others here before... */
+	SWP_SCANNING = (1 << 8),	/* refcount in scan_swap_map */
 };
 
 #define SWAP_CLUSTER_MAX 32
@@ -137,8 +137,8 @@ enum {
  */
 struct swap_info_struct {
 	unsigned long flags;
-	int prio;			/* swap priority */
-	int next;			/* next entry on swap list */
+	int prio;		/* swap priority */
+	int next;		/* next entry on swap list */
 	struct file *swap_file;
 	struct block_device *bdev;
 	struct list_head extent_list;
@@ -157,8 +157,8 @@ struct swap_info_struct {
 };
 
 struct swap_list_t {
-	int head;	/* head of priority-ordered swapfile list */
-	int next;	/* swapfile to be used next */
+	int head;		/* head of priority-ordered swapfile list */
+	int next;		/* swapfile to be used next */
 };
 
 /* Swap 50% full? Release swapcache more aggressively.. */
@@ -172,7 +172,6 @@ extern unsigned int nr_free_pagecache_pages(void);
 
 /* Definition of global_page_state not available yet */
 #define nr_free_pages() global_page_state(NR_FREE_PAGES)
-
 
 /* linux/mm/swap.c */
 extern void __lru_cache_add(struct page *, enum lru_list lru);
@@ -212,7 +211,7 @@ static inline void lru_cache_add_active_file(struct page *page)
 
 /* linux/mm/vmscan.c */
 extern unsigned long try_to_free_pages(struct zonelist *zonelist, int order,
-					gfp_t gfp_mask);
+				       gfp_t gfp_mask);
 extern unsigned long try_to_free_mem_cgroup_pages(struct mem_cgroup *mem,
 						  gfp_t gfp_mask, bool noswap,
 						  unsigned int swappiness);
@@ -241,12 +240,11 @@ extern void scan_mapping_unevictable_pages(struct address_space *);
 
 extern unsigned long scan_unevictable_pages;
 extern int scan_unevictable_handler(struct ctl_table *, int, struct file *,
-					void __user *, size_t *, loff_t *);
+				    void __user *, size_t *, loff_t *);
 extern int scan_unevictable_register_node(struct node *node);
 extern void scan_unevictable_unregister_node(struct node *node);
 #else
-static inline int page_evictable(struct page *page,
-						struct vm_area_struct *vma)
+static inline int page_evictable(struct page *page, struct vm_area_struct *vma)
 {
 	return 1;
 }
@@ -260,7 +258,9 @@ static inline int scan_unevictable_register_node(struct node *node)
 	return 0;
 }
 
-static inline void scan_unevictable_unregister_node(struct node *node) { }
+static inline void scan_unevictable_unregister_node(struct node *node)
+{
+}
 #endif
 
 extern int kswapd_run(int nid);
@@ -290,9 +290,11 @@ extern void free_page_and_swap_cache(struct page *);
 extern void free_pages_and_swap_cache(struct page **, int);
 extern struct page *lookup_swap_cache(swp_entry_t);
 extern struct page *read_swap_cache_async(swp_entry_t, gfp_t,
-			struct vm_area_struct *vma, unsigned long addr);
+					  struct vm_area_struct *vma,
+					  unsigned long addr);
 extern struct page *swapin_readahead(swp_entry_t, gfp_t,
-			struct vm_area_struct *vma, unsigned long addr);
+				     struct vm_area_struct *vma,
+				     unsigned long addr);
 
 /* linux/mm/swapfile.c */
 extern long nr_swap_pages;
@@ -314,7 +316,7 @@ extern int try_to_free_swap(struct page *);
 struct backing_dev_info;
 
 /* linux/mm/thrash.c */
-extern struct mm_struct * swap_token_mm;
+extern struct mm_struct *swap_token_mm;
 extern void grab_swap_token(void);
 extern void __put_swap_token(struct mm_struct *);
 
@@ -377,7 +379,8 @@ static inline void swap_free(swp_entry_t swp)
 }
 
 static inline struct page *swapin_readahead(swp_entry_t swp, gfp_t gfp_mask,
-			struct vm_area_struct *vma, unsigned long addr)
+					    struct vm_area_struct *vma,
+					    unsigned long addr)
 {
 	return NULL;
 }
@@ -393,7 +396,7 @@ static inline int add_to_swap(struct page *page)
 }
 
 static inline int add_to_swap_cache(struct page *page, swp_entry_t entry,
-							gfp_t gfp_mask)
+				    gfp_t gfp_mask)
 {
 	return -1;
 }
@@ -427,11 +430,12 @@ static inline swp_entry_t get_swap_page(void)
 #define disable_swap_token() do { } while(0)
 
 static inline int mem_cgroup_cache_charge_swapin(struct page *page,
-			struct mm_struct *mm, gfp_t mask, bool locked)
+						 struct mm_struct *mm,
+						 gfp_t mask, bool locked)
 {
 	return 0;
 }
 
 #endif /* CONFIG_SWAP */
-#endif /* __KERNEL__*/
+#endif /* __KERNEL__ */
 #endif /* _LINUX_SWAP_H */

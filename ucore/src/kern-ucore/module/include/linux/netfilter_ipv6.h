@@ -30,7 +30,6 @@
 /* Frag & flags. */
 #define NFC_IP6_FRAG             0x0080
 
-
 /* Per-protocol information: only matters if proto match. */
 /* TCP flags. */
 #define NFC_IP6_TCPFLAGS         0x0100
@@ -55,7 +54,6 @@
 #define NF_IP6_NUMHOOKS		5
 #endif /* ! __KERNEL__ */
 
-
 enum nf_ip6_hook_priorities {
 	NF_IP6_PRI_FIRST = INT_MIN,
 	NF_IP6_PRI_CONNTRACK_DEFRAG = -400,
@@ -75,13 +73,20 @@ enum nf_ip6_hook_priorities {
 #ifdef CONFIG_NETFILTER
 extern int ip6_route_me_harder(struct sk_buff *skb);
 extern __sum16 nf_ip6_checksum(struct sk_buff *skb, unsigned int hook,
-				    unsigned int dataoff, u_int8_t protocol);
+			       unsigned int dataoff, u_int8_t protocol);
 
 extern int ipv6_netfilter_init(void);
 extern void ipv6_netfilter_fini(void);
 #else /* CONFIG_NETFILTER */
-static inline int ipv6_netfilter_init(void) { return 0; }
-static inline void ipv6_netfilter_fini(void) { return; }
+static inline int ipv6_netfilter_init(void)
+{
+	return 0;
+}
+
+static inline void ipv6_netfilter_fini(void)
+{
+	return;
+}
 #endif /* CONFIG_NETFILTER */
 
 #endif /* __KERNEL__ */

@@ -8,7 +8,7 @@
 /* You can override this manually, but generally this should match the
    module name. */
 #ifdef MODULE
-#define MODULE_PARAM_PREFIX /* empty */
+#define MODULE_PARAM_PREFIX	/* empty */
 #else
 #define MODULE_PARAM_PREFIX KBUILD_MODNAME "."
 #endif
@@ -23,7 +23,7 @@
 static const char __module_cat(name,__LINE__)[]				  \
   __used								  \
   __attribute__((section(".modinfo"),unused)) = __stringify(tag) "=" info
-#else  /* !MODULE */
+#else /* !MODULE */
 #define __MODULE_INFO(tag, name, info)
 #endif
 #define __MODULE_PARM_TYPE(name, _type)					  \
@@ -32,9 +32,9 @@ static const char __module_cat(name,__LINE__)[]				  \
 struct kernel_param;
 
 /* Returns 0, or -errno.  arg is in kp->arg. */
-typedef int (*param_set_fn)(const char *val, struct kernel_param *kp);
+typedef int (*param_set_fn) (const char *val, struct kernel_param * kp);
 /* Returns length written or -errno.  Buffer is 4k (ie. be short!) */
-typedef int (*param_get_fn)(char *buffer, struct kernel_param *kp);
+typedef int (*param_get_fn) (char *buffer, struct kernel_param * kp);
 
 struct kernel_param {
 	const char *name;
@@ -55,8 +55,7 @@ struct kparam_string {
 };
 
 /* Special one for arrays */
-struct kparam_array
-{
+struct kparam_array {
 	unsigned int max;
 	unsigned int *num;
 	param_set_fn set;
@@ -135,8 +134,7 @@ struct kparam_array
 extern int parse_args(const char *name,
 		      char *args,
 		      struct kernel_param *params,
-		      unsigned num,
-		      int (*unknown)(char *param, char *val));
+		      unsigned num, int (*unknown) (char *param, char *val));
 
 /* All the helper functions */
 /* The macros to do compile-time type checking stolen from Jakub
@@ -214,14 +212,15 @@ extern int module_param_sysfs_setup(struct module *mod,
 extern void module_param_sysfs_remove(struct module *mod);
 #else
 static inline int module_param_sysfs_setup(struct module *mod,
-			     struct kernel_param *kparam,
-			     unsigned int num_params)
+					   struct kernel_param *kparam,
+					   unsigned int num_params)
 {
 	return 0;
 }
 
 static inline void module_param_sysfs_remove(struct module *mod)
-{ }
+{
+}
 #endif
 
 #endif /* _LINUX_MODULE_PARAMS_H */

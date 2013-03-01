@@ -29,18 +29,18 @@ struct rwsem_waiter;
  * - if wait_list is not empty, then there are processes waiting for the semaphore
  */
 struct rw_semaphore {
-	__s32			activity;
-	spinlock_t		wait_lock;
-	struct list_head	wait_list;
+	__s32 activity;
+	spinlock_t wait_lock;
+	struct list_head wait_list;
 #ifdef CONFIG_DEBUG_LOCK_ALLOC
 	struct lockdep_map dep_map;
 #endif
 };
 
 #ifdef CONFIG_DEBUG_LOCK_ALLOC
-# define __RWSEM_DEP_MAP_INIT(lockname) , .dep_map = { .name = #lockname }
+#define __RWSEM_DEP_MAP_INIT(lockname) , .dep_map = { .name = #lockname }
 #else
-# define __RWSEM_DEP_MAP_INIT(lockname)
+#define __RWSEM_DEP_MAP_INIT(lockname)
 #endif
 
 #define __RWSEM_INITIALIZER(name) \

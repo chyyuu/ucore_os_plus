@@ -46,7 +46,7 @@ struct dio_dev {
 	dio_id id;
 	int scode;
 	struct dio_driver *driver;	/* which driver has allocated this device */
-	struct device dev;		/* Generic device interface */
+	struct device dev;	/* Generic device interface */
 	u8 ipl;
 	char name[64];
 	struct resource resource;
@@ -59,14 +59,14 @@ struct dio_dev {
      */
 
 struct dio_bus {
-	struct list_head devices;           /* list of devices on this bus */
-	unsigned int num_resources;         /* number of resources */
-	struct resource resources[2];       /* address space routed to this bus */
+	struct list_head devices;	/* list of devices on this bus */
+	unsigned int num_resources;	/* number of resources */
+	struct resource resources[2];	/* address space routed to this bus */
 	struct device dev;
 	char name[10];
 };
 
-extern struct dio_bus dio_bus;      /* Single DIO bus */
+extern struct dio_bus dio_bus;	/* Single DIO bus */
 extern struct bus_type dio_bus_type;
 
     /*
@@ -74,8 +74,8 @@ extern struct bus_type dio_bus_type;
      */
 
 struct dio_device_id {
-	dio_id id;                    /* Device ID or DIO_WILDCARD */
-	unsigned long driver_data;    /* Data private to the driver */
+	dio_id id;		/* Device ID or DIO_WILDCARD */
+	unsigned long driver_data;	/* Data private to the driver */
 };
 
     /*
@@ -85,10 +85,10 @@ struct dio_device_id {
 struct dio_driver {
 	struct list_head node;
 	char *name;
-	const struct dio_device_id *id_table;     /* NULL if wants all devices */
-	int (*probe)(struct dio_dev *z, const struct dio_device_id *id);
+	const struct dio_device_id *id_table;	/* NULL if wants all devices */
+	int (*probe) (struct dio_dev * z, const struct dio_device_id * id);
 /* New device inserted */
-	void (*remove)(struct dio_dev *z);        /* Device removed (NULL if not a hot-plug capable driver) */
+	void (*remove) (struct dio_dev * z);	/* Device removed (NULL if not a hot-plug capable driver) */
 	struct device_driver driver;
 };
 
@@ -97,25 +97,25 @@ struct dio_driver {
 /* DIO/DIO-II boards all have the following 8bit registers.
  * These are offsets from the base of the device.
  */
-#define DIO_IDOFF     0x01             /* primary device ID */
-#define DIO_IPLOFF    0x03             /* interrupt priority level */
-#define DIO_SECIDOFF  0x15             /* secondary device ID */
-#define DIOII_SIZEOFF 0x101            /* device size, DIO-II only */
-#define DIO_VIRADDRBASE 0xf0000000UL   /* vir addr where IOspace is mapped */
+#define DIO_IDOFF     0x01	/* primary device ID */
+#define DIO_IPLOFF    0x03	/* interrupt priority level */
+#define DIO_SECIDOFF  0x15	/* secondary device ID */
+#define DIOII_SIZEOFF 0x101	/* device size, DIO-II only */
+#define DIO_VIRADDRBASE 0xf0000000UL	/* vir addr where IOspace is mapped */
 
-#define DIO_BASE                0x600000        /* start of DIO space */
-#define DIO_END                 0x1000000       /* end of DIO space */
-#define DIO_DEVSIZE             0x10000         /* size of a DIO device */
+#define DIO_BASE                0x600000	/* start of DIO space */
+#define DIO_END                 0x1000000	/* end of DIO space */
+#define DIO_DEVSIZE             0x10000	/* size of a DIO device */
 
-#define DIOII_BASE              0x01000000      /* start of DIO-II space */
-#define DIOII_END               0x20000000      /* end of DIO-II space */
-#define DIOII_DEVSIZE           0x00400000      /* size of a DIO-II device */
+#define DIOII_BASE              0x01000000	/* start of DIO-II space */
+#define DIOII_END               0x20000000	/* end of DIO-II space */
+#define DIOII_DEVSIZE           0x00400000	/* size of a DIO-II device */
 
 /* Highest valid select code. If we add DIO-II support this should become
  * 256 for everything except HP320, which only has DIO.
  */
 #define DIO_SCMAX (hp300_model == HP_320 ? 32 : 256)
-#define DIOII_SCBASE 132 /* lowest DIO-II select code */
+#define DIOII_SCBASE 132	/* lowest DIO-II select code */
 #define DIO_SCINHOLE(scode) (((scode) >= 32) && ((scode) < DIOII_SCBASE))
 #define DIO_ISDIOII(scode) ((scode) >= 132 && (scode) < 256)
 
@@ -145,95 +145,95 @@ struct dio_driver {
 #define DIO_WILDCARD 0xff
 
 /* Now a whole slew of macros giving device IDs and descriptive strings: */
-#define DIO_ID_DCA0     0x02 /* 98644A serial */
+#define DIO_ID_DCA0     0x02	/* 98644A serial */
 #define DIO_DESC_DCA0 "98644A DCA0 serial"
-#define DIO_ID_DCA0REM  0x82 /* 98644A serial */
+#define DIO_ID_DCA0REM  0x82	/* 98644A serial */
 #define DIO_DESC_DCA0REM "98644A DCA0REM serial"
-#define DIO_ID_DCA1     0x42 /* 98644A serial */
+#define DIO_ID_DCA1     0x42	/* 98644A serial */
 #define DIO_DESC_DCA1 "98644A DCA1 serial"
-#define DIO_ID_DCA1REM  0xc2 /* 98644A serial */
+#define DIO_ID_DCA1REM  0xc2	/* 98644A serial */
 #define DIO_DESC_DCA1REM "98644A DCA1REM serial"
-#define DIO_ID_DCM      0x05 /* 98642A serial MUX */
+#define DIO_ID_DCM      0x05	/* 98642A serial MUX */
 #define DIO_DESC_DCM "98642A DCM serial MUX"
-#define DIO_ID_DCMREM   0x85 /* 98642A serial MUX */
+#define DIO_ID_DCMREM   0x85	/* 98642A serial MUX */
 #define DIO_DESC_DCMREM "98642A DCMREM serial MUX"
-#define DIO_ID_LAN      0x15 /* 98643A LAN */
+#define DIO_ID_LAN      0x15	/* 98643A LAN */
 #define DIO_DESC_LAN "98643A LANCE ethernet"
-#define DIO_ID_FHPIB    0x08 /* 98625A/98625B fast HP-IB */
+#define DIO_ID_FHPIB    0x08	/* 98625A/98625B fast HP-IB */
 #define DIO_DESC_FHPIB "98625A/98625B fast HPIB"
-#define DIO_ID_NHPIB    0x01 /* 98624A HP-IB (normal ie slow) */
+#define DIO_ID_NHPIB    0x01	/* 98624A HP-IB (normal ie slow) */
 #define DIO_DESC_NHPIB "98624A HPIB"
-#define DIO_ID_SCSI0    0x07 /* 98265A SCSI */
+#define DIO_ID_SCSI0    0x07	/* 98265A SCSI */
 #define DIO_DESC_SCSI0 "98265A SCSI0"
-#define DIO_ID_SCSI1    0x27 /* ditto */
+#define DIO_ID_SCSI1    0x27	/* ditto */
 #define DIO_DESC_SCSI1 "98265A SCSI1"
-#define DIO_ID_SCSI2    0x47 /* ditto */
+#define DIO_ID_SCSI2    0x47	/* ditto */
 #define DIO_DESC_SCSI2 "98265A SCSI2"
-#define DIO_ID_SCSI3    0x67 /* ditto */
+#define DIO_ID_SCSI3    0x67	/* ditto */
 #define DIO_DESC_SCSI3 "98265A SCSI3"
-#define DIO_ID_FBUFFER  0x39 /* framebuffer: flavour is distinguished by secondary ID */
+#define DIO_ID_FBUFFER  0x39	/* framebuffer: flavour is distinguished by secondary ID */
 #define DIO_DESC_FBUFFER "bitmapped display"
 /* the NetBSD kernel source is a bit unsure as to what these next IDs actually do :-> */
-#define DIO_ID_MISC0    0x03 /* 98622A */
+#define DIO_ID_MISC0    0x03	/* 98622A */
 #define DIO_DESC_MISC0 "98622A"
-#define DIO_ID_MISC1    0x04 /* 98623A */
+#define DIO_ID_MISC1    0x04	/* 98623A */
 #define DIO_DESC_MISC1 "98623A"
-#define DIO_ID_PARALLEL 0x06 /* internal parallel */
+#define DIO_ID_PARALLEL 0x06	/* internal parallel */
 #define DIO_DESC_PARALLEL "internal parallel"
-#define DIO_ID_MISC2    0x09 /* 98287A keyboard */
+#define DIO_ID_MISC2    0x09	/* 98287A keyboard */
 #define DIO_DESC_MISC2 "98287A keyboard"
-#define DIO_ID_MISC3    0x0a /* HP98635A FP accelerator */
+#define DIO_ID_MISC3    0x0a	/* HP98635A FP accelerator */
 #define DIO_DESC_MISC3 "HP98635A FP accelerator"
-#define DIO_ID_MISC4    0x0b /* timer */
+#define DIO_ID_MISC4    0x0b	/* timer */
 #define DIO_DESC_MISC4 "timer"
-#define DIO_ID_MISC5    0x12 /* 98640A */
+#define DIO_ID_MISC5    0x12	/* 98640A */
 #define DIO_DESC_MISC5 "98640A"
-#define DIO_ID_MISC6    0x16 /* 98659A */
+#define DIO_ID_MISC6    0x16	/* 98659A */
 #define DIO_DESC_MISC6 "98659A"
-#define DIO_ID_MISC7    0x19 /* 237 display */
+#define DIO_ID_MISC7    0x19	/* 237 display */
 #define DIO_DESC_MISC7 "237 display"
-#define DIO_ID_MISC8    0x1a /* quad-wide card */
+#define DIO_ID_MISC8    0x1a	/* quad-wide card */
 #define DIO_DESC_MISC8 "quad-wide card"
-#define DIO_ID_MISC9    0x1b /* 98253A */
+#define DIO_ID_MISC9    0x1b	/* 98253A */
 #define DIO_DESC_MISC9 "98253A"
-#define DIO_ID_MISC10   0x1c /* 98627A */
+#define DIO_ID_MISC10   0x1c	/* 98627A */
 #define DIO_DESC_MISC10 "98253A"
-#define DIO_ID_MISC11   0x1d /* 98633A */
+#define DIO_ID_MISC11   0x1d	/* 98633A */
 #define DIO_DESC_MISC11 "98633A"
-#define DIO_ID_MISC12   0x1e /* 98259A */
+#define DIO_ID_MISC12   0x1e	/* 98259A */
 #define DIO_DESC_MISC12 "98259A"
-#define DIO_ID_MISC13   0x1f /* 8741 */
+#define DIO_ID_MISC13   0x1f	/* 8741 */
 #define DIO_DESC_MISC13 "8741"
-#define DIO_ID_VME      0x31 /* 98577A VME adapter */
+#define DIO_ID_VME      0x31	/* 98577A VME adapter */
 #define DIO_DESC_VME "98577A VME adapter"
-#define DIO_ID_DCL      0x34 /* 98628A serial */
+#define DIO_ID_DCL      0x34	/* 98628A serial */
 #define DIO_DESC_DCL "98628A DCL serial"
-#define DIO_ID_DCLREM   0xb4 /* 98628A serial */
+#define DIO_ID_DCLREM   0xb4	/* 98628A serial */
 #define DIO_DESC_DCLREM "98628A DCLREM serial"
 /* These are the secondary IDs for the framebuffers */
-#define DIO_ID2_GATORBOX    0x01 /* 98700/98710 "gatorbox" */
+#define DIO_ID2_GATORBOX    0x01	/* 98700/98710 "gatorbox" */
 #define DIO_DESC2_GATORBOX       "98700/98710 \"gatorbox\" display"
-#define DIO_ID2_TOPCAT      0x02 /* 98544/98545/98547 "topcat" */
+#define DIO_ID2_TOPCAT      0x02	/* 98544/98545/98547 "topcat" */
 #define DIO_DESC2_TOPCAT         "98544/98545/98547 \"topcat\" display"
-#define DIO_ID2_RENAISSANCE 0x04 /* 98720/98721 "renaissance" */
+#define DIO_ID2_RENAISSANCE 0x04	/* 98720/98721 "renaissance" */
 #define DIO_DESC2_RENAISSANCE    "98720/98721 \"renaissance\" display"
-#define DIO_ID2_LRCATSEYE   0x05 /* lowres "catseye" */
+#define DIO_ID2_LRCATSEYE   0x05	/* lowres "catseye" */
 #define DIO_DESC2_LRCATSEYE      "low-res catseye display"
-#define DIO_ID2_HRCCATSEYE  0x06 /* highres colour "catseye" */
+#define DIO_ID2_HRCCATSEYE  0x06	/* highres colour "catseye" */
 #define DIO_DESC2_HRCCATSEYE     "high-res color catseye display"
-#define DIO_ID2_HRMCATSEYE  0x07 /* highres mono "catseye" */
+#define DIO_ID2_HRMCATSEYE  0x07	/* highres mono "catseye" */
 #define DIO_DESC2_HRMCATSEYE     "high-res mono catseye display"
-#define DIO_ID2_DAVINCI     0x08 /* 98730/98731 "davinci" */
+#define DIO_ID2_DAVINCI     0x08	/* 98730/98731 "davinci" */
 #define DIO_DESC2_DAVINCI        "98730/98731 \"davinci\" display"
-#define DIO_ID2_XXXCATSEYE  0x09 /* "catseye" */
+#define DIO_ID2_XXXCATSEYE  0x09	/* "catseye" */
 #define DIO_DESC2_XXXCATSEYE     "catseye display"
-#define DIO_ID2_HYPERION    0x0e /* A1096A "hyperion" */
+#define DIO_ID2_HYPERION    0x0e	/* A1096A "hyperion" */
 #define DIO_DESC2_HYPERION       "A1096A \"hyperion\" display"
-#define DIO_ID2_XGENESIS    0x0b /* "x-genesis"; no NetBSD support */
+#define DIO_ID2_XGENESIS    0x0b	/* "x-genesis"; no NetBSD support */
 #define DIO_DESC2_XGENESIS       "\"x-genesis\" display"
-#define DIO_ID2_TIGER       0x0c /* "tiger"; no NetBSD support */
+#define DIO_ID2_TIGER       0x0c	/* "tiger"; no NetBSD support */
 #define DIO_DESC2_TIGER          "\"tiger\" display"
-#define DIO_ID2_YGENESIS    0x0d /* "y-genesis"; no NetBSD support */
+#define DIO_ID2_YGENESIS    0x0d	/* "y-genesis"; no NetBSD support */
 #define DIO_DESC2_YGENESIS       "\"y-genesis\" display"
 /* if you add new IDs then you should tell dio.c about them so it can
  * identify them...
@@ -246,10 +246,12 @@ extern int dio_create_sysfs_dev_files(struct dio_dev *);
 /* New-style probing */
 extern int dio_register_driver(struct dio_driver *);
 extern void dio_unregister_driver(struct dio_driver *);
-extern const struct dio_device_id *dio_match_device(const struct dio_device_id *ids, const struct dio_dev *z);
+extern const struct dio_device_id *dio_match_device(const struct dio_device_id
+						    *ids,
+						    const struct dio_dev *z);
 static inline struct dio_driver *dio_dev_driver(const struct dio_dev *d)
 {
-    return d->driver;
+	return d->driver;
 }
 
 #define dio_resource_start(d) ((d)->resource.start)
@@ -266,12 +268,12 @@ static inline struct dio_driver *dio_dev_driver(const struct dio_dev *d)
  * driver-specific data.  They are really just a wrapper around
  * the generic device structure functions of these calls.
  */
-static inline void *dio_get_drvdata (struct dio_dev *d)
+static inline void *dio_get_drvdata(struct dio_dev *d)
 {
 	return dev_get_drvdata(&d->dev);
 }
 
-static inline void dio_set_drvdata (struct dio_dev *d, void *data)
+static inline void dio_set_drvdata(struct dio_dev *d, void *data)
 {
 	dev_set_drvdata(&d->dev, data);
 }

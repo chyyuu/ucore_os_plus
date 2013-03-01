@@ -1,7 +1,6 @@
 /* sonet.h - SONET/SHD physical layer control */
- 
+
 /* Written 1995-2000 by Werner Almesberger, EPFL LRC/ICA */
- 
 
 #ifndef LINUX_SONET_H
 #define LINUX_SONET_H
@@ -15,14 +14,13 @@
     __HANDLE_ITEM(corr_hcs);		/* correctable header errors */ \
     __HANDLE_ITEM(uncorr_hcs);		/* uncorrectable header errors */ \
     __HANDLE_ITEM(tx_cells);		/* cells sent */ \
-    __HANDLE_ITEM(rx_cells);		/* cells received */
+    __HANDLE_ITEM(rx_cells);	/* cells received */
 
 struct sonet_stats {
 #define __HANDLE_ITEM(i) int i
 	__SONET_ITEMS
 #undef __HANDLE_ITEM
 } __attribute__ ((packed));
-
 
 #define SONET_GETSTAT	_IOR('a',ATMIOC_PHYTYP,struct sonet_stats)
 					/* get statistics */
@@ -41,20 +39,19 @@ struct sonet_stats {
 #define SONET_GETFRSENSE _IOR('a',ATMIOC_PHYTYP+7, \
   unsigned char[SONET_FRSENSE_SIZE])	/* get framing sense information */
 
-#define SONET_INS_SBIP	  1		/* section BIP */
-#define SONET_INS_LBIP	  2		/* line BIP */
-#define SONET_INS_PBIP	  4		/* path BIP */
-#define SONET_INS_FRAME	  8		/* out of frame */
-#define SONET_INS_LOS	 16		/* set line to zero */
-#define SONET_INS_LAIS	 32		/* line alarm indication signal */
-#define SONET_INS_PAIS	 64		/* path alarm indication signal */
-#define SONET_INS_HCS	128		/* insert HCS error */
+#define SONET_INS_SBIP	  1	/* section BIP */
+#define SONET_INS_LBIP	  2	/* line BIP */
+#define SONET_INS_PBIP	  4	/* path BIP */
+#define SONET_INS_FRAME	  8	/* out of frame */
+#define SONET_INS_LOS	 16	/* set line to zero */
+#define SONET_INS_LAIS	 32	/* line alarm indication signal */
+#define SONET_INS_PAIS	 64	/* path alarm indication signal */
+#define SONET_INS_HCS	128	/* insert HCS error */
 
-#define SONET_FRAME_SONET 0		/* SONET STS-3 framing */
-#define SONET_FRAME_SDH   1		/* SDH STM-1 framing */
+#define SONET_FRAME_SONET 0	/* SONET STS-3 framing */
+#define SONET_FRAME_SDH   1	/* SDH STM-1 framing */
 
-#define SONET_FRSENSE_SIZE 6		/* C1[3],H1[3] (0xff for unknown) */
-
+#define SONET_FRSENSE_SIZE 6	/* C1[3],H1[3] (0xff for unknown) */
 
 #ifdef __KERNEL__
 
@@ -66,9 +63,10 @@ struct k_sonet_stats {
 #undef __HANDLE_ITEM
 };
 
-extern void sonet_copy_stats(struct k_sonet_stats *from,struct sonet_stats *to);
+extern void sonet_copy_stats(struct k_sonet_stats *from,
+			     struct sonet_stats *to);
 extern void sonet_subtract_stats(struct k_sonet_stats *from,
-    struct sonet_stats *to);
+				 struct sonet_stats *to);
 
 #endif
 

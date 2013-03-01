@@ -26,19 +26,16 @@ struct module;
  * attribute is still left for other arches.
  */
 struct attribute {
-	const char		*name;
-	struct module		*owner;
-	mode_t			mode;
+	const char *name;
+	struct module *owner;
+	mode_t mode;
 };
 
 struct attribute_group {
-	const char		*name;
-	mode_t			(*is_visible)(struct kobject *,
-					      struct attribute *, int);
-	struct attribute	**attrs;
+	const char *name;
+	 mode_t(*is_visible) (struct kobject *, struct attribute *, int);
+	struct attribute **attrs;
 };
-
-
 
 /**
  * Use these macros to make defining attributes easier. See include/linux/device.h
@@ -63,27 +60,28 @@ struct attribute_group {
 struct vm_area_struct;
 
 struct bin_attribute {
-	struct attribute	attr;
-	size_t			size;
-	void			*private;
-	ssize_t (*read)(struct kobject *, struct bin_attribute *,
-			char *, loff_t, size_t);
-	ssize_t (*write)(struct kobject *, struct bin_attribute *,
+	struct attribute attr;
+	size_t size;
+	void *private;
+	 ssize_t(*read) (struct kobject *, struct bin_attribute *,
 			 char *, loff_t, size_t);
-	int (*mmap)(struct kobject *, struct bin_attribute *attr,
-		    struct vm_area_struct *vma);
+	 ssize_t(*write) (struct kobject *, struct bin_attribute *,
+			  char *, loff_t, size_t);
+	int (*mmap) (struct kobject *, struct bin_attribute * attr,
+		     struct vm_area_struct * vma);
 };
 
 struct sysfs_ops {
-	ssize_t	(*show)(struct kobject *, struct attribute *,char *);
-	ssize_t	(*store)(struct kobject *,struct attribute *,const char *, size_t);
+	ssize_t(*show) (struct kobject *, struct attribute *, char *);
+	ssize_t(*store) (struct kobject *, struct attribute *, const char *,
+			 size_t);
 };
 
 struct sysfs_dirent;
 
 #ifdef CONFIG_SYSFS
 
-int sysfs_schedule_callback(struct kobject *kobj, void (*func)(void *),
+int sysfs_schedule_callback(struct kobject *kobj, void (*func) (void *),
 			    void *data, struct module *owner);
 
 int __must_check sysfs_create_dir(struct kobject *kobj);
@@ -111,14 +109,14 @@ void sysfs_remove_link(struct kobject *kobj, const char *name);
 
 int __must_check sysfs_create_group(struct kobject *kobj,
 				    const struct attribute_group *grp);
-int sysfs_update_group(struct kobject *kobj,
-		       const struct attribute_group *grp);
+int sysfs_update_group(struct kobject *kobj, const struct attribute_group *grp);
 void sysfs_remove_group(struct kobject *kobj,
 			const struct attribute_group *grp);
 int sysfs_add_file_to_group(struct kobject *kobj,
-			const struct attribute *attr, const char *group);
+			    const struct attribute *attr, const char *group);
 void sysfs_remove_file_from_group(struct kobject *kobj,
-			const struct attribute *attr, const char *group);
+				  const struct attribute *attr,
+				  const char *group);
 
 void sysfs_notify(struct kobject *kobj, const char *dir, const char *attr);
 void sysfs_notify_dirent(struct sysfs_dirent *sd);
@@ -132,7 +130,8 @@ int __must_check sysfs_init(void);
 #else /* CONFIG_SYSFS */
 
 static inline int sysfs_schedule_callback(struct kobject *kobj,
-		void (*func)(void *), void *data, struct module *owner)
+					  void (*func) (void *), void *data,
+					  struct module *owner)
 {
 	return -ENOSYS;
 }
@@ -209,7 +208,7 @@ static inline int sysfs_create_group(struct kobject *kobj,
 }
 
 static inline int sysfs_update_group(struct kobject *kobj,
-				const struct attribute_group *grp)
+				     const struct attribute_group *grp)
 {
 	return 0;
 }
@@ -220,13 +219,15 @@ static inline void sysfs_remove_group(struct kobject *kobj,
 }
 
 static inline int sysfs_add_file_to_group(struct kobject *kobj,
-		const struct attribute *attr, const char *group)
+					  const struct attribute *attr,
+					  const char *group)
 {
 	return 0;
 }
 
 static inline void sysfs_remove_file_from_group(struct kobject *kobj,
-		const struct attribute *attr, const char *group)
+						const struct attribute *attr,
+						const char *group)
 {
 }
 
@@ -234,19 +235,23 @@ static inline void sysfs_notify(struct kobject *kobj, const char *dir,
 				const char *attr)
 {
 }
+
 static inline void sysfs_notify_dirent(struct sysfs_dirent *sd)
 {
 }
+
 static inline
-struct sysfs_dirent *sysfs_get_dirent(struct sysfs_dirent *parent_sd,
-				      const unsigned char *name)
+    struct sysfs_dirent *sysfs_get_dirent(struct sysfs_dirent *parent_sd,
+					  const unsigned char *name)
 {
 	return NULL;
 }
+
 static inline struct sysfs_dirent *sysfs_get(struct sysfs_dirent *sd)
 {
 	return NULL;
 }
+
 static inline void sysfs_put(struct sysfs_dirent *sd)
 {
 }

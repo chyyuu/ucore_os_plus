@@ -35,7 +35,7 @@ struct sigpending {
 
 /* We don't use <linux/bitops.h> for these because there is no need to
    be atomic.  */
-static inline void sigaddset(sigset_t *set, int _sig)
+static inline void sigaddset(sigset_t * set, int _sig)
 {
 	unsigned long sig = _sig - 1;
 	if (_NSIG_WORDS == 1)
@@ -44,7 +44,7 @@ static inline void sigaddset(sigset_t *set, int _sig)
 		set->sig[sig / _NSIG_BPW] |= 1UL << (sig % _NSIG_BPW);
 }
 
-static inline void sigdelset(sigset_t *set, int _sig)
+static inline void sigdelset(sigset_t * set, int _sig)
 {
 	unsigned long sig = _sig - 1;
 	if (_NSIG_WORDS == 1)
@@ -53,7 +53,7 @@ static inline void sigdelset(sigset_t *set, int _sig)
 		set->sig[sig / _NSIG_BPW] &= ~(1UL << (sig % _NSIG_BPW));
 }
 
-static inline int sigismember(sigset_t *set, int _sig)
+static inline int sigismember(sigset_t * set, int _sig)
 {
 	unsigned long sig = _sig - 1;
 	if (_NSIG_WORDS == 1)
@@ -69,7 +69,7 @@ static inline int sigfindinword(unsigned long word)
 
 #endif /* __HAVE_ARCH_SIG_BITOPS */
 
-static inline int sigisemptyset(sigset_t *set)
+static inline int sigisemptyset(sigset_t * set)
 {
 	extern void _NSIG_WORDS_is_unsupported_size(void);
 	switch (_NSIG_WORDS) {
@@ -117,18 +117,14 @@ static inline void name(sigset_t *r, const sigset_t *a, const sigset_t *b) \
 
 #define _sig_or(x,y)	((x) | (y))
 _SIG_SET_BINOP(sigorsets, _sig_or)
-
 #define _sig_and(x,y)	((x) & (y))
-_SIG_SET_BINOP(sigandsets, _sig_and)
-
+    _SIG_SET_BINOP(sigandsets, _sig_and)
 #define _sig_nand(x,y)	((x) & ~(y))
-_SIG_SET_BINOP(signandsets, _sig_nand)
-
+    _SIG_SET_BINOP(signandsets, _sig_nand)
 #undef _SIG_SET_BINOP
 #undef _sig_or
 #undef _sig_and
 #undef _sig_nand
-
 #define _SIG_SET_OP(name, op)						\
 static inline void name(sigset_t *set)					\
 {									\
@@ -144,75 +140,78 @@ static inline void name(sigset_t *set)					\
 		_NSIG_WORDS_is_unsupported_size();			\
 	}								\
 }
-
 #define _sig_not(x)	(~(x))
-_SIG_SET_OP(signotset, _sig_not)
-
+    _SIG_SET_OP(signotset, _sig_not)
 #undef _SIG_SET_OP
 #undef _sig_not
-
-static inline void sigemptyset(sigset_t *set)
+static inline void sigemptyset(sigset_t * set)
 {
 	switch (_NSIG_WORDS) {
 	default:
 		memset(set, 0, sizeof(sigset_t));
 		break;
-	case 2: set->sig[1] = 0;
-	case 1:	set->sig[0] = 0;
+	case 2:
+		set->sig[1] = 0;
+	case 1:
+		set->sig[0] = 0;
 		break;
 	}
 }
 
-static inline void sigfillset(sigset_t *set)
+static inline void sigfillset(sigset_t * set)
 {
 	switch (_NSIG_WORDS) {
 	default:
 		memset(set, -1, sizeof(sigset_t));
 		break;
-	case 2: set->sig[1] = -1;
-	case 1:	set->sig[0] = -1;
+	case 2:
+		set->sig[1] = -1;
+	case 1:
+		set->sig[0] = -1;
 		break;
 	}
 }
 
 /* Some extensions for manipulating the low 32 signals in particular.  */
 
-static inline void sigaddsetmask(sigset_t *set, unsigned long mask)
+static inline void sigaddsetmask(sigset_t * set, unsigned long mask)
 {
 	set->sig[0] |= mask;
 }
 
-static inline void sigdelsetmask(sigset_t *set, unsigned long mask)
+static inline void sigdelsetmask(sigset_t * set, unsigned long mask)
 {
 	set->sig[0] &= ~mask;
 }
 
-static inline int sigtestsetmask(sigset_t *set, unsigned long mask)
+static inline int sigtestsetmask(sigset_t * set, unsigned long mask)
 {
 	return (set->sig[0] & mask) != 0;
 }
 
-static inline void siginitset(sigset_t *set, unsigned long mask)
+static inline void siginitset(sigset_t * set, unsigned long mask)
 {
 	set->sig[0] = mask;
 	switch (_NSIG_WORDS) {
 	default:
-		memset(&set->sig[1], 0, sizeof(long)*(_NSIG_WORDS-1));
+		memset(&set->sig[1], 0, sizeof(long) * (_NSIG_WORDS - 1));
 		break;
-	case 2: set->sig[1] = 0;
-	case 1: ;
+	case 2:
+		set->sig[1] = 0;
+	case 1:;
 	}
 }
 
-static inline void siginitsetinv(sigset_t *set, unsigned long mask)
+static inline void siginitsetinv(sigset_t * set, unsigned long mask)
 {
 	set->sig[0] = ~mask;
 	switch (_NSIG_WORDS) {
 	default:
-		memset(&set->sig[1], -1, sizeof(long)*(_NSIG_WORDS-1));
+		memset(&set->sig[1], -1, sizeof(long) * (_NSIG_WORDS - 1));
 		break;
-	case 2: set->sig[1] = -1;
-	case 1: ;
+	case 2:
+		set->sig[1] = -1;
+	case 1:;
 	}
 }
 
@@ -232,15 +231,18 @@ static inline int valid_signal(unsigned long sig)
 	return sig <= _NSIG ? 1 : 0;
 }
 
-extern int next_signal(struct sigpending *pending, sigset_t *mask);
-extern int group_send_sig_info(int sig, struct siginfo *info, struct task_struct *p);
+extern int next_signal(struct sigpending *pending, sigset_t * mask);
+extern int group_send_sig_info(int sig, struct siginfo *info,
+			       struct task_struct *p);
 extern int __group_send_sig_info(int, struct siginfo *, struct task_struct *);
 extern long do_sigpending(void __user *, unsigned long);
 extern int sigprocmask(int, sigset_t *, sigset_t *);
 extern int show_unhandled_signals;
 
 struct pt_regs;
-extern int get_signal_to_deliver(siginfo_t *info, struct k_sigaction *return_ka, struct pt_regs *regs, void *cookie);
+extern int get_signal_to_deliver(siginfo_t * info,
+				 struct k_sigaction *return_ka,
+				 struct pt_regs *regs, void *cookie);
 extern void exit_signals(struct task_struct *tsk);
 
 extern struct kmem_cache *sighand_cachep;

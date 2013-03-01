@@ -115,13 +115,12 @@
 #endif
 
 struct flock {
-	short	l_type;
-	short	l_whence;
-	off_t	l_start;
-	off_t	l_len;
-	pid_t	l_pid;
-	__ARCH_FLOCK_PAD
-};
+	short l_type;
+	short l_whence;
+	off_t l_start;
+	off_t l_len;
+	pid_t l_pid;
+ __ARCH_FLOCK_PAD};
 #endif
 
 #ifndef CONFIG_64BIT
@@ -138,13 +137,12 @@ struct flock {
 #endif
 
 struct flock64 {
-	short  l_type;
-	short  l_whence;
+	short l_type;
+	short l_whence;
 	loff_t l_start;
 	loff_t l_len;
-	pid_t  l_pid;
-	__ARCH_FLOCK64_PAD
-};
+	pid_t l_pid;
+ __ARCH_FLOCK64_PAD};
 #endif
 #endif /* !CONFIG_64BIT */
 

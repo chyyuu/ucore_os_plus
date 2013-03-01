@@ -13,8 +13,7 @@
 
 #ifdef CONFIG_COMPAT
 
-int input_event_from_user(const char __user *buffer,
-			  struct input_event *event)
+int input_event_from_user(const char __user * buffer, struct input_event *event)
 {
 	if (INPUT_COMPAT_TEST) {
 		struct input_event_compat compat_event;
@@ -37,8 +36,7 @@ int input_event_from_user(const char __user *buffer,
 	return 0;
 }
 
-int input_event_to_user(char __user *buffer,
-			const struct input_event *event)
+int input_event_to_user(char __user * buffer, const struct input_event *event)
 {
 	if (INPUT_COMPAT_TEST) {
 		struct input_event_compat compat_event;
@@ -61,7 +59,7 @@ int input_event_to_user(char __user *buffer,
 	return 0;
 }
 
-int input_ff_effect_from_user(const char __user *buffer, size_t size,
+int input_ff_effect_from_user(const char __user * buffer, size_t size,
 			      struct ff_effect *effect)
 {
 	if (INPUT_COMPAT_TEST) {
@@ -84,7 +82,7 @@ int input_ff_effect_from_user(const char __user *buffer, size_t size,
 		if (compat_effect->type == FF_PERIODIC &&
 		    compat_effect->u.periodic.waveform == FF_CUSTOM)
 			effect->u.periodic.custom_data =
-				compat_ptr(compat_effect->u.periodic.custom_data);
+			    compat_ptr(compat_effect->u.periodic.custom_data);
 	} else {
 		if (size != sizeof(struct ff_effect))
 			return -EINVAL;
@@ -98,8 +96,7 @@ int input_ff_effect_from_user(const char __user *buffer, size_t size,
 
 #else
 
-int input_event_from_user(const char __user *buffer,
-			 struct input_event *event)
+int input_event_from_user(const char __user * buffer, struct input_event *event)
 {
 	if (copy_from_user(event, buffer, sizeof(struct input_event)))
 		return -EFAULT;
@@ -107,8 +104,7 @@ int input_event_from_user(const char __user *buffer,
 	return 0;
 }
 
-int input_event_to_user(char __user *buffer,
-			const struct input_event *event)
+int input_event_to_user(char __user * buffer, const struct input_event *event)
 {
 	if (copy_to_user(buffer, event, sizeof(struct input_event)))
 		return -EFAULT;
@@ -116,7 +112,7 @@ int input_event_to_user(char __user *buffer,
 	return 0;
 }
 
-int input_ff_effect_from_user(const char __user *buffer, size_t size,
+int input_ff_effect_from_user(const char __user * buffer, size_t size,
 			      struct ff_effect *effect)
 {
 	if (size != sizeof(struct ff_effect))

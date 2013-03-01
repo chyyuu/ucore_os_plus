@@ -51,10 +51,12 @@
 #define __pte_to_swp_entry(pte)	((swp_entry_t) { pte_val(pte) })
 #define __swp_entry_to_pte(x)	((pte_t) { (x).val })
 
-
 typedef pte_t *pte_addr_t;
 
-static inline int pte_file(pte_t pte) { return 0; }
+static inline int pte_file(pte_t pte)
+{
+	return 0;
+}
 
 /*
  * ZERO_PAGE is a global shared page that is always zero: used
@@ -68,7 +70,6 @@ static inline int pte_file(pte_t pte) { return 0; }
 #define pgprot_noncached(prot)	__pgprot(0)
 #define pgprot_writecombine(prot) __pgprot(0)
 
-
 /*
  * These would be in other places but having them here reduces the diffs.
  */
@@ -81,7 +82,6 @@ extern unsigned int kobjsize(const void *objp);
 #define io_remap_page_range	remap_page_range
 #define io_remap_pfn_range	remap_pfn_range
 
-
 /*
  * All 32bit addresses are effectively valid for vmalloc...
  * Sort of meaningless for non-VM targets.
@@ -93,7 +93,7 @@ extern unsigned int kobjsize(const void *objp);
 
 #include <asm-generic/pgtable.h>
 
-#else 
+#else
 
 /*
  * dummy tlb and user structures.

@@ -48,13 +48,11 @@ nf_conntrack_event_cache(enum ip_conntrack_events event, struct nf_conn *ct)
 
 static inline void
 nf_conntrack_event_report(enum ip_conntrack_events event,
-			  struct nf_conn *ct,
-			  u32 pid,
-			  int report)
+			  struct nf_conn *ct, u32 pid, int report)
 {
 	struct nf_ct_event item = {
-		.ct 	= ct,
-		.pid	= pid,
+		.ct = ct,
+		.pid = pid,
 		.report = report
 	};
 	if (nf_ct_is_confirmed(ct) && !nf_ct_is_dying(ct))
@@ -79,13 +77,11 @@ extern int nf_ct_expect_unregister_notifier(struct notifier_block *nb);
 
 static inline void
 nf_ct_expect_event_report(enum ip_conntrack_expect_events event,
-			  struct nf_conntrack_expect *exp,
-			  u32 pid,
-			  int report)
+			  struct nf_conntrack_expect *exp, u32 pid, int report)
 {
 	struct nf_exp_event item = {
-		.exp	= exp,
-		.pid	= pid,
+		.exp = exp,
+		.pid = pid,
 		.report = report
 	};
 	atomic_notifier_call_chain(&nf_ct_expect_chain, event, &item);
@@ -104,21 +100,39 @@ extern void nf_conntrack_ecache_fini(struct net *net);
 #else /* CONFIG_NF_CONNTRACK_EVENTS */
 
 static inline void nf_conntrack_event_cache(enum ip_conntrack_events event,
-					    struct nf_conn *ct) {}
+					    struct nf_conn *ct)
+{
+}
+
 static inline void nf_conntrack_event(enum ip_conntrack_events event,
-				      struct nf_conn *ct) {}
+				      struct nf_conn *ct)
+{
+}
+
 static inline void nf_conntrack_event_report(enum ip_conntrack_events event,
 					     struct nf_conn *ct,
-					     u32 pid,
-					     int report) {}
-static inline void nf_ct_deliver_cached_events(const struct nf_conn *ct) {}
+					     u32 pid, int report)
+{
+}
+
+static inline void nf_ct_deliver_cached_events(const struct nf_conn *ct)
+{
+}
+
 static inline void nf_ct_expect_event(enum ip_conntrack_expect_events event,
-				      struct nf_conntrack_expect *exp) {}
+				      struct nf_conntrack_expect *exp)
+{
+}
+
 static inline void nf_ct_expect_event_report(enum ip_conntrack_expect_events e,
 					     struct nf_conntrack_expect *exp,
- 					     u32 pid,
- 					     int report) {}
-static inline void nf_ct_event_cache_flush(struct net *net) {}
+					     u32 pid, int report)
+{
+}
+
+static inline void nf_ct_event_cache_flush(struct net *net)
+{
+}
 
 static inline int nf_conntrack_ecache_init(struct net *net)
 {
@@ -131,4 +145,3 @@ static inline void nf_conntrack_ecache_fini(struct net *net)
 #endif /* CONFIG_NF_CONNTRACK_EVENTS */
 
 #endif /*_NF_CONNTRACK_ECACHE_H*/
-

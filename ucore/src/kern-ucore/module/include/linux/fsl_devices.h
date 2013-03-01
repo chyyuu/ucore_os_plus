@@ -46,23 +46,23 @@
 
 struct gianfar_platform_data {
 	/* device specific information */
-	u32	device_flags;
-	char	bus_id[BUS_ID_SIZE];
+	u32 device_flags;
+	char bus_id[BUS_ID_SIZE];
 	phy_interface_t interface;
 };
 
 struct gianfar_mdio_data {
 	/* board specific information */
-	int	irq[32];
+	int irq[32];
 };
 
 /* Flags in gianfar_platform_data */
-#define FSL_GIANFAR_BRD_HAS_PHY_INTR	0x00000001 /* set or use a timer */
-#define FSL_GIANFAR_BRD_IS_REDUCED	0x00000002 /* Set if RGMII, RMII */
+#define FSL_GIANFAR_BRD_HAS_PHY_INTR	0x00000001	/* set or use a timer */
+#define FSL_GIANFAR_BRD_IS_REDUCED	0x00000002	/* Set if RGMII, RMII */
 
 struct fsl_i2c_platform_data {
 	/* device specific information */
-	u32	device_flags;
+	u32 device_flags;
 };
 
 /* Flags related to I2C device features */
@@ -86,9 +86,9 @@ enum fsl_usb2_phy_modes {
 
 struct fsl_usb2_platform_data {
 	/* board specific information */
-	enum fsl_usb2_operating_modes	operating_mode;
-	enum fsl_usb2_phy_modes		phy_mode;
-	unsigned int			port_enables;
+	enum fsl_usb2_operating_modes operating_mode;
+	enum fsl_usb2_phy_modes phy_mode;
+	unsigned int port_enables;
 };
 
 /* Flags in fsl_usb2_mph_platform_data */
@@ -96,19 +96,19 @@ struct fsl_usb2_platform_data {
 #define FSL_USB2_PORT1_ENABLED	0x00000002
 
 struct fsl_spi_platform_data {
-	u32 	initial_spmode;	/* initial SPMODE value */
-	u16	bus_num;
-	bool	qe_mode;
+	u32 initial_spmode;	/* initial SPMODE value */
+	u16 bus_num;
+	bool qe_mode;
 	/* board specific information */
-	u16	max_chipselect;
-	void	(*activate_cs)(u8 cs, u8 polarity);
-	void	(*deactivate_cs)(u8 cs, u8 polarity);
-	u32	sysclk;
+	u16 max_chipselect;
+	void (*activate_cs) (u8 cs, u8 polarity);
+	void (*deactivate_cs) (u8 cs, u8 polarity);
+	u32 sysclk;
 };
 
 struct mpc8xx_pcmcia_ops {
-	void(*hw_ctrl)(int slot, int enable);
-	int(*voltage_set)(int slot, int vcc, int vpp);
+	void (*hw_ctrl) (int slot, int enable);
+	int (*voltage_set) (int slot, int vcc, int vpp);
 };
 
 /* Returns non-zero if the current suspend operation would

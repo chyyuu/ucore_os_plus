@@ -113,7 +113,7 @@ struct kprobe {
 };
 
 /* Kprobe status flags */
-#define KPROBE_FLAG_GONE	1 /* breakpoint has already gone */
+#define KPROBE_FLAG_GONE	1	/* breakpoint has already gone */
 
 static inline int kprobe_gone(struct kprobe *p)
 {
@@ -132,7 +132,7 @@ static inline int kprobe_gone(struct kprobe *p)
  */
 struct jprobe {
 	struct kprobe kp;
-	void *entry;	/* probe handling code to jump to */
+	void *entry;		/* probe handling code to jump to */
 };
 
 /* For backward compatibility with old code using JPROBE_ENTRY() */
@@ -188,9 +188,10 @@ extern void arch_prepare_kretprobe(struct kretprobe_instance *ri,
 extern int arch_trampoline_kprobe(struct kprobe *p);
 #else /* CONFIG_KRETPROBES */
 static inline void arch_prepare_kretprobe(struct kretprobe *rp,
-					struct pt_regs *regs)
+					  struct pt_regs *regs)
 {
 }
+
 static inline int arch_trampoline_kprobe(struct kprobe *p)
 {
 	return 0;
@@ -200,11 +201,12 @@ static inline int arch_trampoline_kprobe(struct kprobe *p)
 extern struct kretprobe_blackpoint kretprobe_blacklist[];
 
 static inline void kretprobe_assert(struct kretprobe_instance *ri,
-	unsigned long orig_ret_address, unsigned long trampoline_address)
+				    unsigned long orig_ret_address,
+				    unsigned long trampoline_address)
 {
 	if (!orig_ret_address || (orig_ret_address == trampoline_address)) {
 		printk("kretprobe BUG!: Processing kretprobe %p @ %p\n",
-				ri->rp, ri->rp->kp.addr);
+		       ri->rp, ri->rp->kp.addr);
 		BUG();
 	}
 }
@@ -224,7 +226,7 @@ extern void arch_disarm_kprobe(struct kprobe *p);
 extern int arch_init_kprobes(void);
 extern void show_registers(struct pt_regs *regs);
 extern kprobe_opcode_t *get_insn_slot(void);
-extern void free_insn_slot(kprobe_opcode_t *slot, int dirty);
+extern void free_insn_slot(kprobe_opcode_t * slot, int dirty);
 extern void kprobes_inc_nmissed_count(struct kprobe *p);
 
 /* Get the kprobe at this addr (if any) - called with preemption disabled */
@@ -232,7 +234,7 @@ struct kprobe *get_kprobe(void *addr);
 void kretprobe_hash_lock(struct task_struct *tsk,
 			 struct hlist_head **head, unsigned long *flags);
 void kretprobe_hash_unlock(struct task_struct *tsk, unsigned long *flags);
-struct hlist_head * kretprobe_inst_table_head(struct task_struct *tsk);
+struct hlist_head *kretprobe_inst_table_head(struct task_struct *tsk);
 
 /* kprobe_running() will just return the current_kprobe on this CPU */
 static inline struct kprobe *kprobe_running(void)
@@ -277,57 +279,72 @@ static inline struct kprobe *get_kprobe(void *addr)
 {
 	return NULL;
 }
+
 static inline struct kprobe *kprobe_running(void)
 {
 	return NULL;
 }
+
 static inline int register_kprobe(struct kprobe *p)
 {
 	return -ENOSYS;
 }
+
 static inline int register_kprobes(struct kprobe **kps, int num)
 {
 	return -ENOSYS;
 }
+
 static inline void unregister_kprobe(struct kprobe *p)
 {
 }
+
 static inline void unregister_kprobes(struct kprobe **kps, int num)
 {
 }
+
 static inline int register_jprobe(struct jprobe *p)
 {
 	return -ENOSYS;
 }
+
 static inline int register_jprobes(struct jprobe **jps, int num)
 {
 	return -ENOSYS;
 }
+
 static inline void unregister_jprobe(struct jprobe *p)
 {
 }
+
 static inline void unregister_jprobes(struct jprobe **jps, int num)
 {
 }
+
 static inline void jprobe_return(void)
 {
 }
+
 static inline int register_kretprobe(struct kretprobe *rp)
 {
 	return -ENOSYS;
 }
+
 static inline int register_kretprobes(struct kretprobe **rps, int num)
 {
 	return -ENOSYS;
 }
+
 static inline void unregister_kretprobe(struct kretprobe *rp)
 {
 }
+
 static inline void unregister_kretprobes(struct kretprobe **rps, int num)
 {
 }
+
 static inline void kprobe_flush_task(struct task_struct *tk)
 {
 }
-#endif				/* CONFIG_KPROBES */
-#endif				/* _LINUX_KPROBES_H */
+#endif /* CONFIG_KPROBES */
+#endif /* _LINUX_KPROBES_H */

@@ -9,7 +9,7 @@ struct undef_hook {
 	u32 instr_val;
 	u32 cpsr_mask;
 	u32 cpsr_val;
-	int (*fn)(struct pt_regs *regs, unsigned int instr);
+	int (*fn) (struct pt_regs * regs, unsigned int instr);
 };
 
 void register_undef_hook(struct undef_hook *hook);
@@ -21,7 +21,7 @@ static inline int in_exception_text(unsigned long ptr)
 	extern char __exception_text_end[];
 
 	return ptr >= (unsigned long)&__exception_text_start &&
-	       ptr < (unsigned long)&__exception_text_end;
+	    ptr < (unsigned long)&__exception_text_end;
 }
 
 extern void __init early_trap_init(void);

@@ -38,11 +38,10 @@ enum {
  * @recur: number of recurrences
  * @value: character value for TS_FSM_SPECIFIC
  */
-struct ts_fsm_token
-{
-	__u16		type;
-	__u8		recur;
-	__u8		value;
+struct ts_fsm_token {
+	__u16 type;
+	__u8 recur;
+	__u8 value;
 };
 
 #endif

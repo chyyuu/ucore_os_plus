@@ -137,9 +137,9 @@ void cipso_v4_doi_free(struct cipso_v4_doi *doi_def);
 int cipso_v4_doi_remove(u32 doi, struct netlbl_audit *audit_info);
 struct cipso_v4_doi *cipso_v4_doi_getdef(u32 doi);
 void cipso_v4_doi_putdef(struct cipso_v4_doi *doi_def);
-int cipso_v4_doi_walk(u32 *skip_cnt,
-		     int (*callback) (struct cipso_v4_doi *doi_def, void *arg),
-	             void *cb_arg);
+int cipso_v4_doi_walk(u32 * skip_cnt,
+		      int (*callback) (struct cipso_v4_doi * doi_def,
+				       void *arg), void *cb_arg);
 #else
 static inline int cipso_v4_doi_add(struct cipso_v4_doi *doi_def,
 				   struct netlbl_audit *audit_info)
@@ -152,8 +152,7 @@ static inline void cipso_v4_doi_free(struct cipso_v4_doi *doi_def)
 	return;
 }
 
-static inline int cipso_v4_doi_remove(u32 doi,
-				      struct netlbl_audit *audit_info)
+static inline int cipso_v4_doi_remove(u32 doi, struct netlbl_audit *audit_info)
 {
 	return 0;
 }
@@ -163,9 +162,10 @@ static inline struct cipso_v4_doi *cipso_v4_doi_getdef(u32 doi)
 	return NULL;
 }
 
-static inline int cipso_v4_doi_walk(u32 *skip_cnt,
-		     int (*callback) (struct cipso_v4_doi *doi_def, void *arg),
-		     void *cb_arg)
+static inline int cipso_v4_doi_walk(u32 * skip_cnt,
+				    int (*callback) (struct cipso_v4_doi *
+						     doi_def, void *arg),
+				    void *cb_arg)
 {
 	return 0;
 }
@@ -223,16 +223,15 @@ int cipso_v4_skbuff_getattr(const struct sk_buff *skb,
 			    struct netlbl_lsm_secattr *secattr);
 int cipso_v4_validate(const struct sk_buff *skb, unsigned char **option);
 #else
-static inline void cipso_v4_error(struct sk_buff *skb,
-				  int error,
-				  u32 gateway)
+static inline void cipso_v4_error(struct sk_buff *skb, int error, u32 gateway)
 {
 	return;
 }
 
 static inline int cipso_v4_sock_setattr(struct sock *sk,
-				      const struct cipso_v4_doi *doi_def,
-				      const struct netlbl_lsm_secattr *secattr)
+					const struct cipso_v4_doi *doi_def,
+					const struct netlbl_lsm_secattr
+					*secattr)
 {
 	return -ENOSYS;
 }
@@ -248,8 +247,9 @@ static inline int cipso_v4_sock_getattr(struct sock *sk,
 }
 
 static inline int cipso_v4_skbuff_setattr(struct sk_buff *skb,
-				      const struct cipso_v4_doi *doi_def,
-				      const struct netlbl_lsm_secattr *secattr)
+					  const struct cipso_v4_doi *doi_def,
+					  const struct netlbl_lsm_secattr
+					  *secattr)
 {
 	return -ENOSYS;
 }

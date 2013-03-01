@@ -40,6 +40,4 @@ void hid_resolv_event(__u8, __u16);
 
 #endif /* CONFIG_HID_DEBUG */
 
-
 #endif
-

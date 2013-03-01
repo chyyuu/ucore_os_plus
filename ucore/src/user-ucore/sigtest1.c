@@ -2,13 +2,15 @@
 #include <stdio.h>
 #include <signal.h>
 
-void handler(int sign) {
+void handler(int sign)
+{
 	cprintf("signal: %d received by %d\n", sign, getpid());
 }
 
-int child() {
+int child()
+{
 	int pid = getpid();
-  cprintf("IM child %d\n", pid);
+	cprintf("IM child %d\n", pid);
 
 	signal(SIGUSR1, handler);
 	signal(SIGUSR2, handler);
@@ -19,22 +21,23 @@ int child() {
 
 	int l = 0;
 	while (1) {
-		if ( ++l == 9 ) {
+		if (++l == 9) {
 			cprintf("%d unblock SIGUSER1\n", pid);
 			sigprocmask(SIG_UNBLOCK, &set, NULL);
 		}
 		cprintf("im %d\n", pid);
-		sleep(100);	
+		sleep(100);
 	}
 }
 
-int main() {
+int main()
+{
 	int children[3];
 	int i;
 	for (i = 0; i < 3; ++i) {
 		sleep(20);
 		int pid = fork();
-		if ( pid == 0 )
+		if (pid == 0)
 			child();
 		else
 			children[i] = pid;
@@ -62,4 +65,3 @@ int main() {
 	}
 	return 0;
 }
-

@@ -38,8 +38,8 @@ enum of_gpio_flags {
 struct of_gpio_chip {
 	struct gpio_chip gc;
 	int gpio_cells;
-	int (*xlate)(struct of_gpio_chip *of_gc, struct device_node *np,
-		     const void *gpio_spec, enum of_gpio_flags *flags);
+	int (*xlate) (struct of_gpio_chip * of_gc, struct device_node * np,
+		      const void *gpio_spec, enum of_gpio_flags * flags);
 };
 
 static inline struct of_gpio_chip *to_of_gpio_chip(struct gpio_chip *gc)
@@ -52,7 +52,7 @@ static inline struct of_gpio_chip *to_of_gpio_chip(struct gpio_chip *gc)
  */
 struct of_mm_gpio_chip {
 	struct of_gpio_chip of_gc;
-	void (*save_regs)(struct of_mm_gpio_chip *mm_gc);
+	void (*save_regs) (struct of_mm_gpio_chip * mm_gc);
 	void __iomem *regs;
 };
 

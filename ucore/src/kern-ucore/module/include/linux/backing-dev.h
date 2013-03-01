@@ -29,7 +29,7 @@ enum bdi_state {
 	BDI_unused,		/* Available bits start here */
 };
 
-typedef int (congested_fn)(void *, int);
+typedef int (congested_fn) (void *, int);
 
 enum bdi_stat_item {
 	BDI_RECLAIMABLE,
@@ -42,10 +42,10 @@ enum bdi_stat_item {
 struct backing_dev_info {
 	unsigned long ra_pages;	/* max readahead in PAGE_CACHE_SIZE units */
 	unsigned long state;	/* Always use atomic bitops on this */
-	unsigned int capabilities; /* Device capabilities */
-	congested_fn *congested_fn; /* Function pointer if device is md/dm */
+	unsigned int capabilities;	/* Device capabilities */
+	congested_fn *congested_fn;	/* Function pointer if device is md/dm */
 	void *congested_data;	/* Pointer to aux data for congested func */
-	void (*unplug_io_fn)(struct backing_dev_info *, struct page *);
+	void (*unplug_io_fn) (struct backing_dev_info *, struct page *);
 	void *unplug_io_data;
 
 	struct percpu_counter bdi_stat[NR_BDI_STAT_ITEMS];
@@ -68,24 +68,24 @@ int bdi_init(struct backing_dev_info *bdi);
 void bdi_destroy(struct backing_dev_info *bdi);
 
 int bdi_register(struct backing_dev_info *bdi, struct device *parent,
-		const char *fmt, ...);
+		 const char *fmt, ...);
 int bdi_register_dev(struct backing_dev_info *bdi, dev_t dev);
 void bdi_unregister(struct backing_dev_info *bdi);
 
 static inline void __add_bdi_stat(struct backing_dev_info *bdi,
-		enum bdi_stat_item item, s64 amount)
+				  enum bdi_stat_item item, s64 amount)
 {
 	__percpu_counter_add(&bdi->bdi_stat[item], amount, BDI_STAT_BATCH);
 }
 
 static inline void __inc_bdi_stat(struct backing_dev_info *bdi,
-		enum bdi_stat_item item)
+				  enum bdi_stat_item item)
 {
 	__add_bdi_stat(bdi, item, 1);
 }
 
 static inline void inc_bdi_stat(struct backing_dev_info *bdi,
-		enum bdi_stat_item item)
+				enum bdi_stat_item item)
 {
 	unsigned long flags;
 
@@ -95,13 +95,13 @@ static inline void inc_bdi_stat(struct backing_dev_info *bdi,
 }
 
 static inline void __dec_bdi_stat(struct backing_dev_info *bdi,
-		enum bdi_stat_item item)
+				  enum bdi_stat_item item)
 {
 	__add_bdi_stat(bdi, item, -1);
 }
 
 static inline void dec_bdi_stat(struct backing_dev_info *bdi,
-		enum bdi_stat_item item)
+				enum bdi_stat_item item)
 {
 	unsigned long flags;
 
@@ -111,19 +111,19 @@ static inline void dec_bdi_stat(struct backing_dev_info *bdi,
 }
 
 static inline s64 bdi_stat(struct backing_dev_info *bdi,
-		enum bdi_stat_item item)
+			   enum bdi_stat_item item)
 {
 	return percpu_counter_read_positive(&bdi->bdi_stat[item]);
 }
 
 static inline s64 __bdi_stat_sum(struct backing_dev_info *bdi,
-		enum bdi_stat_item item)
+				 enum bdi_stat_item item)
 {
 	return percpu_counter_sum_positive(&bdi->bdi_stat[item]);
 }
 
 static inline s64 bdi_stat_sum(struct backing_dev_info *bdi,
-		enum bdi_stat_item item)
+			       enum bdi_stat_item item)
 {
 	s64 sum;
 	unsigned long flags;
@@ -225,14 +225,13 @@ static inline int bdi_write_congested(struct backing_dev_info *bdi)
 
 static inline int bdi_rw_congested(struct backing_dev_info *bdi)
 {
-	return bdi_congested(bdi, (1 << BDI_read_congested)|
-				  (1 << BDI_write_congested));
+	return bdi_congested(bdi, (1 << BDI_read_congested) |
+			     (1 << BDI_write_congested));
 }
 
 void clear_bdi_congested(struct backing_dev_info *bdi, int rw);
 void set_bdi_congested(struct backing_dev_info *bdi, int rw);
 long congestion_wait(int rw, long timeout);
-
 
 static inline bool bdi_cap_writeback_dirty(struct backing_dev_info *bdi)
 {
@@ -271,4 +270,4 @@ static inline bool mapping_cap_swap_backed(struct address_space *mapping)
 	return bdi_cap_swap_backed(mapping->backing_dev_info);
 }
 
-#endif		/* _LINUX_BACKING_DEV_H */
+#endif /* _LINUX_BACKING_DEV_H */

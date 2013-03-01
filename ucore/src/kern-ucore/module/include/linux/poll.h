@@ -28,19 +28,21 @@ struct poll_table_struct;
 /* 
  * structures and helpers for f_op->poll implementations
  */
-typedef void (*poll_queue_proc)(struct file *, wait_queue_head_t *, struct poll_table_struct *);
+typedef void (*poll_queue_proc) (struct file *, wait_queue_head_t *,
+				 struct poll_table_struct *);
 
 typedef struct poll_table_struct {
 	poll_queue_proc qproc;
 } poll_table;
 
-static inline void poll_wait(struct file * filp, wait_queue_head_t * wait_address, poll_table *p)
+static inline void poll_wait(struct file *filp,
+			     wait_queue_head_t * wait_address, poll_table * p)
 {
 	if (p && wait_address)
 		p->qproc(filp, wait_address, p);
 }
 
-static inline void init_poll_funcptr(poll_table *pt, poll_queue_proc qproc)
+static inline void init_poll_funcptr(poll_table * pt, poll_queue_proc qproc)
 {
 	pt->qproc = qproc;
 }
@@ -67,7 +69,7 @@ struct poll_wqueues {
 extern void poll_initwait(struct poll_wqueues *pwq);
 extern void poll_freewait(struct poll_wqueues *pwq);
 extern int poll_schedule_timeout(struct poll_wqueues *pwq, int state,
-				 ktime_t *expires, unsigned long slack);
+				 ktime_t * expires, unsigned long slack);
 
 static inline int poll_schedule(struct poll_wqueues *pwq, int state)
 {
@@ -97,7 +99,7 @@ typedef struct {
  * Use "unsigned long" accesses to let user-mode fd_set's be long-aligned.
  */
 static inline
-int get_fd_set(unsigned long nr, void __user *ufdset, unsigned long *fdset)
+    int get_fd_set(unsigned long nr, void __user * ufdset, unsigned long *fdset)
 {
 	nr = FDS_BYTES(nr);
 	if (ufdset)
@@ -108,26 +110,25 @@ int get_fd_set(unsigned long nr, void __user *ufdset, unsigned long *fdset)
 }
 
 static inline unsigned long __must_check
-set_fd_set(unsigned long nr, void __user *ufdset, unsigned long *fdset)
+set_fd_set(unsigned long nr, void __user * ufdset, unsigned long *fdset)
 {
 	if (ufdset)
 		return __copy_to_user(ufdset, fdset, FDS_BYTES(nr));
 	return 0;
 }
 
-static inline
-void zero_fd_set(unsigned long nr, unsigned long *fdset)
+static inline void zero_fd_set(unsigned long nr, unsigned long *fdset)
 {
 	memset(fdset, 0, FDS_BYTES(nr));
 }
 
 #define MAX_INT64_SECONDS (((s64)(~((u64)0)>>1)/HZ)-1)
 
-extern int do_select(int n, fd_set_bits *fds, struct timespec *end_time);
+extern int do_select(int n, fd_set_bits * fds, struct timespec *end_time);
 extern int do_sys_poll(struct pollfd __user * ufds, unsigned int nfds,
 		       struct timespec *end_time);
-extern int core_sys_select(int n, fd_set __user *inp, fd_set __user *outp,
-			   fd_set __user *exp, struct timespec *end_time);
+extern int core_sys_select(int n, fd_set __user * inp, fd_set __user * outp,
+			   fd_set __user * exp, struct timespec *end_time);
 
 extern int poll_select_set_timeout(struct timespec *to, long sec, long nsec);
 

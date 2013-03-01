@@ -630,6 +630,7 @@ static inline void set_le_key_k_type(int version, struct reiserfs_key *key,
 		   cpu_to_le32(type2uniqueness(type)))
 	    : (void)(set_offset_v2_k_type(&(key->u.k_offset_v2), type));
 }
+
 static inline void set_le_ih_k_type(struct item_head *ih, int type)
 {
 	set_le_key_k_type(ih_version(ih), &(ih->ih_key), type);
@@ -974,7 +975,7 @@ struct reiserfs_de_head {
 
 /* 64 bit systems (and the S/390) need to be aligned explicitly -jdm */
 #if BITS_PER_LONG == 64 || defined(__s390__) || defined(__hppa__)
-#   define ADDR_UNALIGNED_BITS  (3)
+#define ADDR_UNALIGNED_BITS  (3)
 #endif
 
 /* These are only used to manipulate deh_state.
@@ -982,18 +983,18 @@ struct reiserfs_de_head {
  * since they are little endian */
 #ifdef ADDR_UNALIGNED_BITS
 
-#   define aligned_address(addr)           ((void *)((long)(addr) & ~((1UL << ADDR_UNALIGNED_BITS) - 1)))
-#   define unaligned_offset(addr)          (((int)((long)(addr) & ((1 << ADDR_UNALIGNED_BITS) - 1))) << 3)
+#define aligned_address(addr)           ((void *)((long)(addr) & ~((1UL << ADDR_UNALIGNED_BITS) - 1)))
+#define unaligned_offset(addr)          (((int)((long)(addr) & ((1 << ADDR_UNALIGNED_BITS) - 1))) << 3)
 
-#   define set_bit_unaligned(nr, addr)     ext2_set_bit((nr) + unaligned_offset(addr), aligned_address(addr))
-#   define clear_bit_unaligned(nr, addr)   ext2_clear_bit((nr) + unaligned_offset(addr), aligned_address(addr))
-#   define test_bit_unaligned(nr, addr)    ext2_test_bit((nr) + unaligned_offset(addr), aligned_address(addr))
+#define set_bit_unaligned(nr, addr)     ext2_set_bit((nr) + unaligned_offset(addr), aligned_address(addr))
+#define clear_bit_unaligned(nr, addr)   ext2_clear_bit((nr) + unaligned_offset(addr), aligned_address(addr))
+#define test_bit_unaligned(nr, addr)    ext2_test_bit((nr) + unaligned_offset(addr), aligned_address(addr))
 
 #else
 
-#   define set_bit_unaligned(nr, addr)     ext2_set_bit(nr, addr)
-#   define clear_bit_unaligned(nr, addr)   ext2_clear_bit(nr, addr)
-#   define test_bit_unaligned(nr, addr)    ext2_test_bit(nr, addr)
+#define set_bit_unaligned(nr, addr)     ext2_set_bit(nr, addr)
+#define clear_bit_unaligned(nr, addr)   ext2_clear_bit(nr, addr)
+#define test_bit_unaligned(nr, addr)    ext2_test_bit(nr, addr)
 
 #endif
 
@@ -1712,7 +1713,9 @@ static inline int reiserfs_transaction_running(struct super_block *s)
 	return 0;
 }
 
-static inline int reiserfs_transaction_free_space(struct reiserfs_transaction_handle *th)
+static inline int reiserfs_transaction_free_space(struct
+						  reiserfs_transaction_handle
+						  *th)
 {
 	return th->t_blocks_allocated - th->t_blocks_logged;
 }
@@ -1749,7 +1752,7 @@ int journal_mark_freed(struct reiserfs_transaction_handle *,
 		       struct super_block *, b_blocknr_t blocknr);
 int journal_transaction_should_end(struct reiserfs_transaction_handle *, int);
 int reiserfs_in_journal(struct super_block *p_s_sb, unsigned int bmap_nr,
-			int bit_nr, int searchall, b_blocknr_t *next);
+			int bit_nr, int searchall, b_blocknr_t * next);
 int journal_begin(struct reiserfs_transaction_handle *,
 		  struct super_block *p_s_sb, unsigned long);
 int journal_join_abort(struct reiserfs_transaction_handle *,
@@ -1807,7 +1810,8 @@ static inline void copy_key(struct reiserfs_key *to,
 	memcpy(to, from, KEY_SIZE);
 }
 
-int comp_items(const struct item_head *stored_ih, const struct treepath *p_s_path);
+int comp_items(const struct item_head *stored_ih,
+	       const struct treepath *p_s_path);
 const struct reiserfs_key *get_rkey(const struct treepath *p_s_chk_path,
 				    const struct super_block *p_s_sb);
 int search_by_key(struct super_block *, const struct cpu_key *,
@@ -1820,7 +1824,8 @@ extern void decrement_bcount(struct buffer_head *p_s_bh);
 void decrement_counters_in_path(struct treepath *p_s_search_path);
 void pathrelse(struct treepath *p_s_search_path);
 int reiserfs_check_path(struct treepath *p);
-void pathrelse_and_restore(struct super_block *s, struct treepath *p_s_search_path);
+void pathrelse_and_restore(struct super_block *s,
+			   struct treepath *p_s_search_path);
 
 int reiserfs_insert_item(struct reiserfs_transaction_handle *th,
 			 struct treepath *path,
@@ -2085,8 +2090,11 @@ __le32 reiserfs_choose_packing(struct inode *dir);
 
 int reiserfs_init_bitmap_cache(struct super_block *sb);
 void reiserfs_free_bitmap_cache(struct super_block *sb);
-void reiserfs_cache_bitmap_metadata(struct super_block *sb, struct buffer_head *bh, struct reiserfs_bitmap_info *info);
-struct buffer_head *reiserfs_read_bitmap_block(struct super_block *sb, unsigned int bitmap);
+void reiserfs_cache_bitmap_metadata(struct super_block *sb,
+				    struct buffer_head *bh,
+				    struct reiserfs_bitmap_info *info);
+struct buffer_head *reiserfs_read_bitmap_block(struct super_block *sb,
+					       unsigned int bitmap);
 int is_reusable(struct super_block *s, b_blocknr_t block, int bit_value);
 void reiserfs_free_block(struct reiserfs_transaction_handle *th, struct inode *,
 			 b_blocknr_t, int for_unformatted);
@@ -2175,7 +2183,7 @@ __u32 r5_hash(const signed char *msg, int len);
 int reiserfs_ioctl(struct inode *inode, struct file *filp,
 		   unsigned int cmd, unsigned long arg);
 long reiserfs_compat_ioctl(struct file *filp,
-		   unsigned int cmd, unsigned long arg);
+			   unsigned int cmd, unsigned long arg);
 int reiserfs_unpack(struct inode *inode, struct file *filp);
 
 /* ioctl's command */
@@ -2203,4 +2211,4 @@ int reiserfs_unpack(struct inode *inode, struct file *filp);
 /* xattr stuff */
 #define REISERFS_XATTR_DIR_SEM(s) (REISERFS_SB(s)->xattr_dir_sem)
 
-#endif				/* _LINUX_REISER_FS_H */
+#endif /* _LINUX_REISER_FS_H */

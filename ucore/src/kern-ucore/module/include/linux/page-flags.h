@@ -78,7 +78,7 @@ enum pageflags {
 	PG_lru,
 	PG_active,
 	PG_slab,
-	PG_owner_priv_1,	/* Owner use. If pagecache, fs may use*/
+	PG_owner_priv_1,	/* Owner use. If pagecache, fs may use */
 	PG_arch_1,
 	PG_reserved,
 	PG_private,		/* If pagecache, has fs-private data */
@@ -152,7 +152,6 @@ static inline int TestSetPage##uname(struct page *page)			\
 static inline int TestClearPage##uname(struct page *page)		\
 		{ return test_and_clear_bit(PG_##lname, &page->flags); }
 
-
 #define PAGEFLAG(uname, lname) TESTPAGEFLAG(uname, lname)		\
 	SETPAGEFLAG(uname, lname) CLEARPAGEFLAG(uname, lname)
 
@@ -178,42 +177,43 @@ static inline void __ClearPage##uname(struct page *page) {  }
 #define TESTCLEARFLAG_FALSE(uname)					\
 static inline int TestClearPage##uname(struct page *page) { return 0; }
 
-struct page;	/* forward declaration */
+struct page;			/* forward declaration */
 
 TESTPAGEFLAG(Locked, locked)
-PAGEFLAG(Error, error)
-PAGEFLAG(Referenced, referenced) TESTCLEARFLAG(Referenced, referenced)
-PAGEFLAG(Dirty, dirty) TESTSCFLAG(Dirty, dirty) __CLEARPAGEFLAG(Dirty, dirty)
-PAGEFLAG(LRU, lru) __CLEARPAGEFLAG(LRU, lru)
-PAGEFLAG(Active, active) __CLEARPAGEFLAG(Active, active)
-	TESTCLEARFLAG(Active, active)
-__PAGEFLAG(Slab, slab)
-PAGEFLAG(Checked, checked)		/* Used by some filesystems */
-PAGEFLAG(Pinned, pinned) TESTSCFLAG(Pinned, pinned)	/* Xen */
-PAGEFLAG(SavePinned, savepinned);			/* Xen */
+    PAGEFLAG(Error, error)
+    PAGEFLAG(Referenced, referenced) TESTCLEARFLAG(Referenced, referenced)
+    PAGEFLAG(Dirty, dirty) TESTSCFLAG(Dirty, dirty) __CLEARPAGEFLAG(Dirty,
+								    dirty)
+    PAGEFLAG(LRU, lru) __CLEARPAGEFLAG(LRU, lru)
+    PAGEFLAG(Active, active) __CLEARPAGEFLAG(Active, active)
+    TESTCLEARFLAG(Active, active)
+    __PAGEFLAG(Slab, slab)
+    PAGEFLAG(Checked, checked)	/* Used by some filesystems */
+    PAGEFLAG(Pinned, pinned) TESTSCFLAG(Pinned, pinned)	/* Xen */
+    PAGEFLAG(SavePinned, savepinned);	/* Xen */
 PAGEFLAG(Reserved, reserved) __CLEARPAGEFLAG(Reserved, reserved)
-PAGEFLAG(Private, private) __CLEARPAGEFLAG(Private, private)
-	__SETPAGEFLAG(Private, private)
-PAGEFLAG(SwapBacked, swapbacked) __CLEARPAGEFLAG(SwapBacked, swapbacked)
+    PAGEFLAG(Private, private) __CLEARPAGEFLAG(Private, private)
+    __SETPAGEFLAG(Private, private)
+    PAGEFLAG(SwapBacked, swapbacked) __CLEARPAGEFLAG(SwapBacked, swapbacked)
 
-__PAGEFLAG(SlobPage, slob_page)
-__PAGEFLAG(SlobFree, slob_free)
+    __PAGEFLAG(SlobPage, slob_page)
+    __PAGEFLAG(SlobFree, slob_free)
 
-__PAGEFLAG(SlubFrozen, slub_frozen)
-__PAGEFLAG(SlubDebug, slub_debug)
+    __PAGEFLAG(SlubFrozen, slub_frozen)
+    __PAGEFLAG(SlubDebug, slub_debug)
 
 /*
  * Only test-and-set exist for PG_writeback.  The unconditional operators are
  * risky: they bypass page accounting.
  */
-TESTPAGEFLAG(Writeback, writeback) TESTSCFLAG(Writeback, writeback)
-__PAGEFLAG(Buddy, buddy)
-PAGEFLAG(MappedToDisk, mappedtodisk)
+    TESTPAGEFLAG(Writeback, writeback) TESTSCFLAG(Writeback, writeback)
+    __PAGEFLAG(Buddy, buddy)
+    PAGEFLAG(MappedToDisk, mappedtodisk)
 
 /* PG_readahead is only used for file reads; PG_reclaim is only for writes */
-PAGEFLAG(Reclaim, reclaim) TESTCLEARFLAG(Reclaim, reclaim)
-PAGEFLAG(Readahead, reclaim)		/* Reminder to do async read-ahead */
-
+    PAGEFLAG(Reclaim, reclaim) TESTCLEARFLAG(Reclaim, reclaim)
+    PAGEFLAG(Readahead, reclaim)
+    /* Reminder to do async read-ahead */
 #ifdef CONFIG_HIGHMEM
 /*
  * Must use a macro here due to header dependency issues. page_zone() is not
@@ -221,41 +221,34 @@ PAGEFLAG(Readahead, reclaim)		/* Reminder to do async read-ahead */
  */
 #define PageHighMem(__p) is_highmem(page_zone(__p))
 #else
-PAGEFLAG_FALSE(HighMem)
+    PAGEFLAG_FALSE(HighMem)
 #endif
-
 #ifdef CONFIG_SWAP
-PAGEFLAG(SwapCache, swapcache)
+    PAGEFLAG(SwapCache, swapcache)
 #else
-PAGEFLAG_FALSE(SwapCache)
-	SETPAGEFLAG_NOOP(SwapCache) CLEARPAGEFLAG_NOOP(SwapCache)
+    PAGEFLAG_FALSE(SwapCache)
+    SETPAGEFLAG_NOOP(SwapCache) CLEARPAGEFLAG_NOOP(SwapCache)
 #endif
-
 #ifdef CONFIG_UNEVICTABLE_LRU
-PAGEFLAG(Unevictable, unevictable) __CLEARPAGEFLAG(Unevictable, unevictable)
-	TESTCLEARFLAG(Unevictable, unevictable)
-
+    PAGEFLAG(Unevictable, unevictable) __CLEARPAGEFLAG(Unevictable, unevictable)
+    TESTCLEARFLAG(Unevictable, unevictable)
 #define MLOCK_PAGES 1
-PAGEFLAG(Mlocked, mlocked) __CLEARPAGEFLAG(Mlocked, mlocked)
-	TESTSCFLAG(Mlocked, mlocked)
-
+    PAGEFLAG(Mlocked, mlocked) __CLEARPAGEFLAG(Mlocked, mlocked)
+    TESTSCFLAG(Mlocked, mlocked)
 #else
-
 #define MLOCK_PAGES 0
-PAGEFLAG_FALSE(Mlocked)
-	SETPAGEFLAG_NOOP(Mlocked) TESTCLEARFLAG_FALSE(Mlocked)
+    PAGEFLAG_FALSE(Mlocked)
+    SETPAGEFLAG_NOOP(Mlocked) TESTCLEARFLAG_FALSE(Mlocked)
 
-PAGEFLAG_FALSE(Unevictable) TESTCLEARFLAG_FALSE(Unevictable)
-	SETPAGEFLAG_NOOP(Unevictable) CLEARPAGEFLAG_NOOP(Unevictable)
-	__CLEARPAGEFLAG_NOOP(Unevictable)
+    PAGEFLAG_FALSE(Unevictable) TESTCLEARFLAG_FALSE(Unevictable)
+    SETPAGEFLAG_NOOP(Unevictable) CLEARPAGEFLAG_NOOP(Unevictable)
+    __CLEARPAGEFLAG_NOOP(Unevictable)
 #endif
-
 #ifdef CONFIG_IA64_UNCACHED_ALLOCATOR
-PAGEFLAG(Uncached, uncached)
+    PAGEFLAG(Uncached, uncached)
 #else
-PAGEFLAG_FALSE(Uncached)
+    PAGEFLAG_FALSE(Uncached)
 #endif
-
 static inline int PageUptodate(struct page *page)
 {
 	int ret = test_bit(PG_uptodate, &(page)->flags);
@@ -319,7 +312,7 @@ static inline void set_page_writeback(struct page *page)
  * generally not used in hot code paths.
  */
 __PAGEFLAG(Head, head)
-__PAGEFLAG(Tail, tail)
+    __PAGEFLAG(Tail, tail)
 
 static inline int PageCompound(struct page *page)
 {
@@ -334,7 +327,7 @@ static inline int PageCompound(struct page *page)
  * pages on the LRU and/or pagecache.
  */
 TESTPAGEFLAG(Compound, compound)
-__PAGEFLAG(Head, compound)
+    __PAGEFLAG(Head, compound)
 
 /*
  * PG_reclaim is used in combination with PG_compound to mark the
@@ -347,7 +340,6 @@ __PAGEFLAG(Head, compound)
  * PG_compound & ~PG_reclaim	=> Head page
  */
 #define PG_head_tail_mask ((1L << PG_compound) | (1L << PG_reclaim))
-
 static inline int PageTail(struct page *page)
 {
 	return ((page->flags & PG_head_tail_mask) == PG_head_tail_mask);
@@ -391,4 +383,4 @@ static inline void __ClearPageTail(struct page *page)
 #define PAGE_FLAGS_CHECK_AT_PREP	((1 << NR_PAGEFLAGS) - 1)
 
 #endif /* !__GENERATING_BOUNDS_H */
-#endif	/* PAGE_FLAGS_H */
+#endif /* PAGE_FLAGS_H */

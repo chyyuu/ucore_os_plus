@@ -86,4 +86,3 @@
 #define OMAP24XX_SEC_PKA_BASE	(OMAP24XX_SEC_BASE + 0x8000)
 
 #endif /* __ASM_ARCH_OMAP2_H */
-

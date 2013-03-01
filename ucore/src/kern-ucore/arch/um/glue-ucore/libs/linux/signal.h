@@ -3,7 +3,7 @@
 
 /* signal code */
 #ifndef SIGKILL
-#define NSIG		32    /* Number of SIGnals */
+#define NSIG		32	/* Number of SIGnals */
 #define SIGHUP		 1
 #define SIGINT		 2
 #define SIGQUIT		 3
@@ -40,42 +40,42 @@
 #define	SIGUNUSED	31
 #define SIGRTMIN	32
 #define SIGRTMAX	_NSIG
-#endif  /* SIGKILL */
+#endif /* SIGKILL */
 
 /* Bits in `sa_flags'.  */
-#define	SA_NOCLDSTOP  1		 /* Don't send SIGCHLD when children stop.  */
-#define SA_NOCLDWAIT  2		 /* Don't create zombie on child death.  */
-#define SA_SIGINFO    4		 /* Invoke signal-catching function with
-				    three arguments instead of one.  */
-#define SA_ONSTACK   0x08000000 /* Use signal stack by using `sa_restorer'. */
-#define SA_RESTART   0x10000000 /* Restart syscall on signal return.  */
-#define SA_NODEFER   0x40000000 /* Don't automatically block the signal when
-				    its handler is being executed.  */
-#define SA_RESETHAND 0x80000000 /* Reset to SIG_DFL on entry to handler.  */
+#define	SA_NOCLDSTOP  1		/* Don't send SIGCHLD when children stop.  */
+#define SA_NOCLDWAIT  2		/* Don't create zombie on child death.  */
+#define SA_SIGINFO    4		/* Invoke signal-catching function with
+				   three arguments instead of one.  */
+#define SA_ONSTACK   0x08000000	/* Use signal stack by using `sa_restorer'. */
+#define SA_RESTART   0x10000000	/* Restart syscall on signal return.  */
+#define SA_NODEFER   0x40000000	/* Don't automatically block the signal when
+				   its handler is being executed.  */
+#define SA_RESETHAND 0x80000000	/* Reset to SIG_DFL on entry to handler.  */
 
 /* Values for the HOW argument to `sigprocmask'.  */
-#define	SIG_BLOCK     0		 /* Block signals.  */
-#define	SIG_UNBLOCK   1		 /* Unblock signals.  */
-#define	SIG_SETMASK   2		 /* Set the set of blocked signals.  */
+#define	SIG_BLOCK     0		/* Block signals.  */
+#define	SIG_UNBLOCK   1		/* Unblock signals.  */
+#define	SIG_SETMASK   2		/* Set the set of blocked signals.  */
 
 #ifndef __ASSEMBLER__
 
-#include <string.h>  /* for memset */
+#include <string.h>		/* for memset */
 #include <types.h>
 
 #define __SI_MAX_SIZE     128
 #define __SI_PAD_SIZE     ((__SI_MAX_SIZE / sizeof (int)) - 3)
 typedef union sigval {
-    int sival_int;
-    void *sival_ptr;
+	int sival_int;
+	void *sival_ptr;
 } sigval_t;
 typedef struct siginfo {
-    int si_signo;		/* Signal number.  */
-    int si_errno;		/* If non-zero, an errno value associated with
-						   this signal, as defined in <errno.h>.  */
-    int si_code;		/* Signal code.  */
+	int si_signo;		/* Signal number.  */
+	int si_errno;		/* If non-zero, an errno value associated with
+				   this signal, as defined in <errno.h>.  */
+	int si_code;		/* Signal code.  */
 
-    union {
+	union {
 		int _pad[__SI_PAD_SIZE];
 
 		/* kill().  */
@@ -86,7 +86,7 @@ typedef struct siginfo {
 
 		/* POSIX.1b timers.  */
 		struct {
-			int si_tid;		/* Timer ID.  */
+			int si_tid;	/* Timer ID.  */
 			int si_overrun;	/* Overrun count.  */
 			sigval_t si_sigval;	/* Signal value.  */
 		} _timer;
@@ -137,14 +137,12 @@ typedef struct siginfo {
 #define si_fd		_sifields._sigpoll.si_fd
 
 /* `si_code' values for SIGSEGV signal.  */
-enum
-{
-  SEGV_MAPERR = 1,		/* Address not mapped to object.  */
-# define SEGV_MAPERR	SEGV_MAPERR
-  SEGV_ACCERR			/* Invalid permissions for mapped object.  */
-# define SEGV_ACCERR	SEGV_ACCERR
+enum {
+	SEGV_MAPERR = 1,	/* Address not mapped to object.  */
+#define SEGV_MAPERR	SEGV_MAPERR
+	SEGV_ACCERR		/* Invalid permissions for mapped object.  */
+#define SEGV_ACCERR	SEGV_ACCERR
 };
-
 
 #define _NSIG         1024
 #define _NSIG_BPW     (8 * sizeof (unsigned long int))
@@ -153,21 +151,20 @@ typedef struct {
 	unsigned long sig[_NSIG_WORDS];
 } sigset_t;
 
-
 typedef void (*__sighandler_t) (int);
 
-#define SIG_ERR	((__sighandler_t) -1)		/* Error return.  */
-#define SIG_DFL	((__sighandler_t) 0)		/* Default action.  */
-#define SIG_IGN	((__sighandler_t) 1)		/* Ignore signal.  */
+#define SIG_ERR	((__sighandler_t) -1)	/* Error return.  */
+#define SIG_DFL	((__sighandler_t) 0)	/* Default action.  */
+#define SIG_IGN	((__sighandler_t) 1)	/* Ignore signal.  */
 
 struct sigaction {
 	union {
-	  __sighandler_t _sa_handler;
-	  void (*_sa_sigaction)(int, struct siginfo *, void *);
+		__sighandler_t _sa_handler;
+		void (*_sa_sigaction) (int, struct siginfo *, void *);
 	} _u;
 	sigset_t sa_mask;
 	unsigned long sa_flags;
-	void (*sa_restorer)(void);
+	void (*sa_restorer) (void);
 };
 #define sa_handler	_u._sa_handler
 #define sa_sigaction	_u._sa_sigaction
@@ -178,14 +175,13 @@ typedef struct sigaltstack {
 	size_t ss_size;
 } stack_t;
 
+extern char *sig_names[];
 
-extern char* sig_names[];
+int raise(int signum);
+void sigemptyset(sigset_t * set);
+void sigaddset(sigset_t * set, int _sig);
+int sigismember(sigset_t * set, int _sig);
 
-int raise (int signum);
-void sigemptyset (sigset_t *set);
-void sigaddset (sigset_t *set, int _sig);
-int sigismember (sigset_t *set, int _sig);
+#endif /* __ASSEMBLER__ */
 
-#endif  /* __ASSEMBLER__ */
-
-#endif  /* !__ARCH_UM_INCLUDE_LINUX_SIGNAL_H__ */
+#endif /* !__ARCH_UM_INCLUDE_LINUX_SIGNAL_H__ */

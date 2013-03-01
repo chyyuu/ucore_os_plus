@@ -31,8 +31,8 @@ static void mmc_host_classdev_release(struct device *dev)
 }
 
 static struct class mmc_host_class = {
-	.name		= "mmc_host",
-	.dev_release	= mmc_host_classdev_release,
+	.name = "mmc_host",
+	.dev_release = mmc_host_classdev_release,
 };
 
 int mmc_register_host_class(void)
@@ -117,8 +117,7 @@ int mmc_add_host(struct mmc_host *host)
 {
 	int err;
 
-	WARN_ON((host->caps & MMC_CAP_SDIO_IRQ) &&
-		!host->ops->enable_sdio_irq);
+	WARN_ON((host->caps & MMC_CAP_SDIO_IRQ) && !host->ops->enable_sdio_irq);
 
 	led_trigger_register_simple(dev_name(&host->class_dev), &host->led);
 
@@ -176,4 +175,3 @@ void mmc_free_host(struct mmc_host *host)
 }
 
 EXPORT_SYMBOL(mmc_free_host);
-

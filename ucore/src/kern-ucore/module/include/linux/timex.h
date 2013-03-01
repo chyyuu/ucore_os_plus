@@ -76,20 +76,28 @@ struct timex {
 	struct timeval time;	/* (read only) */
 	long tick;		/* (modified) usecs between clock ticks */
 
-	long ppsfreq;           /* pps frequency (scaled ppm) (ro) */
-	long jitter;            /* pps jitter (us) (ro) */
-	int shift;              /* interval duration (s) (shift) (ro) */
-	long stabil;            /* pps stability (scaled ppm) (ro) */
-	long jitcnt;            /* jitter limit exceeded (ro) */
-	long calcnt;            /* calibration intervals (ro) */
-	long errcnt;            /* calibration errors (ro) */
-	long stbcnt;            /* stability limit exceeded (ro) */
+	long ppsfreq;		/* pps frequency (scaled ppm) (ro) */
+	long jitter;		/* pps jitter (us) (ro) */
+	int shift;		/* interval duration (s) (shift) (ro) */
+	long stabil;		/* pps stability (scaled ppm) (ro) */
+	long jitcnt;		/* jitter limit exceeded (ro) */
+	long calcnt;		/* calibration intervals (ro) */
+	long errcnt;		/* calibration errors (ro) */
+	long stbcnt;		/* stability limit exceeded (ro) */
 
 	int tai;		/* TAI offset (ro) */
 
-	int  :32; int  :32; int  :32; int  :32;
-	int  :32; int  :32; int  :32; int  :32;
-	int  :32; int  :32; int  :32;
+	int:32;
+	int:32;
+	int:32;
+	int:32;
+	int:32;
+	int:32;
+	int:32;
+	int:32;
+	int:32;
+	int:32;
+	int:32;
 };
 
 /*
@@ -122,7 +130,6 @@ struct timex {
 #define MOD_ESTERROR	ADJ_ESTERROR
 #define MOD_STATUS	ADJ_STATUS
 #define MOD_TIMECONST	ADJ_TIMECONST
-
 
 /*
  * Status codes (timex.status)
@@ -160,7 +167,7 @@ struct timex {
 #define TIME_OOP	3	/* leap second in progress */
 #define TIME_WAIT	4	/* leap second has occurred */
 #define TIME_ERROR	5	/* clock not synchronized */
-#define TIME_BAD	TIME_ERROR /* bw compat */
+#define TIME_BAD	TIME_ERROR	/* bw compat */
 
 #ifdef __KERNEL__
 #include <linux/compiler.h>
@@ -200,16 +207,16 @@ struct timex {
 #define MAXFREQ_SCALED ((s64)MAXFREQ << NTP_SCALE_SHIFT)
 #define MINSEC 256		/* min interval between updates (s) */
 #define MAXSEC 2048		/* max interval between updates (s) */
-#define NTP_PHASE_LIMIT ((MAXPHASE / NSEC_PER_USEC) << 5) /* beyond max. dispersion */
+#define NTP_PHASE_LIMIT ((MAXPHASE / NSEC_PER_USEC) << 5)	/* beyond max. dispersion */
 
 /*
  * kernel variables
  * Note: maximum error = NTP synch distance = dispersion + delay / 2;
  * estimated error = NTP dispersion.
  */
-extern unsigned long tick_usec;		/* USER_HZ period (usec) */
-extern unsigned long tick_nsec;		/* ACTHZ          period (nsec) */
-extern int tickadj;			/* amount of adjustment per tick */
+extern unsigned long tick_usec;	/* USER_HZ period (usec) */
+extern unsigned long tick_nsec;	/* ACTHZ          period (nsec) */
+extern int tickadj;		/* amount of adjustment per tick */
 
 /*
  * phase-lock loop variables

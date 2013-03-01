@@ -2,7 +2,7 @@
 #define __LINUX_SPINLOCK_TYPES_UP_H
 
 #ifndef __LINUX_SPINLOCK_TYPES_H
-# error "please don't include this file directly"
+#error "please don't include this file directly"
 #endif
 
 /*
@@ -22,7 +22,8 @@ typedef struct {
 
 #else
 
-typedef struct { } raw_spinlock_t;
+typedef struct {
+} raw_spinlock_t;
 
 #define __RAW_SPIN_LOCK_UNLOCKED { }
 

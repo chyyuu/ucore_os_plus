@@ -59,7 +59,7 @@
 #define IRQF_NOBALANCING	0x00000800
 #define IRQF_IRQPOLL		0x00001000
 
-typedef irqreturn_t (*irq_handler_t)(int, void *);
+typedef irqreturn_t(*irq_handler_t) (int, void *);
 
 struct irqaction {
 	irq_handler_t handler;
@@ -74,14 +74,15 @@ struct irqaction {
 
 extern irqreturn_t no_action(int cpl, void *dev_id);
 extern int __must_check request_irq(unsigned int, irq_handler_t handler,
-		       unsigned long, const char *, void *);
+				    unsigned long, const char *, void *);
 extern void free_irq(unsigned int, void *);
 
 struct device;
 
 extern int __must_check devm_request_irq(struct device *dev, unsigned int irq,
-			    irq_handler_t handler, unsigned long irqflags,
-			    const char *devname, void *dev_id);
+					 irq_handler_t handler,
+					 unsigned long irqflags,
+					 const char *devname, void *dev_id);
 extern void devm_free_irq(struct device *dev, unsigned int irq, void *dev_id);
 
 /*
@@ -97,9 +98,9 @@ extern void devm_free_irq(struct device *dev, unsigned int irq, void *dev_id);
  * irqs-off latencies.
  */
 #ifdef CONFIG_LOCKDEP
-# define local_irq_enable_in_hardirq()	do { } while (0)
+#define local_irq_enable_in_hardirq()	do { } while (0)
 #else
-# define local_irq_enable_in_hardirq()	local_irq_enable()
+#define local_irq_enable_in_hardirq()	local_irq_enable()
 #endif
 
 extern void disable_irq_nosync(unsigned int irq);
@@ -126,7 +127,10 @@ static inline int irq_can_set_affinity(unsigned int irq)
 	return 0;
 }
 
-static inline int irq_select_affinity(unsigned int irq)  { return 0; }
+static inline int irq_select_affinity(unsigned int irq)
+{
+	return 0;
+}
 
 #endif /* CONFIG_SMP && CONFIG_GENERIC_HARDIRQS */
 
@@ -150,7 +154,8 @@ static inline void disable_irq_nosync_lockdep(unsigned int irq)
 #endif
 }
 
-static inline void disable_irq_nosync_lockdep_irqsave(unsigned int irq, unsigned long *flags)
+static inline void disable_irq_nosync_lockdep_irqsave(unsigned int irq,
+						      unsigned long *flags)
 {
 	disable_irq_nosync(irq);
 #ifdef CONFIG_LOCKDEP
@@ -174,7 +179,8 @@ static inline void enable_irq_lockdep(unsigned int irq)
 	enable_irq(irq);
 }
 
-static inline void enable_irq_lockdep_irqrestore(unsigned int irq, unsigned long *flags)
+static inline void enable_irq_lockdep_irqrestore(unsigned int irq,
+						 unsigned long *flags)
 {
 #ifdef CONFIG_LOCKDEP
 	local_irq_restore(*flags);
@@ -202,14 +208,14 @@ static inline int disable_irq_wake(unsigned int irq)
  * files, under an #ifdef CONFIG_LOCKDEP section.
  */
 #ifndef CONFIG_LOCKDEP
-#  define disable_irq_nosync_lockdep(irq)	disable_irq_nosync(irq)
-#  define disable_irq_nosync_lockdep_irqsave(irq, flags) \
+#define disable_irq_nosync_lockdep(irq)	disable_irq_nosync(irq)
+#define disable_irq_nosync_lockdep_irqsave(irq, flags) \
 						disable_irq_nosync(irq)
-#  define disable_irq_lockdep(irq)		disable_irq(irq)
-#  define enable_irq_lockdep(irq)		enable_irq(irq)
-#  define enable_irq_lockdep_irqrestore(irq, flags) \
+#define disable_irq_lockdep(irq)		disable_irq(irq)
+#define enable_irq_lockdep(irq)		enable_irq(irq)
+#define enable_irq_lockdep_irqrestore(irq, flags) \
 						enable_irq(irq)
-# endif
+#endif
 
 static inline int enable_irq_wake(unsigned int irq)
 {
@@ -243,9 +249,8 @@ static inline int disable_irq_wake(unsigned int irq)
    al. should be converted to tasklets, not to softirqs.
  */
 
-enum
-{
-	HI_SOFTIRQ=0,
+enum {
+	HI_SOFTIRQ = 0,
 	TIMER_SOFTIRQ,
 	NET_TX_SOFTIRQ,
 	NET_RX_SOFTIRQ,
@@ -253,7 +258,7 @@ enum
 	TASKLET_SOFTIRQ,
 	SCHED_SOFTIRQ,
 	HRTIMER_SOFTIRQ,
-	RCU_SOFTIRQ,	/* Preferable RCU should always be the last softirq */
+	RCU_SOFTIRQ,		/* Preferable RCU should always be the last softirq */
 
 	NR_SOFTIRQS
 };
@@ -262,14 +267,13 @@ enum
  * asm/hardirq.h to get better cache usage.  KAO
  */
 
-struct softirq_action
-{
-	void	(*action)(struct softirq_action *);
+struct softirq_action {
+	void (*action) (struct softirq_action *);
 };
 
 asmlinkage void do_softirq(void);
 asmlinkage void __do_softirq(void);
-extern void open_softirq(int nr, void (*action)(struct softirq_action *));
+extern void open_softirq(int nr, void (*action) (struct softirq_action *));
 extern void softirq_init(void);
 #define __raise_softirq_irqoff(nr) do { or_softirq_pending(1UL << (nr)); } while (0)
 extern void raise_softirq_irqoff(unsigned int nr);
@@ -282,12 +286,13 @@ extern void raise_softirq(unsigned int nr);
  * are protected by disabling local cpu interrupts and they must
  * only be accessed by the local cpu that they are for.
  */
-DECLARE_PER_CPU(struct list_head [NR_SOFTIRQS], softirq_work_list);
+DECLARE_PER_CPU(struct list_head[NR_SOFTIRQS], softirq_work_list);
 
 /* Try to send a softirq to a remote cpu.  If this cannot be done, the
  * work will be queued to the local cpu.
  */
-extern void send_remote_softirq(struct call_single_data *cp, int cpu, int softirq);
+extern void send_remote_softirq(struct call_single_data *cp, int cpu,
+				int softirq);
 
 /* Like send_remote_softirq(), but the caller must disable local cpu interrupts
  * and compute the current cpu, passed in as 'this_cpu'.
@@ -315,12 +320,11 @@ extern void __send_remote_softirq(struct call_single_data *cp, int cpu,
      he makes it with spinlocks.
  */
 
-struct tasklet_struct
-{
+struct tasklet_struct {
 	struct tasklet_struct *next;
 	unsigned long state;
 	atomic_t count;
-	void (*func)(unsigned long);
+	void (*func) (unsigned long);
 	unsigned long data;
 };
 
@@ -330,9 +334,7 @@ struct tasklet_struct name = { NULL, 0, ATOMIC_INIT(0), func, data }
 #define DECLARE_TASKLET_DISABLED(name, func, data) \
 struct tasklet_struct name = { NULL, 0, ATOMIC_INIT(1), func, data }
 
-
-enum
-{
+enum {
 	TASKLET_STATE_SCHED,	/* Tasklet is scheduled for execution */
 	TASKLET_STATE_RUN	/* Tasklet is running (SMP only) */
 };
@@ -345,13 +347,15 @@ static inline int tasklet_trylock(struct tasklet_struct *t)
 
 static inline void tasklet_unlock(struct tasklet_struct *t)
 {
-	smp_mb__before_clear_bit(); 
+	smp_mb__before_clear_bit();
 	clear_bit(TASKLET_STATE_RUN, &(t)->state);
 }
 
 static inline void tasklet_unlock_wait(struct tasklet_struct *t)
 {
-	while (test_bit(TASKLET_STATE_RUN, &(t)->state)) { barrier(); }
+	while (test_bit(TASKLET_STATE_RUN, &(t)->state)) {
+		barrier();
+	}
 }
 #else
 #define tasklet_trylock(t) 1
@@ -374,7 +378,6 @@ static inline void tasklet_hi_schedule(struct tasklet_struct *t)
 	if (!test_and_set_bit(TASKLET_STATE_SCHED, &t->state))
 		__tasklet_hi_schedule(t);
 }
-
 
 static inline void tasklet_disable_nosync(struct tasklet_struct *t)
 {
@@ -404,7 +407,7 @@ static inline void tasklet_hi_enable(struct tasklet_struct *t)
 extern void tasklet_kill(struct tasklet_struct *t);
 extern void tasklet_kill_immediate(struct tasklet_struct *t, unsigned int cpu);
 extern void tasklet_init(struct tasklet_struct *t,
-			 void (*func)(unsigned long), unsigned long data);
+			 void (*func) (unsigned long), unsigned long data);
 
 /*
  * Autoprobing for irqs:
@@ -434,15 +437,17 @@ extern void tasklet_init(struct tasklet_struct *t,
  * if more than one irq occurred.
  */
 
-#if defined(CONFIG_GENERIC_HARDIRQS) && !defined(CONFIG_GENERIC_IRQ_PROBE) 
+#if defined(CONFIG_GENERIC_HARDIRQS) && !defined(CONFIG_GENERIC_IRQ_PROBE)
 static inline unsigned long probe_irq_on(void)
 {
 	return 0;
 }
+
 static inline int probe_irq_off(unsigned long val)
 {
 	return 0;
 }
+
 static inline unsigned int probe_irq_mask(unsigned long val)
 {
 	return 0;

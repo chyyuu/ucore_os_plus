@@ -47,4 +47,3 @@
 #define OMAP1510_DSP_MMU_BASE	(0xfffed200)
 
 #endif /*  __ASM_ARCH_OMAP15XX_H */
-

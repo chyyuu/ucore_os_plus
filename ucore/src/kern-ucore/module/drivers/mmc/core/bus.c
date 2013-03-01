@@ -25,7 +25,7 @@
 #define to_mmc_driver(d)	container_of(d, struct mmc_driver, drv)
 
 static ssize_t mmc_type_show(struct device *dev,
-	struct device_attribute *attr, char *buf)
+			     struct device_attribute *attr, char *buf)
 {
 	struct mmc_card *card = dev_to_mmc_card(dev);
 
@@ -56,8 +56,7 @@ static int mmc_bus_match(struct device *dev, struct device_driver *drv)
 	return 1;
 }
 
-static int
-mmc_bus_uevent(struct device *dev, struct kobj_uevent_env *env)
+static int mmc_bus_uevent(struct device *dev, struct kobj_uevent_env *env)
 {
 	struct mmc_card *card = dev_to_mmc_card(dev);
 	const char *type;
@@ -137,14 +136,14 @@ static int mmc_bus_resume(struct device *dev)
 }
 
 static struct bus_type mmc_bus_type = {
-	.name		= "mmc",
-	.dev_attrs	= mmc_dev_attrs,
-	.match		= mmc_bus_match,
-	.uevent		= mmc_bus_uevent,
-	.probe		= mmc_bus_probe,
-	.remove		= mmc_bus_remove,
-	.suspend	= mmc_bus_suspend,
-	.resume		= mmc_bus_resume,
+	.name = "mmc",
+	.dev_attrs = mmc_dev_attrs,
+	.match = mmc_bus_match,
+	.uevent = mmc_bus_uevent,
+	.probe = mmc_bus_probe,
+	.remove = mmc_bus_remove,
+	.suspend = mmc_bus_suspend,
+	.resume = mmc_bus_resume,
 };
 
 int mmc_register_bus(void)
@@ -226,7 +225,8 @@ int mmc_add_card(struct mmc_card *card)
 	int ret;
 	const char *type;
 
-	dev_set_name(&card->dev, "%s:%04x", mmc_hostname(card->host), card->rca);
+	dev_set_name(&card->dev, "%s:%04x", mmc_hostname(card->host),
+		     card->rca);
 
 	switch (card->type) {
 	case MMC_TYPE_MMC:
@@ -247,14 +247,13 @@ int mmc_add_card(struct mmc_card *card)
 
 	if (mmc_host_is_spi(card->host)) {
 		printk(KERN_INFO "%s: new %s%s card on SPI\n",
-			mmc_hostname(card->host),
-			mmc_card_highspeed(card) ? "high speed " : "",
-			type);
+		       mmc_hostname(card->host),
+		       mmc_card_highspeed(card) ? "high speed " : "", type);
 	} else {
 		printk(KERN_INFO "%s: new %s%s card at address %04x\n",
-			mmc_hostname(card->host),
-			mmc_card_highspeed(card) ? "high speed " : "",
-			type, card->rca);
+		       mmc_hostname(card->host),
+		       mmc_card_highspeed(card) ? "high speed " : "",
+		       type, card->rca);
 	}
 
 	ret = device_add(&card->dev);
@@ -283,14 +282,13 @@ void mmc_remove_card(struct mmc_card *card)
 	if (mmc_card_present(card)) {
 		if (mmc_host_is_spi(card->host)) {
 			printk(KERN_INFO "%s: SPI card removed\n",
-				mmc_hostname(card->host));
+			       mmc_hostname(card->host));
 		} else {
 			printk(KERN_INFO "%s: card %04x removed\n",
-				mmc_hostname(card->host), card->rca);
+			       mmc_hostname(card->host), card->rca);
 		}
 		device_del(&card->dev);
 	}
 
 	put_device(&card->dev);
 }
-

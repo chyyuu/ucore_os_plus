@@ -9,24 +9,24 @@
 #ifndef __ASSEMBLY__
 struct bug_entry {
 #ifndef CONFIG_GENERIC_BUG_RELATIVE_POINTERS
-	unsigned long	bug_addr;
+	unsigned long bug_addr;
 #else
-	signed int	bug_addr_disp;
+	signed int bug_addr_disp;
 #endif
 #ifdef CONFIG_DEBUG_BUGVERBOSE
 #ifndef CONFIG_GENERIC_BUG_RELATIVE_POINTERS
-	const char	*file;
+	const char *file;
 #else
-	signed int	file_disp;
+	signed int file_disp;
 #endif
-	unsigned short	line;
+	unsigned short line;
 #endif
-	unsigned short	flags;
+	unsigned short flags;
 };
-#endif		/* __ASSEMBLY__ */
+#endif /* __ASSEMBLY__ */
 
 #define BUGFLAG_WARNING	(1<<0)
-#endif	/* CONFIG_GENERIC_BUG */
+#endif /* CONFIG_GENERIC_BUG */
 
 /*
  * Don't use BUG() or BUG_ON() unless there's really no way out; one
@@ -59,7 +59,8 @@ struct bug_entry {
 #ifndef __WARN
 #ifndef __ASSEMBLY__
 extern void warn_slowpath(const char *file, const int line,
-		const char *fmt, ...) __attribute__((format(printf, 3, 4)));
+			  const char *fmt, ...)
+    __attribute__ ((format(printf, 3, 4)));
 #define WANT_WARN_ON_SLOWPATH
 #endif
 #define __WARN()		warn_slowpath(__FILE__, __LINE__, NULL)
@@ -135,9 +136,9 @@ extern void warn_slowpath(const char *file, const int line,
 		WARN_ON((condition) && __ratelimit(state))
 
 #ifdef CONFIG_SMP
-# define WARN_ON_SMP(x)			WARN_ON(x)
+#define WARN_ON_SMP(x)			WARN_ON(x)
 #else
-# define WARN_ON_SMP(x)			do { } while (0)
+#define WARN_ON_SMP(x)			do { } while (0)
 #endif
 
 #endif

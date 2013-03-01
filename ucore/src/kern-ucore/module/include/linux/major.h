@@ -53,24 +53,24 @@
 #define STL_SIOMEMMAJOR		28
 #define ACSI_MAJOR		28
 #define AZTECH_CDROM_MAJOR	29
-#define FB_MAJOR		29   /* /dev/fb* framebuffers */
+#define FB_MAJOR		29	/* /dev/fb* framebuffers */
 #define CM206_CDROM_MAJOR	32
 #define IDE2_MAJOR		33
 #define IDE3_MAJOR		34
 #define Z8530_MAJOR		34
-#define XPRAM_MAJOR		35   /* Expanded storage on S/390: "slow ram"*/
+#define XPRAM_MAJOR		35	/* Expanded storage on S/390: "slow ram" */
 #define NETLINK_MAJOR		36
 #define PS2ESDI_MAJOR		36
 #define IDETAPE_MAJOR		37
 #define Z2RAM_MAJOR		37
-#define APBLOCK_MAJOR		38   /* AP1000 Block device */
-#define DDV_MAJOR		39   /* AP1000 DDV block device */
-#define NBD_MAJOR		43   /* Network block device	*/
+#define APBLOCK_MAJOR		38	/* AP1000 Block device */
+#define DDV_MAJOR		39	/* AP1000 DDV block device */
+#define NBD_MAJOR		43	/* Network block device    */
 #define RISCOM8_NORMAL_MAJOR	48
-#define DAC960_MAJOR		48   /* 48..55 */
+#define DAC960_MAJOR		48	/* 48..55 */
 #define RISCOM8_CALLOUT_MAJOR	49
 #define MKISS_MAJOR		55
-#define DSP56K_MAJOR		55   /* DSP56001 processor device */
+#define DSP56K_MAJOR		55	/* DSP56001 processor device */
 
 #define IDE4_MAJOR		56
 #define IDE5_MAJOR		57
@@ -99,7 +99,7 @@
 
 #define I2O_MAJOR		80	/* 80->87 */
 
-#define SHMIQ_MAJOR		85   /* Linux/mips, SGI /dev/shmiq */
+#define SHMIQ_MAJOR		85	/* Linux/mips, SGI /dev/shmiq */
 #define SCSI_CHANGER_MAJOR      86
 
 #define IDE6_MAJOR		88

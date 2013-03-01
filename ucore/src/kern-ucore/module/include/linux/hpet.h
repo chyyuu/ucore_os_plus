@@ -59,7 +59,6 @@ struct hpet {
 #define	HPET_LEG_RT_CNF_MASK		(2UL)
 #define	HPET_ENABLE_CNF_MASK		(1UL)
 
-
 /*
  * Timer configuration register
  */
@@ -126,4 +125,4 @@ struct hpet_info {
 #define	HPET_DPI	_IO('h', 0x05)	/* disable periodic */
 #define	HPET_IRQFREQ	_IOW('h', 0x6, unsigned long)	/* IRQFREQ usec */
 
-#endif				/* !__HPET__ */
+#endif /* !__HPET__ */

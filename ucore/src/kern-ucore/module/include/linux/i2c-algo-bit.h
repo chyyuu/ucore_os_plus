@@ -34,8 +34,8 @@ struct i2c_algo_bit_data {
 	void *data;		/* private data for lowlevel routines */
 	void (*setsda) (void *data, int state);
 	void (*setscl) (void *data, int state);
-	int  (*getsda) (void *data);
-	int  (*getscl) (void *data);
+	int (*getsda) (void *data);
+	int (*getscl) (void *data);
 
 	/* local settings */
 	int udelay;		/* half clock cycle time in us,

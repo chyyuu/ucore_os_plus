@@ -13,9 +13,9 @@ struct raid_template {
 
 struct raid_function_template {
 	void *cookie;
-	int (*is_raid)(struct device *);
-	void (*get_resync)(struct device *);
-	void (*get_state)(struct device *);
+	int (*is_raid) (struct device *);
+	void (*get_resync) (struct device *);
+	void (*get_state) (struct device *);
 };
 
 enum raid_state {
@@ -71,12 +71,10 @@ raid_get_##attr(struct raid_template *r, struct device *dev) {		      \
 }
 
 DEFINE_RAID_ATTRIBUTE(enum raid_level, level)
-DEFINE_RAID_ATTRIBUTE(int, resync)
-DEFINE_RAID_ATTRIBUTE(enum raid_state, state)
-	
+DEFINE_RAID_ATTRIBUTE(int, resync) DEFINE_RAID_ATTRIBUTE(enum raid_state, state)
+
 struct raid_template *raid_class_attach(struct raid_function_template *);
 void raid_class_release(struct raid_template *);
 
 int __must_check raid_component_add(struct raid_template *, struct device *,
 				    struct device *);
-

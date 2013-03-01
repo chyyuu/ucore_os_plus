@@ -57,10 +57,10 @@ struct completion {
  * stack.
  */
 #ifdef CONFIG_LOCKDEP
-# define DECLARE_COMPLETION_ONSTACK(work) \
+#define DECLARE_COMPLETION_ONSTACK(work) \
 	struct completion work = COMPLETION_INITIALIZER_ONSTACK(work)
 #else
-# define DECLARE_COMPLETION_ONSTACK(work) DECLARE_COMPLETION(work)
+#define DECLARE_COMPLETION_ONSTACK(work) DECLARE_COMPLETION(work)
 #endif
 
 /**
@@ -80,9 +80,11 @@ extern void wait_for_completion(struct completion *);
 extern int wait_for_completion_interruptible(struct completion *x);
 extern int wait_for_completion_killable(struct completion *x);
 extern unsigned long wait_for_completion_timeout(struct completion *x,
-						   unsigned long timeout);
-extern unsigned long wait_for_completion_interruptible_timeout(
-			struct completion *x, unsigned long timeout);
+						 unsigned long timeout);
+extern unsigned long wait_for_completion_interruptible_timeout(struct completion
+							       *x,
+							       unsigned long
+							       timeout);
 extern bool try_wait_for_completion(struct completion *x);
 extern bool completion_done(struct completion *x);
 
@@ -97,6 +99,5 @@ extern void complete_all(struct completion *);
  * be reused. This is especially important after complete_all() is used.
  */
 #define INIT_COMPLETION(x)	((x).done = 0)
-
 
 #endif

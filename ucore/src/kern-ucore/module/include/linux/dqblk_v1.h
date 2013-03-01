@@ -14,4 +14,4 @@
 #define V1_DEL_ALLOC 0
 #define V1_DEL_REWRITE 2
 
-#endif	/* _LINUX_DQBLK_V1_H */
+#endif /* _LINUX_DQBLK_V1_H */

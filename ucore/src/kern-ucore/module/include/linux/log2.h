@@ -18,7 +18,7 @@
 /*
  * deal with unrepresentable constant logarithms
  */
-extern __attribute__((const, noreturn))
+extern __attribute__ ((const, noreturn))
 int ____ilog2_NaN(void);
 
 /*
@@ -28,7 +28,7 @@ int ____ilog2_NaN(void);
  * - the arch is not required to handle n==0 if implementing the fallback
  */
 #ifndef CONFIG_ARCH_HAS_ILOG2_U32
-static inline __attribute__((const))
+static inline __attribute__ ((const))
 int __ilog2_u32(u32 n)
 {
 	return fls(n) - 1;
@@ -36,7 +36,7 @@ int __ilog2_u32(u32 n)
 #endif
 
 #ifndef CONFIG_ARCH_HAS_ILOG2_U64
-static inline __attribute__((const))
+static inline __attribute__ ((const))
 int __ilog2_u64(u64 n)
 {
 	return fls64(n) - 1;
@@ -48,7 +48,7 @@ int __ilog2_u64(u64 n)
  * *not* considered a power of two.
  */
 
-static inline __attribute__((const))
+static inline __attribute__ ((const))
 bool is_power_of_2(unsigned long n)
 {
 	return (n != 0 && ((n & (n - 1)) == 0));
@@ -57,7 +57,7 @@ bool is_power_of_2(unsigned long n)
 /*
  * round up to nearest power of two
  */
-static inline __attribute__((const))
+static inline __attribute__ ((const))
 unsigned long __roundup_pow_of_two(unsigned long n)
 {
 	return 1UL << fls_long(n - 1);
@@ -66,7 +66,7 @@ unsigned long __roundup_pow_of_two(unsigned long n)
 /*
  * round down to nearest power of two
  */
-static inline __attribute__((const))
+static inline __attribute__ ((const))
 unsigned long __rounddown_pow_of_two(unsigned long n)
 {
 	return 1UL << (fls_long(n) - 1);

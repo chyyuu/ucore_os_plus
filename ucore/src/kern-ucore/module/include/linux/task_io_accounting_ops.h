@@ -46,7 +46,7 @@ static inline void task_io_accounting_init(struct task_io_accounting *ioac)
 }
 
 static inline void task_blk_io_accounting_add(struct task_io_accounting *dst,
-						struct task_io_accounting *src)
+					      struct task_io_accounting *src)
 {
 	dst->read_bytes += src->read_bytes;
 	dst->write_bytes += src->write_bytes;
@@ -82,7 +82,7 @@ static inline void task_io_accounting_init(struct task_io_accounting *ioac)
 }
 
 static inline void task_blk_io_accounting_add(struct task_io_accounting *dst,
-						struct task_io_accounting *src)
+					      struct task_io_accounting *src)
 {
 }
 
@@ -90,7 +90,7 @@ static inline void task_blk_io_accounting_add(struct task_io_accounting *dst,
 
 #ifdef CONFIG_TASK_XACCT
 static inline void task_chr_io_accounting_add(struct task_io_accounting *dst,
-						struct task_io_accounting *src)
+					      struct task_io_accounting *src)
 {
 	dst->rchar += src->rchar;
 	dst->wchar += src->wchar;
@@ -99,13 +99,13 @@ static inline void task_chr_io_accounting_add(struct task_io_accounting *dst,
 }
 #else
 static inline void task_chr_io_accounting_add(struct task_io_accounting *dst,
-						struct task_io_accounting *src)
+					      struct task_io_accounting *src)
 {
 }
 #endif /* CONFIG_TASK_XACCT */
 
 static inline void task_io_accounting_add(struct task_io_accounting *dst,
-						struct task_io_accounting *src)
+					  struct task_io_accounting *src)
 {
 	task_chr_io_accounting_add(dst, src);
 	task_blk_io_accounting_add(dst, src);

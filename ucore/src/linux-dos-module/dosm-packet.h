@@ -14,24 +14,21 @@
 #endif
 
 typedef struct dosm_packet_s *dosm_packet_t;
-typedef struct dosm_packet_s
-{
-	union
-	{
-		struct
-		{
-			int16_t  source_lapic;
+typedef struct dosm_packet_s {
+	union {
+		struct {
+			int16_t source_lapic;
 			uint16_t source_flags;
 			uint16_t offset_link;
-			
+
 			uint16_t remote_flags;	/* Filled by DOS */
-		} __attribute__((packed));
-		
+		} __attribute__ ((packed));
+
 		uint64_t status;
 	};
 	uint64_t priv;
 	uint64_t args[6];
-} __attribute__((packed)) dosm_packet_s;
+} __attribute__ ((packed)) dosm_packet_s;
 
 #define DOSM_SF_USED     0x1
 #define DOSM_SF_VALID    0x2

@@ -28,59 +28,58 @@ struct ctl_table_header;
 struct net_generic;
 
 struct net {
-	atomic_t		count;		/* To decided when the network
-						 *  namespace should be freed.
-						 */
+	atomic_t count;		/* To decided when the network
+				 *  namespace should be freed.
+				 */
 #ifdef NETNS_REFCNT_DEBUG
-	atomic_t		use_count;	/* To track references we
-						 * destroy on demand
-						 */
+	atomic_t use_count;	/* To track references we
+				 * destroy on demand
+				 */
 #endif
-	struct list_head	list;		/* list of network namespaces */
-	struct work_struct	work;		/* work struct for freeing */
+	struct list_head list;	/* list of network namespaces */
+	struct work_struct work;	/* work struct for freeing */
 
-	struct proc_dir_entry 	*proc_net;
-	struct proc_dir_entry 	*proc_net_stat;
+	struct proc_dir_entry *proc_net;
+	struct proc_dir_entry *proc_net_stat;
 
 #ifdef CONFIG_SYSCTL
-	struct ctl_table_set	sysctls;
+	struct ctl_table_set sysctls;
 #endif
 
-	struct net_device       *loopback_dev;          /* The loopback */
+	struct net_device *loopback_dev;	/* The loopback */
 
-	struct list_head 	dev_base_head;
-	struct hlist_head 	*dev_name_head;
-	struct hlist_head	*dev_index_head;
+	struct list_head dev_base_head;
+	struct hlist_head *dev_name_head;
+	struct hlist_head *dev_index_head;
 
 	/* core fib_rules */
-	struct list_head	rules_ops;
-	spinlock_t		rules_mod_lock;
+	struct list_head rules_ops;
+	spinlock_t rules_mod_lock;
 
-	struct sock 		*rtnl;			/* rtnetlink socket */
+	struct sock *rtnl;	/* rtnetlink socket */
 
-	struct netns_core	core;
-	struct netns_mib	mib;
-	struct netns_packet	packet;
-	struct netns_unix	unx;
-	struct netns_ipv4	ipv4;
+	struct netns_core core;
+	struct netns_mib mib;
+	struct netns_packet packet;
+	struct netns_unix unx;
+	struct netns_ipv4 ipv4;
 #if defined(CONFIG_IPV6) || defined(CONFIG_IPV6_MODULE)
-	struct netns_ipv6	ipv6;
+	struct netns_ipv6 ipv6;
 #endif
 #if defined(CONFIG_IP_DCCP) || defined(CONFIG_IP_DCCP_MODULE)
-	struct netns_dccp	dccp;
+	struct netns_dccp dccp;
 #endif
 #ifdef CONFIG_NETFILTER
-	struct netns_xt		xt;
+	struct netns_xt xt;
 #if defined(CONFIG_NF_CONNTRACK) || defined(CONFIG_NF_CONNTRACK_MODULE)
-	struct netns_ct		ct;
+	struct netns_ct ct;
 #endif
 #endif
 #ifdef CONFIG_XFRM
-	struct netns_xfrm	xfrm;
+	struct netns_xfrm xfrm;
 #endif
-	struct net_generic	*gen;
+	struct net_generic *gen;
 };
-
 
 #include <linux/seq_file_net.h>
 
@@ -102,7 +101,6 @@ static inline struct net *copy_net_ns(unsigned long flags, struct net *net_ns)
 	return net_ns;
 }
 #endif /* CONFIG_NET */
-
 
 extern struct list_head net_namespace_list;
 
@@ -133,8 +131,7 @@ static inline void put_net(struct net *net)
 		__put_net(net);
 }
 
-static inline
-int net_eq(const struct net *net1, const struct net *net2)
+static inline int net_eq(const struct net *net1, const struct net *net2)
 {
 	return net1 == net2;
 }
@@ -154,13 +151,11 @@ static inline struct net *maybe_get_net(struct net *net)
 	return net;
 }
 
-static inline
-int net_eq(const struct net *net1, const struct net *net2)
+static inline int net_eq(const struct net *net1, const struct net *net2)
 {
 	return 1;
 }
 #endif
-
 
 #ifdef NETNS_REFCNT_DEBUG
 static inline struct net *hold_net(struct net *net)
@@ -193,7 +188,7 @@ static inline void write_pnet(struct net **pnet, struct net *net)
 	*pnet = net;
 }
 
-static inline struct net *read_pnet(struct net * const *pnet)
+static inline struct net *read_pnet(struct net *const *pnet)
 {
 	return *pnet;
 }
@@ -220,8 +215,8 @@ static inline struct net *read_pnet(struct net * const *pnet)
 
 struct pernet_operations {
 	struct list_head list;
-	int (*init)(struct net *net);
-	void (*exit)(struct net *net);
+	int (*init) (struct net * net);
+	void (*exit) (struct net * net);
 };
 
 /*
@@ -254,10 +249,12 @@ struct ctl_path;
 struct ctl_table;
 struct ctl_table_header;
 
-extern struct ctl_table_header *register_net_sysctl_table(struct net *net,
-	const struct ctl_path *path, struct ctl_table *table);
-extern struct ctl_table_header *register_net_sysctl_rotable(
-	const struct ctl_path *path, struct ctl_table *table);
+extern struct ctl_table_header *register_net_sysctl_table(struct net *net, const struct ctl_path
+							  *path, struct ctl_table
+							  *table);
+extern struct ctl_table_header *register_net_sysctl_rotable(const struct
+							    ctl_path *path, struct ctl_table
+							    *table);
 extern void unregister_net_sysctl_table(struct ctl_table_header *header);
 
 #endif /* __NET_NET_NAMESPACE_H */

@@ -49,7 +49,7 @@
  */
 struct rcu_head {
 	struct rcu_head *next;
-	void (*func)(struct rcu_head *head);
+	void (*func) (struct rcu_head * head);
 };
 
 /* Internal to kernel, but needed by rcupreempt.h. */
@@ -159,8 +159,6 @@ extern int rcu_scheduler_active;
 #define rcu_read_unlock_sched() preempt_enable()
 #define rcu_read_unlock_sched_notrace() preempt_enable_notrace()
 
-
-
 /**
  * rcu_dereference - fetch an RCU-protected pointer in an
  * RCU read-side critical section.  This pointer may later
@@ -205,7 +203,7 @@ struct rcu_synchronize {
 	struct completion completion;
 };
 
-extern void wakeme_after_rcu(struct rcu_head  *head);
+extern void wakeme_after_rcu(struct rcu_head *head);
 
 /**
  * synchronize_sched - block until all CPUs have exited any non-preemptive
@@ -237,7 +235,7 @@ extern void wakeme_after_rcu(struct rcu_head  *head);
  * and may be nested.
  */
 extern void call_rcu(struct rcu_head *head,
-			      void (*func)(struct rcu_head *head));
+		     void (*func) (struct rcu_head * head));
 
 /**
  * call_rcu_bh - Queue an RCU for invocation after a quicker grace period.
@@ -258,7 +256,7 @@ extern void call_rcu(struct rcu_head *head,
  *  These may be nested.
  */
 extern void call_rcu_bh(struct rcu_head *head,
-			void (*func)(struct rcu_head *head));
+			void (*func) (struct rcu_head * head));
 
 /* Exported common interfaces */
 extern void synchronize_rcu(void);

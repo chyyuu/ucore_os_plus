@@ -31,7 +31,7 @@ struct task_struct;
 #define _LINUX_CAPABILITY_VERSION_1  0x19980330
 #define _LINUX_CAPABILITY_U32S_1     1
 
-#define _LINUX_CAPABILITY_VERSION_2  0x20071026  /* deprecated - use v3 */
+#define _LINUX_CAPABILITY_VERSION_2  0x20071026	/* deprecated - use v3 */
 #define _LINUX_CAPABILITY_U32S_2     2
 
 #define _LINUX_CAPABILITY_VERSION_3  0x20080522
@@ -43,11 +43,10 @@ typedef struct __user_cap_header_struct {
 } __user *cap_user_header_t;
 
 typedef struct __user_cap_data_struct {
-        __u32 effective;
-        __u32 permitted;
-        __u32 inheritable;
+	__u32 effective;
+	__u32 permitted;
+	__u32 inheritable;
 } __user *cap_user_data_t;
-
 
 #define XATTR_CAPS_SUFFIX "capability"
 #define XATTR_NAME_CAPS XATTR_SECURITY_PREFIX XATTR_CAPS_SUFFIX
@@ -70,10 +69,10 @@ typedef struct __user_cap_data_struct {
 #define VFS_CAP_REVISION	VFS_CAP_REVISION_2
 
 struct vfs_cap_data {
-	__le32 magic_etc;            /* Little endian */
+	__le32 magic_etc;	/* Little endian */
 	struct {
-		__le32 permitted;    /* Little endian */
-		__le32 inheritable;  /* Little endian */
+		__le32 permitted;	/* Little endian */
+		__le32 inheritable;	/* Little endian */
 	} data[VFS_CAP_U32];
 };
 
@@ -111,7 +110,6 @@ struct cpu_vfs_cap_data {
 #define _KERNEL_CAP_T_SIZE     (sizeof(kernel_cap_t))
 
 #endif
-
 
 /**
  ** POSIX-draft defined capabilities.
@@ -166,7 +164,6 @@ struct cpu_vfs_cap_data {
 /* Allows forged pids on socket credentials passing. */
 
 #define CAP_SETUID           7
-
 
 /**
  ** Linux-specific capabilities
@@ -365,8 +362,8 @@ struct cpu_vfs_cap_data {
  * Bit location of each capability (used by user-space library and kernel)
  */
 
-#define CAP_TO_INDEX(x)     ((x) >> 5)        /* 1 << 5 == bits in __u32 */
-#define CAP_TO_MASK(x)      (1 << ((x) & 31)) /* mask for indexed __u32 */
+#define CAP_TO_INDEX(x)     ((x) >> 5)	/* 1 << 5 == bits in __u32 */
+#define CAP_TO_MASK(x)      (1 << ((x) & 31))	/* mask for indexed __u32 */
 
 #ifdef __KERNEL__
 
@@ -377,23 +374,23 @@ struct cpu_vfs_cap_data {
 #define CAP_FOR_EACH_U32(__capi)  \
 	for (__capi = 0; __capi < _KERNEL_CAPABILITY_U32S; ++__capi)
 
-# define CAP_FS_MASK_B0     (CAP_TO_MASK(CAP_CHOWN)		\
+#define CAP_FS_MASK_B0     (CAP_TO_MASK(CAP_CHOWN)		\
 			    | CAP_TO_MASK(CAP_DAC_OVERRIDE)	\
 			    | CAP_TO_MASK(CAP_DAC_READ_SEARCH)	\
 			    | CAP_TO_MASK(CAP_FOWNER)		\
 			    | CAP_TO_MASK(CAP_FSETID))
 
-# define CAP_FS_MASK_B1     (CAP_TO_MASK(CAP_MAC_OVERRIDE))
+#define CAP_FS_MASK_B1     (CAP_TO_MASK(CAP_MAC_OVERRIDE))
 
 #if _KERNEL_CAPABILITY_U32S != 2
-# error Fix up hand-coded capability macro initializers
+#error Fix up hand-coded capability macro initializers
 #else /* HAND-CODED capability initializers */
 
-# define CAP_EMPTY_SET    ((kernel_cap_t){{ 0, 0 }})
-# define CAP_FULL_SET     ((kernel_cap_t){{ ~0, ~0 }})
-# define CAP_INIT_EFF_SET ((kernel_cap_t){{ ~CAP_TO_MASK(CAP_SETPCAP), ~0 }})
-# define CAP_FS_SET       ((kernel_cap_t){{ CAP_FS_MASK_B0, CAP_FS_MASK_B1 } })
-# define CAP_NFSD_SET     ((kernel_cap_t){{ CAP_FS_MASK_B0 \
+#define CAP_EMPTY_SET    ((kernel_cap_t){{ 0, 0 }})
+#define CAP_FULL_SET     ((kernel_cap_t){{ ~0, ~0 }})
+#define CAP_INIT_EFF_SET ((kernel_cap_t){{ ~CAP_TO_MASK(CAP_SETPCAP), ~0 }})
+#define CAP_FS_SET       ((kernel_cap_t){{ CAP_FS_MASK_B0, CAP_FS_MASK_B1 } })
+#define CAP_NFSD_SET     ((kernel_cap_t){{ CAP_FS_MASK_B0 \
 					    | CAP_TO_MASK(CAP_SYS_RESOURCE) \
 					    | CAP_TO_MASK(CAP_MKNOD), \
 					    CAP_FS_MASK_B1 } })
@@ -402,9 +399,9 @@ struct cpu_vfs_cap_data {
 
 #define CAP_INIT_INH_SET    CAP_EMPTY_SET
 
-# define cap_clear(c)         do { (c) = __cap_empty_set; } while (0)
-# define cap_set_full(c)      do { (c) = __cap_full_set; } while (0)
-# define cap_set_init_eff(c)  do { (c) = __cap_init_eff_set; } while (0)
+#define cap_clear(c)         do { (c) = __cap_empty_set; } while (0)
+#define cap_set_full(c)      do { (c) = __cap_full_set; } while (0)
+#define cap_set_init_eff(c)  do { (c) = __cap_init_eff_set; } while (0)
 
 #define cap_raise(c, flag)  ((c).cap[CAP_TO_INDEX(flag)] |= CAP_TO_MASK(flag))
 #define cap_lower(c, flag)  ((c).cap[CAP_TO_INDEX(flag)] &= ~CAP_TO_MASK(flag))
@@ -486,7 +483,7 @@ static inline int cap_issubset(const kernel_cap_t a, const kernel_cap_t set)
 static inline int cap_is_fs_cap(int cap)
 {
 	const kernel_cap_t __cap_fs_set = CAP_FS_SET;
-	return !!(CAP_TO_MASK(cap) & __cap_fs_set.cap[CAP_TO_INDEX(cap)]);
+	return ! !(CAP_TO_MASK(cap) & __cap_fs_set.cap[CAP_TO_INDEX(cap)]);
 }
 
 static inline kernel_cap_t cap_drop_fs_set(const kernel_cap_t a)
@@ -499,8 +496,7 @@ static inline kernel_cap_t cap_raise_fs_set(const kernel_cap_t a,
 					    const kernel_cap_t permitted)
 {
 	const kernel_cap_t __cap_fs_set = CAP_FS_SET;
-	return cap_combine(a,
-			   cap_intersect(permitted, __cap_fs_set));
+	return cap_combine(a, cap_intersect(permitted, __cap_fs_set));
 }
 
 static inline kernel_cap_t cap_drop_nfsd_set(const kernel_cap_t a)
@@ -513,8 +509,7 @@ static inline kernel_cap_t cap_raise_nfsd_set(const kernel_cap_t a,
 					      const kernel_cap_t permitted)
 {
 	const kernel_cap_t __cap_nfsd_set = CAP_NFSD_SET;
-	return cap_combine(a,
-			   cap_intersect(permitted, __cap_nfsd_set));
+	return cap_combine(a, cap_intersect(permitted, __cap_nfsd_set));
 }
 
 extern const kernel_cap_t __cap_empty_set;
@@ -551,7 +546,8 @@ extern int capable(int cap);
 
 /* audit system wants to get cap info from files as well */
 struct dentry;
-extern int get_vfs_caps_from_disk(const struct dentry *dentry, struct cpu_vfs_cap_data *cpu_caps);
+extern int get_vfs_caps_from_disk(const struct dentry *dentry,
+				  struct cpu_vfs_cap_data *cpu_caps);
 
 #endif /* __KERNEL__ */
 

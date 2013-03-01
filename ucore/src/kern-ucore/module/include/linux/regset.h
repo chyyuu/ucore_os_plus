@@ -19,7 +19,6 @@
 struct task_struct;
 struct user_regset;
 
-
 /**
  * user_regset_active_fn - type of @active function in &struct user_regset
  * @target:	thread being examined
@@ -57,7 +56,7 @@ typedef int user_regset_active_fn(struct task_struct *target,
 typedef int user_regset_get_fn(struct task_struct *target,
 			       const struct user_regset *regset,
 			       unsigned int pos, unsigned int count,
-			       void *kbuf, void __user *ubuf);
+			       void *kbuf, void __user * ubuf);
 
 /**
  * user_regset_set_fn - type of @set function in &struct user_regset
@@ -78,7 +77,7 @@ typedef int user_regset_get_fn(struct task_struct *target,
 typedef int user_regset_set_fn(struct task_struct *target,
 			       const struct user_regset *regset,
 			       unsigned int pos, unsigned int count,
-			       const void *kbuf, const void __user *ubuf);
+			       const void *kbuf, const void __user * ubuf);
 
 /**
  * user_regset_writeback_fn - type of @writeback function in &struct user_regset
@@ -151,15 +150,15 @@ typedef int user_regset_writeback_fn(struct task_struct *target,
  * omitted when there is an @active function and it returns zero.
  */
 struct user_regset {
-	user_regset_get_fn		*get;
-	user_regset_set_fn		*set;
-	user_regset_active_fn		*active;
-	user_regset_writeback_fn	*writeback;
-	unsigned int			n;
-	unsigned int 			size;
-	unsigned int 			align;
-	unsigned int 			bias;
-	unsigned int 			core_note_type;
+	user_regset_get_fn *get;
+	user_regset_set_fn *set;
+	user_regset_active_fn *active;
+	user_regset_writeback_fn *writeback;
+	unsigned int n;
+	unsigned int size;
+	unsigned int align;
+	unsigned int bias;
+	unsigned int core_note_type;
 };
 
 /**
@@ -203,7 +202,6 @@ struct user_regset_view {
  */
 const struct user_regset_view *task_user_regset_view(struct task_struct *tsk);
 
-
 /*
  * These are helpers for writing regset get/set functions in arch code.
  * Because @start_pos and @end_pos are always compile-time constants,
@@ -218,7 +216,7 @@ const struct user_regset_view *task_user_regset_view(struct task_struct *tsk);
 
 static inline int user_regset_copyout(unsigned int *pos, unsigned int *count,
 				      void **kbuf,
-				      void __user **ubuf, const void *data,
+				      void __user ** ubuf, const void *data,
 				      const int start_pos, const int end_pos)
 {
 	if (*count == 0)
@@ -243,7 +241,7 @@ static inline int user_regset_copyout(unsigned int *pos, unsigned int *count,
 
 static inline int user_regset_copyin(unsigned int *pos, unsigned int *count,
 				     const void **kbuf,
-				     const void __user **ubuf, void *data,
+				     const void __user ** ubuf, void *data,
 				     const int start_pos, const int end_pos)
 {
 	if (*count == 0)
@@ -272,7 +270,7 @@ static inline int user_regset_copyin(unsigned int *pos, unsigned int *count,
  */
 static inline int user_regset_copyout_zero(unsigned int *pos,
 					   unsigned int *count,
-					   void **kbuf, void __user **ubuf,
+					   void **kbuf, void __user ** ubuf,
 					   const int start_pos,
 					   const int end_pos)
 {
@@ -298,7 +296,7 @@ static inline int user_regset_copyout_zero(unsigned int *pos,
 static inline int user_regset_copyin_ignore(unsigned int *pos,
 					    unsigned int *count,
 					    const void **kbuf,
-					    const void __user **ubuf,
+					    const void __user ** ubuf,
 					    const int start_pos,
 					    const int end_pos)
 {
@@ -331,7 +329,7 @@ static inline int copy_regset_to_user(struct task_struct *target,
 				      const struct user_regset_view *view,
 				      unsigned int setno,
 				      unsigned int offset, unsigned int size,
-				      void __user *data)
+				      void __user * data)
 {
 	const struct user_regset *regset = &view->regsets[setno];
 
@@ -354,7 +352,7 @@ static inline int copy_regset_from_user(struct task_struct *target,
 					const struct user_regset_view *view,
 					unsigned int setno,
 					unsigned int offset, unsigned int size,
-					const void __user *data)
+					const void __user * data)
 {
 	const struct user_regset *regset = &view->regsets[setno];
 
@@ -364,5 +362,4 @@ static inline int copy_regset_from_user(struct task_struct *target,
 	return regset->set(target, regset, offset, size, NULL, data);
 }
 
-
-#endif	/* <linux/regset.h> */
+#endif /* <linux/regset.h> */

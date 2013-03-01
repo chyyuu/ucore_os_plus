@@ -43,17 +43,17 @@
 #define TIOCSETD	0x5423
 #define TIOCGETD	0x5424
 #define TCSBRKP		0x5425	/* Needed for POSIX tcsendbreak() */
-#define TIOCSBRK	0x5427  /* BSD compatibility */
-#define TIOCCBRK	0x5428  /* BSD compatibility */
-#define TIOCGSID	0x5429  /* Return the session ID of FD */
+#define TIOCSBRK	0x5427	/* BSD compatibility */
+#define TIOCCBRK	0x5428	/* BSD compatibility */
+#define TIOCGSID	0x5429	/* Return the session ID of FD */
 #define TCGETS2		_IOR('T',0x2A, struct termios2)
 #define TCSETS2		_IOW('T',0x2B, struct termios2)
 #define TCSETSW2	_IOW('T',0x2C, struct termios2)
 #define TCSETSF2	_IOW('T',0x2D, struct termios2)
-#define TIOCGPTN	_IOR('T',0x30, unsigned int) /* Get Pty Number (of pty-mux device) */
-#define TIOCSPTLCK	_IOW('T',0x31, int)  /* Lock/unlock Pty */
+#define TIOCGPTN	_IOR('T',0x30, unsigned int)	/* Get Pty Number (of pty-mux device) */
+#define TIOCSPTLCK	_IOW('T',0x31, int)	/* Lock/unlock Pty */
 
-#define FIONCLEX	0x5450  /* these numbers need to be adjusted. */
+#define FIONCLEX	0x5450	/* these numbers need to be adjusted. */
 #define FIOCLEX		0x5451
 #define FIOASYNC	0x5452
 #define TIOCSERCONFIG	0x5453
@@ -61,10 +61,10 @@
 #define TIOCSERSWILD	0x5455
 #define TIOCGLCKTRMIOS	0x5456
 #define TIOCSLCKTRMIOS	0x5457
-#define TIOCSERGSTRUCT	0x5458 /* For debugging only */
-#define TIOCSERGETLSR   0x5459 /* Get line status register */
-#define TIOCSERGETMULTI 0x545A /* Get multiport config  */
-#define TIOCSERSETMULTI 0x545B /* Set multiport config */
+#define TIOCSERGSTRUCT	0x5458	/* For debugging only */
+#define TIOCSERGETLSR   0x5459	/* Get line status register */
+#define TIOCSERGETMULTI 0x545A	/* Get multiport config  */
+#define TIOCSERSETMULTI 0x545B	/* Set multiport config */
 
 #define TIOCMIWAIT	0x545C	/* wait for a change on serial input line(s) */
 #define TIOCGICOUNT	0x545D	/* read serial port inline interrupt counts */

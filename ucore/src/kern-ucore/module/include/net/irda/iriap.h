@@ -31,8 +31,8 @@
 
 #include <net/irda/iriap_event.h>
 #include <net/irda/irias_object.h>
-#include <net/irda/irqueue.h>		/* irda_queue_t */
-#include <net/irda/timer.h>		/* struct timer_list */
+#include <net/irda/irqueue.h>	/* irda_queue_t */
+#include <net/irda/timer.h>	/* struct timer_list */
 
 #define IAP_LST 0x80
 #define IAP_ACK 0x40
@@ -53,18 +53,18 @@
 #define IAS_ATTRIB_UNKNOWN 2
 #define IAS_DISCONNECT     10
 
-typedef void (*CONFIRM_CALLBACK)(int result, __u16 obj_id, 
-				 struct ias_value *value, void *priv);
+typedef void (*CONFIRM_CALLBACK) (int result, __u16 obj_id,
+				  struct ias_value * value, void *priv);
 
 struct iriap_cb {
-	irda_queue_t q; /* Must be first */	
-	magic_t magic;  /* Magic cookie */
+	irda_queue_t q;		/* Must be first */
+	magic_t magic;		/* Magic cookie */
 
-	int          mode;   /* Client or server */
+	int mode;		/* Client or server */
 
-	__u32        saddr;
-	__u32        daddr;
-	__u8         operation;
+	__u32 saddr;
+	__u32 daddr;
+	__u8 operation;
 
 	struct sk_buff *request_skb;
 	struct lsap_cb *lsap;
@@ -73,36 +73,34 @@ struct iriap_cb {
 	/* Client states */
 	IRIAP_STATE client_state;
 	IRIAP_STATE call_state;
-	
+
 	/* Server states */
 	IRIAP_STATE server_state;
 	IRIAP_STATE r_connect_state;
-	
+
 	CONFIRM_CALLBACK confirm;
-	void *priv;                /* Used to identify client */
+	void *priv;		/* Used to identify client */
 
 	__u8 max_header_size;
 	__u32 max_data_size;
-	
+
 	struct timer_list watchdog_timer;
 };
 
-int  iriap_init(void);
+int iriap_init(void);
 void iriap_cleanup(void);
 
-struct iriap_cb *iriap_open(__u8 slsap_sel, int mode, void *priv, 
+struct iriap_cb *iriap_open(__u8 slsap_sel, int mode, void *priv,
 			    CONFIRM_CALLBACK callback);
 void iriap_close(struct iriap_cb *self);
 
-int iriap_getvaluebyclass_request(struct iriap_cb *self, 
+int iriap_getvaluebyclass_request(struct iriap_cb *self,
 				  __u32 saddr, __u32 daddr,
 				  char *name, char *attr);
 void iriap_connect_request(struct iriap_cb *self);
-void iriap_send_ack( struct iriap_cb *self);
+void iriap_send_ack(struct iriap_cb *self);
 void iriap_call_indication(struct iriap_cb *self, struct sk_buff *skb);
 
 void iriap_register_server(void);
 
 #endif
-
-

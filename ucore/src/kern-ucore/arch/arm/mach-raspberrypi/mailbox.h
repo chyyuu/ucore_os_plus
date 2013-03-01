@@ -5,4 +5,4 @@
 extern unsigned int readmailbox(unsigned int channel);
 extern void writemailbox(unsigned int channel, unsigned int data);
 
-#endif  /* MAILBOX_H */
+#endif /* MAILBOX_H */

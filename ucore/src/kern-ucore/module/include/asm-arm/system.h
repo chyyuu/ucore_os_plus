@@ -17,33 +17,33 @@
 /*
  * CR1 bits (CP#15 CR1)
  */
-#define CR_M	(1 << 0)	/* MMU enable				*/
-#define CR_A	(1 << 1)	/* Alignment abort enable		*/
-#define CR_C	(1 << 2)	/* Dcache enable			*/
-#define CR_W	(1 << 3)	/* Write buffer enable			*/
-#define CR_P	(1 << 4)	/* 32-bit exception handler		*/
-#define CR_D	(1 << 5)	/* 32-bit data address range		*/
-#define CR_L	(1 << 6)	/* Implementation defined		*/
-#define CR_B	(1 << 7)	/* Big endian				*/
-#define CR_S	(1 << 8)	/* System MMU protection		*/
-#define CR_R	(1 << 9)	/* ROM MMU protection			*/
-#define CR_F	(1 << 10)	/* Implementation defined		*/
-#define CR_Z	(1 << 11)	/* Implementation defined		*/
-#define CR_I	(1 << 12)	/* Icache enable			*/
-#define CR_V	(1 << 13)	/* Vectors relocated to 0xffff0000	*/
-#define CR_RR	(1 << 14)	/* Round Robin cache replacement	*/
-#define CR_L4	(1 << 15)	/* LDR pc can set T bit			*/
+#define CR_M	(1 << 0)	/* MMU enable                           */
+#define CR_A	(1 << 1)	/* Alignment abort enable               */
+#define CR_C	(1 << 2)	/* Dcache enable                        */
+#define CR_W	(1 << 3)	/* Write buffer enable                  */
+#define CR_P	(1 << 4)	/* 32-bit exception handler             */
+#define CR_D	(1 << 5)	/* 32-bit data address range            */
+#define CR_L	(1 << 6)	/* Implementation defined               */
+#define CR_B	(1 << 7)	/* Big endian                           */
+#define CR_S	(1 << 8)	/* System MMU protection                */
+#define CR_R	(1 << 9)	/* ROM MMU protection                   */
+#define CR_F	(1 << 10)	/* Implementation defined               */
+#define CR_Z	(1 << 11)	/* Implementation defined               */
+#define CR_I	(1 << 12)	/* Icache enable                        */
+#define CR_V	(1 << 13)	/* Vectors relocated to 0xffff0000      */
+#define CR_RR	(1 << 14)	/* Round Robin cache replacement        */
+#define CR_L4	(1 << 15)	/* LDR pc can set T bit                 */
 #define CR_DT	(1 << 16)
 #define CR_IT	(1 << 18)
 #define CR_ST	(1 << 19)
-#define CR_FI	(1 << 21)	/* Fast interrupt (lower latency mode)	*/
-#define CR_U	(1 << 22)	/* Unaligned access operation		*/
-#define CR_XP	(1 << 23)	/* Extended page tables			*/
-#define CR_VE	(1 << 24)	/* Vectored interrupts			*/
-#define CR_EE	(1 << 25)	/* Exception (Big) Endian		*/
-#define CR_TRE	(1 << 28)	/* TEX remap enable			*/
-#define CR_AFE	(1 << 29)	/* Access flag enable			*/
-#define CR_TE	(1 << 30)	/* Thumb exception enable		*/
+#define CR_FI	(1 << 21)	/* Fast interrupt (lower latency mode)  */
+#define CR_U	(1 << 22)	/* Unaligned access operation           */
+#define CR_XP	(1 << 23)	/* Extended page tables                 */
+#define CR_VE	(1 << 24)	/* Vectored interrupts                  */
+#define CR_EE	(1 << 25)	/* Exception (Big) Endian               */
+#define CR_TRE	(1 << 28)	/* TEX remap enable                     */
+#define CR_AFE	(1 << 29)	/* Access flag enable                   */
+#define CR_TE	(1 << 30)	/* Thumb exception enable               */
 
 /*
  * This is used to ensure the compiler did actually allocate the register we
@@ -74,14 +74,14 @@ extern unsigned int mem_fclk_21285;
 struct pt_regs;
 
 void die(const char *msg, struct pt_regs *regs, int err)
-		__attribute__((noreturn));
+    __attribute__ ((noreturn));
 
 struct siginfo;
 void arm_notify_die(const char *str, struct pt_regs *regs, struct siginfo *info,
-		unsigned long err, unsigned long trap);
+		    unsigned long err, unsigned long trap);
 
-void hook_fault_code(int nr, int (*fn)(unsigned long, unsigned int,
-				       struct pt_regs *),
+void hook_fault_code(int nr, int (*fn) (unsigned long, unsigned int,
+					struct pt_regs *),
 		     int sig, const char *name);
 
 #define xchg(ptr,x) \
@@ -98,7 +98,7 @@ extern int cpu_architecture(void);
 extern void cpu_init(void);
 
 void arm_machine_restart(char mode);
-extern void (*arm_pm_restart)(char str);
+extern void (*arm_pm_restart) (char str);
 
 #define UDBG_UNDEFINED	(1 << 0)
 #define UDBG_SYSCALL	(1 << 1)
@@ -159,14 +159,14 @@ extern unsigned long cr_alignment;	/* defined in entry-armv.S */
 static inline unsigned int get_cr(void)
 {
 	unsigned int val;
-	asm("mrc p15, 0, %0, c1, c0, 0	@ get CR" : "=r" (val) : : "cc");
+asm("mrc p15, 0, %0, c1, c0, 0	@ get CR": "=r"(val): :"cc");
 	return val;
 }
 
 static inline void set_cr(unsigned int val)
 {
-	asm volatile("mcr p15, 0, %0, c1, c0, 0	@ set CR"
-	  : : "r" (val) : "cc");
+	asm volatile ("mcr p15, 0, %0, c1, c0, 0	@ set CR"::"r"
+		      (val):"cc");
 	isb();
 }
 
@@ -181,15 +181,14 @@ extern void adjust_cr(unsigned long mask, unsigned long set);
 static inline unsigned int get_copro_access(void)
 {
 	unsigned int val;
-	asm("mrc p15, 0, %0, c1, c0, 2 @ get copro access"
-	  : "=r" (val) : : "cc");
+asm("mrc p15, 0, %0, c1, c0, 2 @ get copro access": "=r"(val): :"cc");
 	return val;
 }
 
 static inline void set_copro_access(unsigned int val)
 {
-	asm volatile("mcr p15, 0, %0, c1, c0, 2 @ set copro access"
-	  : : "r" (val) : "cc");
+	asm volatile ("mcr p15, 0, %0, c1, c0, 2 @ set copro access"::"r"
+		      (val):"cc");
 	isb();
 }
 
@@ -205,7 +204,9 @@ static inline void set_copro_access(unsigned int val)
  * `prev' will never be the same as `next'.  schedule() itself
  * contains the memory barrier to tell GCC not to cache `current'.
  */
-extern struct task_struct *__switch_to(struct task_struct *, struct thread_info *, struct thread_info *);
+extern struct task_struct *__switch_to(struct task_struct *,
+				       struct thread_info *,
+				       struct thread_info *);
 
 #define switch_to(prev,next,last)					\
 do {									\
@@ -231,7 +232,8 @@ do {									\
 #define swp_is_buggy
 #endif
 
-static inline unsigned long __xchg(unsigned long x, volatile void *ptr, int size)
+static inline unsigned long __xchg(unsigned long x, volatile void *ptr,
+				   int size)
 {
 	extern void __bad_xchg(volatile void *, int);
 	unsigned long ret;
@@ -245,24 +247,22 @@ static inline unsigned long __xchg(unsigned long x, volatile void *ptr, int size
 	switch (size) {
 #if __LINUX_ARM_ARCH__ >= 6
 	case 1:
-		asm volatile("@	__xchg1\n"
-		"1:	ldrexb	%0, [%3]\n"
-		"	strexb	%1, %2, [%3]\n"
-		"	teq	%1, #0\n"
-		"	bne	1b"
-			: "=&r" (ret), "=&r" (tmp)
-			: "r" (x), "r" (ptr)
-			: "memory", "cc");
+		asm volatile ("@	__xchg1\n"
+			      "1:	ldrexb	%0, [%3]\n"
+			      "	strexb	%1, %2, [%3]\n"
+			      "	teq	%1, #0\n"
+			      "	bne	1b":"=&r" (ret), "=&r"(tmp)
+			      :"r"(x), "r"(ptr)
+			      :"memory", "cc");
 		break;
 	case 4:
-		asm volatile("@	__xchg4\n"
-		"1:	ldrex	%0, [%3]\n"
-		"	strex	%1, %2, [%3]\n"
-		"	teq	%1, #0\n"
-		"	bne	1b"
-			: "=&r" (ret), "=&r" (tmp)
-			: "r" (x), "r" (ptr)
-			: "memory", "cc");
+		asm volatile ("@	__xchg4\n"
+			      "1:	ldrex	%0, [%3]\n"
+			      "	strex	%1, %2, [%3]\n"
+			      "	teq	%1, #0\n"
+			      "	bne	1b":"=&r" (ret), "=&r"(tmp)
+			      :"r"(x), "r"(ptr)
+			      :"memory", "cc");
 		break;
 #elif defined(swp_is_buggy)
 #ifdef CONFIG_SMP
@@ -283,18 +283,16 @@ static inline unsigned long __xchg(unsigned long x, volatile void *ptr, int size
 		break;
 #else
 	case 1:
-		asm volatile("@	__xchg1\n"
-		"	swpb	%0, %1, [%2]"
-			: "=&r" (ret)
-			: "r" (x), "r" (ptr)
-			: "memory", "cc");
+		asm volatile ("@	__xchg1\n"
+			      "	swpb	%0, %1, [%2]":"=&r" (ret)
+			      :"r"(x), "r"(ptr)
+			      :"memory", "cc");
 		break;
 	case 4:
-		asm volatile("@	__xchg4\n"
-		"	swp	%0, %1, [%2]"
-			: "=&r" (ret)
-			: "r" (x), "r" (ptr)
-			: "memory", "cc");
+		asm volatile ("@	__xchg4\n"
+			      "	swp	%0, %1, [%2]":"=&r" (ret)
+			      :"r"(x), "r"(ptr)
+			      :"memory", "cc");
 		break;
 #endif
 	default:

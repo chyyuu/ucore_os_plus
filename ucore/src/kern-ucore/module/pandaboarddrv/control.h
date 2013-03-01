@@ -79,7 +79,7 @@
 #define OMAP2_CONTROL_RPUB_KEY_H_3	(OMAP2_CONTROL_GENERAL + 0x009c)
 
 /* 242x-only CONTROL_GENERAL register offsets */
-#define OMAP242X_CONTROL_DEVCONF	OMAP2_CONTROL_DEVCONF0 /* match TRM */
+#define OMAP242X_CONTROL_DEVCONF	OMAP2_CONTROL_DEVCONF0	/* match TRM */
 #define OMAP242X_CONTROL_OCM_RAM_PERM	(OMAP2_CONTROL_GENERAL + 0x0068)
 
 /* 243x-only CONTROL_GENERAL register offsets */
@@ -269,7 +269,7 @@
  * and the security mode (secure, non-secure, don't care)
  */
 /* CONTROL_DEVCONF0 bits */
-#define OMAP2_MMCSDIO1ADPCLKISEL	(1 << 24) /* MMC1 loop back clock */
+#define OMAP2_MMCSDIO1ADPCLKISEL	(1 << 24)	/* MMC1 loop back clock */
 #define OMAP24XX_USBSTANDBYCTRL		(1 << 15)
 #define OMAP2_MCBSP2_CLKS_MASK		(1 << 6)
 #define OMAP2_MCBSP1_FSR_MASK		(1 << 4)
@@ -278,10 +278,10 @@
 
 /* CONTROL_DEVCONF1 bits */
 #define OMAP243X_MMC1_ACTIVE_OVERWRITE	(1 << 31)
-#define OMAP2_MMCSDIO2ADPCLKISEL	(1 << 6) /* MMC2 loop back clock */
-#define OMAP2_MCBSP5_CLKS_MASK		(1 << 4) /* > 242x */
-#define OMAP2_MCBSP4_CLKS_MASK		(1 << 2) /* > 242x */
-#define OMAP2_MCBSP3_CLKS_MASK		(1 << 0) /* > 242x */
+#define OMAP2_MMCSDIO2ADPCLKISEL	(1 << 6)	/* MMC2 loop back clock */
+#define OMAP2_MCBSP5_CLKS_MASK		(1 << 4)	/* > 242x */
+#define OMAP2_MCBSP4_CLKS_MASK		(1 << 2)	/* > 242x */
+#define OMAP2_MCBSP3_CLKS_MASK		(1 << 0)	/* > 242x */
 
 /* CONTROL_STATUS bits */
 #define OMAP2_DEVICETYPE_MASK		(0x7 << 8)
@@ -387,7 +387,6 @@
 #define		FEAT_NEON		0
 #define		FEAT_NEON_NONE		1
 
-
 #ifndef __ASSEMBLY__
 #ifdef CONFIG_ARCH_OMAP2PLUS
 extern void __iomem *omap_ctrl_base_get(void);
@@ -424,7 +423,6 @@ extern int omap3_ctrl_save_padconf(void);
 #define omap_ctrl_writel(x, y)		WARN_ON(1)
 #define omap4_ctrl_pad_writel(x, y)	WARN_ON(1)
 #endif
-#endif	/* __ASSEMBLY__ */
+#endif /* __ASSEMBLY__ */
 
 #endif /* __ARCH_ARM_MACH_OMAP2_CONTROL_H */
-

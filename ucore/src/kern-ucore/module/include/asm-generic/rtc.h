@@ -26,7 +26,7 @@
 #define RTC_SQWE 0x08		/* enable square-wave output */
 #define RTC_DM_BINARY 0x04	/* all time/date values are BCD if clear */
 #define RTC_24H 0x02		/* 24 hour mode - else hours bit 7 means pm */
-#define RTC_DST_EN 0x01	        /* auto switch DST - works f. USA only */
+#define RTC_DST_EN 0x01		/* auto switch DST - works f. USA only */
 
 /*
  * Returns true if a clock update is in progress
@@ -82,8 +82,7 @@ static inline unsigned int __get_rtc_time(struct rtc_time *time)
 	ctrl = CMOS_READ(RTC_CONTROL);
 	spin_unlock_irqrestore(&rtc_lock, flags);
 
-	if (!(ctrl & RTC_DM_BINARY) || RTC_ALWAYS_BCD)
-	{
+	if (!(ctrl & RTC_DM_BINARY) || RTC_ALWAYS_BCD) {
 		time->tm_sec = bcd2bin(time->tm_sec);
 		time->tm_min = bcd2bin(time->tm_min);
 		time->tm_hour = bcd2bin(time->tm_hour);
@@ -91,7 +90,6 @@ static inline unsigned int __get_rtc_time(struct rtc_time *time)
 		time->tm_mon = bcd2bin(time->tm_mon);
 		time->tm_year = bcd2bin(time->tm_year);
 	}
-
 #ifdef CONFIG_MACH_DECSTATION
 	time->tm_year += real_year - 72;
 #endif
@@ -124,20 +122,20 @@ static inline int __set_rtc_time(struct rtc_time *time)
 #endif
 
 	yrs = time->tm_year;
-	mon = time->tm_mon + 1;   /* tm_mon starts at zero */
+	mon = time->tm_mon + 1;	/* tm_mon starts at zero */
 	day = time->tm_mday;
 	hrs = time->tm_hour;
 	min = time->tm_min;
 	sec = time->tm_sec;
 
-	if (yrs > 255)	/* They are unsigned */
+	if (yrs > 255)		/* They are unsigned */
 		return -EINVAL;
 
 	spin_lock_irqsave(&rtc_lock, flags);
 #ifdef CONFIG_MACH_DECSTATION
 	real_yrs = yrs;
 	leap_yr = ((!((yrs + 1900) % 4) && ((yrs + 1900) % 100)) ||
-			!((yrs + 1900) % 400));
+		   !((yrs + 1900) % 400));
 	yrs = 72;
 
 	/*
@@ -172,9 +170,9 @@ static inline int __set_rtc_time(struct rtc_time *time)
 	}
 
 	save_control = CMOS_READ(RTC_CONTROL);
-	CMOS_WRITE((save_control|RTC_SET), RTC_CONTROL);
+	CMOS_WRITE((save_control | RTC_SET), RTC_CONTROL);
 	save_freq_select = CMOS_READ(RTC_FREQ_SELECT);
-	CMOS_WRITE((save_freq_select|RTC_DIV_RESET2), RTC_FREQ_SELECT);
+	CMOS_WRITE((save_freq_select | RTC_DIV_RESET2), RTC_FREQ_SELECT);
 
 #ifdef CONFIG_MACH_DECSTATION
 	CMOS_WRITE(real_yrs, RTC_DEC_YEAR);
@@ -210,6 +208,7 @@ static inline int get_rtc_pll(struct rtc_pll_info *pll)
 {
 	return -EINVAL;
 }
+
 static inline int set_rtc_pll(struct rtc_pll_info *pll)
 {
 	return -EINVAL;

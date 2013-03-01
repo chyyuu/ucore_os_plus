@@ -33,7 +33,6 @@
 
 #include <net/irda/ircomm_core.h>
 
-int  ircomm_open_tsap(struct ircomm_cb *self);
+int ircomm_open_tsap(struct ircomm_cb *self);
 
 #endif
-

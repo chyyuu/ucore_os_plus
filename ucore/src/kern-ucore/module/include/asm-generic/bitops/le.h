@@ -43,9 +43,11 @@
 	__test_and_clear_bit((nr) ^ BITOP_LE_SWIZZLE, (addr))
 
 extern unsigned long generic_find_next_zero_le_bit(const unsigned long *addr,
-		unsigned long size, unsigned long offset);
+						   unsigned long size,
+						   unsigned long offset);
 extern unsigned long generic_find_next_le_bit(const unsigned long *addr,
-		unsigned long size, unsigned long offset);
+					      unsigned long size,
+					      unsigned long offset);
 
 #else
 #error "Please fix <asm/byteorder.h>"

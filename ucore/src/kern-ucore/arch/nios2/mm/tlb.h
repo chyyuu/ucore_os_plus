@@ -16,7 +16,6 @@
 
 #define TLBMISC_SET_PID(tlbmisc, pid) ((tlbmisc)=((tlbmisc)&0xFFFC000F)|((pid<<4)&0x3FFF0))
 
-
 void tlb_init(void);
 
 //perm = 1 when this is a permission violation exception; else perm = 0.
@@ -26,6 +25,5 @@ int tlb_miss_handler(uintptr_t la, bool perm);
 void tlb_write(uintptr_t la, uintptr_t pa, bool write);
 
 void tlb_setpid(int pid);
-
 
 #endif /* !__NIOS2_TLB_H__ */

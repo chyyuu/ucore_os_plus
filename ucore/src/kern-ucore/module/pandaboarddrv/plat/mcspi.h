@@ -8,7 +8,7 @@
 #define OMAP4_MCSPI_REG_OFFSET 0x100
 
 struct omap2_mcspi_platform_config {
-	unsigned short	num_cs;
+	unsigned short num_cs;
 	unsigned int regs_offset;
 };
 

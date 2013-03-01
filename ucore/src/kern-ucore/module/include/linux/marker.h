@@ -31,11 +31,11 @@ struct marker;
  * format string to recover the variable argument list.
  */
 typedef void marker_probe_func(void *probe_private, void *call_private,
-		const char *fmt, va_list *args);
+			       const char *fmt, va_list * args);
 
 struct marker_probe_closure {
 	marker_probe_func *func;	/* Callback */
-	void *probe_private;		/* Private probe data */
+	void *probe_private;	/* Private probe data */
 };
 
 struct marker {
@@ -45,13 +45,13 @@ struct marker {
 				 */
 	char state;		/* Marker state. */
 	char ptype;		/* probe type : 0 : single, 1 : multi */
-				/* Probe wrapper */
-	void (*call)(const struct marker *mdata, void *call_private, ...);
+	/* Probe wrapper */
+	void (*call) (const struct marker * mdata, void *call_private, ...);
 	struct marker_probe_closure single;
 	struct marker_probe_closure *multi;
 	const char *tp_name;	/* Optional tracepoint name */
 	void *tp_cb;		/* Optional tracepoint callback */
-} __attribute__((aligned(8)));
+} __attribute__ ((aligned(8)));
 
 #ifdef CONFIG_MARKERS
 
@@ -104,8 +104,7 @@ struct marker {
 					## args);			\
 	} while (0)
 
-extern void marker_update_probe_range(struct marker *begin,
-	struct marker *end);
+extern void marker_update_probe_range(struct marker *begin, struct marker *end);
 
 #define GET_MARKER(name)	(__mark_##name)
 
@@ -122,8 +121,10 @@ extern void marker_update_probe_range(struct marker *begin,
 		__mark_check_format(format, ## args);			\
 	} while (0)
 static inline void marker_update_probe_range(struct marker *begin,
-	struct marker *end)
-{ }
+					     struct marker *end)
+{
+}
+
 #define GET_MARKER(name)
 #endif /* CONFIG_MARKERS */
 
@@ -186,28 +187,30 @@ static inline void __printf(1, 2) ___mark_check_format(const char *fmt, ...)
 extern marker_probe_func __mark_empty_function;
 
 extern void marker_probe_cb(const struct marker *mdata,
-	void *call_private, ...);
+			    void *call_private, ...);
 
 /*
  * Connect a probe to a marker.
  * private data pointer must be a valid allocated memory address, or NULL.
  */
 extern int marker_probe_register(const char *name, const char *format,
-				marker_probe_func *probe, void *probe_private);
+				 marker_probe_func * probe,
+				 void *probe_private);
 
 /*
  * Returns the private data given to marker_probe_register.
  */
 extern int marker_probe_unregister(const char *name,
-	marker_probe_func *probe, void *probe_private);
+				   marker_probe_func * probe,
+				   void *probe_private);
 /*
  * Unregister a marker by providing the registered private data.
  */
-extern int marker_probe_unregister_private_data(marker_probe_func *probe,
-	void *probe_private);
+extern int marker_probe_unregister_private_data(marker_probe_func * probe,
+						void *probe_private);
 
-extern void *marker_get_private_data(const char *name, marker_probe_func *probe,
-	int num);
+extern void *marker_get_private_data(const char *name,
+				     marker_probe_func * probe, int num);
 
 /*
  * marker_synchronize_unregister must be called between the last marker probe

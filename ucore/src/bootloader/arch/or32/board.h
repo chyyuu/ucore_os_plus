@@ -13,7 +13,7 @@
 #define UART_IRQ                 2
 
 /* Clock Frequence */
-#define IN_CLK                   50000000            // 50MHz
+#define IN_CLK                   50000000	// 50MHz
 #ifdef BOARD
 #define TIMER_FREQ               0x400000
 #else
@@ -22,9 +22,9 @@
 
 /* RAM size */
 #ifdef BOARD
-#define RAM_SIZE                 0x4000000           // 64M bytes
+#define RAM_SIZE                 0x4000000	// 64M bytes
 #else
-#define RAM_SIZE                 0x200000            // 2M bytes
+#define RAM_SIZE                 0x200000	// 2M bytes
 #endif
 
 #define DISK_FS_BASE             0x800000
@@ -35,4 +35,4 @@
 #define GPIO_PHYSICAL_BASE       0x20000000
 #define SPI_PHYSICAL_BASE        0x70000000
 
-#endif  /* __ARCH_OR32_DRIVERS_BOARD_H__ */
+#endif /* __ARCH_OR32_DRIVERS_BOARD_H__ */

@@ -51,39 +51,34 @@
 #if defined(CONFIG_SOC_OMAP2420) || defined(CONFIG_SOC_OMAP2430)
 static struct map_desc omap24xx_io_desc[] __initdata = {
 	{
-		.virtual	= L3_24XX_VIRT,
-		.pfn		= __phys_to_pfn(L3_24XX_PHYS),
-		.length		= L3_24XX_SIZE,
-		.type		= MT_DEVICE
-	},
+	 .virtual = L3_24XX_VIRT,
+	 .pfn = __phys_to_pfn(L3_24XX_PHYS),
+	 .length = L3_24XX_SIZE,
+	 .type = MT_DEVICE},
 	{
-		.virtual	= L4_24XX_VIRT,
-		.pfn		= __phys_to_pfn(L4_24XX_PHYS),
-		.length		= L4_24XX_SIZE,
-		.type		= MT_DEVICE
-	},
+	 .virtual = L4_24XX_VIRT,
+	 .pfn = __phys_to_pfn(L4_24XX_PHYS),
+	 .length = L4_24XX_SIZE,
+	 .type = MT_DEVICE},
 };
 
 #ifdef CONFIG_SOC_OMAP2420
 static struct map_desc omap242x_io_desc[] __initdata = {
 	{
-		.virtual	= DSP_MEM_2420_VIRT,
-		.pfn		= __phys_to_pfn(DSP_MEM_2420_PHYS),
-		.length		= DSP_MEM_2420_SIZE,
-		.type		= MT_DEVICE
-	},
+	 .virtual = DSP_MEM_2420_VIRT,
+	 .pfn = __phys_to_pfn(DSP_MEM_2420_PHYS),
+	 .length = DSP_MEM_2420_SIZE,
+	 .type = MT_DEVICE},
 	{
-		.virtual	= DSP_IPI_2420_VIRT,
-		.pfn		= __phys_to_pfn(DSP_IPI_2420_PHYS),
-		.length		= DSP_IPI_2420_SIZE,
-		.type		= MT_DEVICE
-	},
+	 .virtual = DSP_IPI_2420_VIRT,
+	 .pfn = __phys_to_pfn(DSP_IPI_2420_PHYS),
+	 .length = DSP_IPI_2420_SIZE,
+	 .type = MT_DEVICE},
 	{
-		.virtual	= DSP_MMU_2420_VIRT,
-		.pfn		= __phys_to_pfn(DSP_MMU_2420_PHYS),
-		.length		= DSP_MMU_2420_SIZE,
-		.type		= MT_DEVICE
-	},
+	 .virtual = DSP_MMU_2420_VIRT,
+	 .pfn = __phys_to_pfn(DSP_MMU_2420_PHYS),
+	 .length = DSP_MMU_2420_SIZE,
+	 .type = MT_DEVICE},
 };
 
 #endif
@@ -91,29 +86,25 @@ static struct map_desc omap242x_io_desc[] __initdata = {
 #ifdef CONFIG_SOC_OMAP2430
 static struct map_desc omap243x_io_desc[] __initdata = {
 	{
-		.virtual	= L4_WK_243X_VIRT,
-		.pfn		= __phys_to_pfn(L4_WK_243X_PHYS),
-		.length		= L4_WK_243X_SIZE,
-		.type		= MT_DEVICE
-	},
+	 .virtual = L4_WK_243X_VIRT,
+	 .pfn = __phys_to_pfn(L4_WK_243X_PHYS),
+	 .length = L4_WK_243X_SIZE,
+	 .type = MT_DEVICE},
 	{
-		.virtual	= OMAP243X_GPMC_VIRT,
-		.pfn		= __phys_to_pfn(OMAP243X_GPMC_PHYS),
-		.length		= OMAP243X_GPMC_SIZE,
-		.type		= MT_DEVICE
-	},
+	 .virtual = OMAP243X_GPMC_VIRT,
+	 .pfn = __phys_to_pfn(OMAP243X_GPMC_PHYS),
+	 .length = OMAP243X_GPMC_SIZE,
+	 .type = MT_DEVICE},
 	{
-		.virtual	= OMAP243X_SDRC_VIRT,
-		.pfn		= __phys_to_pfn(OMAP243X_SDRC_PHYS),
-		.length		= OMAP243X_SDRC_SIZE,
-		.type		= MT_DEVICE
-	},
+	 .virtual = OMAP243X_SDRC_VIRT,
+	 .pfn = __phys_to_pfn(OMAP243X_SDRC_PHYS),
+	 .length = OMAP243X_SDRC_SIZE,
+	 .type = MT_DEVICE},
 	{
-		.virtual	= OMAP243X_SMS_VIRT,
-		.pfn		= __phys_to_pfn(OMAP243X_SMS_PHYS),
-		.length		= OMAP243X_SMS_SIZE,
-		.type		= MT_DEVICE
-	},
+	 .virtual = OMAP243X_SMS_VIRT,
+	 .pfn = __phys_to_pfn(OMAP243X_SMS_PHYS),
+	 .length = OMAP243X_SMS_SIZE,
+	 .type = MT_DEVICE},
 };
 #endif
 #endif
@@ -121,55 +112,47 @@ static struct map_desc omap243x_io_desc[] __initdata = {
 #ifdef	CONFIG_ARCH_OMAP3
 static struct map_desc omap34xx_io_desc[] __initdata = {
 	{
-		.virtual	= L3_34XX_VIRT,
-		.pfn		= __phys_to_pfn(L3_34XX_PHYS),
-		.length		= L3_34XX_SIZE,
-		.type		= MT_DEVICE
-	},
+	 .virtual = L3_34XX_VIRT,
+	 .pfn = __phys_to_pfn(L3_34XX_PHYS),
+	 .length = L3_34XX_SIZE,
+	 .type = MT_DEVICE},
 	{
-		.virtual	= L4_34XX_VIRT,
-		.pfn		= __phys_to_pfn(L4_34XX_PHYS),
-		.length		= L4_34XX_SIZE,
-		.type		= MT_DEVICE
-	},
+	 .virtual = L4_34XX_VIRT,
+	 .pfn = __phys_to_pfn(L4_34XX_PHYS),
+	 .length = L4_34XX_SIZE,
+	 .type = MT_DEVICE},
 	{
-		.virtual	= OMAP34XX_GPMC_VIRT,
-		.pfn		= __phys_to_pfn(OMAP34XX_GPMC_PHYS),
-		.length		= OMAP34XX_GPMC_SIZE,
-		.type		= MT_DEVICE
-	},
+	 .virtual = OMAP34XX_GPMC_VIRT,
+	 .pfn = __phys_to_pfn(OMAP34XX_GPMC_PHYS),
+	 .length = OMAP34XX_GPMC_SIZE,
+	 .type = MT_DEVICE},
 	{
-		.virtual	= OMAP343X_SMS_VIRT,
-		.pfn		= __phys_to_pfn(OMAP343X_SMS_PHYS),
-		.length		= OMAP343X_SMS_SIZE,
-		.type		= MT_DEVICE
-	},
+	 .virtual = OMAP343X_SMS_VIRT,
+	 .pfn = __phys_to_pfn(OMAP343X_SMS_PHYS),
+	 .length = OMAP343X_SMS_SIZE,
+	 .type = MT_DEVICE},
 	{
-		.virtual	= OMAP343X_SDRC_VIRT,
-		.pfn		= __phys_to_pfn(OMAP343X_SDRC_PHYS),
-		.length		= OMAP343X_SDRC_SIZE,
-		.type		= MT_DEVICE
-	},
+	 .virtual = OMAP343X_SDRC_VIRT,
+	 .pfn = __phys_to_pfn(OMAP343X_SDRC_PHYS),
+	 .length = OMAP343X_SDRC_SIZE,
+	 .type = MT_DEVICE},
 	{
-		.virtual	= L4_PER_34XX_VIRT,
-		.pfn		= __phys_to_pfn(L4_PER_34XX_PHYS),
-		.length		= L4_PER_34XX_SIZE,
-		.type		= MT_DEVICE
-	},
+	 .virtual = L4_PER_34XX_VIRT,
+	 .pfn = __phys_to_pfn(L4_PER_34XX_PHYS),
+	 .length = L4_PER_34XX_SIZE,
+	 .type = MT_DEVICE},
 	{
-		.virtual	= L4_EMU_34XX_VIRT,
-		.pfn		= __phys_to_pfn(L4_EMU_34XX_PHYS),
-		.length		= L4_EMU_34XX_SIZE,
-		.type		= MT_DEVICE
-	},
+	 .virtual = L4_EMU_34XX_VIRT,
+	 .pfn = __phys_to_pfn(L4_EMU_34XX_PHYS),
+	 .length = L4_EMU_34XX_SIZE,
+	 .type = MT_DEVICE},
 #if defined(CONFIG_DEBUG_LL) &&							\
 	(defined(CONFIG_MACH_OMAP_ZOOM2) || defined(CONFIG_MACH_OMAP_ZOOM3))
 	{
-		.virtual	= ZOOM_UART_VIRT,
-		.pfn		= __phys_to_pfn(ZOOM_UART_BASE),
-		.length		= SZ_1M,
-		.type		= MT_DEVICE
-	},
+	 .virtual = ZOOM_UART_VIRT,
+	 .pfn = __phys_to_pfn(ZOOM_UART_BASE),
+	 .length = SZ_1M,
+	 .type = MT_DEVICE},
 #endif
 };
 #endif
@@ -177,58 +160,55 @@ static struct map_desc omap34xx_io_desc[] __initdata = {
 #ifdef CONFIG_SOC_TI81XX
 static struct map_desc omapti81xx_io_desc[] __initdata = {
 	{
-		.virtual	= L4_34XX_VIRT,
-		.pfn		= __phys_to_pfn(L4_34XX_PHYS),
-		.length		= L4_34XX_SIZE,
-		.type		= MT_DEVICE
-	}
+	 .virtual = L4_34XX_VIRT,
+	 .pfn = __phys_to_pfn(L4_34XX_PHYS),
+	 .length = L4_34XX_SIZE,
+	 .type = MT_DEVICE}
 };
 #endif
 
 #ifdef CONFIG_SOC_AM33XX
 static struct map_desc omapam33xx_io_desc[] __initdata = {
 	{
-		.virtual	= L4_34XX_VIRT,
-		.pfn		= __phys_to_pfn(L4_34XX_PHYS),
-		.length		= L4_34XX_SIZE,
-		.type		= MT_DEVICE
-	},
+	 .virtual = L4_34XX_VIRT,
+	 .pfn = __phys_to_pfn(L4_34XX_PHYS),
+	 .length = L4_34XX_SIZE,
+	 .type = MT_DEVICE},
 	{
-		.virtual	= L4_WK_AM33XX_VIRT,
-		.pfn		= __phys_to_pfn(L4_WK_AM33XX_PHYS),
-		.length		= L4_WK_AM33XX_SIZE,
-		.type		= MT_DEVICE
-	}
+	 .virtual = L4_WK_AM33XX_VIRT,
+	 .pfn = __phys_to_pfn(L4_WK_AM33XX_PHYS),
+	 .length = L4_WK_AM33XX_SIZE,
+	 .type = MT_DEVICE}
 };
 #endif
 
 #ifdef	CONFIG_ARCH_OMAP4
 static struct map_desc omap44xx_io_desc[] __initdata = {
 	{
-		.virtual	= L3_44XX_VIRT,
-		.pfn		= __phys_to_pfn(L3_44XX_PHYS),
-		.length		= L3_44XX_SIZE,
-		.type		= MT_DEVICE,
-	},
+	 .virtual = L3_44XX_VIRT,
+	 .pfn = __phys_to_pfn(L3_44XX_PHYS),
+	 .length = L3_44XX_SIZE,
+	 .type = MT_DEVICE,
+	 },
 	{
-		.virtual	= L4_44XX_VIRT,
-		.pfn		= __phys_to_pfn(L4_44XX_PHYS),
-		.length		= L4_44XX_SIZE,
-		.type		= MT_DEVICE,
-	},
+	 .virtual = L4_44XX_VIRT,
+	 .pfn = __phys_to_pfn(L4_44XX_PHYS),
+	 .length = L4_44XX_SIZE,
+	 .type = MT_DEVICE,
+	 },
 	{
-		.virtual	= L4_PER_44XX_VIRT,
-		.pfn		= __phys_to_pfn(L4_PER_44XX_PHYS),
-		.length		= L4_PER_44XX_SIZE,
-		.type		= MT_DEVICE,
-	},
+	 .virtual = L4_PER_44XX_VIRT,
+	 .pfn = __phys_to_pfn(L4_PER_44XX_PHYS),
+	 .length = L4_PER_44XX_SIZE,
+	 .type = MT_DEVICE,
+	 },
 #ifdef CONFIG_OMAP4_ERRATA_I688
 	{
-		.virtual	= OMAP4_SRAM_VA,
-		.pfn		= __phys_to_pfn(OMAP4_SRAM_PA),
-		.length		= PAGE_SIZE,
-		.type		= MT_MEMORY_SO,
-	},
+	 .virtual = OMAP4_SRAM_VA,
+	 .pfn = __phys_to_pfn(OMAP4_SRAM_PA),
+	 .length = PAGE_SIZE,
+	 .type = MT_MEMORY_SO,
+	 },
 #endif
 
 };
@@ -237,29 +217,29 @@ static struct map_desc omap44xx_io_desc[] __initdata = {
 #ifdef	CONFIG_SOC_OMAP5
 static struct map_desc omap54xx_io_desc[] __initdata = {
 	{
-		.virtual	= L3_54XX_VIRT,
-		.pfn		= __phys_to_pfn(L3_54XX_PHYS),
-		.length		= L3_54XX_SIZE,
-		.type		= MT_DEVICE,
-	},
+	 .virtual = L3_54XX_VIRT,
+	 .pfn = __phys_to_pfn(L3_54XX_PHYS),
+	 .length = L3_54XX_SIZE,
+	 .type = MT_DEVICE,
+	 },
 	{
-		.virtual	= L4_54XX_VIRT,
-		.pfn		= __phys_to_pfn(L4_54XX_PHYS),
-		.length		= L4_54XX_SIZE,
-		.type		= MT_DEVICE,
-	},
+	 .virtual = L4_54XX_VIRT,
+	 .pfn = __phys_to_pfn(L4_54XX_PHYS),
+	 .length = L4_54XX_SIZE,
+	 .type = MT_DEVICE,
+	 },
 	{
-		.virtual	= L4_WK_54XX_VIRT,
-		.pfn		= __phys_to_pfn(L4_WK_54XX_PHYS),
-		.length		= L4_WK_54XX_SIZE,
-		.type		= MT_DEVICE,
-	},
+	 .virtual = L4_WK_54XX_VIRT,
+	 .pfn = __phys_to_pfn(L4_WK_54XX_PHYS),
+	 .length = L4_WK_54XX_SIZE,
+	 .type = MT_DEVICE,
+	 },
 	{
-		.virtual	= L4_PER_54XX_VIRT,
-		.pfn		= __phys_to_pfn(L4_PER_54XX_PHYS),
-		.length		= L4_PER_54XX_SIZE,
-		.type		= MT_DEVICE,
-	},
+	 .virtual = L4_PER_54XX_VIRT,
+	 .pfn = __phys_to_pfn(L4_PER_54XX_PHYS),
+	 .length = L4_PER_54XX_SIZE,
+	 .type = MT_DEVICE,
+	 },
 };
 #endif
 
@@ -350,7 +330,7 @@ static int __init _omap2_init_reprogram_sdrc(void)
 
 static int _set_hwmod_postsetup_state(struct omap_hwmod *oh, void *data)
 {
-	return omap_hwmod_set_postsetup_state(oh, *(u8 *)data);
+	return omap_hwmod_set_postsetup_state(oh, *(u8 *) data);
 }
 
 static void __init omap_common_init_early(void)
@@ -560,7 +540,7 @@ void __init omap5_init_early(void)
 #endif
 
 void __init omap_sdrc_init(struct omap_sdrc_params *sdrc_cs0,
-				      struct omap_sdrc_params *sdrc_cs1)
+			   struct omap_sdrc_params *sdrc_cs1)
 {
 	omap_sram_init();
 

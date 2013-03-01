@@ -99,17 +99,17 @@ typedef struct __key_reference_with_attributes *key_ref_t;
 static inline key_ref_t make_key_ref(const struct key *key,
 				     unsigned long possession)
 {
-	return (key_ref_t) ((unsigned long) key | possession);
+	return (key_ref_t) ((unsigned long)key | possession);
 }
 
 static inline struct key *key_ref_to_ptr(const key_ref_t key_ref)
 {
-	return (struct key *) ((unsigned long) key_ref & ~1UL);
+	return (struct key *)((unsigned long)key_ref & ~1UL);
 }
 
 static inline unsigned long is_key_possessed(const key_ref_t key_ref)
 {
-	return (unsigned long) key_ref & 1UL;
+	return (unsigned long)key_ref & 1UL;
 }
 
 /*****************************************************************************/
@@ -121,30 +121,30 @@ static inline unsigned long is_key_possessed(const key_ref_t key_ref)
  *   - Kerberos TGTs and tickets
  */
 struct key {
-	atomic_t		usage;		/* number of references */
-	key_serial_t		serial;		/* key serial number */
-	struct rb_node		serial_node;
-	struct key_type		*type;		/* type of key */
-	struct rw_semaphore	sem;		/* change vs change sem */
-	struct key_user		*user;		/* owner of this key */
-	void			*security;	/* security data for this key */
-	time_t			expiry;		/* time at which key expires (or 0) */
-	uid_t			uid;
-	gid_t			gid;
-	key_perm_t		perm;		/* access permissions */
-	unsigned short		quotalen;	/* length added to quota */
-	unsigned short		datalen;	/* payload data length
-						 * - may not match RCU dereferenced payload
-						 * - payload should contain own length
-						 */
+	atomic_t usage;		/* number of references */
+	key_serial_t serial;	/* key serial number */
+	struct rb_node serial_node;
+	struct key_type *type;	/* type of key */
+	struct rw_semaphore sem;	/* change vs change sem */
+	struct key_user *user;	/* owner of this key */
+	void *security;		/* security data for this key */
+	time_t expiry;		/* time at which key expires (or 0) */
+	uid_t uid;
+	gid_t gid;
+	key_perm_t perm;	/* access permissions */
+	unsigned short quotalen;	/* length added to quota */
+	unsigned short datalen;	/* payload data length
+				 * - may not match RCU dereferenced payload
+				 * - payload should contain own length
+				 */
 
 #ifdef KEY_DEBUGGING
-	unsigned		magic;
+	unsigned magic;
 #define KEY_DEBUG_MAGIC		0x18273645u
 #define KEY_DEBUG_MAGIC_X	0xf8e9dacbu
 #endif
 
-	unsigned long		flags;		/* status flags (change with bitops) */
+	unsigned long flags;	/* status flags (change with bitops) */
 #define KEY_FLAG_INSTANTIATED	0	/* set if key has been instantiated */
 #define KEY_FLAG_DEAD		1	/* set if key type has been deleted */
 #define KEY_FLAG_REVOKED	2	/* set if key had been revoked */
@@ -157,15 +157,15 @@ struct key {
 	 * - this should be a printable string
 	 * - eg: for krb5 AFS, this might be "afs@REDHAT.COM"
 	 */
-	char			*description;
+	char *description;
 
 	/* type specific data
 	 * - this is used by the keyring type to index the name
 	 */
 	union {
-		struct list_head	link;
-		unsigned long		x[2];
-		void			*p[2];
+		struct list_head link;
+		unsigned long x[2];
+		void *p[2];
 	} type_data;
 
 	/* key data
@@ -173,9 +173,9 @@ struct key {
 	 *   whatever
 	 */
 	union {
-		unsigned long		value;
-		void			*data;
-		struct keyring_list	*subscriptions;
+		unsigned long value;
+		void *data;
+		struct keyring_list *subscriptions;
 	} payload;
 };
 
@@ -183,9 +183,7 @@ extern struct key *key_alloc(struct key_type *type,
 			     const char *desc,
 			     uid_t uid, gid_t gid,
 			     const struct cred *cred,
-			     key_perm_t perm,
-			     unsigned long flags);
-
+			     key_perm_t perm, unsigned long flags);
 
 #define KEY_ALLOC_IN_QUOTA	0x0000	/* add to quota, reject if would overrun */
 #define KEY_ALLOC_QUOTA_OVERRUN	0x0001	/* add to quota, permit even if overrun */
@@ -213,8 +211,7 @@ extern struct key *request_key(struct key_type *type,
 extern struct key *request_key_with_auxdata(struct key_type *type,
 					    const char *description,
 					    const void *callout_info,
-					    size_t callout_len,
-					    void *aux);
+					    size_t callout_len, void *aux);
 
 extern struct key *request_key_async(struct key_type *type,
 				     const char *description,
@@ -236,32 +233,24 @@ extern key_ref_t key_create_or_update(key_ref_t keyring,
 				      const char *description,
 				      const void *payload,
 				      size_t plen,
-				      key_perm_t perm,
-				      unsigned long flags);
+				      key_perm_t perm, unsigned long flags);
 
-extern int key_update(key_ref_t key,
-		      const void *payload,
-		      size_t plen);
+extern int key_update(key_ref_t key, const void *payload, size_t plen);
 
-extern int key_link(struct key *keyring,
-		    struct key *key);
+extern int key_link(struct key *keyring, struct key *key);
 
-extern int key_unlink(struct key *keyring,
-		      struct key *key);
+extern int key_unlink(struct key *keyring, struct key *key);
 
 extern struct key *keyring_alloc(const char *description, uid_t uid, gid_t gid,
 				 const struct cred *cred,
-				 unsigned long flags,
-				 struct key *dest);
+				 unsigned long flags, struct key *dest);
 
 extern int keyring_clear(struct key *keyring);
 
 extern key_ref_t keyring_search(key_ref_t keyring,
-				struct key_type *type,
-				const char *description);
+				struct key_type *type, const char *description);
 
-extern int keyring_add_key(struct key *keyring,
-			   struct key *key);
+extern int keyring_add_key(struct key *keyring, struct key *key);
 
 extern struct key *key_lookup(key_serial_t id);
 

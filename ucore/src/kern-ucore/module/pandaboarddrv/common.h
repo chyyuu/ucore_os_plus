@@ -165,16 +165,16 @@ void omap_prcm_restart(char, const char *);
  * listed are physical addresses.
  */
 struct omap_globals {
-	u32		class;		/* OMAP class to detect */
-	void __iomem	*tap;		/* Control module ID code */
-	void __iomem	*sdrc;           /* SDRAM Controller */
-	void __iomem	*sms;            /* SDRAM Memory Scheduler */
-	void __iomem	*ctrl;           /* System Control Module */
-	void __iomem	*ctrl_pad;	/* PAD Control Module */
-	void __iomem	*prm;            /* Power and Reset Management */
-	void __iomem	*cm;             /* Clock Management */
-	void __iomem	*cm2;
-	void __iomem	*prcm_mpu;
+	u32 class;		/* OMAP class to detect */
+	void __iomem *tap;	/* Control module ID code */
+	void __iomem *sdrc;	/* SDRAM Controller */
+	void __iomem *sms;	/* SDRAM Memory Scheduler */
+	void __iomem *ctrl;	/* System Control Module */
+	void __iomem *ctrl_pad;	/* PAD Control Module */
+	void __iomem *prm;	/* Power and Reset Management */
+	void __iomem *cm;	/* Clock Management */
+	void __iomem *cm2;
+	void __iomem *prcm_mpu;
 };
 
 void omap2_set_globals_242x(void);
@@ -191,7 +191,8 @@ void omap2_set_globals_tap(struct omap_globals *);
 void omap2_set_globals_sdrc(struct omap_globals *);
 #else
 static inline void omap2_set_globals_sdrc(struct omap_globals *omap2_globals)
-{ }
+{
+}
 #endif
 void omap2_set_globals_control(struct omap_globals *);
 void omap2_set_globals_prcm(struct omap_globals *);
@@ -250,11 +251,10 @@ extern void __iomem *omap4_get_l2cache_base(void);
 
 struct device_node;
 #ifdef CONFIG_OF
-int __init intc_of_init(struct device_node *node,
-			     struct device_node *parent);
+int __init intc_of_init(struct device_node *node, struct device_node *parent);
 #else
 static int __init intc_of_init(struct device_node *node,
-			     struct device_node *parent)
+			       struct device_node *parent)
 {
 	return 0;
 }
@@ -292,7 +292,7 @@ extern int omap4_hotplug_cpu(unsigned int cpu, unsigned int power_state);
 extern u32 omap4_mpuss_read_prev_context_state(void);
 #else
 static inline int omap4_enter_lowpower(unsigned int cpu,
-					unsigned int power_state)
+				       unsigned int power_state)
 {
 	cpu_do_idle();
 	return 0;
@@ -315,7 +315,8 @@ static inline int omap4_finish_suspend(unsigned long cpu_state)
 }
 
 static inline void omap4_cpu_resume(void)
-{}
+{
+}
 
 static inline u32 omap4_mpuss_read_prev_context_state(void)
 {
@@ -325,7 +326,7 @@ static inline u32 omap4_mpuss_read_prev_context_state(void)
 
 struct omap_sdrc_params;
 extern void omap_sdrc_init(struct omap_sdrc_params *sdrc_cs0,
-				      struct omap_sdrc_params *sdrc_cs1);
+			   struct omap_sdrc_params *sdrc_cs1);
 struct omap2_hsmmc_info;
 extern int omap4_twl6030_hsmmc_init(struct omap2_hsmmc_info *controllers);
 

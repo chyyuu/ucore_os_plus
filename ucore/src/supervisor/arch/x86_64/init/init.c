@@ -20,19 +20,19 @@
 #include <kern.h>
 #include <mp.h>
 
-void kern_init(void) __attribute__((noreturn));
+void kern_init(void) __attribute__ ((noreturn));
 
-void
-kern_init(void) {
-    extern char __edata[], __end[];
-    memset(__edata, 0, __end - __edata);
+void kern_init(void)
+{
+	extern char __edata[], __end[];
+	memset(__edata, 0, __end - __edata);
 
-    cons_init();                // init the console
+	cons_init();		// init the console
 
-    const char *message = "(THU.CST) os is loading ...";
-    cprintf("%s\n\n", message);
+	const char *message = "(THU.CST) os is loading ...";
+	cprintf("%s\n\n", message);
 
-    print_kerninfo();
+	print_kerninfo();
 
 	/* Get the self apic id for locating the TSS */
 	uint32_t b;
@@ -40,10 +40,10 @@ kern_init(void) {
 	int cur_apic_id = (b >> 24) & 0xff;
 	sysconf.lcpu_boot = cur_apic_id;
 
-    pmm_init();                 // init physical memory management
+	pmm_init();		// init physical memory management
 
-    pic_init();                 // init interrupt controller
-    idt_init();                 // init interrupt descriptor table
+	pic_init();		// init interrupt controller
+	idt_init();		// init interrupt descriptor table
 
 	context_init();
 

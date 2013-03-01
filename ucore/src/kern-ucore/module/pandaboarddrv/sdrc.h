@@ -57,7 +57,7 @@ static inline u32 sms_read_reg(u16 reg)
 			OMAP2_L3_IO_ADDRESS(OMAP243X_SDRC_BASE + (reg))
 #define OMAP34XX_SDRC_REGADDR(reg)					\
 			OMAP2_L3_IO_ADDRESS(OMAP343X_SDRC_BASE + (reg))
-#endif	/* __ASSEMBLER__ */
+#endif /* __ASSEMBLER__ */
 
 /* Minimum frequency that the SDRC DLL can lock at */
 #define MIN_SDRC_DLL_LOCK_FREQ		83000000

@@ -62,7 +62,7 @@ typedef struct _agp_info {
 	struct agp_version version;	/* version of the driver        */
 	__u32 bridge_id;	/* bridge vendor/device         */
 	__u32 agp_mode;		/* mode info of bridge          */
-	unsigned long aper_base;/* base of aperture             */
+	unsigned long aper_base;	/* base of aperture             */
 	size_t aper_size;	/* size of aperture             */
 	size_t pg_total;	/* max pages (swap + system)    */
 	size_t pg_system;	/* max pages (system)           */
@@ -92,7 +92,7 @@ typedef struct _agp_allocate {
 	int key;		/* tag of allocation            */
 	size_t pg_count;	/* number of pages              */
 	__u32 type;		/* 0 == normal, other devspec   */
-   	__u32 physical;         /* device specific (some devices  
+	__u32 physical;		/* device specific (some devices  
 				 * need a phys address of the     
 				 * actual page behind the gatt    
 				 * table)                        */
@@ -108,7 +108,7 @@ typedef struct _agp_unbind {
 	__u32 priority;		/* priority for paging out      */
 } agp_unbind;
 
-#else				/* __KERNEL__ */
+#else /* __KERNEL__ */
 #include <linux/mutex.h>
 #include <linux/agp_backend.h>
 
@@ -118,7 +118,7 @@ struct agp_info {
 	struct agp_version version;	/* version of the driver        */
 	u32 bridge_id;		/* bridge vendor/device         */
 	u32 agp_mode;		/* mode info of bridge          */
-	unsigned long aper_base;/* base of aperture             */
+	unsigned long aper_base;	/* base of aperture             */
 	size_t aper_size;	/* size of aperture             */
 	size_t pg_total;	/* max pages (swap + system)    */
 	size_t pg_system;	/* max pages (system)           */
@@ -154,7 +154,7 @@ struct agp_allocate {
 	int key;		/* tag of allocation            */
 	size_t pg_count;	/* number of pages              */
 	u32 type;		/* 0 == normal, other devspec   */
-	u32 physical;           /* device specific (some devices  
+	u32 physical;		/* device specific (some devices  
 				 * need a phys address of the     
 				 * actual page behind the gatt    
 				 * table)                        */
@@ -209,6 +209,6 @@ struct agp_front_data {
 	bool backend_acquired;
 };
 
-#endif				/* __KERNEL__ */
+#endif /* __KERNEL__ */
 
-#endif				/* _AGP_H */
+#endif /* _AGP_H */

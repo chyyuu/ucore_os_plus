@@ -16,15 +16,13 @@
  * =====================================================================================
  */
 
-
 #ifndef  MACH_BOARD_GOLDFISH_H
 #define  MACH_BOARD_GOLDFISH_H
 
 #define GOLDFISH_IO_START 0xFF000000
 #define GOLDFISH_IO_FREE_START 0xff010000
-#define GOLDFISH_UART0 (GOLDFISH_IO_FREE_START+0x2000) 
+#define GOLDFISH_UART0 (GOLDFISH_IO_FREE_START+0x2000)
 #define GOLDFISH_PDEV_BUS (GOLDFISH_IO_START+0x1000)
-
 
 #define GOLDFISH_TIMER0_1_BASE (GOLDFISH_IO_START+0x3000)
 
@@ -42,7 +40,7 @@
 //extern macro
 
 #define SDRAM0_START UCONFIG_DRAM_START
-#define SDRAM0_SIZE  UCONFIG_DRAM_SIZE //256M
+#define SDRAM0_SIZE  UCONFIG_DRAM_SIZE	//256M
 
 #define IO_SPACE_START GOLDFISH_IO_START
 #define IO_SPACE_SIZE  0x1000000
@@ -61,4 +59,4 @@ extern void board_init(void);
 
 #endif
 
-#endif  
+#endif

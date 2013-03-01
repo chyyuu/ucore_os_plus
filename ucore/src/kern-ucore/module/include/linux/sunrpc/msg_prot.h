@@ -7,7 +7,7 @@
 #ifndef _LINUX_SUNRPC_MSGPROT_H_
 #define _LINUX_SUNRPC_MSGPROT_H_
 
-#ifdef __KERNEL__ /* user programs should get these from the rpc header files */
+#ifdef __KERNEL__		/* user programs should get these from the rpc header files */
 
 #define RPC_VERSION 2
 
@@ -15,24 +15,24 @@
 #define XDR_UNIT	(4)
 
 /* spec defines authentication flavor as an unsigned 32 bit integer */
-typedef u32	rpc_authflavor_t;
+typedef u32 rpc_authflavor_t;
 
 enum rpc_auth_flavors {
-	RPC_AUTH_NULL  = 0,
-	RPC_AUTH_UNIX  = 1,
+	RPC_AUTH_NULL = 0,
+	RPC_AUTH_UNIX = 1,
 	RPC_AUTH_SHORT = 2,
-	RPC_AUTH_DES   = 3,
-	RPC_AUTH_KRB   = 4,
-	RPC_AUTH_GSS   = 6,
+	RPC_AUTH_DES = 3,
+	RPC_AUTH_KRB = 4,
+	RPC_AUTH_GSS = 6,
 	RPC_AUTH_MAXFLAVOR = 8,
 	/* pseudoflavors: */
-	RPC_AUTH_GSS_KRB5  = 390003,
+	RPC_AUTH_GSS_KRB5 = 390003,
 	RPC_AUTH_GSS_KRB5I = 390004,
 	RPC_AUTH_GSS_KRB5P = 390005,
-	RPC_AUTH_GSS_LKEY  = 390006,
+	RPC_AUTH_GSS_LKEY = 390006,
 	RPC_AUTH_GSS_LKEYI = 390007,
 	RPC_AUTH_GSS_LKEYP = 390008,
-	RPC_AUTH_GSS_SPKM  = 390009,
+	RPC_AUTH_GSS_SPKM = 390009,
 	RPC_AUTH_GSS_SPKMI = 390010,
 	RPC_AUTH_GSS_SPKMP = 390011,
 };
@@ -99,7 +99,7 @@ enum rpc_auth_stat {
  * 2GB.
  */
 
-typedef __be32	rpc_fraghdr;
+typedef __be32 rpc_fraghdr;
 
 #define	RPC_LAST_STREAM_FRAGMENT	(1U << 31)
 #define	RPC_FRAGMENT_SIZE_MASK		(~RPC_LAST_STREAM_FRAGMENT)
@@ -111,7 +111,6 @@ typedef __be32	rpc_fraghdr;
  */
 #define RPC_CALLHDRSIZE		(6)
 #define RPC_REPHDRSIZE		(4)
-
 
 /*
  * Maximum RPC header size, including authentication,

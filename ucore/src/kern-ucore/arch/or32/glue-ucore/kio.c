@@ -10,13 +10,13 @@
  * cputch - writes a single character @c to stdout, and it will
  * increace the value of counter pointed by @cnt.
  * */
-static void
-cputch(int c, int *cnt, int fd) {
-    kcons_putc(c);
-    (*cnt) ++;
+static void cputch(int c, int *cnt, int fd)
+{
+	kcons_putc(c);
+	(*cnt)++;
 }
 
-static spinlock_s kprintf_lock = {0};
+static spinlock_s kprintf_lock = { 0 };
 
 /* *
  * vcprintf - format a string and writes it to stdout
@@ -27,16 +27,16 @@ static spinlock_s kprintf_lock = {0};
  * Call this function if you are already dealing with a va_list.
  * Or you probably want cprintf() instead.
  * */
-int
-vkprintf(const char *fmt, va_list ap) {
-    int cnt = 0;
+int vkprintf(const char *fmt, va_list ap)
+{
+	int cnt = 0;
 	int flag;
 	local_intr_save_hw(flag);
 	spinlock_acquire(&kprintf_lock);
-    vprintfmt((void*)cputch, NO_FD, &cnt, fmt, ap);
+	vprintfmt((void *)cputch, NO_FD, &cnt, fmt, ap);
 	spinlock_release(&kprintf_lock);
 	local_intr_restore_hw(flag);
-    return cnt;
+	return cnt;
 }
 
 /* *
@@ -45,12 +45,12 @@ vkprintf(const char *fmt, va_list ap) {
  * The return value is the number of characters which would be
  * written to stdout.
  * */
-int
-kprintf(const char *fmt, ...) {
-    va_list ap;
-    int cnt;
-    va_start(ap, fmt);
-    cnt = vkprintf(fmt, ap);
-    va_end(ap);
-    return cnt;
+int kprintf(const char *fmt, ...)
+{
+	va_list ap;
+	int cnt;
+	va_start(ap, fmt);
+	cnt = vkprintf(fmt, ap);
+	va_end(ap);
+	return cnt;
 }

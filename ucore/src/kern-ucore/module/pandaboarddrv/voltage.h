@@ -76,17 +76,16 @@ struct voltagedomain {
 	struct omap_voltdm_pmic *pmic;
 
 	/* VC/VP register access functions: SoC specific */
-	u32 (*read) (u8 offset);
+	 u32(*read) (u8 offset);
 	void (*write) (u32 val, u8 offset);
-	u32 (*rmw)(u32 mask, u32 bits, u8 offset);
+	 u32(*rmw) (u32 mask, u32 bits, u8 offset);
 
 	union {
 		const char *name;
 		u32 rate;
 	} sys_clk;
 
-	int (*scale) (struct voltagedomain *voltdm,
-		      unsigned long target_volt);
+	int (*scale) (struct voltagedomain * voltdm, unsigned long target_volt);
 
 	u32 nominal_volt;
 	struct omap_volt_data *volt_data;
@@ -124,17 +123,17 @@ struct omap_voltdm_pmic {
 	bool i2c_high_speed;
 	u8 i2c_mcode;
 	unsigned long (*vsel_to_uv) (const u8 vsel);
-	u8 (*uv_to_vsel) (unsigned long uV);
+	 u8(*uv_to_vsel) (unsigned long uV);
 };
 
 void omap_voltage_get_volttable(struct voltagedomain *voltdm,
-		struct omap_volt_data **volt_data);
+				struct omap_volt_data **volt_data);
 struct omap_volt_data *omap_voltage_get_voltdata(struct voltagedomain *voltdm,
-		unsigned long volt);
+						 unsigned long volt);
 int omap_voltage_register_pmic(struct voltagedomain *voltdm,
 			       struct omap_voltdm_pmic *pmic);
 void omap_change_voltscale_method(struct voltagedomain *voltdm,
-		int voltscale_method);
+				  int voltscale_method);
 int omap_voltage_late_init(void);
 
 extern void omap2xxx_voltagedomains_init(void);
@@ -145,11 +144,11 @@ extern void omap44xx_voltagedomains_init(void);
 struct voltagedomain *voltdm_lookup(const char *name);
 void voltdm_init(struct voltagedomain **voltdm_list);
 int voltdm_add_pwrdm(struct voltagedomain *voltdm, struct powerdomain *pwrdm);
-int voltdm_for_each(int (*fn)(struct voltagedomain *voltdm, void *user),
+int voltdm_for_each(int (*fn) (struct voltagedomain * voltdm, void *user),
 		    void *user);
 int voltdm_for_each_pwrdm(struct voltagedomain *voltdm,
-			  int (*fn)(struct voltagedomain *voltdm,
-				    struct powerdomain *pwrdm));
+			  int (*fn) (struct voltagedomain * voltdm,
+				     struct powerdomain * pwrdm));
 int voltdm_scale(struct voltagedomain *voltdm, unsigned long target_volt);
 void voltdm_reset(struct voltagedomain *voltdm);
 unsigned long voltdm_get_voltage(struct voltagedomain *voltdm);

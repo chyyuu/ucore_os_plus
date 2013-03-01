@@ -17,7 +17,6 @@
 #ifndef AT91CAP9_MATRIX_H
 #define AT91CAP9_MATRIX_H
 
-
 #define AT91_MATRIX_EBICSA	( 0x128)	/* EBI Chip Select Assignment Register */
 #define		AT91_MATRIX_EBI_CS1A		(1 << 1)	/* Chip Select 1 Assignment */
 #define			AT91_MATRIX_EBI_CS1A_SMC		(0 << 1)
@@ -36,6 +35,5 @@
 #define		AT91_MATRIX_EBI_VDDIOMSEL	(1 << 16)	/* Memory voltage selection */
 #define			AT91_MATRIX_EBI_VDDIOMSEL_1_8V		(0 << 16)
 #define			AT91_MATRIX_EBI_VDDIOMSEL_3_3V		(1 << 16)
-
 
 #endif

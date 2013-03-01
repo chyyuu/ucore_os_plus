@@ -29,12 +29,12 @@
  * Each member is aligned to a 8 byte boundary.
  */
 struct cgroupstats {
-	__u64	nr_sleeping;		/* Number of tasks sleeping */
-	__u64	nr_running;		/* Number of tasks running */
-	__u64	nr_stopped;		/* Number of tasks in stopped state */
-	__u64	nr_uninterruptible;	/* Number of tasks in uninterruptible */
-					/* state */
-	__u64	nr_io_wait;		/* Number of tasks waiting on IO */
+	__u64 nr_sleeping;	/* Number of tasks sleeping */
+	__u64 nr_running;	/* Number of tasks running */
+	__u64 nr_stopped;	/* Number of tasks in stopped state */
+	__u64 nr_uninterruptible;	/* Number of tasks in uninterruptible */
+	/* state */
+	__u64 nr_io_wait;	/* Number of tasks waiting on IO */
 };
 
 /*
@@ -45,8 +45,8 @@ struct cgroupstats {
 
 enum {
 	CGROUPSTATS_CMD_UNSPEC = __TASKSTATS_CMD_MAX,	/* Reserved */
-	CGROUPSTATS_CMD_GET,		/* user->kernel request/get-response */
-	CGROUPSTATS_CMD_NEW,		/* kernel->user event */
+	CGROUPSTATS_CMD_GET,	/* user->kernel request/get-response */
+	CGROUPSTATS_CMD_NEW,	/* kernel->user event */
 	__CGROUPSTATS_CMD_MAX,
 };
 

@@ -42,4 +42,3 @@ do {					\
 } while (0)
 
 #endif /* _ASM_GENERIC_BITOPS_LOCK_H_ */
-

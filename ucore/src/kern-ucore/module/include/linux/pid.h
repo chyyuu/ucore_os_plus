@@ -3,8 +3,7 @@
 
 #include <linux/rcupdate.h>
 
-enum pid_type
-{
+enum pid_type {
 	PIDTYPE_PID,
 	PIDTYPE_PGID,
 	PIDTYPE_SID,
@@ -40,7 +39,6 @@ enum pid_type
  * processes.
  */
 
-
 /*
  * struct upid is used to get the id of the struct pid, as it is
  * seen in particular namespace. Later the struct pid is found with
@@ -54,8 +52,7 @@ struct upid {
 	struct hlist_node pid_chain;
 };
 
-struct pid
-{
+struct pid {
 	atomic_t count;
 	unsigned int level;
 	/* lists of tasks that use this pid */
@@ -66,8 +63,7 @@ struct pid
 
 extern struct pid init_struct_pid;
 
-struct pid_link
-{
+struct pid_link {
 	struct hlist_node node;
 	struct pid *pid;
 };
@@ -90,10 +86,10 @@ extern struct pid *get_task_pid(struct task_struct *task, enum pid_type type);
  * write-held.
  */
 extern void attach_pid(struct task_struct *task, enum pid_type type,
-			struct pid *pid);
+		       struct pid *pid);
 extern void detach_pid(struct task_struct *task, enum pid_type);
 extern void change_pid(struct task_struct *task, enum pid_type,
-			struct pid *pid);
+		       struct pid *pid);
 extern void transfer_pid(struct task_struct *old, struct task_struct *new,
 			 enum pid_type);
 
@@ -159,7 +155,7 @@ static inline pid_t pid_nr(struct pid *pid)
 	return nr;
 }
 
-pid_t pid_nr_ns(struct pid *pid, struct pid_namespace *ns);
+pid_t pid_nr_ns(struct pid * pid, struct pid_namespace * ns);
 pid_t pid_vnr(struct pid *pid);
 
 #define do_each_pid_task(pid, type, task)				\

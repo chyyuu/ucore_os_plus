@@ -19,13 +19,13 @@
  * RxRPC socket address
  */
 struct sockaddr_rxrpc {
-	sa_family_t	srx_family;	/* address family */
-	u16		srx_service;	/* service desired */
-	u16		transport_type;	/* type of transport socket (SOCK_DGRAM) */
-	u16		transport_len;	/* length of transport address */
+	sa_family_t srx_family;	/* address family */
+	u16 srx_service;	/* service desired */
+	u16 transport_type;	/* type of transport socket (SOCK_DGRAM) */
+	u16 transport_len;	/* length of transport address */
 	union {
-		sa_family_t family;		/* transport address family */
-		struct sockaddr_in sin;		/* IPv4 transport address */
+		sa_family_t family;	/* transport address family */
+		struct sockaddr_in sin;	/* IPv4 transport address */
 		struct sockaddr_in6 sin6;	/* IPv6 transport address */
 	} transport;
 };
@@ -57,6 +57,5 @@ struct sockaddr_rxrpc {
 #define RXRPC_SECURITY_PLAIN	0	/* plain secure-checksummed packets only */
 #define RXRPC_SECURITY_AUTH	1	/* authenticated packets */
 #define RXRPC_SECURITY_ENCRYPT	2	/* encrypted packets */
-
 
 #endif /* _LINUX_RXRPC_H */

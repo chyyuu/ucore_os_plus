@@ -62,7 +62,7 @@ static inline int fs_fec_index2id(int index)
 	if (id >= fsid_fec1 && id <= fsid_fec2)
 		return id;
 	return FS_MAX_INDEX;
-		}
+}
 
 static inline int fs_fcc_index2id(int index)
 {
@@ -100,16 +100,16 @@ struct fs_mii_bit {
 	u8 polarity;
 };
 struct fs_mii_bb_platform_info {
-	struct fs_mii_bit 	mdio_dir;
-	struct fs_mii_bit 	mdio_dat;
-	struct fs_mii_bit	mdc_dat;
-	int delay;	/* delay in us         */
-	int irq[32]; 	/* irqs per phy's */
+	struct fs_mii_bit mdio_dir;
+	struct fs_mii_bit mdio_dat;
+	struct fs_mii_bit mdc_dat;
+	int delay;		/* delay in us         */
+	int irq[32];		/* irqs per phy's */
 };
 
 struct fs_platform_info {
 
-	void(*init_ioports)(struct fs_platform_info *);
+	void (*init_ioports) (struct fs_platform_info *);
 	/* device specific information */
 	int fs_no;		/* controller index            */
 	char fs_type[4];	/* controller type             */
@@ -118,7 +118,7 @@ struct fs_platform_info {
 	u32 cp_block;		/* CPM sblock */
 	u32 cp_command;		/* CPM page/sblock/mcn */
 
-	u32 clk_trx;		/* some stuff for pins & mux configuration*/
+	u32 clk_trx;		/* some stuff for pins & mux configuration */
 	u32 clk_rx;
 	u32 clk_tx;
 	u32 clk_route;
@@ -127,7 +127,7 @@ struct fs_platform_info {
 	u32 mem_offset;
 	u32 dpram_offset;
 	u32 fcc_regs_c;
-	
+
 	u32 device_flags;
 
 	int phy_addr;		/* the phy address (-1 no phy) */
@@ -142,8 +142,8 @@ struct fs_platform_info {
 	int use_napi;		/* use NAPI                    */
 	int napi_weight;	/* NAPI weight                 */
 
-	int use_rmii;		/* use RMII mode 	       */
-	int has_phy;            /* if the network is phy container as well...*/
+	int use_rmii;		/* use RMII mode               */
+	int has_phy;		/* if the network is phy container as well... */
 };
 struct fs_mii_fec_platform_info {
 	u32 irq[32];
@@ -152,11 +152,11 @@ struct fs_mii_fec_platform_info {
 
 static inline int fs_get_id(struct fs_platform_info *fpi)
 {
-	if(strstr(fpi->fs_type, "SCC"))
+	if (strstr(fpi->fs_type, "SCC"))
 		return fs_scc_index2id(fpi->fs_no);
-	if(strstr(fpi->fs_type, "FCC"))
+	if (strstr(fpi->fs_type, "FCC"))
 		return fs_fcc_index2id(fpi->fs_no);
-	if(strstr(fpi->fs_type, "FEC"))
+	if (strstr(fpi->fs_type, "FEC"))
 		return fs_fec_index2id(fpi->fs_no);
 	return fpi->fs_no;
 }

@@ -57,7 +57,7 @@
 		desc			;	\
 	ELFNOTE_END
 
-#else	/* !__ASSEMBLER__ */
+#else /* !__ASSEMBLER__ */
 #include <linux/elf.h>
 /*
  * Use an anonymous structure which matches the shape of
@@ -93,6 +93,6 @@
 
 #define ELFNOTE32(name, type, desc) ELFNOTE(32, name, type, desc)
 #define ELFNOTE64(name, type, desc) ELFNOTE(64, name, type, desc)
-#endif	/* __ASSEMBLER__ */
+#endif /* __ASSEMBLER__ */
 
 #endif /* _LINUX_ELFNOTE_H */

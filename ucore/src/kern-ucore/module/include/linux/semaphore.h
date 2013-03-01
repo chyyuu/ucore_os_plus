@@ -15,9 +15,9 @@
 #if 0
 /* Please don't access any members of this structure directly */
 struct semaphore {
-	spinlock_t		lock;
-	unsigned int		count;
-	struct list_head	wait_list;
+	spinlock_t lock;
+	unsigned int count;
+	struct list_head wait_list;
 };
 
 #define __SEMAPHORE_INITIALIZER(name, n)				\
@@ -33,7 +33,7 @@ struct semaphore {
 static inline void sema_init(struct semaphore *sem, int val)
 {
 	static struct lock_class_key __key;
-	*sem = (struct semaphore) __SEMAPHORE_INITIALIZER(*sem, val);
+	*sem = (struct semaphore)__SEMAPHORE_INITIALIZER(*sem, val);
 	lockdep_init_map(&sem->lock.dep_map, "semaphore->lock", &__key, 0);
 }
 

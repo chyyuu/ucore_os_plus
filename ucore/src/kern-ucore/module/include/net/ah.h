@@ -7,17 +7,16 @@
 /* This is the maximum truncated ICV length that we know of. */
 #define MAX_AH_AUTH_LEN	12
 
-struct ah_data
-{
-	u8			*work_icv;
-	int			icv_full_len;
-	int			icv_trunc_len;
+struct ah_data {
+	u8 *work_icv;
+	int icv_full_len;
+	int icv_trunc_len;
 
-	struct crypto_hash	*tfm;
+	struct crypto_hash *tfm;
 };
 
 static inline int ah_mac_digest(struct ah_data *ahp, struct sk_buff *skb,
-				u8 *auth_data)
+				u8 * auth_data)
 {
 	struct hash_desc desc;
 	int err;

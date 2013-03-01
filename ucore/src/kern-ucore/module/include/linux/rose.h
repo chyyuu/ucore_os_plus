@@ -40,48 +40,48 @@
 #define	ROSE_SHIP_ABSENT	0x39
 
 typedef struct {
-	char		rose_addr[5];
+	char rose_addr[5];
 } rose_address;
 
 struct sockaddr_rose {
-	sa_family_t	srose_family;
-	rose_address	srose_addr;
-	ax25_address	srose_call;
-	int		srose_ndigis;
-	ax25_address	srose_digi;
+	sa_family_t srose_family;
+	rose_address srose_addr;
+	ax25_address srose_call;
+	int srose_ndigis;
+	ax25_address srose_digi;
 };
 
 struct full_sockaddr_rose {
-	sa_family_t	srose_family;
-	rose_address	srose_addr;
-	ax25_address	srose_call;
-	unsigned int	srose_ndigis;
-	ax25_address	srose_digis[ROSE_MAX_DIGIS];
+	sa_family_t srose_family;
+	rose_address srose_addr;
+	ax25_address srose_call;
+	unsigned int srose_ndigis;
+	ax25_address srose_digis[ROSE_MAX_DIGIS];
 };
 
 struct rose_route_struct {
-	rose_address	address;
-	unsigned short	mask;
-	ax25_address	neighbour;
-	char		device[16];
-	unsigned char	ndigis;
-	ax25_address	digipeaters[AX25_MAX_DIGIS];
+	rose_address address;
+	unsigned short mask;
+	ax25_address neighbour;
+	char device[16];
+	unsigned char ndigis;
+	ax25_address digipeaters[AX25_MAX_DIGIS];
 };
 
 struct rose_cause_struct {
-	unsigned char	cause;
-	unsigned char	diagnostic;
+	unsigned char cause;
+	unsigned char diagnostic;
 };
 
 struct rose_facilities_struct {
-	rose_address	source_addr,   dest_addr;
-	ax25_address	source_call,   dest_call;
-	unsigned char	source_ndigis, dest_ndigis;
-	ax25_address	source_digis[ROSE_MAX_DIGIS];
-	ax25_address	dest_digis[ROSE_MAX_DIGIS];
-	unsigned int	rand;
-	rose_address	fail_addr;
-	ax25_address	fail_call;
+	rose_address source_addr, dest_addr;
+	ax25_address source_call, dest_call;
+	unsigned char source_ndigis, dest_ndigis;
+	ax25_address source_digis[ROSE_MAX_DIGIS];
+	ax25_address dest_digis[ROSE_MAX_DIGIS];
+	unsigned int rand;
+	rose_address fail_addr;
+	ax25_address fail_call;
 };
 
 #endif

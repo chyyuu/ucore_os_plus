@@ -24,8 +24,6 @@
  */
 #define MCA_NOTFOUND	(-1)
 
-
-
 /* Returns the slot of the first enabled adapter matching id.  User can
  * specify a starting slot beyond zero, to deal with detecting multiple
  * devices.  Returns MCA_NOTFOUND if id not found.  Also checks the
@@ -44,7 +42,7 @@ extern unsigned char mca_read_stored_pos(int slot, int reg);
  * getting meaningful information into the MCA_info structure,
  * so we can have a more interesting /proc/mca.
  */
-extern void mca_set_adapter_name(int slot, char* name);
+extern void mca_set_adapter_name(int slot, char *name);
 
 /* These routines actually mess with the hardware POS registers.  They
  * temporarily disable the device (and interrupts), so make sure you know

@@ -17,7 +17,7 @@
 #ifndef __arch_page_to_dma
 static inline dma_addr_t page_to_dma(struct device *dev, struct page *page)
 {
-	return (dma_addr_t)__virt_to_bus((unsigned long)page_address(page));
+	return (dma_addr_t) __virt_to_bus((unsigned long)page_address(page));
 }
 
 static inline void *dma_to_virt(struct device *dev, dma_addr_t addr)
@@ -27,7 +27,7 @@ static inline void *dma_to_virt(struct device *dev, dma_addr_t addr)
 
 static inline dma_addr_t virt_to_dma(struct device *dev, void *addr)
 {
-	return (dma_addr_t)__virt_to_bus((unsigned long)(addr));
+	return (dma_addr_t) __virt_to_bus((unsigned long)(addr));
 }
 #else
 static inline dma_addr_t page_to_dma(struct device *dev, struct page *page)
@@ -91,7 +91,7 @@ static inline int dma_get_cache_alignment(void)
 
 static inline int dma_is_consistent(struct device *dev, dma_addr_t handle)
 {
-	return !!arch_is_coherent();
+	return ! !arch_is_coherent();
 }
 
 /*
@@ -107,13 +107,13 @@ static inline int dma_mapping_error(struct device *dev, dma_addr_t dma_addr)
  * function so drivers using this API are highlighted with build warnings.
  */
 static inline void *dma_alloc_noncoherent(struct device *dev, size_t size,
-		dma_addr_t *handle, gfp_t gfp)
+					  dma_addr_t * handle, gfp_t gfp)
 {
 	return NULL;
 }
 
 static inline void dma_free_noncoherent(struct device *dev, size_t size,
-		void *cpu_addr, dma_addr_t handle)
+					void *cpu_addr, dma_addr_t handle)
 {
 }
 
@@ -158,8 +158,7 @@ extern void dma_free_coherent(struct device *, size_t, void *, dma_addr_t);
  * driver until the user space mapping has been released.
  */
 int dma_mmap_coherent(struct device *, struct vm_area_struct *,
-		void *, dma_addr_t, size_t);
-
+		      void *, dma_addr_t, size_t);
 
 /**
  * dma_alloc_writecombine - allocate writecombining memory for DMA
@@ -173,14 +172,13 @@ int dma_mmap_coherent(struct device *, struct vm_area_struct *,
  * device-viewed address.
  */
 extern void *dma_alloc_writecombine(struct device *, size_t, dma_addr_t *,
-		gfp_t);
+				    gfp_t);
 
 #define dma_free_writecombine(dev,size,cpu_addr,handle) \
 	dma_free_coherent(dev,size,cpu_addr,handle)
 
 int dma_mmap_writecombine(struct device *, struct vm_area_struct *,
-		void *, dma_addr_t, size_t);
-
+			  void *, dma_addr_t, size_t);
 
 #ifdef CONFIG_DMABOUNCE
 /*
@@ -208,7 +206,7 @@ int dma_mmap_writecombine(struct device *, struct vm_area_struct *,
  *
  */
 extern int dmabounce_register_dev(struct device *, unsigned long,
-		unsigned long);
+				  unsigned long);
 
 /**
  * dmabounce_unregister_dev
@@ -238,38 +236,39 @@ extern void dmabounce_unregister_dev(struct device *);
  * DMA access and 1 if the buffer needs to be bounced.
  *
  */
-extern int dma_needs_bounce(struct device*, dma_addr_t, size_t);
+extern int dma_needs_bounce(struct device *, dma_addr_t, size_t);
 
 /*
  * The DMA API, implemented by dmabounce.c.  See below for descriptions.
  */
 extern dma_addr_t dma_map_single(struct device *, void *, size_t,
-		enum dma_data_direction);
+				 enum dma_data_direction);
 extern dma_addr_t dma_map_page(struct device *, struct page *,
-		unsigned long, size_t, enum dma_data_direction);
+			       unsigned long, size_t, enum dma_data_direction);
 extern void dma_unmap_single(struct device *, dma_addr_t, size_t,
-		enum dma_data_direction);
+			     enum dma_data_direction);
 
 /*
  * Private functions
  */
 int dmabounce_sync_for_cpu(struct device *, dma_addr_t, unsigned long,
-		size_t, enum dma_data_direction);
+			   size_t, enum dma_data_direction);
 int dmabounce_sync_for_device(struct device *, dma_addr_t, unsigned long,
-		size_t, enum dma_data_direction);
+			      size_t, enum dma_data_direction);
 #else
 static inline int dmabounce_sync_for_cpu(struct device *d, dma_addr_t addr,
-	unsigned long offset, size_t size, enum dma_data_direction dir)
+					 unsigned long offset, size_t size,
+					 enum dma_data_direction dir)
 {
 	return 1;
 }
 
 static inline int dmabounce_sync_for_device(struct device *d, dma_addr_t addr,
-	unsigned long offset, size_t size, enum dma_data_direction dir)
+					    unsigned long offset, size_t size,
+					    enum dma_data_direction dir)
 {
 	return 1;
 }
-
 
 /**
  * dma_map_single - map a single buffer for streaming DMA
@@ -286,7 +285,8 @@ static inline int dmabounce_sync_for_device(struct device *d, dma_addr_t addr,
  * dma_sync_single_for_cpu().
  */
 static inline dma_addr_t dma_map_single(struct device *dev, void *cpu_addr,
-		size_t size, enum dma_data_direction dir)
+					size_t size,
+					enum dma_data_direction dir)
 {
 	BUG_ON(!valid_dma_direction(dir));
 
@@ -311,7 +311,8 @@ static inline dma_addr_t dma_map_single(struct device *dev, void *cpu_addr,
  * can regain ownership by calling dma_unmap_page().
  */
 static inline dma_addr_t dma_map_page(struct device *dev, struct page *page,
-	     unsigned long offset, size_t size, enum dma_data_direction dir)
+				      unsigned long offset, size_t size,
+				      enum dma_data_direction dir)
 {
 	BUG_ON(!valid_dma_direction(dir));
 
@@ -336,7 +337,7 @@ static inline dma_addr_t dma_map_page(struct device *dev, struct page *page,
  * whatever the device wrote there.
  */
 static inline void dma_unmap_single(struct device *dev, dma_addr_t handle,
-		size_t size, enum dma_data_direction dir)
+				    size_t size, enum dma_data_direction dir)
 {
 	/* nothing to do */
 }
@@ -357,7 +358,7 @@ static inline void dma_unmap_single(struct device *dev, dma_addr_t handle,
  * whatever the device wrote there.
  */
 static inline void dma_unmap_page(struct device *dev, dma_addr_t handle,
-		size_t size, enum dma_data_direction dir)
+				  size_t size, enum dma_data_direction dir)
 {
 	dma_unmap_single(dev, handle, size, dir);
 }
@@ -381,8 +382,10 @@ static inline void dma_unmap_page(struct device *dev, dma_addr_t handle,
  * device again owns the buffer.
  */
 static inline void dma_sync_single_range_for_cpu(struct device *dev,
-		dma_addr_t handle, unsigned long offset, size_t size,
-		enum dma_data_direction dir)
+						 dma_addr_t handle,
+						 unsigned long offset,
+						 size_t size,
+						 enum dma_data_direction dir)
 {
 	BUG_ON(!valid_dma_direction(dir));
 
@@ -390,8 +393,10 @@ static inline void dma_sync_single_range_for_cpu(struct device *dev,
 }
 
 static inline void dma_sync_single_range_for_device(struct device *dev,
-		dma_addr_t handle, unsigned long offset, size_t size,
-		enum dma_data_direction dir)
+						    dma_addr_t handle,
+						    unsigned long offset,
+						    size_t size,
+						    enum dma_data_direction dir)
 {
 	BUG_ON(!valid_dma_direction(dir));
 
@@ -403,13 +408,15 @@ static inline void dma_sync_single_range_for_device(struct device *dev,
 }
 
 static inline void dma_sync_single_for_cpu(struct device *dev,
-		dma_addr_t handle, size_t size, enum dma_data_direction dir)
+					   dma_addr_t handle, size_t size,
+					   enum dma_data_direction dir)
 {
 	dma_sync_single_range_for_cpu(dev, handle, 0, size, dir);
 }
 
 static inline void dma_sync_single_for_device(struct device *dev,
-		dma_addr_t handle, size_t size, enum dma_data_direction dir)
+					      dma_addr_t handle, size_t size,
+					      enum dma_data_direction dir)
 {
 	dma_sync_single_range_for_device(dev, handle, 0, size, dir);
 }
@@ -418,14 +425,13 @@ static inline void dma_sync_single_for_device(struct device *dev,
  * The scatter list versions of the above methods.
  */
 extern int dma_map_sg(struct device *, struct scatterlist *, int,
-		enum dma_data_direction);
+		      enum dma_data_direction);
 extern void dma_unmap_sg(struct device *, struct scatterlist *, int,
-		enum dma_data_direction);
+			 enum dma_data_direction);
 extern void dma_sync_sg_for_cpu(struct device *, struct scatterlist *, int,
-		enum dma_data_direction);
+				enum dma_data_direction);
 extern void dma_sync_sg_for_device(struct device *, struct scatterlist *, int,
-		enum dma_data_direction);
-
+				   enum dma_data_direction);
 
 #endif /* __KERNEL__ */
 #endif

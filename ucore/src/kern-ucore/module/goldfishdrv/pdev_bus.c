@@ -54,7 +54,6 @@ static LIST_HEAD(pdev_bus_registered_devices);
 static LIST_HEAD(pdev_bus_removed_devices);
 static DECLARE_WORK(pdev_bus_worker, goldfish_pdev_worker);
 
-
 static void goldfish_pdev_worker(struct work_struct *work)
 {
 	int ret;
@@ -68,11 +67,13 @@ static void goldfish_pdev_worker(struct work_struct *work)
 	list_for_each_entry_safe(pos, n, &pdev_bus_new_devices, list) {
 		list_del(&pos->list);
 		ret = platform_device_register(&pos->pdev);
-		if(ret) {
-			printk("goldfish_pdev_worker failed to register device, %s\n", pos->pdev.name);
-		}
-		else {
-			printk("goldfish_pdev_worker registered %s\n", pos->pdev.name);
+		if (ret) {
+			printk
+			    ("goldfish_pdev_worker failed to register device, %s\n",
+			     pos->pdev.name);
+		} else {
+			printk("goldfish_pdev_worker registered %s\n",
+			       pos->pdev.name);
 		}
 		list_add_tail(&pos->list, &pdev_bus_registered_devices);
 	}
@@ -82,18 +83,18 @@ static void goldfish_pdev_remove(void)
 {
 	struct pdev_bus_dev *pos, *n;
 	uint32_t base;
-	
+
 	base = readl(pdev_bus_base + PDEV_BUS_IO_BASE);
 
 	list_for_each_entry_safe(pos, n, &pdev_bus_new_devices, list) {
-		if(pos->resources[0].start == base) {
+		if (pos->resources[0].start == base) {
 			list_del(&pos->list);
 			kfree(pos);
 			return;
 		}
 	}
 	list_for_each_entry_safe(pos, n, &pdev_bus_registered_devices, list) {
-		if(pos->resources[0].start == base) {
+		if (pos->resources[0].start == base) {
 			list_del(&pos->list);
 			list_add_tail(&pos->list, &pdev_bus_removed_devices);
 			schedule_work(&pdev_bus_worker);
@@ -116,11 +117,13 @@ static int goldfish_new_pdev(void)
 
 	irq_count = readl(pdev_bus_base + PDEV_BUS_IRQ_COUNT);
 	name_len = readl(pdev_bus_base + PDEV_BUS_NAME_LEN);
-	if(irq_count)
+	if (irq_count)
 		resource_count++;
 
-	dev = kzalloc(sizeof(*dev) + sizeof(struct resource) * resource_count + name_len + 1, GFP_ATOMIC);
-	if(dev == NULL)
+	dev =
+	    kzalloc(sizeof(*dev) + sizeof(struct resource) * resource_count +
+		    name_len + 1, GFP_ATOMIC);
+	if (dev == NULL)
 		return -ENOMEM;
 
 	dev->pdev.num_resources = resource_count;
@@ -132,9 +135,10 @@ static int goldfish_new_pdev(void)
 	name[name_len] = '\0';
 	dev->pdev.id = readl(pdev_bus_base + PDEV_BUS_ID);
 	dev->pdev.resource[0].start = base;
-	dev->pdev.resource[0].end = base + readl(pdev_bus_base + PDEV_BUS_IO_SIZE) - 1;
+	dev->pdev.resource[0].end =
+	    base + readl(pdev_bus_base + PDEV_BUS_IO_SIZE) - 1;
 	dev->pdev.resource[0].flags = IORESOURCE_MEM;
-	if(irq_count) {
+	if (irq_count) {
 		irq = readl(pdev_bus_base + PDEV_BUS_IRQ);
 		dev->pdev.resource[1].start = irq;
 		dev->pdev.resource[1].end = irq + irq_count - 1;
@@ -144,26 +148,26 @@ static int goldfish_new_pdev(void)
 	printk("goldfish_new_pdev %s at %x irq %d\n", name, base, irq);
 	list_add_tail(&dev->list, &pdev_bus_new_devices);
 	schedule_work(&pdev_bus_worker);
-	
+
 	return 0;
 }
 
 static irqreturn_t goldfish_pdev_bus_interrupt(int irq, void *dev_id)
 {
 	irqreturn_t ret = IRQ_NONE;
-	while(1) {
+	while (1) {
 		uint32_t op = readl(pdev_bus_base + PDEV_BUS_OP);
-		switch(op) {
-			case PDEV_BUS_OP_DONE:
-				return IRQ_NONE;
+		switch (op) {
+		case PDEV_BUS_OP_DONE:
+			return IRQ_NONE;
 
-			case PDEV_BUS_OP_REMOVE_DEV:
-				goldfish_pdev_remove();
-				break;
+		case PDEV_BUS_OP_REMOVE_DEV:
+			goldfish_pdev_remove();
+			break;
 
-			case PDEV_BUS_OP_ADD_DEV:
-				goldfish_new_pdev();
-				break;
+		case PDEV_BUS_OP_ADD_DEV:
+			goldfish_new_pdev();
+			break;
 		}
 		ret = IRQ_HANDLED;
 	}
@@ -171,21 +175,23 @@ static irqreturn_t goldfish_pdev_bus_interrupt(int irq, void *dev_id)
 
 static int __devinit goldfish_pdev_bus_probe(struct platform_device *pdev)
 {
-  printk(KERN_DEBUG "> goldfish_pdev_bus_probe\n");
+	printk(KERN_DEBUG "> goldfish_pdev_bus_probe\n");
 	int ret;
 	struct resource *r;
 	r = platform_get_resource(pdev, IORESOURCE_IO, 0);
-	if(r == NULL)
+	if (r == NULL)
 		return -EINVAL;
 	pdev_bus_base = IO_ADDRESS(r->start);
 
 	r = platform_get_resource(pdev, IORESOURCE_IRQ, 0);
-	if(r == NULL)
+	if (r == NULL)
 		return -EINVAL;
 	pdev_bus_irq = r->start;
 
-	ret = request_irq(pdev_bus_irq, goldfish_pdev_bus_interrupt, IRQF_SHARED, "goldfish_pdev_bus", pdev);
-	if(ret)
+	ret =
+	    request_irq(pdev_bus_irq, goldfish_pdev_bus_interrupt, IRQF_SHARED,
+			"goldfish_pdev_bus", pdev);
+	if (ret)
 		goto err_request_irq_failed;
 
 	writel(PDEV_BUS_OP_INIT, pdev_bus_base + PDEV_BUS_OP);
@@ -204,8 +210,7 @@ static struct platform_driver goldfish_pdev_bus_driver = {
 	.probe = goldfish_pdev_bus_probe,
 	.remove = __devexit_p(goldfish_pdev_bus_remove),
 	.driver = {
-		.name = "goldfish_pdev_bus"
-	}
+		   .name = "goldfish_pdev_bus"}
 };
 
 static int __init goldfish_pdev_bus_init(void)
@@ -220,4 +225,3 @@ static void __exit goldfish_pdev_bus_exit(void)
 
 module_init(goldfish_pdev_bus_init);
 module_exit(goldfish_pdev_bus_exit);
-

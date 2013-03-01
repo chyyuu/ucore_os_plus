@@ -78,8 +78,8 @@ struct atmlec_msg {
 		} normal;
 		struct atmlec_config_msg config;
 		struct {
-			uint16_t lec_id;			/* requestor lec_id  */
-			uint32_t tran_id;			/* transaction id    */
+			uint16_t lec_id;	/* requestor lec_id  */
+			uint32_t tran_id;	/* transaction id    */
 			unsigned char mac_addr[ETH_ALEN];	/* dst mac addr      */
 			unsigned char atm_addr[ATM_ESA_LEN];	/* reqestor ATM addr */
 		} proxy;	/*

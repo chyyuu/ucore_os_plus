@@ -30,7 +30,6 @@ union cnt32_to_63 {
 	u64 val;
 };
 
-
 /**
  * cnt32_to_63 - Expand a 32-bit counter to a 63-bit counter
  * @cnt_lo: The low part of the counter

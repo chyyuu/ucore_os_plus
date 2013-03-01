@@ -11,7 +11,6 @@
 #define	LINUX_REBOOT_MAGIC2B	369367448
 #define	LINUX_REBOOT_MAGIC2C	537993216
 
-
 /*
  * Commands accepted by the _reboot() system call.
  *
@@ -34,14 +33,12 @@
 #define	LINUX_REBOOT_CMD_SW_SUSPEND	0xD000FCE2
 #define	LINUX_REBOOT_CMD_KEXEC		0x45584543
 
-
 #ifdef __KERNEL__
 
 #include <linux/notifier.h>
 
 extern int register_reboot_notifier(struct notifier_block *);
 extern int unregister_reboot_notifier(struct notifier_block *);
-
 
 /*
  * Architecture-specific implementations of sys_reboot commands.

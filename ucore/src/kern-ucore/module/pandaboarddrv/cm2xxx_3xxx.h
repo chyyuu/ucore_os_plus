@@ -25,7 +25,6 @@
 #define OMAP34XX_CM_REGADDR(module, reg)				\
 			OMAP2_L4_IO_ADDRESS(OMAP3430_CM_BASE + (module) + (reg))
 
-
 /*
  * OMAP3-specific global CM registers
  * Use cm_{read,write}_reg() with these registers.
@@ -93,12 +92,10 @@
 #define OMAP3430_CM_CLKSEL2_EMU				0x0050
 #define OMAP3430_CM_CLKSEL3_EMU				0x0054
 
-
 /* CM_IDLEST bit field values to indicate deasserted IdleReq */
 
 #define OMAP24XX_CM_IDLEST_VAL				0
 #define OMAP34XX_CM_IDLEST_VAL				1
-
 
 /* Clock management domain register get/set */
 
@@ -145,11 +142,10 @@ extern void omap2xxx_cm_set_apll96_auto_low_power_stop(void);
 /* CM_IDLEST_GFX */
 #define OMAP_ST_GFX_MASK				(1 << 0)
 
-
 /* Function prototypes */
-# ifndef __ASSEMBLER__
+#ifndef __ASSEMBLER__
 extern void omap3_cm_save_context(void);
 extern void omap3_cm_restore_context(void);
-# endif
+#endif
 
 #endif

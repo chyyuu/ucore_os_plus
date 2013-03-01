@@ -6,8 +6,8 @@
  * 
  * Created from SOPC Builder system 'nios2_cpu' in
  * file './nios2_cpu.sopcinfo'.
- */
-
+ */ 
+    
 /*
  * This file contains macros for module 'cpu' and devices
  * connected to the following masters:
@@ -20,12 +20,12 @@
  * different module or master group at the same time.
  * Doing so may result in duplicate macro names.
  * Instead, use the system header file which has macros with unique names.
- */
-
+ */ 
+    
 /*
  * Macros for module 'cpu', class 'altera_nios2'.
  * The macros have no prefix.
- */
+ */ 
 #define CPU_IMPLEMENTATION "fast"
 #define BIG_ENDIAN 0
 #define CPU_FREQ 50000000
@@ -66,12 +66,12 @@
 #define INST_ADDR_WIDTH 25
 #define DATA_ADDR_WIDTH 25
 #define NUM_OF_SHADOW_REG_SETS 0
-
+    
 /*
  * Macros for device 'cfi_flash', class 'altera_avalon_cfi_flash'
  * The macros are prefixed with 'CFI_FLASH_'.
  * The prefix is the slave descriptor.
- */
+ */ 
 #define CFI_FLASH_COMPONENT_TYPE altera_avalon_cfi_flash
 #define CFI_FLASH_COMPONENT_NAME cfi_flash
 #define CFI_FLASH_BASE 0x0
@@ -89,12 +89,12 @@
 #define CFI_FLASH_MEMORY_INFO_GENERATE_FLASH 1
 #define CFI_FLASH_MEMORY_INFO_DAT_SYM_INSTALL_DIR SIM_DIR
 #define CFI_FLASH_MEMORY_INFO_FLASH_INSTALL_DIR APP_DIR
-
+    
 /*
  * Macros for device 'timer_us', class 'altera_avalon_timer'
  * The macros are prefixed with 'TIMER_US_'.
  * The prefix is the slave descriptor.
- */
+ */ 
 #define TIMER_US_COMPONENT_TYPE altera_avalon_timer
 #define TIMER_US_COMPONENT_NAME timer_us
 #define TIMER_US_BASE 0x400000
@@ -113,24 +113,24 @@
 #define TIMER_US_COUNTER_SIZE 32
 #define TIMER_US_MULT 1.0E-6
 #define TIMER_US_TICKS_PER_SEC 1000000
-
+    
 /*
  * Macros for device 'RF212_0', class 'RF212_Controller'
  * The macros are prefixed with 'RF212_0_'.
  * The prefix is the slave descriptor.
- */
+ */ 
 #define RF212_0_COMPONENT_TYPE RF212_Controller
 #define RF212_0_COMPONENT_NAME RF212_0
 #define RF212_0_BASE 0x400400
 #define RF212_0_SPAN 1024
 #define RF212_0_END 0x4007ff
 #define RF212_0_IRQ 6
-
+    
 /*
  * Macros for device 'epcs_flash_controller', class 'altera_avalon_epcs_flash_controller'
  * The macros are prefixed with 'EPCS_FLASH_CONTROLLER_'.
  * The prefix is the slave descriptor.
- */
+ */ 
 #define EPCS_FLASH_CONTROLLER_COMPONENT_TYPE altera_avalon_epcs_flash_controller
 #define EPCS_FLASH_CONTROLLER_COMPONENT_NAME epcs_flash_controller
 #define EPCS_FLASH_CONTROLLER_BASE 0x401800
@@ -148,12 +148,12 @@
 #define EPCS_FLASH_CONTROLLER_MEMORY_INFO_HEX_INSTALL_DIR SIM_DIR
 #define EPCS_FLASH_CONTROLLER_MEMORY_INFO_DAT_SYM_INSTALL_DIR SIM_DIR
 #define EPCS_FLASH_CONTROLLER_MEMORY_INFO_FLASH_INSTALL_DIR APP_DIR
-
+    
 /*
  * Macros for device 'onchip_memory2', class 'altera_avalon_onchip_memory2'
  * The macros are prefixed with 'ONCHIP_MEMORY2_'.
  * The prefix is the slave descriptor.
- */
+ */ 
 #define ONCHIP_MEMORY2_COMPONENT_TYPE altera_avalon_onchip_memory2
 #define ONCHIP_MEMORY2_COMPONENT_NAME onchip_memory2
 #define ONCHIP_MEMORY2_BASE 0x402000
@@ -181,12 +181,12 @@
 #define ONCHIP_MEMORY2_MEMORY_INFO_GENERATE_DAT_SYM 1
 #define ONCHIP_MEMORY2_MEMORY_INFO_DAT_SYM_INSTALL_DIR SIM_DIR
 #define ONCHIP_MEMORY2_MEMORY_INFO_MEM_INIT_FILENAME D:\OS\20120414\nios2_fpga\ff.hex
-
+    
 /*
  * Macros for device 'timer', class 'altera_avalon_timer'
  * The macros are prefixed with 'TIMER_'.
  * The prefix is the slave descriptor.
- */
+ */ 
 #define TIMER_COMPONENT_TYPE altera_avalon_timer
 #define TIMER_COMPONENT_NAME timer
 #define TIMER_BASE 0x402400
@@ -205,12 +205,12 @@
 #define TIMER_COUNTER_SIZE 32
 #define TIMER_MULT 0.0010
 #define TIMER_TICKS_PER_SEC 1000
-
+    
 /*
  * Macros for device 'uart', class 'altera_avalon_uart'
  * The macros are prefixed with 'UART_'.
  * The prefix is the slave descriptor.
- */
+ */ 
 #define UART_COMPONENT_TYPE altera_avalon_uart
 #define UART_COMPONENT_NAME uart
 #define UART_BASE 0x402420
@@ -228,12 +228,12 @@
 #define UART_SIM_TRUE_BAUD 0
 #define UART_SIM_CHAR_STREAM ""
 #define UART_FREQ 50000000
-
+    
 /*
  * Macros for device 'pio_led', class 'altera_avalon_pio'
  * The macros are prefixed with 'PIO_LED_'.
  * The prefix is the slave descriptor.
- */
+ */ 
 #define PIO_LED_COMPONENT_TYPE altera_avalon_pio
 #define PIO_LED_COMPONENT_NAME pio_led
 #define PIO_LED_BASE 0x402440
@@ -252,12 +252,12 @@
 #define PIO_LED_EDGE_TYPE "NONE"
 #define PIO_LED_IRQ_TYPE "NONE"
 #define PIO_LED_FREQ 50000000
-
+    
 /*
  * Macros for device 'sysid', class 'altera_avalon_sysid'
  * The macros are prefixed with 'SYSID_'.
  * The prefix is the slave descriptor.
- */
+ */ 
 #define SYSID_COMPONENT_TYPE altera_avalon_sysid
 #define SYSID_COMPONENT_NAME sysid
 #define SYSID_BASE 0x402450
@@ -265,12 +265,12 @@
 #define SYSID_END 0x402457
 #define SYSID_ID 35
 #define SYSID_TIMESTAMP 1352566910
-
+    
 /*
  * Macros for device 'jtag_uart', class 'altera_avalon_jtag_uart'
  * The macros are prefixed with 'JTAG_UART_'.
  * The prefix is the slave descriptor.
- */
+ */ 
 #define JTAG_UART_COMPONENT_TYPE altera_avalon_jtag_uart
 #define JTAG_UART_COMPONENT_NAME jtag_uart
 #define JTAG_UART_BASE 0x402458
@@ -281,23 +281,23 @@
 #define JTAG_UART_READ_DEPTH 64
 #define JTAG_UART_WRITE_THRESHOLD 8
 #define JTAG_UART_READ_THRESHOLD 8
-
+    
 /*
  * Macros for device 'sram', class 'sram_16bit_512k'
  * The macros are prefixed with 'SRAM_'.
  * The prefix is the slave descriptor.
- */
+ */ 
 #define SRAM_COMPONENT_TYPE sram_16bit_512k
 #define SRAM_COMPONENT_NAME sram
 #define SRAM_BASE 0x500000
 #define SRAM_SPAN 524288
 #define SRAM_END 0x57ffff
-
+    
 /*
  * Macros for device 'sdram', class 'altera_avalon_new_sdram_controller'
  * The macros are prefixed with 'SDRAM_'.
  * The prefix is the slave descriptor.
- */
+ */ 
 #define SDRAM_COMPONENT_TYPE altera_avalon_new_sdram_controller
 #define SDRAM_COMPONENT_NAME sdram
 #define SDRAM_BASE 0x1000000
@@ -331,6 +331,5 @@
 #define SDRAM_MEMORY_INFO_MEM_INIT_DATA_WIDTH 16
 #define SDRAM_MEMORY_INFO_GENERATE_DAT_SYM 1
 #define SDRAM_MEMORY_INFO_DAT_SYM_INSTALL_DIR SIM_DIR
-
-
-#endif /* _ALTERA_SYSTEM-20121111_H_ */
+     
+#endif	/* _ALTERA_SYSTEM-20121111_H_ */

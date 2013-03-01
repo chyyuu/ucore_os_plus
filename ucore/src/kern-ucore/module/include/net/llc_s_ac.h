@@ -23,7 +23,7 @@
 #define SAP_ACT_TEST_IND	9
 
 /* All action functions must look like this */
-typedef int (*llc_sap_action_t)(struct llc_sap *sap, struct sk_buff *skb);
+typedef int (*llc_sap_action_t) (struct llc_sap * sap, struct sk_buff * skb);
 
 extern int llc_sap_action_unitdata_ind(struct llc_sap *sap,
 				       struct sk_buff *skb);

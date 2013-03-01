@@ -24,4 +24,3 @@ void __noreturn __panic(const char *file, int line, const char *fmt, ...);
     switch (x) { case 0: case (x): ; }
 
 #endif /* !__KERN_DEBUG_ASSERT_H__ */
-

@@ -16,10 +16,10 @@ struct uart_info;
  * functions; it is intended to be discarded after boot.
  */
 struct sa1100_port_fns {
-	void	(*set_mctrl)(struct uart_port *, u_int);
-	u_int	(*get_mctrl)(struct uart_port *);
-	void	(*pm)(struct uart_port *, u_int, u_int);
-	int	(*set_wake)(struct uart_port *, u_int);
+	void (*set_mctrl) (struct uart_port *, u_int);
+	 u_int(*get_mctrl) (struct uart_port *);
+	void (*pm) (struct uart_port *, u_int, u_int);
+	int (*set_wake) (struct uart_port *, u_int);
 };
 
 #ifdef CONFIG_SERIAL_SA1100

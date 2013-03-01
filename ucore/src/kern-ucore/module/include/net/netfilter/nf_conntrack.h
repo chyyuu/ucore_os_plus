@@ -91,10 +91,9 @@ struct nf_conn_help {
 #include <net/netfilter/ipv4/nf_conntrack_ipv4.h>
 #include <net/netfilter/ipv6/nf_conntrack_ipv6.h>
 
-struct nf_conn
-{
+struct nf_conn {
 	/* Usage count in here is 1 for hash table/destruct timer, 1 per skb,
-           plus 1 for any connection(s) we are `master' for */
+	   plus 1 for any connection(s) we are `master' for */
 	struct nf_conntrack ct_general;
 
 	/* XXX should I move this to the tail ? - Y.K */
@@ -129,8 +128,9 @@ struct nf_conn
 	struct rcu_head rcu;
 };
 
-static inline struct nf_conn *
-nf_ct_tuplehash_to_ctrack(const struct nf_conntrack_tuple_hash *hash)
+static inline struct nf_conn *nf_ct_tuplehash_to_ctrack(const struct
+							nf_conntrack_tuple_hash
+							*hash)
 {
 	return container_of(hash, struct nf_conn,
 			    tuplehash[hash->tuple.dst.dir]);
@@ -172,8 +172,8 @@ nf_conntrack_tuple_taken(const struct nf_conntrack_tuple *tuple,
 			 const struct nf_conn *ignored_conntrack);
 
 /* Return conntrack_info and tuple hash for given skb. */
-static inline struct nf_conn *
-nf_ct_get(const struct sk_buff *skb, enum ip_conntrack_info *ctinfo)
+static inline struct nf_conn *nf_ct_get(const struct sk_buff *skb,
+					enum ip_conntrack_info *ctinfo)
 {
 	*ctinfo = skb->nfctinfo;
 	return (struct nf_conn *)skb->nfct;
@@ -190,12 +190,14 @@ static inline void nf_ct_put(struct nf_conn *ct)
 extern int nf_ct_l3proto_try_module_get(unsigned short l3proto);
 extern void nf_ct_l3proto_module_put(unsigned short l3proto);
 
-extern struct hlist_head *nf_ct_alloc_hashtable(unsigned int *sizep, int *vmalloced);
+extern struct hlist_head *nf_ct_alloc_hashtable(unsigned int *sizep,
+						int *vmalloced);
 extern void nf_ct_free_hashtable(struct hlist_head *hash, int vmalloced,
 				 unsigned int size);
 
-extern struct nf_conntrack_tuple_hash *
-__nf_conntrack_find(struct net *net, const struct nf_conntrack_tuple *tuple);
+extern struct nf_conntrack_tuple_hash *__nf_conntrack_find(struct net *net, const struct
+							   nf_conntrack_tuple
+							   *tuple);
 
 extern void nf_conntrack_hash_insert(struct nf_conn *ct);
 
@@ -210,8 +212,7 @@ extern bool nf_ct_invert_tuplepr(struct nf_conntrack_tuple *inverse,
 extern void __nf_ct_refresh_acct(struct nf_conn *ct,
 				 enum ip_conntrack_info ctinfo,
 				 const struct sk_buff *skb,
-				 unsigned long extra_jiffies,
-				 int do_acct);
+				 unsigned long extra_jiffies, int do_acct);
 
 /* Refresh conntrack for this many jiffies and do accounting */
 static inline void nf_ct_refresh_acct(struct nf_conn *ct,
@@ -232,8 +233,7 @@ static inline void nf_ct_refresh(struct nf_conn *ct,
 
 extern bool __nf_ct_kill_acct(struct nf_conn *ct,
 			      enum ip_conntrack_info ctinfo,
-			      const struct sk_buff *skb,
-			      int do_acct);
+			      const struct sk_buff *skb, int do_acct);
 
 /* kill conntrack and do accounting */
 static inline bool nf_ct_kill_acct(struct nf_conn *ct,
@@ -253,21 +253,20 @@ static inline bool nf_ct_kill(struct nf_conn *ct)
 /* Update TCP window tracking data when NAT mangles the packet */
 extern void nf_conntrack_tcp_update(const struct sk_buff *skb,
 				    unsigned int dataoff,
-				    struct nf_conn *ct,
-				    int dir);
+				    struct nf_conn *ct, int dir);
 
 /* Fake conntrack entry for untracked connections */
 extern struct nf_conn nf_conntrack_untracked;
 
 /* Iterate over all conntracks: if iter returns true, it's deleted. */
 extern void
-nf_ct_iterate_cleanup(struct net *net, int (*iter)(struct nf_conn *i, void *data), void *data);
+nf_ct_iterate_cleanup(struct net *net,
+		      int (*iter) (struct nf_conn * i, void *data), void *data);
 extern void nf_conntrack_free(struct nf_conn *ct);
-extern struct nf_conn *
-nf_conntrack_alloc(struct net *net,
-		   const struct nf_conntrack_tuple *orig,
-		   const struct nf_conntrack_tuple *repl,
-		   gfp_t gfp);
+extern struct nf_conn *nf_conntrack_alloc(struct net *net,
+					  const struct nf_conntrack_tuple *orig,
+					  const struct nf_conntrack_tuple *repl,
+					  gfp_t gfp);
 
 /* It's confirmed if it is, or has been in the hash table. */
 static inline int nf_ct_is_confirmed(struct nf_conn *ct)

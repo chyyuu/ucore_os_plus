@@ -42,14 +42,14 @@ struct vm_area_struct;
 #define __GFP_NOWARN	((__force gfp_t)0x200u)	/* Suppress page allocation failure warning */
 #define __GFP_REPEAT	((__force gfp_t)0x400u)	/* See above */
 #define __GFP_NOFAIL	((__force gfp_t)0x800u)	/* See above */
-#define __GFP_NORETRY	((__force gfp_t)0x1000u)/* See above */
-#define __GFP_COMP	((__force gfp_t)0x4000u)/* Add compound page metadata */
-#define __GFP_ZERO	((__force gfp_t)0x8000u)/* Return zeroed page on success */
-#define __GFP_NOMEMALLOC ((__force gfp_t)0x10000u) /* Don't use emergency reserves */
-#define __GFP_HARDWALL   ((__force gfp_t)0x20000u) /* Enforce hardwall cpuset memory allocs */
-#define __GFP_THISNODE	((__force gfp_t)0x40000u)/* No fallback, no policies */
-#define __GFP_RECLAIMABLE ((__force gfp_t)0x80000u) /* Page is reclaimable */
-#define __GFP_MOVABLE	((__force gfp_t)0x100000u)  /* Page is movable */
+#define __GFP_NORETRY	((__force gfp_t)0x1000u)	/* See above */
+#define __GFP_COMP	((__force gfp_t)0x4000u)	/* Add compound page metadata */
+#define __GFP_ZERO	((__force gfp_t)0x8000u)	/* Return zeroed page on success */
+#define __GFP_NOMEMALLOC ((__force gfp_t)0x10000u)	/* Don't use emergency reserves */
+#define __GFP_HARDWALL   ((__force gfp_t)0x20000u)	/* Enforce hardwall cpuset memory allocs */
+#define __GFP_THISNODE	((__force gfp_t)0x40000u)	/* No fallback, no policies */
+#define __GFP_RECLAIMABLE ((__force gfp_t)0x80000u)	/* Page is reclaimable */
+#define __GFP_MOVABLE	((__force gfp_t)0x100000u)	/* Page is movable */
 
 #define __GFP_BITS_SHIFT 21	/* Room for 21 __GFP_FOO bits */
 #define __GFP_BITS_MASK ((__force gfp_t)((1 << __GFP_BITS_SHIFT) - 1))
@@ -108,7 +108,7 @@ static inline int allocflags_to_migratetype(gfp_t gfp_flags)
 
 	/* Group based on mobility */
 	return (((gfp_flags & __GFP_MOVABLE) != 0) << 1) |
-		((gfp_flags & __GFP_RECLAIMABLE) != 0);
+	    ((gfp_flags & __GFP_RECLAIMABLE) != 0);
 }
 
 static inline enum zone_type gfp_zone(gfp_t flags)
@@ -122,7 +122,7 @@ static inline enum zone_type gfp_zone(gfp_t flags)
 		return ZONE_DMA32;
 #endif
 	if ((flags & (__GFP_HIGHMEM | __GFP_MOVABLE)) ==
-			(__GFP_HIGHMEM | __GFP_MOVABLE))
+	    (__GFP_HIGHMEM | __GFP_MOVABLE))
 		return ZONE_MOVABLE;
 #ifdef CONFIG_HIGHMEM
 	if (flags & __GFP_HIGHMEM)
@@ -161,33 +161,36 @@ static inline struct zonelist *node_zonelist(int nid, gfp_t flags)
 }
 
 #ifndef HAVE_ARCH_FREE_PAGE
-static inline void arch_free_page(struct page *page, int order) { }
+static inline void arch_free_page(struct page *page, int order)
+{
+}
 #endif
 #ifndef HAVE_ARCH_ALLOC_PAGE
-static inline void arch_alloc_page(struct page *page, int order) { }
+static inline void arch_alloc_page(struct page *page, int order)
+{
+}
 #endif
 
-struct page *
-__alloc_pages_internal(gfp_t gfp_mask, unsigned int order,
-		       struct zonelist *zonelist, nodemask_t *nodemask);
+struct page *__alloc_pages_internal(gfp_t gfp_mask, unsigned int order,
+				    struct zonelist *zonelist,
+				    nodemask_t * nodemask);
 
-static inline struct page *
-__alloc_pages(gfp_t gfp_mask, unsigned int order,
-		struct zonelist *zonelist)
+static inline struct page *__alloc_pages(gfp_t gfp_mask, unsigned int order,
+					 struct zonelist *zonelist)
 {
 	return __alloc_pages_internal(gfp_mask, order, zonelist, NULL);
 }
 
-static inline struct page *
-__alloc_pages_nodemask(gfp_t gfp_mask, unsigned int order,
-		struct zonelist *zonelist, nodemask_t *nodemask)
+static inline struct page *__alloc_pages_nodemask(gfp_t gfp_mask,
+						  unsigned int order,
+						  struct zonelist *zonelist,
+						  nodemask_t * nodemask)
 {
 	return __alloc_pages_internal(gfp_mask, order, zonelist, nodemask);
 }
 
-
 static inline struct page *alloc_pages_node(int nid, gfp_t gfp_mask,
-						unsigned int order)
+					    unsigned int order)
 {
 	if (unlikely(order >= MAX_ORDER))
 		return NULL;
@@ -202,16 +205,17 @@ static inline struct page *alloc_pages_node(int nid, gfp_t gfp_mask,
 #ifdef CONFIG_NUMA
 extern struct page *alloc_pages_current(gfp_t gfp_mask, unsigned order);
 
-static inline struct page *
-alloc_pages(gfp_t gfp_mask, unsigned int order)
+static inline struct page *alloc_pages(gfp_t gfp_mask, unsigned int order)
 {
 	if (unlikely(order >= MAX_ORDER))
 		return NULL;
 
 	return alloc_pages_current(gfp_mask, order);
 }
+
 extern struct page *alloc_page_vma(gfp_t gfp_mask,
-			struct vm_area_struct *vma, unsigned long addr);
+				   struct vm_area_struct *vma,
+				   unsigned long addr);
 #else
 #define alloc_pages(gfp_mask, order) \
 		alloc_pages_node(numa_node_id(), gfp_mask, order)

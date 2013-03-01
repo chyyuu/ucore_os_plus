@@ -29,7 +29,8 @@ static inline void aout_dump_thread(struct pt_regs *regs, struct user *dump)
 	dump->start_stack = regs->ARM_sp & ~(PAGE_SIZE - 1);
 
 	dump->u_tsize = (tsk->mm->end_code - tsk->mm->start_code) >> PAGE_SHIFT;
-	dump->u_dsize = (tsk->mm->brk - tsk->mm->start_data + PAGE_SIZE - 1) >> PAGE_SHIFT;
+	dump->u_dsize =
+	    (tsk->mm->brk - tsk->mm->start_data + PAGE_SIZE - 1) >> PAGE_SHIFT;
 	dump->u_ssize = 0;
 
 	dump->u_debugreg[0] = tsk->thread.debug.bp[0].address;
@@ -42,7 +43,7 @@ static inline void aout_dump_thread(struct pt_regs *regs, struct user *dump)
 		dump->u_ssize = (0x04000000 - dump->start_stack) >> PAGE_SHIFT;
 
 	dump->regs = *regs;
-	dump->u_fpvalid = dump_fpu (regs, &dump->u_fp);
+	dump->u_fpvalid = dump_fpu(regs, &dump->u_fp);
 }
 
 #endif /* __KERNEL__ */

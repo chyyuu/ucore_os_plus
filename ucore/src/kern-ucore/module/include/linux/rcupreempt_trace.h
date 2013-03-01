@@ -42,29 +42,29 @@
  */
 
 struct rcupreempt_trace {
-	long		next_length;
-	long		next_add;
-	long		wait_length;
-	long		wait_add;
-	long		done_length;
-	long		done_add;
-	long		done_remove;
-	atomic_t	done_invoked;
-	long		rcu_check_callbacks;
-	atomic_t	rcu_try_flip_1;
-	atomic_t	rcu_try_flip_e1;
-	long		rcu_try_flip_i1;
-	long		rcu_try_flip_ie1;
-	long		rcu_try_flip_g1;
-	long		rcu_try_flip_a1;
-	long		rcu_try_flip_ae1;
-	long		rcu_try_flip_a2;
-	long		rcu_try_flip_z1;
-	long		rcu_try_flip_ze1;
-	long		rcu_try_flip_z2;
-	long		rcu_try_flip_m1;
-	long		rcu_try_flip_me1;
-	long		rcu_try_flip_m2;
+	long next_length;
+	long next_add;
+	long wait_length;
+	long wait_add;
+	long done_length;
+	long done_add;
+	long done_remove;
+	atomic_t done_invoked;
+	long rcu_check_callbacks;
+	atomic_t rcu_try_flip_1;
+	atomic_t rcu_try_flip_e1;
+	long rcu_try_flip_i1;
+	long rcu_try_flip_ie1;
+	long rcu_try_flip_g1;
+	long rcu_try_flip_a1;
+	long rcu_try_flip_ae1;
+	long rcu_try_flip_a2;
+	long rcu_try_flip_z1;
+	long rcu_try_flip_ze1;
+	long rcu_try_flip_z2;
+	long rcu_try_flip_m1;
+	long rcu_try_flip_me1;
+	long rcu_try_flip_m2;
 };
 
 #ifdef CONFIG_RCU_TRACE

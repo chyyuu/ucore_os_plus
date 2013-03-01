@@ -12,4 +12,3 @@ int swapfs_write(swap_entry_t entry, struct Page *page);
 #endif
 
 #endif /* !__KERN_FS_SWAP_SWAPFS_H__ */
-

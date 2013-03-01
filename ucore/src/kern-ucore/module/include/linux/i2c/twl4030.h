@@ -70,7 +70,7 @@
  * Read and write single 8-bit registers
  */
 int twl4030_i2c_write_u8(u8 mod_no, u8 val, u8 reg);
-int twl4030_i2c_read_u8(u8 mod_no, u8 *val, u8 reg);
+int twl4030_i2c_read_u8(u8 mod_no, u8 * val, u8 reg);
 
 /*
  * Read and write several 8-bit registers at once.
@@ -78,8 +78,8 @@ int twl4030_i2c_read_u8(u8 mod_no, u8 *val, u8 reg);
  * IMPORTANT:  For twl4030_i2c_write(), allocate num_bytes + 1
  * for the value, and populate your data starting at offset 1.
  */
-int twl4030_i2c_write(u8 mod_no, u8 *value, u8 reg, unsigned num_bytes);
-int twl4030_i2c_read(u8 mod_no, u8 *value, u8 reg, unsigned num_bytes);
+int twl4030_i2c_write(u8 mod_no, u8 * value, u8 reg, unsigned num_bytes);
+int twl4030_i2c_read(u8 mod_no, u8 * value, u8 reg, unsigned num_bytes);
 
 /*----------------------------------------------------------------------*/
 
@@ -225,34 +225,32 @@ struct twl4030_bci_platform_data {
 
 /* TWL4030_GPIO_MAX (18) GPIOs, with interrupts */
 struct twl4030_gpio_platform_data {
-	int		gpio_base;
-	unsigned	irq_base, irq_end;
+	int gpio_base;
+	unsigned irq_base, irq_end;
 
 	/* package the two LED signals as output-only GPIOs? */
-	bool		use_leds;
+	bool use_leds;
 
 	/* gpio-n should control VMMC(n+1) if BIT(n) in mmc_cd is set */
-	u8		mmc_cd;
+	u8 mmc_cd;
 
 	/* if BIT(N) is set, or VMMC(n+1) is linked, debounce GPIO-N */
-	u32		debounce;
+	u32 debounce;
 
 	/* For gpio-N, bit (1 << N) in "pullups" is set if that pullup
 	 * should be enabled.  Else, if that bit is set in "pulldowns",
 	 * that pulldown is enabled.  Don't waste power by letting any
 	 * digital inputs float...
 	 */
-	u32		pullups;
-	u32		pulldowns;
+	u32 pullups;
+	u32 pulldowns;
 
-	int		(*setup)(struct device *dev,
-				unsigned gpio, unsigned ngpio);
-	int		(*teardown)(struct device *dev,
-				unsigned gpio, unsigned ngpio);
+	int (*setup) (struct device * dev, unsigned gpio, unsigned ngpio);
+	int (*teardown) (struct device * dev, unsigned gpio, unsigned ngpio);
 };
 
 struct twl4030_madc_platform_data {
-	int		irq_line;
+	int irq_line;
 };
 
 struct twl4030_keypad_data {
@@ -270,28 +268,28 @@ enum twl4030_usb_mode {
 };
 
 struct twl4030_usb_data {
-	enum twl4030_usb_mode	usb_mode;
+	enum twl4030_usb_mode usb_mode;
 };
 
 struct twl4030_platform_data {
-	unsigned				irq_base, irq_end;
-	struct twl4030_bci_platform_data	*bci;
-	struct twl4030_gpio_platform_data	*gpio;
-	struct twl4030_madc_platform_data	*madc;
-	struct twl4030_keypad_data		*keypad;
-	struct twl4030_usb_data			*usb;
+	unsigned irq_base, irq_end;
+	struct twl4030_bci_platform_data *bci;
+	struct twl4030_gpio_platform_data *gpio;
+	struct twl4030_madc_platform_data *madc;
+	struct twl4030_keypad_data *keypad;
+	struct twl4030_usb_data *usb;
 
 	/* LDO regulators */
-	struct regulator_init_data		*vdac;
-	struct regulator_init_data		*vpll1;
-	struct regulator_init_data		*vpll2;
-	struct regulator_init_data		*vmmc1;
-	struct regulator_init_data		*vmmc2;
-	struct regulator_init_data		*vsim;
-	struct regulator_init_data		*vaux1;
-	struct regulator_init_data		*vaux2;
-	struct regulator_init_data		*vaux3;
-	struct regulator_init_data		*vaux4;
+	struct regulator_init_data *vdac;
+	struct regulator_init_data *vpll1;
+	struct regulator_init_data *vpll2;
+	struct regulator_init_data *vmmc1;
+	struct regulator_init_data *vmmc2;
+	struct regulator_init_data *vsim;
+	struct regulator_init_data *vaux1;
+	struct regulator_init_data *vaux2;
+	struct regulator_init_data *vaux3;
+	struct regulator_init_data *vaux4;
 
 	/* REVISIT more to come ... _nothing_ should be hard-wired */
 };
@@ -310,12 +308,14 @@ int twl4030_sih_setup(int module);
 #define TWL4030_VAUX3_DEV_GRP		0x1F
 #define TWL4030_VAUX3_DEDICATED		0x22
 
-
 #if defined(CONFIG_TWL4030_BCI_BATTERY) || \
 	defined(CONFIG_TWL4030_BCI_BATTERY_MODULE)
-	extern int twl4030charger_usb_en(int enable);
+extern int twl4030charger_usb_en(int enable);
 #else
-	static inline int twl4030charger_usb_en(int enable) { return 0; }
+static inline int twl4030charger_usb_en(int enable)
+{
+	return 0;
+}
 #endif
 
 /*----------------------------------------------------------------------*/

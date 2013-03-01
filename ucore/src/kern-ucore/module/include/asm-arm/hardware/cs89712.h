@@ -27,11 +27,11 @@
 /*
 *	CS89712 additional registers
 */
-                                  
+
 #define PCDR			0x0002	/* Port C Data register ---------------------------- */
 #define PCDDR			0x0042	/* Port C Data Direction register ------------------ */
-#define SDCONF			0x2300  /* SDRAM Configuration register ---------------------*/
-#define SDRFPR			0x2340  /* SDRAM Refresh period register --------------------*/
+#define SDCONF			0x2300	/* SDRAM Configuration register --------------------- */
+#define SDRFPR			0x2340	/* SDRAM Refresh period register -------------------- */
 
 #define SDCONF_ACTIVE		(1 << 10)
 #define SDCONF_CLKCTL		(1 << 9)

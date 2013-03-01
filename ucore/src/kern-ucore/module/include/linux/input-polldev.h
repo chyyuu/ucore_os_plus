@@ -30,9 +30,9 @@
 struct input_polled_dev {
 	void *private;
 
-	void (*flush)(struct input_polled_dev *dev);
-	void (*poll)(struct input_polled_dev *dev);
-	unsigned int poll_interval; /* msec */
+	void (*flush) (struct input_polled_dev * dev);
+	void (*poll) (struct input_polled_dev * dev);
+	unsigned int poll_interval;	/* msec */
 
 	struct input_dev *input;
 	struct delayed_work work;

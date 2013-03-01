@@ -48,14 +48,14 @@
  * Information obtained through the get_tcinfo() PROM call.
  */
 struct tcinfo {
-	s32		revision;	/* Hardware revision level. */
-	s32		clk_period;	/* Clock period in nanoseconds. */
-	s32		slot_size;	/* Slot size in megabytes. */
-	s32		io_timeout;	/* I/O timeout in cycles. */
-	s32		dma_range;	/* DMA address range in megabytes. */
-	s32		max_dma_burst;	/* Maximum DMA burst length. */
-	s32		parity;		/* System module supports TC parity. */
-	s32		reserved[4];
+	s32 revision;		/* Hardware revision level. */
+	s32 clk_period;		/* Clock period in nanoseconds. */
+	s32 slot_size;		/* Slot size in megabytes. */
+	s32 io_timeout;		/* I/O timeout in cycles. */
+	s32 dma_range;		/* DMA address range in megabytes. */
+	s32 max_dma_burst;	/* Maximum DMA burst length. */
+	s32 parity;		/* System module supports TC parity. */
+	s32 reserved[4];
 };
 
 /*
@@ -63,39 +63,39 @@ struct tcinfo {
  */
 struct tc_bus {
 	struct list_head devices;	/* List of devices on this bus. */
-	struct resource	resource[2];	/* Address space routed to this bus. */
+	struct resource resource[2];	/* Address space routed to this bus. */
 
-	struct device	dev;
-	char		name[13];
-	resource_size_t	slot_base;
-	resource_size_t	ext_slot_base;
-	resource_size_t	ext_slot_size;
-	int		num_tcslots;
-	struct tcinfo	info;
+	struct device dev;
+	char name[13];
+	resource_size_t slot_base;
+	resource_size_t ext_slot_base;
+	resource_size_t ext_slot_size;
+	int num_tcslots;
+	struct tcinfo info;
 };
 
 /*
  * TURBOchannel device.
  */
 struct tc_dev {
-	struct list_head node;		/* Node in list of all TC devices. */
-	struct tc_bus	*bus;		/* Bus this device is on. */
+	struct list_head node;	/* Node in list of all TC devices. */
+	struct tc_bus *bus;	/* Bus this device is on. */
 	struct tc_driver *driver;	/* Which driver has allocated this
 					   device. */
-	struct device	dev;		/* Generic device interface. */
-	struct resource	resource;	/* Address space of this device. */
-	char		vendor[9];
-	char		name[9];
-	char		firmware[9];
-	int		interrupt;
-	int		slot;
+	struct device dev;	/* Generic device interface. */
+	struct resource resource;	/* Address space of this device. */
+	char vendor[9];
+	char name[9];
+	char firmware[9];
+	int interrupt;
+	int slot;
 };
 
 #define to_tc_dev(n) container_of(n, struct tc_dev, dev)
 
 struct tc_device_id {
-	char		vendor[9];
-	char		name[9];
+	char vendor[9];
+	char name[9];
 };
 
 /*
@@ -126,15 +126,21 @@ extern void tc_unregister_driver(struct tc_driver *tdrv);
 
 #else /* !CONFIG_TC */
 
-static inline int tc_register_driver(struct tc_driver *tdrv) { return 0; }
-static inline void tc_unregister_driver(struct tc_driver *tdrv) { }
+static inline int tc_register_driver(struct tc_driver *tdrv)
+{
+	return 0;
+}
+
+static inline void tc_unregister_driver(struct tc_driver *tdrv)
+{
+}
 
 #endif /* CONFIG_TC */
 
 /*
  * These have to be provided by the architecture.
  */
-extern int tc_preadb(u8 *valp, void __iomem *addr);
+extern int tc_preadb(u8 * valp, void __iomem * addr);
 extern int tc_bus_get_info(struct tc_bus *tbus);
 extern void tc_device_get_irq(struct tc_dev *tdev);
 

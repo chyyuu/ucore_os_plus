@@ -7,4 +7,3 @@ int cons_getc(void);
 void serial_intr(void);
 
 #endif /* !__KERN_DRIVER_CONSOLE_H__ */
-

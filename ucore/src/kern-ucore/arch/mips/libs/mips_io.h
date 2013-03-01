@@ -20,5 +20,3 @@ char *readline(const char *prompt);
 #define PRINT_HEX(str,x) {kprintf(str);printhex((unsigned int)x);kprintf("\n");}
 
 #endif /* !__LIBS_STDIO_H__ */
-
-

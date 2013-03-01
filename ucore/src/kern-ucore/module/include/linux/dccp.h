@@ -18,32 +18,25 @@
  * @dccph_seq - sequence number high or low order 24 bits, depends on dccph_x
  */
 struct dccp_hdr {
-	__be16	dccph_sport,
-		dccph_dport;
-	__u8	dccph_doff;
+	__be16 dccph_sport, dccph_dport;
+	__u8 dccph_doff;
 #if defined(__LITTLE_ENDIAN_BITFIELD)
-	__u8	dccph_cscov:4,
-		dccph_ccval:4;
+	__u8 dccph_cscov:4, dccph_ccval:4;
 #elif defined(__BIG_ENDIAN_BITFIELD)
-	__u8	dccph_ccval:4,
-		dccph_cscov:4;
+	__u8 dccph_ccval:4, dccph_cscov:4;
 #else
 #error  "Adjust your <asm/byteorder.h> defines"
 #endif
-	__sum16	dccph_checksum;
+	__sum16 dccph_checksum;
 #if defined(__LITTLE_ENDIAN_BITFIELD)
-	__u8	dccph_x:1,
-		dccph_type:4,
-		dccph_reserved:3;
+	__u8 dccph_x:1, dccph_type:4, dccph_reserved:3;
 #elif defined(__BIG_ENDIAN_BITFIELD)
-	__u8	dccph_reserved:3,
-		dccph_type:4,
-		dccph_x:1;
+	__u8 dccph_reserved:3, dccph_type:4, dccph_x:1;
 #else
 #error  "Adjust your <asm/byteorder.h> defines"
 #endif
-	__u8	dccph_seq2;
-	__be16	dccph_seq;
+	__u8 dccph_seq2;
+	__be16 dccph_seq;
 };
 
 /**
@@ -52,7 +45,7 @@ struct dccp_hdr {
  * @dccph_seq_low - low 24 bits of a 48 bit seq packet
  */
 struct dccp_hdr_ext {
-	__be32	dccph_seq_low;
+	__be32 dccph_seq_low;
 };
 
 /**
@@ -61,7 +54,7 @@ struct dccp_hdr_ext {
  * @dccph_req_service - Service to which the client app wants to connect
  */
 struct dccp_hdr_request {
-	__be32	dccph_req_service;
+	__be32 dccph_req_service;
 };
 /**
  * struct dccp_hdr_ack_bits - acknowledgment bits common to most packets
@@ -70,9 +63,9 @@ struct dccp_hdr_request {
  * @dccph_resp_ack_nr_low - 48 bit ack number low order bits, contains GSR
  */
 struct dccp_hdr_ack_bits {
-	__be16	dccph_reserved1;
-	__be16	dccph_ack_nr_high;
-	__be32	dccph_ack_nr_low;
+	__be16 dccph_reserved1;
+	__be16 dccph_ack_nr_high;
+	__be32 dccph_ack_nr_low;
 };
 /**
  * struct dccp_hdr_response - Connection initiation response header
@@ -81,8 +74,8 @@ struct dccp_hdr_ack_bits {
  * @dccph_resp_service - Echoes the Service Code on a received DCCP-Request
  */
 struct dccp_hdr_response {
-	struct dccp_hdr_ack_bits	dccph_resp_ack;
-	__be32				dccph_resp_service;
+	struct dccp_hdr_ack_bits dccph_resp_ack;
+	__be32 dccph_resp_service;
 };
 
 /**
@@ -93,9 +86,8 @@ struct dccp_hdr_response {
  * @dccph_reset_data - the Data 1 ... Data 3 fields from 5.6
  */
 struct dccp_hdr_reset {
-	struct dccp_hdr_ack_bits	dccph_reset_ack;
-	__u8				dccph_reset_code,
-					dccph_reset_data[3];
+	struct dccp_hdr_ack_bits dccph_reset_ack;
+	__u8 dccph_reset_code, dccph_reset_data[3];
 };
 
 enum dccp_pkt_type {
@@ -118,12 +110,11 @@ static inline unsigned int dccp_packet_hdr_len(const __u8 type)
 {
 	if (type == DCCP_PKT_DATA)
 		return 0;
-	if (type == DCCP_PKT_DATAACK	||
-	    type == DCCP_PKT_ACK	||
-	    type == DCCP_PKT_SYNC	||
-	    type == DCCP_PKT_SYNCACK	||
-	    type == DCCP_PKT_CLOSE	||
-	    type == DCCP_PKT_CLOSEREQ)
+	if (type == DCCP_PKT_DATAACK ||
+	    type == DCCP_PKT_ACK ||
+	    type == DCCP_PKT_SYNC ||
+	    type == DCCP_PKT_SYNCACK ||
+	    type == DCCP_PKT_CLOSE || type == DCCP_PKT_CLOSEREQ)
 		return sizeof(struct dccp_hdr_ack_bits);
 	if (type == DCCP_PKT_REQUEST)
 		return sizeof(struct dccp_hdr_request);
@@ -131,6 +122,7 @@ static inline unsigned int dccp_packet_hdr_len(const __u8 type)
 		return sizeof(struct dccp_hdr_response);
 	return sizeof(struct dccp_hdr_reset);
 }
+
 enum dccp_reset_codes {
 	DCCP_RESET_CODE_UNSPECIFIED = 0,
 	DCCP_RESET_CODE_CLOSED,
@@ -145,7 +137,7 @@ enum dccp_reset_codes {
 	DCCP_RESET_CODE_BAD_INIT_COOKIE,
 	DCCP_RESET_CODE_AGGRESSION_PENALTY,
 
-	DCCP_MAX_RESET_CODES		/* Leave at the end!  */
+	DCCP_MAX_RESET_CODES	/* Leave at the end!  */
 };
 
 /* DCCP options */
@@ -196,7 +188,7 @@ enum dccp_feature_numbers {
 };
 
 /* DCCP socket options */
-#define DCCP_SOCKOPT_PACKET_SIZE	1 /* XXX deprecated, without effect */
+#define DCCP_SOCKOPT_PACKET_SIZE	1	/* XXX deprecated, without effect */
 #define DCCP_SOCKOPT_SERVICE		2
 #define DCCP_SOCKOPT_CHANGE_L		3
 #define DCCP_SOCKOPT_CHANGE_R		4
@@ -228,10 +220,10 @@ enum dccp_feature_numbers {
 #include <net/tcp_states.h>
 
 enum dccp_state {
-	DCCP_OPEN	     = TCP_ESTABLISHED,
-	DCCP_REQUESTING	     = TCP_SYN_SENT,
-	DCCP_LISTEN	     = TCP_LISTEN,
-	DCCP_RESPOND	     = TCP_SYN_RECV,
+	DCCP_OPEN = TCP_ESTABLISHED,
+	DCCP_REQUESTING = TCP_SYN_SENT,
+	DCCP_LISTEN = TCP_LISTEN,
+	DCCP_RESPOND = TCP_SYN_RECV,
 	/*
 	 * States involved in closing a DCCP connection:
 	 * 1) ACTIVE_CLOSEREQ is entered by a server sending a CloseReq.
@@ -251,27 +243,27 @@ enum dccp_state {
 	 *    - PASSIVE_CLOSEREQ (from (PART)OPEN to CLOSING; case (b) above).
 	 */
 	DCCP_ACTIVE_CLOSEREQ = TCP_FIN_WAIT1,
-	DCCP_PASSIVE_CLOSE   = TCP_CLOSE_WAIT,	/* any node receiving a Close */
-	DCCP_CLOSING	     = TCP_CLOSING,
-	DCCP_TIME_WAIT	     = TCP_TIME_WAIT,
-	DCCP_CLOSED	     = TCP_CLOSE,
-	DCCP_PARTOPEN	     = TCP_MAX_STATES,
-	DCCP_PASSIVE_CLOSEREQ,			/* clients receiving CloseReq */
+	DCCP_PASSIVE_CLOSE = TCP_CLOSE_WAIT,	/* any node receiving a Close */
+	DCCP_CLOSING = TCP_CLOSING,
+	DCCP_TIME_WAIT = TCP_TIME_WAIT,
+	DCCP_CLOSED = TCP_CLOSE,
+	DCCP_PARTOPEN = TCP_MAX_STATES,
+	DCCP_PASSIVE_CLOSEREQ,	/* clients receiving CloseReq */
 	DCCP_MAX_STATES
 };
 
 #define DCCP_STATE_MASK 0x1f
 
 enum {
-	DCCPF_OPEN	      = TCPF_ESTABLISHED,
-	DCCPF_REQUESTING      = TCPF_SYN_SENT,
-	DCCPF_LISTEN	      = TCPF_LISTEN,
-	DCCPF_RESPOND	      = TCPF_SYN_RECV,
+	DCCPF_OPEN = TCPF_ESTABLISHED,
+	DCCPF_REQUESTING = TCPF_SYN_SENT,
+	DCCPF_LISTEN = TCPF_LISTEN,
+	DCCPF_RESPOND = TCPF_SYN_RECV,
 	DCCPF_ACTIVE_CLOSEREQ = TCPF_FIN_WAIT1,
-	DCCPF_CLOSING	      = TCPF_CLOSING,
-	DCCPF_TIME_WAIT	      = TCPF_TIME_WAIT,
-	DCCPF_CLOSED	      = TCPF_CLOSE,
-	DCCPF_PARTOPEN	      = (1 << DCCP_PARTOPEN),
+	DCCPF_CLOSING = TCPF_CLOSING,
+	DCCPF_TIME_WAIT = TCPF_TIME_WAIT,
+	DCCPF_CLOSED = TCPF_CLOSE,
+	DCCPF_PARTOPEN = (1 << DCCP_PARTOPEN),
 };
 
 static inline struct dccp_hdr *dccp_hdr(const struct sk_buff *skb)
@@ -304,12 +296,12 @@ static inline unsigned int dccp_basic_hdr_len(const struct sk_buff *skb)
 
 static inline __u64 dccp_hdr_seq(const struct dccp_hdr *dh)
 {
-	__u64 seq_nr =  ntohs(dh->dccph_seq);
+	__u64 seq_nr = ntohs(dh->dccph_seq);
 
 	if (dh->dccph_x != 0)
 		seq_nr = (seq_nr << 32) + ntohl(dccp_hdrx(dh)->dccph_seq_low);
 	else
-		seq_nr += (u32)dh->dccph_seq2 << 16;
+		seq_nr += (u32) dh->dccph_seq2 << 16;
 
 	return seq_nr;
 }
@@ -320,7 +312,8 @@ static inline struct dccp_hdr_request *dccp_hdr_request(struct sk_buff *skb)
 					   dccp_basic_hdr_len(skb));
 }
 
-static inline struct dccp_hdr_ack_bits *dccp_hdr_ack_bits(const struct sk_buff *skb)
+static inline struct dccp_hdr_ack_bits *dccp_hdr_ack_bits(const struct sk_buff
+							  *skb)
 {
 	return (struct dccp_hdr_ack_bits *)(skb_transport_header(skb) +
 					    dccp_basic_hdr_len(skb));
@@ -329,7 +322,8 @@ static inline struct dccp_hdr_ack_bits *dccp_hdr_ack_bits(const struct sk_buff *
 static inline u64 dccp_hdr_ack_seq(const struct sk_buff *skb)
 {
 	const struct dccp_hdr_ack_bits *dhack = dccp_hdr_ack_bits(skb);
-	return ((u64)ntohs(dhack->dccph_ack_nr_high) << 32) + ntohl(dhack->dccph_ack_nr_low);
+	return ((u64) ntohs(dhack->dccph_ack_nr_high) << 32) +
+	    ntohl(dhack->dccph_ack_nr_low);
 }
 
 static inline struct dccp_hdr_response *dccp_hdr_response(struct sk_buff *skb)
@@ -346,15 +340,13 @@ static inline struct dccp_hdr_reset *dccp_hdr_reset(struct sk_buff *skb)
 
 static inline unsigned int __dccp_hdr_len(const struct dccp_hdr *dh)
 {
-	return __dccp_basic_hdr_len(dh) +
-	       dccp_packet_hdr_len(dh->dccph_type);
+	return __dccp_basic_hdr_len(dh) + dccp_packet_hdr_len(dh->dccph_type);
 }
 
 static inline unsigned int dccp_hdr_len(const struct sk_buff *skb)
 {
 	return __dccp_hdr_len(dccp_hdr(skb));
 }
-
 
 /* initial values for each feature */
 #define DCCPF_INITIAL_SEQUENCE_WINDOW		100
@@ -373,24 +365,24 @@ static inline unsigned int dccp_hdr_len(const struct sk_buff *skb)
   * @dccpms_conf -
   */
 struct dccp_minisock {
-	__u64			dccpms_sequence_window;
-	struct list_head	dccpms_pending;
-	struct list_head	dccpms_conf;
+	__u64 dccpms_sequence_window;
+	struct list_head dccpms_pending;
+	struct list_head dccpms_conf;
 };
 
 struct dccp_opt_conf {
-	__u8			*dccpoc_val;
-	__u8			dccpoc_len;
+	__u8 *dccpoc_val;
+	__u8 dccpoc_len;
 };
 
 struct dccp_opt_pend {
-	struct list_head	dccpop_node;
-	__u8			dccpop_type;
-	__u8			dccpop_feat;
-	__u8		        *dccpop_val;
-	__u8			dccpop_len;
-	int			dccpop_conf;
-	struct dccp_opt_conf    *dccpop_sc;
+	struct list_head dccpop_node;
+	__u8 dccpop_type;
+	__u8 dccpop_feat;
+	__u8 *dccpop_val;
+	__u8 dccpop_len;
+	int dccpop_conf;
+	struct dccp_opt_conf *dccpop_sc;
 };
 
 extern void dccp_minisock_init(struct dccp_minisock *dmsk);
@@ -408,12 +400,12 @@ extern void dccp_minisock_init(struct dccp_minisock *dmsk);
  */
 struct dccp_request_sock {
 	struct inet_request_sock dreq_inet_rsk;
-	__u64			 dreq_iss;
-	__u64			 dreq_isr;
-	__be32			 dreq_service;
-	struct list_head	 dreq_featneg;
-	__u32			 dreq_timestamp_echo;
-	__u32			 dreq_timestamp_time;
+	__u64 dreq_iss;
+	__u64 dreq_isr;
+	__be32 dreq_service;
+	struct list_head dreq_featneg;
+	__u32 dreq_timestamp_echo;
+	__u32 dreq_timestamp_time;
 };
 
 static inline struct dccp_request_sock *dccp_rsk(const struct request_sock *req)
@@ -427,10 +419,10 @@ extern int dccp_parse_options(struct sock *sk, struct dccp_request_sock *dreq,
 			      struct sk_buff *skb);
 
 struct dccp_options_received {
-	u64	dccpor_ndp:48;
-	u32	dccpor_timestamp;
-	u32	dccpor_timestamp_echo;
-	u32	dccpor_elapsed_time;
+	u64 dccpor_ndp:48;
+	u32 dccpor_timestamp;
+	u32 dccpor_timestamp_echo;
+	u32 dccpor_elapsed_time;
 };
 
 struct ccid;
@@ -443,8 +435,8 @@ enum dccp_role {
 };
 
 struct dccp_service_list {
-	__u32	dccpsl_nr;
-	__be32	dccpsl_list[0];
+	__u32 dccpsl_nr;
+	__be32 dccpsl_list[0];
 };
 
 #define DCCP_SERVICE_INVALID_VALUE htonl((__u32)-1)
@@ -504,41 +496,41 @@ struct dccp_ackvec;
  */
 struct dccp_sock {
 	/* inet_connection_sock has to be the first member of dccp_sock */
-	struct inet_connection_sock	dccps_inet_connection;
+	struct inet_connection_sock dccps_inet_connection;
 #define dccps_syn_rtt			dccps_inet_connection.icsk_ack.lrcvtime
-	__u64				dccps_swl;
-	__u64				dccps_swh;
-	__u64				dccps_awl;
-	__u64				dccps_awh;
-	__u64				dccps_iss;
-	__u64				dccps_isr;
-	__u64				dccps_osr;
-	__u64				dccps_gss;
-	__u64				dccps_gsr;
-	__u64				dccps_gar;
-	__be32				dccps_service;
-	__u32				dccps_mss_cache;
-	struct dccp_service_list	*dccps_service_list;
-	__u32				dccps_timestamp_echo;
-	__u32				dccps_timestamp_time;
-	__u16				dccps_l_ack_ratio;
-	__u16				dccps_r_ack_ratio;
-	__u8				dccps_pcslen:4;
-	__u8				dccps_pcrlen:4;
-	__u8				dccps_send_ndp_count:1;
-	__u64				dccps_ndp_count:48;
-	unsigned long			dccps_rate_last;
-	struct dccp_minisock		dccps_minisock;
-	struct list_head		dccps_featneg;
-	struct dccp_ackvec		*dccps_hc_rx_ackvec;
-	struct ccid			*dccps_hc_rx_ccid;
-	struct ccid			*dccps_hc_tx_ccid;
-	struct dccp_options_received	dccps_options_received;
-	enum dccp_role			dccps_role:2;
-	__u8				dccps_hc_rx_insert_options:1;
-	__u8				dccps_hc_tx_insert_options:1;
-	__u8				dccps_server_timewait:1;
-	struct timer_list		dccps_xmit_timer;
+	__u64 dccps_swl;
+	__u64 dccps_swh;
+	__u64 dccps_awl;
+	__u64 dccps_awh;
+	__u64 dccps_iss;
+	__u64 dccps_isr;
+	__u64 dccps_osr;
+	__u64 dccps_gss;
+	__u64 dccps_gsr;
+	__u64 dccps_gar;
+	__be32 dccps_service;
+	__u32 dccps_mss_cache;
+	struct dccp_service_list *dccps_service_list;
+	__u32 dccps_timestamp_echo;
+	__u32 dccps_timestamp_time;
+	__u16 dccps_l_ack_ratio;
+	__u16 dccps_r_ack_ratio;
+	__u8 dccps_pcslen:4;
+	__u8 dccps_pcrlen:4;
+	__u8 dccps_send_ndp_count:1;
+	__u64 dccps_ndp_count:48;
+	unsigned long dccps_rate_last;
+	struct dccp_minisock dccps_minisock;
+	struct list_head dccps_featneg;
+	struct dccp_ackvec *dccps_hc_rx_ackvec;
+	struct ccid *dccps_hc_rx_ccid;
+	struct ccid *dccps_hc_tx_ccid;
+	struct dccp_options_received dccps_options_received;
+	enum dccp_role dccps_role:2;
+	__u8 dccps_hc_rx_insert_options:1;
+	__u8 dccps_hc_tx_insert_options:1;
+	__u8 dccps_server_timewait:1;
+	struct timer_list dccps_xmit_timer;
 };
 
 static inline struct dccp_sock *dccp_sk(const struct sock *sk)
@@ -554,10 +546,14 @@ static inline struct dccp_minisock *dccp_msk(const struct sock *sk)
 static inline const char *dccp_role(const struct sock *sk)
 {
 	switch (dccp_sk(sk)->dccps_role) {
-	case DCCP_ROLE_UNDEFINED: return "undefined";
-	case DCCP_ROLE_LISTEN:	  return "listen";
-	case DCCP_ROLE_SERVER:	  return "server";
-	case DCCP_ROLE_CLIENT:	  return "client";
+	case DCCP_ROLE_UNDEFINED:
+		return "undefined";
+	case DCCP_ROLE_LISTEN:
+		return "listen";
+	case DCCP_ROLE_SERVER:
+		return "server";
+	case DCCP_ROLE_CLIENT:
+		return "client";
 	}
 	return NULL;
 }

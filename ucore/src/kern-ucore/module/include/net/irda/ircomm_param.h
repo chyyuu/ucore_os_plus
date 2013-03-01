@@ -35,8 +35,8 @@
 
 /* Parameters common to all service types */
 #define IRCOMM_SERVICE_TYPE     0x00
-#define IRCOMM_PORT_TYPE        0x01 /* Only used in LM-IAS */
-#define IRCOMM_PORT_NAME        0x02 /* Only used in LM-IAS */
+#define IRCOMM_PORT_TYPE        0x01	/* Only used in LM-IAS */
+#define IRCOMM_PORT_NAME        0x02	/* Only used in LM-IAS */
 
 /* Parameters for both 3 wire and 9 wire */
 #define IRCOMM_DATA_RATE        0x10
@@ -69,7 +69,7 @@
 #define IRCOMM_WSIZE_8          0x03
 
 #define IRCOMM_1_STOP_BIT       0x00
-#define IRCOMM_2_STOP_BIT       0x04 /* 1.5 if char len 5 */
+#define IRCOMM_2_STOP_BIT       0x04	/* 1.5 if char len 5 */
 
 #define IRCOMM_PARITY_DISABLE   0x00
 #define IRCOMM_PARITY_ENABLE    0x08
@@ -101,14 +101,14 @@
 #define IRCOMM_RTS              0x08
 
 /* DCE (Data communications equipment) line settings */
-#define IRCOMM_DELTA_CTS        0x01  /* Clear to send has changed */
-#define IRCOMM_DELTA_DSR        0x02  /* Data set ready has changed */
-#define IRCOMM_DELTA_RI         0x04  /* Ring indicator has changed */
-#define IRCOMM_DELTA_CD         0x08  /* Carrier detect has changed */
-#define IRCOMM_CTS              0x10  /* Clear to send is high */
-#define IRCOMM_DSR              0x20  /* Data set ready is high */
-#define IRCOMM_RI               0x40  /* Ring indicator is high */
-#define IRCOMM_CD               0x80  /* Carrier detect is high */
+#define IRCOMM_DELTA_CTS        0x01	/* Clear to send has changed */
+#define IRCOMM_DELTA_DSR        0x02	/* Data set ready has changed */
+#define IRCOMM_DELTA_RI         0x04	/* Ring indicator has changed */
+#define IRCOMM_DELTA_CD         0x08	/* Carrier detect has changed */
+#define IRCOMM_CTS              0x10	/* Clear to send is high */
+#define IRCOMM_DSR              0x20	/* Data set ready is high */
+#define IRCOMM_RI               0x40	/* Ring indicator is high */
+#define IRCOMM_CD               0x80	/* Carrier detect is high */
 #define IRCOMM_DCE_DELTA_ANY    0x0f
 
 /*
@@ -116,20 +116,20 @@
  */
 struct ircomm_params {
 	/* General control params */
-	__u8  service_type;
-	__u8  port_type;
-	char  port_name[32];
+	__u8 service_type;
+	__u8 port_type;
+	char port_name[32];
 
 	/* Control params for 3- and 9-wire service type */
-	__u32 data_rate;         /* Data rate in bps */
-	__u8  data_format;
-	__u8  flow_control;
-	char  xonxoff[2];
-	char  enqack[2];
-	__u8  line_status;
-	__u8  _break;
+	__u32 data_rate;	/* Data rate in bps */
+	__u8 data_format;
+	__u8 flow_control;
+	char xonxoff[2];
+	char enqack[2];
+	__u8 line_status;
+	__u8 _break;
 
-	__u8  null_modem;
+	__u8 null_modem;
 
 	/* Control params for 9-wire service type */
 	__u8 dte;
@@ -139,11 +139,10 @@ struct ircomm_params {
 	/* Control params for Centronics service type */
 };
 
-struct ircomm_tty_cb; /* Forward decl. */
+struct ircomm_tty_cb;		/* Forward decl. */
 
 int ircomm_param_request(struct ircomm_tty_cb *self, __u8 pi, int flush);
 
 extern pi_param_info_t ircomm_param_info;
 
 #endif /* IRCOMM_PARAMS_H */
-

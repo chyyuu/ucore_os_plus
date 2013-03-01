@@ -141,30 +141,32 @@
 #include <linux/threads.h>
 #include <linux/bitmap.h>
 
-typedef struct cpumask { DECLARE_BITMAP(bits, NR_CPUS); } cpumask_t;
+typedef struct cpumask {
+	DECLARE_BITMAP(bits, NR_CPUS);
+} cpumask_t;
 extern cpumask_t _unused_cpumask_arg_;
 
 #ifndef CONFIG_DISABLE_OBSOLETE_CPUMASK_FUNCTIONS
 #define cpu_set(cpu, dst) __cpu_set((cpu), &(dst))
-static inline void __cpu_set(int cpu, volatile cpumask_t *dstp)
+static inline void __cpu_set(int cpu, volatile cpumask_t * dstp)
 {
 	set_bit(cpu, dstp->bits);
 }
 
 #define cpu_clear(cpu, dst) __cpu_clear((cpu), &(dst))
-static inline void __cpu_clear(int cpu, volatile cpumask_t *dstp)
+static inline void __cpu_clear(int cpu, volatile cpumask_t * dstp)
 {
 	clear_bit(cpu, dstp->bits);
 }
 
 #define cpus_setall(dst) __cpus_setall(&(dst), NR_CPUS)
-static inline void __cpus_setall(cpumask_t *dstp, int nbits)
+static inline void __cpus_setall(cpumask_t * dstp, int nbits)
 {
 	bitmap_fill(dstp->bits, nbits);
 }
 
 #define cpus_clear(dst) __cpus_clear(&(dst), NR_CPUS)
-static inline void __cpus_clear(cpumask_t *dstp, int nbits)
+static inline void __cpus_clear(cpumask_t * dstp, int nbits)
 {
 	bitmap_zero(dstp->bits, nbits);
 }
@@ -173,98 +175,98 @@ static inline void __cpus_clear(cpumask_t *dstp, int nbits)
 #define cpu_isset(cpu, cpumask) test_bit((cpu), (cpumask).bits)
 
 #define cpu_test_and_set(cpu, cpumask) __cpu_test_and_set((cpu), &(cpumask))
-static inline int __cpu_test_and_set(int cpu, cpumask_t *addr)
+static inline int __cpu_test_and_set(int cpu, cpumask_t * addr)
 {
 	return test_and_set_bit(cpu, addr->bits);
 }
 
 #define cpus_and(dst, src1, src2) __cpus_and(&(dst), &(src1), &(src2), NR_CPUS)
-static inline void __cpus_and(cpumask_t *dstp, const cpumask_t *src1p,
-					const cpumask_t *src2p, int nbits)
+static inline void __cpus_and(cpumask_t * dstp, const cpumask_t * src1p,
+			      const cpumask_t * src2p, int nbits)
 {
 	bitmap_and(dstp->bits, src1p->bits, src2p->bits, nbits);
 }
 
 #define cpus_or(dst, src1, src2) __cpus_or(&(dst), &(src1), &(src2), NR_CPUS)
-static inline void __cpus_or(cpumask_t *dstp, const cpumask_t *src1p,
-					const cpumask_t *src2p, int nbits)
+static inline void __cpus_or(cpumask_t * dstp, const cpumask_t * src1p,
+			     const cpumask_t * src2p, int nbits)
 {
 	bitmap_or(dstp->bits, src1p->bits, src2p->bits, nbits);
 }
 
 #define cpus_xor(dst, src1, src2) __cpus_xor(&(dst), &(src1), &(src2), NR_CPUS)
-static inline void __cpus_xor(cpumask_t *dstp, const cpumask_t *src1p,
-					const cpumask_t *src2p, int nbits)
+static inline void __cpus_xor(cpumask_t * dstp, const cpumask_t * src1p,
+			      const cpumask_t * src2p, int nbits)
 {
 	bitmap_xor(dstp->bits, src1p->bits, src2p->bits, nbits);
 }
 
 #define cpus_andnot(dst, src1, src2) \
 				__cpus_andnot(&(dst), &(src1), &(src2), NR_CPUS)
-static inline void __cpus_andnot(cpumask_t *dstp, const cpumask_t *src1p,
-					const cpumask_t *src2p, int nbits)
+static inline void __cpus_andnot(cpumask_t * dstp, const cpumask_t * src1p,
+				 const cpumask_t * src2p, int nbits)
 {
 	bitmap_andnot(dstp->bits, src1p->bits, src2p->bits, nbits);
 }
 
 #define cpus_complement(dst, src) __cpus_complement(&(dst), &(src), NR_CPUS)
-static inline void __cpus_complement(cpumask_t *dstp,
-					const cpumask_t *srcp, int nbits)
+static inline void __cpus_complement(cpumask_t * dstp,
+				     const cpumask_t * srcp, int nbits)
 {
 	bitmap_complement(dstp->bits, srcp->bits, nbits);
 }
 
 #define cpus_equal(src1, src2) __cpus_equal(&(src1), &(src2), NR_CPUS)
-static inline int __cpus_equal(const cpumask_t *src1p,
-					const cpumask_t *src2p, int nbits)
+static inline int __cpus_equal(const cpumask_t * src1p,
+			       const cpumask_t * src2p, int nbits)
 {
 	return bitmap_equal(src1p->bits, src2p->bits, nbits);
 }
 
 #define cpus_intersects(src1, src2) __cpus_intersects(&(src1), &(src2), NR_CPUS)
-static inline int __cpus_intersects(const cpumask_t *src1p,
-					const cpumask_t *src2p, int nbits)
+static inline int __cpus_intersects(const cpumask_t * src1p,
+				    const cpumask_t * src2p, int nbits)
 {
 	return bitmap_intersects(src1p->bits, src2p->bits, nbits);
 }
 
 #define cpus_subset(src1, src2) __cpus_subset(&(src1), &(src2), NR_CPUS)
-static inline int __cpus_subset(const cpumask_t *src1p,
-					const cpumask_t *src2p, int nbits)
+static inline int __cpus_subset(const cpumask_t * src1p,
+				const cpumask_t * src2p, int nbits)
 {
 	return bitmap_subset(src1p->bits, src2p->bits, nbits);
 }
 
 #define cpus_empty(src) __cpus_empty(&(src), NR_CPUS)
-static inline int __cpus_empty(const cpumask_t *srcp, int nbits)
+static inline int __cpus_empty(const cpumask_t * srcp, int nbits)
 {
 	return bitmap_empty(srcp->bits, nbits);
 }
 
 #define cpus_full(cpumask) __cpus_full(&(cpumask), NR_CPUS)
-static inline int __cpus_full(const cpumask_t *srcp, int nbits)
+static inline int __cpus_full(const cpumask_t * srcp, int nbits)
 {
 	return bitmap_full(srcp->bits, nbits);
 }
 
 #define cpus_weight(cpumask) __cpus_weight(&(cpumask), NR_CPUS)
-static inline int __cpus_weight(const cpumask_t *srcp, int nbits)
+static inline int __cpus_weight(const cpumask_t * srcp, int nbits)
 {
 	return bitmap_weight(srcp->bits, nbits);
 }
 
 #define cpus_shift_right(dst, src, n) \
 			__cpus_shift_right(&(dst), &(src), (n), NR_CPUS)
-static inline void __cpus_shift_right(cpumask_t *dstp,
-					const cpumask_t *srcp, int n, int nbits)
+static inline void __cpus_shift_right(cpumask_t * dstp,
+				      const cpumask_t * srcp, int n, int nbits)
 {
 	bitmap_shift_right(dstp->bits, srcp->bits, n, nbits);
 }
 
 #define cpus_shift_left(dst, src, n) \
 			__cpus_shift_left(&(dst), &(src), (n), NR_CPUS)
-static inline void __cpus_shift_left(cpumask_t *dstp,
-					const cpumask_t *srcp, int n, int nbits)
+static inline void __cpus_shift_left(cpumask_t * dstp,
+				     const cpumask_t * srcp, int n, int nbits)
 {
 	bitmap_shift_left(dstp->bits, srcp->bits, n, nbits);
 }
@@ -297,7 +299,7 @@ static inline int __check_is_bitmap(const unsigned long *bitmap)
  * appropriately offset.
  */
 extern const unsigned long
-	cpu_bit_bitmap[BITS_PER_LONG+1][BITS_TO_LONGS(NR_CPUS)];
+    cpu_bit_bitmap[BITS_PER_LONG + 1][BITS_TO_LONGS(NR_CPUS)];
 
 static inline const struct cpumask *get_cpu_mask(unsigned int cpu)
 {
@@ -313,7 +315,6 @@ static inline const struct cpumask *get_cpu_mask(unsigned int cpu)
  * variable created:
  */
 #define cpumask_of_cpu(cpu) (*get_cpu_mask(cpu))
-
 
 #define CPU_MASK_LAST_WORD BITMAP_LAST_WORD_MASK(NR_CPUS)
 
@@ -364,31 +365,33 @@ extern cpumask_t cpu_mask_all;
 #define cpu_remap(oldbit, old, new) \
 		__cpu_remap((oldbit), &(old), &(new), NR_CPUS)
 static inline int __cpu_remap(int oldbit,
-		const cpumask_t *oldp, const cpumask_t *newp, int nbits)
+			      const cpumask_t * oldp, const cpumask_t * newp,
+			      int nbits)
 {
 	return bitmap_bitremap(oldbit, oldp->bits, newp->bits, nbits);
 }
 
 #define cpus_remap(dst, src, old, new) \
 		__cpus_remap(&(dst), &(src), &(old), &(new), NR_CPUS)
-static inline void __cpus_remap(cpumask_t *dstp, const cpumask_t *srcp,
-		const cpumask_t *oldp, const cpumask_t *newp, int nbits)
+static inline void __cpus_remap(cpumask_t * dstp, const cpumask_t * srcp,
+				const cpumask_t * oldp, const cpumask_t * newp,
+				int nbits)
 {
 	bitmap_remap(dstp->bits, srcp->bits, oldp->bits, newp->bits, nbits);
 }
 
 #define cpus_onto(dst, orig, relmap) \
 		__cpus_onto(&(dst), &(orig), &(relmap), NR_CPUS)
-static inline void __cpus_onto(cpumask_t *dstp, const cpumask_t *origp,
-		const cpumask_t *relmapp, int nbits)
+static inline void __cpus_onto(cpumask_t * dstp, const cpumask_t * origp,
+			       const cpumask_t * relmapp, int nbits)
 {
 	bitmap_onto(dstp->bits, origp->bits, relmapp->bits, nbits);
 }
 
 #define cpus_fold(dst, orig, sz) \
 		__cpus_fold(&(dst), &(orig), sz, NR_CPUS)
-static inline void __cpus_fold(cpumask_t *dstp, const cpumask_t *origp,
-		int sz, int nbits)
+static inline void __cpus_fold(cpumask_t * dstp, const cpumask_t * origp,
+			       int sz, int nbits)
 {
 	bitmap_fold(dstp->bits, origp->bits, sz, nbits);
 }
@@ -408,9 +411,9 @@ static inline void __cpus_fold(cpumask_t *dstp, const cpumask_t *origp,
 
 extern int nr_cpu_ids;
 #ifndef CONFIG_DISABLE_OBSOLETE_CPUMASK_FUNCTIONS
-int __first_cpu(const cpumask_t *srcp);
-int __next_cpu(int n, const cpumask_t *srcp);
-int __any_online_cpu(const cpumask_t *mask);
+int __first_cpu(const cpumask_t * srcp);
+int __next_cpu(int n, const cpumask_t * srcp);
+int __any_online_cpu(const cpumask_t * mask);
 
 #define first_cpu(src)		__first_cpu(&(src))
 #define next_cpu(n, src)	__next_cpu((n), &(src))
@@ -431,7 +434,7 @@ int __any_online_cpu(const cpumask_t *mask);
 
 #else /* NR_CPUS > 64 */
 
-int __next_cpu_nr(int n, const cpumask_t *srcp);
+int __next_cpu_nr(int n, const cpumask_t * srcp);
 #define next_cpu_nr(n, src)	__next_cpu_nr((n), &(src))
 #define cpus_weight_nr(cpumask)	__cpus_weight(&(cpumask), nr_cpu_ids)
 #define for_each_cpu_mask_nr(cpu, mask)			\
@@ -559,19 +562,19 @@ static inline unsigned int cpumask_first(const struct cpumask *srcp)
 /* Valid inputs for n are -1 and 0. */
 static inline unsigned int cpumask_next(int n, const struct cpumask *srcp)
 {
-	return n+1;
+	return n + 1;
 }
 
 static inline unsigned int cpumask_next_zero(int n, const struct cpumask *srcp)
 {
-	return n+1;
+	return n + 1;
 }
 
 static inline unsigned int cpumask_next_and(int n,
 					    const struct cpumask *srcp,
 					    const struct cpumask *andp)
 {
-	return n+1;
+	return n + 1;
 }
 
 /* cpu must be a valid cpu, ie 0, so there's no other choice. */
@@ -609,7 +612,7 @@ static inline unsigned int cpumask_next(int n, const struct cpumask *srcp)
 	/* -1 is a legal arg here. */
 	if (n != -1)
 		cpumask_check(n);
-	return find_next_bit(cpumask_bits(srcp), nr_cpumask_bits, n+1);
+	return find_next_bit(cpumask_bits(srcp), nr_cpumask_bits, n + 1);
 }
 
 /**
@@ -624,7 +627,7 @@ static inline unsigned int cpumask_next_zero(int n, const struct cpumask *srcp)
 	/* -1 is a legal arg here. */
 	if (n != -1)
 		cpumask_check(n);
-	return find_next_zero_bit(cpumask_bits(srcp), nr_cpumask_bits, n+1);
+	return find_next_zero_bit(cpumask_bits(srcp), nr_cpumask_bits, n + 1);
 }
 
 int cpumask_next_and(int n, const struct cpumask *, const struct cpumask *);
@@ -743,7 +746,7 @@ static inline void cpumask_and(struct cpumask *dstp,
 			       const struct cpumask *src2p)
 {
 	bitmap_and(cpumask_bits(dstp), cpumask_bits(src1p),
-				       cpumask_bits(src2p), nr_cpumask_bits);
+		   cpumask_bits(src2p), nr_cpumask_bits);
 }
 
 /**
@@ -756,7 +759,7 @@ static inline void cpumask_or(struct cpumask *dstp, const struct cpumask *src1p,
 			      const struct cpumask *src2p)
 {
 	bitmap_or(cpumask_bits(dstp), cpumask_bits(src1p),
-				      cpumask_bits(src2p), nr_cpumask_bits);
+		  cpumask_bits(src2p), nr_cpumask_bits);
 }
 
 /**
@@ -770,7 +773,7 @@ static inline void cpumask_xor(struct cpumask *dstp,
 			       const struct cpumask *src2p)
 {
 	bitmap_xor(cpumask_bits(dstp), cpumask_bits(src1p),
-				       cpumask_bits(src2p), nr_cpumask_bits);
+		   cpumask_bits(src2p), nr_cpumask_bits);
 }
 
 /**
@@ -784,7 +787,7 @@ static inline void cpumask_andnot(struct cpumask *dstp,
 				  const struct cpumask *src2p)
 {
 	bitmap_andnot(cpumask_bits(dstp), cpumask_bits(src1p),
-					  cpumask_bits(src2p), nr_cpumask_bits);
+		      cpumask_bits(src2p), nr_cpumask_bits);
 }
 
 /**
@@ -796,7 +799,7 @@ static inline void cpumask_complement(struct cpumask *dstp,
 				      const struct cpumask *srcp)
 {
 	bitmap_complement(cpumask_bits(dstp), cpumask_bits(srcp),
-					      nr_cpumask_bits);
+			  nr_cpumask_bits);
 }
 
 /**
@@ -805,10 +808,10 @@ static inline void cpumask_complement(struct cpumask *dstp,
  * @src2p: the second input
  */
 static inline bool cpumask_equal(const struct cpumask *src1p,
-				const struct cpumask *src2p)
+				 const struct cpumask *src2p)
 {
 	return bitmap_equal(cpumask_bits(src1p), cpumask_bits(src2p),
-						 nr_cpumask_bits);
+			    nr_cpumask_bits);
 }
 
 /**
@@ -817,10 +820,10 @@ static inline bool cpumask_equal(const struct cpumask *src1p,
  * @src2p: the second input
  */
 static inline bool cpumask_intersects(const struct cpumask *src1p,
-				     const struct cpumask *src2p)
+				      const struct cpumask *src2p)
 {
 	return bitmap_intersects(cpumask_bits(src1p), cpumask_bits(src2p),
-						      nr_cpumask_bits);
+				 nr_cpumask_bits);
 }
 
 /**
@@ -832,7 +835,7 @@ static inline int cpumask_subset(const struct cpumask *src1p,
 				 const struct cpumask *src2p)
 {
 	return bitmap_subset(cpumask_bits(src1p), cpumask_bits(src2p),
-						  nr_cpumask_bits);
+			     nr_cpumask_bits);
 }
 
 /**
@@ -872,7 +875,7 @@ static inline void cpumask_shift_right(struct cpumask *dstp,
 				       const struct cpumask *srcp, int n)
 {
 	bitmap_shift_right(cpumask_bits(dstp), cpumask_bits(srcp), n,
-					       nr_cpumask_bits);
+			   nr_cpumask_bits);
 }
 
 /**
@@ -885,7 +888,7 @@ static inline void cpumask_shift_left(struct cpumask *dstp,
 				      const struct cpumask *srcp, int n)
 {
 	bitmap_shift_left(cpumask_bits(dstp), cpumask_bits(srcp), n,
-					      nr_cpumask_bits);
+			  nr_cpumask_bits);
 }
 
 /**
@@ -954,7 +957,7 @@ static inline int cpumask_scnprintf(char *buf, int len,
  *
  * Returns -errno, or 0 for success.
  */
-static inline int cpumask_parse_user(const char __user *buf, int len,
+static inline int cpumask_parse_user(const char __user * buf, int len,
 				     struct cpumask *dstp)
 {
 	return bitmap_parse_user(buf, len, cpumask_bits(dstp), nr_cpumask_bits);
@@ -1020,27 +1023,27 @@ static inline size_t cpumask_size(void)
 #ifdef CONFIG_CPUMASK_OFFSTACK
 typedef struct cpumask *cpumask_var_t;
 
-bool alloc_cpumask_var_node(cpumask_var_t *mask, gfp_t flags, int node);
-bool alloc_cpumask_var(cpumask_var_t *mask, gfp_t flags);
-void alloc_bootmem_cpumask_var(cpumask_var_t *mask);
+bool alloc_cpumask_var_node(cpumask_var_t * mask, gfp_t flags, int node);
+bool alloc_cpumask_var(cpumask_var_t * mask, gfp_t flags);
+void alloc_bootmem_cpumask_var(cpumask_var_t * mask);
 void free_cpumask_var(cpumask_var_t mask);
 void free_bootmem_cpumask_var(cpumask_var_t mask);
 
 #else
 typedef struct cpumask cpumask_var_t[1];
 
-static inline bool alloc_cpumask_var(cpumask_var_t *mask, gfp_t flags)
+static inline bool alloc_cpumask_var(cpumask_var_t * mask, gfp_t flags)
 {
 	return true;
 }
 
-static inline bool alloc_cpumask_var_node(cpumask_var_t *mask, gfp_t flags,
+static inline bool alloc_cpumask_var_node(cpumask_var_t * mask, gfp_t flags,
 					  int node)
 {
 	return true;
 }
 
-static inline void alloc_bootmem_cpumask_var(cpumask_var_t *mask)
+static inline void alloc_bootmem_cpumask_var(cpumask_var_t * mask)
 {
 }
 

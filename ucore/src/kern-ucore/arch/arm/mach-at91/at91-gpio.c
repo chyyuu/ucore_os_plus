@@ -35,6 +35,4 @@
 #include "at91-gpio.h"
 #include <kio.h>
 
-#define EINVAL 1                /* Error code returned when the PIN is unknown */
-
-
+#define EINVAL 1		/* Error code returned when the PIN is unknown */

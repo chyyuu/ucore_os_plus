@@ -105,71 +105,71 @@
  * Extended asyncmap - allows any character to be escaped.
  */
 
-typedef __u32		ext_accm[8];
+typedef __u32 ext_accm[8];
 
 /*
  * What to do with network protocol (NP) packets.
  */
 enum NPmode {
-    NPMODE_PASS,		/* pass the packet through */
-    NPMODE_DROP,		/* silently drop the packet */
-    NPMODE_ERROR,		/* return an error */
-    NPMODE_QUEUE		/* save it up for later. */
+	NPMODE_PASS,		/* pass the packet through */
+	NPMODE_DROP,		/* silently drop the packet */
+	NPMODE_ERROR,		/* return an error */
+	NPMODE_QUEUE		/* save it up for later. */
 };
 
 /*
  * Statistics for LQRP and pppstats
  */
-struct pppstat	{
-    __u32	ppp_discards;	/* # frames discarded */
+struct pppstat {
+	__u32 ppp_discards;	/* # frames discarded */
 
-    __u32	ppp_ibytes;	/* bytes received */
-    __u32	ppp_ioctects;	/* bytes received not in error */
-    __u32	ppp_ipackets;	/* packets received */
-    __u32	ppp_ierrors;	/* receive errors */
-    __u32	ppp_ilqrs;	/* # LQR frames received */
+	__u32 ppp_ibytes;	/* bytes received */
+	__u32 ppp_ioctects;	/* bytes received not in error */
+	__u32 ppp_ipackets;	/* packets received */
+	__u32 ppp_ierrors;	/* receive errors */
+	__u32 ppp_ilqrs;	/* # LQR frames received */
 
-    __u32	ppp_obytes;	/* raw bytes sent */
-    __u32	ppp_ooctects;	/* frame bytes sent */
-    __u32	ppp_opackets;	/* packets sent */
-    __u32	ppp_oerrors;	/* transmit errors */ 
-    __u32	ppp_olqrs;	/* # LQR frames sent */
+	__u32 ppp_obytes;	/* raw bytes sent */
+	__u32 ppp_ooctects;	/* frame bytes sent */
+	__u32 ppp_opackets;	/* packets sent */
+	__u32 ppp_oerrors;	/* transmit errors */
+	__u32 ppp_olqrs;	/* # LQR frames sent */
 };
 
 struct vjstat {
-    __u32	vjs_packets;	/* outbound packets */
-    __u32	vjs_compressed;	/* outbound compressed packets */
-    __u32	vjs_searches;	/* searches for connection state */
-    __u32	vjs_misses;	/* times couldn't find conn. state */
-    __u32	vjs_uncompressedin; /* inbound uncompressed packets */
-    __u32	vjs_compressedin;   /* inbound compressed packets */
-    __u32	vjs_errorin;	/* inbound unknown type packets */
-    __u32	vjs_tossed;	/* inbound packets tossed because of error */
+	__u32 vjs_packets;	/* outbound packets */
+	__u32 vjs_compressed;	/* outbound compressed packets */
+	__u32 vjs_searches;	/* searches for connection state */
+	__u32 vjs_misses;	/* times couldn't find conn. state */
+	__u32 vjs_uncompressedin;	/* inbound uncompressed packets */
+	__u32 vjs_compressedin;	/* inbound compressed packets */
+	__u32 vjs_errorin;	/* inbound unknown type packets */
+	__u32 vjs_tossed;	/* inbound packets tossed because of error */
 };
 
 struct compstat {
-    __u32	unc_bytes;	/* total uncompressed bytes */
-    __u32	unc_packets;	/* total uncompressed packets */
-    __u32	comp_bytes;	/* compressed bytes */
-    __u32	comp_packets;	/* compressed packets */
-    __u32	inc_bytes;	/* incompressible bytes */
-    __u32	inc_packets;	/* incompressible packets */
+	__u32 unc_bytes;	/* total uncompressed bytes */
+	__u32 unc_packets;	/* total uncompressed packets */
+	__u32 comp_bytes;	/* compressed bytes */
+	__u32 comp_packets;	/* compressed packets */
+	__u32 inc_bytes;	/* incompressible bytes */
+	__u32 inc_packets;	/* incompressible packets */
 
-    /* the compression ratio is defined as in_count / bytes_out */
-    __u32       in_count;	/* Bytes received */
-    __u32       bytes_out;	/* Bytes transmitted */
+	/* the compression ratio is defined as in_count / bytes_out */
+	__u32 in_count;		/* Bytes received */
+	__u32 bytes_out;	/* Bytes transmitted */
 
-    double	ratio;		/* not computed in kernel. */
+	double ratio;		/* not computed in kernel. */
 };
 
 struct ppp_stats {
-    struct pppstat	p;	/* basic PPP statistics */
-    struct vjstat	vj;	/* VJ header compression statistics */
+	struct pppstat p;	/* basic PPP statistics */
+	struct vjstat vj;	/* VJ header compression statistics */
 };
 
 struct ppp_comp_stats {
-    struct compstat	c;	/* packet compression statistics */
-    struct compstat	d;	/* packet decompression statistics */
+	struct compstat c;	/* packet compression statistics */
+	struct compstat d;	/* packet decompression statistics */
 };
 
 /*
@@ -177,8 +177,8 @@ struct ppp_comp_stats {
  * the last NP packet was sent or received.
  */
 struct ppp_idle {
-    time_t xmit_idle;		/* time since last NP packet sent */
-    time_t recv_idle;		/* time since last NP packet received */
+	time_t xmit_idle;	/* time since last NP packet sent */
+	time_t recv_idle;	/* time since last NP packet received */
 };
 
 #endif /* _PPP_DEFS_H_ */

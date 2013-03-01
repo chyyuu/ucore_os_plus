@@ -101,8 +101,7 @@ static inline void percpu_counter_set(struct percpu_counter *fbc, s64 amount)
 #define __percpu_counter_add(fbc, amount, batch) \
 	percpu_counter_add(fbc, amount)
 
-static inline void
-percpu_counter_add(struct percpu_counter *fbc, s64 amount)
+static inline void percpu_counter_add(struct percpu_counter *fbc, s64 amount)
 {
 	preempt_disable();
 	fbc->count += amount;
@@ -129,7 +128,7 @@ static inline s64 percpu_counter_sum(struct percpu_counter *fbc)
 	return percpu_counter_read(fbc);
 }
 
-#endif	/* CONFIG_SMP */
+#endif /* CONFIG_SMP */
 
 static inline void percpu_counter_inc(struct percpu_counter *fbc)
 {

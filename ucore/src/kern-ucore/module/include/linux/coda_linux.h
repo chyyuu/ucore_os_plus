@@ -17,7 +17,7 @@
 #include <linux/mm.h>
 #include <linux/vmalloc.h>
 #include <linux/slab.h>
-#include <linux/wait.h>		
+#include <linux/wait.h>
 #include <linux/types.h>
 #include <linux/fs.h>
 #include <linux/coda_fs_i.h>
@@ -65,7 +65,6 @@ void coda_sysctl_clean(void);
     else memset( ptr, 0, size ); \
 } while (0)
 
-
 #define CODA_FREE(ptr,size) \
     do { if (size < PAGE_SIZE) kfree((ptr)); else vfree((ptr)); } while (0)
 
@@ -90,6 +89,6 @@ static __inline__ char *coda_i2s(struct inode *inode)
 static __inline__ void coda_flag_inode(struct inode *inode, int flag)
 {
 	ITOC(inode)->c_flags |= flag;
-}		
+}
 
 #endif

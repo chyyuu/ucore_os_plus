@@ -56,6 +56,7 @@ static inline void rcu_qsctr_inc(int cpu)
 
 	rdssp->sched_qs++;
 }
+
 #define rcu_bh_qsctr_inc(cpu)
 
 /*
@@ -77,10 +78,10 @@ static inline void rcu_qsctr_inc(int cpu)
  * completed.
  */
 extern void call_rcu_sched(struct rcu_head *head,
-			   void (*func)(struct rcu_head *head));
+			   void (*func) (struct rcu_head * head));
 
-extern void __rcu_read_lock(void)	__acquires(RCU);
-extern void __rcu_read_unlock(void)	__releases(RCU);
+extern void __rcu_read_lock(void) __acquires(RCU);
+extern void __rcu_read_unlock(void) __releases(RCU);
 extern int rcu_pending(int cpu);
 extern int rcu_needs_cpu(int cpu);
 
@@ -122,7 +123,7 @@ static inline void rcu_enter_nohz(void)
 {
 	static DEFINE_RATELIMIT_STATE(rs, 10 * HZ, 1);
 
-	smp_mb(); /* CPUs seeing ++ must see prior RCU read-side crit sects */
+	smp_mb();		/* CPUs seeing ++ must see prior RCU read-side crit sects */
 	__get_cpu_var(rcu_dyntick_sched).dynticks++;
 	WARN_ON_RATELIMIT(__get_cpu_var(rcu_dyntick_sched).dynticks & 0x1, &rs);
 }
@@ -132,9 +133,9 @@ static inline void rcu_exit_nohz(void)
 	static DEFINE_RATELIMIT_STATE(rs, 10 * HZ, 1);
 
 	__get_cpu_var(rcu_dyntick_sched).dynticks++;
-	smp_mb(); /* CPUs seeing ++ must see later RCU read-side crit sects */
+	smp_mb();		/* CPUs seeing ++ must see later RCU read-side crit sects */
 	WARN_ON_RATELIMIT(!(__get_cpu_var(rcu_dyntick_sched).dynticks & 0x1),
-				&rs);
+			  &rs);
 }
 
 #else /* CONFIG_NO_HZ */

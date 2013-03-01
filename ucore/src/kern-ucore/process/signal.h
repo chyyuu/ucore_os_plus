@@ -59,7 +59,7 @@ struct sighand_struct {
 	semaphore_t sig_sem;
 };
 
-struct proc_signal{
+struct proc_signal {
 	struct signal_struct *signal;
 	struct sighand_struct *sighand;
 	sigset_t blocked;
@@ -69,44 +69,44 @@ struct proc_signal{
 	size_t sas_ss_size;
 };
 
-static inline int
-signal_count(struct signal_struct *sig) {
-    return atomic_read(&(sig->count));
+static inline int signal_count(struct signal_struct *sig)
+{
+	return atomic_read(&(sig->count));
 }
 
-static inline void
-set_signal_count(struct signal_struct *sig, int val) {
-    atomic_set(&(sig->count), val);
+static inline void set_signal_count(struct signal_struct *sig, int val)
+{
+	atomic_set(&(sig->count), val);
 }
 
-static inline int
-signal_count_inc(struct signal_struct *sig) {
-    return atomic_add_return(&(sig->count), 1);
+static inline int signal_count_inc(struct signal_struct *sig)
+{
+	return atomic_add_return(&(sig->count), 1);
 }
 
-static inline int
-signal_count_dec(struct signal_struct *sig) {
-    return atomic_sub_return(&(sig->count), 1);
+static inline int signal_count_dec(struct signal_struct *sig)
+{
+	return atomic_sub_return(&(sig->count), 1);
 }
 
-static inline int
-sighand_count(struct sighand_struct *sh) {
-    return atomic_read(&(sh->count));
+static inline int sighand_count(struct sighand_struct *sh)
+{
+	return atomic_read(&(sh->count));
 }
 
-static inline void
-set_sighand_count(struct sighand_struct *sh, int val) {
-    atomic_set(&(sh->count), val);
+static inline void set_sighand_count(struct sighand_struct *sh, int val)
+{
+	atomic_set(&(sh->count), val);
 }
 
-static inline int
-sighand_count_inc(struct sighand_struct *sh) {
-    return atomic_add_return(&(sh->count), 1);
+static inline int sighand_count_inc(struct sighand_struct *sh)
+{
+	return atomic_add_return(&(sh->count), 1);
 }
 
-static inline int
-sighand_count_dec(struct sighand_struct *sh) {
-    return atomic_sub_return(&(sh->count), 1);
+static inline int sighand_count_dec(struct sighand_struct *sh)
+{
+	return atomic_sub_return(&(sh->count), 1);
 }
 
 struct signal_struct *signal_create(void);
@@ -119,24 +119,24 @@ void lock_sig(struct sighand_struct *sh);
 void unlock_sig(struct sighand_struct *sh);
 
 int do_sigaction(int sign, const struct sigaction *act, struct sigaction *old);
-int do_sigpending(sigset_t *set);
-int do_sigprocmask(int how, const sigset_t *set, sigset_t *old);
-int do_sigsuspend(sigset_t __user *pmask);
+int do_sigpending(sigset_t * set);
+int do_sigprocmask(int how, const sigset_t * set, sigset_t * old);
+int do_sigsuspend(sigset_t __user * pmask);
 int do_sigreturn(void);
-int do_sigaltstack(const stack_t *ss, stack_t *old);
+int do_sigaltstack(const stack_t * ss, stack_t * old);
 
 int do_sigtkill(int pid, int sign);
 int do_sigkill(int pid, int sign);
 
-int do_sigwaitinfo(const sigset_t *set, struct siginfo_t *info);
+int do_sigwaitinfo(const sigset_t * set, struct siginfo_t *info);
 
 int raise_signal(struct proc_struct *proc, int sign, bool group);
 
-int do_signal(struct trapframe *tf, sigset_t *old);
+int do_signal(struct trapframe *tf, sigset_t * old);
 
 void sig_recalc_pending(struct proc_struct *proc);
 
-int __sig_setup_frame(int sign, struct sigaction *act, sigset_t oldset, struct trapframe *tf);
+int __sig_setup_frame(int sign, struct sigaction *act, sigset_t oldset,
+		      struct trapframe *tf);
 
 #endif // _HERN_PROCESS_SIGNAL_H_
-

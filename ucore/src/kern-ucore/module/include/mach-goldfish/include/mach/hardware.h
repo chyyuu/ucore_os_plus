@@ -22,12 +22,12 @@
  * Where in virtual memory the IO devices (timers, system controllers
  * and so on)
  */
-#define IO_BASE			0xfe000000                 // VA of IO 
-#define IO_SIZE			0x00800000                 // How much?
-#define IO_START		0xff000000                 // PA of IO
+#define IO_BASE			0xfe000000	// VA of IO
+#define IO_SIZE			0x00800000	// How much?
+#define IO_START		0xff000000	// PA of IO
 
 #define GOLDFISH_INTERRUPT_BASE     (0x0)
-#define GOLDFISH_INTERRUPT_STATUS       (0x00) // number of pending interrupts
+#define GOLDFISH_INTERRUPT_STATUS       (0x00)	// number of pending interrupts
 #define GOLDFISH_INTERRUPT_NUMBER       (0x04)
 #define GOLDFISH_INTERRUPT_DISABLE_ALL  (0x08)
 #define GOLDFISH_INTERRUPT_DISABLE      (0x0c)

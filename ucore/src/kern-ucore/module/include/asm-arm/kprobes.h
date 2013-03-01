@@ -37,12 +37,12 @@
 typedef u32 kprobe_opcode_t;
 
 struct kprobe;
-typedef void (kprobe_insn_handler_t)(struct kprobe *, struct pt_regs *);
+typedef void (kprobe_insn_handler_t) (struct kprobe *, struct pt_regs *);
 
 /* Architecture specific copy of original instruction. */
 struct arch_specific_insn {
-	kprobe_opcode_t		*insn;
-	kprobe_insn_handler_t	*insn_handler;
+	kprobe_opcode_t *insn;
+	kprobe_insn_handler_t *insn_handler;
 };
 
 struct prev_kprobe {

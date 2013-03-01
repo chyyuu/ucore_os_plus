@@ -101,20 +101,24 @@ enum nfs4_acl_whotype {
 #include <linux/list.h>
 
 struct nfs4_ace {
-	uint32_t	type;
-	uint32_t	flag;
-	uint32_t	access_mask;
-	int		whotype;
-	uid_t		who;
+	uint32_t type;
+	uint32_t flag;
+	uint32_t access_mask;
+	int whotype;
+	uid_t who;
 };
 
 struct nfs4_acl {
-	uint32_t	naces;
-	struct nfs4_ace	aces[0];
+	uint32_t naces;
+	struct nfs4_ace aces[0];
 };
 
-typedef struct { char data[NFS4_VERIFIER_SIZE]; } nfs4_verifier;
-typedef struct { char data[NFS4_STATEID_SIZE]; } nfs4_stateid;
+typedef struct {
+	char data[NFS4_VERIFIER_SIZE];
+} nfs4_verifier;
+typedef struct {
+	char data[NFS4_STATEID_SIZE];
+} nfs4_stateid;
 
 enum nfs_opnum4 {
 	OP_ACCESS = 3,
@@ -238,16 +242,16 @@ enum nfsstat4 {
  * internally by nfsd.
  */
 enum nfs_ftype4 {
-	NF4BAD		= 0,
-        NF4REG          = 1,    /* Regular File */
-        NF4DIR          = 2,    /* Directory */
-        NF4BLK          = 3,    /* Special File - block device */
-        NF4CHR          = 4,    /* Special File - character device */
-        NF4LNK          = 5,    /* Symbolic Link */
-        NF4SOCK         = 6,    /* Special File - socket */
-        NF4FIFO         = 7,    /* Special File - fifo */
-        NF4ATTRDIR      = 8,    /* Attribute Directory */
-        NF4NAMEDATTR    = 9     /* Named Attribute */
+	NF4BAD = 0,
+	NF4REG = 1,		/* Regular File */
+	NF4DIR = 2,		/* Directory */
+	NF4BLK = 3,		/* Special File - block device */
+	NF4CHR = 4,		/* Special File - character device */
+	NF4LNK = 5,		/* Symbolic Link */
+	NF4SOCK = 6,		/* Special File - socket */
+	NF4FIFO = 7,		/* Special File - fifo */
+	NF4ATTRDIR = 8,		/* Attribute Directory */
+	NF4NAMEDATTR = 9	/* Named Attribute */
 };
 
 enum open_claim_type4 {
@@ -286,7 +290,6 @@ enum lock_type4 {
 	NFS4_READW_LT = 3,
 	NFS4_WRITEW_LT = 4
 };
-
 
 /* Mandatory Attributes */
 #define FATTR4_WORD0_SUPPORTED_ATTRS    (1UL << 0)
@@ -356,7 +359,7 @@ enum lock_type4 {
 /* Index of predefined Linux client operations */
 
 enum {
-	NFSPROC4_CLNT_NULL = 0,		/* Unused */
+	NFSPROC4_CLNT_NULL = 0,	/* Unused */
 	NFSPROC4_CLNT_READ,
 	NFSPROC4_CLNT_WRITE,
 	NFSPROC4_CLNT_COMMIT,

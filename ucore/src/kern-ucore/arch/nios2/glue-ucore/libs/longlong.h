@@ -122,7 +122,7 @@ extern const UQItype __clz_tab[256];
     (q) = __udiv_qrnnd (&__r, (n1), (n0), (d));				\
     (r) = __r;								\
   } while (0)
-extern UDItype __udiv_qrnnd (UDItype *, UDItype, UDItype, UDItype);
+extern UDItype __udiv_qrnnd(UDItype *, UDItype, UDItype, UDItype);
 #define UDIV_TIME 220
 #endif /* LONGLONG_STANDALONE */
 #ifdef __alpha_cix__
@@ -183,7 +183,7 @@ do {									\
   w0 = __w.s.low;							\
 } while (0)
 #define __umulsidi3 __umulsidi3
-UDItype __umulsidi3 (USItype, USItype);
+UDItype __umulsidi3(USItype, USItype);
 #endif
 
 #if defined (__arm__) && !defined (__thumb__) && W_TYPE_SIZE == 32
@@ -439,7 +439,7 @@ UDItype __umulsidi3 (USItype, USItype);
 	     "1" ((USItype) (n1)),					\
 	     "dmi" ((USItype) (d)))
 
-#elif defined (__mcoldfire__) /* not mc68020 */
+#elif defined (__mcoldfire__)	/* not mc68020 */
 
 #define umul_ppmm(xh, xl, a, b) \
   __asm__ ("| Inlined umul_ppmm\n"					\
@@ -554,7 +554,7 @@ UDItype __umulsidi3 (USItype, USItype);
 	     : "r" ((USItype) (x)));					\
     (count) = __cbtmp ^ 31;						\
   } while (0)
-#define COUNT_LEADING_ZEROS_0 63 /* sic */
+#define COUNT_LEADING_ZEROS_0 63	/* sic */
 #if defined (__mc88110__)
 #define umul_ppmm(wh, wl, u, v) \
   do {									\
@@ -765,8 +765,8 @@ UDItype __umulsidi3 (USItype, USItype);
     __asm__ ("mulhd %0,%1,%2" : "=r" (ph) : "%r" (m0), "r" (m1));	\
     (pl) = __m0 * __m1;							\
   } while (0)
-#define SMUL_TIME 14  /* ??? */
-#define UDIV_TIME 120 /* ??? */
+#define SMUL_TIME 14		/* ??? */
+#define UDIV_TIME 120		/* ??? */
 #endif /* 64-bit PowerPC.  */
 
 #if defined (__ibm032__) /* RT/ROMP */ && W_TYPE_SIZE == 32

@@ -36,13 +36,13 @@ struct backlight_ops {
 #define BL_CORE_SUSPENDRESUME	(1 << 0)
 
 	/* Notify the backlight driver some property has changed */
-	int (*update_status)(struct backlight_device *);
+	int (*update_status) (struct backlight_device *);
 	/* Return the current backlight brightness (accounting for power,
 	   fb_blank etc.) */
-	int (*get_brightness)(struct backlight_device *);
+	int (*get_brightness) (struct backlight_device *);
 	/* Check if given framebuffer device is the one bound to this backlight;
 	   return 0 if not, !=0 if it is. If NULL, backlight always matches the fb. */
-	int (*check_fb)(struct fb_info *);
+	int (*check_fb) (struct fb_info *);
 };
 
 /* This structure defines all the properties of a backlight */
@@ -98,12 +98,15 @@ static inline void backlight_update_status(struct backlight_device *bd)
 }
 
 extern struct backlight_device *backlight_device_register(const char *name,
-	struct device *dev, void *devdata, struct backlight_ops *ops);
+							  struct device *dev,
+							  void *devdata,
+							  struct backlight_ops
+							  *ops);
 extern void backlight_device_unregister(struct backlight_device *bd);
 
 #define to_backlight_device(obj) container_of(obj, struct backlight_device, dev)
 
-static inline void * bl_get_data(struct backlight_device *bl_dev)
+static inline void *bl_get_data(struct backlight_device *bl_dev)
 {
 	return dev_get_drvdata(&bl_dev->dev);
 }
@@ -113,8 +116,8 @@ struct generic_bl_info {
 	int max_intensity;
 	int default_intensity;
 	int limit_mask;
-	void (*set_bl_intensity)(int intensity);
-	void (*kick_battery)(void);
+	void (*set_bl_intensity) (int intensity);
+	void (*kick_battery) (void);
 };
 
 #endif

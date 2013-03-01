@@ -30,5 +30,5 @@ extern void out_of_memory(struct zonelist *zonelist, gfp_t gfp_mask, int order);
 extern int register_oom_notifier(struct notifier_block *nb);
 extern int unregister_oom_notifier(struct notifier_block *nb);
 
-#endif /* __KERNEL__*/
+#endif /* __KERNEL__ */
 #endif /* _INCLUDE_LINUX_OOM_H */

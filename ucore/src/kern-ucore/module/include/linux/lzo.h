@@ -21,11 +21,11 @@
 
 /* This requires 'workmem' of size LZO1X_1_MEM_COMPRESS */
 int lzo1x_1_compress(const unsigned char *src, size_t src_len,
-			unsigned char *dst, size_t *dst_len, void *wrkmem);
+		     unsigned char *dst, size_t * dst_len, void *wrkmem);
 
 /* safe decompression with overrun testing */
 int lzo1x_decompress_safe(const unsigned char *src, size_t src_len,
-			unsigned char *dst, size_t *dst_len);
+			  unsigned char *dst, size_t * dst_len);
 
 /*
  * Return values (< 0 = Error)

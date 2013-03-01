@@ -307,7 +307,7 @@
 #define SAITR_RDBDA	(1<<10)
 #define SAITR_RDBDB	(1<<11)
 
-#endif  /* !CONFIG_ARCH_PXA */
+#endif /* !CONFIG_ARCH_PXA */
 
 /*
  * General-Purpose I/O Interface
@@ -511,9 +511,6 @@
 #define PCSSR_S0_SLEEP	(1<<0)
 #define PCSSR_S1_SLEEP	(1<<1)
 
-
-
-
 extern struct bus_type sa1111_bus_type;
 
 #define SA1111_DEVID_SBI	0
@@ -527,13 +524,13 @@ extern struct bus_type sa1111_bus_type;
 #define SA1111_DEVID_PCMCIA	8
 
 struct sa1111_dev {
-	struct device	dev;
-	unsigned int	devid;
-	struct resource	res;
-	void __iomem	*mapbase;
-	unsigned int	skpcr_mask;
-	unsigned int	irq[6];
-	u64		dma_mask;
+	struct device dev;
+	unsigned int devid;
+	struct resource res;
+	void __iomem *mapbase;
+	unsigned int skpcr_mask;
+	unsigned int irq[6];
+	u64 dma_mask;
 };
 
 #define SA1111_DEV(_d)	container_of((_d), struct sa1111_dev, dev)
@@ -542,12 +539,12 @@ struct sa1111_dev {
 #define sa1111_set_drvdata(d,p)	dev_set_drvdata(&(d)->dev, p)
 
 struct sa1111_driver {
-	struct device_driver	drv;
-	unsigned int		devid;
-	int (*probe)(struct sa1111_dev *);
-	int (*remove)(struct sa1111_dev *);
-	int (*suspend)(struct sa1111_dev *, pm_message_t);
-	int (*resume)(struct sa1111_dev *);
+	struct device_driver drv;
+	unsigned int devid;
+	int (*probe) (struct sa1111_dev *);
+	int (*remove) (struct sa1111_dev *);
+	int (*suspend) (struct sa1111_dev *, pm_message_t);
+	int (*resume) (struct sa1111_dev *);
 };
 
 #define SA1111_DRV(_d)	container_of((_d), struct sa1111_driver, drv)
@@ -574,8 +571,10 @@ int sa1111_check_dma_bug(dma_addr_t addr);
 int sa1111_driver_register(struct sa1111_driver *);
 void sa1111_driver_unregister(struct sa1111_driver *);
 
-void sa1111_set_io_dir(struct sa1111_dev *sadev, unsigned int bits, unsigned int dir, unsigned int sleep_dir);
+void sa1111_set_io_dir(struct sa1111_dev *sadev, unsigned int bits,
+		       unsigned int dir, unsigned int sleep_dir);
 void sa1111_set_io(struct sa1111_dev *sadev, unsigned int bits, unsigned int v);
-void sa1111_set_sleep_io(struct sa1111_dev *sadev, unsigned int bits, unsigned int v);
+void sa1111_set_sleep_io(struct sa1111_dev *sadev, unsigned int bits,
+			 unsigned int v);
 
-#endif  /* _ASM_ARCH_SA1111 */
+#endif /* _ASM_ARCH_SA1111 */

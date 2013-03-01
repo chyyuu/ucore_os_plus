@@ -30,37 +30,37 @@ struct iobuf;
  * need to worry about it.
  */
 struct inode {
-    union {
-        struct device __device_info;
-        struct pipe_root __pipe_root_info;
-        struct pipe_inode __pipe_inode_info;
-        struct sfs_inode __sfs_inode_info;
+	union {
+		struct device __device_info;
+		struct pipe_root __pipe_root_info;
+		struct pipe_inode __pipe_inode_info;
+		struct sfs_inode __sfs_inode_info;
 #ifdef UCONFIG_HAVE_YAFFS2
-        struct yaffs2_inode __yaffs2_inode_info;
+		struct yaffs2_inode __yaffs2_inode_info;
 #endif
 #ifdef UCONFIG_HAVE_FATFS
-        struct ffs_inode __ffs_inode_info;
+		struct ffs_inode __ffs_inode_info;
 #endif
-    } in_info;
-    enum {
-        inode_type_device_info = 0x1234,
-        inode_type_pipe_root_info,
-        inode_type_pipe_inode_info,
-        inode_type_sfs_inode_info,
+	} in_info;
+	enum {
+		inode_type_device_info = 0x1234,
+		inode_type_pipe_root_info,
+		inode_type_pipe_inode_info,
+		inode_type_sfs_inode_info,
 #ifdef UCONFIG_HAVE_YAFFS2
-        inode_type_yaffs2_inode_info,
+		inode_type_yaffs2_inode_info,
 #endif
 #ifdef UCONFIG_HAVE_FATFS
-        inode_type_ffs_inode_info,
+		inode_type_ffs_inode_info,
 #endif
-    } in_type;
-    atomic_t ref_count;
-    atomic_t open_count;
-    struct fs *in_fs;
-    const struct inode_ops *in_ops;
+	} in_type;
+	atomic_t ref_count;
+	atomic_t open_count;
+	struct fs *in_fs;
+	const struct inode_ops *in_ops;
 #ifdef UCONFIG_BIONIC_LIBC
 	list_entry_t mapped_addr_list;
-#endif //UCONFIG_BIONIC_LIBC
+#endif				//UCONFIG_BIONIC_LIBC
 };
 
 #define __in_type(type)                                             inode_type_##type##_info
@@ -216,29 +216,35 @@ void inode_kill(struct inode *node);
  *                      inode handed back.
  */
 struct inode_ops {
-    unsigned long vop_magic;
-    int (*vop_open)(struct inode *node, uint32_t open_flags);
-    int (*vop_close)(struct inode *node);
-    int (*vop_read)(struct inode *node, struct iobuf *iob);
-    int (*vop_write)(struct inode *node, struct iobuf *iob);
-    int (*vop_fstat)(struct inode *node, struct stat *stat);
-    int (*vop_fsync)(struct inode *node);
-    int (*vop_mkdir)(struct inode *node, const char *name);
-    int (*vop_link)(struct inode *node, const char *name, struct inode *link_node);
-    int (*vop_rename)(struct inode *node, const char *name, struct inode *new_node, const char *new_name);
-    int (*vop_readlink)(struct inode *node, struct iobuf *iob);
-    int (*vop_symlink)(struct inode *node, const char *name, const char *path);
-    int (*vop_namefile)(struct inode *node, struct iobuf *iob);
-    int (*vop_getdirentry)(struct inode *node, struct iobuf *iob);
-    int (*vop_reclaim)(struct inode *node);
-    int (*vop_ioctl)(struct inode *node, int op, void *data);
-    int (*vop_gettype)(struct inode *node, uint32_t *type_store);
-    int (*vop_tryseek)(struct inode *node, off_t pos);
-    int (*vop_truncate)(struct inode *node, off_t len);
-    int (*vop_create)(struct inode *node, const char *name, bool excl, struct inode **node_store);
-    int (*vop_unlink)(struct inode *node, const char *name);
-    int (*vop_lookup)(struct inode *node, char *path, struct inode **node_store);
-    int (*vop_lookup_parent)(struct inode *node, char *path, struct inode **node_store, char **endp);
+	unsigned long vop_magic;
+	int (*vop_open) (struct inode * node, uint32_t open_flags);
+	int (*vop_close) (struct inode * node);
+	int (*vop_read) (struct inode * node, struct iobuf * iob);
+	int (*vop_write) (struct inode * node, struct iobuf * iob);
+	int (*vop_fstat) (struct inode * node, struct stat * stat);
+	int (*vop_fsync) (struct inode * node);
+	int (*vop_mkdir) (struct inode * node, const char *name);
+	int (*vop_link) (struct inode * node, const char *name,
+			 struct inode * link_node);
+	int (*vop_rename) (struct inode * node, const char *name,
+			   struct inode * new_node, const char *new_name);
+	int (*vop_readlink) (struct inode * node, struct iobuf * iob);
+	int (*vop_symlink) (struct inode * node, const char *name,
+			    const char *path);
+	int (*vop_namefile) (struct inode * node, struct iobuf * iob);
+	int (*vop_getdirentry) (struct inode * node, struct iobuf * iob);
+	int (*vop_reclaim) (struct inode * node);
+	int (*vop_ioctl) (struct inode * node, int op, void *data);
+	int (*vop_gettype) (struct inode * node, uint32_t * type_store);
+	int (*vop_tryseek) (struct inode * node, off_t pos);
+	int (*vop_truncate) (struct inode * node, off_t len);
+	int (*vop_create) (struct inode * node, const char *name, bool excl,
+			   struct inode ** node_store);
+	int (*vop_unlink) (struct inode * node, const char *name);
+	int (*vop_lookup) (struct inode * node, char *path,
+			   struct inode ** node_store);
+	int (*vop_lookup_parent) (struct inode * node, char *path,
+				  struct inode ** node_store, char **endp);
 };
 
 int null_vop_pass(void);
@@ -311,15 +317,14 @@ void inode_check(struct inode *node, const char *opstr);
 #define NULL_VOP_ISDIR                                              ((void *)null_vop_isdir)
 #define NULL_VOP_NOTDIR                                             ((void *)null_vop_notdir)
 
-static inline int
-inode_ref_count(struct inode *node) {
-    return atomic_read(&(node->ref_count));
+static inline int inode_ref_count(struct inode *node)
+{
+	return atomic_read(&(node->ref_count));
 }
 
-static inline int
-inode_open_count(struct inode *node) {
-    return atomic_read(&(node->open_count));
+static inline int inode_open_count(struct inode *node)
+{
+	return atomic_read(&(node->open_count));
 }
 
 #endif /* !__KERN_FS_VFS_INODE_H__ */
-

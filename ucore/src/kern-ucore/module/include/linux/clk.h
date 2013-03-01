@@ -17,7 +17,6 @@ struct device;
  * The base API.
  */
 
-
 /*
  * struct clk - an machine class defined object / cookie.
  */
@@ -83,11 +82,9 @@ unsigned long clk_get_rate(struct clk *clk);
  */
 void clk_put(struct clk *clk);
 
-
 /*
  * The remaining APIs are optional for machine class support.
  */
-
 
 /**
  * clk_round_rate - adjust a rate to the exact rate a clock can provide
@@ -97,7 +94,7 @@ void clk_put(struct clk *clk);
  * Returns rounded clock rate in Hz, or negative errno.
  */
 long clk_round_rate(struct clk *clk, unsigned long rate);
- 
+
 /**
  * clk_set_rate - set the clock rate for a clock source
  * @clk: clock source
@@ -106,7 +103,7 @@ long clk_round_rate(struct clk *clk, unsigned long rate);
  * Returns success (0) or negative errno.
  */
 int clk_set_rate(struct clk *clk, unsigned long rate);
- 
+
 /**
  * clk_set_parent - set the parent clock source for this clock
  * @clk: clock source

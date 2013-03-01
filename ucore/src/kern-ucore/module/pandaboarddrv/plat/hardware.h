@@ -290,4 +290,4 @@
 #include <plat/am33xx.h>
 #include <plat/omap54xx.h>
 
-#endif	/* __ASM_ARCH_OMAP_HARDWARE_H */
+#endif /* __ASM_ARCH_OMAP_HARDWARE_H */

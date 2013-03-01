@@ -73,7 +73,6 @@
 #define __initdata_refok __refdata
 #define __exit_refok     __ref
 
-
 #ifdef MODULE
 #define __exitused
 #else
@@ -136,8 +135,8 @@
 /*
  * Used for initialization calls..
  */
-typedef int (*initcall_t)(void);
-typedef void (*exitcall_t)(void);
+typedef int (*initcall_t) (void);
+typedef void (*exitcall_t) (void);
 
 extern initcall_t __con_initcall_start[], __con_initcall_end[];
 extern initcall_t __security_initcall_start[], __security_initcall_end[];
@@ -152,10 +151,10 @@ extern unsigned int reset_devices;
 void setup_arch(char **);
 void prepare_namespace(void);
 
-extern void (*late_time_init)(void);
+extern void (*late_time_init) (void);
 
 #endif
-  
+
 #ifndef MODULE
 
 #ifndef __ASSEMBLY__
@@ -220,7 +219,7 @@ extern void (*late_time_init)(void);
 
 struct obs_kernel_param {
 	const char *str;
-	int (*setup_func)(char *);
+	int (*setup_func) (char *);
 	int early;
 };
 
@@ -297,7 +296,7 @@ void __init parse_early_param(void);
 	void cleanup_module(void) __attribute__((alias(#exitfn)));
 
 #define __setup_param(str, unique_id, fn)	/* nothing */
-#define __setup(str, func) 			/* nothing */
+#define __setup(str, func)	/* nothing */
 #endif
 
 /* Data marked not to be saved by software suspend */
@@ -311,7 +310,7 @@ void __init parse_early_param(void);
 #else
 #define __init_or_module __init
 #define __initdata_or_module __initdata
-#endif /*CONFIG_MODULES*/
+#endif /*CONFIG_MODULES */
 
 /* Functions marked as __devexit may be discarded at kernel link time, depending
    on config options.  Newer versions of binutils detect references from

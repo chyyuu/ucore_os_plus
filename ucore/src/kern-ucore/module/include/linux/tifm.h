@@ -20,45 +20,45 @@
 
 /* Host registers (relative to pci base address): */
 enum {
-	FM_SET_INTERRUPT_ENABLE   = 0x008,
+	FM_SET_INTERRUPT_ENABLE = 0x008,
 	FM_CLEAR_INTERRUPT_ENABLE = 0x00c,
-	FM_INTERRUPT_STATUS       = 0x014
+	FM_INTERRUPT_STATUS = 0x014
 };
 
 /* Socket registers (relative to socket base address): */
 enum {
-	SOCK_CONTROL                   = 0x004,
-	SOCK_PRESENT_STATE             = 0x008,
-	SOCK_DMA_ADDRESS               = 0x00c,
-	SOCK_DMA_CONTROL               = 0x010,
-	SOCK_DMA_FIFO_INT_ENABLE_SET   = 0x014,
+	SOCK_CONTROL = 0x004,
+	SOCK_PRESENT_STATE = 0x008,
+	SOCK_DMA_ADDRESS = 0x00c,
+	SOCK_DMA_CONTROL = 0x010,
+	SOCK_DMA_FIFO_INT_ENABLE_SET = 0x014,
 	SOCK_DMA_FIFO_INT_ENABLE_CLEAR = 0x018,
-	SOCK_DMA_FIFO_STATUS           = 0x020,
-	SOCK_FIFO_CONTROL              = 0x024,
-	SOCK_FIFO_PAGE_SIZE            = 0x028,
-	SOCK_MMCSD_COMMAND             = 0x104,
-	SOCK_MMCSD_ARG_LOW             = 0x108,
-	SOCK_MMCSD_ARG_HIGH            = 0x10c,
-	SOCK_MMCSD_CONFIG              = 0x110,
-	SOCK_MMCSD_STATUS              = 0x114,
-	SOCK_MMCSD_INT_ENABLE          = 0x118,
-	SOCK_MMCSD_COMMAND_TO          = 0x11c,
-	SOCK_MMCSD_DATA_TO             = 0x120,
-	SOCK_MMCSD_DATA                = 0x124,
-	SOCK_MMCSD_BLOCK_LEN           = 0x128,
-	SOCK_MMCSD_NUM_BLOCKS          = 0x12c,
-	SOCK_MMCSD_BUFFER_CONFIG       = 0x130,
-	SOCK_MMCSD_SPI_CONFIG          = 0x134,
-	SOCK_MMCSD_SDIO_MODE_CONFIG    = 0x138,
-	SOCK_MMCSD_RESPONSE            = 0x144,
-	SOCK_MMCSD_SDIO_SR             = 0x164,
-	SOCK_MMCSD_SYSTEM_CONTROL      = 0x168,
-	SOCK_MMCSD_SYSTEM_STATUS       = 0x16c,
-	SOCK_MS_COMMAND                = 0x184,
-	SOCK_MS_DATA                   = 0x188,
-	SOCK_MS_STATUS                 = 0x18c,
-	SOCK_MS_SYSTEM                 = 0x190,
-	SOCK_FIFO_ACCESS               = 0x200
+	SOCK_DMA_FIFO_STATUS = 0x020,
+	SOCK_FIFO_CONTROL = 0x024,
+	SOCK_FIFO_PAGE_SIZE = 0x028,
+	SOCK_MMCSD_COMMAND = 0x104,
+	SOCK_MMCSD_ARG_LOW = 0x108,
+	SOCK_MMCSD_ARG_HIGH = 0x10c,
+	SOCK_MMCSD_CONFIG = 0x110,
+	SOCK_MMCSD_STATUS = 0x114,
+	SOCK_MMCSD_INT_ENABLE = 0x118,
+	SOCK_MMCSD_COMMAND_TO = 0x11c,
+	SOCK_MMCSD_DATA_TO = 0x120,
+	SOCK_MMCSD_DATA = 0x124,
+	SOCK_MMCSD_BLOCK_LEN = 0x128,
+	SOCK_MMCSD_NUM_BLOCKS = 0x12c,
+	SOCK_MMCSD_BUFFER_CONFIG = 0x130,
+	SOCK_MMCSD_SPI_CONFIG = 0x134,
+	SOCK_MMCSD_SDIO_MODE_CONFIG = 0x138,
+	SOCK_MMCSD_RESPONSE = 0x144,
+	SOCK_MMCSD_SDIO_SR = 0x164,
+	SOCK_MMCSD_SYSTEM_CONTROL = 0x168,
+	SOCK_MMCSD_SYSTEM_STATUS = 0x16c,
+	SOCK_MS_COMMAND = 0x184,
+	SOCK_MS_DATA = 0x188,
+	SOCK_MS_STATUS = 0x18c,
+	SOCK_MS_SYSTEM = 0x190,
+	SOCK_FIFO_ACCESS = 0x200
 };
 
 #define TIFM_CTRL_LED             0x00000040
@@ -89,46 +89,43 @@ struct tifm_device_id {
 
 struct tifm_driver;
 struct tifm_dev {
-	char __iomem  *addr;
-	spinlock_t    lock;
+	char __iomem *addr;
+	spinlock_t lock;
 	unsigned char type;
-	unsigned int  socket_id;
+	unsigned int socket_id;
 
-	void          (*card_event)(struct tifm_dev *sock);
-	void          (*data_event)(struct tifm_dev *sock);
+	void (*card_event) (struct tifm_dev * sock);
+	void (*data_event) (struct tifm_dev * sock);
 
 	struct device dev;
 };
 
 struct tifm_driver {
 	struct tifm_device_id *id_table;
-	int                   (*probe)(struct tifm_dev *dev);
-	void                  (*remove)(struct tifm_dev *dev);
-	int                   (*suspend)(struct tifm_dev *dev,
-					 pm_message_t state);
-	int                   (*resume)(struct tifm_dev *dev);
+	int (*probe) (struct tifm_dev * dev);
+	void (*remove) (struct tifm_dev * dev);
+	int (*suspend) (struct tifm_dev * dev, pm_message_t state);
+	int (*resume) (struct tifm_dev * dev);
 
-	struct device_driver  driver;
+	struct device_driver driver;
 };
 
 struct tifm_adapter {
-	char __iomem        *addr;
-	spinlock_t          lock;
-	unsigned int        irq_status;
-	unsigned int        socket_change_set;
-	unsigned int        id;
-	unsigned int        num_sockets;
-	struct completion   *finish_me;
+	char __iomem *addr;
+	spinlock_t lock;
+	unsigned int irq_status;
+	unsigned int socket_change_set;
+	unsigned int id;
+	unsigned int num_sockets;
+	struct completion *finish_me;
 
-	struct work_struct  media_switcher;
-	struct device	    dev;
+	struct work_struct media_switcher;
+	struct device dev;
 
-	void                (*eject)(struct tifm_adapter *fm,
-				     struct tifm_dev *sock);
-	int                 (*has_ms_pif)(struct tifm_adapter *fm,
-					  struct tifm_dev *sock);
+	void (*eject) (struct tifm_adapter * fm, struct tifm_dev * sock);
+	int (*has_ms_pif) (struct tifm_adapter * fm, struct tifm_dev * sock);
 
-	struct tifm_dev     *sockets[0];
+	struct tifm_dev *sockets[0];
 };
 
 struct tifm_adapter *tifm_alloc_adapter(unsigned int num_sockets,

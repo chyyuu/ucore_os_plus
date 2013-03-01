@@ -25,33 +25,32 @@
 #define HIGHMEM_ZONE(xx)
 #endif
 
-
 #define FOR_ALL_ZONES(xx) DMA_ZONE(xx) DMA32_ZONE(xx) xx##_NORMAL HIGHMEM_ZONE(xx) , xx##_MOVABLE
 
 enum vm_event_item { PGPGIN, PGPGOUT, PSWPIN, PSWPOUT,
-		FOR_ALL_ZONES(PGALLOC),
-		PGFREE, PGACTIVATE, PGDEACTIVATE,
-		PGFAULT, PGMAJFAULT,
-		FOR_ALL_ZONES(PGREFILL),
-		FOR_ALL_ZONES(PGSTEAL),
-		FOR_ALL_ZONES(PGSCAN_KSWAPD),
-		FOR_ALL_ZONES(PGSCAN_DIRECT),
-		PGINODESTEAL, SLABS_SCANNED, KSWAPD_STEAL, KSWAPD_INODESTEAL,
-		PAGEOUTRUN, ALLOCSTALL, PGROTATED,
+	FOR_ALL_ZONES(PGALLOC),
+	PGFREE, PGACTIVATE, PGDEACTIVATE,
+	PGFAULT, PGMAJFAULT,
+	FOR_ALL_ZONES(PGREFILL),
+	FOR_ALL_ZONES(PGSTEAL),
+	FOR_ALL_ZONES(PGSCAN_KSWAPD),
+	FOR_ALL_ZONES(PGSCAN_DIRECT),
+	PGINODESTEAL, SLABS_SCANNED, KSWAPD_STEAL, KSWAPD_INODESTEAL,
+	PAGEOUTRUN, ALLOCSTALL, PGROTATED,
 #ifdef CONFIG_HUGETLB_PAGE
-		HTLB_BUDDY_PGALLOC, HTLB_BUDDY_PGALLOC_FAIL,
+	HTLB_BUDDY_PGALLOC, HTLB_BUDDY_PGALLOC_FAIL,
 #endif
 #ifdef CONFIG_UNEVICTABLE_LRU
-		UNEVICTABLE_PGCULLED,	/* culled to noreclaim list */
-		UNEVICTABLE_PGSCANNED,	/* scanned for reclaimability */
-		UNEVICTABLE_PGRESCUED,	/* rescued from noreclaim list */
-		UNEVICTABLE_PGMLOCKED,
-		UNEVICTABLE_PGMUNLOCKED,
-		UNEVICTABLE_PGCLEARED,	/* on COW, page truncate */
-		UNEVICTABLE_PGSTRANDED,	/* unable to isolate on unlock */
-		UNEVICTABLE_MLOCKFREED,
+	UNEVICTABLE_PGCULLED,	/* culled to noreclaim list */
+	UNEVICTABLE_PGSCANNED,	/* scanned for reclaimability */
+	UNEVICTABLE_PGRESCUED,	/* rescued from noreclaim list */
+	UNEVICTABLE_PGMLOCKED,
+	UNEVICTABLE_PGMUNLOCKED,
+	UNEVICTABLE_PGCLEARED,	/* on COW, page truncate */
+	UNEVICTABLE_PGSTRANDED,	/* unable to isolate on unlock */
+	UNEVICTABLE_MLOCKFREED,
 #endif
-		NR_VM_EVENT_ITEMS
+	NR_VM_EVENT_ITEMS
 };
 
 extern int sysctl_stat_interval;
@@ -110,18 +109,23 @@ static inline void vm_events_fold_cpu(int cpu)
 static inline void count_vm_event(enum vm_event_item item)
 {
 }
+
 static inline void count_vm_events(enum vm_event_item item, long delta)
 {
 }
+
 static inline void __count_vm_event(enum vm_event_item item)
 {
 }
+
 static inline void __count_vm_events(enum vm_event_item item, long delta)
 {
 }
+
 static inline void all_vm_events(unsigned long *ret)
 {
 }
+
 static inline void vm_events_fold_cpu(int cpu)
 {
 }
@@ -138,7 +142,7 @@ static inline void vm_events_fold_cpu(int cpu)
 extern atomic_long_t vm_stat[NR_VM_ZONE_STAT_ITEMS];
 
 static inline void zone_page_state_add(long x, struct zone *zone,
-				 enum zone_stat_item item)
+				       enum zone_stat_item item)
 {
 	atomic_long_add(x, &zone->vm_stat[item]);
 	atomic_long_add(x, &vm_stat[item]);
@@ -155,7 +159,7 @@ static inline unsigned long global_page_state(enum zone_stat_item item)
 }
 
 static inline unsigned long zone_page_state(struct zone *zone,
-					enum zone_stat_item item)
+					    enum zone_stat_item item)
 {
 	long x = atomic_long_read(&zone->vm_stat[item]);
 #ifdef CONFIG_SMP
@@ -181,23 +185,22 @@ static inline unsigned long zone_lru_pages(struct zone *zone)
  * is called frequently in a NUMA machine, so try to be as
  * frugal as possible.
  */
-static inline unsigned long node_page_state(int node,
-				 enum zone_stat_item item)
+static inline unsigned long node_page_state(int node, enum zone_stat_item item)
 {
 	struct zone *zones = NODE_DATA(node)->node_zones;
 
 	return
 #ifdef CONFIG_ZONE_DMA
-		zone_page_state(&zones[ZONE_DMA], item) +
+	    zone_page_state(&zones[ZONE_DMA], item) +
 #endif
 #ifdef CONFIG_ZONE_DMA32
-		zone_page_state(&zones[ZONE_DMA32], item) +
+	    zone_page_state(&zones[ZONE_DMA32], item) +
 #endif
 #ifdef CONFIG_HIGHMEM
-		zone_page_state(&zones[ZONE_HIGHMEM], item) +
+	    zone_page_state(&zones[ZONE_HIGHMEM], item) +
 #endif
-		zone_page_state(&zones[ZONE_NORMAL], item) +
-		zone_page_state(&zones[ZONE_MOVABLE], item);
+	    zone_page_state(&zones[ZONE_NORMAL], item) +
+	    zone_page_state(&zones[ZONE_MOVABLE], item);
 }
 
 extern void zone_statistics(struct zone *, struct zone *);
@@ -246,7 +249,7 @@ void refresh_cpu_vm_stats(int);
  * The functions directly modify the zone and global counters.
  */
 static inline void __mod_zone_page_state(struct zone *zone,
-			enum zone_stat_item item, int delta)
+					 enum zone_stat_item item, int delta)
 {
 	zone_page_state_add(delta, zone, item);
 }
@@ -258,7 +261,7 @@ static inline void __inc_zone_state(struct zone *zone, enum zone_stat_item item)
 }
 
 static inline void __inc_zone_page_state(struct page *page,
-			enum zone_stat_item item)
+					 enum zone_stat_item item)
 {
 	__inc_zone_state(page_zone(page), item);
 }
@@ -270,7 +273,7 @@ static inline void __dec_zone_state(struct zone *zone, enum zone_stat_item item)
 }
 
 static inline void __dec_zone_page_state(struct page *page,
-			enum zone_stat_item item)
+					 enum zone_stat_item item)
 {
 	__dec_zone_state(page_zone(page), item);
 }
@@ -283,7 +286,9 @@ static inline void __dec_zone_page_state(struct page *page,
 #define dec_zone_page_state __dec_zone_page_state
 #define mod_zone_page_state __mod_zone_page_state
 
-static inline void refresh_cpu_vm_stats(int cpu) { }
+static inline void refresh_cpu_vm_stats(int cpu)
+{
+}
 #endif
 
 #endif /* _LINUX_VMSTAT_H */

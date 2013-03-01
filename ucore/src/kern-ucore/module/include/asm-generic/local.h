@@ -18,8 +18,7 @@
 /* Implement in terms of atomics. */
 
 /* Don't use typedef: don't want them to be mixed with atomic_t's. */
-typedef struct
-{
+typedef struct {
 	atomic_long_t a;
 } local_t;
 

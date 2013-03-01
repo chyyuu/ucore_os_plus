@@ -4,7 +4,7 @@
 #include <types.h>
 
 extern volatile char *driver_os_buffer;
-extern size_t         driver_os_buffer_size;
+extern size_t driver_os_buffer_size;
 
 void driver_os_init(void);
 void driver_os_notify(void);

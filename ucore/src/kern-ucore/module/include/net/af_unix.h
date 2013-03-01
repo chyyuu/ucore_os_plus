@@ -16,17 +16,17 @@ extern void wait_for_unix_gc(void);
 extern unsigned int unix_tot_inflight;
 
 struct unix_address {
-	atomic_t	refcnt;
-	int		len;
-	unsigned	hash;
+	atomic_t refcnt;
+	int len;
+	unsigned hash;
 	struct sockaddr_un name[0];
 };
 
 struct unix_skb_parms {
-	struct ucred		creds;		/* Skb credentials	*/
-	struct scm_fp_list	*fp;		/* Passed files		*/
+	struct ucred creds;	/* Skb credentials      */
+	struct scm_fp_list *fp;	/* Passed files         */
 #ifdef CONFIG_SECURITY_NETWORK
-	u32			secid;		/* Security ID		*/
+	u32 secid;		/* Security ID          */
 #endif
 };
 
@@ -44,19 +44,19 @@ struct unix_skb_parms {
 /* The AF_UNIX socket */
 struct unix_sock {
 	/* WARNING: sk has to be the first member */
-	struct sock		sk;
-        struct unix_address     *addr;
-        struct dentry		*dentry;
-        struct vfsmount		*mnt;
-	struct mutex		readlock;
-        struct sock		*peer;
-        struct sock		*other;
-	struct list_head	link;
-        atomic_long_t           inflight;
-        spinlock_t		lock;
-	unsigned int		gc_candidate : 1;
-	unsigned int		gc_maybe_cycle : 1;
-        wait_queue_head_t       peer_wait;
+	struct sock sk;
+	struct unix_address *addr;
+	struct dentry *dentry;
+	struct vfsmount *mnt;
+	struct mutex readlock;
+	struct sock *peer;
+	struct sock *other;
+	struct list_head link;
+	atomic_long_t inflight;
+	spinlock_t lock;
+	unsigned int gc_candidate:1;
+	unsigned int gc_maybe_cycle:1;
+	wait_queue_head_t peer_wait;
 };
 #define unix_sk(__sk) ((struct unix_sock *)__sk)
 
@@ -64,8 +64,14 @@ struct unix_sock {
 extern int unix_sysctl_register(struct net *net);
 extern void unix_sysctl_unregister(struct net *net);
 #else
-static inline int unix_sysctl_register(struct net *net) { return 0; }
-static inline void unix_sysctl_unregister(struct net *net) {}
+static inline int unix_sysctl_register(struct net *net)
+{
+	return 0;
+}
+
+static inline void unix_sysctl_unregister(struct net *net)
+{
+}
 #endif
 #endif
 #endif

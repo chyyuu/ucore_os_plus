@@ -15,7 +15,6 @@
 #ifndef _INET_TIMEWAIT_SOCK_
 #define _INET_TIMEWAIT_SOCK_
 
-
 #include <linux/list.h>
 #include <linux/module.h>
 #include <linux/timer.h>
@@ -39,48 +38,48 @@ struct inet_hashinfo;
  * so that we select tick to get range about 4 seconds.
  */
 #if HZ <= 16 || HZ > 4096
-# error Unsupported: HZ <= 16 or HZ > 4096
+#error Unsupported: HZ <= 16 or HZ > 4096
 #elif HZ <= 32
-# define INET_TWDR_RECYCLE_TICK (5 + 2 - INET_TWDR_RECYCLE_SLOTS_LOG)
+#define INET_TWDR_RECYCLE_TICK (5 + 2 - INET_TWDR_RECYCLE_SLOTS_LOG)
 #elif HZ <= 64
-# define INET_TWDR_RECYCLE_TICK (6 + 2 - INET_TWDR_RECYCLE_SLOTS_LOG)
+#define INET_TWDR_RECYCLE_TICK (6 + 2 - INET_TWDR_RECYCLE_SLOTS_LOG)
 #elif HZ <= 128
-# define INET_TWDR_RECYCLE_TICK (7 + 2 - INET_TWDR_RECYCLE_SLOTS_LOG)
+#define INET_TWDR_RECYCLE_TICK (7 + 2 - INET_TWDR_RECYCLE_SLOTS_LOG)
 #elif HZ <= 256
-# define INET_TWDR_RECYCLE_TICK (8 + 2 - INET_TWDR_RECYCLE_SLOTS_LOG)
+#define INET_TWDR_RECYCLE_TICK (8 + 2 - INET_TWDR_RECYCLE_SLOTS_LOG)
 #elif HZ <= 512
-# define INET_TWDR_RECYCLE_TICK (9 + 2 - INET_TWDR_RECYCLE_SLOTS_LOG)
+#define INET_TWDR_RECYCLE_TICK (9 + 2 - INET_TWDR_RECYCLE_SLOTS_LOG)
 #elif HZ <= 1024
-# define INET_TWDR_RECYCLE_TICK (10 + 2 - INET_TWDR_RECYCLE_SLOTS_LOG)
+#define INET_TWDR_RECYCLE_TICK (10 + 2 - INET_TWDR_RECYCLE_SLOTS_LOG)
 #elif HZ <= 2048
-# define INET_TWDR_RECYCLE_TICK (11 + 2 - INET_TWDR_RECYCLE_SLOTS_LOG)
+#define INET_TWDR_RECYCLE_TICK (11 + 2 - INET_TWDR_RECYCLE_SLOTS_LOG)
 #else
-# define INET_TWDR_RECYCLE_TICK (12 + 2 - INET_TWDR_RECYCLE_SLOTS_LOG)
+#define INET_TWDR_RECYCLE_TICK (12 + 2 - INET_TWDR_RECYCLE_SLOTS_LOG)
 #endif
 
 /* TIME_WAIT reaping mechanism. */
-#define INET_TWDR_TWKILL_SLOTS	8 /* Please keep this a power of 2. */
+#define INET_TWDR_TWKILL_SLOTS	8	/* Please keep this a power of 2. */
 
 #define INET_TWDR_TWKILL_QUOTA 100
 
 struct inet_timewait_death_row {
 	/* Short-time timewait calendar */
-	int			twcal_hand;
-	unsigned long		twcal_jiffie;
-	struct timer_list	twcal_timer;
-	struct hlist_head	twcal_row[INET_TWDR_RECYCLE_SLOTS];
+	int twcal_hand;
+	unsigned long twcal_jiffie;
+	struct timer_list twcal_timer;
+	struct hlist_head twcal_row[INET_TWDR_RECYCLE_SLOTS];
 
-	spinlock_t		death_lock;
-	int			tw_count;
-	int			period;
-	u32			thread_slots;
-	struct work_struct	twkill_work;
-	struct timer_list	tw_timer;
-	int			slot;
-	struct hlist_head	cells[INET_TWDR_TWKILL_SLOTS];
-	struct inet_hashinfo 	*hashinfo;
-	int			sysctl_tw_recycle;
-	int			sysctl_max_tw_buckets;
+	spinlock_t death_lock;
+	int tw_count;
+	int period;
+	u32 thread_slots;
+	struct work_struct twkill_work;
+	struct timer_list tw_timer;
+	int slot;
+	struct hlist_head cells[INET_TWDR_TWKILL_SLOTS];
+	struct inet_hashinfo *hashinfo;
+	int sysctl_tw_recycle;
+	int sysctl_max_tw_buckets;
 };
 
 extern void inet_twdr_hangman(unsigned long data);
@@ -105,7 +104,7 @@ struct inet_timewait_sock {
 	 * Now struct sock also uses sock_common, so please just
 	 * don't add nothing before this first member (__tw_common) --acme
 	 */
-	struct sock_common	__tw_common;
+	struct sock_common __tw_common;
 #define tw_family		__tw_common.skc_family
 #define tw_state		__tw_common.skc_state
 #define tw_reuse		__tw_common.skc_reuse
@@ -116,29 +115,29 @@ struct inet_timewait_sock {
 #define tw_hash			__tw_common.skc_hash
 #define tw_prot			__tw_common.skc_prot
 #define tw_net			__tw_common.skc_net
-	int			tw_timeout;
-	volatile unsigned char	tw_substate;
+	int tw_timeout;
+	volatile unsigned char tw_substate;
 	/* 3 bits hole, try to pack */
-	unsigned char		tw_rcv_wscale;
+	unsigned char tw_rcv_wscale;
 	/* Socket demultiplex comparisons on incoming packets. */
 	/* these five are in inet_sock */
-	__be16			tw_sport;
-	__be32			tw_daddr __attribute__((aligned(INET_TIMEWAIT_ADDRCMP_ALIGN_BYTES)));
-	__be32			tw_rcv_saddr;
-	__be16			tw_dport;
-	__u16			tw_num;
+	__be16 tw_sport;
+	__be32 tw_daddr
+	    __attribute__ ((aligned(INET_TIMEWAIT_ADDRCMP_ALIGN_BYTES)));
+	__be32 tw_rcv_saddr;
+	__be16 tw_dport;
+	__u16 tw_num;
 	/* And these are ours. */
-	__u8			tw_ipv6only:1,
-				tw_transparent:1;
+	__u8 tw_ipv6only:1, tw_transparent:1;
 	/* 15 bits hole, try to pack */
-	__u16			tw_ipv6_offset;
-	unsigned long		tw_ttd;
-	struct inet_bind_bucket	*tw_tb;
-	struct hlist_node	tw_death_node;
+	__u16 tw_ipv6_offset;
+	unsigned long tw_ttd;
+	struct inet_bind_bucket *tw_tb;
+	struct hlist_node tw_death_node;
 };
 
 static inline void inet_twsk_add_node_rcu(struct inet_timewait_sock *tw,
-				      struct hlist_nulls_head *list)
+					  struct hlist_nulls_head *list)
 {
 	hlist_nulls_add_head_rcu(&tw->tw_node, list);
 }
@@ -191,7 +190,7 @@ static inline struct inet_timewait_sock *inet_twsk(const struct sock *sk)
 static inline __be32 inet_rcv_saddr(const struct sock *sk)
 {
 	return likely(sk->sk_state != TCP_TIME_WAIT) ?
-		inet_sk(sk)->rcv_saddr : inet_twsk(sk)->tw_rcv_saddr;
+	    inet_sk(sk)->rcv_saddr : inet_twsk(sk)->tw_rcv_saddr;
 }
 
 extern void inet_twsk_put(struct inet_timewait_sock *tw);
@@ -212,8 +211,7 @@ extern void inet_twsk_deschedule(struct inet_timewait_sock *tw,
 extern void inet_twsk_purge(struct net *net, struct inet_hashinfo *hashinfo,
 			    struct inet_timewait_death_row *twdr, int family);
 
-static inline
-struct net *twsk_net(const struct inet_timewait_sock *twsk)
+static inline struct net *twsk_net(const struct inet_timewait_sock *twsk)
 {
 #ifdef CONFIG_NET_NS
 	return twsk->tw_net;
@@ -223,10 +221,10 @@ struct net *twsk_net(const struct inet_timewait_sock *twsk)
 }
 
 static inline
-void twsk_net_set(struct inet_timewait_sock *twsk, struct net *net)
+    void twsk_net_set(struct inet_timewait_sock *twsk, struct net *net)
 {
 #ifdef CONFIG_NET_NS
 	twsk->tw_net = net;
 #endif
 }
-#endif	/* _INET_TIMEWAIT_SOCK_ */
+#endif /* _INET_TIMEWAIT_SOCK_ */

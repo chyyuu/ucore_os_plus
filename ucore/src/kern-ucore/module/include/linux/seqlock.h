@@ -57,21 +57,21 @@ typedef struct {
  * Acts like a normal spin_lock/unlock.
  * Don't need preempt_disable() because that is in the spin_lock already.
  */
-static inline void write_seqlock(seqlock_t *sl)
+static inline void write_seqlock(seqlock_t * sl)
 {
 	spin_lock(&sl->lock);
 	++sl->sequence;
 	smp_wmb();
 }
 
-static inline void write_sequnlock(seqlock_t *sl)
+static inline void write_sequnlock(seqlock_t * sl)
 {
 	smp_wmb();
 	sl->sequence++;
 	spin_unlock(&sl->lock);
 }
 
-static inline int write_tryseqlock(seqlock_t *sl)
+static inline int write_tryseqlock(seqlock_t * sl)
 {
 	int ret = spin_trylock(&sl->lock);
 
@@ -83,7 +83,7 @@ static inline int write_tryseqlock(seqlock_t *sl)
 }
 
 /* Start of read calculation -- fetch last complete writer token */
-static __always_inline unsigned read_seqbegin(const seqlock_t *sl)
+static __always_inline unsigned read_seqbegin(const seqlock_t * sl)
 {
 	unsigned ret;
 
@@ -103,13 +103,12 @@ repeat:
  *
  * If sequence value changed then writer changed data while in section.
  */
-static __always_inline int read_seqretry(const seqlock_t *sl, unsigned start)
+static __always_inline int read_seqretry(const seqlock_t * sl, unsigned start)
 {
 	smp_rmb();
 
 	return (sl->sequence != start);
 }
-
 
 /*
  * Version using sequence counter only.
@@ -126,7 +125,7 @@ typedef struct seqcount {
 #define seqcount_init(x)	do { *(x) = (seqcount_t) SEQCNT_ZERO; } while (0)
 
 /* Start of read using pointer to a sequence counter only.  */
-static inline unsigned read_seqcount_begin(const seqcount_t *s)
+static inline unsigned read_seqcount_begin(const seqcount_t * s)
 {
 	unsigned ret;
 
@@ -143,25 +142,24 @@ repeat:
 /*
  * Test if reader processed invalid data because sequence number has changed.
  */
-static inline int read_seqcount_retry(const seqcount_t *s, unsigned start)
+static inline int read_seqcount_retry(const seqcount_t * s, unsigned start)
 {
 	smp_rmb();
 
 	return s->sequence != start;
 }
 
-
 /*
  * Sequence counter only version assumes that callers are using their
  * own mutexing.
  */
-static inline void write_seqcount_begin(seqcount_t *s)
+static inline void write_seqcount_begin(seqcount_t * s)
 {
 	s->sequence++;
 	smp_wmb();
 }
 
-static inline void write_seqcount_end(seqcount_t *s)
+static inline void write_seqcount_end(seqcount_t * s)
 {
 	smp_wmb();
 	s->sequence++;

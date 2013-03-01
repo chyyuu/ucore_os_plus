@@ -19,18 +19,18 @@
 #define __LINUX_SWITCH_H__
 
 struct switch_dev {
-	const char	*name;
-	struct device	*dev;
-	int		index;
-	int		state;
+	const char *name;
+	struct device *dev;
+	int index;
+	int state;
 
-	ssize_t	(*print_name)(struct switch_dev *sdev, char *buf);
-	ssize_t	(*print_state)(struct switch_dev *sdev, char *buf);
+	 ssize_t(*print_name) (struct switch_dev * sdev, char *buf);
+	 ssize_t(*print_state) (struct switch_dev * sdev, char *buf);
 };
 
 struct gpio_switch_platform_data {
 	const char *name;
-	unsigned 	gpio;
+	unsigned gpio;
 
 	/* if NULL, switch_dev.name will be printed */
 	const char *name_on;

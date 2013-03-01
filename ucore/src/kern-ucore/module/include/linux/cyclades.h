@@ -70,10 +70,10 @@
 #include <linux/types.h>
 
 struct cyclades_monitor {
-        unsigned long           int_count;
-        unsigned long           char_count;
-        unsigned long           char_max;
-        unsigned long           char_last;
+	unsigned long int_count;
+	unsigned long char_count;
+	unsigned long char_max;
+	unsigned long char_last;
 };
 
 /*
@@ -82,14 +82,14 @@ struct cyclades_monitor {
  * open)
  */
 struct cyclades_idle_stats {
-    time_t	   in_use;	/* Time device has been in use (secs) */
-    time_t	   recv_idle;	/* Time since last char received (secs) */
-    time_t	   xmit_idle;	/* Time since last char transmitted (secs) */
-    unsigned long  recv_bytes;	/* Bytes received */
-    unsigned long  xmit_bytes;	/* Bytes transmitted */
-    unsigned long  overruns;	/* Input overruns */
-    unsigned long  frame_errs;	/* Input framing errors */
-    unsigned long  parity_errs;	/* Input parity errors */
+	time_t in_use;		/* Time device has been in use (secs) */
+	time_t recv_idle;	/* Time since last char received (secs) */
+	time_t xmit_idle;	/* Time since last char transmitted (secs) */
+	unsigned long recv_bytes;	/* Bytes received */
+	unsigned long xmit_bytes;	/* Bytes transmitted */
+	unsigned long overruns;	/* Input overruns */
+	unsigned long frame_errs;	/* Input framing errors */
+	unsigned long parity_errs;	/* Input parity errors */
 };
 
 #define CYCLADES_MAGIC  0x4359
@@ -124,22 +124,21 @@ struct cyclades_idle_stats {
 
 #define CZ_DEF_POLL	(HZ/25)
 
-#define MAX_BOARD       4       /* Max number of boards */
-#define MAX_DEV         256     /* Max number of ports total */
+#define MAX_BOARD       4	/* Max number of boards */
+#define MAX_DEV         256	/* Max number of ports total */
 #define	CYZ_MAX_SPEED	921600
 
 #define	CYZ_FIFO_SIZE	16
 
 #define CYZ_BOOT_NWORDS 0x100
 struct CYZ_BOOT_CTRL {
-        unsigned short  nboard;
-        int             status[MAX_BOARD];
-        int             nchannel[MAX_BOARD];
-        int             fw_rev[MAX_BOARD];
-        unsigned long   offset;
-        unsigned long   data[CYZ_BOOT_NWORDS];
+	unsigned short nboard;
+	int status[MAX_BOARD];
+	int nchannel[MAX_BOARD];
+	int fw_rev[MAX_BOARD];
+	unsigned long offset;
+	unsigned long data[CYZ_BOOT_NWORDS];
 };
-
 
 #ifndef DP_WINDOW_SIZE
 /* #include "cyclomz.h" */
@@ -150,10 +149,10 @@ struct CYZ_BOOT_CTRL {
  *	architectures and compilers.
  */
 
-typedef __u64  ucdouble;		/* 64 bits, unsigned */
-typedef __u32  uclong;			/* 32 bits, unsigned */
-typedef __u16  ucshort;		/* 16 bits, unsigned */
-typedef __u8   ucchar;			/* 8 bits, unsigned */
+typedef __u64 ucdouble;		/* 64 bits, unsigned */
+typedef __u32 uclong;		/* 32 bits, unsigned */
+typedef __u16 ucshort;		/* 16 bits, unsigned */
+typedef __u8 ucchar;		/* 8 bits, unsigned */
 
 /*
  *	Memory Window Sizes
@@ -161,7 +160,7 @@ typedef __u8   ucchar;			/* 8 bits, unsigned */
 
 #define	DP_WINDOW_SIZE		(0x00080000)	/* window size 512 Kb */
 #define	ZE_DP_WINDOW_SIZE	(0x00100000)	/* window size 1 Mb (Ze and
-						  8Zo V.2 */
+						   8Zo V.2 */
 #define	CTRL_WINDOW_SIZE	(0x00000080)	/* runtime regs 128 bytes */
 
 /*
@@ -170,25 +169,25 @@ typedef __u8   ucchar;			/* 8 bits, unsigned */
  *	start_cpu and stop_cpu.
  */
 
-struct	CUSTOM_REG {
-	__u32	fpga_id;		/* FPGA Identification Register */
-	__u32	fpga_version;		/* FPGA Version Number Register */
-	__u32	cpu_start;		/* CPU start Register (write) */
-	__u32	cpu_stop;		/* CPU stop Register (write) */
-	__u32	misc_reg;		/* Miscellaneous Register */
-	__u32	idt_mode;		/* IDT mode Register */
-	__u32	uart_irq_status;	/* UART IRQ status Register */
-	__u32	clear_timer0_irq;	/* Clear timer interrupt Register */
-	__u32	clear_timer1_irq;	/* Clear timer interrupt Register */
-	__u32	clear_timer2_irq;	/* Clear timer interrupt Register */
-	__u32	test_register;		/* Test Register */
-	__u32	test_count;		/* Test Count Register */
-	__u32	timer_select;		/* Timer select register */
-	__u32	pr_uart_irq_status;	/* Prioritized UART IRQ stat Reg */
-	__u32	ram_wait_state;		/* RAM wait-state Register */
-	__u32	uart_wait_state;	/* UART wait-state Register */
-	__u32	timer_wait_state;	/* timer wait-state Register */
-	__u32	ack_wait_state;		/* ACK wait State Register */
+struct CUSTOM_REG {
+	__u32 fpga_id;		/* FPGA Identification Register */
+	__u32 fpga_version;	/* FPGA Version Number Register */
+	__u32 cpu_start;	/* CPU start Register (write) */
+	__u32 cpu_stop;		/* CPU stop Register (write) */
+	__u32 misc_reg;		/* Miscellaneous Register */
+	__u32 idt_mode;		/* IDT mode Register */
+	__u32 uart_irq_status;	/* UART IRQ status Register */
+	__u32 clear_timer0_irq;	/* Clear timer interrupt Register */
+	__u32 clear_timer1_irq;	/* Clear timer interrupt Register */
+	__u32 clear_timer2_irq;	/* Clear timer interrupt Register */
+	__u32 test_register;	/* Test Register */
+	__u32 test_count;	/* Test Count Register */
+	__u32 timer_select;	/* Timer select register */
+	__u32 pr_uart_irq_status;	/* Prioritized UART IRQ stat Reg */
+	__u32 ram_wait_state;	/* RAM wait-state Register */
+	__u32 uart_wait_state;	/* UART wait-state Register */
+	__u32 timer_wait_state;	/* timer wait-state Register */
+	__u32 ack_wait_state;	/* ACK wait State Register */
 };
 
 /*
@@ -198,34 +197,34 @@ struct	CUSTOM_REG {
  */
 
 struct RUNTIME_9060 {
-	__u32	loc_addr_range;	/* 00h - Local Address Range */
-	__u32	loc_addr_base;	/* 04h - Local Address Base */
-	__u32	loc_arbitr;	/* 08h - Local Arbitration */
-	__u32	endian_descr;	/* 0Ch - Big/Little Endian Descriptor */
-	__u32	loc_rom_range;	/* 10h - Local ROM Range */
-	__u32	loc_rom_base;	/* 14h - Local ROM Base */
-	__u32	loc_bus_descr;	/* 18h - Local Bus descriptor */
-	__u32	loc_range_mst;	/* 1Ch - Local Range for Master to PCI */
-	__u32	loc_base_mst;	/* 20h - Local Base for Master PCI */
-	__u32	loc_range_io;	/* 24h - Local Range for Master IO */
-	__u32	pci_base_mst;	/* 28h - PCI Base for Master PCI */
-	__u32	pci_conf_io;	/* 2Ch - PCI configuration for Master IO */
-	__u32	filler1;	/* 30h */
-	__u32	filler2;	/* 34h */
-	__u32	filler3;	/* 38h */
-	__u32	filler4;	/* 3Ch */
-	__u32	mail_box_0;	/* 40h - Mail Box 0 */
-	__u32	mail_box_1;	/* 44h - Mail Box 1 */
-	__u32	mail_box_2;	/* 48h - Mail Box 2 */
-	__u32	mail_box_3;	/* 4Ch - Mail Box 3 */
-	__u32	filler5;	/* 50h */
-	__u32	filler6;	/* 54h */
-	__u32	filler7;	/* 58h */
-	__u32	filler8;	/* 5Ch */
-	__u32	pci_doorbell;	/* 60h - PCI to Local Doorbell */
-	__u32	loc_doorbell;	/* 64h - Local to PCI Doorbell */
-	__u32	intr_ctrl_stat;	/* 68h - Interrupt Control/Status */
-	__u32	init_ctrl;	/* 6Ch - EEPROM control, Init Control, etc */
+	__u32 loc_addr_range;	/* 00h - Local Address Range */
+	__u32 loc_addr_base;	/* 04h - Local Address Base */
+	__u32 loc_arbitr;	/* 08h - Local Arbitration */
+	__u32 endian_descr;	/* 0Ch - Big/Little Endian Descriptor */
+	__u32 loc_rom_range;	/* 10h - Local ROM Range */
+	__u32 loc_rom_base;	/* 14h - Local ROM Base */
+	__u32 loc_bus_descr;	/* 18h - Local Bus descriptor */
+	__u32 loc_range_mst;	/* 1Ch - Local Range for Master to PCI */
+	__u32 loc_base_mst;	/* 20h - Local Base for Master PCI */
+	__u32 loc_range_io;	/* 24h - Local Range for Master IO */
+	__u32 pci_base_mst;	/* 28h - PCI Base for Master PCI */
+	__u32 pci_conf_io;	/* 2Ch - PCI configuration for Master IO */
+	__u32 filler1;		/* 30h */
+	__u32 filler2;		/* 34h */
+	__u32 filler3;		/* 38h */
+	__u32 filler4;		/* 3Ch */
+	__u32 mail_box_0;	/* 40h - Mail Box 0 */
+	__u32 mail_box_1;	/* 44h - Mail Box 1 */
+	__u32 mail_box_2;	/* 48h - Mail Box 2 */
+	__u32 mail_box_3;	/* 4Ch - Mail Box 3 */
+	__u32 filler5;		/* 50h */
+	__u32 filler6;		/* 54h */
+	__u32 filler7;		/* 58h */
+	__u32 filler8;		/* 5Ch */
+	__u32 pci_doorbell;	/* 60h - PCI to Local Doorbell */
+	__u32 loc_doorbell;	/* 64h - Local to PCI Doorbell */
+	__u32 intr_ctrl_stat;	/* 68h - Interrupt Control/Status */
+	__u32 init_ctrl;	/* 6Ch - EEPROM control, Init Control, etc */
 };
 
 /* Values for the Local Base Address re-map register */
@@ -235,10 +234,10 @@ struct RUNTIME_9060 {
 
 /* Values timer select registers */
 
-#define	TIMER_BY_1M	0x00		/* clock divided by 1M */
-#define	TIMER_BY_256K	0x01		/* clock divided by 256k */
-#define	TIMER_BY_128K	0x02		/* clock divided by 128k */
-#define	TIMER_BY_32K	0x03		/* clock divided by 32k */
+#define	TIMER_BY_1M	0x00	/* clock divided by 1M */
+#define	TIMER_BY_256K	0x01	/* clock divided by 256k */
+#define	TIMER_BY_128K	0x02	/* clock divided by 128k */
+#define	TIMER_BY_32K	0x03	/* clock divided by 32k */
 
 /****************** ****************** *******************/
 #endif
@@ -253,7 +252,7 @@ struct RUNTIME_9060 {
 
 /* General Constant definitions */
 
-#define	MAX_CHAN	64		/* max number of channels per board */
+#define	MAX_CHAN	64	/* max number of channels per board */
 
 /* firmware id structure (set after boot) */
 
@@ -262,13 +261,13 @@ struct RUNTIME_9060 {
 #define	ZFIRM_HLT	0x59505B5CL	/* ZFIRM needs external power supply */
 #define	ZFIRM_RST	0x56040674L	/* RST signal (due to FW reset) */
 
-#define	ZF_TINACT_DEF	1000		/* default inactivity timeout 
-					   (1000 ms) */
+#define	ZF_TINACT_DEF	1000	/* default inactivity timeout 
+				   (1000 ms) */
 #define	ZF_TINACT	ZF_TINACT_DEF
 
-struct	FIRM_ID {
-	__u32	signature;		/* ZFIRM/U signature */
-	__u32	zfwctrl_addr;		/* pointer to ZFW_CTRL structure */
+struct FIRM_ID {
+	__u32 signature;	/* ZFIRM/U signature */
+	__u32 zfwctrl_addr;	/* pointer to ZFW_CTRL structure */
 };
 
 /* Op. System id */
@@ -321,12 +320,12 @@ struct	FIRM_ID {
 #define	C_IN_RXBRK	0x00001000	/* Break received */
 #define	C_IN_PR_ERROR	0x00002000	/* parity error */
 #define	C_IN_FR_ERROR	0x00004000	/* frame error */
-#define C_IN_OVR_ERROR  0x00008000      /* overrun error */
-#define C_IN_RXOFL	0x00010000      /* RX buffer overflow */
-#define C_IN_IOCTLW	0x00020000      /* I/O control w/ wait */
+#define C_IN_OVR_ERROR  0x00008000	/* overrun error */
+#define C_IN_RXOFL	0x00010000	/* RX buffer overflow */
+#define C_IN_IOCTLW	0x00020000	/* I/O control w/ wait */
 #define C_IN_MRTS	0x00040000	/* modem RTS drop */
 #define C_IN_ICHAR	0x00080000
- 
+
 /* flow control */
 
 #define	C_FL_OXX	0x00000001	/* output Xon/Xoff flow control */
@@ -353,50 +352,50 @@ struct	FIRM_ID {
 
 /* commands Host <-> Board */
 
-#define	C_CM_RESET	0x01		/* reset/flush buffers */
-#define	C_CM_IOCTL	0x02		/* re-read CH_CTRL */
-#define	C_CM_IOCTLW	0x03		/* re-read CH_CTRL, intr when done */
-#define	C_CM_IOCTLM	0x04		/* RS-232 outputs change */
-#define	C_CM_SENDXOFF	0x10		/* send Xoff */
-#define	C_CM_SENDXON	0x11		/* send Xon */
-#define C_CM_CLFLOW	0x12		/* Clear flow control (resume) */
-#define	C_CM_SENDBRK	0x41		/* send break */
-#define	C_CM_INTBACK	0x42		/* Interrupt back */
-#define	C_CM_SET_BREAK	0x43		/* Tx break on */
-#define	C_CM_CLR_BREAK	0x44		/* Tx break off */
-#define	C_CM_CMD_DONE	0x45		/* Previous command done */
-#define C_CM_INTBACK2	0x46		/* Alternate Interrupt back */
-#define	C_CM_TINACT	0x51		/* set inactivity detection */
-#define	C_CM_IRQ_ENBL	0x52		/* enable generation of interrupts */
-#define	C_CM_IRQ_DSBL	0x53		/* disable generation of interrupts */
-#define	C_CM_ACK_ENBL	0x54		/* enable acknowledged interrupt mode */
-#define	C_CM_ACK_DSBL	0x55		/* disable acknowledged intr mode */
-#define	C_CM_FLUSH_RX	0x56		/* flushes Rx buffer */
-#define	C_CM_FLUSH_TX	0x57		/* flushes Tx buffer */
-#define C_CM_Q_ENABLE	0x58		/* enables queue access from the 
-					   driver */
-#define C_CM_Q_DISABLE  0x59            /* disables queue access from the 
-					   driver */
+#define	C_CM_RESET	0x01	/* reset/flush buffers */
+#define	C_CM_IOCTL	0x02	/* re-read CH_CTRL */
+#define	C_CM_IOCTLW	0x03	/* re-read CH_CTRL, intr when done */
+#define	C_CM_IOCTLM	0x04	/* RS-232 outputs change */
+#define	C_CM_SENDXOFF	0x10	/* send Xoff */
+#define	C_CM_SENDXON	0x11	/* send Xon */
+#define C_CM_CLFLOW	0x12	/* Clear flow control (resume) */
+#define	C_CM_SENDBRK	0x41	/* send break */
+#define	C_CM_INTBACK	0x42	/* Interrupt back */
+#define	C_CM_SET_BREAK	0x43	/* Tx break on */
+#define	C_CM_CLR_BREAK	0x44	/* Tx break off */
+#define	C_CM_CMD_DONE	0x45	/* Previous command done */
+#define C_CM_INTBACK2	0x46	/* Alternate Interrupt back */
+#define	C_CM_TINACT	0x51	/* set inactivity detection */
+#define	C_CM_IRQ_ENBL	0x52	/* enable generation of interrupts */
+#define	C_CM_IRQ_DSBL	0x53	/* disable generation of interrupts */
+#define	C_CM_ACK_ENBL	0x54	/* enable acknowledged interrupt mode */
+#define	C_CM_ACK_DSBL	0x55	/* disable acknowledged intr mode */
+#define	C_CM_FLUSH_RX	0x56	/* flushes Rx buffer */
+#define	C_CM_FLUSH_TX	0x57	/* flushes Tx buffer */
+#define C_CM_Q_ENABLE	0x58	/* enables queue access from the 
+				   driver */
+#define C_CM_Q_DISABLE  0x59	/* disables queue access from the 
+				   driver */
 
-#define	C_CM_TXBEMPTY	0x60		/* Tx buffer is empty */
-#define	C_CM_TXLOWWM	0x61		/* Tx buffer low water mark */
-#define	C_CM_RXHIWM	0x62		/* Rx buffer high water mark */
-#define	C_CM_RXNNDT	0x63		/* rx no new data timeout */
+#define	C_CM_TXBEMPTY	0x60	/* Tx buffer is empty */
+#define	C_CM_TXLOWWM	0x61	/* Tx buffer low water mark */
+#define	C_CM_RXHIWM	0x62	/* Rx buffer high water mark */
+#define	C_CM_RXNNDT	0x63	/* rx no new data timeout */
 #define	C_CM_TXFEMPTY	0x64
 #define	C_CM_ICHAR	0x65
-#define	C_CM_MDCD	0x70		/* modem DCD change */
-#define	C_CM_MDSR	0x71		/* modem DSR change */
-#define	C_CM_MRI	0x72		/* modem RI change */
-#define	C_CM_MCTS	0x73		/* modem CTS change */
-#define C_CM_MRTS	0x74		/* modem RTS drop */
-#define	C_CM_RXBRK	0x84		/* Break received */
-#define	C_CM_PR_ERROR	0x85		/* Parity error */
-#define	C_CM_FR_ERROR	0x86		/* Frame error */
-#define C_CM_OVR_ERROR  0x87            /* Overrun error */
-#define C_CM_RXOFL	0x88            /* RX buffer overflow */
-#define	C_CM_CMDERROR	0x90		/* command error */
-#define	C_CM_FATAL	0x91		/* fatal error */
-#define	C_CM_HW_RESET	0x92		/* reset board */
+#define	C_CM_MDCD	0x70	/* modem DCD change */
+#define	C_CM_MDSR	0x71	/* modem DSR change */
+#define	C_CM_MRI	0x72	/* modem RI change */
+#define	C_CM_MCTS	0x73	/* modem CTS change */
+#define C_CM_MRTS	0x74	/* modem RTS drop */
+#define	C_CM_RXBRK	0x84	/* Break received */
+#define	C_CM_PR_ERROR	0x85	/* Parity error */
+#define	C_CM_FR_ERROR	0x86	/* Frame error */
+#define C_CM_OVR_ERROR  0x87	/* Overrun error */
+#define C_CM_RXOFL	0x88	/* RX buffer overflow */
+#define	C_CM_CMDERROR	0x90	/* command error */
+#define	C_CM_FATAL	0x91	/* fatal error */
+#define	C_CM_HW_RESET	0x92	/* reset board */
 
 /*
  *	CH_CTRL - This per port structure contains all parameters
@@ -405,45 +404,44 @@ struct	FIRM_ID {
  */
 
 struct CH_CTRL {
-	__u32	op_mode;	/* operation mode */
-	__u32	intr_enable;	/* interrupt masking */
-	__u32	sw_flow;	/* SW flow control */
-	__u32	flow_status;	/* output flow status */
-	__u32	comm_baud;	/* baud rate  - numerically specified */
-	__u32	comm_parity;	/* parity */
-	__u32	comm_data_l;	/* data length/stop */
-	__u32	comm_flags;	/* other flags */
-	__u32	hw_flow;	/* HW flow control */
-	__u32	rs_control;	/* RS-232 outputs */
-	__u32	rs_status;	/* RS-232 inputs */
-	__u32	flow_xon;	/* xon char */
-	__u32	flow_xoff;	/* xoff char */
-	__u32	hw_overflow;	/* hw overflow counter */
-	__u32	sw_overflow;	/* sw overflow counter */
-	__u32	comm_error;	/* frame/parity error counter */
+	__u32 op_mode;		/* operation mode */
+	__u32 intr_enable;	/* interrupt masking */
+	__u32 sw_flow;		/* SW flow control */
+	__u32 flow_status;	/* output flow status */
+	__u32 comm_baud;	/* baud rate  - numerically specified */
+	__u32 comm_parity;	/* parity */
+	__u32 comm_data_l;	/* data length/stop */
+	__u32 comm_flags;	/* other flags */
+	__u32 hw_flow;		/* HW flow control */
+	__u32 rs_control;	/* RS-232 outputs */
+	__u32 rs_status;	/* RS-232 inputs */
+	__u32 flow_xon;		/* xon char */
+	__u32 flow_xoff;	/* xoff char */
+	__u32 hw_overflow;	/* hw overflow counter */
+	__u32 sw_overflow;	/* sw overflow counter */
+	__u32 comm_error;	/* frame/parity error counter */
 	__u32 ichar;
 	__u32 filler[7];
 };
-
 
 /*
  *	BUF_CTRL - This per channel structure contains
  *	all Tx and Rx buffer control for a given channel.
  */
 
-struct	BUF_CTRL	{
-	__u32	flag_dma;	/* buffers are in Host memory */
-	__u32	tx_bufaddr;	/* address of the tx buffer */
-	__u32	tx_bufsize;	/* tx buffer size */
-	__u32	tx_threshold;	/* tx low water mark */
-	__u32	tx_get;		/* tail index tx buf */
-	__u32	tx_put;		/* head index tx buf */
-	__u32	rx_bufaddr;	/* address of the rx buffer */
-	__u32	rx_bufsize;	/* rx buffer size */
-	__u32	rx_threshold;	/* rx high water mark */
-	__u32	rx_get;		/* tail index rx buf */
-	__u32	rx_put;		/* head index rx buf */
-	__u32	filler[5];	/* filler to align structures */
+struct BUF_CTRL {
+	__u32 flag_dma;		/* buffers are in Host memory */
+	__u32 tx_bufaddr;	/* address of the tx buffer */
+	__u32 tx_bufsize;	/* tx buffer size */
+	__u32 tx_threshold;	/* tx low water mark */
+	__u32 tx_get;		/* tail index tx buf */
+	__u32 tx_put;		/* head index tx buf */
+	__u32 rx_bufaddr;	/* address of the rx buffer */
+	__u32 rx_bufsize;	/* rx buffer size */
+	__u32 rx_threshold;	/* rx high water mark */
+	__u32 rx_get;		/* tail index rx buf */
+	__u32 rx_put;		/* head index rx buf */
+	__u32 filler[5];	/* filler to align structures */
 };
 
 /*
@@ -454,50 +452,50 @@ struct	BUF_CTRL	{
 struct BOARD_CTRL {
 
 	/* static info provided by the on-board CPU */
-	__u32	n_channel;	/* number of channels */
-	__u32	fw_version;	/* firmware version */
+	__u32 n_channel;	/* number of channels */
+	__u32 fw_version;	/* firmware version */
 
 	/* static info provided by the driver */
-	__u32	op_system;	/* op_system id */
-	__u32	dr_version;	/* driver version */
+	__u32 op_system;	/* op_system id */
+	__u32 dr_version;	/* driver version */
 
 	/* board control area */
-	__u32	inactivity;	/* inactivity control */
+	__u32 inactivity;	/* inactivity control */
 
 	/* host to FW commands */
-	__u32	hcmd_channel;	/* channel number */
-	__u32	hcmd_param;	/* pointer to parameters */
+	__u32 hcmd_channel;	/* channel number */
+	__u32 hcmd_param;	/* pointer to parameters */
 
 	/* FW to Host commands */
-	__u32	fwcmd_channel;	/* channel number */
-	__u32	fwcmd_param;	/* pointer to parameters */
-	__u32	zf_int_queue_addr; /* offset for INT_QUEUE structure */
+	__u32 fwcmd_channel;	/* channel number */
+	__u32 fwcmd_param;	/* pointer to parameters */
+	__u32 zf_int_queue_addr;	/* offset for INT_QUEUE structure */
 
 	/* filler so the structures are aligned */
-	__u32	filler[6];
+	__u32 filler[6];
 };
 
 /* Host Interrupt Queue */
 
 #define QUEUE_SIZE	(10*MAX_CHAN)
 
-struct	INT_QUEUE {
-	unsigned char	intr_code[QUEUE_SIZE];
-	unsigned long	channel[QUEUE_SIZE];
-	unsigned long	param[QUEUE_SIZE];
-	unsigned long	put;
-	unsigned long	get;
+struct INT_QUEUE {
+	unsigned char intr_code[QUEUE_SIZE];
+	unsigned long channel[QUEUE_SIZE];
+	unsigned long param[QUEUE_SIZE];
+	unsigned long put;
+	unsigned long get;
 };
 
 /*
  *	ZFW_CTRL - This is the data structure that includes all other
  *	data structures used by the Firmware.
  */
- 
+
 struct ZFW_CTRL {
-	struct BOARD_CTRL	board_ctrl;
-	struct CH_CTRL		ch_ctrl[MAX_CHAN];
-	struct BUF_CTRL		buf_ctrl[MAX_CHAN];
+	struct BOARD_CTRL board_ctrl;
+	struct CH_CTRL ch_ctrl[MAX_CHAN];
+	struct BUF_CTRL buf_ctrl[MAX_CHAN];
 };
 
 /****************** ****************** *******************/
@@ -507,16 +505,16 @@ struct ZFW_CTRL {
 
 /* Per card data structure */
 struct cyclades_card {
-    void __iomem *base_addr;
-    void __iomem *ctl_addr;
-    int irq;
-    unsigned int num_chips;	/* 0 if card absent, -1 if Z/PCI, else Y */
-    unsigned int first_line;	/* minor number of first channel on card */
-    unsigned int nports;	/* Number of ports in the card */
-    int bus_index;		/* address shift - 0 for ISA, 1 for PCI */
-    int intr_enabled;		/* FW Interrupt flag - 0 disabled, 1 enabled */
-    spinlock_t card_lock;
-    struct cyclades_port *ports;
+	void __iomem *base_addr;
+	void __iomem *ctl_addr;
+	int irq;
+	unsigned int num_chips;	/* 0 if card absent, -1 if Z/PCI, else Y */
+	unsigned int first_line;	/* minor number of first channel on card */
+	unsigned int nports;	/* Number of ports in the card */
+	int bus_index;		/* address shift - 0 for ISA, 1 for PCI */
+	int intr_enabled;	/* FW Interrupt flag - 0 disabled, 1 enabled */
+	spinlock_t card_lock;
+	struct cyclades_port *ports;
 };
 
 /***************************************
@@ -532,9 +530,9 @@ struct cyclades_card {
  * Statistics counters
  */
 struct cyclades_icount {
-	__u32	cts, dsr, rng, dcd, tx, rx;
-	__u32	frame, parity, overrun, brk;
-	__u32	buf_overrun;
+	__u32 cts, dsr, rng, dcd, tx, rx;
+	__u32 frame, parity, overrun, brk;
+	__u32 buf_overrun;
 };
 
 /*
@@ -547,44 +545,43 @@ struct cyclades_icount {
  */
 
 struct cyclades_port {
-	int                     magic;
-	struct tty_port		port;
-	struct cyclades_card	*card;
-	int			line;
-	int			flags; 		/* defined in tty.h */
-	int                     type;		/* UART type */
-	int			read_status_mask;
-	int			ignore_status_mask;
-	int			timeout;
-	int			xmit_fifo_size;
-	int                     cor1,cor2,cor3,cor4,cor5;
-	int                     tbpr,tco,rbpr,rco;
-	int			baud;
-	int			rflow;
-	int			rtsdtr_inv;
-	int			chip_rev;
-	int			custom_divisor;
-	u8			x_char; /* to be pushed out ASAP */
-	int                     breakon;
-	int                     breakoff;
-	int			xmit_head;
-	int			xmit_tail;
-	int			xmit_cnt;
-        int                     default_threshold;
-        int                     default_timeout;
-	unsigned long		rflush_count;
-	struct cyclades_monitor	mon;
-	struct cyclades_idle_stats	idle_stats;
-	struct cyclades_icount	icount;
-	struct completion       shutdown_wait;
-	wait_queue_head_t       delta_msr_wait;
+	int magic;
+	struct tty_port port;
+	struct cyclades_card *card;
+	int line;
+	int flags;		/* defined in tty.h */
+	int type;		/* UART type */
+	int read_status_mask;
+	int ignore_status_mask;
+	int timeout;
+	int xmit_fifo_size;
+	int cor1, cor2, cor3, cor4, cor5;
+	int tbpr, tco, rbpr, rco;
+	int baud;
+	int rflow;
+	int rtsdtr_inv;
+	int chip_rev;
+	int custom_divisor;
+	u8 x_char;		/* to be pushed out ASAP */
+	int breakon;
+	int breakoff;
+	int xmit_head;
+	int xmit_tail;
+	int xmit_cnt;
+	int default_threshold;
+	int default_timeout;
+	unsigned long rflush_count;
+	struct cyclades_monitor mon;
+	struct cyclades_idle_stats idle_stats;
+	struct cyclades_icount icount;
+	struct completion shutdown_wait;
+	wait_queue_head_t delta_msr_wait;
 	int throttle;
 };
 
 #define	CLOSING_WAIT_DELAY	30*HZ
 #define CY_CLOSING_WAIT_NONE	ASYNC_CLOSING_WAIT_NONE
 #define CY_CLOSING_WAIT_INF	ASYNC_CLOSING_WAIT_INF
-
 
 #define CyMAX_CHIPS_PER_CARD	8
 #define CyMAX_CHAR_FIFO		12
@@ -729,13 +726,13 @@ struct cyclades_port {
 #define      CyCtsAE		(0x02)
 #define      CyDsrAE		(0x01)
 #define CyCOR3		(0x0A*2)
-#define      CySPL_CH_DRANGE	(0x80)  /* special character detect range */
-#define      CySPL_CH_DET1	(0x40)  /* enable special character detection
-                                                               on SCHR4-SCHR3 */
-#define      CyFL_CTRL_TRNSP	(0x20)  /* Flow Control Transparency */
-#define      CySPL_CH_DET2	(0x10)  /* Enable special character detection
-                                                               on SCHR2-SCHR1 */
-#define      CyREC_FIFO		(0x0F)  /* Receive FIFO threshold */
+#define      CySPL_CH_DRANGE	(0x80)	/* special character detect range */
+#define      CySPL_CH_DET1	(0x40)	/* enable special character detection
+					   on SCHR4-SCHR3 */
+#define      CyFL_CTRL_TRNSP	(0x20)	/* Flow Control Transparency */
+#define      CySPL_CH_DET2	(0x10)	/* Enable special character detection
+					   on SCHR2-SCHR1 */
+#define      CyREC_FIFO		(0x0F)	/* Receive FIFO threshold */
 #define CyCOR4		(0x1E*2)
 #define CyCOR5		(0x1F*2)
 #define CyCCSR		(0x0B*2)

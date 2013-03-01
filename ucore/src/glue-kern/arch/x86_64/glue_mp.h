@@ -7,11 +7,10 @@
 #include <types.h>
 #endif
 
-typedef struct lcpu_info_s
-{
-	int      lapic_id;
-	int      idx;
-	
+typedef struct lcpu_info_s {
+	int lapic_id;
+	int idx;
+
 	uint64_t freq;
 } lcpu_info_s;
 
@@ -24,8 +23,8 @@ typedef struct lcpu_info_s
 extern unsigned int lapic_id_get(void);
 extern unsigned int lcpu_idx_get(void);
 extern unsigned int lcpu_count_get(void);
-extern uintptr_t    pls_base_get(void);
-extern int          lapic_ipi_issue(int lapic_id);
+extern uintptr_t pls_base_get(void);
+extern int lapic_ipi_issue(int lapic_id);
 
 #define LAPIC_COUNT 256
 
@@ -99,8 +98,6 @@ extern uintptr_t __kern_pls_start;
 		*(typeof(pls_##var) *)((uintptr_t)&(pls_##var) - __seg_base + __pls_base) = value; \
 	} while (0)
 
-
-
-#endif  /* !SEGMENT_SUPPORT */
+#endif /* !SEGMENT_SUPPORT */
 
 #endif

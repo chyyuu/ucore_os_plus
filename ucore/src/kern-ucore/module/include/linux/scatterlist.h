@@ -9,7 +9,7 @@
 
 struct sg_table {
 	struct scatterlist *sgl;	/* the list */
-	unsigned int nents;		/* number of mapped entries */
+	unsigned int nents;	/* number of mapped entries */
 	unsigned int orig_nents;	/* original size of list */
 };
 
@@ -60,12 +60,12 @@ static inline void sg_assign_page(struct scatterlist *sg, struct page *page)
 	 * In order for the low bit stealing approach to work, pages
 	 * must be aligned at a 32-bit boundary as a minimum.
 	 */
-	BUG_ON((unsigned long) page & 0x03);
+	BUG_ON((unsigned long)page & 0x03);
 #ifdef CONFIG_DEBUG_SG
 	BUG_ON(sg->sg_magic != SG_MAGIC);
 	BUG_ON(sg_is_chain(sg));
 #endif
-	sg->page_link = page_link | (unsigned long) page;
+	sg->page_link = page_link | (unsigned long)page;
 }
 
 /**
@@ -145,7 +145,7 @@ static inline void sg_chain(struct scatterlist *prv, unsigned int prv_nents,
 	 * Set lowest bit to indicate a link pointer, and make sure to clear
 	 * the termination bit if it happens to be set.
 	 */
-	prv[prv_nents - 1].page_link = ((unsigned long) sgl | 0x01) & ~0x02;
+	prv[prv_nents - 1].page_link = ((unsigned long)sgl | 0x01) & ~0x02;
 }
 
 /**
@@ -204,8 +204,8 @@ struct scatterlist *sg_last(struct scatterlist *s, unsigned int);
 void sg_init_table(struct scatterlist *, unsigned int);
 void sg_init_one(struct scatterlist *, const void *, unsigned int);
 
-typedef struct scatterlist *(sg_alloc_fn)(unsigned int, gfp_t);
-typedef void (sg_free_fn)(struct scatterlist *, unsigned int);
+typedef struct scatterlist *(sg_alloc_fn) (unsigned int, gfp_t);
+typedef void (sg_free_fn) (struct scatterlist *, unsigned int);
 
 void __sg_free_table(struct sg_table *, unsigned int, sg_free_fn *);
 void sg_free_table(struct sg_table *);
@@ -224,7 +224,6 @@ size_t sg_copy_to_buffer(struct scatterlist *sgl, unsigned int nents,
  */
 #define SG_MAX_SINGLE_ALLOC		(PAGE_SIZE / sizeof(struct scatterlist))
 
-
 /*
  * Mapping sg iterator
  *
@@ -241,20 +240,20 @@ size_t sg_copy_to_buffer(struct scatterlist *sgl, unsigned int nents,
  * continue later (e.g. at the next interrupt).
  */
 
-#define SG_MITER_ATOMIC		(1 << 0)	 /* use kmap_atomic */
+#define SG_MITER_ATOMIC		(1 << 0)	/* use kmap_atomic */
 
 struct sg_mapping_iter {
 	/* the following three fields can be accessed directly */
-	struct page		*page;		/* currently mapped page */
-	void			*addr;		/* pointer to the mapped area */
-	size_t			length;		/* length of the mapped area */
-	size_t			consumed;	/* number of consumed bytes */
+	struct page *page;	/* currently mapped page */
+	void *addr;		/* pointer to the mapped area */
+	size_t length;		/* length of the mapped area */
+	size_t consumed;	/* number of consumed bytes */
 
 	/* these are internal states, keep away */
-	struct scatterlist	*__sg;		/* current entry */
-	unsigned int		__nents;	/* nr of remaining entries */
-	unsigned int		__offset;	/* offset within sg */
-	unsigned int		__flags;
+	struct scatterlist *__sg;	/* current entry */
+	unsigned int __nents;	/* nr of remaining entries */
+	unsigned int __offset;	/* offset within sg */
+	unsigned int __flags;
 };
 
 void sg_miter_start(struct sg_mapping_iter *miter, struct scatterlist *sgl,

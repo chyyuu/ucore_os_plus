@@ -12,4 +12,3 @@ void enable_timer_list();
 void __common_timer_int_handler();
 
 #endif /* !__KERN_DRIVER_CLOCK_H__ */
-

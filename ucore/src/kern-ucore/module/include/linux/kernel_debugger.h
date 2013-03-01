@@ -17,7 +17,7 @@
 #define _LINUX_KERNEL_DEBUGGER_H_
 
 struct kdbg_ctxt {
-	int (*printf)(void *cookie, const char *fmt, ...);
+	int (*printf) (void *cookie, const char *fmt, ...);
 	void *cookie;
 };
 

@@ -38,12 +38,12 @@ struct dentry;
 
 struct xattr_handler {
 	char *prefix;
-	size_t (*list)(struct inode *inode, char *list, size_t list_size,
-		       const char *name, size_t name_len);
-	int (*get)(struct inode *inode, const char *name, void *buffer,
-		   size_t size);
-	int (*set)(struct inode *inode, const char *name, const void *buffer,
-		   size_t size, int flags);
+	 size_t(*list) (struct inode * inode, char *list, size_t list_size,
+			const char *name, size_t name_len);
+	int (*get) (struct inode * inode, const char *name, void *buffer,
+		    size_t size);
+	int (*set) (struct inode * inode, const char *name, const void *buffer,
+		    size_t size, int flags);
 };
 
 ssize_t xattr_getsecurity(struct inode *, const char *, void *, size_t);
@@ -52,11 +52,14 @@ ssize_t vfs_listxattr(struct dentry *d, char *list, size_t size);
 int vfs_setxattr(struct dentry *, const char *, const void *, size_t, int);
 int vfs_removexattr(struct dentry *, const char *);
 
-ssize_t generic_getxattr(struct dentry *dentry, const char *name, void *buffer, size_t size);
-ssize_t generic_listxattr(struct dentry *dentry, char *buffer, size_t buffer_size);
-int generic_setxattr(struct dentry *dentry, const char *name, const void *value, size_t size, int flags);
+ssize_t generic_getxattr(struct dentry *dentry, const char *name, void *buffer,
+			 size_t size);
+ssize_t generic_listxattr(struct dentry *dentry, char *buffer,
+			  size_t buffer_size);
+int generic_setxattr(struct dentry *dentry, const char *name, const void *value,
+		     size_t size, int flags);
 int generic_removexattr(struct dentry *dentry, const char *name);
 
-#endif  /*  __KERNEL__  */
+#endif /*  __KERNEL__  */
 
-#endif	/* _LINUX_XATTR_H */
+#endif /* _LINUX_XATTR_H */

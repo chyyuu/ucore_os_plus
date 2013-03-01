@@ -58,43 +58,43 @@ struct fb_cvt_data {
 };
 
 static const unsigned char fb_cvt_vbi_tab[] = {
-	4,        /* 4:3      */
-	5,        /* 16:9     */
-	6,        /* 16:10    */
-	7,        /* 5:4      */
-	7,        /* 15:9     */
-	8,        /* reserved */
-	9,        /* reserved */
-	10        /* custom   */
+	4,			/* 4:3      */
+	5,			/* 16:9     */
+	6,			/* 16:10    */
+	7,			/* 5:4      */
+	7,			/* 15:9     */
+	8,			/* reserved */
+	9,			/* reserved */
+	10			/* custom   */
 };
 
 /* returns hperiod * 1000 */
 static u32 fb_cvt_hperiod(struct fb_cvt_data *cvt)
 {
-	u32 num = 1000000000/cvt->f_refresh;
+	u32 num = 1000000000 / cvt->f_refresh;
 	u32 den;
 
 	if (cvt->flags & FB_CVT_FLAG_REDUCED_BLANK) {
 		num -= FB_CVT_RB_MIN_VBLANK * 1000;
-		den = 2 * (cvt->yres/cvt->interlace + 2 * cvt->v_margin);
+		den = 2 * (cvt->yres / cvt->interlace + 2 * cvt->v_margin);
 	} else {
 		num -= FB_CVT_MIN_VSYNC_BP * 1000;
-		den = 2 * (cvt->yres/cvt->interlace + cvt->v_margin * 2
-			   + FB_CVT_MIN_VPORCH + cvt->interlace/2);
+		den = 2 * (cvt->yres / cvt->interlace + cvt->v_margin * 2
+			   + FB_CVT_MIN_VPORCH + cvt->interlace / 2);
 	}
 
-	return 2 * (num/den);
+	return 2 * (num / den);
 }
 
 /* returns ideal duty cycle * 1000 */
 static u32 fb_cvt_ideal_duty_cycle(struct fb_cvt_data *cvt)
 {
 	u32 c_prime = (FB_CVT_GTF_C - FB_CVT_GTF_J) *
-		(FB_CVT_GTF_K) + 256 * FB_CVT_GTF_J;
+	    (FB_CVT_GTF_K) + 256 * FB_CVT_GTF_J;
 	u32 m_prime = (FB_CVT_GTF_K * FB_CVT_GTF_M);
 	u32 h_period_est = cvt->hperiod;
 
-	return (1000 * c_prime  - ((m_prime * h_period_est)/1000))/256;
+	return (1000 * c_prime - ((m_prime * h_period_est) / 1000)) / 256;
 }
 
 static u32 fb_cvt_hblank(struct fb_cvt_data *cvt)
@@ -108,11 +108,10 @@ static u32 fb_cvt_hblank(struct fb_cvt_data *cvt)
 		u32 active_pixels = cvt->active_pixels;
 
 		if (ideal_duty_cycle < 20000)
-			hblank = (active_pixels * 20000)/
-				(100000 - 20000);
+			hblank = (active_pixels * 20000) / (100000 - 20000);
 		else {
-			hblank = (active_pixels * ideal_duty_cycle)/
-				(100000 - ideal_duty_cycle);
+			hblank = (active_pixels * ideal_duty_cycle) /
+			    (100000 - ideal_duty_cycle);
 		}
 	}
 
@@ -128,7 +127,7 @@ static u32 fb_cvt_hsync(struct fb_cvt_data *cvt)
 	if (cvt->flags & FB_CVT_FLAG_REDUCED_BLANK)
 		hsync = 32;
 	else
-		hsync = (FB_CVT_CELLSIZE * cvt->htotal)/100;
+		hsync = (FB_CVT_CELLSIZE * cvt->htotal) / 100;
 
 	hsync &= ~(FB_CVT_CELLSIZE - 1);
 	return hsync;
@@ -139,15 +138,15 @@ static u32 fb_cvt_vbi_lines(struct fb_cvt_data *cvt)
 	u32 vbi_lines, min_vbi_lines, act_vbi_lines;
 
 	if (cvt->flags & FB_CVT_FLAG_REDUCED_BLANK) {
-		vbi_lines = (1000 * FB_CVT_RB_MIN_VBLANK)/cvt->hperiod + 1;
-		min_vbi_lines =  FB_CVT_RB_V_FPORCH + cvt->vsync +
-			FB_CVT_MIN_BPORCH;
+		vbi_lines = (1000 * FB_CVT_RB_MIN_VBLANK) / cvt->hperiod + 1;
+		min_vbi_lines = FB_CVT_RB_V_FPORCH + cvt->vsync +
+		    FB_CVT_MIN_BPORCH;
 
 	} else {
-		vbi_lines = (FB_CVT_MIN_VSYNC_BP * 1000)/cvt->hperiod + 1 +
-			 FB_CVT_MIN_VPORCH;
+		vbi_lines = (FB_CVT_MIN_VSYNC_BP * 1000) / cvt->hperiod + 1 +
+		    FB_CVT_MIN_VPORCH;
 		min_vbi_lines = cvt->vsync + FB_CVT_MIN_BPORCH +
-			FB_CVT_MIN_VPORCH;
+		    FB_CVT_MIN_VPORCH;
 	}
 
 	if (vbi_lines < min_vbi_lines)
@@ -160,10 +159,11 @@ static u32 fb_cvt_vbi_lines(struct fb_cvt_data *cvt)
 
 static u32 fb_cvt_vtotal(struct fb_cvt_data *cvt)
 {
-	u32 vtotal = cvt->yres/cvt->interlace;
+	u32 vtotal = cvt->yres / cvt->interlace;
 
-	vtotal += 2 * cvt->v_margin + cvt->interlace/2 + fb_cvt_vbi_lines(cvt);
-	vtotal |= cvt->interlace/2;
+	vtotal +=
+	    2 * cvt->v_margin + cvt->interlace / 2 + fb_cvt_vbi_lines(cvt);
+	vtotal |= cvt->interlace / 2;
 
 	return vtotal;
 }
@@ -173,9 +173,9 @@ static u32 fb_cvt_pixclock(struct fb_cvt_data *cvt)
 	u32 pixclock;
 
 	if (cvt->flags & FB_CVT_FLAG_REDUCED_BLANK)
-		pixclock = (cvt->f_refresh * cvt->vtotal * cvt->htotal)/1000;
+		pixclock = (cvt->f_refresh * cvt->vtotal * cvt->htotal) / 1000;
 	else
-		pixclock = (cvt->htotal * 1000000)/cvt->hperiod;
+		pixclock = (cvt->htotal * 1000000) / cvt->hperiod;
 
 	pixclock /= 250;
 	pixclock *= 250;
@@ -190,19 +190,18 @@ static u32 fb_cvt_aspect_ratio(struct fb_cvt_data *cvt)
 	u32 yres = cvt->yres;
 	u32 aspect = -1;
 
-	if (xres == (yres * 4)/3 && !((yres * 4) % 3))
+	if (xres == (yres * 4) / 3 && !((yres * 4) % 3))
 		aspect = 0;
-	else if (xres == (yres * 16)/9 && !((yres * 16) % 9))
+	else if (xres == (yres * 16) / 9 && !((yres * 16) % 9))
 		aspect = 1;
-	else if (xres == (yres * 16)/10 && !((yres * 16) % 10))
+	else if (xres == (yres * 16) / 10 && !((yres * 16) % 10))
 		aspect = 2;
-	else if (xres == (yres * 5)/4 && !((yres * 5) % 4))
+	else if (xres == (yres * 5) / 4 && !((yres * 5) % 4))
 		aspect = 3;
-	else if (xres == (yres * 15)/9 && !((yres * 15) % 9))
+	else if (xres == (yres * 15) / 9 && !((yres * 15) % 9))
 		aspect = 4;
 	else {
-		printk(KERN_INFO "fbcvt: Aspect ratio not CVT "
-		       "standard\n");
+		printk(KERN_INFO "fbcvt: Aspect ratio not CVT " "standard\n");
 		aspect = 7;
 		cvt->status = 1;
 	}
@@ -219,44 +218,44 @@ static void fb_cvt_print_name(struct fb_cvt_data *cvt)
 	if (!buf)
 		return;
 
-	pixcount = (cvt->xres * (cvt->yres/cvt->interlace))/1000000;
-	pixcount_mod = (cvt->xres * (cvt->yres/cvt->interlace)) % 1000000;
+	pixcount = (cvt->xres * (cvt->yres / cvt->interlace)) / 1000000;
+	pixcount_mod = (cvt->xres * (cvt->yres / cvt->interlace)) % 1000000;
 	pixcount_mod /= 1000;
 
-	read = snprintf(buf+offset, cnt, "fbcvt: %dx%d@%d: CVT Name - ",
+	read = snprintf(buf + offset, cnt, "fbcvt: %dx%d@%d: CVT Name - ",
 			cvt->xres, cvt->yres, cvt->refresh);
 	offset += read;
 	cnt -= read;
 
 	if (cvt->status)
-		snprintf(buf+offset, cnt, "Not a CVT standard - %d.%03d Mega "
+		snprintf(buf + offset, cnt, "Not a CVT standard - %d.%03d Mega "
 			 "Pixel Image\n", pixcount, pixcount_mod);
 	else {
 		if (pixcount) {
-			read = snprintf(buf+offset, cnt, "%d", pixcount);
+			read = snprintf(buf + offset, cnt, "%d", pixcount);
 			cnt -= read;
 			offset += read;
 		}
 
-		read = snprintf(buf+offset, cnt, ".%03dM", pixcount_mod);
+		read = snprintf(buf + offset, cnt, ".%03dM", pixcount_mod);
 		cnt -= read;
 		offset += read;
 
 		if (cvt->aspect_ratio == 0)
-			read = snprintf(buf+offset, cnt, "3");
+			read = snprintf(buf + offset, cnt, "3");
 		else if (cvt->aspect_ratio == 3)
-			read = snprintf(buf+offset, cnt, "4");
+			read = snprintf(buf + offset, cnt, "4");
 		else if (cvt->aspect_ratio == 1 || cvt->aspect_ratio == 4)
-			read = snprintf(buf+offset, cnt, "9");
+			read = snprintf(buf + offset, cnt, "9");
 		else if (cvt->aspect_ratio == 2)
-			read = snprintf(buf+offset, cnt, "A");
+			read = snprintf(buf + offset, cnt, "A");
 		else
 			read = 0;
 		cnt -= read;
 		offset += read;
 
 		if (cvt->flags & FB_CVT_FLAG_REDUCED_BLANK) {
-			read = snprintf(buf+offset, cnt, "-R");
+			read = snprintf(buf + offset, cnt, "-R");
 			cnt -= read;
 			offset += read;
 		}
@@ -270,7 +269,7 @@ static void fb_cvt_convert_to_mode(struct fb_cvt_data *cvt,
 				   struct fb_videomode *mode)
 {
 	mode->refresh = cvt->f_refresh;
-	mode->pixclock = KHZ2PICOS(cvt->pixclock/1000);
+	mode->pixclock = KHZ2PICOS(cvt->pixclock / 1000);
 	mode->left_margin = cvt->h_back_porch;
 	mode->right_margin = cvt->h_front_porch;
 	mode->hsync_len = cvt->hsync;
@@ -308,13 +307,13 @@ int fb_find_mode_cvt(struct fb_videomode *mode, int margins, int rb)
 	memset(&cvt, 0, sizeof(cvt));
 
 	if (margins)
-	    cvt.flags |= FB_CVT_FLAG_MARGINS;
+		cvt.flags |= FB_CVT_FLAG_MARGINS;
 
 	if (rb)
-	    cvt.flags |= FB_CVT_FLAG_REDUCED_BLANK;
+		cvt.flags |= FB_CVT_FLAG_REDUCED_BLANK;
 
 	if (mode->vmode & FB_VMODE_INTERLACED)
-	    cvt.flags |= FB_CVT_FLAG_INTERLACED;
+		cvt.flags |= FB_CVT_FLAG_INTERLACED;
 
 	cvt.xres = mode->xres;
 	cvt.yres = mode->yres;
@@ -329,8 +328,7 @@ int fb_find_mode_cvt(struct fb_videomode *mode, int margins, int rb)
 
 	if (!(cvt.refresh == 50 || cvt.refresh == 60 || cvt.refresh == 70 ||
 	      cvt.refresh == 85)) {
-		printk(KERN_INFO "fbcvt: Refresh rate not CVT "
-		       "standard\n");
+		printk(KERN_INFO "fbcvt: Refresh rate not CVT " "standard\n");
 		cvt.status = 1;
 	}
 
@@ -350,9 +348,9 @@ int fb_find_mode_cvt(struct fb_videomode *mode, int margins, int rb)
 	}
 
 	if (cvt.flags & FB_CVT_FLAG_MARGINS) {
-		cvt.h_margin = (cvt.xres * 18)/1000;
+		cvt.h_margin = (cvt.xres * 18) / 1000;
 		cvt.h_margin &= ~(FB_CVT_CELLSIZE - 1);
-		cvt.v_margin = ((cvt.yres/cvt.interlace)* 18)/1000;
+		cvt.v_margin = ((cvt.yres / cvt.interlace) * 18) / 1000;
 	}
 
 	cvt.aspect_ratio = fb_cvt_aspect_ratio(&cvt);
@@ -364,12 +362,12 @@ int fb_find_mode_cvt(struct fb_videomode *mode, int margins, int rb)
 	cvt.htotal = cvt.active_pixels + cvt.hblank;
 	cvt.hsync = fb_cvt_hsync(&cvt);
 	cvt.pixclock = fb_cvt_pixclock(&cvt);
-	cvt.hfreq = cvt.pixclock/cvt.htotal;
-	cvt.h_back_porch = cvt.hblank/2 + cvt.h_margin;
+	cvt.hfreq = cvt.pixclock / cvt.htotal;
+	cvt.h_back_porch = cvt.hblank / 2 + cvt.h_margin;
 	cvt.h_front_porch = cvt.hblank - cvt.hsync - cvt.h_back_porch +
-		2 * cvt.h_margin;
+	    2 * cvt.h_margin;
 	cvt.v_back_porch = 3 + cvt.v_margin;
-	cvt.v_front_porch = cvt.vtotal - cvt.yres/cvt.interlace -
+	cvt.v_front_porch = cvt.vtotal - cvt.yres / cvt.interlace -
 	    cvt.v_back_porch - cvt.vsync;
 	fb_cvt_print_name(&cvt);
 	fb_cvt_convert_to_mode(&cvt, mode);

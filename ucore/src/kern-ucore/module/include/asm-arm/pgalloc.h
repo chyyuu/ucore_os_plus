@@ -31,7 +31,7 @@
 #define pgd_populate(mm,pmd,pte)	BUG()
 
 extern pgd_t *get_pgd_slow(struct mm_struct *mm);
-extern void free_pgd_slow(struct mm_struct *mm, pgd_t *pgd);
+extern void free_pgd_slow(struct mm_struct *mm, pgd_t * pgd);
 
 #define pgd_alloc(mm)			get_pgd_slow(mm)
 #define pgd_free(mm, pgd)		free_pgd_slow(mm, pgd)
@@ -52,12 +52,12 @@ extern void free_pgd_slow(struct mm_struct *mm, pgd_t *pgd);
  *  | Linux pt 1 |
  *  +------------+
  */
-static inline pte_t *
-pte_alloc_one_kernel(struct mm_struct *mm, unsigned long addr)
+static inline pte_t *pte_alloc_one_kernel(struct mm_struct *mm,
+					  unsigned long addr)
 {
 	pte_t *pte;
 
-	pte = (pte_t *)__get_free_page(GFP_KERNEL|__GFP_REPEAT|__GFP_ZERO);
+	pte = (pte_t *) __get_free_page(GFP_KERNEL | __GFP_REPEAT | __GFP_ZERO);
 	if (pte) {
 		clean_dcache_area(pte, sizeof(pte_t) * PTRS_PER_PTE);
 		pte += PTRS_PER_PTE;
@@ -66,12 +66,11 @@ pte_alloc_one_kernel(struct mm_struct *mm, unsigned long addr)
 	return pte;
 }
 
-static inline pgtable_t
-pte_alloc_one(struct mm_struct *mm, unsigned long addr)
+static inline pgtable_t pte_alloc_one(struct mm_struct *mm, unsigned long addr)
 {
 	struct page *pte;
 
-	pte = alloc_pages(GFP_KERNEL|__GFP_REPEAT|__GFP_ZERO, 0);
+	pte = alloc_pages(GFP_KERNEL | __GFP_REPEAT | __GFP_ZERO, 0);
 	if (pte) {
 		void *page = page_address(pte);
 		clean_dcache_area(page, sizeof(pte_t) * PTRS_PER_PTE);
@@ -84,7 +83,7 @@ pte_alloc_one(struct mm_struct *mm, unsigned long addr)
 /*
  * Free one PTE table.
  */
-static inline void pte_free_kernel(struct mm_struct *mm, pte_t *pte)
+static inline void pte_free_kernel(struct mm_struct *mm, pte_t * pte)
 {
 	if (pte) {
 		pte -= PTRS_PER_PTE;
@@ -98,7 +97,7 @@ static inline void pte_free(struct mm_struct *mm, pgtable_t pte)
 	__free_page(pte);
 }
 
-static inline void __pmd_populate(pmd_t *pmdp, unsigned long pmdval)
+static inline void __pmd_populate(pmd_t * pmdp, unsigned long pmdval)
 {
 	pmdp[0] = __pmd(pmdval);
 	pmdp[1] = __pmd(pmdval + 256 * sizeof(pte_t));
@@ -112,7 +111,7 @@ static inline void __pmd_populate(pmd_t *pmdp, unsigned long pmdval)
  * Ensure that we always set both PMD entries.
  */
 static inline void
-pmd_populate_kernel(struct mm_struct *mm, pmd_t *pmdp, pte_t *ptep)
+pmd_populate_kernel(struct mm_struct *mm, pmd_t * pmdp, pte_t * ptep)
 {
 	unsigned long pte_ptr = (unsigned long)ptep;
 
@@ -125,10 +124,12 @@ pmd_populate_kernel(struct mm_struct *mm, pmd_t *pmdp, pte_t *ptep)
 }
 
 static inline void
-pmd_populate(struct mm_struct *mm, pmd_t *pmdp, pgtable_t ptep)
+pmd_populate(struct mm_struct *mm, pmd_t * pmdp, pgtable_t ptep)
 {
-	__pmd_populate(pmdp, page_to_pfn(ptep) << PAGE_SHIFT | _PAGE_USER_TABLE);
+	__pmd_populate(pmdp,
+		       page_to_pfn(ptep) << PAGE_SHIFT | _PAGE_USER_TABLE);
 }
+
 #define pmd_pgtable(pmd) pmd_page(pmd)
 
 #endif /* CONFIG_MMU */

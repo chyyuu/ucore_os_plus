@@ -18,7 +18,7 @@
 struct mmc_card;
 struct sdio_func;
 
-typedef void (sdio_irq_handler_t)(struct sdio_func *);
+typedef void (sdio_irq_handler_t) (struct sdio_func *);
 
 /*
  * Structure used to hold embedded SDIO device data from platform layer
@@ -42,27 +42,27 @@ struct sdio_func_tuple {
  * SDIO function devices
  */
 struct sdio_func {
-	struct mmc_card		*card;		/* the card this device belongs to */
-	struct device		dev;		/* the device */
-	sdio_irq_handler_t	*irq_handler;	/* IRQ callback */
-	unsigned int		num;		/* function number */
+	struct mmc_card *card;	/* the card this device belongs to */
+	struct device dev;	/* the device */
+	sdio_irq_handler_t *irq_handler;	/* IRQ callback */
+	unsigned int num;	/* function number */
 
-	unsigned char		class;		/* standard interface class */
-	unsigned short		vendor;		/* vendor id */
-	unsigned short		device;		/* device id */
+	unsigned char class;	/* standard interface class */
+	unsigned short vendor;	/* vendor id */
+	unsigned short device;	/* device id */
 
-	unsigned		max_blksize;	/* maximum block size */
-	unsigned		cur_blksize;	/* current block size */
+	unsigned max_blksize;	/* maximum block size */
+	unsigned cur_blksize;	/* current block size */
 
-	unsigned		enable_timeout;	/* max enable timeout in msec */
+	unsigned enable_timeout;	/* max enable timeout in msec */
 
-	unsigned int		state;		/* function state */
-#define SDIO_STATE_PRESENT	(1<<0)		/* present in sysfs */
+	unsigned int state;	/* function state */
+#define SDIO_STATE_PRESENT	(1<<0)	/* present in sysfs */
 
-	u8			tmpbuf[4];	/* DMA:able scratch buffer */
+	u8 tmpbuf[4];		/* DMA:able scratch buffer */
 
-	unsigned		num_info;	/* number of info strings */
-	const char		**info;		/* info strings */
+	unsigned num_info;	/* number of info strings */
+	const char **info;	/* info strings */
 
 	struct sdio_func_tuple *tuples;
 };
@@ -83,8 +83,8 @@ struct sdio_driver {
 	char *name;
 	const struct sdio_device_id *id_table;
 
-	int (*probe)(struct sdio_func *, const struct sdio_device_id *);
-	void (*remove)(struct sdio_func *);
+	int (*probe) (struct sdio_func *, const struct sdio_device_id *);
+	void (*remove) (struct sdio_func *);
 
 	struct device_driver drv;
 };
@@ -127,38 +127,37 @@ extern int sdio_disable_func(struct sdio_func *func);
 
 extern int sdio_set_block_size(struct sdio_func *func, unsigned blksz);
 
-extern int sdio_claim_irq(struct sdio_func *func, sdio_irq_handler_t *handler);
+extern int sdio_claim_irq(struct sdio_func *func, sdio_irq_handler_t * handler);
 extern int sdio_release_irq(struct sdio_func *func);
 
 extern unsigned int sdio_align_size(struct sdio_func *func, unsigned int sz);
 
 extern u8 sdio_readb(struct sdio_func *func, unsigned int addr, int *err_ret);
-extern u8 sdio_readb_ext(struct sdio_func *func, unsigned int addr, int *err_ret,
-	unsigned in);
+extern u8 sdio_readb_ext(struct sdio_func *func, unsigned int addr,
+			 int *err_ret, unsigned in);
 extern u16 sdio_readw(struct sdio_func *func, unsigned int addr, int *err_ret);
 extern u32 sdio_readl(struct sdio_func *func, unsigned int addr, int *err_ret);
 
 extern int sdio_memcpy_fromio(struct sdio_func *func, void *dst,
-	unsigned int addr, int count);
+			      unsigned int addr, int count);
 extern int sdio_readsb(struct sdio_func *func, void *dst,
-	unsigned int addr, int count);
+		       unsigned int addr, int count);
 
 extern void sdio_writeb(struct sdio_func *func, u8 b,
-	unsigned int addr, int *err_ret);
+			unsigned int addr, int *err_ret);
 extern void sdio_writew(struct sdio_func *func, u16 b,
-	unsigned int addr, int *err_ret);
+			unsigned int addr, int *err_ret);
 extern void sdio_writel(struct sdio_func *func, u32 b,
-	unsigned int addr, int *err_ret);
+			unsigned int addr, int *err_ret);
 
 extern int sdio_memcpy_toio(struct sdio_func *func, unsigned int addr,
-	void *src, int count);
+			    void *src, int count);
 extern int sdio_writesb(struct sdio_func *func, unsigned int addr,
-	void *src, int count);
+			void *src, int count);
 
 extern unsigned char sdio_f0_readb(struct sdio_func *func,
-	unsigned int addr, int *err_ret);
+				   unsigned int addr, int *err_ret);
 extern void sdio_f0_writeb(struct sdio_func *func, unsigned char b,
-	unsigned int addr, int *err_ret);
+			   unsigned int addr, int *err_ret);
 
 #endif
-

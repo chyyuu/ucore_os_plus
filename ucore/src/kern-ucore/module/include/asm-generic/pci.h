@@ -16,7 +16,7 @@
  */
 static inline void
 pcibios_resource_to_bus(struct pci_dev *dev, struct pci_bus_region *region,
-			 struct resource *res)
+			struct resource *res)
 {
 	region->start = res->start;
 	region->end = res->end;
@@ -30,8 +30,8 @@ pcibios_bus_to_resource(struct pci_dev *dev, struct resource *res,
 	res->end = region->end;
 }
 
-static inline struct resource *
-pcibios_select_root(struct pci_dev *pdev, struct resource *res)
+static inline struct resource *pcibios_select_root(struct pci_dev *pdev,
+						   struct resource *res)
 {
 	struct resource *root = NULL;
 

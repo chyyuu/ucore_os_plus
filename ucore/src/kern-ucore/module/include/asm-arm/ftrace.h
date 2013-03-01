@@ -3,7 +3,7 @@
 
 #ifdef CONFIG_FUNCTION_TRACER
 #define MCOUNT_ADDR		((long)(mcount))
-#define MCOUNT_INSN_SIZE	4 /* sizeof mcount call */
+#define MCOUNT_INSN_SIZE	4	/* sizeof mcount call */
 
 #ifndef __ASSEMBLY__
 extern void mcount(void);

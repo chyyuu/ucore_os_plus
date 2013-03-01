@@ -4,7 +4,7 @@
 #ifdef __KERNEL__
 #include <asm-generic/pci-dma-compat.h>
 
-#include <mach/hardware.h> /* for PCIBIOS_MIN_* */
+#include <mach/hardware.h>	/* for PCIBIOS_MIN_* */
 
 #define pcibios_scan_all_fns(a, b)	0
 
@@ -55,18 +55,19 @@ static inline void pci_dma_burst_advice(struct pci_dev *pdev,
 
 #define HAVE_PCI_MMAP
 extern int pci_mmap_page_range(struct pci_dev *dev, struct vm_area_struct *vma,
-                               enum pci_mmap_state mmap_state, int write_combine);
+			       enum pci_mmap_state mmap_state,
+			       int write_combine);
 
 extern void
 pcibios_resource_to_bus(struct pci_dev *dev, struct pci_bus_region *region,
-			 struct resource *res);
+			struct resource *res);
 
 extern void
 pcibios_bus_to_resource(struct pci_dev *dev, struct resource *res,
 			struct pci_bus_region *region);
 
-static inline struct resource *
-pcibios_select_root(struct pci_dev *pdev, struct resource *res)
+static inline struct resource *pcibios_select_root(struct pci_dev *pdev,
+						   struct resource *res)
 {
 	struct resource *root = NULL;
 
@@ -87,5 +88,5 @@ static inline int pci_get_legacy_ide_irq(struct pci_dev *dev, int channel)
 }
 
 #endif /* __KERNEL__ */
- 
+
 #endif

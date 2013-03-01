@@ -125,8 +125,8 @@ static __inline__ struct llc_conn_state_ev *llc_conn_ev(struct sk_buff *skb)
 	return (struct llc_conn_state_ev *)skb->cb;
 }
 
-typedef int (*llc_conn_ev_t)(struct sock *sk, struct sk_buff *skb);
-typedef int (*llc_conn_ev_qfyr_t)(struct sock *sk, struct sk_buff *skb);
+typedef int (*llc_conn_ev_t) (struct sock * sk, struct sk_buff * skb);
+typedef int (*llc_conn_ev_qfyr_t) (struct sock * sk, struct sk_buff * skb);
 
 extern int llc_conn_ev_conn_req(struct sock *sk, struct sk_buff *skb);
 extern int llc_conn_ev_data_req(struct sock *sk, struct sk_buff *skb);
@@ -147,9 +147,9 @@ extern int llc_conn_ev_rx_i_cmd_pbit_set_x_inval_ns(struct sock *sk,
 extern int llc_conn_ev_rx_i_rsp_fbit_set_x(struct sock *sk,
 					   struct sk_buff *skb);
 extern int llc_conn_ev_rx_i_rsp_fbit_set_x_unexpd_ns(struct sock *sk,
-						  struct sk_buff *skb);
+						     struct sk_buff *skb);
 extern int llc_conn_ev_rx_i_rsp_fbit_set_x_inval_ns(struct sock *sk,
-						  struct sk_buff *skb);
+						    struct sk_buff *skb);
 extern int llc_conn_ev_rx_rej_rsp_fbit_set_x(struct sock *sk,
 					     struct sk_buff *skb);
 extern int llc_conn_ev_rx_sabme_cmd_pbit_set_x(struct sock *sk,
@@ -175,17 +175,17 @@ extern int llc_conn_ev_rx_xxx_cmd_pbit_set_1(struct sock *sk,
 extern int llc_conn_ev_rx_xxx_rsp_fbit_set_1(struct sock *sk,
 					     struct sk_buff *skb);
 extern int llc_conn_ev_rx_i_cmd_pbit_set_0_unexpd_ns(struct sock *sk,
-						  struct sk_buff *skb);
+						     struct sk_buff *skb);
 extern int llc_conn_ev_rx_i_cmd_pbit_set_1_unexpd_ns(struct sock *sk,
-						  struct sk_buff *skb);
+						     struct sk_buff *skb);
 extern int llc_conn_ev_rx_i_cmd_pbit_set_0(struct sock *sk,
 					   struct sk_buff *skb);
 extern int llc_conn_ev_rx_i_cmd_pbit_set_1(struct sock *sk,
 					   struct sk_buff *skb);
 extern int llc_conn_ev_rx_i_rsp_fbit_set_0_unexpd_ns(struct sock *sk,
-						  struct sk_buff *skb);
+						     struct sk_buff *skb);
 extern int llc_conn_ev_rx_i_rsp_fbit_set_1_unexpd_ns(struct sock *sk,
-						  struct sk_buff *skb);
+						     struct sk_buff *skb);
 extern int llc_conn_ev_rx_i_rsp_fbit_set_0(struct sock *sk,
 					   struct sk_buff *skb);
 extern int llc_conn_ev_rx_i_rsp_fbit_set_1(struct sock *sk,
@@ -253,7 +253,7 @@ extern int llc_conn_ev_qlfy_set_status_disc(struct sock *sk,
 extern int llc_conn_ev_qlfy_set_status_failed(struct sock *sk,
 					      struct sk_buff *skb);
 extern int llc_conn_ev_qlfy_set_status_remote_busy(struct sock *sk,
-						  struct sk_buff *skb);
+						   struct sk_buff *skb);
 extern int llc_conn_ev_qlfy_set_status_refuse(struct sock *sk,
 					      struct sk_buff *skb);
 extern int llc_conn_ev_qlfy_set_status_conflict(struct sock *sk,
@@ -264,6 +264,6 @@ extern int llc_conn_ev_qlfy_set_status_rst_done(struct sock *sk,
 static __inline__ int llc_conn_space(struct sock *sk, struct sk_buff *skb)
 {
 	return atomic_read(&sk->sk_rmem_alloc) + skb->truesize <
-	       (unsigned)sk->sk_rcvbuf;
+	    (unsigned)sk->sk_rcvbuf;
 }
 #endif /* LLC_C_EV_H */

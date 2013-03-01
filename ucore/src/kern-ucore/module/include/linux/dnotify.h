@@ -9,15 +9,14 @@
 #include <linux/fs.h>
 
 struct dnotify_struct {
-	struct dnotify_struct *	dn_next;
-	unsigned long		dn_mask;
-	int			dn_fd;
-	struct file *		dn_filp;
-	fl_owner_t		dn_owner;
+	struct dnotify_struct *dn_next;
+	unsigned long dn_mask;
+	int dn_fd;
+	struct file *dn_filp;
+	fl_owner_t dn_owner;
 };
 
 #ifdef __KERNEL__
-
 
 #ifdef CONFIG_DNOTIFY
 

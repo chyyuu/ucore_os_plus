@@ -1,42 +1,41 @@
 #ifndef __ASM_ARM_TERMBITS_H
 #define __ASM_ARM_TERMBITS_H
 
-typedef unsigned char	cc_t;
-typedef unsigned int	speed_t;
-typedef unsigned int	tcflag_t;
+typedef unsigned char cc_t;
+typedef unsigned int speed_t;
+typedef unsigned int tcflag_t;
 
 #define NCCS 19
 struct termios {
-	tcflag_t c_iflag;		/* input mode flags */
-	tcflag_t c_oflag;		/* output mode flags */
-	tcflag_t c_cflag;		/* control mode flags */
-	tcflag_t c_lflag;		/* local mode flags */
-	cc_t c_line;			/* line discipline */
-	cc_t c_cc[NCCS];		/* control characters */
+	tcflag_t c_iflag;	/* input mode flags */
+	tcflag_t c_oflag;	/* output mode flags */
+	tcflag_t c_cflag;	/* control mode flags */
+	tcflag_t c_lflag;	/* local mode flags */
+	cc_t c_line;		/* line discipline */
+	cc_t c_cc[NCCS];	/* control characters */
 };
 
 struct termios2 {
-	tcflag_t c_iflag;		/* input mode flags */
-	tcflag_t c_oflag;		/* output mode flags */
-	tcflag_t c_cflag;		/* control mode flags */
-	tcflag_t c_lflag;		/* local mode flags */
-	cc_t c_line;			/* line discipline */
-	cc_t c_cc[NCCS];		/* control characters */
-	speed_t c_ispeed;		/* input speed */
-	speed_t c_ospeed;		/* output speed */
+	tcflag_t c_iflag;	/* input mode flags */
+	tcflag_t c_oflag;	/* output mode flags */
+	tcflag_t c_cflag;	/* control mode flags */
+	tcflag_t c_lflag;	/* local mode flags */
+	cc_t c_line;		/* line discipline */
+	cc_t c_cc[NCCS];	/* control characters */
+	speed_t c_ispeed;	/* input speed */
+	speed_t c_ospeed;	/* output speed */
 };
 
 struct ktermios {
-	tcflag_t c_iflag;		/* input mode flags */
-	tcflag_t c_oflag;		/* output mode flags */
-	tcflag_t c_cflag;		/* control mode flags */
-	tcflag_t c_lflag;		/* local mode flags */
-	cc_t c_line;			/* line discipline */
-	cc_t c_cc[NCCS];		/* control characters */
-	speed_t c_ispeed;		/* input speed */
-	speed_t c_ospeed;		/* output speed */
+	tcflag_t c_iflag;	/* input mode flags */
+	tcflag_t c_oflag;	/* output mode flags */
+	tcflag_t c_cflag;	/* control mode flags */
+	tcflag_t c_lflag;	/* local mode flags */
+	cc_t c_line;		/* line discipline */
+	cc_t c_cc[NCCS];	/* control characters */
+	speed_t c_ispeed;	/* input speed */
+	speed_t c_ospeed;	/* output speed */
 };
-
 
 /* c_cc characters */
 #define VINTR 0
@@ -155,9 +154,9 @@ struct ktermios {
 #define  B3000000 0010015
 #define  B3500000 0010016
 #define  B4000000 0010017
-#define CIBAUD	  002003600000		/* input baud rate */
-#define CMSPAR    010000000000		/* mark or space (stick) parity */
-#define CRTSCTS	  020000000000		/* flow control */
+#define CIBAUD	  002003600000	/* input baud rate */
+#define CMSPAR    010000000000	/* mark or space (stick) parity */
+#define CRTSCTS	  020000000000	/* flow control */
 
 #define IBSHIFT	   16
 
@@ -194,4 +193,4 @@ struct ktermios {
 #define	TCSADRAIN	1
 #define	TCSAFLUSH	2
 
-#endif	/* __ASM_ARM_TERMBITS_H */
+#endif /* __ASM_ARM_TERMBITS_H */

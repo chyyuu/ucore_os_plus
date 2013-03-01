@@ -28,8 +28,8 @@
 #define ASHMEM_IS_PINNED	1
 
 struct ashmem_pin {
-	__u32 offset;	/* offset into region, in bytes, page-aligned */
-	__u32 len;	/* length forward from offset, in bytes, page-aligned */
+	__u32 offset;		/* offset into region, in bytes, page-aligned */
+	__u32 len;		/* length forward from offset, in bytes, page-aligned */
 };
 
 #define __ASHMEMIOC		0x77
@@ -45,4 +45,4 @@ struct ashmem_pin {
 #define ASHMEM_GET_PIN_STATUS	_IO(__ASHMEMIOC, 9)
 #define ASHMEM_PURGE_ALL_CACHES	_IO(__ASHMEMIOC, 10)
 
-#endif	/* _LINUX_ASHMEM_H */
+#endif /* _LINUX_ASHMEM_H */

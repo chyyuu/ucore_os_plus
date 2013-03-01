@@ -38,13 +38,13 @@
  * Generic IO read/write.  These perform native-endian accesses.  Note
  * that some architectures will want to re-define __raw_{read,write}w.
  */
-extern void __raw_writesb(void __iomem *addr, const void *data, int bytelen);
-extern void __raw_writesw(void __iomem *addr, const void *data, int wordlen);
-extern void __raw_writesl(void __iomem *addr, const void *data, int longlen);
+extern void __raw_writesb(void __iomem * addr, const void *data, int bytelen);
+extern void __raw_writesw(void __iomem * addr, const void *data, int wordlen);
+extern void __raw_writesl(void __iomem * addr, const void *data, int longlen);
 
-extern void __raw_readsb(const void __iomem *addr, void *data, int bytelen);
-extern void __raw_readsw(const void __iomem *addr, void *data, int wordlen);
-extern void __raw_readsl(const void __iomem *addr, void *data, int longlen);
+extern void __raw_readsb(const void __iomem * addr, void *data, int bytelen);
+extern void __raw_readsw(const void __iomem * addr, void *data, int wordlen);
+extern void __raw_readsl(const void __iomem * addr, void *data, int longlen);
 
 #define __raw_writeb(v,a)	(__chk_io_ptr(a), *(volatile unsigned char __force  *)(a) = (v))
 #define __raw_writew(v,a)	(__chk_io_ptr(a), *(volatile unsigned short __force *)(a) = (v))
@@ -70,9 +70,10 @@ extern void __raw_readsl(const void __iomem *addr, void *data, int longlen);
  * __arm_ioremap takes CPU physical address.
  * __arm_ioremap_pfn takes a Page Frame Number and an offset into that page
  */
-extern void __iomem * __arm_ioremap_pfn(unsigned long, unsigned long, size_t, unsigned int);
-extern void __iomem * __arm_ioremap(unsigned long, size_t, unsigned int);
-extern void __iounmap(volatile void __iomem *addr);
+extern void __iomem *__arm_ioremap_pfn(unsigned long, unsigned long, size_t,
+				       unsigned int);
+extern void __iomem *__arm_ioremap(unsigned long, size_t, unsigned int);
+extern void __iounmap(volatile void __iomem * addr);
 
 /*
  * Bad read/write accesses...
@@ -210,7 +211,7 @@ extern void _memset_io(volatile void __iomem *, int, size_t);
 
 #define check_signature(io,sig,len)	(0)
 
-#endif	/* __mem_pci */
+#endif /* __mem_pci */
 
 /*
  * ioremap and friends.
@@ -254,13 +255,14 @@ extern void _memset_io(volatile void __iomem *, int, size_t);
 #define iowrite32_rep(p,s,c)	__raw_writesl(p,s,c)
 
 extern void __iomem *ioport_map(unsigned long port, unsigned int nr);
-extern void ioport_unmap(void __iomem *addr);
+extern void ioport_unmap(void __iomem * addr);
 #endif
 
 struct pci_dev;
 
-extern void __iomem *pci_iomap(struct pci_dev *dev, int bar, unsigned long maxlen);
-extern void pci_iounmap(struct pci_dev *dev, void __iomem *addr);
+extern void __iomem *pci_iomap(struct pci_dev *dev, int bar,
+			       unsigned long maxlen);
+extern void pci_iounmap(struct pci_dev *dev, void __iomem * addr);
 
 /*
  * can the hardware map this into one segment or not, given no other
@@ -293,5 +295,5 @@ extern int valid_mmap_phys_addr_range(unsigned long pfn, size_t size);
 extern void register_isa_ports(unsigned int mmio, unsigned int io,
 			       unsigned int io_shift);
 
-#endif	/* __KERNEL__ */
-#endif	/* __ASM_ARM_IO_H */
+#endif /* __KERNEL__ */
+#endif /* __ASM_ARM_IO_H */

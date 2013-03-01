@@ -1,17 +1,17 @@
 #ifndef __ARCH_UM_INCLUDE_LINUX_IONTL_H__
 #define __ARCH_UM_INCLUDE_LINUX_IONTL_H__
 
-typedef unsigned char	cc_t;
-typedef unsigned int	tcflag_t;
+typedef unsigned char cc_t;
+typedef unsigned int tcflag_t;
 
 #define NCCS 19
 struct termios {
-	tcflag_t c_iflag;		/* input mode flags */
-	tcflag_t c_oflag;		/* output mode flags */
-	tcflag_t c_cflag;		/* control mode flags */
-	tcflag_t c_lflag;		/* local mode flags */
-	cc_t c_line;			/* line discipline */
-	cc_t c_cc[NCCS];		/* control characters */
+	tcflag_t c_iflag;	/* input mode flags */
+	tcflag_t c_oflag;	/* output mode flags */
+	tcflag_t c_cflag;	/* control mode flags */
+	tcflag_t c_lflag;	/* local mode flags */
+	cc_t c_line;		/* line discipline */
+	cc_t c_cc[NCCS];	/* control characters */
 };
 
 /* c_iflag bits */
@@ -96,7 +96,7 @@ struct termios {
 #define HUPCL	0002000
 #define CLOCAL	0004000
 #define CBAUDEX 0010000
-#define	   BOTHER 0010000		/* non standard rate */
+#define	   BOTHER 0010000	/* non standard rate */
 #define    B57600 0010001
 #define   B115200 0010002
 #define   B230400 0010003
@@ -158,4 +158,4 @@ struct termios {
 #define TCGETS		0x5401
 #define TCSETS		0x5402
 
-#endif  /* !__ARCH_UM_INCLUDE_LINUX_IONTL_H__ */
+#endif /* !__ARCH_UM_INCLUDE_LINUX_IONTL_H__ */

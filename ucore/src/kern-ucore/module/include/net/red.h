@@ -40,7 +40,6 @@
 	is a negative power of two in order arithmetics to contain
 	only shifts.
 
-
 	Parameters, settable by user:
 	-----------------------------
 
@@ -60,7 +59,6 @@
 	Stab
 
 	Lookup table for log((1-W)^(t/t_ave).
-
 
 	NOTES:
 
@@ -90,36 +88,34 @@
 #define RED_STAB_SIZE	256
 #define RED_STAB_MASK	(RED_STAB_SIZE - 1)
 
-struct red_stats
-{
-	u32		prob_drop;	/* Early probability drops */
-	u32		prob_mark;	/* Early probability marks */
-	u32		forced_drop;	/* Forced drops, qavg > max_thresh */
-	u32		forced_mark;	/* Forced marks, qavg > max_thresh */
-	u32		pdrop;          /* Drops due to queue limits */
-	u32		other;          /* Drops due to drop() calls */
-	u32		backlog;
+struct red_stats {
+	u32 prob_drop;		/* Early probability drops */
+	u32 prob_mark;		/* Early probability marks */
+	u32 forced_drop;	/* Forced drops, qavg > max_thresh */
+	u32 forced_mark;	/* Forced marks, qavg > max_thresh */
+	u32 pdrop;		/* Drops due to queue limits */
+	u32 other;		/* Drops due to drop() calls */
+	u32 backlog;
 };
 
-struct red_parms
-{
+struct red_parms {
 	/* Parameters */
-	u32		qth_min;	/* Min avg length threshold: A scaled */
-	u32		qth_max;	/* Max avg length threshold: A scaled */
-	u32		Scell_max;
-	u32		Rmask;		/* Cached random mask, see red_rmask */
-	u8		Scell_log;
-	u8		Wlog;		/* log(W)		*/
-	u8		Plog;		/* random number bits	*/
-	u8		Stab[RED_STAB_SIZE];
+	u32 qth_min;		/* Min avg length threshold: A scaled */
+	u32 qth_max;		/* Max avg length threshold: A scaled */
+	u32 Scell_max;
+	u32 Rmask;		/* Cached random mask, see red_rmask */
+	u8 Scell_log;
+	u8 Wlog;		/* log(W)               */
+	u8 Plog;		/* random number bits   */
+	u8 Stab[RED_STAB_SIZE];
 
 	/* Variables */
-	int		qcount;		/* Number of packets since last random
-					   number generation */
-	u32		qR;		/* Cached random number */
+	int qcount;		/* Number of packets since last random
+				   number generation */
+	u32 qR;			/* Cached random number */
 
-	unsigned long	qavg;		/* Average queue length: A scaled */
-	psched_time_t	qidlestart;	/* Start of current idle period */
+	unsigned long qavg;	/* Average queue length: A scaled */
+	psched_time_t qidlestart;	/* Start of current idle period */
 };
 
 static inline u32 red_rmask(u8 Plog)
@@ -129,22 +125,22 @@ static inline u32 red_rmask(u8 Plog)
 
 static inline void red_set_parms(struct red_parms *p,
 				 u32 qth_min, u32 qth_max, u8 Wlog, u8 Plog,
-				 u8 Scell_log, u8 *stab)
+				 u8 Scell_log, u8 * stab)
 {
 	/* Reset average queue length, the value is strictly bound
 	 * to the parameters below, reseting hurts a bit but leaving
 	 * it might result in an unreasonable qavg for a while. --TGR
 	 */
-	p->qavg		= 0;
+	p->qavg = 0;
 
-	p->qcount	= -1;
-	p->qth_min	= qth_min << Wlog;
-	p->qth_max	= qth_max << Wlog;
-	p->Wlog		= Wlog;
-	p->Plog		= Plog;
-	p->Rmask	= red_rmask(Plog);
-	p->Scell_log	= Scell_log;
-	p->Scell_max	= (255 << Scell_log);
+	p->qcount = -1;
+	p->qth_min = qth_min << Wlog;
+	p->qth_max = qth_max << Wlog;
+	p->Wlog = Wlog;
+	p->Plog = Plog;
+	p->Rmask = red_rmask(Plog);
+	p->Scell_log = Scell_log;
+	p->Scell_max = (255 << Scell_log);
 
 	memcpy(p->Stab, stab, sizeof(p->Stab));
 }
@@ -175,7 +171,7 @@ static inline unsigned long red_calc_qavg_from_idle_time(struct red_parms *p)
 {
 	psched_time_t now;
 	long us_idle;
-	int  shift;
+	int shift;
 
 	now = psched_get_time();
 	us_idle = psched_tdiff_bounded(now, p->qidlestart, p->Scell_max);
@@ -188,11 +184,11 @@ static inline unsigned long red_calc_qavg_from_idle_time(struct red_parms *p)
 	 *
 	 * SF+VJ proposed to "generate":
 	 *
-	 *	m = idletime / (average_pkt_size / bandwidth)
+	 *      m = idletime / (average_pkt_size / bandwidth)
 	 *
 	 * dummy packets as a burst after idle time, i.e.
 	 *
-	 * 	p->qavg *= (1-W)^m
+	 *      p->qavg *= (1-W)^m
 	 *
 	 * This is an apparently overcomplicated solution (f.e. we have to
 	 * precompute a table to make this calculation in reasonable time)
@@ -207,12 +203,12 @@ static inline unsigned long red_calc_qavg_from_idle_time(struct red_parms *p)
 	else {
 		/* Approximate initial part of exponent with linear function:
 		 *
-		 * 	(1-W)^m ~= 1-mW + ...
+		 *      (1-W)^m ~= 1-mW + ...
 		 *
 		 * Seems, it is the best solution to
 		 * problem of too coarse exponent tabulation.
 		 */
-		us_idle = (p->qavg * (u64)us_idle) >> p->Scell_log;
+		us_idle = (p->qavg * (u64) us_idle) >> p->Scell_log;
 
 		if (us_idle < (p->qavg >> 1))
 			return p->qavg - us_idle;
@@ -229,7 +225,7 @@ static inline unsigned long red_calc_qavg_no_idle_time(struct red_parms *p,
 	 * The formula below is equvalent to floating point
 	 * version:
 	 *
-	 * 	qavg = qavg*(1-W) + backlog*W;
+	 *      qavg = qavg*(1-W) + backlog*W;
 	 *
 	 * --ANK (980924)
 	 */
@@ -296,25 +292,25 @@ enum {
 static inline int red_action(struct red_parms *p, unsigned long qavg)
 {
 	switch (red_cmp_thresh(p, qavg)) {
-		case RED_BELOW_MIN_THRESH:
-			p->qcount = -1;
-			return RED_DONT_MARK;
+	case RED_BELOW_MIN_THRESH:
+		p->qcount = -1;
+		return RED_DONT_MARK;
 
-		case RED_BETWEEN_TRESH:
-			if (++p->qcount) {
-				if (red_mark_probability(p, qavg)) {
-					p->qcount = 0;
-					p->qR = red_random(p);
-					return RED_PROB_MARK;
-				}
-			} else
+	case RED_BETWEEN_TRESH:
+		if (++p->qcount) {
+			if (red_mark_probability(p, qavg)) {
+				p->qcount = 0;
 				p->qR = red_random(p);
+				return RED_PROB_MARK;
+			}
+		} else
+			p->qR = red_random(p);
 
-			return RED_DONT_MARK;
+		return RED_DONT_MARK;
 
-		case RED_ABOVE_MAX_TRESH:
-			p->qcount = -1;
-			return RED_HARD_MARK;
+	case RED_ABOVE_MAX_TRESH:
+		p->qcount = -1;
+		return RED_HARD_MARK;
 	}
 
 	BUG();

@@ -14,15 +14,13 @@ struct scatterlist;
  */
 #define IO_TLB_SEGSIZE	128
 
-
 /*
  * log of the size of each IO TLB slab.  The number of slabs is command line
  * controllable.
  */
 #define IO_TLB_SHIFT 11
 
-extern void
-swiotlb_init(void);
+extern void swiotlb_init(void);
 
 extern void *swiotlb_alloc_boot(size_t bytes, unsigned long nslabs);
 extern void *swiotlb_alloc(unsigned order, unsigned long nslabs);
@@ -35,7 +33,7 @@ extern int swiotlb_arch_range_needs_mapping(void *ptr, size_t size);
 
 extern void
 *swiotlb_alloc_coherent(struct device *hwdev, size_t size,
-			dma_addr_t *dma_handle, gfp_t flags);
+			dma_addr_t * dma_handle, gfp_t flags);
 
 extern void
 swiotlb_free_coherent(struct device *hwdev, size_t size,
@@ -97,10 +95,8 @@ swiotlb_sync_single_range_for_device(struct device *hwdev, dma_addr_t dev_addr,
 				     unsigned long offset, size_t size,
 				     int dir);
 
-extern int
-swiotlb_dma_mapping_error(struct device *hwdev, dma_addr_t dma_addr);
+extern int swiotlb_dma_mapping_error(struct device *hwdev, dma_addr_t dma_addr);
 
-extern int
-swiotlb_dma_supported(struct device *hwdev, u64 mask);
+extern int swiotlb_dma_supported(struct device *hwdev, u64 mask);
 
 #endif /* __LINUX_SWIOTLB_H */

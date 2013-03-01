@@ -237,7 +237,7 @@ static inline int iop_chan_is_busy(struct iop_adma_chan *chan)
 }
 
 static inline int iop_desc_is_aligned(struct iop_adma_desc_slot *desc,
-					int num_slots)
+				      int num_slots)
 {
 	/* num_slots will only ever be 1, 2, 4, or 8 */
 	return (desc->idx & (num_slots - 1)) ? 0 : 1;
@@ -258,18 +258,18 @@ static inline int iop_chan_memset_slot_count(size_t len, int *slots_per_op)
 }
 
 static inline int iop3xx_aau_xor_slot_count(size_t len, int src_cnt,
-					int *slots_per_op)
+					    int *slots_per_op)
 {
 	static const char slot_count_table[] = {
-						1, 1, 1, 1, /* 01 - 04 */
-						2, 2, 2, 2, /* 05 - 08 */
-						4, 4, 4, 4, /* 09 - 12 */
-						4, 4, 4, 4, /* 13 - 16 */
-						8, 8, 8, 8, /* 17 - 20 */
-						8, 8, 8, 8, /* 21 - 24 */
-						8, 8, 8, 8, /* 25 - 28 */
-						8, 8, 8, 8, /* 29 - 32 */
-					      };
+		1, 1, 1, 1,	/* 01 - 04 */
+		2, 2, 2, 2,	/* 05 - 08 */
+		4, 4, 4, 4,	/* 09 - 12 */
+		4, 4, 4, 4,	/* 13 - 16 */
+		8, 8, 8, 8,	/* 17 - 20 */
+		8, 8, 8, 8,	/* 21 - 24 */
+		8, 8, 8, 8,	/* 25 - 28 */
+		8, 8, 8, 8,	/* 29 - 32 */
+	};
 	*slots_per_op = slot_count_table[src_cnt - 1];
 	return *slots_per_op;
 }
@@ -290,7 +290,7 @@ iop_chan_interrupt_slot_count(int *slots_per_op, struct iop_adma_chan *chan)
 }
 
 static inline int iop_chan_xor_slot_count(size_t len, int src_cnt,
-						int *slots_per_op)
+					  int *slots_per_op)
 {
 	int slot_cnt = iop3xx_aau_xor_slot_count(len, src_cnt, slots_per_op);
 
@@ -313,7 +313,7 @@ static inline int iop_chan_xor_slot_count(size_t len, int src_cnt,
  * descriptors
  */
 static inline int iop_chan_zero_sum_slot_count(size_t len, int src_cnt,
-						int *slots_per_op)
+					       int *slots_per_op)
 {
 	int slot_cnt = iop3xx_aau_xor_slot_count(len, src_cnt, slots_per_op);
 
@@ -333,9 +333,9 @@ static inline int iop_chan_zero_sum_slot_count(size_t len, int src_cnt,
 }
 
 static inline u32 iop_desc_get_dest_addr(struct iop_adma_desc_slot *desc,
-					struct iop_adma_chan *chan)
+					 struct iop_adma_chan *chan)
 {
-	union iop3xx_desc hw_desc = { .ptr = desc->hw_desc, };
+	union iop3xx_desc hw_desc = {.ptr = desc->hw_desc, };
 
 	switch (chan->device->id) {
 	case DMA0_ID:
@@ -350,9 +350,9 @@ static inline u32 iop_desc_get_dest_addr(struct iop_adma_desc_slot *desc,
 }
 
 static inline u32 iop_desc_get_byte_count(struct iop_adma_desc_slot *desc,
-					struct iop_adma_chan *chan)
+					  struct iop_adma_chan *chan)
 {
-	union iop3xx_desc hw_desc = { .ptr = desc->hw_desc, };
+	union iop3xx_desc hw_desc = {.ptr = desc->hw_desc, };
 
 	switch (chan->device->id) {
 	case DMA0_ID:
@@ -370,23 +370,22 @@ static inline u32 iop_desc_get_byte_count(struct iop_adma_desc_slot *desc,
 static inline int __desc_idx(int src_idx)
 {
 	static const int desc_idx_table[] = { 0, 0, 0, 0,
-					      0, 1, 2, 3,
-					      5, 6, 7, 8,
-					      9, 10, 11, 12,
-					      14, 15, 16, 17,
-					      18, 19, 20, 21,
-					      23, 24, 25, 26,
-					      27, 28, 29, 30,
-					    };
+		0, 1, 2, 3,
+		5, 6, 7, 8,
+		9, 10, 11, 12,
+		14, 15, 16, 17,
+		18, 19, 20, 21,
+		23, 24, 25, 26,
+		27, 28, 29, 30,
+	};
 
 	return desc_idx_table[src_idx];
 }
 
 static inline u32 iop_desc_get_src_addr(struct iop_adma_desc_slot *desc,
-					struct iop_adma_chan *chan,
-					int src_idx)
+					struct iop_adma_chan *chan, int src_idx)
 {
-	union iop3xx_desc hw_desc = { .ptr = desc->hw_desc, };
+	union iop3xx_desc hw_desc = {.ptr = desc->hw_desc, };
 
 	switch (chan->device->id) {
 	case DMA0_ID:
@@ -405,7 +404,7 @@ static inline u32 iop_desc_get_src_addr(struct iop_adma_desc_slot *desc,
 }
 
 static inline void iop3xx_aau_desc_set_src_addr(struct iop3xx_desc_aau *hw_desc,
-					int src_idx, dma_addr_t addr)
+						int src_idx, dma_addr_t addr)
 {
 	if (src_idx < 4)
 		hw_desc->src[src_idx] = addr;
@@ -424,7 +423,7 @@ iop_desc_init_memcpy(struct iop_adma_desc_slot *desc, unsigned long flags)
 
 	u_desc_ctrl.value = 0;
 	u_desc_ctrl.field.mem_to_mem_en = 1;
-	u_desc_ctrl.field.pci_transaction = 0xe; /* memory read block */
+	u_desc_ctrl.field.pci_transaction = 0xe;	/* memory read block */
 	u_desc_ctrl.field.int_en = flags & DMA_PREP_INTERRUPT;
 	hw_desc->desc_ctrl = u_desc_ctrl.value;
 	hw_desc->upper_pci_src_addr = 0;
@@ -441,7 +440,7 @@ iop_desc_init_memset(struct iop_adma_desc_slot *desc, unsigned long flags)
 	} u_desc_ctrl;
 
 	u_desc_ctrl.value = 0;
-	u_desc_ctrl.field.blk1_cmd_ctrl = 0x2; /* memory block fill */
+	u_desc_ctrl.field.blk1_cmd_ctrl = 0x2;	/* memory block fill */
 	u_desc_ctrl.field.dest_write_en = 1;
 	u_desc_ctrl.field.int_en = flags & DMA_PREP_INTERRUPT;
 	hw_desc->desc_ctrl = u_desc_ctrl.value;
@@ -461,7 +460,7 @@ iop3xx_desc_init_xor(struct iop3xx_desc_aau *hw_desc, int src_cnt,
 	u_desc_ctrl.value = 0;
 	switch (src_cnt) {
 	case 25 ... 32:
-		u_desc_ctrl.field.blk_ctrl = 0x3; /* use EDCR[2:0] */
+		u_desc_ctrl.field.blk_ctrl = 0x3;	/* use EDCR[2:0] */
 		edcr = 0;
 		shift = 1;
 		for (i = 24; i < src_cnt; i++) {
@@ -474,7 +473,7 @@ iop3xx_desc_init_xor(struct iop3xx_desc_aau *hw_desc, int src_cnt,
 	case 17 ... 24:
 		if (!u_desc_ctrl.field.blk_ctrl) {
 			hw_desc->src_edc[AAU_EDCR2_IDX].e_desc_ctrl = 0;
-			u_desc_ctrl.field.blk_ctrl = 0x3; /* use EDCR[2:0] */
+			u_desc_ctrl.field.blk_ctrl = 0x3;	/* use EDCR[2:0] */
 		}
 		edcr = 0;
 		shift = 1;
@@ -487,7 +486,7 @@ iop3xx_desc_init_xor(struct iop3xx_desc_aau *hw_desc, int src_cnt,
 		/* fall through */
 	case 9 ... 16:
 		if (!u_desc_ctrl.field.blk_ctrl)
-			u_desc_ctrl.field.blk_ctrl = 0x2; /* use EDCR0 */
+			u_desc_ctrl.field.blk_ctrl = 0x2;	/* use EDCR0 */
 		edcr = 0;
 		shift = 1;
 		for (i = 8; i < src_cnt; i++) {
@@ -505,11 +504,11 @@ iop3xx_desc_init_xor(struct iop3xx_desc_aau *hw_desc, int src_cnt,
 		}
 
 		if (!u_desc_ctrl.field.blk_ctrl && src_cnt > 4)
-			u_desc_ctrl.field.blk_ctrl = 0x1; /* use mini-desc */
+			u_desc_ctrl.field.blk_ctrl = 0x1;	/* use mini-desc */
 	}
 
 	u_desc_ctrl.field.dest_write_en = 1;
-	u_desc_ctrl.field.blk1_cmd_ctrl = 0x7; /* direct fill */
+	u_desc_ctrl.field.blk1_cmd_ctrl = 0x7;	/* direct fill */
 	u_desc_ctrl.field.int_en = flags & DMA_PREP_INTERRUPT;
 	hw_desc->desc_ctrl = u_desc_ctrl.value;
 
@@ -539,7 +538,7 @@ iop_desc_init_zero_sum(struct iop_adma_desc_slot *desc, int src_cnt,
 	hw_desc = desc->hw_desc;
 
 	for (i = 0, j = 0; (slot_cnt -= slots_per_op) >= 0;
-		i += slots_per_op, j++) {
+	     i += slots_per_op, j++) {
 		iter = iop_hw_desc_slot_idx(hw_desc, i);
 		u_desc_ctrl.value = iop3xx_desc_init_xor(iter, src_cnt, flags);
 		u_desc_ctrl.field.dest_write_en = 0;
@@ -552,9 +551,9 @@ iop_desc_init_zero_sum(struct iop_adma_desc_slot *desc, int src_cnt,
 		 */
 		if (i) {
 			prev_hw_desc =
-				iop_hw_desc_slot_idx(hw_desc, i - slots_per_op);
+			    iop_hw_desc_slot_idx(hw_desc, i - slots_per_op);
 			prev_hw_desc->next_desc =
-				(u32) (desc->async_tx.phys + (i << 5));
+			    (u32) (desc->async_tx.phys + (i << 5));
 		}
 	}
 
@@ -574,24 +573,24 @@ iop_desc_init_null_xor(struct iop_adma_desc_slot *desc, int src_cnt,
 	u_desc_ctrl.value = 0;
 	switch (src_cnt) {
 	case 25 ... 32:
-		u_desc_ctrl.field.blk_ctrl = 0x3; /* use EDCR[2:0] */
+		u_desc_ctrl.field.blk_ctrl = 0x3;	/* use EDCR[2:0] */
 		hw_desc->src_edc[AAU_EDCR2_IDX].e_desc_ctrl = 0;
 		/* fall through */
 	case 17 ... 24:
 		if (!u_desc_ctrl.field.blk_ctrl) {
 			hw_desc->src_edc[AAU_EDCR2_IDX].e_desc_ctrl = 0;
-			u_desc_ctrl.field.blk_ctrl = 0x3; /* use EDCR[2:0] */
+			u_desc_ctrl.field.blk_ctrl = 0x3;	/* use EDCR[2:0] */
 		}
 		hw_desc->src_edc[AAU_EDCR1_IDX].e_desc_ctrl = 0;
 		/* fall through */
 	case 9 ... 16:
 		if (!u_desc_ctrl.field.blk_ctrl)
-			u_desc_ctrl.field.blk_ctrl = 0x2; /* use EDCR0 */
+			u_desc_ctrl.field.blk_ctrl = 0x2;	/* use EDCR0 */
 		hw_desc->src_edc[AAU_EDCR0_IDX].e_desc_ctrl = 0;
 		/* fall through */
 	case 1 ... 8:
 		if (!u_desc_ctrl.field.blk_ctrl && src_cnt > 4)
-			u_desc_ctrl.field.blk_ctrl = 0x1; /* use mini-desc */
+			u_desc_ctrl.field.blk_ctrl = 0x1;	/* use mini-desc */
 	}
 
 	u_desc_ctrl.field.dest_write_en = 0;
@@ -600,10 +599,10 @@ iop_desc_init_null_xor(struct iop_adma_desc_slot *desc, int src_cnt,
 }
 
 static inline void iop_desc_set_byte_count(struct iop_adma_desc_slot *desc,
-					struct iop_adma_chan *chan,
-					u32 byte_count)
+					   struct iop_adma_chan *chan,
+					   u32 byte_count)
 {
-	union iop3xx_desc hw_desc = { .ptr = desc->hw_desc, };
+	union iop3xx_desc hw_desc = {.ptr = desc->hw_desc, };
 
 	switch (chan->device->id) {
 	case DMA0_ID:
@@ -622,7 +621,7 @@ static inline void
 iop_desc_init_interrupt(struct iop_adma_desc_slot *desc,
 			struct iop_adma_chan *chan)
 {
-	union iop3xx_desc hw_desc = { .ptr = desc->hw_desc, };
+	union iop3xx_desc hw_desc = {.ptr = desc->hw_desc, };
 
 	switch (chan->device->id) {
 	case DMA0_ID:
@@ -669,10 +668,10 @@ iop_desc_set_zero_sum_byte_count(struct iop_adma_desc_slot *desc, u32 len)
 }
 
 static inline void iop_desc_set_dest_addr(struct iop_adma_desc_slot *desc,
-					struct iop_adma_chan *chan,
-					dma_addr_t addr)
+					  struct iop_adma_chan *chan,
+					  dma_addr_t addr)
 {
-	union iop3xx_desc hw_desc = { .ptr = desc->hw_desc, };
+	union iop3xx_desc hw_desc = {.ptr = desc->hw_desc, };
 
 	switch (chan->device->id) {
 	case DMA0_ID:
@@ -688,7 +687,7 @@ static inline void iop_desc_set_dest_addr(struct iop_adma_desc_slot *desc,
 }
 
 static inline void iop_desc_set_memcpy_src_addr(struct iop_adma_desc_slot *desc,
-					dma_addr_t addr)
+						dma_addr_t addr)
 {
 	struct iop3xx_desc_dma *hw_desc = desc->hw_desc;
 	hw_desc->src_addr = addr;
@@ -696,7 +695,7 @@ static inline void iop_desc_set_memcpy_src_addr(struct iop_adma_desc_slot *desc,
 
 static inline void
 iop_desc_set_zero_sum_src_addr(struct iop_adma_desc_slot *desc, int src_idx,
-				dma_addr_t addr)
+			       dma_addr_t addr)
 {
 
 	struct iop3xx_desc_aau *hw_desc = desc->hw_desc, *iter;
@@ -704,14 +703,14 @@ iop_desc_set_zero_sum_src_addr(struct iop_adma_desc_slot *desc, int src_idx,
 	int i;
 
 	for (i = 0; (slot_cnt -= slots_per_op) >= 0;
-		i += slots_per_op, addr += IOP_ADMA_ZERO_SUM_MAX_BYTE_COUNT) {
+	     i += slots_per_op, addr += IOP_ADMA_ZERO_SUM_MAX_BYTE_COUNT) {
 		iter = iop_hw_desc_slot_idx(hw_desc, i);
 		iop3xx_aau_desc_set_src_addr(iter, src_idx, addr);
 	}
 }
 
 static inline void iop_desc_set_xor_src_addr(struct iop_adma_desc_slot *desc,
-					int src_idx, dma_addr_t addr)
+					     int src_idx, dma_addr_t addr)
 {
 
 	struct iop3xx_desc_aau *hw_desc = desc->hw_desc, *iter;
@@ -719,17 +718,17 @@ static inline void iop_desc_set_xor_src_addr(struct iop_adma_desc_slot *desc,
 	int i;
 
 	for (i = 0; (slot_cnt -= slots_per_op) >= 0;
-		i += slots_per_op, addr += IOP_ADMA_XOR_MAX_BYTE_COUNT) {
+	     i += slots_per_op, addr += IOP_ADMA_XOR_MAX_BYTE_COUNT) {
 		iter = iop_hw_desc_slot_idx(hw_desc, i);
 		iop3xx_aau_desc_set_src_addr(iter, src_idx, addr);
 	}
 }
 
 static inline void iop_desc_set_next_desc(struct iop_adma_desc_slot *desc,
-					u32 next_desc_addr)
+					  u32 next_desc_addr)
 {
 	/* hw_desc->next_desc is the same location for all channels */
-	union iop3xx_desc hw_desc = { .ptr = desc->hw_desc, };
+	union iop3xx_desc hw_desc = {.ptr = desc->hw_desc, };
 
 	iop_paranoia(hw_desc.dma->next_desc);
 	hw_desc.dma->next_desc = next_desc_addr;
@@ -738,19 +737,19 @@ static inline void iop_desc_set_next_desc(struct iop_adma_desc_slot *desc,
 static inline u32 iop_desc_get_next_desc(struct iop_adma_desc_slot *desc)
 {
 	/* hw_desc->next_desc is the same location for all channels */
-	union iop3xx_desc hw_desc = { .ptr = desc->hw_desc, };
+	union iop3xx_desc hw_desc = {.ptr = desc->hw_desc, };
 	return hw_desc.dma->next_desc;
 }
 
 static inline void iop_desc_clear_next_desc(struct iop_adma_desc_slot *desc)
 {
 	/* hw_desc->next_desc is the same location for all channels */
-	union iop3xx_desc hw_desc = { .ptr = desc->hw_desc, };
+	union iop3xx_desc hw_desc = {.ptr = desc->hw_desc, };
 	hw_desc.dma->next_desc = 0;
 }
 
 static inline void iop_desc_set_block_fill_val(struct iop_adma_desc_slot *desc,
-						u32 val)
+					       u32 val)
 {
 	struct iop3xx_desc_aau *hw_desc = desc->hw_desc;
 	hw_desc->src[0] = val;

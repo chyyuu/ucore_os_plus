@@ -47,38 +47,38 @@ typedef struct siginfo {
 
 		/* kill() */
 		struct {
-			pid_t _pid;		/* sender's pid */
+			pid_t _pid;	/* sender's pid */
 			__ARCH_SI_UID_T _uid;	/* sender's uid */
 		} _kill;
 
 		/* POSIX.1b timers */
 		struct {
-			timer_t _tid;		/* timer id */
-			int _overrun;		/* overrun count */
-			char _pad[sizeof( __ARCH_SI_UID_T) - sizeof(int)];
+			timer_t _tid;	/* timer id */
+			int _overrun;	/* overrun count */
+			char _pad[sizeof(__ARCH_SI_UID_T) - sizeof(int)];
 			sigval_t _sigval;	/* same as below */
-			int _sys_private;       /* not to be passed to user */
+			int _sys_private;	/* not to be passed to user */
 		} _timer;
 
 		/* POSIX.1b signals */
 		struct {
-			pid_t _pid;		/* sender's pid */
+			pid_t _pid;	/* sender's pid */
 			__ARCH_SI_UID_T _uid;	/* sender's uid */
 			sigval_t _sigval;
 		} _rt;
 
 		/* SIGCHLD */
 		struct {
-			pid_t _pid;		/* which child */
+			pid_t _pid;	/* which child */
 			__ARCH_SI_UID_T _uid;	/* sender's uid */
-			int _status;		/* exit code */
+			int _status;	/* exit code */
 			clock_t _utime;
 			clock_t _stime;
 		} _sigchld;
 
 		/* SIGILL, SIGFPE, SIGSEGV, SIGBUS */
 		struct {
-			void __user *_addr; /* faulting insn/memory ref. */
+			void __user *_addr;	/* faulting insn/memory ref. */
 #ifdef __ARCH_SI_TRAPNO
 			int _trapno;	/* TRAP # which caused the signal */
 #endif
@@ -140,15 +140,15 @@ typedef struct siginfo {
  * si_code values
  * Digital reserves positive values for kernel-generated signals.
  */
-#define SI_USER		0		/* sent by kill, sigsend, raise */
-#define SI_KERNEL	0x80		/* sent by the kernel from somewhere */
-#define SI_QUEUE	-1		/* sent by sigqueue */
-#define SI_TIMER __SI_CODE(__SI_TIMER,-2) /* sent by timer expiration */
-#define SI_MESGQ __SI_CODE(__SI_MESGQ,-3) /* sent by real time mesq state change */
-#define SI_ASYNCIO	-4		/* sent by AIO completion */
-#define SI_SIGIO	-5		/* sent by queued SIGIO */
-#define SI_TKILL	-6		/* sent by tkill system call */
-#define SI_DETHREAD	-7		/* sent by execve() killing subsidiary threads */
+#define SI_USER		0	/* sent by kill, sigsend, raise */
+#define SI_KERNEL	0x80	/* sent by the kernel from somewhere */
+#define SI_QUEUE	-1	/* sent by sigqueue */
+#define SI_TIMER __SI_CODE(__SI_TIMER,-2)	/* sent by timer expiration */
+#define SI_MESGQ __SI_CODE(__SI_MESGQ,-3)	/* sent by real time mesq state change */
+#define SI_ASYNCIO	-4	/* sent by AIO completion */
+#define SI_SIGIO	-5	/* sent by queued SIGIO */
+#define SI_TKILL	-6	/* sent by tkill system call */
+#define SI_DETHREAD	-7	/* sent by execve() killing subsidiary threads */
 
 #define SI_FROMUSER(siptr)	((siptr)->si_code <= 0)
 #define SI_FROMKERNEL(siptr)	((siptr)->si_code > 0)
@@ -199,8 +199,8 @@ typedef struct siginfo {
  */
 #define TRAP_BRKPT	(__SI_FAULT|1)	/* process breakpoint */
 #define TRAP_TRACE	(__SI_FAULT|2)	/* process trace trap */
-#define TRAP_BRANCH     (__SI_FAULT|3)  /* process taken branch trap */
-#define TRAP_HWBKPT     (__SI_FAULT|4)  /* hardware breakpoint/watchpoint */
+#define TRAP_BRANCH     (__SI_FAULT|3)	/* process taken branch trap */
+#define TRAP_HWBKPT     (__SI_FAULT|4)	/* hardware breakpoint/watchpoint */
 #define NSIGTRAP	2
 
 /*
@@ -256,10 +256,10 @@ typedef struct sigevent {
 	int sigev_notify;
 	union {
 		int _pad[SIGEV_PAD_SIZE];
-		 int _tid;
+		int _tid;
 
 		struct {
-			void (*_function)(sigval_t);
+			void (*_function) (sigval_t);
 			void *_attribute;	/* really pthread_attr_t */
 		} _sigev_thread;
 	} _sigev_un;
@@ -284,12 +284,15 @@ static inline void copy_siginfo(struct siginfo *to, struct siginfo *from)
 		memcpy(to, from, sizeof(*to));
 	else
 		/* _sigchld is currently the largest know union member */
-		memcpy(to, from, __ARCH_SI_PREAMBLE_SIZE + sizeof(from->_sifields._sigchld));
+		memcpy(to, from,
+		       __ARCH_SI_PREAMBLE_SIZE +
+		       sizeof(from->_sifields._sigchld));
 }
 
 #endif
 
-extern int copy_siginfo_to_user(struct siginfo __user *to, struct siginfo *from);
+extern int copy_siginfo_to_user(struct siginfo __user * to,
+				struct siginfo *from);
 
 #endif /* __KERNEL__ */
 

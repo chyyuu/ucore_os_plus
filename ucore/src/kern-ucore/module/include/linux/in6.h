@@ -27,13 +27,11 @@
  *	IPv6 address structure
  */
 
-struct in6_addr
-{
-	union 
-	{
-		__u8		u6_addr8[16];
-		__be16		u6_addr16[8];
-		__be32		u6_addr32[4];
+struct in6_addr {
+	union {
+		__u8 u6_addr8[16];
+		__be16 u6_addr16[8];
+		__be32 u6_addr32[4];
 	} in6_u;
 #define s6_addr			in6_u.u6_addr8
 #define s6_addr16		in6_u.u6_addr16
@@ -58,11 +56,11 @@ extern const struct in6_addr in6addr_linklocal_allrouters;
 #endif
 
 struct sockaddr_in6 {
-	unsigned short int	sin6_family;    /* AF_INET6 */
-	__be16			sin6_port;      /* Transport layer port # */
-	__be32			sin6_flowinfo;  /* IPv6 flow information */
-	struct in6_addr		sin6_addr;      /* IPv6 address */
-	__u32			sin6_scope_id;  /* scope id (new in RFC2553) */
+	unsigned short int sin6_family;	/* AF_INET6 */
+	__be16 sin6_port;	/* Transport layer port # */
+	__be32 sin6_flowinfo;	/* IPv6 flow information */
+	struct in6_addr sin6_addr;	/* IPv6 address */
+	__u32 sin6_scope_id;	/* scope id (new in RFC2553) */
 };
 
 struct ipv6_mreq {
@@ -70,21 +68,20 @@ struct ipv6_mreq {
 	struct in6_addr ipv6mr_multiaddr;
 
 	/* local IPv6 address of interface */
-	int		ipv6mr_ifindex;
+	int ipv6mr_ifindex;
 };
 
 #define ipv6mr_acaddr	ipv6mr_multiaddr
 
-struct in6_flowlabel_req
-{
-	struct in6_addr	flr_dst;
-	__be32	flr_label;
-	__u8	flr_action;
-	__u8	flr_share;
-	__u16	flr_flags;
-	__u16 	flr_expires;
-	__u16	flr_linger;
-	__u32	__flr_pad;
+struct in6_flowlabel_req {
+	struct in6_addr flr_dst;
+	__be32 flr_label;
+	__u8 flr_action;
+	__u8 flr_share;
+	__u16 flr_flags;
+	__u16 flr_expires;
+	__u16 flr_linger;
+	__u32 __flr_pad;
 	/* Options in format of IPV6_PKTOPTIONS */
 };
 
@@ -100,7 +97,6 @@ struct in6_flowlabel_req
 #define IPV6_FL_S_PROCESS	2
 #define IPV6_FL_S_USER		3
 #define IPV6_FL_S_ANY		255
-
 
 /*
  *	Bitmask constant declarations to help applications select out the 
@@ -134,13 +130,13 @@ struct in6_flowlabel_req
 /*
  *	IPV6 extension headers
  */
-#define IPPROTO_HOPOPTS		0	/* IPv6 hop-by-hop options	*/
-#define IPPROTO_ROUTING		43	/* IPv6 routing header		*/
-#define IPPROTO_FRAGMENT	44	/* IPv6 fragmentation header	*/
-#define IPPROTO_ICMPV6		58	/* ICMPv6			*/
-#define IPPROTO_NONE		59	/* IPv6 no next header		*/
-#define IPPROTO_DSTOPTS		60	/* IPv6 destination options	*/
-#define IPPROTO_MH		135	/* IPv6 mobility header		*/
+#define IPPROTO_HOPOPTS		0	/* IPv6 hop-by-hop options      */
+#define IPPROTO_ROUTING		43	/* IPv6 routing header          */
+#define IPPROTO_FRAGMENT	44	/* IPv6 fragmentation header    */
+#define IPPROTO_ICMPV6		58	/* ICMPv6                       */
+#define IPPROTO_NONE		59	/* IPv6 no next header          */
+#define IPPROTO_DSTOPTS		60	/* IPv6 destination options     */
+#define IPPROTO_MH		135	/* IPv6 mobility header         */
 
 /*
  *	IPv6 TLV options.
@@ -224,7 +220,7 @@ struct in6_flowlabel_req
 #define IPV6_RTHDR		57
 #define IPV6_RECVDSTOPTS	58
 #define IPV6_DSTOPTS		59
-#if 0	/* not yet */
+#if 0				/* not yet */
 #define IPV6_RECVPATHMTU	60
 #define IPV6_PATHMTU		61
 #define IPV6_DONTFRAG		62

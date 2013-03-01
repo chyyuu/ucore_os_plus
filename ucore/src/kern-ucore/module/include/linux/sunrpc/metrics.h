@@ -38,9 +38,9 @@ struct rpc_iostats {
 	 * the client is retransmitting too aggressively, or the
 	 * requests are large and the network is congested.
 	 */
-	unsigned long		om_ops,		/* count of operations */
-				om_ntrans,	/* count of RPC transmissions */
-				om_timeouts;	/* count of major timeouts */
+	unsigned long om_ops,	/* count of operations */
+	 om_ntrans,		/* count of RPC transmissions */
+	 om_timeouts;		/* count of major timeouts */
 
 	/*
 	 * These count how many bytes are sent and received for a
@@ -49,8 +49,8 @@ struct rpc_iostats {
 	 * counts include the RPC and ULP headers, and the request
 	 * payload.
 	 */
-	unsigned long long      om_bytes_sent,	/* count of bytes out */
-				om_bytes_recv;	/* count of bytes in */
+	unsigned long long om_bytes_sent,	/* count of bytes out */
+	 om_bytes_recv;		/* count of bytes in */
 
 	/*
 	 * The length of time an RPC request waits in queue before
@@ -58,9 +58,9 @@ struct rpc_iostats {
 	 * and the total time the request spent from init to release
 	 * are measured.
 	 */
-	unsigned long long	om_queue,	/* jiffies queued for xmit */
-				om_rtt,		/* jiffies for RPC RTT */
-				om_execute;	/* jiffies for RPC execution */
+	unsigned long long om_queue,	/* jiffies queued for xmit */
+	 om_rtt,		/* jiffies for RPC RTT */
+	 om_execute;		/* jiffies for RPC execution */
 } ____cacheline_aligned;
 
 struct rpc_task;
@@ -72,18 +72,31 @@ struct rpc_clnt;
 
 #ifdef CONFIG_PROC_FS
 
-struct rpc_iostats *	rpc_alloc_iostats(struct rpc_clnt *);
-void			rpc_count_iostats(struct rpc_task *);
-void			rpc_print_iostats(struct seq_file *, struct rpc_clnt *);
-void			rpc_free_iostats(struct rpc_iostats *);
+struct rpc_iostats *rpc_alloc_iostats(struct rpc_clnt *);
+void rpc_count_iostats(struct rpc_task *);
+void rpc_print_iostats(struct seq_file *, struct rpc_clnt *);
+void rpc_free_iostats(struct rpc_iostats *);
 
-#else  /*  CONFIG_PROC_FS  */
+#else /*  CONFIG_PROC_FS  */
 
-static inline struct rpc_iostats *rpc_alloc_iostats(struct rpc_clnt *clnt) { return NULL; }
-static inline void rpc_count_iostats(struct rpc_task *task) {}
-static inline void rpc_print_iostats(struct seq_file *seq, struct rpc_clnt *clnt) {}
-static inline void rpc_free_iostats(struct rpc_iostats *stats) {}
+static inline struct rpc_iostats *rpc_alloc_iostats(struct rpc_clnt *clnt)
+{
+	return NULL;
+}
 
-#endif  /*  CONFIG_PROC_FS  */
+static inline void rpc_count_iostats(struct rpc_task *task)
+{
+}
+
+static inline void rpc_print_iostats(struct seq_file *seq,
+				     struct rpc_clnt *clnt)
+{
+}
+
+static inline void rpc_free_iostats(struct rpc_iostats *stats)
+{
+}
+
+#endif /*  CONFIG_PROC_FS  */
 
 #endif /* _LINUX_SUNRPC_METRICS_H */

@@ -1,7 +1,6 @@
 /* atmapi.h - ATM API user space/kernel compatibility */
- 
+
 /* Written 1999,2000 by Werner Almesberger, EPFL ICA */
- 
 
 #ifndef _LINUX_ATMAPI_H
 #define _LINUX_ATMAPI_H
@@ -14,7 +13,6 @@
 #define __ATM_API_ALIGN
 #endif
 
-
 /*
  * Opaque type for kernel pointers. Note that _ is never accessed. We need
  * the struct in order hide the array, so that we can make simple assignments
@@ -23,7 +21,9 @@
  *
  * Convention: NULL pointers are passed as a field of all zeroes.
  */
- 
-typedef struct { unsigned char _[8]; } __ATM_API_ALIGN atm_kptr_t;
+
+typedef struct {
+	unsigned char _[8];
+} __ATM_API_ALIGN atm_kptr_t;
 
 #endif

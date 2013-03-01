@@ -17,7 +17,7 @@
 struct watchdog_info {
 	__u32 options;		/* Options the card/driver supports */
 	__u32 firmware_version;	/* Firmware version of the card */
-	__u8  identity[32];	/* Identity of the board */
+	__u8 identity[32];	/* Identity of the board */
 };
 
 #define	WDIOC_GETSUPPORT	_IOR(WATCHDOG_IOCTL_BASE, 0, struct watchdog_info)
@@ -42,9 +42,9 @@ struct watchdog_info {
 #define	WDIOF_POWERUNDER	0x0010	/* Power bad/power fault */
 #define	WDIOF_CARDRESET		0x0020	/* Card previously reset the CPU */
 #define	WDIOF_POWEROVER		0x0040	/* Power over voltage */
-#define	WDIOF_SETTIMEOUT	0x0080  /* Set timeout (in seconds) */
+#define	WDIOF_SETTIMEOUT	0x0080	/* Set timeout (in seconds) */
 #define	WDIOF_MAGICCLOSE	0x0100	/* Supports magic close char */
-#define	WDIOF_PRETIMEOUT	0x0200  /* Pretimeout (in seconds), get/set */
+#define	WDIOF_PRETIMEOUT	0x0200	/* Pretimeout (in seconds), get/set */
 #define	WDIOF_KEEPALIVEPING	0x8000	/* Keep alive ping reply */
 
 #define	WDIOS_DISABLECARD	0x0001	/* Turn off the watchdog timer */
@@ -59,6 +59,6 @@ struct watchdog_info {
 #define WATCHDOG_NOWAYOUT	0
 #endif
 
-#endif	/* __KERNEL__ */
+#endif /* __KERNEL__ */
 
-#endif  /* ifndef _LINUX_WATCHDOG_H */
+#endif /* ifndef _LINUX_WATCHDOG_H */

@@ -28,20 +28,20 @@ struct ppp_channel;
 struct ppp_channel_ops {
 	/* Send a packet (or multilink fragment) on this channel.
 	   Returns 1 if it was accepted, 0 if not. */
-	int	(*start_xmit)(struct ppp_channel *, struct sk_buff *);
+	int (*start_xmit) (struct ppp_channel *, struct sk_buff *);
 	/* Handle an ioctl call that has come in via /dev/ppp. */
-	int	(*ioctl)(struct ppp_channel *, unsigned int, unsigned long);
+	int (*ioctl) (struct ppp_channel *, unsigned int, unsigned long);
 };
 
 struct ppp_channel {
-	void		*private;	/* channel private data */
+	void *private;		/* channel private data */
 	struct ppp_channel_ops *ops;	/* operations for this channel */
-	int		mtu;		/* max transmit packet size */
-	int		hdrlen;		/* amount of headroom channel needs */
-	void		*ppp;		/* opaque to channel */
+	int mtu;		/* max transmit packet size */
+	int hdrlen;		/* amount of headroom channel needs */
+	void *ppp;		/* opaque to channel */
 	/* the following are not used at present */
-	int		speed;		/* transfer rate (bytes/second) */
-	int		latency;	/* overhead time in milliseconds */
+	int speed;		/* transfer rate (bytes/second) */
+	int latency;		/* overhead time in milliseconds */
 };
 
 #ifdef __KERNEL__

@@ -15,4 +15,3 @@ void cons_dtor(void);
 #define CONSOLE_BUFFER_SIZE 10
 
 #endif /* !__KERN_DRIVER_CONSOLE_H__ */
-

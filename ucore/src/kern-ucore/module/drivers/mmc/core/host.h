@@ -15,4 +15,3 @@ int mmc_register_host_class(void);
 void mmc_unregister_host_class(void);
 
 #endif
-

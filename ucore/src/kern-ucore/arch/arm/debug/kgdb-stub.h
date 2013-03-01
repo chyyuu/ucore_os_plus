@@ -35,11 +35,11 @@
 void kgdb_init();
 int setup_bp(uint32_t addr);
 int remove_bp(uint32_t addr);
-int kgdb_trap(struct trapframe* tf);
+int kgdb_trap(struct trapframe *tf);
 
 static inline void kgdb_breakpoint()
 {
-  __asm__ volatile(".word 0xe7f001f0");
+	__asm__ volatile (".word 0xe7f001f0");
 }
 
 #endif

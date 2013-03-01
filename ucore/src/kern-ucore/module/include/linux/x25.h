@@ -56,8 +56,8 @@ struct x25_address {
  *	Linux X.25 Address structure, used for bind, and connect mostly.
  */
 struct sockaddr_x25 {
-	sa_family_t	   sx25_family;		/* Must be AF_X25 */
-	struct x25_address sx25_addr;		/* X.121 Address */
+	sa_family_t sx25_family;	/* Must be AF_X25 */
+	struct x25_address sx25_addr;	/* X.121 Address */
 };
 
 /*
@@ -69,14 +69,14 @@ struct sockaddr_x25 {
  *	backward compatibility.
  */
 struct x25_subscrip_struct {
-	char device[200-sizeof(unsigned long)];
-	unsigned long	global_facil_mask;	/* 0 to disable negotiation */
-	unsigned int	extended;
+	char device[200 - sizeof(unsigned long)];
+	unsigned long global_facil_mask;	/* 0 to disable negotiation */
+	unsigned int extended;
 };
 
 /* values for above global_facil_mask */
 
-#define	X25_MASK_REVERSE	0x01	
+#define	X25_MASK_REVERSE	0x01
 #define	X25_MASK_THROUGHPUT	0x02
 #define	X25_MASK_PACKET_SIZE	0x04
 #define	X25_MASK_WINDOW_SIZE	0x08
@@ -84,24 +84,23 @@ struct x25_subscrip_struct {
 #define X25_MASK_CALLING_AE 0x10
 #define X25_MASK_CALLED_AE 0x20
 
-
 /*
  *	Routing table control structure.
  */
 struct x25_route_struct {
 	struct x25_address address;
-	unsigned int	   sigdigits;
-	char		   device[200];
+	unsigned int sigdigits;
+	char device[200];
 };
 
 /*
  *	Facilities structure.
  */
 struct x25_facilities {
-	unsigned int	winsize_in, winsize_out;
-	unsigned int	pacsize_in, pacsize_out;
-	unsigned int	throughput;
-	unsigned int	reverse;
+	unsigned int winsize_in, winsize_out;
+	unsigned int pacsize_in, pacsize_out;
+	unsigned int throughput;
+	unsigned int reverse;
 };
 
 /*
@@ -128,16 +127,16 @@ struct x25_dte_facilities {
  *	Call User Data structure.
  */
 struct x25_calluserdata {
-	unsigned int	cudlength;
-	unsigned char	cuddata[128];
+	unsigned int cudlength;
+	unsigned char cuddata[128];
 };
 
 /*
  *	Call clearing Cause and Diagnostic structure.
  */
 struct x25_causediag {
-	unsigned char	cause;
-	unsigned char	diagnostic;
+	unsigned char cause;
+	unsigned char diagnostic;
 };
 
 /*

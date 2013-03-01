@@ -23,7 +23,7 @@
  *
  * This can be thought of as a very heavy write lock, equivalent to
  * grabbing every spinlock in the kernel. */
-int stop_machine(int (*fn)(void *), void *data, const struct cpumask *cpus);
+int stop_machine(int (*fn) (void *), void *data, const struct cpumask *cpus);
 
 /**
  * __stop_machine: freeze the machine on all CPUs and run this function
@@ -34,7 +34,7 @@ int stop_machine(int (*fn)(void *), void *data, const struct cpumask *cpus);
  * Description: This is a special version of the above, which assumes cpus
  * won't come or go while it's being called.  Used by hotplug cpu.
  */
-int __stop_machine(int (*fn)(void *), void *data, const struct cpumask *cpus);
+int __stop_machine(int (*fn) (void *), void *data, const struct cpumask *cpus);
 
 /**
  * stop_machine_create: create all stop_machine threads
@@ -55,7 +55,7 @@ void stop_machine_destroy(void);
 
 #else
 
-static inline int stop_machine(int (*fn)(void *), void *data,
+static inline int stop_machine(int (*fn) (void *), void *data,
 			       const struct cpumask *cpus)
 {
 	int ret;
@@ -65,8 +65,14 @@ static inline int stop_machine(int (*fn)(void *), void *data,
 	return ret;
 }
 
-static inline int stop_machine_create(void) { return 0; }
-static inline void stop_machine_destroy(void) { }
+static inline int stop_machine_create(void)
+{
+	return 0;
+}
+
+static inline void stop_machine_destroy(void)
+{
+}
 
 #endif /* CONFIG_SMP */
 #endif /* _LINUX_STOP_MACHINE */

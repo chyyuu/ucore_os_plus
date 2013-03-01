@@ -31,19 +31,19 @@ static int sched_enabled = 0;
 
 void enable_timer_list()
 {
-  sched_enabled = 1;
+	sched_enabled = 1;
 }
 
 void __common_timer_int_handler()
 {
-  ticks++;
+	ticks++;
 #ifdef UCONFIG_HAVE_LINUX_DDE_BASE
-  jiffies ++;
-  jiffies_64++;
+	jiffies++;
+	jiffies_64++;
 #endif
-  //if(ticks % 100 == 0)
-  //  serial_putc('A');
-  extern void run_timer_list();
-  if(sched_enabled)
-    run_timer_list();
+	//if(ticks % 100 == 0)
+	//  serial_putc('A');
+	extern void run_timer_list();
+	if (sched_enabled)
+		run_timer_list();
 }

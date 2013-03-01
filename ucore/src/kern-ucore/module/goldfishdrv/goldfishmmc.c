@@ -51,7 +51,6 @@
 #include <asm/mach-types.h>
 #endif
 
-
 #include <asm/types.h>
 #include <asm/io.h>
 #include <asm/uaccess.h>
@@ -63,49 +62,48 @@
 #define GOLDFISH_MMC_READ(host, addr)   (readl(host->reg_base + addr))
 #define GOLDFISH_MMC_WRITE(host, addr, x)   (writel(x, host->reg_base + addr))
 
-
 enum {
 	/* status register */
-	MMC_INT_STATUS	        = 0x00, 
+	MMC_INT_STATUS = 0x00,
 	/* set this to enable IRQ */
-	MMC_INT_ENABLE	        = 0x04,
+	MMC_INT_ENABLE = 0x04,
 	/* set this to specify buffer address */
-	MMC_SET_BUFFER          = 0x08,
-	
+	MMC_SET_BUFFER = 0x08,
+
 	/* MMC command number */
-	MMC_CMD	                = 0x0C,	
+	MMC_CMD = 0x0C,
 
 	/* MMC argument */
-	MMC_ARG	                = 0x10,
-	
+	MMC_ARG = 0x10,
+
 	/* MMC response (or R2 bits 0 - 31) */
-	MMC_RESP_0		        = 0x14,
+	MMC_RESP_0 = 0x14,
 
 	/* MMC R2 response bits 32 - 63 */
-	MMC_RESP_1		        = 0x18,
+	MMC_RESP_1 = 0x18,
 
 	/* MMC R2 response bits 64 - 95 */
-	MMC_RESP_2		        = 0x1C,
+	MMC_RESP_2 = 0x1C,
 
 	/* MMC R2 response bits 96 - 127 */
-	MMC_RESP_3		        = 0x20,
+	MMC_RESP_3 = 0x20,
 
-	MMC_BLOCK_LENGTH        = 0x24,
-	MMC_BLOCK_COUNT         = 0x28,
+	MMC_BLOCK_LENGTH = 0x24,
+	MMC_BLOCK_COUNT = 0x28,
 
 	/* MMC state flags */
-	MMC_STATE               = 0x2C,
+	MMC_STATE = 0x2C,
 
 	/* MMC_INT_STATUS bits */
-	
-	MMC_STAT_END_OF_CMD     = 1U << 0,
-	MMC_STAT_END_OF_DATA    = 1U << 1,
-	MMC_STAT_STATE_CHANGE   = 1U << 2,
-	MMC_STAT_CMD_TIMEOUT    = 1U << 3,
+
+	MMC_STAT_END_OF_CMD = 1U << 0,
+	MMC_STAT_END_OF_DATA = 1U << 1,
+	MMC_STAT_STATE_CHANGE = 1U << 2,
+	MMC_STAT_CMD_TIMEOUT = 1U << 3,
 
 	/* MMC_STATE bits */
-	MMC_STATE_INSERTED     = 1U << 0,
-	MMC_STATE_READ_ONLY    = 1U << 1,
+	MMC_STATE_INSERTED = 1U << 0,
+	MMC_STATE_READ_ONLY = 1U << 1,
 };
 
 /*
@@ -116,47 +114,46 @@ enum {
 #define OMAP_MMC_CMDTYPE_AC	2
 #define OMAP_MMC_CMDTYPE_ADTC	3
 
-
 struct goldfish_mmc_host {
-	struct mmc_request *	mrq;
-	struct mmc_command *	cmd;
-	struct mmc_data *	data;
-	struct mmc_host *	mmc;
-	struct device *		dev;
-	unsigned char		id; /* 16xx chips have 2 MMC blocks */
-	void __iomem		*virt_base;
-	unsigned int		phys_base;
-	int			irq;
-	unsigned char		bus_mode;
-	unsigned char		hw_bus_mode;
+	struct mmc_request *mrq;
+	struct mmc_command *cmd;
+	struct mmc_data *data;
+	struct mmc_host *mmc;
+	struct device *dev;
+	unsigned char id;	/* 16xx chips have 2 MMC blocks */
+	void __iomem *virt_base;
+	unsigned int phys_base;
+	int irq;
+	unsigned char bus_mode;
+	unsigned char hw_bus_mode;
 
-	unsigned int		sg_len;
-	unsigned		dma_done:1;
-	unsigned		dma_in_use:1;
+	unsigned int sg_len;
+	unsigned dma_done:1;
+	unsigned dma_in_use:1;
 
-	void __iomem		*reg_base;
+	void __iomem *reg_base;
 };
 
-static inline int
-goldfish_mmc_cover_is_open(struct goldfish_mmc_host *host)
+static inline int goldfish_mmc_cover_is_open(struct goldfish_mmc_host *host)
 {
 	return 0;
 }
 
 static ssize_t
 goldfish_mmc_show_cover_switch(struct device *dev,
-	struct device_attribute *attr, char *buf)
+			       struct device_attribute *attr, char *buf)
 {
 	struct goldfish_mmc_host *host = dev_get_drvdata(dev);
 
 	return sprintf(buf, "%s\n", goldfish_mmc_cover_is_open(host) ? "open" :
-			"closed");
+		       "closed");
 }
 
 static DEVICE_ATTR(cover_switch, S_IRUGO, goldfish_mmc_show_cover_switch, NULL);
 
 static void
-goldfish_mmc_start_command(struct goldfish_mmc_host *host, struct mmc_command *cmd)
+goldfish_mmc_start_command(struct goldfish_mmc_host *host,
+			   struct mmc_command *cmd)
 {
 	u32 cmdreg;
 	u32 resptype;
@@ -183,7 +180,8 @@ goldfish_mmc_start_command(struct goldfish_mmc_host *host, struct mmc_command *c
 		resptype = 3;
 		break;
 	default:
-		dev_err(mmc_dev(host->mmc), "Invalid response type: %04x\n", mmc_resp_type(cmd));
+		dev_err(mmc_dev(host->mmc), "Invalid response type: %04x\n",
+			mmc_resp_type(cmd));
 		break;
 	}
 
@@ -225,15 +223,16 @@ goldfish_mmc_xfer_done(struct goldfish_mmc_host *host, struct mmc_data *data)
 
 		if (dma_data_dir == DMA_FROM_DEVICE) {
 			// we don't really have DMA, so we need to copy from our platform driver buffer
-			uint8_t* dest = (uint8_t *)sg_virt(data->sg);
+			uint8_t *dest = (uint8_t *) sg_virt(data->sg);
 			memcpy(dest, host->virt_base, data->sg->length);
 		}
 
 		host->data->bytes_xfered += data->sg->length;
 
-		dma_unmap_sg(mmc_dev(host->mmc), data->sg, host->sg_len, dma_data_dir);
+		dma_unmap_sg(mmc_dev(host->mmc), data->sg, host->sg_len,
+			     dma_data_dir);
 	}
-	
+
 	host->data = NULL;
 	host->sg_len = 0;
 
@@ -269,18 +268,13 @@ goldfish_mmc_cmd_done(struct goldfish_mmc_host *host, struct mmc_command *cmd)
 	if (cmd->flags & MMC_RSP_PRESENT) {
 		if (cmd->flags & MMC_RSP_136) {
 			/* response type 2 */
-			cmd->resp[3] =
-				GOLDFISH_MMC_READ(host, MMC_RESP_0);
-			cmd->resp[2] =
-				GOLDFISH_MMC_READ(host, MMC_RESP_1);
-			cmd->resp[1] =
-				GOLDFISH_MMC_READ(host, MMC_RESP_2);
-			cmd->resp[0] =
-				GOLDFISH_MMC_READ(host, MMC_RESP_3);
+			cmd->resp[3] = GOLDFISH_MMC_READ(host, MMC_RESP_0);
+			cmd->resp[2] = GOLDFISH_MMC_READ(host, MMC_RESP_1);
+			cmd->resp[1] = GOLDFISH_MMC_READ(host, MMC_RESP_2);
+			cmd->resp[0] = GOLDFISH_MMC_READ(host, MMC_RESP_3);
 		} else {
 			/* response types 1, 1b, 3, 4, 5, 6 */
-			cmd->resp[0] =
-				GOLDFISH_MMC_READ(host, MMC_RESP_0);
+			cmd->resp[0] = GOLDFISH_MMC_READ(host, MMC_RESP_0);
 		}
 	}
 
@@ -292,7 +286,7 @@ goldfish_mmc_cmd_done(struct goldfish_mmc_host *host, struct mmc_command *cmd)
 
 static irqreturn_t goldfish_mmc_irq(int irq, void *dev_id)
 {
-	struct goldfish_mmc_host * host = (struct goldfish_mmc_host *)dev_id;
+	struct goldfish_mmc_host *host = (struct goldfish_mmc_host *)dev_id;
 	u16 status;
 	int end_command = 0;
 	int end_transfer = 0;
@@ -314,10 +308,10 @@ static irqreturn_t goldfish_mmc_irq(int irq, void *dev_id)
 			state_changed = 1;
 		}
 
-                if (status & MMC_STAT_CMD_TIMEOUT) {
+		if (status & MMC_STAT_CMD_TIMEOUT) {
 			end_command = 0;
 			cmd_timeout = 1;
-                }
+		}
 	}
 
 	if (cmd_timeout) {
@@ -346,7 +340,7 @@ static irqreturn_t goldfish_mmc_irq(int irq, void *dev_id)
 	if (!end_command && !end_transfer &&
 	    !transfer_error && !state_changed && !cmd_timeout) {
 		status = GOLDFISH_MMC_READ(host, MMC_INT_STATUS);
-		dev_info(mmc_dev(host->mmc),"spurious irq 0x%04x\n", status);
+		dev_info(mmc_dev(host->mmc), "spurious irq 0x%04x\n", status);
 		if (status != 0) {
 			GOLDFISH_MMC_WRITE(host, MMC_INT_STATUS, status);
 			GOLDFISH_MMC_WRITE(host, MMC_INT_ENABLE, 0);
@@ -357,7 +351,8 @@ static irqreturn_t goldfish_mmc_irq(int irq, void *dev_id)
 }
 
 static void
-goldfish_mmc_prepare_data(struct goldfish_mmc_host *host, struct mmc_request *req)
+goldfish_mmc_prepare_data(struct goldfish_mmc_host *host,
+			  struct mmc_request *req)
 {
 	struct mmc_data *data = req->data;
 	int block_size;
@@ -388,22 +383,21 @@ goldfish_mmc_prepare_data(struct goldfish_mmc_host *host, struct mmc_request *re
 		dma_data_dir = DMA_FROM_DEVICE;
 #ifdef CONFIG_ARM
 	host->sg_len = dma_map_sg(mmc_dev(host->mmc), data->sg,
-				sg_len, dma_data_dir);
+				  sg_len, dma_data_dir);
 #elif	CONFIG_X86
-    /*
-     * Use NULL for dev for ISA-like devices
-     */
-	host->sg_len = dma_map_sg(NULL, data->sg,
-				sg_len, dma_data_dir);
+	/*
+	 * Use NULL for dev for ISA-like devices
+	 */
+	host->sg_len = dma_map_sg(NULL, data->sg, sg_len, dma_data_dir);
 #else
 #error NOT SUPPORTED
 #endif
 	host->dma_done = 0;
 	host->dma_in_use = 1;
-	
+
 	if (dma_data_dir == DMA_TO_DEVICE) {
 		// we don't really have DMA, so we need to copy to our platform driver buffer
-		const uint8_t* src = (uint8_t *)sg_virt(data->sg);
+		const uint8_t *src = (uint8_t *) sg_virt(data->sg);
 		memcpy(host->virt_base, src, data->sg->length);
 	}
 }
@@ -420,7 +414,7 @@ static void goldfish_mmc_request(struct mmc_host *mmc, struct mmc_request *req)
 
 	/* this is to avoid accidentally being detected as an SDIO card in mmc_attach_sdio() */
 	if (req->cmd->opcode == SD_IO_SEND_OP_COND &&
-		req->cmd->flags == (MMC_RSP_SPI_R4 | MMC_RSP_R4 | MMC_CMD_BCR)) {
+	    req->cmd->flags == (MMC_RSP_SPI_R4 | MMC_RSP_R4 | MMC_CMD_BCR)) {
 		req->cmd->error = -EINVAL;
 	}
 }
@@ -437,15 +431,15 @@ static int goldfish_mmc_get_ro(struct mmc_host *mmc)
 {
 	uint32_t state;
 	struct goldfish_mmc_host *host = mmc_priv(mmc);
-	
+
 	state = GOLDFISH_MMC_READ(host, MMC_STATE);
 	return ((state & MMC_STATE_READ_ONLY) != 0);
 }
 
 static const struct mmc_host_ops goldfish_mmc_ops = {
-	.request	= goldfish_mmc_request,
-	.set_ios	= goldfish_mmc_set_ios,
-	.get_ro		= goldfish_mmc_get_ro,
+	.request = goldfish_mmc_request,
+	.set_ios = goldfish_mmc_set_ios,
+	.get_ro = goldfish_mmc_get_ro,
 };
 
 static int __init goldfish_mmc_probe(struct platform_device *pdev)
@@ -469,21 +463,22 @@ static int __init goldfish_mmc_probe(struct platform_device *pdev)
 	}
 
 	host = mmc_priv(mmc);
-	host->mmc = mmc;	
+	host->mmc = mmc;
 #ifdef CONFIG_ARM
 	host->reg_base = (void __iomem *)IO_ADDRESS(res->start - IO_START);
 	host->virt_base = dma_alloc_writecombine(&pdev->dev, BUFFER_SIZE,
 						 &buf_addr, GFP_KERNEL);
 #elif	CONFIG_X86
-    /*
-     * Use NULL for dev for ISA-like devices
-     */
+	/*
+	 * Use NULL for dev for ISA-like devices
+	 */
 	host->reg_base = ioremap(res->start, res->end - res->start + 1);
-	host->virt_base = dma_alloc_coherent(NULL, BUFFER_SIZE, &buf_addr, GFP_KERNEL);
+	host->virt_base =
+	    dma_alloc_coherent(NULL, BUFFER_SIZE, &buf_addr, GFP_KERNEL);
 #else
 #error NOT SUPPORTED
 #endif
-	if(host->virt_base == 0) {
+	if (host->virt_base == 0) {
 		ret = -EBUSY;
 		goto dma_alloc_failed;
 	}
@@ -518,12 +513,13 @@ static int __init goldfish_mmc_probe(struct platform_device *pdev)
 
 	ret = device_create_file(&pdev->dev, &dev_attr_cover_switch);
 	if (ret)
-		dev_warn(mmc_dev(host->mmc), "Unable to create sysfs attributes\n");
+		dev_warn(mmc_dev(host->mmc),
+			 "Unable to create sysfs attributes\n");
 
-	GOLDFISH_MMC_WRITE(host, MMC_SET_BUFFER, host->phys_base);	
-	GOLDFISH_MMC_WRITE(host, MMC_INT_ENABLE, 
-		MMC_STAT_END_OF_CMD | MMC_STAT_END_OF_DATA | MMC_STAT_STATE_CHANGE |
-		MMC_STAT_CMD_TIMEOUT);
+	GOLDFISH_MMC_WRITE(host, MMC_SET_BUFFER, host->phys_base);
+	GOLDFISH_MMC_WRITE(host, MMC_INT_ENABLE,
+			   MMC_STAT_END_OF_CMD | MMC_STAT_END_OF_DATA |
+			   MMC_STAT_STATE_CHANGE | MMC_STAT_CMD_TIMEOUT);
 
 	mmc_add_host(mmc);
 
@@ -531,7 +527,8 @@ static int __init goldfish_mmc_probe(struct platform_device *pdev)
 
 err_request_irq_failed:
 #ifdef	CONFIG_ARM
-	dma_free_writecombine(&pdev->dev, BUFFER_SIZE, host->virt_base, host->phys_base);
+	dma_free_writecombine(&pdev->dev, BUFFER_SIZE, host->virt_base,
+			      host->phys_base);
 #elif	CONFIG_X86
 	dma_free_coherent(NULL, BUFFER_SIZE, host->virt_base, host->phys_base);
 #else
@@ -554,7 +551,8 @@ static int goldfish_mmc_remove(struct platform_device *pdev)
 	mmc_remove_host(host->mmc);
 	free_irq(host->irq, host);
 #ifdef	CONFIG_ARM
-	dma_free_writecombine(&pdev->dev, BUFFER_SIZE, host->virt_base, host->phys_base);
+	dma_free_writecombine(&pdev->dev, BUFFER_SIZE, host->virt_base,
+			      host->phys_base);
 #elif	CONFIG_X86
 	dma_free_coherent(NULL, BUFFER_SIZE, host->virt_base, host->phys_base);
 #else
@@ -566,11 +564,11 @@ static int goldfish_mmc_remove(struct platform_device *pdev)
 }
 
 static struct platform_driver goldfish_mmc_driver = {
-	.probe		= goldfish_mmc_probe,
-	.remove		= goldfish_mmc_remove,
-	.driver		= {
-		.name	= DRIVER_NAME,
-	},
+	.probe = goldfish_mmc_probe,
+	.remove = goldfish_mmc_remove,
+	.driver = {
+		   .name = DRIVER_NAME,
+		   },
 };
 
 static int __init goldfish_mmc_init(void)
@@ -585,4 +583,3 @@ static void __exit goldfish_mmc_exit(void)
 
 module_init(goldfish_mmc_init);
 module_exit(goldfish_mmc_exit);
-

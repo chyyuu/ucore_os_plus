@@ -19,28 +19,27 @@ struct machine_desc {
 	 * Note! The first four elements are used
 	 * by assembler code in head.S, head-common.S
 	 */
-	unsigned int		nr;		/* architecture number	*/
-	unsigned int		phys_io;	/* start of physical io	*/
-	unsigned int		io_pg_offst;	/* byte offset for io 
-						 * page tabe entry	*/
+	unsigned int nr;	/* architecture number  */
+	unsigned int phys_io;	/* start of physical io */
+	unsigned int io_pg_offst;	/* byte offset for io 
+					 * page tabe entry      */
 
-	const char		*name;		/* architecture name	*/
-	unsigned long		boot_params;	/* tagged list		*/
+	const char *name;	/* architecture name    */
+	unsigned long boot_params;	/* tagged list          */
 
-	unsigned int		video_start;	/* start of video RAM	*/
-	unsigned int		video_end;	/* end of video RAM	*/
+	unsigned int video_start;	/* start of video RAM   */
+	unsigned int video_end;	/* end of video RAM     */
 
-	unsigned int		reserve_lp0 :1;	/* never has lp0	*/
-	unsigned int		reserve_lp1 :1;	/* never has lp1	*/
-	unsigned int		reserve_lp2 :1;	/* never has lp2	*/
-	unsigned int		soft_reboot :1;	/* soft reboot		*/
-	void			(*fixup)(struct machine_desc *,
-					 struct tag *, char **,
-					 struct meminfo *);
-	void			(*map_io)(void);/* IO mapping function	*/
-	void			(*init_irq)(void);
-	struct sys_timer	*timer;		/* system tick timer	*/
-	void			(*init_machine)(void);
+	unsigned int reserve_lp0:1;	/* never has lp0        */
+	unsigned int reserve_lp1:1;	/* never has lp1        */
+	unsigned int reserve_lp2:1;	/* never has lp2        */
+	unsigned int soft_reboot:1;	/* soft reboot          */
+	void (*fixup) (struct machine_desc *,
+		       struct tag *, char **, struct meminfo *);
+	void (*map_io) (void);	/* IO mapping function  */
+	void (*init_irq) (void);
+	struct sys_timer *timer;	/* system tick timer    */
+	void (*init_machine) (void);
 };
 
 /*

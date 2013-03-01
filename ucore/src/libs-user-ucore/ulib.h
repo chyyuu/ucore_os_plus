@@ -4,7 +4,8 @@
 #include <types.h>
 
 void __warn(const char *file, int line, const char *fmt, ...);
-void __panic(const char *file, int line, const char *fmt, ...) __attribute__((noreturn));
+void __panic(const char *file, int line, const char *fmt, ...)
+    __attribute__ ((noreturn));
 
 #define warn(...)                                       \
     __warn(__FILE__, __LINE__, __VA_ARGS__)
@@ -25,7 +26,7 @@ void __panic(const char *file, int line, const char *fmt, ...) __attribute__((no
 
 int fprintf(int fd, const char *fmt, ...);
 
-void exit(int error_code) __attribute__((noreturn));
+void exit(int error_code) __attribute__ ((noreturn));
 int fork(void);
 int forks(void);
 int wait(void);
@@ -36,10 +37,10 @@ int kill(int pid);
 unsigned int gettime_msec(void);
 int getpid(void);
 void print_pgdir(void);
-int mmap(uintptr_t *addr_store, size_t len, uint32_t mmap_flags);
+int mmap(uintptr_t * addr_store, size_t len, uint32_t mmap_flags);
 int munmap(uintptr_t addr, size_t len);
-int shmem(uintptr_t *addr_store, size_t len, uint32_t mmap_flags);
-int clone(uint32_t clone_flags, uintptr_t stack, int (*fn)(void *), void *arg);
+int shmem(uintptr_t * addr_store, size_t len, uint32_t mmap_flags);
+int clone(uint32_t clone_flags, uintptr_t stack, int (*fn) (void *), void *arg);
 sem_t sem_init(int value);
 int sem_post(sem_t sem_id);
 int sem_wait(sem_t sem_id);
@@ -71,4 +72,3 @@ int __exec(const char *name, const char **argv, const char **envp);
 #define nexec(name, path, ...)                  __exec0(name, path, ##__VA_ARGS__)
 
 #endif /* !__USER_LIBS_ULIB_H__ */
-

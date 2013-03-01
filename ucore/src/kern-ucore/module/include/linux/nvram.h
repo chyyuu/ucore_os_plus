@@ -4,8 +4,8 @@
 #include <linux/ioctl.h>
 
 /* /dev/nvram ioctls */
-#define NVRAM_INIT	_IO('p', 0x40) /* initialize NVRAM and set checksum */
-#define NVRAM_SETCKS	_IO('p', 0x41) /* recalculate checksum */
+#define NVRAM_INIT	_IO('p', 0x40)	/* initialize NVRAM and set checksum */
+#define NVRAM_SETCKS	_IO('p', 0x41)	/* recalculate checksum */
 
 /* for all current systems, this is where NVRAM starts */
 #define NVRAM_FIRST_BYTE    14
@@ -22,4 +22,4 @@ extern int __nvram_check_checksum(void);
 extern int nvram_check_checksum(void);
 #endif
 
-#endif  /* _LINUX_NVRAM_H */
+#endif /* _LINUX_NVRAM_H */

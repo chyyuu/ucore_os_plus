@@ -29,19 +29,18 @@
 #define PTRACE_SETSIGINFO	0x4203
 
 enum __ptrace_setoptions {
-  PTRACE_O_TRACESYSGOOD	= 0x00000001,
-  PTRACE_O_TRACEFORK	= 0x00000002,
-  PTRACE_O_TRACEVFORK   = 0x00000004,
-  PTRACE_O_TRACECLONE	= 0x00000008,
-  PTRACE_O_TRACEEXEC	= 0x00000010,
-  PTRACE_O_TRACEVFORKDONE = 0x00000020,
-  PTRACE_O_TRACEEXIT	= 0x00000040,
-  PTRACE_O_MASK		= 0x0000007f
+	PTRACE_O_TRACESYSGOOD = 0x00000001,
+	PTRACE_O_TRACEFORK = 0x00000002,
+	PTRACE_O_TRACEVFORK = 0x00000004,
+	PTRACE_O_TRACECLONE = 0x00000008,
+	PTRACE_O_TRACEEXEC = 0x00000010,
+	PTRACE_O_TRACEVFORKDONE = 0x00000020,
+	PTRACE_O_TRACEEXIT = 0x00000040,
+	PTRACE_O_MASK = 0x0000007f
 };
 
 /* copied from user.h */
-struct user_regs_struct
-{
+struct user_regs_struct {
 	long int ebx;
 	long int ecx;
 	long int edx;
@@ -65,9 +64,9 @@ struct user_regs_struct
 #define FAULT_W   0x2
 
 struct faultinfo {
-	int error_code;  		/* in ptrace_faultinfo misleadingly called is_write */
-	unsigned long cr2; 		/* in ptrace_faultinfo called addr */
-	int trap_no;			/* missing in ptrace_faultinfo */
+	int error_code;		/* in ptrace_faultinfo misleadingly called is_write */
+	unsigned long cr2;	/* in ptrace_faultinfo called addr */
+	int trap_no;		/* missing in ptrace_faultinfo */
 };
 
 struct um_pt_regs {
@@ -77,4 +76,4 @@ struct um_pt_regs {
 	int is_user;
 };
 
-#endif  /* !__ARCH_UM_INCLUDE_LINUX_PTRACE_H__ */
+#endif /* !__ARCH_UM_INCLUDE_LINUX_PTRACE_H__ */

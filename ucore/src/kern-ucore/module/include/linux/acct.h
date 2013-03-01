@@ -28,8 +28,8 @@
  *  See linux/kernel/acct.c for the specific encoding systems used.
  */
 
-typedef __u16	comp_t;
-typedef __u32	comp2_t;
+typedef __u16 comp_t;
+typedef __u32 comp2_t;
 
 /*
  *   accounting file record
@@ -40,61 +40,59 @@ typedef __u32	comp2_t;
 
 #define ACCT_COMM	16
 
-struct acct
-{
-	char		ac_flag;		/* Flags */
-	char		ac_version;		/* Always set to ACCT_VERSION */
+struct acct {
+	char ac_flag;		/* Flags */
+	char ac_version;	/* Always set to ACCT_VERSION */
 	/* for binary compatibility back until 2.0 */
-	__u16		ac_uid16;		/* LSB of Real User ID */
-	__u16		ac_gid16;		/* LSB of Real Group ID */
-	__u16		ac_tty;			/* Control Terminal */
-	__u32		ac_btime;		/* Process Creation Time */
-	comp_t		ac_utime;		/* User Time */
-	comp_t		ac_stime;		/* System Time */
-	comp_t		ac_etime;		/* Elapsed Time */
-	comp_t		ac_mem;			/* Average Memory Usage */
-	comp_t		ac_io;			/* Chars Transferred */
-	comp_t		ac_rw;			/* Blocks Read or Written */
-	comp_t		ac_minflt;		/* Minor Pagefaults */
-	comp_t		ac_majflt;		/* Major Pagefaults */
-	comp_t		ac_swaps;		/* Number of Swaps */
+	__u16 ac_uid16;		/* LSB of Real User ID */
+	__u16 ac_gid16;		/* LSB of Real Group ID */
+	__u16 ac_tty;		/* Control Terminal */
+	__u32 ac_btime;		/* Process Creation Time */
+	comp_t ac_utime;	/* User Time */
+	comp_t ac_stime;	/* System Time */
+	comp_t ac_etime;	/* Elapsed Time */
+	comp_t ac_mem;		/* Average Memory Usage */
+	comp_t ac_io;		/* Chars Transferred */
+	comp_t ac_rw;		/* Blocks Read or Written */
+	comp_t ac_minflt;	/* Minor Pagefaults */
+	comp_t ac_majflt;	/* Major Pagefaults */
+	comp_t ac_swaps;	/* Number of Swaps */
 /* m68k had no padding here. */
 #if !defined(CONFIG_M68K) || !defined(__KERNEL__)
-	__u16		ac_ahz;			/* AHZ */
+	__u16 ac_ahz;		/* AHZ */
 #endif
-	__u32		ac_exitcode;		/* Exitcode */
-	char		ac_comm[ACCT_COMM + 1];	/* Command Name */
-	__u8		ac_etime_hi;		/* Elapsed Time MSB */
-	__u16		ac_etime_lo;		/* Elapsed Time LSB */
-	__u32		ac_uid;			/* Real User ID */
-	__u32		ac_gid;			/* Real Group ID */
+	__u32 ac_exitcode;	/* Exitcode */
+	char ac_comm[ACCT_COMM + 1];	/* Command Name */
+	__u8 ac_etime_hi;	/* Elapsed Time MSB */
+	__u16 ac_etime_lo;	/* Elapsed Time LSB */
+	__u32 ac_uid;		/* Real User ID */
+	__u32 ac_gid;		/* Real Group ID */
 };
 
-struct acct_v3
-{
-	char		ac_flag;		/* Flags */
-	char		ac_version;		/* Always set to ACCT_VERSION */
-	__u16		ac_tty;			/* Control Terminal */
-	__u32		ac_exitcode;		/* Exitcode */
-	__u32		ac_uid;			/* Real User ID */
-	__u32		ac_gid;			/* Real Group ID */
-	__u32		ac_pid;			/* Process ID */
-	__u32		ac_ppid;		/* Parent Process ID */
-	__u32		ac_btime;		/* Process Creation Time */
+struct acct_v3 {
+	char ac_flag;		/* Flags */
+	char ac_version;	/* Always set to ACCT_VERSION */
+	__u16 ac_tty;		/* Control Terminal */
+	__u32 ac_exitcode;	/* Exitcode */
+	__u32 ac_uid;		/* Real User ID */
+	__u32 ac_gid;		/* Real Group ID */
+	__u32 ac_pid;		/* Process ID */
+	__u32 ac_ppid;		/* Parent Process ID */
+	__u32 ac_btime;		/* Process Creation Time */
 #ifdef __KERNEL__
-	__u32		ac_etime;		/* Elapsed Time */
+	__u32 ac_etime;		/* Elapsed Time */
 #else
-	float		ac_etime;		/* Elapsed Time */
+	float ac_etime;		/* Elapsed Time */
 #endif
-	comp_t		ac_utime;		/* User Time */
-	comp_t		ac_stime;		/* System Time */
-	comp_t		ac_mem;			/* Average Memory Usage */
-	comp_t		ac_io;			/* Chars Transferred */
-	comp_t		ac_rw;			/* Blocks Read or Written */
-	comp_t		ac_minflt;		/* Minor Pagefaults */
-	comp_t		ac_majflt;		/* Major Pagefaults */
-	comp_t		ac_swaps;		/* Number of Swaps */
-	char		ac_comm[ACCT_COMM];	/* Command Name */
+	comp_t ac_utime;	/* User Time */
+	comp_t ac_stime;	/* System Time */
+	comp_t ac_mem;		/* Average Memory Usage */
+	comp_t ac_io;		/* Chars Transferred */
+	comp_t ac_rw;		/* Blocks Read or Written */
+	comp_t ac_minflt;	/* Minor Pagefaults */
+	comp_t ac_majflt;	/* Major Pagefaults */
+	comp_t ac_swaps;	/* Number of Swaps */
+	char ac_comm[ACCT_COMM];	/* Command Name */
 };
 
 /*
@@ -114,7 +112,6 @@ struct acct_v3
 #endif
 
 #ifdef __KERNEL__
-
 
 #ifdef CONFIG_BSD_PROCESS_ACCT
 struct vfsmount;
@@ -164,7 +161,7 @@ typedef struct acct acct_t;
 #else
 #define ACCT_VERSION	2
 #define AHZ		(HZ)
-#endif	/* __KERNEL */
+#endif /* __KERNEL */
 
 #ifdef __KERNEL__
 #include <linux/jiffies.h>
@@ -176,15 +173,15 @@ typedef struct acct acct_t;
 static inline u32 jiffies_to_AHZ(unsigned long x)
 {
 #if (TICK_NSEC % (NSEC_PER_SEC / AHZ)) == 0
-# if HZ < AHZ
+#if HZ < AHZ
 	return x * (AHZ / HZ);
-# else
-	return x / (HZ / AHZ);
-# endif
 #else
-        u64 tmp = (u64)x * TICK_NSEC;
-        do_div(tmp, (NSEC_PER_SEC / AHZ));
-        return (long)tmp;
+	return x / (HZ / AHZ);
+#endif
+#else
+	u64 tmp = (u64) x * TICK_NSEC;
+	do_div(tmp, (NSEC_PER_SEC / AHZ));
+	return (long)tmp;
 #endif
 }
 
@@ -193,21 +190,21 @@ static inline u64 nsec_to_AHZ(u64 x)
 #if (NSEC_PER_SEC % AHZ) == 0
 	do_div(x, (NSEC_PER_SEC / AHZ));
 #elif (AHZ % 512) == 0
-	x *= AHZ/512;
+	x *= AHZ / 512;
 	do_div(x, (NSEC_PER_SEC / 512));
 #else
 	/*
-         * max relative error 5.7e-8 (1.8s per year) for AHZ <= 1024,
-         * overflow after 64.99 years.
-         * exact for AHZ=60, 72, 90, 120, 144, 180, 300, 600, 900, ...
-         */
+	 * max relative error 5.7e-8 (1.8s per year) for AHZ <= 1024,
+	 * overflow after 64.99 years.
+	 * exact for AHZ=60, 72, 90, 120, 144, 180, 300, 600, 900, ...
+	 */
 	x *= 9;
-	do_div(x, (unsigned long)((9ull * NSEC_PER_SEC + (AHZ/2))
-	                          / AHZ));
+	do_div(x, (unsigned long)((9ull * NSEC_PER_SEC + (AHZ / 2))
+				  / AHZ));
 #endif
 	return x;
 }
 
-#endif  /* __KERNEL */
+#endif /* __KERNEL */
 
-#endif	/* _LINUX_ACCT_H */
+#endif /* _LINUX_ACCT_H */

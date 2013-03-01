@@ -116,4 +116,4 @@ enum nfs_stat_eventcounters {
 	__NFSIOS_COUNTSMAX,
 };
 
-#endif	/* _LINUX_NFS_IOSTAT */
+#endif /* _LINUX_NFS_IOSTAT */

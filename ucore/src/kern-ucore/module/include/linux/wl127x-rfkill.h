@@ -29,7 +29,7 @@
 struct wl127x_rfkill_platform_data {
 	int nshutdown_gpio;
 
-	struct rfkill *rfkill;  /* for driver only */
+	struct rfkill *rfkill;	/* for driver only */
 };
 
 #endif

@@ -20,15 +20,15 @@
 struct nr_route_struct {
 #define	NETROM_NEIGH	0
 #define	NETROM_NODE	1
-	int		type;
-	ax25_address	callsign;
-	char		device[16];
-	unsigned int	quality;
-	char		mnemonic[7];
-	ax25_address	neighbour;
-	unsigned int	obs_count;
-	unsigned int	ndigis;
-	ax25_address	digipeaters[AX25_MAX_DIGIS];
+	int type;
+	ax25_address callsign;
+	char device[16];
+	unsigned int quality;
+	char mnemonic[7];
+	ax25_address neighbour;
+	unsigned int obs_count;
+	unsigned int ndigis;
+	ax25_address digipeaters[AX25_MAX_DIGIS];
 };
 
 #endif

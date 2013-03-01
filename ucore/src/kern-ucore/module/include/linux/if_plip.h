@@ -7,7 +7,7 @@
  *	2 of the License, or (at your option) any later version.
  *
  */
- 
+
 #ifndef _LINUX_IF_PLIP_H
 #define _LINUX_IF_PLIP_H
 
@@ -15,11 +15,10 @@
 
 #define	SIOCDEVPLIP	SIOCDEVPRIVATE
 
-struct plipconf
-{
+struct plipconf {
 	unsigned short pcmd;
-	unsigned long  nibble;
-	unsigned long  trigger;
+	unsigned long nibble;
+	unsigned long trigger;
 };
 
 #define PLIP_GET_TIMEOUT	0x1

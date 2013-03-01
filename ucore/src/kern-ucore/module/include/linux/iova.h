@@ -21,18 +21,18 @@
 
 /* iova structure */
 struct iova {
-	struct rb_node	node;
-	unsigned long	pfn_hi; /* IOMMU dish out addr hi */
-	unsigned long	pfn_lo; /* IOMMU dish out addr lo */
+	struct rb_node node;
+	unsigned long pfn_hi;	/* IOMMU dish out addr hi */
+	unsigned long pfn_lo;	/* IOMMU dish out addr lo */
 };
 
 /* holds all the iova translations for a domain */
 struct iova_domain {
-	spinlock_t	iova_alloc_lock;/* Lock to protect iova  allocation */
-	spinlock_t	iova_rbtree_lock; /* Lock to protect update of rbtree */
-	struct rb_root	rbroot;		/* iova domain rbtree root */
-	struct rb_node	*cached32_node; /* Save last alloced node */
-	unsigned long	dma_32bit_pfn;
+	spinlock_t iova_alloc_lock;	/* Lock to protect iova  allocation */
+	spinlock_t iova_rbtree_lock;	/* Lock to protect update of rbtree */
+	struct rb_root rbroot;	/* iova domain rbtree root */
+	struct rb_node *cached32_node;	/* Save last alloced node */
+	unsigned long dma_32bit_pfn;
 };
 
 struct iova *alloc_iova_mem(void);
@@ -40,10 +40,9 @@ void free_iova_mem(struct iova *iova);
 void free_iova(struct iova_domain *iovad, unsigned long pfn);
 void __free_iova(struct iova_domain *iovad, struct iova *iova);
 struct iova *alloc_iova(struct iova_domain *iovad, unsigned long size,
-	unsigned long limit_pfn,
-	bool size_aligned);
+			unsigned long limit_pfn, bool size_aligned);
 struct iova *reserve_iova(struct iova_domain *iovad, unsigned long pfn_lo,
-	unsigned long pfn_hi);
+			  unsigned long pfn_hi);
 void copy_reserved_iova(struct iova_domain *from, struct iova_domain *to);
 void init_iova_domain(struct iova_domain *iovad, unsigned long pfn_32bit);
 struct iova *find_iova(struct iova_domain *iovad, unsigned long pfn);

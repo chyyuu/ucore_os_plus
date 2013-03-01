@@ -59,7 +59,7 @@ void kref_get(struct kref *kref)
  * memory.  Only use the return value if you want to see if the kref is now
  * gone, not present.
  */
-int kref_put(struct kref *kref, void (*release)(struct kref *kref))
+int kref_put(struct kref *kref, void (*release) (struct kref * kref))
 {
 	WARN_ON(release == NULL);
 	WARN_ON(release == (void (*)(struct kref *))kfree);

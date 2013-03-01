@@ -14,16 +14,16 @@
  */
 
 struct ucontext {
-	unsigned long	  uc_flags;
-	struct ucontext  *uc_link;
-	stack_t		  uc_stack;
+	unsigned long uc_flags;
+	struct ucontext *uc_link;
+	stack_t uc_stack;
 	struct sigcontext uc_mcontext;
-	sigset_t	  uc_sigmask;
+	sigset_t uc_sigmask;
 	/* Allow for uc_sigmask growth.  Glibc uses a 1024-bit sigset_t.  */
-	int		  __unused[32 - (sizeof (sigset_t) / sizeof (int))];
+	int __unused[32 - (sizeof(sigset_t) / sizeof(int))];
 	/* Last for extensibility.  Eight byte aligned because some
 	   coprocessors require eight byte alignment.  */
- 	unsigned long	  uc_regspace[128] __attribute__((__aligned__(8)));
+	unsigned long uc_regspace[128] __attribute__ ((__aligned__(8)));
 };
 
 #ifdef __KERNEL__
@@ -40,10 +40,10 @@ struct ucontext {
 #define CRUNCH_STORAGE_SIZE	(CRUNCH_SIZE + 8)
 
 struct crunch_sigframe {
-	unsigned long	magic;
-	unsigned long	size;
-	struct crunch_state	storage;
-} __attribute__((__aligned__(8)));
+	unsigned long magic;
+	unsigned long size;
+	struct crunch_state storage;
+} __attribute__ ((__aligned__(8)));
 #endif
 
 #ifdef CONFIG_IWMMXT
@@ -52,10 +52,10 @@ struct crunch_sigframe {
 #define IWMMXT_STORAGE_SIZE	(IWMMXT_SIZE + 8)
 
 struct iwmmxt_sigframe {
-	unsigned long	magic;
-	unsigned long	size;
+	unsigned long magic;
+	unsigned long size;
 	struct iwmmxt_struct storage;
-} __attribute__((__aligned__(8)));
+} __attribute__ ((__aligned__(8)));
 #endif /* CONFIG_IWMMXT */
 
 #ifdef CONFIG_VFP
@@ -70,11 +70,10 @@ struct iwmmxt_sigframe {
 #define VFP_STORAGE_SIZE	144
 #endif
 
-struct vfp_sigframe
-{
-	unsigned long		magic;
-	unsigned long		size;
-	union vfp_state		storage;
+struct vfp_sigframe {
+	unsigned long magic;
+	unsigned long size;
+	union vfp_state storage;
 };
 #endif /* CONFIG_VFP */
 
@@ -86,17 +85,17 @@ struct vfp_sigframe
  */
 struct aux_sigframe {
 #ifdef CONFIG_CRUNCH
-	struct crunch_sigframe	crunch;
+	struct crunch_sigframe crunch;
 #endif
 #ifdef CONFIG_IWMMXT
-	struct iwmmxt_sigframe	iwmmxt;
+	struct iwmmxt_sigframe iwmmxt;
 #endif
-#if 0 && defined CONFIG_VFP /* Not yet saved.  */
-	struct vfp_sigframe	vfp;
+#if 0 && defined CONFIG_VFP	/* Not yet saved.  */
+	struct vfp_sigframe vfp;
 #endif
 	/* Something that isn't a valid magic number for any coprocessor.  */
-	unsigned long		end_magic;
-} __attribute__((__aligned__(8)));
+	unsigned long end_magic;
+} __attribute__ ((__aligned__(8)));
 
 #endif
 

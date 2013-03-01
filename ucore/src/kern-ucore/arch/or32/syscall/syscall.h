@@ -4,4 +4,3 @@
 void syscall(void);
 
 #endif /* !__ARCH_TEMPLATE_INCLUDE_SYSCALL_H__ */
-

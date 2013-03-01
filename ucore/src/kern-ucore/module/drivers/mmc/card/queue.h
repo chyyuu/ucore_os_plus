@@ -5,18 +5,18 @@ struct request;
 struct task_struct;
 
 struct mmc_queue {
-	struct mmc_card		*card;
-	struct task_struct	*thread;
-	struct semaphore	thread_sem;
-	unsigned int		flags;
-	struct request		*req;
-	int			(*issue_fn)(struct mmc_queue *, struct request *);
-	void			*data;
-	struct request_queue	*queue;
-	struct scatterlist	*sg;
-	char			*bounce_buf;
-	struct scatterlist	*bounce_sg;
-	unsigned int		bounce_sg_len;
+	struct mmc_card *card;
+	struct task_struct *thread;
+	struct semaphore thread_sem;
+	unsigned int flags;
+	struct request *req;
+	int (*issue_fn) (struct mmc_queue *, struct request *);
+	void *data;
+	struct request_queue *queue;
+	struct scatterlist *sg;
+	char *bounce_buf;
+	struct scatterlist *bounce_sg;
+	unsigned int bounce_sg_len;
 };
 
 extern int mmc_init_queue(struct mmc_queue *, struct mmc_card *, spinlock_t *);

@@ -33,7 +33,6 @@
 #define OMAP44XX_PRM_REGADDR(inst, reg)				\
 	OMAP2_L4_IO_ADDRESS(OMAP4430_PRM_BASE + (inst) + (reg))
 
-
 /* PRM instances */
 #define OMAP4430_PRM_OCP_SOCKET_INST	0x0000
 #define OMAP4430_PRM_CKGEN_INST		0x0100
@@ -66,7 +65,6 @@
 #define OMAP4_RM_RSTST					0x0008
 #define OMAP4_PM_PWSTCTRL				0x0000
 #define OMAP4_PM_PWSTST					0x0004
-
 
 /* PRM */
 
@@ -745,7 +743,7 @@
 #define OMAP4430_PRM_VC_ERRST				OMAP44XX_PRM_REGADDR(OMAP4430_PRM_DEVICE_INST, 0x00f8)
 
 /* Function prototypes */
-# ifndef __ASSEMBLER__
+#ifndef __ASSEMBLER__
 
 extern u32 omap4_prm_read_inst_reg(s16 inst, u16 idx);
 extern void omap4_prm_write_inst_reg(u32 val, s16 inst, u16 idx);
@@ -768,9 +766,9 @@ extern void omap44xx_prm_reconfigure_io_chain(void);
 /* PRM interrupt-related functions */
 extern void omap44xx_prm_read_pending_irqs(unsigned long *events);
 extern void omap44xx_prm_ocp_barrier(void);
-extern void omap44xx_prm_save_and_clear_irqen(u32 *saved_mask);
-extern void omap44xx_prm_restore_irqen(u32 *saved_mask);
+extern void omap44xx_prm_save_and_clear_irqen(u32 * saved_mask);
+extern void omap44xx_prm_restore_irqen(u32 * saved_mask);
 
-# endif
+#endif
 
 #endif

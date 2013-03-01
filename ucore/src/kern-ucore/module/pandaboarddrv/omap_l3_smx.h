@@ -146,7 +146,7 @@ enum omap3_l3_initiator_id {
 	OMAP_L3_IA_MPU_SS_3 = 25,
 	OMAP_L3_IA_MPU_SS_4 = 24,
 	OMAP_L3_IA_MPU_SS_5 = 23,
-	/* IVA2.2 SS has 3 IDs*/
+	/* IVA2.2 SS has 3 IDs */
 	OMAP_L3_IA_IVA_SS_1 = 22,
 	OMAP_L3_IA_IVA_SS_2 = 21,
 	OMAP_L3_IA_IVA_SS_3 = 20,
@@ -195,7 +195,7 @@ struct omap3_l3 {
 	struct device *dev;
 	struct clk *ick;
 
-	/* memory base*/
+	/* memory base */
 	void __iomem *rt;
 
 	int debug_irq;

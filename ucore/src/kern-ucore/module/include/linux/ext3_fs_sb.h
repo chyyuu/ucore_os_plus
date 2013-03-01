@@ -29,21 +29,21 @@
  */
 struct ext3_sb_info {
 	unsigned long s_frag_size;	/* Size of a fragment in bytes */
-	unsigned long s_frags_per_block;/* Number of fragments per block */
-	unsigned long s_inodes_per_block;/* Number of inodes per block */
-	unsigned long s_frags_per_group;/* Number of fragments in a group */
-	unsigned long s_blocks_per_group;/* Number of blocks in a group */
-	unsigned long s_inodes_per_group;/* Number of inodes in a group */
+	unsigned long s_frags_per_block;	/* Number of fragments per block */
+	unsigned long s_inodes_per_block;	/* Number of inodes per block */
+	unsigned long s_frags_per_group;	/* Number of fragments in a group */
+	unsigned long s_blocks_per_group;	/* Number of blocks in a group */
+	unsigned long s_inodes_per_group;	/* Number of inodes in a group */
 	unsigned long s_itb_per_group;	/* Number of inode table blocks per group */
 	unsigned long s_gdb_count;	/* Number of group descriptor blocks */
 	unsigned long s_desc_per_block;	/* Number of group descriptors per block */
 	unsigned long s_groups_count;	/* Number of groups in the fs */
-	unsigned long s_overhead_last;  /* Last calculated overhead */
-	unsigned long s_blocks_last;    /* Last seen block count */
-	struct buffer_head * s_sbh;	/* Buffer containing the super block */
-	struct ext3_super_block * s_es;	/* Pointer to the super block in the buffer */
-	struct buffer_head ** s_group_desc;
-	unsigned long  s_mount_opt;
+	unsigned long s_overhead_last;	/* Last calculated overhead */
+	unsigned long s_blocks_last;	/* Last seen block count */
+	struct buffer_head *s_sbh;	/* Buffer containing the super block */
+	struct ext3_super_block *s_es;	/* Pointer to the super block in the buffer */
+	struct buffer_head **s_group_desc;
+	unsigned long s_mount_opt;
 	ext3_fsblk_t s_sb_block;
 	uid_t s_resuid;
 	gid_t s_resgid;
@@ -69,8 +69,8 @@ struct ext3_sb_info {
 	struct ext3_reserve_window_node s_rsv_window_head;
 
 	/* Journaling */
-	struct inode * s_journal_inode;
-	struct journal_s * s_journal;
+	struct inode *s_journal_inode;
+	struct journal_s *s_journal;
 	struct list_head s_orphan;
 	unsigned long s_commit_interval;
 	struct block_device *journal_bdev;
@@ -79,15 +79,15 @@ struct ext3_sb_info {
 	wait_queue_head_t ro_wait_queue;	/* For people waiting for the fs to go read-only */
 #endif
 #ifdef CONFIG_QUOTA
-	char *s_qf_names[MAXQUOTAS];		/* Names of quota files with journalled quota */
-	int s_jquota_fmt;			/* Format of quota to use */
+	char *s_qf_names[MAXQUOTAS];	/* Names of quota files with journalled quota */
+	int s_jquota_fmt;	/* Format of quota to use */
 #endif
 };
 
-static inline spinlock_t *
-sb_bgl_lock(struct ext3_sb_info *sbi, unsigned int block_group)
+static inline spinlock_t *sb_bgl_lock(struct ext3_sb_info *sbi,
+				      unsigned int block_group)
 {
 	return bgl_lock_ptr(sbi->s_blockgroup_lock, block_group);
 }
 
-#endif	/* _LINUX_EXT3_FS_SB */
+#endif /* _LINUX_EXT3_FS_SB */

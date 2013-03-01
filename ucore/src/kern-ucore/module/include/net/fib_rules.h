@@ -7,68 +7,60 @@
 #include <net/flow.h>
 #include <net/rtnetlink.h>
 
-struct fib_rule
-{
-	struct list_head	list;
-	atomic_t		refcnt;
-	int			ifindex;
-	char			ifname[IFNAMSIZ];
-	u32			mark;
-	u32			mark_mask;
-	u32			pref;
-	u32			flags;
-	u32			table;
-	u8			action;
-	u32			target;
-	struct fib_rule *	ctarget;
-	struct rcu_head		rcu;
-	struct net *		fr_net;
+struct fib_rule {
+	struct list_head list;
+	atomic_t refcnt;
+	int ifindex;
+	char ifname[IFNAMSIZ];
+	u32 mark;
+	u32 mark_mask;
+	u32 pref;
+	u32 flags;
+	u32 table;
+	u8 action;
+	u32 target;
+	struct fib_rule *ctarget;
+	struct rcu_head rcu;
+	struct net *fr_net;
 };
 
-struct fib_lookup_arg
-{
-	void			*lookup_ptr;
-	void			*result;
-	struct fib_rule		*rule;
+struct fib_lookup_arg {
+	void *lookup_ptr;
+	void *result;
+	struct fib_rule *rule;
 };
 
-struct fib_rules_ops
-{
-	int			family;
-	struct list_head	list;
-	int			rule_size;
-	int			addr_size;
-	int			unresolved_rules;
-	int			nr_goto_rules;
+struct fib_rules_ops {
+	int family;
+	struct list_head list;
+	int rule_size;
+	int addr_size;
+	int unresolved_rules;
+	int nr_goto_rules;
 
-	int			(*action)(struct fib_rule *,
-					  struct flowi *, int,
-					  struct fib_lookup_arg *);
-	int			(*match)(struct fib_rule *,
-					 struct flowi *, int);
-	int			(*configure)(struct fib_rule *,
-					     struct sk_buff *,
-					     struct nlmsghdr *,
-					     struct fib_rule_hdr *,
-					     struct nlattr **);
-	int			(*compare)(struct fib_rule *,
-					   struct fib_rule_hdr *,
-					   struct nlattr **);
-	int			(*fill)(struct fib_rule *, struct sk_buff *,
-					struct nlmsghdr *,
-					struct fib_rule_hdr *);
-	u32			(*default_pref)(struct fib_rules_ops *ops);
-	size_t			(*nlmsg_payload)(struct fib_rule *);
+	int (*action) (struct fib_rule *,
+		       struct flowi *, int, struct fib_lookup_arg *);
+	int (*match) (struct fib_rule *, struct flowi *, int);
+	int (*configure) (struct fib_rule *,
+			  struct sk_buff *,
+			  struct nlmsghdr *,
+			  struct fib_rule_hdr *, struct nlattr **);
+	int (*compare) (struct fib_rule *,
+			struct fib_rule_hdr *, struct nlattr **);
+	int (*fill) (struct fib_rule *, struct sk_buff *,
+		     struct nlmsghdr *, struct fib_rule_hdr *);
+	 u32(*default_pref) (struct fib_rules_ops * ops);
+	 size_t(*nlmsg_payload) (struct fib_rule *);
 
 	/* Called after modifications to the rules set, must flush
 	 * the route cache if one exists. */
-	void			(*flush_cache)(struct fib_rules_ops *ops);
+	void (*flush_cache) (struct fib_rules_ops * ops);
 
-	int			nlgroup;
-	const struct nla_policy	*policy;
-	struct list_head	rules_list;
-	struct module		*owner;
-	struct net		*fro_net;
+	int nlgroup;
+	const struct nla_policy *policy;
+	struct list_head rules_list;
+	struct module *owner;
+	struct net *fro_net;
 };
 
 #define FRA_GENERIC_POLICY \
@@ -106,12 +98,10 @@ static inline u32 frh_get_table(struct fib_rule_hdr *frh, struct nlattr **nla)
 
 extern int fib_rules_register(struct fib_rules_ops *);
 extern void fib_rules_unregister(struct fib_rules_ops *);
-extern void                     fib_rules_cleanup_ops(struct fib_rules_ops *);
+extern void fib_rules_cleanup_ops(struct fib_rules_ops *);
 
-extern int			fib_rules_lookup(struct fib_rules_ops *,
-						 struct flowi *, int flags,
-						 struct fib_lookup_arg *);
-extern int			fib_default_rule_add(struct fib_rules_ops *,
-						     u32 pref, u32 table,
-						     u32 flags);
+extern int fib_rules_lookup(struct fib_rules_ops *,
+			    struct flowi *, int flags, struct fib_lookup_arg *);
+extern int fib_default_rule_add(struct fib_rules_ops *,
+				u32 pref, u32 table, u32 flags);
 #endif

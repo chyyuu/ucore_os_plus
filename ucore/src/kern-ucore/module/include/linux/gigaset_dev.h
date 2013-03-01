@@ -24,7 +24,7 @@
 
 #define GIGASET_REDIR    _IOWR (GIGASET_IOCTL, 0, int)
 #define GIGASET_CONFIG   _IOWR (GIGASET_IOCTL, 1, int)
-#define GIGASET_BRKCHARS _IOW  (GIGASET_IOCTL, 2, unsigned char[6]) //FIXME [6] okay?
+#define GIGASET_BRKCHARS _IOW  (GIGASET_IOCTL, 2, unsigned char[6])	//FIXME [6] okay?
 #define GIGASET_VERSION  _IOWR (GIGASET_IOCTL, 3, unsigned[4])
 
 #endif

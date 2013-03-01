@@ -86,7 +86,7 @@ enum power_supply_property {
 	POWER_SUPPLY_PROP_ENERGY_EMPTY,
 	POWER_SUPPLY_PROP_ENERGY_NOW,
 	POWER_SUPPLY_PROP_ENERGY_AVG,
-	POWER_SUPPLY_PROP_CAPACITY, /* in percents! */
+	POWER_SUPPLY_PROP_CAPACITY,	/* in percents! */
 	POWER_SUPPLY_PROP_TEMP,
 	POWER_SUPPLY_PROP_TEMP_AMBIENT,
 	POWER_SUPPLY_PROP_TIME_TO_EMPTY_NOW,
@@ -120,10 +120,10 @@ struct power_supply {
 	char **supplied_to;
 	size_t num_supplicants;
 
-	int (*get_property)(struct power_supply *psy,
-			    enum power_supply_property psp,
-			    union power_supply_propval *val);
-	void (*external_power_changed)(struct power_supply *psy);
+	int (*get_property) (struct power_supply * psy,
+			     enum power_supply_property psp,
+			     union power_supply_propval * val);
+	void (*external_power_changed) (struct power_supply * psy);
 
 	/* For APM emulation, think legacy userspace. */
 	int use_for_apm;
@@ -169,7 +169,10 @@ extern int power_supply_am_i_supplied(struct power_supply *psy);
 #if defined(CONFIG_POWER_SUPPLY) || defined(CONFIG_POWER_SUPPLY_MODULE)
 extern int power_supply_is_system_supplied(void);
 #else
-static inline int power_supply_is_system_supplied(void) { return -ENOSYS; }
+static inline int power_supply_is_system_supplied(void)
+{
+	return -ENOSYS;
+}
 #endif
 
 extern int power_supply_register(struct device *parent,

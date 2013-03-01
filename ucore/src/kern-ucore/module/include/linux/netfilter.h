@@ -51,21 +51,21 @@ enum nf_inet_hooks {
 };
 
 enum {
-	NFPROTO_UNSPEC =  0,
-	NFPROTO_IPV4   =  2,
-	NFPROTO_ARP    =  3,
-	NFPROTO_BRIDGE =  7,
-	NFPROTO_IPV6   = 10,
+	NFPROTO_UNSPEC = 0,
+	NFPROTO_IPV4 = 2,
+	NFPROTO_ARP = 3,
+	NFPROTO_BRIDGE = 7,
+	NFPROTO_IPV6 = 10,
 	NFPROTO_DECNET = 12,
 	NFPROTO_NUMPROTO,
 };
 
 union nf_inet_addr {
-	__u32		all[4];
-	__be32		ip;
-	__be32		ip6[4];
-	struct in_addr	in;
-	struct in6_addr	in6;
+	__u32 all[4];
+	__be32 ip;
+	__be32 ip6[4];
+	struct in_addr in;
+	struct in6_addr in6;
 };
 
 #ifdef __KERNEL__
@@ -75,9 +75,8 @@ static inline int nf_inet_addr_cmp(const union nf_inet_addr *a1,
 				   const union nf_inet_addr *a2)
 {
 	return a1->all[0] == a2->all[0] &&
-	       a1->all[1] == a2->all[1] &&
-	       a1->all[2] == a2->all[2] &&
-	       a1->all[3] == a2->all[3];
+	    a1->all[1] == a2->all[1] &&
+	    a1->all[2] == a2->all[2] && a1->all[3] == a2->all[3];
 }
 
 extern void netfilter_init(void);
@@ -91,10 +90,9 @@ typedef unsigned int nf_hookfn(unsigned int hooknum,
 			       struct sk_buff *skb,
 			       const struct net_device *in,
 			       const struct net_device *out,
-			       int (*okfn)(struct sk_buff *));
+			       int (*okfn) (struct sk_buff *));
 
-struct nf_hook_ops
-{
+struct nf_hook_ops {
 	struct list_head list;
 
 	/* User fills in from here down. */
@@ -106,8 +104,7 @@ struct nf_hook_ops
 	int priority;
 };
 
-struct nf_sockopt_ops
-{
+struct nf_sockopt_ops {
 	struct list_head list;
 
 	u_int8_t pf;
@@ -115,15 +112,16 @@ struct nf_sockopt_ops
 	/* Non-inclusive ranges: use 0/0/NULL to never get called. */
 	int set_optmin;
 	int set_optmax;
-	int (*set)(struct sock *sk, int optval, void __user *user, unsigned int len);
-	int (*compat_set)(struct sock *sk, int optval,
-			void __user *user, unsigned int len);
+	int (*set) (struct sock * sk, int optval, void __user * user,
+		    unsigned int len);
+	int (*compat_set) (struct sock * sk, int optval, void __user * user,
+			   unsigned int len);
 
 	int get_optmin;
 	int get_optmax;
-	int (*get)(struct sock *sk, int optval, void __user *user, int *len);
-	int (*compat_get)(struct sock *sk, int optval,
-			void __user *user, int *len);
+	int (*get) (struct sock * sk, int optval, void __user * user, int *len);
+	int (*compat_get) (struct sock * sk, int optval,
+			   void __user * user, int *len);
 
 	/* Use the module struct to lock set/get code in place */
 	struct module *owner;
@@ -150,7 +148,7 @@ extern struct list_head nf_hooks[NFPROTO_NUMPROTO][NF_MAX_HOOKS];
 
 int nf_hook_slow(u_int8_t pf, unsigned int hook, struct sk_buff *skb,
 		 struct net_device *indev, struct net_device *outdev,
-		 int (*okfn)(struct sk_buff *), int thresh);
+		 int (*okfn) (struct sk_buff *), int thresh);
 
 /**
  *	nf_hook_thresh - call a netfilter hook
@@ -163,7 +161,7 @@ static inline int nf_hook_thresh(u_int8_t pf, unsigned int hook,
 				 struct sk_buff *skb,
 				 struct net_device *indev,
 				 struct net_device *outdev,
-				 int (*okfn)(struct sk_buff *), int thresh,
+				 int (*okfn) (struct sk_buff *), int thresh,
 				 int cond)
 {
 	if (!cond)
@@ -177,11 +175,11 @@ static inline int nf_hook_thresh(u_int8_t pf, unsigned int hook,
 
 static inline int nf_hook(u_int8_t pf, unsigned int hook, struct sk_buff *skb,
 			  struct net_device *indev, struct net_device *outdev,
-			  int (*okfn)(struct sk_buff *))
+			  int (*okfn) (struct sk_buff *))
 {
 	return nf_hook_thresh(pf, hook, skb, indev, outdev, okfn, INT_MIN, 1);
 }
-                   
+
 /* Activate hook; either okfn or kfree_skb called, unless a hook
    returns NF_STOLEN (in which case, it's up to the hook to deal with
    the consequences).
@@ -220,15 +218,15 @@ __ret;})
 	NF_HOOK_THRESH(pf, hook, skb, indev, outdev, okfn, INT_MIN)
 
 /* Call setsockopt() */
-int nf_setsockopt(struct sock *sk, u_int8_t pf, int optval, char __user *opt,
+int nf_setsockopt(struct sock *sk, u_int8_t pf, int optval, char __user * opt,
 		  int len);
-int nf_getsockopt(struct sock *sk, u_int8_t pf, int optval, char __user *opt,
+int nf_getsockopt(struct sock *sk, u_int8_t pf, int optval, char __user * opt,
 		  int *len);
 
 int compat_nf_setsockopt(struct sock *sk, u_int8_t pf, int optval,
-		char __user *opt, int len);
+			 char __user * opt, int len);
 int compat_nf_getsockopt(struct sock *sk, u_int8_t pf, int optval,
-		char __user *opt, int *len);
+			 char __user * opt, int *len);
 
 /* Call this before modifying an existing packet: ensures it is
    modifiable and linear to the point you care about (writable_len).
@@ -239,20 +237,19 @@ struct flowi;
 struct nf_queue_entry;
 
 struct nf_afinfo {
-	unsigned short	family;
-	__sum16		(*checksum)(struct sk_buff *skb, unsigned int hook,
-				    unsigned int dataoff, u_int8_t protocol);
-	__sum16		(*checksum_partial)(struct sk_buff *skb,
-					    unsigned int hook,
-					    unsigned int dataoff,
-					    unsigned int len,
-					    u_int8_t protocol);
-	int		(*route)(struct dst_entry **dst, struct flowi *fl);
-	void		(*saveroute)(const struct sk_buff *skb,
-				     struct nf_queue_entry *entry);
-	int		(*reroute)(struct sk_buff *skb,
-				   const struct nf_queue_entry *entry);
-	int		route_key_size;
+	unsigned short family;
+	 __sum16(*checksum) (struct sk_buff * skb, unsigned int hook,
+			     unsigned int dataoff, u_int8_t protocol);
+	 __sum16(*checksum_partial) (struct sk_buff * skb,
+				     unsigned int hook,
+				     unsigned int dataoff,
+				     unsigned int len, u_int8_t protocol);
+	int (*route) (struct dst_entry ** dst, struct flowi * fl);
+	void (*saveroute) (const struct sk_buff * skb,
+			   struct nf_queue_entry * entry);
+	int (*reroute) (struct sk_buff * skb,
+			const struct nf_queue_entry * entry);
+	int route_key_size;
 };
 
 extern const struct nf_afinfo *nf_afinfo[NFPROTO_NUMPROTO];
@@ -297,13 +294,13 @@ extern int nf_register_afinfo(const struct nf_afinfo *afinfo);
 extern void nf_unregister_afinfo(const struct nf_afinfo *afinfo);
 
 #include <net/flow.h>
-extern void (*ip_nat_decode_session)(struct sk_buff *, struct flowi *);
+extern void (*ip_nat_decode_session) (struct sk_buff *, struct flowi *);
 
 static inline void
 nf_nat_decode_session(struct sk_buff *skb, struct flowi *fl, u_int8_t family)
 {
 #ifdef CONFIG_NF_NAT_NEEDED
-	void (*decodefn)(struct sk_buff *, struct flowi *);
+	void (*decodefn) (struct sk_buff *, struct flowi *);
 
 	if (family == AF_INET) {
 		rcu_read_lock();
@@ -327,30 +324,34 @@ static inline int nf_hook_thresh(u_int8_t pf, unsigned int hook,
 				 struct sk_buff *skb,
 				 struct net_device *indev,
 				 struct net_device *outdev,
-				 int (*okfn)(struct sk_buff *), int thresh,
+				 int (*okfn) (struct sk_buff *), int thresh,
 				 int cond)
 {
 	return okfn(skb);
 }
+
 static inline int nf_hook(u_int8_t pf, unsigned int hook, struct sk_buff *skb,
 			  struct net_device *indev, struct net_device *outdev,
-			  int (*okfn)(struct sk_buff *))
+			  int (*okfn) (struct sk_buff *))
 {
 	return 1;
 }
+
 struct flowi;
 static inline void
 nf_nat_decode_session(struct sk_buff *skb, struct flowi *fl, u_int8_t family)
 {
 }
-#endif /*CONFIG_NETFILTER*/
+#endif /*CONFIG_NETFILTER */
 
 #if defined(CONFIG_NF_CONNTRACK) || defined(CONFIG_NF_CONNTRACK_MODULE)
-extern void (*ip_ct_attach)(struct sk_buff *, struct sk_buff *);
+extern void (*ip_ct_attach) (struct sk_buff *, struct sk_buff *);
 extern void nf_ct_attach(struct sk_buff *, struct sk_buff *);
-extern void (*nf_ct_destroy)(struct nf_conntrack *);
+extern void (*nf_ct_destroy) (struct nf_conntrack *);
 #else
-static inline void nf_ct_attach(struct sk_buff *new, struct sk_buff *skb) {}
+static inline void nf_ct_attach(struct sk_buff *new, struct sk_buff *skb)
+{
+}
 #endif
 
 #endif /*__KERNEL__*/

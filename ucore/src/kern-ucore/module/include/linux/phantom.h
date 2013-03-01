@@ -39,10 +39,10 @@ struct phm_regs {
 #define PHN_GETREGS		_IOWR(PH_IOC_MAGIC, 7, struct phm_regs)
 #define PHN_SETREGS		_IOW(PH_IOC_MAGIC, 8, struct phm_regs)
 
-#define PHN_CONTROL		0x6     /* control byte in iaddr space */
-#define PHN_CTL_AMP		0x1     /*   switch after torques change */
-#define PHN_CTL_BUT		0x2     /*   is button switched */
-#define PHN_CTL_IRQ		0x10    /*   is irq enabled */
+#define PHN_CONTROL		0x6	/* control byte in iaddr space */
+#define PHN_CTL_AMP		0x1	/*   switch after torques change */
+#define PHN_CTL_BUT		0x2	/*   is button switched */
+#define PHN_CTL_IRQ		0x10	/*   is irq enabled */
 
 #define PHN_ZERO_FORCE		2048	/* zero torque on motor */
 

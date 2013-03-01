@@ -27,8 +27,6 @@
 #define MTD_DATAFLASH		6
 #define MTD_UBIVOLUME		7
 
-
-
 struct nand_oobfree {
 	uint32_t offset;
 	uint32_t length;
@@ -46,49 +44,51 @@ struct nand_ecclayout {
 	struct nand_oobfree oobfree[MTD_MAX_OOBFREE_ENTRIES];
 };
 
-
 struct nand_chip {
-  void (*write_cmd)(unsigned char cmd);
-  void (*write_addr)(unsigned char addr);
-  void (*enable_chip)(int enable);
-  unsigned char (*read_byte)();
-  void (*write_byte)(unsigned char byte);
-  void (*wait_rdy)();
-  void (*write_full_addr)(unsigned int row, unsigned int col);
+	void (*write_cmd) (unsigned char cmd);
+	void (*write_addr) (unsigned char addr);
+	void (*enable_chip) (int enable);
+	unsigned char (*read_byte) ();
+	void (*write_byte) (unsigned char byte);
+	void (*wait_rdy) ();
+	void (*write_full_addr) (unsigned int row, unsigned int col);
 
-  int (*ecc_calculate)(const unsigned char *dat, size_t sz, unsigned char *ecc_code);
-  int (*ecc_correct)(unsigned char *dat,unsigned char *read_ecc, unsigned char *isnull);
+	int (*ecc_calculate) (const unsigned char *dat, size_t sz,
+			      unsigned char *ecc_code);
+	int (*ecc_correct) (unsigned char *dat, unsigned char *read_ecc,
+			    unsigned char *isnull);
 
-  /* size of data buffer>=pg_size, size of spare buffer>=spare_size */
-  int (*read_page)(struct nand_chip* chip,unsigned page_id, 
-    unsigned char *data,unsigned char *spare, int *eccStatus);
+	/* size of data buffer>=pg_size, size of spare buffer>=spare_size */
+	int (*read_page) (struct nand_chip * chip, unsigned page_id,
+			  unsigned char *data, unsigned char *spare,
+			  int *eccStatus);
 
-  /* spare data only contain user data, ecc auto-appended */
-  int (*write_page)(struct nand_chip* chip, unsigned pageId, 
-					  const unsigned char *data, unsigned dataLength,
-            const unsigned char *spare, unsigned spareLength);
+	/* spare data only contain user data, ecc auto-appended */
+	int (*write_page) (struct nand_chip * chip, unsigned pageId,
+			   const unsigned char *data, unsigned dataLength,
+			   const unsigned char *spare, unsigned spareLength);
 
-  int (*erase_block)(struct nand_chip* chip, unsigned blkID);
-  /* return 0 if bad */
-  int (*check_block)(struct nand_chip *chip, unsigned blkID);
-  /* mark bad blk */
-  int (*mark_badblock)(struct nand_chip *chip, unsigned blkID);
+	int (*erase_block) (struct nand_chip * chip, unsigned blkID);
+	/* return 0 if bad */
+	int (*check_block) (struct nand_chip * chip, unsigned blkID);
+	/* mark bad blk */
+	int (*mark_badblock) (struct nand_chip * chip, unsigned blkID);
 
-  struct nand_ecclayout *ecclayout; 
+	struct nand_ecclayout *ecclayout;
 
-  int badblock_offset;
-  unsigned spare_size;
-  unsigned blk_cnt;
-  unsigned pages_per_blk;
-  unsigned blk_shift;
-  unsigned pg_size;
-  unsigned pg_size_shift;
+	int badblock_offset;
+	unsigned spare_size;
+	unsigned blk_cnt;
+	unsigned pages_per_blk;
+	unsigned blk_shift;
+	unsigned pg_size;
+	unsigned pg_size_shift;
 };
 
-struct mtd_partition{
-  char name[32];
-  unsigned start_block;
-  unsigned end_block;
+struct mtd_partition {
+	char name[32];
+	unsigned start_block;
+	unsigned end_block;
 };
 
 /* kernel only */
@@ -123,9 +123,9 @@ struct mtd_partition{
 #define NAND_BUS_WIDTH_16BITS		0x1
 
 extern int check_nandflash();
-extern struct nand_chip* get_nand_chip();
-extern struct mtd_partition* get_mtd_partition();
-extern int    get_mtd_partition_cnt();
+extern struct nand_chip *get_nand_chip();
+extern struct mtd_partition *get_mtd_partition();
+extern int get_mtd_partition_cnt();
 
 #define MAX_SPARE_BUF 128
 #define MAX_PAGE_BUF  4096

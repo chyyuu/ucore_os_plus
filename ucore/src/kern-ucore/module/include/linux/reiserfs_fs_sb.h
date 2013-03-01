@@ -529,4 +529,4 @@ static inline int __reiserfs_is_journal_aborted(struct reiserfs_journal
 	return test_bit(J_ABORTED, &journal->j_state);
 }
 
-#endif				/* _LINUX_REISER_FS_SB */
+#endif /* _LINUX_REISER_FS_SB */

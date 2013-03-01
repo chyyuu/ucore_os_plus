@@ -32,14 +32,15 @@
  * - no readahead or I/O queue unplugging required
  */
 struct backing_dev_info directly_mappable_cdev_bdi = {
-	.capabilities	= (
+	.capabilities = (
 #ifdef CONFIG_MMU
-		/* permit private copies of the data to be taken */
-		BDI_CAP_MAP_COPY |
+				/* permit private copies of the data to be taken */
+				BDI_CAP_MAP_COPY |
 #endif
-		/* permit direct mmap, for read, write or exec */
-		BDI_CAP_MAP_DIRECT |
-		BDI_CAP_READ_MAP | BDI_CAP_WRITE_MAP | BDI_CAP_EXEC_MAP),
+				/* permit direct mmap, for read, write or exec */
+				BDI_CAP_MAP_DIRECT |
+				BDI_CAP_READ_MAP | BDI_CAP_WRITE_MAP |
+				BDI_CAP_EXEC_MAP),
 };
 
 static struct kobj_map *cdev_map;
@@ -52,7 +53,7 @@ static struct char_device_struct {
 	unsigned int baseminor;
 	int minorct;
 	char name[64];
-	struct cdev *cdev;		/* will die */
+	struct cdev *cdev;	/* will die */
 } *chrdevs[CHRDEV_MAJOR_HASH_SIZE];
 
 /* index in the above */
@@ -88,9 +89,11 @@ void chrdev_show(struct seq_file *f, off_t offset)
  *
  * Returns a -ve errno on failure.
  */
-static struct char_device_struct *
-__register_chrdev_region(unsigned int major, unsigned int baseminor,
-			   int minorct, const char *name)
+static struct char_device_struct *__register_chrdev_region(unsigned int major,
+							   unsigned int
+							   baseminor,
+							   int minorct,
+							   const char *name)
 {
 	struct char_device_struct *cd, **cp;
 	int ret = 0;
@@ -104,7 +107,7 @@ __register_chrdev_region(unsigned int major, unsigned int baseminor,
 
 	/* temporary */
 	if (major == 0) {
-		for (i = ARRAY_SIZE(chrdevs)-1; i > 0; i--) {
+		for (i = ARRAY_SIZE(chrdevs) - 1; i > 0; i--) {
 			if (chrdevs[i] == NULL)
 				break;
 		}
@@ -161,8 +164,9 @@ out:
 	return ERR_PTR(ret);
 }
 
-static struct char_device_struct *
-__unregister_chrdev_region(unsigned major, unsigned baseminor, int minorct)
+static struct char_device_struct *__unregister_chrdev_region(unsigned major,
+							     unsigned baseminor,
+							     int minorct)
 {
 	struct char_device_struct *cd = NULL, **cp;
 	int i = major_to_index(major);
@@ -170,8 +174,7 @@ __unregister_chrdev_region(unsigned major, unsigned baseminor, int minorct)
 	mutex_lock(&chrdevs_lock);
 	for (cp = &chrdevs[i]; *cp; cp = &(*cp)->next)
 		if ((*cp)->major == major &&
-		    (*cp)->baseminor == baseminor &&
-		    (*cp)->minorct == minorct)
+		    (*cp)->baseminor == baseminor && (*cp)->minorct == minorct)
 			break;
 	if (*cp) {
 		cd = *cp;
@@ -197,11 +200,11 @@ int register_chrdev_region(dev_t from, unsigned count, const char *name)
 	dev_t n, next;
 
 	for (n = from; n < to; n = next) {
-		next = MKDEV(MAJOR(n)+1, 0);
+		next = MKDEV(MAJOR(n) + 1, 0);
 		if (next > to)
 			next = to;
 		cd = __register_chrdev_region(MAJOR(n), MINOR(n),
-			       next - n, name);
+					      next - n, name);
 		if (IS_ERR(cd))
 			goto fail;
 	}
@@ -209,7 +212,7 @@ int register_chrdev_region(dev_t from, unsigned count, const char *name)
 fail:
 	to = n;
 	for (n = from; n < to; n = next) {
-		next = MKDEV(MAJOR(n)+1, 0);
+		next = MKDEV(MAJOR(n) + 1, 0);
 		kfree(__unregister_chrdev_region(MAJOR(n), MINOR(n), next - n));
 	}
 	return PTR_ERR(cd);
@@ -226,7 +229,7 @@ fail:
  * chosen dynamically, and returned (along with the first minor number)
  * in @dev.  Returns zero or a negative error code.
  */
-int alloc_chrdev_region(dev_t *dev, unsigned baseminor, unsigned count,
+int alloc_chrdev_region(dev_t * dev, unsigned baseminor, unsigned count,
 			const char *name)
 {
 	struct char_device_struct *cd;
@@ -270,7 +273,7 @@ int register_chrdev(unsigned int major, const char *name,
 	cd = __register_chrdev_region(major, 0, 256, name);
 	if (IS_ERR(cd))
 		return PTR_ERR(cd);
-	
+
 	cdev = cdev_alloc();
 	if (!cdev)
 		goto out2;
@@ -278,9 +281,9 @@ int register_chrdev(unsigned int major, const char *name,
 	cdev->owner = fops->owner;
 	cdev->ops = fops;
 	kobject_set_name(&cdev->kobj, "%s", name);
-	for (s = strchr(kobject_name(&cdev->kobj),'/'); s; s = strchr(s, '/'))
+	for (s = strchr(kobject_name(&cdev->kobj), '/'); s; s = strchr(s, '/'))
 		*s = '!';
-		
+
 	err = cdev_add(cdev, MKDEV(cd->major, 0), 256);
 	if (err)
 		goto out;
@@ -310,7 +313,7 @@ void unregister_chrdev_region(dev_t from, unsigned count)
 	dev_t n, next;
 
 	for (n = from; n < to; n = next) {
-		next = MKDEV(MAJOR(n)+1, 0);
+		next = MKDEV(MAJOR(n) + 1, 0);
 		if (next > to)
 			next = to;
 		kfree(__unregister_chrdev_region(MAJOR(n), MINOR(n), next - n));
@@ -393,14 +396,14 @@ static int chrdev_open(struct inode *inode, struct file *filp)
 		goto out_cdev_put;
 
 	if (filp->f_op->open) {
-		ret = filp->f_op->open(inode,filp);
+		ret = filp->f_op->open(inode, filp);
 		if (ret)
 			goto out_cdev_put;
 	}
 
 	return 0;
 
- out_cdev_put:
+out_cdev_put:
 	cdev_put(p);
 	return ret;
 }
@@ -481,7 +484,6 @@ void cdev_del(struct cdev *p)
 	kobject_put(&p->kobj);
 }
 
-
 static void cdev_default_release(struct kobject *kobj)
 {
 	struct cdev *p = container_of(kobj, struct cdev, kobj);
@@ -496,11 +498,11 @@ static void cdev_dynamic_release(struct kobject *kobj)
 }
 
 static struct kobj_type ktype_cdev_default = {
-	.release	= cdev_default_release,
+	.release = cdev_default_release,
 };
 
 static struct kobj_type ktype_cdev_dynamic = {
-	.release	= cdev_dynamic_release,
+	.release = cdev_dynamic_release,
 };
 
 /**
@@ -547,7 +549,6 @@ void __init chrdev_init(void)
 	cdev_map = kobj_map_init(base_probe, &chrdevs_lock);
 	bdi_init(&directly_mappable_cdev_bdi);
 }
-
 
 /* Let modules do char dev stuff */
 EXPORT_SYMBOL(register_chrdev_region);

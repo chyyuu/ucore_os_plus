@@ -20,7 +20,6 @@
 /* __kernel_uid_t can never change, so we have to use __kernel_uid32_t */
 #define	SMB_IOC_GETMOUNTUID32		_IOR('u', 3, __kernel_uid32_t)
 
-
 #ifdef __KERNEL__
 #include <linux/smb_fs_i.h>
 #include <linux/smb_fs_sb.h>
@@ -59,7 +58,6 @@ static inline struct smb_inode_info *SMB_I(struct inode *inode)
  */
 #define SMB_F_LOCALWRITE	0x02	/* file modified locally */
 
-
 /* NT1 protocol capability bits */
 #define SMB_CAP_RAW_MODE         0x00000001
 #define SMB_CAP_MPX_MODE         0x00000002
@@ -76,7 +74,6 @@ static inline struct smb_inode_info *SMB_I(struct inode *inode)
 #define SMB_CAP_LARGE_WRITEX     0x00008000
 #define SMB_CAP_UNIX             0x00800000	/* unofficial ... */
 
-
 /*
  * This is the time we allow an inode, dentry or dir cache to live. It is bad
  * for performance to have shorter ttl on an inode than on the cache. It can
@@ -91,16 +88,16 @@ smb_age_dentry(struct smb_sb_info *server, struct dentry *dentry)
 }
 
 struct smb_cache_head {
-	time_t		mtime;	/* unused */
-	unsigned long	time;	/* cache age */
-	unsigned long	end;	/* last valid fpos in cache */
-	int		eof;
+	time_t mtime;		/* unused */
+	unsigned long time;	/* cache age */
+	unsigned long end;	/* last valid fpos in cache */
+	int eof;
 };
 
 #define SMB_DIRCACHE_SIZE	((int)(PAGE_CACHE_SIZE/sizeof(struct dentry *)))
 union smb_dir_cache {
-	struct smb_cache_head   head;
-	struct dentry           *dentry[SMB_DIRCACHE_SIZE];
+	struct smb_cache_head head;
+	struct dentry *dentry[SMB_DIRCACHE_SIZE];
 };
 
 #define SMB_FIRSTCACHE_SIZE	((int)((SMB_DIRCACHE_SIZE * \
@@ -110,39 +107,36 @@ union smb_dir_cache {
 #define SMB_DIRCACHE_START      (SMB_DIRCACHE_SIZE - SMB_FIRSTCACHE_SIZE)
 
 struct smb_cache_control {
-	struct  smb_cache_head		head;
-	struct  page			*page;
-	union   smb_dir_cache		*cache;
-	unsigned long			fpos, ofs;
-	int				filled, valid, idx;
+	struct smb_cache_head head;
+	struct page *page;
+	union smb_dir_cache *cache;
+	unsigned long fpos, ofs;
+	int filled, valid, idx;
 };
 
 #define SMB_OPS_NUM_STATIC	5
 struct smb_ops {
-	int (*read)(struct inode *inode, loff_t offset, int count,
-		    char *data);
-	int (*write)(struct inode *inode, loff_t offset, int count, const
+	int (*read) (struct inode * inode, loff_t offset, int count,
 		     char *data);
-	int (*readdir)(struct file *filp, void *dirent, filldir_t filldir,
-		       struct smb_cache_control *ctl);
+	int (*write) (struct inode * inode, loff_t offset, int count, const
+		      char *data);
+	int (*readdir) (struct file * filp, void *dirent, filldir_t filldir,
+			struct smb_cache_control * ctl);
 
-	int (*getattr)(struct smb_sb_info *server, struct dentry *dir,
-		       struct smb_fattr *fattr);
-	/* int (*setattr)(...); */      /* setattr is really icky! */
+	int (*getattr) (struct smb_sb_info * server, struct dentry * dir,
+			struct smb_fattr * fattr);
+	/* int (*setattr)(...); *//* setattr is really icky! */
 
-	int (*truncate)(struct inode *inode, loff_t length);
-
+	int (*truncate) (struct inode * inode, loff_t length);
 
 	/* --- --- --- end of "static" entries --- --- --- */
 
-	int (*convert)(unsigned char *output, int olen,
-		       const unsigned char *input, int ilen,
-		       struct nls_table *nls_from,
-		       struct nls_table *nls_to);
+	int (*convert) (unsigned char *output, int olen,
+			const unsigned char *input, int ilen,
+			struct nls_table * nls_from, struct nls_table * nls_to);
 };
 
-static inline int
-smb_is_open(struct inode *i)
+static inline int smb_is_open(struct inode *i)
 {
 	return (SMB_I(i)->open == server_from_inode(i)->generation);
 }

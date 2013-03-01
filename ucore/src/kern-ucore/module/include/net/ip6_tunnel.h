@@ -18,7 +18,7 @@ struct ip6_tnl {
 	int recursion;		/* depth of hard_start_xmit recursion */
 	struct ip6_tnl_parm parms;	/* tunnel configuration parameters */
 	struct flowi fl;	/* flowi template for xmit */
-	struct dst_entry *dst_cache;    /* cached dst */
+	struct dst_entry *dst_cache;	/* cached dst */
 	u32 dst_cookie;
 };
 

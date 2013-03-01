@@ -19,9 +19,11 @@
 #ifndef UACCESS_GLUE_H
 #define UACCESS_GLUE_H
 
-extern unsigned long __ucore_copy_to_user(void *to, const void *from, unsigned long n);
+extern unsigned long __ucore_copy_to_user(void *to, const void *from,
+					  unsigned long n);
 
-extern unsigned long __ucore_copy_from_user(void *to, const void *from, unsigned long n);
+extern unsigned long __ucore_copy_from_user(void *to, const void *from,
+					    unsigned long n);
 
 #ifndef copy_to_user
 #define copy_to_user __ucore_copy_to_user
@@ -31,4 +33,3 @@ extern unsigned long __ucore_copy_from_user(void *to, const void *from, unsigned
 #endif
 
 #endif
-
