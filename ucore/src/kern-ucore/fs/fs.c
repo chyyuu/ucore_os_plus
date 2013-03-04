@@ -15,7 +15,6 @@ void fs_init(void)
 	dev_init();
 	pipe_init();
 	sfs_init();
-	list_init(&open_file_list);
 }
 
 void fs_cleanup(void)
@@ -41,7 +40,7 @@ struct fs_struct *fs_create(void)
 	if ((fs_struct =
 	     kmalloc(sizeof(struct fs_struct) + FS_STRUCT_BUFSIZE)) != NULL) {
 		fs_struct->pwd = NULL;
-		fs_struct->filemap = (void **)(fs_struct + 1);
+		fs_struct->filemap = (void *)(fs_struct + 1);
 		atomic_set(&(fs_struct->fs_count), 0);
 		sem_init(&(fs_struct->fs_sem), 1);
 		filemap_init(fs_struct->filemap);
@@ -56,15 +55,14 @@ void fs_destroy(struct fs_struct *fs_struct)
 		vop_ref_dec(fs_struct->pwd);
 	}
 	int i;
-	struct file **file = fs_struct->filemap;
+	struct file *file = fs_struct->filemap;
 	for (i = 0; i < FS_STRUCT_NENTRY; i++, file++) {
-		if ((*file)->status == FD_OPENED) {
-			filemap_close(*file);
+		if (file->status == FD_OPENED) {
+			filemap_close(file);
 		}
-		if ((*file)->status != FD_NONE)
-			kprintf("file->fd:%d\n", (*file)->fd);
-		assert((*file)->status == FD_NONE);
-		kfree(*file);
+		if (file->status != FD_NONE)
+			kprintf("file->fd:%d\n", file->fd);
+		assert(file->status == FD_NONE);
 	}
 	kfree(fs_struct);
 }
@@ -73,10 +71,10 @@ void fs_closeall(struct fs_struct *fs_struct)
 {
 	assert(fs_struct != NULL && fs_count(fs_struct) > 0);
 	int i;
-	struct file **file = fs_struct->filemap;
+	struct file *file = fs_struct->filemap;
 	for (i = 3, file += 2; i < FS_STRUCT_NENTRY; i++, file++) {
-		if ((*file)->status == FD_OPENED) {
-			filemap_close(*file);
+		if (file->status == FD_OPENED) {
+			filemap_close(file);
 		}
 	}
 }
@@ -89,19 +87,17 @@ int dup_fs(struct fs_struct *to, struct fs_struct *from)
 		vop_ref_inc(to->pwd);
 	}
 	int i;
-	struct file **to_file = to->filemap, **from_file = from->filemap;
+	struct file *to_file = to->filemap, *from_file = from->filemap;
 	for (i = 0; i < FS_STRUCT_NENTRY; i++, to_file++, from_file++) {
-		if ((*from_file)->status == FD_OPENED) {
+		if (from_file->status == FD_OPENED) {
 			/* alloc_fd first */
-			(*to_file)->status = FD_INIT;
-			filemap_dup(*to_file, *from_file);
+			to_file->status = FD_INIT;
+			filemap_dup(to_file, from_file);
 		}
-		/*
-		   else if((*from_file)->status != FD_NONE) {
-		   (*to_file)->status = (*from_file)->status;
-		   filemap_dup_close(to_file, from_file);
-		   }
-		 */
+		else if(from_file->status != FD_NONE) {
+			to_file->status = from_file->status;
+			filemap_dup_close(to_file, from_file);
+		}
 	}
 	return 0;
 }

@@ -21,13 +21,13 @@ struct file;
 
 struct fs_struct {
 	struct inode *pwd;
-	struct file **filemap;
+	struct file *filemap;
 	atomic_t fs_count;
 	semaphore_t fs_sem;
 };
 
 #define FS_STRUCT_BUFSIZE                       (2 * PGSIZE - sizeof(struct fs_struct))
-#define FS_STRUCT_NENTRY                        (FS_STRUCT_BUFSIZE / sizeof(struct file *))
+#define FS_STRUCT_NENTRY                        (FS_STRUCT_BUFSIZE / sizeof(struct file))
 
 void lock_fs(struct fs_struct *fs_struct);
 void unlock_fs(struct fs_struct *fs_struct);
