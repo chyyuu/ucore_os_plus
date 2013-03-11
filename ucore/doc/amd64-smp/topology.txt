@@ -1,0 +1,9 @@
+The Topology for x86-64 architecuture
+=======================================
+
+NUMA architecture intro:
+------------------------
+Non-Uniform Memory Access (NUMA) is a computer memory design used in multiprocessing, where the memory access time depends on the memory location relative to a processor. Under NUMA, a processor can access its own local memory faster than non-local memory (memory local to another processor or memory shared between processors).
+
+init part for NUMA:
+---------------
