@@ -85,7 +85,7 @@ export HOSTAR HOSTAS HOSTCC HOSTCXX HOSTLD
 HOSTCFLAGS=$(CFLAGS_FOR_BUILD)
 export HOSTCFLAGS
 
-PHONY+=defconfig menuconfig clean all
+PHONY+=defconfig menuconfig clean all tags
 
 all: kernel
 
@@ -191,6 +191,13 @@ clean:
 indent:
 	$(Q)find $(TOPDIR)/src -name *.c -or -name *.h | grep -vf $(TOPDIR)/misc/indent-whitelist | xargs $(TOPDIR)/misc/Lindent
 	$(Q)rm -rf `find $(TOPDIR)/src -name *~`
+
+tags:
+	@echo TAGS ALL
+	$(Q)rm -f cscope.files cscope.in.out cscope.out cscope.po.out tags
+	$(Q)ctags -R .
+	$(Q)find . -type f -name "*.[chS]" >cscope.files
+	$(Q)cscope -bq 
 
 FORCE:
 
