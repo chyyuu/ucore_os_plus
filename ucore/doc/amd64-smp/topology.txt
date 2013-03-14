@@ -99,7 +99,52 @@ initextpic
 
 
 --------------------
+//simple
 inituartcons  //require interrupt routing
+
+
+--------------------
+//simple
+initcga
+--------------------
+//
+  // Some global constructors require mycpu()->id (via myid()) which
+  // we setup in inittls.  (Note that gcc 4.7 eliminated the .ctors
+  // section entirely, but gcc has supported .init_array for some
+  // time.)  Note that this will implicitly initialize CPU 0's per-CPU
+  // objects as well.
+  extern void (*__init_array_start[])(int, char **, char **);
+  extern void (*__init_array_end[])(int, char **, char **);
+  for (size_t i = 0; i < __init_array_end - __init_array_start; i++)
+      (*__init_array_start[i])(0, nullptr, nullptr);
+
+--------------------
+//simple
+inittrap //setup IDT
+
+--------------------
+//simple
+initcmdline //show command line of xv6
+
+--------------------
+// Initialize free list of physical pages.
+initkalloc
+
+
+--------------------
+--------------------
+--------------------
+--------------------
+--------------------
+--------------------
+--------------------
+--------------------
+--------------------
+--------------------
+--------------------
+--------------------
+--------------------
+--------------------
 
 ==================================
 demo of xv6
