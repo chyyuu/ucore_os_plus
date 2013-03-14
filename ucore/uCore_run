@@ -98,4 +98,21 @@ case $UCONFIG_ARCH in
             -s -serial file:$BUILD_DIR/serial.log \
             $EXTRA_OPT
         ;;
+    amd64)
+        QEMU=qemu
+        which qemu-system-x86_64 > /dev/null 2>&1
+        if [ $? -eq 0 ]; then
+            QEMU=qemu-system-x86_64
+        fi
+        if [[ $TEST_MODE = y ]]; then
+            EXTRA_OPT="-S -display none"
+        else
+            EXTRA_OPT="-monitor stdio"
+        fi
+        exec $QEMU -m 512 \
+            -hda $BUILD_DIR/kernel.img \
+            -drive file=$BUILD_DIR/sfs.img,media=disk,cache=writeback,index=2 \
+            -s -serial file:$BUILD_DIR/serial.log \
+            $EXTRA_OPT
+        ;;
 esac
