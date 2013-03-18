@@ -1,1 +1,0 @@
-obj-y := pmm.o swap.o vmm.o
