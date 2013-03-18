@@ -1,4 +1,4 @@
-README for ucore x86-64 in ubuntu 12.04 x86-64
+README for ucore amd64 in ubuntu 12.04 x86-64
 
 -----------------------------
 prerequirement:
@@ -9,18 +9,16 @@ intalll gcc x86-64 and qemu-system-x86_64
 build
 ------------------
 cd ucore
-make menuconfig ARCH=x86_84
+make menuconfig ARCH=amd64    //do nothing, just save&exit
 make
 make sfsimg
-make swapimg
 
+NOTICE: no need to build swapimg
 ------------------
 run
 ------------------
 ./uCore_run -d obj
 
 OR
-
-qemu-system-x86_64 -smp 4 -m 512 -hda obj/kernel.img -drive file=obj/swap.img,media=disk,cache=writeback -drive file=obj/sfs.img,media=disk,cache=writeback -s -serial file:obj/se
-rial.log -monitor stdio
+qemu-system-x86_64 -m 512 -hda obj/kernel.img -drive file=obj/sfs.img,media=disk,cache=writeback,index=2 -s -serial file:obj/serial.log -monitor stdio
 
