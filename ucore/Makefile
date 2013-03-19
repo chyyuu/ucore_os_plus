@@ -6,7 +6,7 @@
 TOPDIR=$(shell pwd)
 Q :=@
 
-
+ARCH ?= amd64
 KTREE = $(TOPDIR)/src/kern-ucore
 ifndef O
 OBJPATH_ROOT := $(TOPDIR)/obj
