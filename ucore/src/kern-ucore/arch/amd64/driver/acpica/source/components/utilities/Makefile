@@ -1,0 +1,1 @@
+obj-y := utaddress.o utalloc.o utcache.o utclib.o utcopy.o utdebug.o utdecode.o utdelete.o uteval.o utglobal.o utids.o utinit.o utlock.o utmath.o utmisc.o utmutex.o utobject.o utosi.o utresrc.o utstate.o uttrack.o utxface.o utxferror.o utxfmutex.o

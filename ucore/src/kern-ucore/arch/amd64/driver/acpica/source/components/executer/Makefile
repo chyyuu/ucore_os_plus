@@ -1,0 +1,1 @@
+obj-y := exconfig.o exconvrt.o excreate.o exdebug.o exdump.o exfield.o exfldio.o exmisc.o exmutex.o exnames.o exoparg1.o exoparg2.o exoparg3.o exoparg6.o exprep.o exregion.o exresnte.o exresolv.o exresop.o exstore.o exstoren.o exstorob.o exsystem.o exutils.o
