@@ -1,0 +1,161 @@
+A simple explain of the setup process of x86-64 long mode
+------------------------------------
+From 
+http://wiki.osdev.org/X86-64
+http://wiki.osdev.org/User:Stephanvanschaik/Setting_Up_Long_Mode
+
+
+1. What does Long Mode offer?
+-----------------------------
+Long mode extends general registers to 64 bits (RAX, RBX, RIP, RSP, RFLAGS, etc), and adds an additional 8 integer registers (R8, R9, ..., R15) plus 8 more SSE registers (XMM8 to XMM15) to the CPU. Linear addresses are extended to 64 bit (however, a given CPU may implement less than this) and the physical address space is extended to 52 bits (a given CPU may implement less than this). In essence long mode adds another mode to the CPU.
+
+1.1 Segmentation in Long Mode
+------------------------------
+Segmentation in long mode functions with a flat model with the exception of two registers: FS and GS. Setting the base address for these two segment registers is possible via two specific MSRs, FS.base (C000_0100h) and GS.base (C000_0101h).
+
+Additionally there is a long mode specific instruction called SWAPGS, which swaps the contents of GS.base and another MSR called KernelGSBase (C000_0102h). This instruction is particularly useful for preserving kernel information for a specific logical processor core across context switches. Note: This is an exchange operation.
+ 
+2. How to enable Long Mode
+The steps for enabling long mode are:
+
+. Have paging disabled
+
+Before we actually cover up the new paging used in x86-64 we should disable the old paging first (you can skip this if you never set up paging in protected mode) as this is required.
+
+    mov eax, cr0                                   ; Set the A-register to control register 0.
+    and eax, 01111111111111111111111111111111b     ; Clear the PG-bit, which is bit 31.
+    mov cr0, eax                                   ; Set control register 0 to the A-register.
+
+Now that paging is disabled, we can actually take a look at how paging is set up in x86-64 (It's recommended to read Chapter 5.3 of the AMD64 Architecture Programmer's Manual, Volume 2). First of all, long mode uses PAE paging and therefore you have the page-directory pointer table (PDPT), the page-directory table (PDT) and the page table (PT). There's also another table which now forms the root (instead of the PDPT or the PDT) and that is page-map level-4 table (PML4T). In protected mode a page table entry was only four bytes long, so you had 1024 entries per table. In long mode, however, you only have 512 entries per table as each entry is eight bytes long. This means that one entry in a PT can address 4kB, one entry in a PDT can address 2MB, one entry in a PDPT can address 1GB and one entry in a PML4T can address 512GB. This means that only 256TB can be addressed. The way these tables work is that each entry in the PML4T point to a PDPT, each entry in a PDPT to a PDT and each entry in a PDT to a PT. Each entry in a PT then points to the physical address, that is, if it is marked as present. So how does the MMU/processor know which physical address should be used with which virtual address? Basically each table has 512 entries ranging from 0 to 511. These entries each refer to a specific domain of memory. Like index 0 of the PML4T refers to the first 512GB in virtual memory, index 1 refers to the next 512GB and so on. The same applies to the PDPT, PDT and the PT (except with smaller sizes; 1GB, 2MB and 4kB as seen above). The last gigabyte of virtual memory would be described in the table referred to by 511th index of the PDPT which is referred to by the 511th index of the PML4T or in psuedo-C:
+
+   pagedir_t* PDT = PML4[511]->PDPT[511];
+   
+Basically, what pages you want to set up and how you want them to be set up is up to you, but I'd identity map the first megabyte and then map some high memory to the memory after the first megabyte (a.k.a. 0x100000 - ???), however, this may be pretty difficult to set up first. So let's identity map the first two megabytes. We'll set up four tables at 0x1000 (assuming that this is free to use): a PML4T, a PDPT, a PDT and a PT. Basically we want to identity map the first two megabytes so:
+
+    PML4T[0] -> PDPT.
+    PDPT[0] -> PDT.
+    PDT[0] -> PT.
+    PT -> 0x00000000 - 0x00200000.
+
+First we will clear the tables:
+
+    mov edi, 0x1000    ; Set the destination index to 0x1000.
+    mov cr3, edi       ; Set control register 3 to the destination index.
+    xor eax, eax       ; Nullify the A-register.
+    mov ecx, 4096      ; Set the C-register to 4096.
+    rep stosd          ; Clear the memory.
+    mov edi, cr3       ; Set the destination index to control register 3.
+    
+    
+So lets make PML4T[0] point to the PDPT and so on:    
+
+    mov DWORD [edi], 0x2003      ; Set the double word at the destination index to 0x2003.
+    add edi, 0x1000              ; Add 0x1000 to the destination index.
+    mov DWORD [edi], 0x3003      ; Set the double word at the destination index to 0x3003.
+    add edi, 0x1000              ; Add 0x1000 to the destination index.
+    mov DWORD [edi], 0x4003      ; Set the double word at the destination index to 0x4003.
+    add edi, 0x1000              ; Add 0x1000 to the destination index.
+
+If you haven't noticed already, I used a three. This simply means that the first two bits should be set. These bits indicate that the page is present and that it is readable as well as writable. Now all that's left to do is identity map the first two megabytes:
+
+    mov ebx, 0x00000003          ; Set the B-register to 0x00000003.
+    mov ecx, 512                 ; Set the C-register to 512.
+ 
+.SetEntry:
+    mov DWORD [edi], ebx         ; Set the double word at the destination index to the B-register.
+    add ebx, 0x1000              ; Add 0x1000 to the B-register.
+    add edi, 8                   ; Add eight to the destination index.
+    loop .SetEntry               ; Set the next entry.    
+
+        
+. Set the PAE enable bit in CR4
+
+Now we should enable PAE-paging by setting the PAE-bit in the fourth control register:
+    mov eax, cr4                 ; Set the A-register to control register 4.
+    or eax, 1 << 5               ; Set the PAE-bit, which is the 6th bit (bit 5).
+    mov cr4, eax                 ; Set control register 4 to the A-register.
+
+Now paging is set up, but it isn't enabled yet.
+
+
+
+. Load CR3 with the physical address of the PML4
+
+Already down
+    mov edi, 0x1000    ; Set the destination index to 0x1000.
+    mov cr3, edi       ; Set control register 3 to the destination index.
+
+
+
+. Enable long mode by setting the EFER.LME flag in MSR 0xC0000080
+There's not much left to do. We should set the long mode bit in the EFER MSR and then we should enable paging and then we are in compatibility mode (which is part of long mode).
+
+So we first set the LM-bit:
+    mov ecx, 0xC0000080          ; Set the C-register to 0xC0000080, which is the EFER MSR.
+    rdmsr                        ; Read from the model-specific register.
+    or eax, 1 << 8               ; Set the LM-bit which is the 9th bit (bit 8).
+    wrmsr                        ; Write to the model-specific register.
+    
+    
+    
+. Enable paging
+    mov eax, cr0                 ; Set the A-register to control register 0.
+    or eax, 1 << 31              ; Set the PG-bit, which is the 32nd bit (bit 31).
+    mov cr0, eax                 ; Set control register 0 to the A-register.
+
+Now we're in compatibility mode.
+
+
+. Entering the 64-bit Submode
+Now that we're in long mode, there's one issue left: we are in the IA32e submode and we actually wanted to enter 64-bit long mode. This isn't a hard thing to do. We should load just load a GDT with the 64-bit flags set in the code and data selectors.
+
+Our GDT (see chapter 4.8.1 and 4.8.2 of the AMD64 Architecture Programmer's Manual Volume 2) should look like this:
+
+GDT64:                           ; Global Descriptor Table (64-bit).
+    .Null: equ $ - GDT64         ; The null descriptor.
+    dw 0                         ; Limit (low).
+    dw 0                         ; Base (low).
+    db 0                         ; Base (middle)
+    db 0                         ; Access.
+    db 0                         ; Granularity.
+    db 0                         ; Base (high).
+    .Code: equ $ - GDT64         ; The code descriptor.
+    dw 0                         ; Limit (low).
+    dw 0                         ; Base (low).
+    db 0                         ; Base (middle)
+    db 10011000b                 ; Access.
+    db 00100000b                 ; Granularity.
+    db 0                         ; Base (high).
+    .Data: equ $ - GDT64         ; The data descriptor.
+    dw 0                         ; Limit (low).
+    dw 0                         ; Base (low).
+    db 0                         ; Base (middle)
+    db 10010000b                 ; Access.
+    db 00000000b                 ; Granularity.
+    db 0                         ; Base (high).
+    .Pointer:                    ; The GDT-pointer.
+    dw $ - GDT64 - 1             ; Limit.
+    dq GDT64                     ; Base.
+    
+Now the only thing left to do is load it and make the jump to 64-bit:
+
+    lgdt [GDT64.Pointer]         ; Load the 64-bit global descriptor table.
+    jmp GDT64.Code:Realm64       ; Set the code segment and enter 64-bit long mode.
+    
+Now that we're in 64-bit, we want to do something that is actually 64-bit. In this sample I'm just going with an ordinary clear the screen:
+
+; Use 64-bit.
+[BITS 64]
+ 
+Realm64:
+    cli                           ; Clear the interrupt flag.
+    mov ax, GDT64.Data            ; Set the A-register to the data descriptor.
+    mov ds, ax                    ; Set the data segment to the A-register.
+    mov es, ax                    ; Set the extra segment to the A-register.
+    mov fs, ax                    ; Set the F-segment to the A-register.
+    mov gs, ax                    ; Set the G-segment to the A-register.
+    mov edi, 0xB8000              ; Set the destination index to 0xB8000.
+    mov rax, 0x1F201F201F201F20   ; Set the A-register to 0x1F201F201F201F20.
+    mov ecx, 500                  ; Set the C-register to 500.
+    rep movsq                     ; Clear the screen.
+    hlt                           ; Halt the processor.
