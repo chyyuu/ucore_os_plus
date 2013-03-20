@@ -5,6 +5,9 @@
 #include <glue_memlayout.h>
 #include <types.h>
 
+/* maxinum cpu number */
+#define NCPU 128
+
 extern int pls_lapic_id;
 extern int pls_lcpu_idx;
 extern int pls_lcpu_count;

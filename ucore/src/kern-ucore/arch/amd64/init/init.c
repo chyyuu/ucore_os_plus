@@ -38,6 +38,8 @@ int kern_init(void)
 	pmm_init();		// init physical memory management
 	pmm_init_ap();
 
+	hz_init();
+
 	//init the acpi stuff
 	acpitables_init();
 
@@ -50,9 +52,10 @@ int kern_init(void)
 	sync_init();		// init sync struct
 
 //	acpi_conf_init();
-	acpi_init();
 	lapic_init();
+	numa_init();
 	ioapic_init();
+	acpi_init();
 
 	ide_init();		// init ide devices
 #ifdef UCONFIG_SWAP

@@ -2,8 +2,23 @@
 #define __LIBS_X86_H__
 
 #include <types.h>
+#include "msrbits.h"
 
 #define barrier() __asm__ __volatile__ ("" ::: "memory")
+
+static inline
+void hlt(void)
+{
+  __asm volatile("hlt");
+}
+
+static inline
+void nop_pause(void)
+{
+  __asm volatile("pause" : :);
+}
+
+
 
 static inline uint8_t inb(uint16_t port) __attribute__ ((always_inline));
 static inline void insl(uint32_t port, void *addr, int cnt)
@@ -188,6 +203,84 @@ static inline void write_rflags(uint64_t rflags)
 	asm volatile ("pushq %0; popfq"::"r" (rflags));
 }
 
+static inline void
+writefs(uint16_t v)
+{
+  __asm volatile("movw %0, %%fs" : : "r" (v));
+}
+
+static inline uint16_t
+readfs(void)
+{
+  uint16_t v;
+  __asm volatile("movw %%fs, %0" : "=r" (v));
+  return v;
+}
+
+static inline void
+writegs(uint16_t v)
+{
+  __asm volatile("movw %0, %%gs" : : "r" (v));
+}
+
+static inline uint16_t
+readgs(void)
+{
+  uint16_t v;
+  __asm volatile("movw %%gs, %0" : "=r" (v));
+  return v;
+}
+
+static inline uint64_t
+readmsr(uint32_t msr)
+{
+  uint32_t hi, lo;
+  __asm volatile("rdmsr" : "=d" (hi), "=a" (lo) : "c" (msr));
+  return ((uint64_t) lo) | (((uint64_t) hi) << 32);
+}
+
+static inline void
+writemsr(uint64_t msr, uint64_t val)
+{
+  uint32_t lo = val & 0xffffffff;
+  uint32_t hi = val >> 32;
+  __asm volatile("wrmsr" : : "c" (msr), "a" (lo), "d" (hi) : "memory");
+}
+
+static inline uint64_t
+rdtsc(void)
+{
+  uint32_t hi, lo;
+  __asm volatile("rdtsc" : "=a"(lo), "=d"(hi));
+  return ((uint64_t)lo)|(((uint64_t)hi)<<32);
+}
+
+static inline uint64_t
+rdpmc(uint32_t ecx)
+{
+  uint32_t hi, lo;
+  __asm volatile("rdpmc" : "=a" (lo), "=d" (hi) : "c" (ecx));
+  return ((uint64_t) lo) | (((uint64_t) hi) << 32);
+}
+
+static inline uint64_t
+rrsp(void)
+{
+  uint64_t val;
+  __asm volatile("movq %%rsp,%0" : "=r" (val));
+  return val;
+}
+
+static inline uint64_t
+rrbp(void)
+{
+  uint64_t val;
+  __asm volatile("movq %%rbp,%0" : "=r" (val));
+  return val;
+}
+
+
+
 #else /* not __UCORE_64__ (only used for 32-bit libs) */
 
 #define do_div(n, base) ({                                          \
@@ -228,6 +321,7 @@ static inline void write_eflags(uint32_t eflags)
 {
 	asm volatile ("pushl %0; popfl"::"r" (eflags));
 }
+
 
 #endif /* !__UCORE_64__ */
 

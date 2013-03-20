@@ -9,6 +9,7 @@ int acpi_conf_init(void);
 
 int acpitables_init(void);
 int lapic_init(void); 
+int numa_init(void);
 
 int acpi_init(void);
 #endif

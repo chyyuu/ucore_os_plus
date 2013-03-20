@@ -20,6 +20,9 @@
 #include <assert.h>
 #include <acpi_conf.h>
 #include <acpi.h>
+#include <lapic.h>
+#include <mp.h>
+#include "sysconf.h"
 #include "cpuid.h"
 
 static int table_inited = 0;
@@ -61,12 +64,94 @@ int acpitables_init(void)
 	return 0;
 }
 
-int lapic_init0(void)
+static struct lapic_chip* __lapic_chip;
+struct lapic_chip *lapic_get_chip()
 {
-	static bool bsp = TRUE;
+	return __lapic_chip;
+}
+int lapic_init(void)
+{
+	static int bsp = 1;
+	if(bsp){
+		__lapic_chip = x2apic_lapic_init();
+		if(!__lapic_chip)
+			__lapic_chip = xapic_lapic_init();
+		if(!__lapic_chip)
+			panic("ERROR: No LAPIC found\n");
+	}
+	struct lapic_chip* chip = lapic_get_chip();
+	assert(chip != NULL);
+	chip->cpu_init(chip);
+
+	if(bsp){
+		//TODO percpu
+		bsp = 0;
+	}
 	return 0;
 }
+#define FOR_ACPI_TABLE(head, subtype, sub) for(sub=(subtype *)((head)+1);\
+		sub < (subtype *)((char*)head + (head)->Header.Length);  \
+		sub=(subtype *)((char*)sub + (sub->Length)))
 
+static uint32_t cpu_id_to_apicid[NCPU];
+static void cpumap_init(void)
+{
+	if(!hdr_madt){
+		kprintf("cpumap_init: no madt found\n");
+		cpu_id_to_apicid[0] = 0;
+		sysconf.lcpu_count = 1;
+		return;
+	}
+	struct lapic_chip* chip = lapic_get_chip();
+	uint32_t myapicid = chip->id(chip);
+	int count = 1;
+	int found_bsp = 0;
+	kprintf("cpumap_init: bootcpu apicid: %d\n", myapicid);
+	ACPI_SUBTABLE_HEADER *sub;
+	FOR_ACPI_TABLE(hdr_madt,ACPI_SUBTABLE_HEADER, sub){
+		uint32_t lapicid;
+		if(sub->Type == ACPI_MADT_TYPE_LOCAL_APIC) {
+			ACPI_MADT_LOCAL_APIC* lapic = (ACPI_MADT_LOCAL_APIC*)sub;
+      			if (!(lapic->LapicFlags & ACPI_MADT_ENABLED))
+				continue;
+			lapicid = lapic->Id;
+		}else if(sub->Type == ACPI_MADT_TYPE_LOCAL_X2APIC){
+			ACPI_MADT_LOCAL_X2APIC* lapic = (ACPI_MADT_LOCAL_X2APIC*)sub;
+      			if (!(lapic->LapicFlags & ACPI_MADT_ENABLED))
+				continue;
+			lapicid = lapic->LocalApicId;
+		}else{
+			continue;
+		}
+
+		if(lapicid == myapicid){
+			found_bsp = 1;
+			continue;
+		}
+
+		if(count < NCPU){
+			cpu_id_to_apicid[count] = lapicid;
+		}
+		count++;
+	}
+
+	if (count > NCPU)
+		panic("acpi: Only %d of %d CPUs supported; please increase NCPU", NCPU, count);
+	if (!found_bsp)
+		panic("Bootstrap process missing from MADT");
+	sysconf.lcpu_count = count;
+
+
+	int i;
+	for(i=0;i<count;i++)
+		kprintf("  CPU %d: to LAPIC %d\n", i, cpu_id_to_apicid[i]);
+
+}
+
+int numa_init(void)
+{
+	cpumap_init();
+}
 
 int acpi_init(void)
 {

@@ -7,6 +7,7 @@ typedef struct sysconf_s {
 	int lcpu_boot;
 	int lcpu_count;
 
+	//XXX
 	uintptr_t lapic_phys;
 
 	int ioapic_count;

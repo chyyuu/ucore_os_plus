@@ -226,8 +226,10 @@ static void trap_dispatch(struct trapframe *tf)
 	}
 
 	if (tf->tf_trapno >= IRQ_OFFSET &&
-	    tf->tf_trapno < IRQ_OFFSET + IRQ_COUNT)
-		lapic_eoi_send();
+	    tf->tf_trapno < IRQ_OFFSET + IRQ_COUNT){
+		struct lapic_chip* chip = lapic_get_chip();
+		chip->eoi(chip);
+	}
 }
 
 void trap(struct trapframe *tf)
