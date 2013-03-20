@@ -38,6 +38,9 @@ int kern_init(void)
 	pmm_init();		// init physical memory management
 	pmm_init_ap();
 
+	//init the acpi stuff
+	acpitables_init();
+
 	pic_init();		// init interrupt controller
 	idt_init();		// init interrupt descriptor table
 
@@ -46,7 +49,8 @@ int kern_init(void)
 	proc_init();		// init process table
 	sync_init();		// init sync struct
 
-	acpi_conf_init();
+//	acpi_conf_init();
+	acpi_init();
 	lapic_init();
 	ioapic_init();
 
