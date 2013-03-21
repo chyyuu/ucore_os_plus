@@ -7,6 +7,19 @@
 
 /* maxinum cpu number */
 #define NCPU 128
+#define MAX_NUMA_NODES 16
+#define MAX_NUMA_MEMS  16
+
+struct numa_node{
+	uint32_t hwid;
+	int nr_cpus;
+	int nr_mems;
+	struct{
+		uintptr_t base;
+		uint64_t  length;
+	}mems[MAX_NUMA_MEMS];
+	int cpu_ids[NCPU];
+};
 
 extern int pls_lapic_id;
 extern int pls_lcpu_idx;
