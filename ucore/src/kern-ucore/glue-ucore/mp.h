@@ -12,6 +12,7 @@
 #define __mpalign__ __attribute__((aligned(CACHELINE)))
 
 
+struct cpu;
 struct numa_node{
 	uint32_t hwid;
 	int nr_cpus;
@@ -27,6 +28,8 @@ struct numa_node{
 struct cpu {
 	uint32_t id;  //index of cpus[]
 	uint32_t hwid; //apic id
+
+	struct numa_node *node;
 
 	__padout__;
 	//percpu

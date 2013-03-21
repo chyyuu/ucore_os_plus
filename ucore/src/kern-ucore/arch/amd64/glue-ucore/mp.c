@@ -51,6 +51,8 @@ tls_init(struct cpu *c)
 void percpu_init(void)
 {
 	size_t percpu_size = ROUNDUP(__percpu_end - __percpu_start, CACHELINE);
+	if(!percpu_size || sysconf.lcpu_count<=1)
+		return;
 	int i;
 	size_t totalsize = percpu_size * (sysconf.lcpu_count - 1);
 	unsigned int pages = ROUNDUP_DIV(totalsize, PGSIZE);
@@ -58,6 +60,8 @@ void percpu_init(void)
 	struct Page *p = alloc_pages(pages);
 	assert(p != NULL);
 	void *kva = page2kva(p);
+	/* zero it out */
+	memset(kva, 0, pages * PGSIZE);
 	for(i=1;i<sysconf.lcpu_count;i++, kva += percpu_size)
 		percpu_offsets[i] = kva;
 }

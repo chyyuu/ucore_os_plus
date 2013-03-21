@@ -21,6 +21,7 @@
 #include <mp.h>
 #include <entry.h>
 #include <ioapic.h>
+#include <sysconf.h>
 
 #define current (pls_read(current))
 #define idleproc (pls_read(idleproc))
@@ -271,15 +272,21 @@ int ucore_in_interrupt()
 
 void irq_enable(int irq_no)
 {
-	ioapic_enable(ioapic_id_set[0], irq_no, 0);
+	//XXX
+	ioapic_enable(0, irq_no, 0);
 }
 
 void irq_disable(int irq_no)
 {
-	ioapic_disable(ioapic_id_set[0], irq_no);
+	//XXX
+	ioapic_disable(0, irq_no);
 }
 
 void trap_init(void)
 {
+	//XXX
+	if(!sysconf.lioapic_count)
+		return;
 	irq_enable(IRQ_KBD);
+	irq_enable(IRQ_COM1);
 }

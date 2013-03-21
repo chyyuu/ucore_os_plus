@@ -13,6 +13,7 @@
 #define NCPU 128
 #define MAX_NUMA_NODES 16
 #define MAX_NUMA_MEMS  16
+#define MAX_IOAPIC     8
 
 #ifndef CACHELINE
 #warning CACHELINE not defined

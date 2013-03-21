@@ -223,7 +223,7 @@ static void x_cpu_init(struct lapic_chip* _this)
 
 	if (xapichz == 0) {
 		// Measure the TICR frequency
-		xapicw(TDCR, X1);    
+		xapicw(TDCR, X1);
 		xapicw(TICR, 0xffffffff); 
 		uint64_t ccr0 = xapicr(TCCR);
 		microdelay(10 * 1000);    // 1/100th of a second

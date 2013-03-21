@@ -50,8 +50,8 @@ int kern_init(void)
 	//init the acpi stuff
 	acpitables_init();
 
-	pic_init();		// init interrupt controller
 	idt_init();		// init interrupt descriptor table
+	pic_init();		// init interrupt controller
 
 	vmm_init();		// init virtual memory management
 	sched_init();		// init scheduler
@@ -62,7 +62,10 @@ int kern_init(void)
 	lapic_init();
 	numa_init();
 	percpu_init();
+	cpus_init();
 
+
+	/* ext int */
 	ioapic_init();
 	acpi_init();
 
