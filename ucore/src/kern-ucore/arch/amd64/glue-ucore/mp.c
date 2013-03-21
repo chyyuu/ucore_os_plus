@@ -8,6 +8,7 @@
 #include <arch.h>
 #include <vmm.h>
 #include <percpu.h>
+#include <sysconf.h>
 
 PLS int pls_lapic_id;
 PLS int pls_lcpu_idx;
@@ -44,6 +45,21 @@ tls_init(struct cpu *c)
 	writemsr(MSR_GS_BASE, (uint64_t)&c->cpu);
 	writemsr(MSR_GS_KERNBASE, (uint64_t)&c->cpu);
 	c->cpu = c;
+}
+
+/* TODO alloc percpu var in the corresponding    NUMA nodes */
+void percpu_init(void)
+{
+	size_t percpu_size = ROUNDUP(__percpu_end - __percpu_start, CACHELINE);
+	int i;
+	size_t totalsize = percpu_size * (sysconf.lcpu_count - 1);
+	unsigned int pages = ROUNDUP_DIV(totalsize, PGSIZE);
+	kprintf("percpu_init: alloc %d pages for percpu variables\n", pages);
+	struct Page *p = alloc_pages(pages);
+	assert(p != NULL);
+	void *kva = page2kva(p);
+	for(i=1;i<sysconf.lcpu_count;i++, kva += percpu_size)
+		percpu_offsets[i] = kva;
 }
 
 

@@ -61,6 +61,8 @@ int kern_init(void)
 //	acpi_conf_init();
 	lapic_init();
 	numa_init();
+	percpu_init();
+
 	ioapic_init();
 	acpi_init();
 

@@ -60,6 +60,8 @@ void mp_tlb_update(pgd_t * pgdir, uintptr_t la);
 //we use gs to access percpu variable
 //setup in tls_init
 void tls_init(struct cpu* cpu);
+/* alloc percpu memory */
+void percpu_init(void);
 
 static inline struct cpu* mycpu(void)
 {
