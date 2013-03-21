@@ -6,6 +6,7 @@
 typedef struct sysconf_s {
 	int lcpu_boot;
 	int lcpu_count;
+	int lnuma_count;
 
 	//XXX
 	uintptr_t lapic_phys;

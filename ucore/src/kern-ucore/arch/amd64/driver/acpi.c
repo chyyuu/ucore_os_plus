@@ -64,6 +64,7 @@ int acpitables_init(void)
 	return 0;
 }
 
+//XXX should not put here?
 static struct lapic_chip* __lapic_chip;
 struct lapic_chip *lapic_get_chip()
 {
@@ -94,6 +95,8 @@ int lapic_init(void)
 		sub=(subtype *)((char*)sub + (sub->Length)))
 
 static uint32_t cpu_id_to_apicid[NCPU];
+static struct numa_node numa_nodes[MAX_NUMA_NODES];
+
 static void cpumap_init(void)
 {
 	if(!hdr_madt){
@@ -148,9 +151,108 @@ static void cpumap_init(void)
 
 }
 
+/* a proximity_domain is a NUMA node */
+static struct numa_node*
+proximity_domain_to_node(uint32_t proximity_domain)
+{
+	int i;
+	for(i=0;i<sysconf.lnuma_count;i++)
+		if(numa_nodes[i].hwid == proximity_domain)
+			return &numa_nodes[i];
+	return NULL;
+}
+
 int numa_init(void)
 {
+	int numa_node_nr = 0;
+	int i;
 	cpumap_init();
+	if(!hdr_srat){
+		kprintf("numa_init: SRAT not found! Assuming one NUMA node\n");
+		numa_nodes[0].hwid = 0;
+		numa_nodes[0].nr_mems = 1;
+		numa_nodes[0].nr_cpus = sysconf.lcpu_count;
+		numa_nodes[0].mems[0].base = 0;
+		numa_nodes[0].mems[0].length = ~0ull;
+		for(i=0;i<sysconf.lcpu_count;i++)
+			numa_nodes[0].cpu_ids[i] = i;
+		sysconf.lnuma_count = 1;
+		return;
+	}
+	ACPI_SUBTABLE_HEADER *sub;
+	/* construct NUMA nodes and memory */
+	FOR_ACPI_TABLE(hdr_srat,ACPI_SUBTABLE_HEADER, sub){
+		ACPI_SRAT_MEM_AFFINITY *aff = (ACPI_SRAT_MEM_AFFINITY*)sub;
+		if(!(aff->Flags & ACPI_SRAT_MEM_ENABLED))
+			continue;
+		uint32_t proximity_domain = aff->ProximityDomain;
+		if(hdr_srat->Header.Revision < 2)
+			proximity_domain &= 0xff;
+		struct numa_node* node = proximity_domain_to_node(proximity_domain);
+		if(!node){
+			int nr = sysconf.lnuma_count;
+			numa_nodes[nr].hwid = proximity_domain;
+			node = &numa_nodes[nr];
+			sysconf.lnuma_count++;
+		}
+		int nr = node->nr_mems;
+		node->mems[nr].base = aff->BaseAddress;
+		node->mems[nr].length = aff->Length;
+		node->nr_mems ++;
+	}
+	/* CPUs in NUMA nodes */
+	FOR_ACPI_TABLE(hdr_srat,ACPI_SUBTABLE_HEADER, sub){
+		uint32_t proximity_domain, apicid;
+		switch (sub->Type) {
+			case ACPI_SRAT_TYPE_CPU_AFFINITY: {
+				ACPI_SRAT_CPU_AFFINITY *aff = (ACPI_SRAT_CPU_AFFINITY*)sub;
+				if (!(aff->Flags & ACPI_SRAT_CPU_USE_AFFINITY))
+					continue;
+			      proximity_domain = aff->ProximityDomainLo;
+			      if (hdr_srat->Header.Revision >= 2)
+				for (i = 0; i < 3; ++i)
+				  proximity_domain |= aff->ProximityDomainHi[i] << (i * 8);
+				apicid = aff->ApicId;
+			      break;
+			    }
+			case ACPI_SRAT_TYPE_X2APIC_CPU_AFFINITY: {
+				ACPI_SRAT_X2APIC_CPU_AFFINITY *aff = (ACPI_SRAT_X2APIC_CPU_AFFINITY*)sub;
+				if (!(aff->Flags & ACPI_SRAT_CPU_ENABLED))
+					continue;
+				proximity_domain = aff->ProximityDomain;
+				apicid = aff->ApicId;
+				break;
+			}
+			default:
+				continue;
+			}
+		struct numa_node *node = proximity_domain_to_node(proximity_domain);
+		assert(node != NULL);
+		int found = 0;
+		for(i=0;i < sysconf.lcpu_count;i++){
+			if(cpu_id_to_apicid[i] == apicid){
+				node->cpu_ids[node->nr_cpus++] = i;
+				found = 1;
+				break;
+			}
+		}
+		if(!found)
+			panic("SRAT refers to unknown CPU APICID %d", apicid);
+				
+	}
+
+	/* dump NUMA nodes */
+	for(i=0;i<sysconf.lnuma_count;i++){
+		int j;
+		kprintf("acpi: NUMA node %d : cpus ", numa_nodes[i].hwid);
+		for(j=0;j<numa_nodes[i].nr_cpus;j++)
+			kprintf("%d ", numa_nodes[i].cpu_ids[j]);
+		kprintf("\n  mems:\n");
+		for(j=0;j<numa_nodes[i].nr_mems;j++)
+			kprintf("  %p - %p\n", numa_nodes[i].mems[j].base, 
+					numa_nodes[i].mems[j].base+numa_nodes[i].mems[j].length-1);
+	}
+
 }
 
 int acpi_init(void)

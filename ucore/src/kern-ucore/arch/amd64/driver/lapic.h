@@ -25,4 +25,8 @@ struct lapic_chip* x2apic_lapic_init(void);
 struct lapic_chip* xapic_lapic_init(void);
 
 struct lapic_chip *lapic_get_chip();
+
+/* helper macros */
+#define lapic_eoi() do{struct lapic_chip* __c = lapic_get_chip(); \
+	__c->eoi(__c);}while(0)
 #endif
