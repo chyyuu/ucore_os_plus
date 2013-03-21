@@ -313,6 +313,7 @@ process_precision:
 
 			// (unsigned) hexadecimal
 		case 'x':
+		case 'X':
 			num = getuint(ap, lflag);
 			base = 16;
 number:

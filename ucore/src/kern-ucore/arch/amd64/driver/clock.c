@@ -33,7 +33,8 @@ volatile size_t ticks;
  * */
 void clock_init(void)
 {
-	lapic_timer_set(100);
+	//lapic_timer_set(100);
+	//percpu timer has been inited in lapic_init 
 
 	kprintf("++ setup timer interrupts\n");
 	pic_enable(IRQ_TIMER);
