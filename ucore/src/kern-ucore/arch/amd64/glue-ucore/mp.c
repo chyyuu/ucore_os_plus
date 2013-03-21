@@ -7,12 +7,16 @@
 #include <assert.h>
 #include <arch.h>
 #include <vmm.h>
+#include <percpu.h>
 
 PLS int pls_lapic_id;
 PLS int pls_lcpu_idx;
 PLS int pls_lcpu_count;
 
 PLS static int volatile pls_local_kern_locking;
+
+void *percpu_offsets[NCPU];
+DEFINE_PERCPU_NOINIT(struct cpu, cpus);
 
 volatile int ipi_raise[LAPIC_COUNT] = { 0 };
 
@@ -30,6 +34,18 @@ int mp_init(void)
 
 	return 0;
 }
+
+void
+tls_init(struct cpu *c)
+{
+	// Initialize cpu-local storage.
+	writegs(KERNEL_DS);
+	/* gs base shadow reg in msr */
+	writemsr(MSR_GS_BASE, (uint64_t)&c->cpu);
+	writemsr(MSR_GS_KERNBASE, (uint64_t)&c->cpu);
+	c->cpu = c;
+}
+
 
 void kern_enter(int source)
 {

@@ -6,6 +6,7 @@
 #include <cpuid.h>
 #include <kio.h>
 #include <picirq.h>
+#include <percpu.h>
 
 /* The LAPIC access */
 // Local APIC registers, divided by 4 for use as uint[] indices.
@@ -214,8 +215,7 @@ static void x_cpu_init(struct lapic_chip* _this)
 {
 	uint64_t count;
 
-	//XXX should use percpu
-	kprintf("xapic: Initializing LAPIC (CPU %d)\n", 0);
+	kprintf("xapic: Initializing LAPIC (CPU %d)\n", myid());
 
 	// Enable local APIC, do not suppress EOI broadcast, set spurious
 	// interrupt vector.

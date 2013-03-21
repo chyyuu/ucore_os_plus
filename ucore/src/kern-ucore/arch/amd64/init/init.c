@@ -17,6 +17,7 @@
 #include <kio.h>
 #include <mp.h>
 #include <mod.h>
+#include <percpu.h>
 
 int kern_init(void) __attribute__ ((noreturn));
 
@@ -24,6 +25,9 @@ int kern_init(void)
 {
 	extern char edata[], end[];
 	memset(edata, 0, end - edata);
+
+	/* percpu variable for CPU0 is preallocated */
+	percpu_offsets[0] = __percpu_start;
 
 	cons_init();		// init the console
 
@@ -33,7 +37,10 @@ int kern_init(void)
 	print_kerninfo();
 
 	/* Only to initialize lcpu_count. */
+	/* mp_init deprecated */
 	mp_init();
+	/* get_cpu_var not available before tls_init() */
+	tls_init(per_cpu_ptr(cpus, 0));
 
 	pmm_init();		// init physical memory management
 	pmm_init_ap();

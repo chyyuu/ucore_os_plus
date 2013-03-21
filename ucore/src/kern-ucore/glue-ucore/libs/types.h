@@ -108,6 +108,9 @@ typedef uint32_t dev_t;
 #define __user
 #endif
 
+#define __XCONCAT2(a, b) a ## b
+#define __XCONCAT(a, b) __XCONCAT2(a, b)
+
 #endif /* __NO_UCORE_TYPE__ */
 
 /* sem_t is used for semaphore id */

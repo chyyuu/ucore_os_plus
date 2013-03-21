@@ -4,11 +4,13 @@
 #include <glue_mp.h>
 #include <glue_memlayout.h>
 #include <types.h>
+#include <arch.h>
+#include <percpu.h>
 
-/* maxinum cpu number */
-#define NCPU 128
-#define MAX_NUMA_NODES 16
-#define MAX_NUMA_MEMS  16
+#define __padout__  \
+  char __XCONCAT(__padout, __COUNTER__)[0] __attribute__((aligned(CACHELINE)))
+#define __mpalign__ __attribute__((aligned(CACHELINE)))
+
 
 struct numa_node{
 	uint32_t hwid;
@@ -20,6 +22,19 @@ struct numa_node{
 	}mems[MAX_NUMA_MEMS];
 	int cpu_ids[NCPU];
 };
+
+//TODO padding needed
+struct cpu {
+	uint32_t id;  //index of cpus[]
+	uint32_t hwid; //apic id
+
+	__padout__;
+	//percpu
+	struct cpu *cpu;  //mysellf
+	void *percpu_base;           // Per-CPU memory region base
+} __mpalign__;
+
+DECLARE_PERCPU(struct cpu, cpus);
 
 extern int pls_lapic_id;
 extern int pls_lcpu_idx;
@@ -41,5 +56,19 @@ void mp_set_mm_pagetable(struct mm_struct *mm);
 void __mp_tlb_invalidate(pgd_t * pgdir, uintptr_t la);
 void mp_tlb_invalidate(pgd_t * pgdir, uintptr_t la);
 void mp_tlb_update(pgd_t * pgdir, uintptr_t la);
+
+//we use gs to access percpu variable
+//setup in tls_init
+void tls_init(struct cpu* cpu);
+
+static inline struct cpu* mycpu(void)
+{
+	uint64_t val;
+	__asm volatile("movq %%gs:0, %0" : "=r" (val));
+	return (struct cpu *)val;
+
+}
+
+#define myid() (mycpu()->id)
 
 #endif
