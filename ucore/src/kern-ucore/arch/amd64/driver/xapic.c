@@ -110,6 +110,7 @@ static uint32_t lapicw(int index, uint32_t value)
 	return ((volatile uint32_t *)VADDR_DIRECT(sysconf.lapic_phys))[ID];
 }
 
+#if 0
 int lapic_init_ap(void)
 {
 	// Enable local APIC; set spurious interrupt vector.
@@ -156,6 +157,7 @@ int lapic_init_ap(void)
 
 	return 0;
 }
+#endif
 
 static uint32_t x_lapic_id(struct lapic_chip* chip)
 {

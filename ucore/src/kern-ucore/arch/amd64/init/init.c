@@ -21,6 +21,11 @@
 
 int kern_init(void) __attribute__ ((noreturn));
 
+static void bootaps(void)
+{
+	kprintf("starting to boot Application Processors!\n");
+}
+
 int kern_init(void)
 {
 	extern char edata[], end[];
@@ -64,7 +69,6 @@ int kern_init(void)
 	percpu_init();
 	cpus_init();
 
-
 	/* ext int */
 	ioapic_init();
 	acpi_init();
@@ -79,6 +83,10 @@ int kern_init(void)
 	mod_init();
 
 	trap_init();
+
+	//XXX put here?
+	bootaps();
+
 	intr_enable();		// enable irq interrupt
 
 	/* do nothing */

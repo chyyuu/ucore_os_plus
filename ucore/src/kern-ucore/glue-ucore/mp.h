@@ -7,6 +7,11 @@
 #include <arch.h>
 #include <percpu.h>
 
+#ifndef CACHELINE
+#warning CACHELINE not defined
+#define CACHELINE 64
+#endif
+
 #define __padout__  \
   char __XCONCAT(__padout, __COUNTER__)[0] __attribute__((aligned(CACHELINE)))
 #define __mpalign__ __attribute__((aligned(CACHELINE)))

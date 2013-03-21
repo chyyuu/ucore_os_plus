@@ -15,12 +15,6 @@
 #define MAX_NUMA_MEMS  16
 #define MAX_IOAPIC     8
 
-#ifndef CACHELINE
-#warning CACHELINE not defined
-#define CACHELINE 64
-#endif
-
-
 static inline
 void hlt(void)
 {
