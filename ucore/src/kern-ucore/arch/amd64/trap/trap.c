@@ -18,7 +18,6 @@
 #include <clock.h>
 #include <intr.h>
 #include <mp.h>
-#include <entry.h>
 #include <ioapic.h>
 #include <sysconf.h>
 

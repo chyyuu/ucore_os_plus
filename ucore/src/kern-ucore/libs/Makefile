@@ -1,1 +1,1 @@
-obj-y := rb_tree.o readline.o string.o
+obj-y := hash.o printfmt.o rand.o rb_tree.o readline.o string.o
