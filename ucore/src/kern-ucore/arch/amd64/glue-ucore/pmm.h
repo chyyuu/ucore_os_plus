@@ -6,7 +6,6 @@
 #include <memlayout.h>
 #include <atomic.h>
 #include <assert.h>
-#include <glue_pgmap.h>
 
 #define TEST_PAGE 0x0
 

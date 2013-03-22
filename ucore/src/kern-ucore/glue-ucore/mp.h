@@ -1,7 +1,7 @@
 #ifndef __GLUE_UCORE_MP_H__
 #define __GLUE_UCORE_MP_H__
 
-#include <glue_memlayout.h>
+#include <memlayout.h>
 #include <types.h>
 #include <arch.h>
 #include <percpu.h>

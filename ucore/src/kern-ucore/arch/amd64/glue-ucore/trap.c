@@ -17,7 +17,6 @@
 #include <kio.h>
 #include <clock.h>
 #include <intr.h>
-#include <glue_kio.h>
 #include <mp.h>
 #include <entry.h>
 #include <ioapic.h>
@@ -205,7 +204,7 @@ static void trap_dispatch(struct trapframe *tf)
 		break;
 	case IRQ_OFFSET + IRQ_COM1:
 	case IRQ_OFFSET + IRQ_KBD:
-		c = kcons_getc();
+		c = cons_getc();
 
 		extern void dev_stdin_write(char c);
 		dev_stdin_write(c);

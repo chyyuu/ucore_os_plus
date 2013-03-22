@@ -15,7 +15,7 @@ KTREE_OBJ_ROOT := $(OBJPATH_ROOT)/kernel
 
 export KTREE_OBJ_ROOT
 
-KERN_INCLUDES :=../glue-kern/arch/${ARCH} glue-ucore glue-ucore/libs \
+KERN_INCLUDES := glue-ucore glue-ucore/libs \
 libs syscall debug driver mm sync schedule process fs \
 fs/swap fs/vfs fs/pipe fs/sfs fs/devs module kmodule sysconf
 

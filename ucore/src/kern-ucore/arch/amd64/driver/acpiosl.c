@@ -9,7 +9,6 @@
 #include <mmu.h>
 #include <pmm.h>
 #include <slab.h>
-#include <glue_pgmap.h>
 #include <assert.h>
 
 #define nullptr NULL

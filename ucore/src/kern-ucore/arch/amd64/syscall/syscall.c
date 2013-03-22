@@ -13,7 +13,6 @@
 #include <dirent.h>
 #include <sysfile.h>
 #include <kio.h>
-#include <glue_kio.h>
 
 static uint64_t sys_exit(uint64_t arg[])
 {
@@ -119,7 +118,7 @@ static uint64_t sys_shmem(uint64_t arg[])
 static uint64_t sys_putc(uint64_t arg[])
 {
 	int c = (int)arg[0];
-	kcons_putc(c);
+	cons_putc(c);
 	return 0;
 }
 
