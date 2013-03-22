@@ -4,9 +4,8 @@
 #include <memlayout.h>
 #include <types.h>
 #include <arch.h>
+#include <arch_mp.h>
 #include <percpu.h>
-
-#define LAPIC_COUNT 1
 
 #ifndef CACHELINE
 #warning CACHELINE not defined
@@ -50,17 +49,9 @@ struct cpu {
 
 DECLARE_PERCPU(struct cpu, cpus);
 
-extern int pls_lapic_id;
-extern int pls_lcpu_idx;
-extern int pls_lcpu_count;
-
-extern volatile int ipi_raise[LAPIC_COUNT];
-
 extern pgd_t *mpti_pgdir;
 extern uintptr_t mpti_la;
 extern volatile int mpti_end;
-
-int mp_init(void);
 
 struct mm_struct;
 
@@ -76,14 +67,6 @@ void mp_tlb_update(pgd_t * pgdir, uintptr_t la);
 void tls_init(struct cpu* cpu);
 /* alloc percpu memory */
 void percpu_init(void);
-
-static inline struct cpu* mycpu(void)
-{
-	uint64_t val;
-	__asm volatile("movq %%gs:0, %0" : "=r" (val));
-	return (struct cpu *)val;
-
-}
 
 #define myid() (mycpu()->id)
 

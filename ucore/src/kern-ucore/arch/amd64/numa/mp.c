@@ -13,8 +13,6 @@
 void *percpu_offsets[NCPU];
 DEFINE_PERCPU_NOINIT(struct cpu, cpus);
 
-volatile int ipi_raise[LAPIC_COUNT] = { 0 };
-
 #if 0
 #define mp_debug(a ...) kprintf(a)
 #else
