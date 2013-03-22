@@ -8,7 +8,6 @@
 #include <memlayout.h>
 #include <types.h>
 #include <arch.h>
-#include <arch_mp.h>
 #include <percpu.h>
 
 #ifndef CACHELINE
@@ -52,6 +51,8 @@ struct cpu {
 } __mpalign__;
 
 DECLARE_PERCPU(struct cpu, cpus);
+
+#include <arch_mp.h>
 
 extern pgd_t *mpti_pgdir;
 extern uintptr_t mpti_la;

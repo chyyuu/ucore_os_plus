@@ -3,6 +3,8 @@
 
 #include <types.h>
 
+#define CACHELINE 64
+
 #define do_div(n, base) ({                                          \
             unsigned long __upper, __low, __high, __mod, __base;    \
             __base = (base);                                        \
