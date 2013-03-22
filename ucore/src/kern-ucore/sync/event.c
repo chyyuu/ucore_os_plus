@@ -9,9 +9,6 @@
 #include <clock.h>
 #include <event.h>
 
-#define current (pls_read(current))
-#define idleproc (pls_read(idleproc))
-
 void event_box_init(event_t * event_box)
 {
 	wait_queue_init(&(event_box->wait_queue));

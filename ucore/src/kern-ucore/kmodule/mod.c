@@ -17,8 +17,6 @@
 #include <stdlib.h>
 #include <error.h>
 
-#define current (pls_read(current))
-
 #ifndef ARCH_SHF_SMALL
 #define ARCH_SHF_SMALL 0
 #endif

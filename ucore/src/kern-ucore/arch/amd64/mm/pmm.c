@@ -70,6 +70,20 @@ struct pseudodesc gdt_pd = {
 	sizeof(gdt) - 1, (uintptr_t) gdt
 };
 
+static DEFINE_PERCPU_NOINIT(size_t, used_pages);
+DEFINE_PERCPU_NOINIT(list_entry_t, page_struct_free_list);
+
+// virtual address of physical page array
+struct Page *pages;
+// amount of physical memory (in pages)
+size_t npage = 0;
+
+// virtual address of boot-time page directory
+pgd_t *boot_pgdir = NULL;
+
+// physical memory management
+const struct pmm_manager *pmm_manager;
+
 static void check_alloc_page(void);
 
 /* *
@@ -129,6 +143,11 @@ void map_pgdir(pgd_t * pgdir)
 {
 	ptep_map(&(pgdir[PGX(VPT)]), PADDR(pgdir));
 	ptep_set_s_write(&(pgdir[PGX(VPT)]));
+}
+
+size_t nr_used_pages(void)
+{
+	return get_cpu_var(used_pages);
 }
 
 /* gdt_init - initialize the default GDT and TSS */
@@ -214,6 +233,32 @@ static void page_init(void)
 	}
 }
 
+/**
+ * call pmm->alloc_pages to allocate a continuing n*PAGESIZE memory
+ * @param n pages to be allocated
+ */
+struct Page *alloc_pages(size_t n)
+{
+	struct Page *page;
+	bool intr_flag;
+#ifdef UCONFIG_SWAP
+try_again:
+#endif
+	local_intr_save(intr_flag);
+	{
+		page = pmm_manager->alloc_pages(n);
+	}
+	local_intr_restore(intr_flag);
+#ifdef UCONFIG_SWAP
+	if (page == NULL && try_free_pages(n)) {
+		goto try_again;
+	}
+#endif
+
+	get_cpu_var(used_pages) += n;
+	return page;
+}
+
 //boot_alloc_page - allocate one page using pmm->alloc_pages(1) 
 // return value: the kernel virtual address of this allocated page
 //note: this function is used to get the memory for PDT(Page Directory Table)&PT(Page Table)
@@ -224,6 +269,38 @@ void *boot_alloc_page(void)
 		panic("boot_alloc_page failed.\n");
 	}
 	return page2kva(p);
+}
+
+/**
+ * free_pages - call pmm->free_pages to free a continuing n*PAGESIZE memory
+ * @param base the first page to be freed
+ * @param n number of pages to be freed
+ */
+void free_pages(struct Page *base, size_t n)
+{
+	bool intr_flag;
+	local_intr_save(intr_flag);
+	{
+		pmm_manager->free_pages(base, n);
+	}
+	local_intr_restore(intr_flag);
+	get_cpu_var(used_pages) -= n;
+}
+
+/**
+ * nr_free_pages - call pmm->nr_free_pages to get the size (nr*PAGESIZE) of current free memory
+ * @return number of free pages
+ */
+size_t nr_free_pages(void)
+{
+	size_t ret;
+	bool intr_flag;
+	local_intr_save(intr_flag);
+	{
+		ret = pmm_manager->nr_free_pages();
+	}
+	local_intr_restore(intr_flag);
+	return ret;
 }
 
 void
@@ -303,6 +380,14 @@ void pmm_init(void)
 	print_pgdir(kprintf);
 
 	slab_init();
+}
+
+void pmm_init_ap(void)
+{
+	list_entry_t *page_struct_free_list =
+	    get_cpu_ptr(page_struct_free_list);
+	list_init(page_struct_free_list);
+	get_cpu_var(used_pages) = 0;
 }
 
 // invalidate a TLB entry, but only if the page tables being

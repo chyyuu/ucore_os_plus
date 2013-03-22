@@ -1,1 +1,1 @@
-dirs-y := debug driver glue-ucore init mm process syscall module
+dirs-y := debug driver init kmodule libs mm numa process syscall trap

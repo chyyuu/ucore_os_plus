@@ -10,22 +10,22 @@
 
 static struct inode *get_cwd_nolock(void)
 {
-	return pls_read(current)->fs_struct->pwd;
+	return current->fs_struct->pwd;
 }
 
 static void set_cwd_nolock(struct inode *pwd)
 {
-	pls_read(current)->fs_struct->pwd = pwd;
+	current->fs_struct->pwd = pwd;
 }
 
 static void lock_cfs(void)
 {
-	lock_fs(pls_read(current)->fs_struct);
+	lock_fs(current->fs_struct);
 }
 
 static void unlock_cfs(void)
 {
-	unlock_fs(pls_read(current)->fs_struct);
+	unlock_fs(current->fs_struct);
 }
 
 /*

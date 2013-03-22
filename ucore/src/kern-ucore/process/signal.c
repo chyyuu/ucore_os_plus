@@ -11,7 +11,6 @@
 
 //#define SIGQUEUE
 
-#define current (pls_read(current))
 #define get_si(x) (&((x)->signal_info))
 
 //#define __SIGDEBUG
@@ -28,12 +27,6 @@ void unlock_sig(struct sighand_struct *sh)
 	if (sh != NULL) {
 		up(&(sh->sig_sem));
 	}
-}
-
-// next_thread - get the next thread "proc" from thread_group list
-struct proc_struct *next_thread(struct proc_struct *proc)
-{
-	return le2proc(list_next(&(proc->thread_group)), thread_group);
 }
 
 // remove sign from the pending queue
@@ -295,7 +288,7 @@ out:
 // do syscall sigsuspend
 int do_sigsuspend(sigset_t __user * pmask)
 {
-	struct mm_struct *mm = pls_read(current)->mm;
+	struct mm_struct *mm = current->mm;
 	sigset_t mask;
 	lock_mm(mm);
 	{

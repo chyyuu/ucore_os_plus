@@ -27,7 +27,7 @@ static inline timer_t *ipc_timer_init(unsigned int timeout,
 {
 	if (timeout != 0) {
 		*saved_ticks = ticks;
-		return timer_init(timer, pls_read(current), timeout);
+		return timer_init(timer, current, timeout);
 	}
 	return NULL;
 }

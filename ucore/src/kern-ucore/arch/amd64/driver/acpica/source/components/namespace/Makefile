@@ -1,0 +1,1 @@
+obj-y := nsaccess.o nsalloc.o nsdump.o nsdumpdv.o nseval.o nsinit.o nsload.o nsnames.o nsobject.o nsparse.o nspredef.o nsrepair2.o nsrepair.o nssearch.o nsutils.o nswalk.o nsxfeval.o nsxfname.o nsxfobj.o

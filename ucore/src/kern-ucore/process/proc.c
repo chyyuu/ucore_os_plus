@@ -23,6 +23,7 @@
 #include <stdio.h>
 #include <mp.h>
 #include <resource.h>
+#include <sysconf.h>
 
 /* ------------- process/thread mechanism design&implementation -------------
 (an simplified Linux process/thread mechanism )
@@ -70,13 +71,8 @@ SYS_getpid      : get the process's pid
 
 */
 
-PLS struct proc_struct *pls_current;
-PLS struct proc_struct *pls_idleproc;
 struct proc_struct *initproc;
 struct proc_struct *kswapd;
-
-#define current (pls_read(current))
-#define idleproc (pls_read(idleproc))
 
 // the process set's list
 list_entry_t proc_list;
@@ -144,7 +140,7 @@ static int get_pid(void)
 	list_entry_t *list = &proc_list, *le;
 	static int next_safe = MAX_PID, last_pid = MAX_PID;
 	if (++last_pid >= MAX_PID) {
-		last_pid = pls_read(lcpu_count);
+		last_pid = sysconf.lcpu_count;
 		goto inside;
 	}
 	if (last_pid >= next_safe) {
@@ -181,7 +177,7 @@ void proc_run(struct proc_struct *proc)
 		// kprintf("(%d) => %d\n", lapic_id, next->pid);
 		local_intr_save(intr_flag);
 		{
-			pls_write(current, proc);
+			current = proc;
 			load_rsp0(next->kstack + KSTACKSIZE);
 			mp_set_mm_pagetable(next->mm);
 
@@ -304,7 +300,7 @@ static void de_thread(struct proc_struct *proc)
 }
 
 // next_thread - get the next thread "proc" from thread_group list
-static struct proc_struct *next_thread(struct proc_struct *proc)
+struct proc_struct *next_thread(struct proc_struct *proc)
 {
 	return le2proc(list_next(&(proc->thread_group)), thread_group);
 }
@@ -655,7 +651,7 @@ static int __do_exit(void)
 
 	struct mm_struct *mm = current->mm;
 	if (mm != NULL) {
-		mm->lapic = -1;
+		mm->cpuid = -1;
 		mp_set_mm_pagetable(NULL);
 		if (mm_count_dec(mm) == 0) {
 			exit_mmap(mm);
@@ -1100,7 +1096,7 @@ static int load_icode(int fd, int argc, char **kargv, int envc, char **kenvp)
 	mm_count_inc(mm);
 	current->mm = mm;
 	set_pgdir(current, mm->pgdir);
-	mm->lapic = pls_read(lapic_id);
+	mm->cpuid = myid();
 	mp_set_mm_pagetable(mm);
 
 	if (!is_dynamic) {
@@ -1240,7 +1236,7 @@ int do_execve(const char *filename, const char **argv, const char **envp)
 	}
 
 	if (mm != NULL) {
-		mm->lapic = -1;
+		mm->cpuid = -1;
 		mp_set_mm_pagetable(NULL);
 		if (mm_count_dec(mm) == 0) {
 			exit_mmap(mm);
@@ -2008,9 +2004,9 @@ static int init_main(void *arg)
 	       && initproc->optr == NULL);
 	assert(kswapd->cptr == NULL && kswapd->yptr == NULL
 	       && kswapd->optr == NULL);
-	assert(nr_process == 2 + pls_read(lcpu_count));
+	assert(nr_process == 2 + sysconf.lcpu_count);
 #else
-	assert(nr_process == 1 + pls_read(lcpu_count));
+	assert(nr_process == 1 + sysconf.lcpu_count);
 #endif
 	assert(nr_used_pages_store == nr_used_pages());
 	assert(slab_allocated_store == slab_allocated());
@@ -2023,9 +2019,8 @@ static int init_main(void *arg)
 void proc_init(void)
 {
 	int i;
-	int lcpu_idx = pls_read(lcpu_idx);
-	int lapic_id = pls_read(lapic_id);
-	int lcpu_count = pls_read(lcpu_count);
+	int cpuid = myid();
+	struct proc_struct *idle;
 
 	list_init(&proc_list);
 	list_init(&proc_mm_list);
@@ -2033,29 +2028,30 @@ void proc_init(void)
 		list_init(hash_list + i);
 	}
 
-	pls_write(idleproc, alloc_proc());
-	if (idleproc == NULL) {
+	idle = alloc_proc();
+	if (idle == NULL) {
 		panic("cannot alloc idleproc.\n");
 	}
 
-	idleproc->pid = lcpu_idx;
-	idleproc->state = PROC_RUNNABLE;
+	idle->pid = cpuid;
+	idle->state = PROC_RUNNABLE;
 	// XXX
 	// idleproc->kstack = (uintptr_t)bootstack;
-	idleproc->need_resched = 1;
-	idleproc->tf = NULL;
-	if ((idleproc->fs_struct = fs_create()) == NULL) {
+	idle->need_resched = 1;
+	idle->tf = NULL;
+	if ((idle->fs_struct = fs_create()) == NULL) {
 		panic("create fs_struct (idleproc) failed.\n");
 	}
-	fs_count_inc(idleproc->fs_struct);
+	fs_count_inc(idle->fs_struct);
 
 	char namebuf[32];
-	snprintf(namebuf, 32, "idle/%d", lapic_id);
+	snprintf(namebuf, 32, "idle/%d", cpuid);
 
-	set_proc_name(idleproc, namebuf);
+	set_proc_name(idle, namebuf);
 	nr_process++;
 
-	pls_write(current, idleproc);
+	idleproc = idle;
+	current = idle;
 
 	int pid = ucore_kernel_thread(init_main, NULL, 0);
 	if (pid <= 0) {
@@ -2065,40 +2061,41 @@ void proc_init(void)
 	initproc = find_proc(pid);
 	set_proc_name(initproc, "kinit");
 
-	assert(idleproc != NULL && idleproc->pid == lcpu_idx);
-	assert(initproc != NULL && initproc->pid == lcpu_count);
+	assert(idleproc != NULL && idleproc->pid == cpuid);
+	assert(initproc != NULL && initproc->pid == sysconf.lcpu_count);
 }
 
 void proc_init_ap(void)
 {
-	int lcpu_idx = pls_read(lcpu_idx);
-	int lapic_id = pls_read(lapic_id);
+	int cpuid = myid();
+	struct proc_struct *idle;
 
-	pls_write(idleproc, alloc_proc());
-	if (idleproc == NULL) {
+	idle = alloc_proc();
+	if (idle == NULL) {
 		panic("cannot alloc idleproc.\n");
 	}
 
-	idleproc->pid = lcpu_idx;
-	idleproc->state = PROC_RUNNABLE;
+	idle->pid = cpuid;
+	idle->state = PROC_RUNNABLE;
 	// XXX
-	// idleproc->kstack = (uintptr_t)bootstack;
-	idleproc->need_resched = 1;
-	idleproc->tf = NULL;
-	if ((idleproc->fs_struct = fs_create()) == NULL) {
+	// idle->kstack = (uintptr_t)bootstack;
+	idle->need_resched = 1;
+	idle->tf = NULL;
+	if ((idle->fs_struct = fs_create()) == NULL) {
 		panic("create fs_struct (idleproc) failed.\n");
 	}
-	fs_count_inc(idleproc->fs_struct);
+	fs_count_inc(idle->fs_struct);
 
 	char namebuf[32];
-	snprintf(namebuf, 32, "idle/%d", lapic_id);
+	snprintf(namebuf, 32, "idle/%d", cpuid);
 
-	set_proc_name(idleproc, namebuf);
+	set_proc_name(idle, namebuf);
 	nr_process++;
 
-	pls_write(current, idleproc);
+	idleproc = idle;
+	current = idle;
 
-	assert(idleproc != NULL && idleproc->pid == lcpu_idx);
+	assert(idleproc != NULL && idleproc->pid == cpuid);
 }
 
 int do_linux_ugetrlimit(int res, struct linux_rlimit *__user __limit)

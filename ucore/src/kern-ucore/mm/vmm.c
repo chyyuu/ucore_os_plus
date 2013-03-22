@@ -66,7 +66,6 @@ void lock_mm(struct mm_struct *mm)
 {
 	if (mm != NULL) {
 		down(&(mm->mm_sem));
-		struct proc_struct *current = pls_read(current);
 		if (current != NULL) {
 			mm->locked_by = current->pid;
 		}
@@ -87,7 +86,6 @@ bool try_lock_mm(struct mm_struct *mm)
 		if (!try_down(&(mm->mm_sem))) {
 			return 0;
 		}
-		struct proc_struct *current = pls_read(current);
 		if (current != NULL) {
 			mm->locked_by = current->pid;
 		}
@@ -111,7 +109,7 @@ struct mm_struct *mm_create(void)
 		mm->brk_start = mm->brk = 0;
 		list_init(&(mm->proc_mm_link));
 		sem_init(&(mm->mm_sem), 1);
-		mm->lapic = -1;
+		mm->cpuid = -1;
 	}
 	return mm;
 }
@@ -223,7 +221,7 @@ void vma_mapfile(struct vma_struct *vma, int fd, off_t off, struct fs_struct *fs
 {
 
 	if(fs_struct == NULL) {
-		fs_struct = pls_read(current)->fs_struct;
+		fs_struct = current->fs_struct;
 	}
 
 	/*
@@ -872,7 +870,6 @@ int do_madvise(void *addr, size_t len, int advice)
 
 int do_pgfault(struct mm_struct *mm, machine_word_t error_code, uintptr_t addr)
 {
-	struct proc_struct *current = pls_read(current);
 	if (mm == NULL) {
 		assert(current != NULL);
 		/* Chen Yuheng 

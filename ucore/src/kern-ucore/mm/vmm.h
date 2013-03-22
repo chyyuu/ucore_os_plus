@@ -89,7 +89,7 @@ struct mm_struct {
 	uintptr_t brk_start, brk;
 	list_entry_t proc_mm_link;
 	semaphore_t mm_sem;
-	int lapic;
+	int cpuid;
 };
 
 void lock_mm(struct mm_struct *mm);
