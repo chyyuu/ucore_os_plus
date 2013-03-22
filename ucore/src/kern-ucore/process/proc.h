@@ -134,6 +134,7 @@ int do_linux_waitpid(int pid, int *code_store);
 
 /* Implemented by archs */
 struct proc_struct *alloc_proc(void);
+struct proc_struct *next_thread(struct proc_struct *proc);
 void switch_to(struct context *from, struct context *to);
 
 /* For TLS(Thread Local Storage */

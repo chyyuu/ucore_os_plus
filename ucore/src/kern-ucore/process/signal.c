@@ -29,12 +29,6 @@ void unlock_sig(struct sighand_struct *sh)
 	}
 }
 
-// next_thread - get the next thread "proc" from thread_group list
-struct proc_struct *next_thread(struct proc_struct *proc)
-{
-	return le2proc(list_next(&(proc->thread_group)), thread_group);
-}
-
 // remove sign from the pending queue
 static void remove_from_queue(int sign, struct sigpending *queue)
 {

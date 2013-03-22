@@ -300,7 +300,7 @@ static void de_thread(struct proc_struct *proc)
 }
 
 // next_thread - get the next thread "proc" from thread_group list
-static struct proc_struct *next_thread(struct proc_struct *proc)
+struct proc_struct *next_thread(struct proc_struct *proc)
 {
 	return le2proc(list_next(&(proc->thread_group)), thread_group);
 }
