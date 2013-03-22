@@ -8,7 +8,7 @@
 #include <unistd.h>
 #include <sem.h>
 #include <event.h>
-#include <glue_mp.h>
+#include <mp.h>
 #include <elf.h>
 #include <arch_proc.h>
 #include <signal.h>
@@ -97,8 +97,9 @@ struct linux_timespec {
 #define le2proc(le, member)         \
   to_struct((le), struct proc_struct, member)
 
-extern struct proc_struct *pls_current;
-extern struct proc_struct *pls_idleproc;
+#define current (mycpu()->current)
+#define idleproc (mycpu()->idleproc)
+
 extern struct proc_struct *initproc;
 extern struct proc_struct *kswapd;
 

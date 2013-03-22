@@ -10,12 +10,6 @@
 #include <percpu.h>
 #include <sysconf.h>
 
-PLS int pls_lapic_id;
-PLS int pls_lcpu_idx;
-PLS int pls_lcpu_count;
-
-PLS static int volatile pls_local_kern_locking;
-
 void *percpu_offsets[NCPU];
 DEFINE_PERCPU_NOINIT(struct cpu, cpus);
 
@@ -26,15 +20,6 @@ volatile int ipi_raise[LAPIC_COUNT] = { 0 };
 #else
 #define mp_debug(a ...)
 #endif
-
-int mp_init(void)
-{
-	pls_write(lapic_id, 0);
-	pls_write(lcpu_idx, 0);
-	pls_write(lcpu_count, 1);
-
-	return 0;
-}
 
 void
 tls_init(struct cpu *c)

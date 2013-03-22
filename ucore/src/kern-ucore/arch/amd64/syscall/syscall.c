@@ -15,8 +15,6 @@
 #include <kio.h>
 #include <glue_kio.h>
 
-#define current (pls_read(current))
-
 static uint64_t sys_exit(uint64_t arg[])
 {
 	int error_code = (int)arg[0];

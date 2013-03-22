@@ -23,9 +23,6 @@
 #include <ioapic.h>
 #include <sysconf.h>
 
-#define current (pls_read(current))
-#define idleproc (pls_read(idleproc))
-
 #define TICK_NUM 30
 
 static struct gatedesc idt[256] = { {0} };

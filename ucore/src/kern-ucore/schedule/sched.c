@@ -9,9 +9,7 @@
 #include <kio.h>
 #include <mp.h>
 #include <trap.h>
-
-#define current (pls_read(current))
-#define idleproc (pls_read(idleproc))
+#include <sysconf.h>
 
 /* For GDB ONLY - START */
 /* Collect scheduling information to check how are the CPUs... */
@@ -27,7 +25,7 @@ void db_sched(int lines)
 {
 	kprintf("\n");
 
-	int lcpu_count = pls_read(lcpu_count);
+	int lcpu_count = sysconf.lcpu_count;
 	int i, j, k;
 	/* Print a header */
 	kprintf("        ");
@@ -53,7 +51,7 @@ void db_time(uint16_t left, uint16_t right)
 {
 	kprintf("\n");
 
-	int lcpu_count = pls_read(lcpu_count);
+	int lcpu_count = sysconf.lcpu_count;
 	int i, j;
 	for (i = 0; i < lcpu_count; i++) {
 		kprintf("On CPU%d: ", i);
@@ -153,7 +151,7 @@ void wakeup_proc(struct proc_struct *proc)
 			proc->state = PROC_RUNNABLE;
 			proc->wait_state = 0;
 			if (proc != current) {
-				assert(proc->pid >= pls_read(lcpu_count));
+				assert(proc->pid >= sysconf.lcpu_count);
 				sched_class_enqueue(proc);
 			}
 		} else {
@@ -208,17 +206,16 @@ void schedule(void)
 	struct proc_struct *next;
 #ifndef MT_SUPPORT
 	list_entry_t head;
-	int lapic_id = pls_read(lapic_id);
 #endif
 
 	local_intr_save(intr_flag);
-	int lcpu_count = pls_read(lcpu_count);
+	int lcpu_count = sysconf.lcpu_count;
 	{
 		current->need_resched = 0;
 #ifndef MT_SUPPORT
 		if (current->mm) {
-			assert(current->mm->lapic == lapic_id);
-			current->mm->lapic = -1;
+			assert(current->mm->cpuid == myid());
+			current->mm->cpuid = -1;
 		}
 #endif
 		if (current->state == PROC_RUNNABLE
@@ -256,31 +253,31 @@ void schedule(void)
 		next->runs++;
 		/* Collect information here */
 		if (sched_collect_info) {
-			int lcpu_count = pls_read(lcpu_count);
-			int lcpu_idx = pls_read(lcpu_idx);
-			int loc = sched_info_head[lcpu_idx];
-			int prev = sched_info_pid[loc * lcpu_count + lcpu_idx];
+			int lcpu_count = sysconf.lcpu_count;
+			int cpuid = myid();
+			int loc = sched_info_head[cpuid];
+			int prev = sched_info_pid[loc * lcpu_count + cpuid];
 			if (next->pid == prev)
-				sched_info_times[loc * lcpu_count + lcpu_idx]++;
+				sched_info_times[loc * lcpu_count + cpuid]++;
 			else {
-				sched_info_head[lcpu_idx]++;
-				if (sched_info_head[lcpu_idx] >=
+				sched_info_head[cpuid]++;
+				if (sched_info_head[cpuid] >=
 				    PGSIZE / sizeof(uint16_t) / lcpu_count)
-					sched_info_head[lcpu_idx] = 0;
-				loc = sched_info_head[lcpu_idx];
+					sched_info_head[cpuid] = 0;
+				loc = sched_info_head[cpuid];
 				uint16_t prev_pid =
-				    sched_info_pid[loc * lcpu_count + lcpu_idx];
+				    sched_info_pid[loc * lcpu_count + cpuid];
 				uint16_t prev_times =
 				    sched_info_times[loc * lcpu_count +
-						     lcpu_idx];
+						     cpuid];
 				if (prev_times > 0
 				    && prev_pid >= lcpu_count + 2)
-					sched_slices[lcpu_idx][prev_pid %
+					sched_slices[cpuid][prev_pid %
 							       SLICEPOOL_SIZE]
 					    += prev_times;
-				sched_info_pid[loc * lcpu_count + lcpu_idx] =
+				sched_info_pid[loc * lcpu_count + cpuid] =
 				    next->pid;
-				sched_info_times[loc * lcpu_count + lcpu_idx] =
+				sched_info_times[loc * lcpu_count + cpuid] =
 				    1;
 			}
 		}

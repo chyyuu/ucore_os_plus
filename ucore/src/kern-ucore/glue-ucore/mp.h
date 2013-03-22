@@ -1,11 +1,12 @@
 #ifndef __GLUE_UCORE_MP_H__
 #define __GLUE_UCORE_MP_H__
 
-#include <glue_mp.h>
 #include <glue_memlayout.h>
 #include <types.h>
 #include <arch.h>
 #include <percpu.h>
+
+#define LAPIC_COUNT 1
 
 #ifndef CACHELINE
 #warning CACHELINE not defined
@@ -29,6 +30,8 @@ struct numa_node{
 	int cpu_ids[NCPU];
 };
 
+struct proc_struct;
+
 //TODO padding needed
 struct cpu {
 	uint32_t id;  //index of cpus[]
@@ -40,6 +43,9 @@ struct cpu {
 	//percpu
 	struct cpu *cpu;  //mysellf
 	void *percpu_base;           // Per-CPU memory region base
+
+	struct proc_struct *current;
+	struct proc_struct *idleproc;
 } __mpalign__;
 
 DECLARE_PERCPU(struct cpu, cpus);

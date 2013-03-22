@@ -7,16 +7,8 @@ typedef struct sysconf_s {
 	int lcpu_boot;
 	int lcpu_count;
 	int lnuma_count;
-	int lioapic_count;
 
-	//XXX
-	uintptr_t lapic_phys;
-
-//	int ioapic_count;
-//	int use_ioapic_eoi;
-
-	int has_hpet;
-	uintptr_t hpet_phys;
+#include <arch_sysconf.h>
 } sysconf_s;
 
 extern sysconf_s sysconf;

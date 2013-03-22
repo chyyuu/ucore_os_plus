@@ -7,7 +7,7 @@ extern int ticks;
 int ucore_gettimeofday(struct linux_timeval __user * tv,
 		       struct linux_timezone __user * tz)
 {
-	struct mm_struct *mm = pls_read(current)->mm;
+	struct mm_struct *mm = current->mm;
 	struct linux_timeval ktv;
 	ktv.tv_sec = ticks / 100;
 	ktv.tv_usec = (ticks % 100) * 10000;
@@ -32,7 +32,7 @@ int ucore_gettimeofday(struct linux_timeval __user * tv,
 
 int do_clock_gettime(struct linux_timespec __user * time)
 {
-	struct mm_struct *mm = pls_read(current)->mm;
+	struct mm_struct *mm = current->mm;
 	struct linux_timespec ktv;
 	ktv.tv_sec = ticks / 100;
 	ktv.tv_nsec = (ticks % 100) * 10000000;

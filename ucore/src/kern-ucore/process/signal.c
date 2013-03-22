@@ -11,7 +11,6 @@
 
 //#define SIGQUEUE
 
-#define current (pls_read(current))
 #define get_si(x) (&((x)->signal_info))
 
 //#define __SIGDEBUG
@@ -295,7 +294,7 @@ out:
 // do syscall sigsuspend
 int do_sigsuspend(sigset_t __user * pmask)
 {
-	struct mm_struct *mm = pls_read(current)->mm;
+	struct mm_struct *mm = current->mm;
 	sigset_t mask;
 	lock_mm(mm);
 	{

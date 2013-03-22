@@ -11,10 +11,10 @@
 #include <swap.h>
 #include <string.h>
 #include <kio.h>
-#include <glue_mp.h>
+#include <mp.h>
 
-PLS static size_t pls_used_pages;
-PLS list_entry_t pls_page_struct_free_list;
+static DEFINE_PERCPU_NOINIT(size_t, used_pages);
+DEFINE_PERCPU_NOINIT(list_entry_t, page_struct_free_list);
 
 // virtual address of physicall page array
 struct Page *pages;
@@ -37,15 +37,15 @@ void init_memmap(struct Page *base, size_t n)
 
 size_t nr_used_pages(void)
 {
-	return pls_read(used_pages);
+	return get_cpu_var(used_pages);
 }
 
 void pmm_init_ap(void)
 {
 	list_entry_t *page_struct_free_list =
-	    pls_get_ptr(page_struct_free_list);
+	    get_cpu_ptr(page_struct_free_list);
 	list_init(page_struct_free_list);
-	pls_write(used_pages, 0);
+	get_cpu_var(used_pages) = 0;
 }
 
 /**************************************************
@@ -74,7 +74,7 @@ try_again:
 	}
 #endif
 
-	pls_write(used_pages, pls_read(used_pages) + n);
+	get_cpu_var(used_pages) += n;
 	return page;
 }
 
@@ -91,7 +91,7 @@ void free_pages(struct Page *base, size_t n)
 		pmm_manager->free_pages(base, n);
 	}
 	local_intr_restore(intr_flag);
-	pls_write(used_pages, pls_read(used_pages) - n);
+	get_cpu_var(used_pages) -= n;
 }
 
 /**

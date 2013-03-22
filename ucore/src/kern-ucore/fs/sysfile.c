@@ -17,7 +17,7 @@
 
 static int copy_path(char **to, const char *from)
 {
-	struct mm_struct *mm = pls_read(current)->mm;
+	struct mm_struct *mm = current->mm;
 	char *buffer;
 	if ((buffer = kmalloc(FS_MAX_FPATH_LEN + 1)) == NULL) {
 		return -E_NO_MEM;
@@ -56,7 +56,7 @@ int sysfile_close(int fd)
 int sysfile_read(int fd, void *base, size_t len)
 {
 	int ret = 0;
-	struct mm_struct *mm = pls_read(current)->mm;
+	struct mm_struct *mm = current->mm;
 	if (len == 0) {
 		return 0;
 	}
@@ -111,7 +111,7 @@ out:
 int sysfile_write(int fd, void *base, size_t len)
 {
 	int ret = 0;
-	struct mm_struct *mm = pls_read(current)->mm;
+	struct mm_struct *mm = current->mm;
 	if (len == 0) {
 		return 0;
 	}
@@ -171,7 +171,7 @@ int sysfile_writev(int fd, struct iovec __user * iov, int iovcnt)
 	kprintf("writev: fd=%08x iov=%08x iovcnt=%d\n", fd, iov, iovcnt);
 	struct iovec *tv;
 	int rcode = 0, count = 0, i;
-	struct mm_struct *mm = pls_read(current)->mm;
+	struct mm_struct *mm = current->mm;
 	for (i = 0; i < iovcnt; ++i) {
 		char *pbase;
 		size_t plen;
@@ -198,7 +198,7 @@ int sysfile_seek(int fd, off_t pos, int whence)
 
 int sysfile_fstat(int fd, struct stat *__stat)
 {
-	struct mm_struct *mm = pls_read(current)->mm;
+	struct mm_struct *mm = current->mm;
 	int ret;
 	struct stat __local_stat, *stat = &__local_stat;
 	if ((ret = file_fstat(fd, stat)) != 0) {
@@ -217,7 +217,7 @@ int sysfile_fstat(int fd, struct stat *__stat)
 
 int sysfile_linux_fstat(int fd, struct linux_stat __user * buf)
 {
-	struct mm_struct *mm = pls_read(current)->mm;
+	struct mm_struct *mm = current->mm;
 	int ret;
 	struct stat __local_stat, *kstat = &__local_stat;
 	if ((ret = file_fstat(fd, kstat)) != 0) {
@@ -250,7 +250,7 @@ int sysfile_linux_fstat(int fd, struct linux_stat __user * buf)
 
 int sysfile_linux_fstat64(int fd, struct linux_stat64 __user * buf)
 {
-	struct mm_struct *mm = pls_read(current)->mm;
+	struct mm_struct *mm = current->mm;
 	int ret;
 	struct stat __local_stat, *kstat = &__local_stat;
 	if ((ret = file_fstat(fd, kstat)) != 0) {
@@ -386,7 +386,7 @@ int sysfile_unlink(const char *__path)
 
 int sysfile_getcwd(char *buf, size_t len)
 {
-	struct mm_struct *mm = pls_read(current)->mm;
+	struct mm_struct *mm = current->mm;
 	if (len == 0) {
 		return -E_INVAL;
 	}
@@ -405,7 +405,7 @@ int sysfile_getcwd(char *buf, size_t len)
 
 int sysfile_getdirentry(int fd, struct dirent *__direntp, uint32_t * len_store)
 {
-	struct mm_struct *mm = pls_read(current)->mm;
+	struct mm_struct *mm = current->mm;
 	struct dirent *direntp;
 	if ((direntp = kmalloc(sizeof(struct dirent))) == NULL) {
 		return -E_NO_MEM;
@@ -449,7 +449,7 @@ out:
 #if 0
 int sysfile_linux_getdents(int fd, struct linux_dirent *__dir, uint32_t count)
 {
-	struct mm_struct *mm = pls_read(current)->mm;
+	struct mm_struct *mm = current->mm;
 	struct linux_dirent *dir;
 	int ret = 0;
 	if (count < sizeof(struct linux_dirent))
@@ -506,7 +506,7 @@ int sysfile_dup(int fd1, int fd2)
 
 int sysfile_pipe(int *fd_store)
 {
-	struct mm_struct *mm = pls_read(current)->mm;
+	struct mm_struct *mm = current->mm;
 	int ret, fd[2];
 	if (!user_mem_check(mm, (uintptr_t) fd_store, sizeof(fd), 1)) {
 		return -E_INVAL;
