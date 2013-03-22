@@ -1,6 +1,10 @@
 #ifndef __GLUE_UCORE_MP_H__
 #define __GLUE_UCORE_MP_H__
 
+#define NCPU		UCONFIG_NR_CPUS
+#define MAX_NUMA_NODES	UCONFIG_NR_NUMA_NODES
+#define MAX_NUMA_MEMS	UCONFIG_NR_MEMS_PER_NODE
+
 #include <memlayout.h>
 #include <types.h>
 #include <arch.h>

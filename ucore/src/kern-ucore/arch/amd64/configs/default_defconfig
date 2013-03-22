@@ -6,6 +6,13 @@ ADDITIONAL_CFLAGS=""
 ADDITIONAL_LDFLAGS=""
 
 #
+# NUMA Support
+#
+NR_CPUS=128
+NR_NUMA_NODES=16
+NR_MEMS_PER_NODE=16
+
+#
 # Memory Management
 #
 # SWAP is not set
