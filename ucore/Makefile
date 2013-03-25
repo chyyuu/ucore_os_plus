@@ -202,8 +202,10 @@ tags:
 
 amd64tags:
 	$(Q)./buildamd64tags.sh
-run:
+run: kernel sfsimg
 	./uCore_run -d obj
+runsmp: kernel sfsimg
+	qemu-system-x86_64 -m 2g -hda obj/kernel.img -smp 16 -numa node -numa node  -drive file=obj/sfs.img,media=disk,cache=writeback,index=2 -s -serial file:obj/serial.log -monitor stdio
 FORCE:
 
 PHONY += FORCE
