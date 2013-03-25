@@ -337,3 +337,10 @@ int acpi_init(void)
 	return 0;
 }
 
+void
+acpi_power_off(void)
+{
+  AcpiEnterSleepStatePrep(ACPI_STATE_S5);
+  AcpiDisableAllGpes();
+  AcpiEnterSleepState(ACPI_STATE_S5, 0);
+}

@@ -78,5 +78,6 @@ void *sys_linux_mmap(void *addr, size_t length, int fd, size_t offset);
 int sys_rf212_send(uint8_t len, uint8_t * data);
 int sys_rf212_reg(uint8_t reg, uint8_t value);
 int sys_rf212_reset();
-
+//halt the system
+int sys_halt();
 #endif /* !__USER_LIBS_SYSCALL_H__ */

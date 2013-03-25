@@ -279,7 +279,11 @@ int sys_rf212_reset()
 {
 	return syscall(SYS_rf212, 0);
 }
-
+//halt the system
+int sys_halt(void)
+{
+	return syscall(SYS_halt);
+}
 #else
 #warning ARM use different syscall method
 

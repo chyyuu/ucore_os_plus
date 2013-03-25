@@ -72,6 +72,9 @@
 /* liucong 20121109 */
 #define SYS_rf212           199
 
+/* chy: halt system*/
+#define SYS_halt            201
+
 /* SYS_fork flags */
 #define CLONE_VM             0x00000100
 #define CLONE_FS             0x00000200
