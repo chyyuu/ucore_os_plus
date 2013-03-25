@@ -11,7 +11,6 @@
 #include <unistd.h>
 #include <error.h>
 #include <assert.h>
-#include <glue_kio.h>
 
 #define STDIN_BUFSIZE               4096
 
@@ -50,7 +49,7 @@ try_again:
 			if (p_rpos < p_wpos) {
 				char c = stdin_buffer[p_rpos % STDIN_BUFSIZE];
 				//FIXME
-				kcons_putc(c);
+				cons_putc(c);
 				*buf++ = c;
 				p_rpos++;
 				ret++;

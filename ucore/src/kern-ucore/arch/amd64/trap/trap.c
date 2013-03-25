@@ -17,13 +17,9 @@
 #include <kio.h>
 #include <clock.h>
 #include <intr.h>
-#include <glue_kio.h>
 #include <mp.h>
-#include <entry.h>
 #include <ioapic.h>
-
-#define current (pls_read(current))
-#define idleproc (pls_read(idleproc))
+#include <sysconf.h>
 
 #define TICK_NUM 30
 
@@ -207,7 +203,7 @@ static void trap_dispatch(struct trapframe *tf)
 		break;
 	case IRQ_OFFSET + IRQ_COM1:
 	case IRQ_OFFSET + IRQ_KBD:
-		c = kcons_getc();
+		c = cons_getc();
 
 		extern void dev_stdin_write(char c);
 		dev_stdin_write(c);
@@ -271,15 +267,21 @@ int ucore_in_interrupt()
 
 void irq_enable(int irq_no)
 {
-	ioapic_enable(ioapic_id_set[0], irq_no, 0);
+	//XXX
+	ioapic_enable(0, irq_no, 0);
 }
 
 void irq_disable(int irq_no)
 {
-	ioapic_disable(ioapic_id_set[0], irq_no);
+	//XXX
+	ioapic_disable(0, irq_no);
 }
 
 void trap_init(void)
 {
+	//XXX
+	if(!sysconf.lioapic_count)
+		return;
 	irq_enable(IRQ_KBD);
+	irq_enable(IRQ_COM1);
 }

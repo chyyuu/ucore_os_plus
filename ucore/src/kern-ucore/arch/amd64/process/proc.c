@@ -76,10 +76,10 @@ int kernel_thread(int (*fn) (void *), void *arg, uint32_t clone_flags)
 //       after switch_to, the current proc will execute here.
 void forkret(void)
 {
-	if (!trap_in_kernel(pls_read(current)->tf)) {
+	if (!trap_in_kernel(current->tf)) {
 		kern_leave();
 	}
-	forkrets(pls_read(current)->tf);
+	forkrets(current->tf);
 }
 
 int kernel_execve(const char *name, const char **argv, const char **kenvp)
@@ -91,8 +91,6 @@ int kernel_execve(const char *name, const char **argv, const char **kenvp)
 		      :"memory");
 	return ret;
 }
-
-#define current (pls_read(current))
 
 int
 init_new_context(struct proc_struct *proc, struct elfhdr *elf,

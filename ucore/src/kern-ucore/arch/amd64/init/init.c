@@ -17,13 +17,30 @@
 #include <kio.h>
 #include <mp.h>
 #include <mod.h>
+#include <percpu.h>
+#include <sysconf.h>
 
 int kern_init(void) __attribute__ ((noreturn));
+
+static void bootaps(void)
+{
+	int i;
+	kprintf("starting to boot Application Processors!\n");
+	for(i=0;i<sysconf.lcpu_count;i++){
+		if(i == myid())
+			continue;
+		kprintf("booting cpu%d\n", i);
+		cpu_up(i);
+	}
+}
 
 int kern_init(void)
 {
 	extern char edata[], end[];
 	memset(edata, 0, end - edata);
+
+	/* percpu variable for CPU0 is preallocated */
+	percpu_offsets[0] = __percpu_start;
 
 	cons_init();		// init the console
 
@@ -32,28 +49,31 @@ int kern_init(void)
 
 	print_kerninfo();
 
-	/* Only to initialize lcpu_count. */
-	mp_init();
+	/* get_cpu_var not available before tls_init() */
+	tls_init(per_cpu_ptr(cpus, 0));
 
 	pmm_init();		// init physical memory management
-	pmm_init_ap();
 
 	hz_init();
 
 	//init the acpi stuff
 	acpitables_init();
 
-	pic_init();		// init interrupt controller
 	idt_init();		// init interrupt descriptor table
+	pic_init();		// init interrupt controller
+
+//	acpi_conf_init();
+	lapic_init();
+	numa_init();
+	percpu_init();
+	cpus_init();
 
 	vmm_init();		// init virtual memory management
 	sched_init();		// init scheduler
 	proc_init();		// init process table
 	sync_init();		// init sync struct
 
-//	acpi_conf_init();
-	lapic_init();
-	numa_init();
+	/* ext int */
 	ioapic_init();
 	acpi_init();
 
@@ -67,6 +87,10 @@ int kern_init(void)
 	mod_init();
 
 	trap_init();
+
+	//XXX put here?
+	bootaps();
+
 	intr_enable();		// enable irq interrupt
 
 	/* do nothing */

@@ -1,5 +1,5 @@
-#ifndef __GLUE_INTR_H__
-#define __GLUE_INTR_H__
+#ifndef __KERN_TRAP_TRAP_H__
+#define __KERN_TRAP_TRAP_H__
 
 #include <types.h>
 #include <arch.h>
@@ -91,4 +91,4 @@ bool trap_in_kernel(struct trapframe *tf);
 #define local_intr_save_hw(x)      do { (x) = (read_rflags() & FL_IF) != 0; cli(); } while (0)
 #define local_intr_restore_hw(x)   do { if (x) sti(); } while (0)
 
-#endif /* !__GLUE_INTR_H__ */
+#endif /* !__KERN_TRAP_TRAP_H__ */

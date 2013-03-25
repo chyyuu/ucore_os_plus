@@ -21,6 +21,7 @@
 #include <acpi_conf.h>
 #include <acpi.h>
 #include <lapic.h>
+#include <ioapic.h>
 #include <mp.h>
 #include "sysconf.h"
 #include "cpuid.h"
@@ -85,11 +86,13 @@ int lapic_init(void)
 	chip->cpu_init(chip);
 
 	if(bsp){
-		//TODO percpu
+		// not necessary
+		mycpu()->hwid = chip->id(chip);
 		bsp = 0;
 	}
 	return 0;
 }
+
 #define FOR_ACPI_TABLE(head, subtype, sub) for(sub=(subtype *)((head)+1);\
 		sub < (subtype *)((char*)head + (head)->Header.Length);  \
 		sub=(subtype *)((char*)sub + (sub->Length)))
@@ -253,6 +256,76 @@ int numa_init(void)
 					numa_nodes[i].mems[j].base+numa_nodes[i].mems[j].length-1);
 	}
 
+}
+
+static int cpuacpi_init(void)
+{
+	int ncpu = sysconf.lcpu_count;
+	int i, j;
+	for(i = 0;i < ncpu; i++){
+		struct cpu* c = per_cpu_ptr(cpus, i);
+		c->id = i;
+		c->node = NULL;
+		c->hwid = cpu_id_to_apicid[i];
+	}
+	/* associate cpus and NUMA nodes */
+	for(i=0;i<sysconf.lnuma_count;i++){
+		struct numa_node *node = &numa_nodes[i];
+		for(j=0;j<node->nr_cpus;j++){
+			int id = node->cpu_ids[j];
+			struct cpu *c = per_cpu_ptr(cpus, id);
+			assert(c->node == NULL);
+			c->node = node;
+			kprintf("associate cpu%d to NUMA node%d\n", c->id, i);
+		}
+	}
+	/* check */
+	for(i=0;i<ncpu;i++){
+		struct cpu *c = per_cpu_ptr(cpus, i);
+		if(!c->node)
+			panic("CPU %d not belong to NUMA nodes!\n", i);
+	}
+	return 0;
+}
+
+int acpi_ioapic_setup(void)
+{
+	if(!hdr_madt){
+		panic("No MADT\n");
+		return -1;
+	}
+	int nr = 0;
+	ACPI_SUBTABLE_HEADER *sub;
+	FOR_ACPI_TABLE(hdr_madt,ACPI_SUBTABLE_HEADER, sub){
+		if (sub->Type == ACPI_MADT_TYPE_IO_APIC) {
+			assert(nr < MAX_IOAPIC);
+			// [ACPI5.0 5.2.12.3]
+			ACPI_MADT_IO_APIC *p= (ACPI_MADT_IO_APIC*)sub;
+			ioapic[nr].hwid = p->Id;
+			ioapic[nr].phys = p->Address;
+			ioapic[nr].intr_base = p->GlobalIrqBase;
+			assert(p->Id < 256);
+			__ioapic_hwid_to_id[p->Id] = nr;
+			ioapic_register_one(&ioapic[nr]);
+			nr++;
+		} else if (sub->Type == ACPI_MADT_TYPE_INTERRUPT_OVERRIDE) {
+			// [ACPI5.0 5.2.12.5]
+      			ACPI_MADT_INTERRUPT_OVERRIDE *intov = (ACPI_MADT_INTERRUPT_OVERRIDE*)sub;
+			kprintf("TODO irq override source:%d global:%d\n", intov->GlobalIrq, intov->SourceIrq);
+		} else if (sub->Type == ACPI_MADT_TYPE_NMI_SOURCE) {
+			// [ACPI5.0 5.2.12.6]
+			panic("ACPI_MADT_TYPE_NMI_SOURCE not implement\n");
+		}
+
+	}
+	sysconf.lioapic_count = nr;
+	return 0;
+}
+
+int cpus_init(void)
+{
+	cpuacpi_init();
+	return 0;
 }
 
 int acpi_init(void)

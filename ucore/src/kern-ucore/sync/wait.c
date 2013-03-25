@@ -6,8 +6,6 @@
 #include <sched.h>
 #include <assert.h>
 
-#define current (pls_read(current))
-
 void wait_init(wait_t * wait, struct proc_struct *proc)
 {
 	wait->proc = proc;

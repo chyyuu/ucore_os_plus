@@ -1,7 +1,7 @@
 #include <kio.h>
 #include <console.h>
 #include <sync.h>
-#include <glue_intr.h>
+#include <trap.h>
 #include <stdio.h>
 #include <spinlock.h>
 #include <stdarg.h>

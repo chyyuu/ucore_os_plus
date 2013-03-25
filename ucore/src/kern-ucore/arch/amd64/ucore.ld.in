@@ -40,6 +40,14 @@ SECTIONS {
 	}
 
 	. = ALIGN(0x1000);
+	.percpu : AT(ADDR(.percpu) - MEM_BASE){
+		PROVIDE(__percpu_start = .);
+		*(.percpu)
+		PROVIDE(__percpu_end = .);
+	}
+
+
+	. = ALIGN(0x1000);
 	PROVIDE(end = .);
  
 	/DISCARD/ : {

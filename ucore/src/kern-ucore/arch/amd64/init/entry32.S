@@ -96,6 +96,49 @@ spin_nocpuid:
 spin_nolongm:
     jmp spin_nolongm
 
+.global apstart
+apstart:
+    # Prepare for long-mode, set (CR4_PGE | CR4_PAE)
+    movl $0x20, %eax
+    movl %eax, %cr4
+
+    # set cr3
+    movl $pgd, %eax
+    movl %eax, %cr3
+
+    # enable long-mode
+    movl $0xC0000080, %ecx
+    rdmsr
+    orl $0x00000100, %eax
+    wrmsr
+
+    # Active long-mode
+    movl %cr0, %eax
+    orl $0x80000001, %eax
+    movl %eax, %cr0
+
+    movl $gdtdesc, %edi
+    lgdt (%edi)
+    ljmp $KERNEL_CS, $longmode_ap_entry
+
+.code64
+longmode_ap_entry:
+    # Set up the protected-mode data segment registers
+    mov $KERNEL_DS, %ax
+    mov %ax, %ds
+    mov %ax, %es
+    mov %ax, %ss
+
+    # setup rsp
+    movq $KERNBASE, %rax
+    mov (%esp), %rsp
+
+    # Jump to kern_entry64
+    movq $KERNBASE, %rax
+    addq $kern_ap_entry64 - KERNBASE, %rax
+    jmp *%rax
+
+
 # long-mode code here
 .code64
 longmode_entry:

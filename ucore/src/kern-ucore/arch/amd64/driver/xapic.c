@@ -6,6 +6,7 @@
 #include <cpuid.h>
 #include <kio.h>
 #include <picirq.h>
+#include <percpu.h>
 
 /* The LAPIC access */
 // Local APIC registers, divided by 4 for use as uint[] indices.
@@ -109,6 +110,7 @@ static uint32_t lapicw(int index, uint32_t value)
 	return ((volatile uint32_t *)VADDR_DIRECT(sysconf.lapic_phys))[ID];
 }
 
+#if 0
 int lapic_init_ap(void)
 {
 	// Enable local APIC; set spurious interrupt vector.
@@ -155,6 +157,7 @@ int lapic_init_ap(void)
 
 	return 0;
 }
+#endif
 
 static uint32_t x_lapic_id(struct lapic_chip* chip)
 {
@@ -174,48 +177,42 @@ void lapic_eoi_send(struct lapic_chip* chip)
 	xapicw(EOI, 0);
 }
 
-// Start additional processor running bootstrap code at addr.
-// See Appendix B of MultiProcessor Specification.
-void lapic_ap_start(int apicid, uint32_t addr)
+static void x_lapic_start_ap(struct lapic_chip *_this, struct cpu *c, 
+		uint32_t addr)
 {
-	int i;
-	uint16_t *wrv;
+  int i;
 
-	// "The BSP must initialize CMOS shutdown code to 0AH
-	// and the warm reset vector (DWORD based at 40:67) to point at
-	// the AP startup code prior to the [universal startup algorithm]."
-	outb(IO_RTC, 0xF);	// offset 0xF is shutdown code
-	outb(IO_RTC + 1, 0x0A);
-	wrv = VADDR_DIRECT(0x40 << 4 | 0x67);
-	wrv[0] = addr & 0xffff;
-	wrv[1] = (addr ^ wrv[0]) >> 4;
+  // "Universal startup algorithm."
+  // Send INIT (level-triggered) interrupt to reset other CPU.
 
-	// "Universal startup algorithm."
-	// Send INIT (level-triggered) interrupt to reset other CPU.
-	lapicw(ICRHI, apicid << 24);
-	lapicw(ICRLO, INIT | LEVEL | ASSERT);
-	microdelay(200);
-	lapicw(ICRLO, INIT | LEVEL);
-	microdelay(100);	// should be 10ms, but too slow in Bochs!
+  xapicw(ICRHI, c->hwid << 24);
+  xapicw(ICRLO, INIT | LEVEL | ASSERT);
+  xapicwait();
+  microdelay(10000);
+  xapicw(ICRLO, INIT | LEVEL);
+  xapicwait();
+  microdelay(10000);    // should be 10ms, but too slow in Bochs!
+ 
+  // Send startup IPI (twice!) to enter bootstrap code.
+  // Regular hardware is supposed to only accept a STARTUP
+  // when it is in the halted state due to an INIT.  So the second
+  // should be ignored, but it is part of the official Intel algorithm.
+  // Bochs complains about the second one.  Too bad for Bochs.
+  for(i = 0; i < 2; i++){
+    xapicw(ICRHI, c->hwid << 24);
+    xapicw(ICRLO, STARTUP | (addr>>12));
+    microdelay(200);
+  }
 
-	// Send startup IPI (twice!) to enter bootstrap code.
-	// Regular hardware is supposed to only accept a STARTUP
-	// when it is in the halted state due to an INIT.  So the second
-	// should be ignored, but it is part of the official Intel algorithm.
-	// Bochs complains about the second one. Too bad for Bochs.
-	for (i = 0; i < 2; i++) {
-		lapicw(ICRHI, apicid << 24);
-		lapicw(ICRLO, STARTUP | (addr >> 12));
-		microdelay(200);
-	}
+ 
 }
+
 
 static void x_cpu_init(struct lapic_chip* _this)
 {
 	uint64_t count;
 
-	//XXX should use percpu
-	kprintf("xapic: Initializing LAPIC (CPU %d)\n", 0);
+	kprintf("xapic: Initializing LAPIC (CPU %d)\n", myid());
 
 	// Enable local APIC, do not suppress EOI broadcast, set spurious
 	// interrupt vector.
@@ -223,7 +220,7 @@ static void x_cpu_init(struct lapic_chip* _this)
 
 	if (xapichz == 0) {
 		// Measure the TICR frequency
-		xapicw(TDCR, X1);    
+		xapicw(TDCR, X1);
 		xapicw(TICR, 0xffffffff); 
 		uint64_t ccr0 = xapicr(TCCR);
 		microdelay(10 * 1000);    // 1/100th of a second
@@ -275,7 +272,8 @@ static void x_cpu_init(struct lapic_chip* _this)
 static struct lapic_chip xapic_chip = {
 	.cpu_init = x_cpu_init,
 	.id = x_lapic_id,
-	.eoi = lapic_eoi_send
+	.eoi = lapic_eoi_send,
+	.start_ap = x_lapic_start_ap,
 };
 
 static xapic_init_once()

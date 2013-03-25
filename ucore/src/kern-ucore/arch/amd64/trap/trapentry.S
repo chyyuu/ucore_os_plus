@@ -28,6 +28,12 @@ __alltraps:
     movw %ds, %rax
     pushq %rax
 
+    # swap in kernel GS BASE if we come from user space
+    cmpw $USER_CS, 0xA0(%rsp)
+    jnz 1f
+    swapgs
+
+1:
     # use %rdi to pass a pointer to the trapframe as an argument to trap()
     movq %rsp, %rdi
 
@@ -37,6 +43,13 @@ __alltraps:
     # return falls through to trapret...
 .globl __trapret
 __trapret:
+
+    # restore GS BASE if we'll back to userspace
+    cmpw $USER_CS, 0xA0(%rsp)
+    jnz 1f
+    swapgs
+
+1:
     # restore registers from stack
 
     # pop ds, es

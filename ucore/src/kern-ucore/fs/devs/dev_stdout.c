@@ -7,7 +7,6 @@
 #include <unistd.h>
 #include <error.h>
 #include <assert.h>
-#include <glue_kio.h>
 
 static int stdout_open(struct device *dev, uint32_t open_flags)
 {
@@ -27,7 +26,7 @@ static int stdout_io(struct device *dev, struct iobuf *iob, bool write)
 	if (write) {
 		char *data = iob->io_base;
 		for (; iob->io_resid != 0; iob->io_resid--) {
-			kcons_putc(*data++);
+			cons_putc(*data++);
 		}
 		return 0;
 	}
