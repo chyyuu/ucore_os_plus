@@ -85,7 +85,7 @@ export HOSTAR HOSTAS HOSTCC HOSTCXX HOSTLD
 HOSTCFLAGS=$(CFLAGS_FOR_BUILD)
 export HOSTCFLAGS
 
-PHONY+=defconfig menuconfig clean all tags
+PHONY+=defconfig menuconfig clean all tags amd64tags run
 
 all: kernel
 
@@ -200,6 +200,10 @@ tags:
 	$(Q)find . -type f -name "*.[chS]" >cscope.files
 	$(Q)cscope -bq 
 
+amd64tags:
+	$(Q)./buildamd64tags.sh
+run:
+	./uCore_run -d obj
 FORCE:
 
 PHONY += FORCE

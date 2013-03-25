@@ -143,29 +143,40 @@ static void vma_destroy(struct vma_struct *vma)
 	kfree(vma);
 }
 
-// find_vma_rb - find a vma  (vma->vm_start <= addr <= vma_vm_end) in rb tree
+// find_vma_rb - find a vma  (vma->vm_start <= addr < vma_vm_end) in rb tree
 static inline struct vma_struct *find_vma_rb(rb_tree * tree, uintptr_t addr)
 {
 	rb_node *node = rb_node_root(tree);
 	struct vma_struct *vma = NULL, *tmp;
+    //kprintf("  find_vma_rb begin:: addr is %d\n",addr);
 	while (node != NULL) {
 		tmp = rbn2vma(node, rb_link);
+        //kprintf("find_vma_rb while:: vma tmp start %d, end %d, addr %d\n",tmp->vm_start, tmp->vm_end, addr);
 		if (tmp->vm_end > addr) {
 			vma = tmp;
 			if (tmp->vm_start <= addr) {
 				break;
 			}
+            vma = NULL;
 			node = rb_node_left(tree, node);
 		} else {
+            vma = NULL;
 			node = rb_node_right(tree, node);
 		}
 	}
+#if 0
+    if (vma!=NULL) 
+      kprintf("  find_vma_rb end:: addr %d, vma %x, start %d, end %d\n",addr, vma, vma->vm_start, vma->vm_end);
+    else
+      kprintf("  find_vma_rb end:: vma is NULL\n");
+#endif
 	return vma;
 }
 
-// find_vma - find a vma  (vma->vm_start <= addr <= vma_vm_end)
+// find_vma - find a vma  (vma->vm_start <= addr < vma_vm_end)
 struct vma_struct *find_vma(struct mm_struct *mm, uintptr_t addr)
 {
+    //kprintf("find_vma begin:: addr %d\n",addr);
 	struct vma_struct *vma = NULL;
 	if (mm != NULL) {
 		vma = mm->mmap_cache;
@@ -180,7 +191,7 @@ struct vma_struct *find_vma(struct mm_struct *mm, uintptr_t addr)
 				    list;
 				while ((le = list_next(le)) != list) {
 					vma = le2vma(le, list_link);
-					if (addr < vma->vm_end) {
+                    if (vma->vm_start<=addr && addr < vma->vm_end) {
 						found = 1;
 						break;
 					}
@@ -188,6 +199,7 @@ struct vma_struct *find_vma(struct mm_struct *mm, uintptr_t addr)
 				if (!found) {
 					vma = NULL;
 				}
+                //kprintf("  find_vma linear:: vma %d\n",vma);
 			}
 		}
 		if (vma != NULL) {
@@ -750,8 +762,55 @@ static void check_vma_struct(void)
 	assert(mm != NULL);
 
 	int step1 = RB_MIN_MAP_COUNT * 2, step2 = step1 * 10;
+//	int step1 = 2, step2 = step1 * 10;
 
 	int i;
+    for (i = step1; i >= 1; i --) {
+        struct vma_struct *vma = vma_create(i * 5, i * 5 + 2, 0);
+        assert(vma != NULL);
+        insert_vma_struct(mm, vma);
+    }
+
+    for (i = step1 + 1; i <= step2; i ++) {
+        struct vma_struct *vma = vma_create(i * 5, i * 5 + 2, 0);
+        assert(vma != NULL);
+        insert_vma_struct(mm, vma);
+    }
+
+    list_entry_t *le = list_next(&(mm->mmap_list));
+
+    for (i = 1; i <= step2; i ++) {
+        assert(le != &(mm->mmap_list));
+        struct vma_struct *mmap = le2vma(le, list_link);
+        assert(mmap->vm_start == i * 5 && mmap->vm_end == i * 5 + 2);
+        le = list_next(le);
+    }
+
+    for (i = 5; i <= 5 * step2; i +=5) {
+        //kprintf("check_vma_struct:: i is %d\n",i);
+        struct vma_struct *vma1 = find_vma(mm, i);
+        //kprintf("check_vma_struct:: addr is %d, vma1 start %d, end %d\n",i,vma1->vm_start,vma1->vm_end);
+        assert(vma1 != NULL);
+        struct vma_struct *vma2 = find_vma(mm, i+1);
+        //kprintf("check_vma_struct:: addr is %d, vma2 start %d, end %d\n",i+1,vma2->vm_start,vma2->vm_end);
+        assert(vma2 != NULL);
+        struct vma_struct *vma3 = find_vma(mm, i+2);
+        //kprintf("check_vma_struct:: addr is %d, vma3 start %d, end %d\n",i+2,vma3->vm_start,vma3->vm_end);
+        assert(vma3 == NULL);
+        struct vma_struct *vma4 = find_vma(mm, i+3);
+        assert(vma4 == NULL);
+        struct vma_struct *vma5 = find_vma(mm, i+4);
+        assert(vma5 == NULL);
+
+        assert(vma1->vm_start == i  && vma1->vm_end == i  + 2);
+        assert(vma2->vm_start == i  && vma2->vm_end == i  + 2);
+    }
+
+    for (i =4; i>=0; i--) {
+        struct vma_struct *vma_below_5= find_vma(mm,i);
+        assert(vma_below_5 == NULL);
+    }
+#if 0
 	for (i = step1; i >= 0; i--) {
 		struct vma_struct *vma = vma_create(i * 5, i * 5 + 2, 0);
 		assert(vma != NULL);
@@ -782,7 +841,7 @@ static void check_vma_struct(void)
 		}
 		assert(vma->vm_start == j * 5 && vma->vm_end == j * 5 + 2);
 	}
-
+#endif
 	mm_destroy(mm);
 
 	__CHECK_MEMORY_LEAK();

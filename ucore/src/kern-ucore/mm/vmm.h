@@ -22,11 +22,12 @@ struct mapped_file_struct {
 };
 #endif //UCONFIG_BIONIC_LIBC
 
-// the virtual continuous memory area(vma)
+// the virtual continuous memory area(vma), [vm_start, vm_end), 
+// addr belong to a vma means  vma.vm_start<= addr <vma.vm_end 
 struct vma_struct {
-	struct mm_struct *vm_mm;	// the set of vma using the same PDT 
-	uintptr_t vm_start;	// start addr of vma       
-	uintptr_t vm_end;	// end addr of vma
+    struct mm_struct *vm_mm; // the set of vma using the same PDT 
+    uintptr_t vm_start;      // start addr of vma      
+    uintptr_t vm_end;        // end addr of vma, not include the vm_end itself
 	uint32_t vm_flags;	// flags of vma
 	rb_node rb_link;	// redblack link which sorted by start addr of vma
 	list_entry_t list_link;	// linear list link which sorted by start addr of vma
