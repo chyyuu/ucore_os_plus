@@ -365,6 +365,16 @@ void pmm_init(void)
 	/* and map the first 1MB for the ap booting */
 	/* boot_map_segment(boot_pgdir, 0, 0x100000, 0, PTE_W); */
 
+	//TODO put here?
+	pmm_init_ap();
+
+	print_pgdir(kprintf);
+	slab_init();
+}
+
+void pmm_init_ap(void)
+{
+
 	lcr3(boot_cr3);
 
 	// set CR0
@@ -377,13 +387,6 @@ void pmm_init(void)
 
 	gdt_init();
 
-	print_pgdir(kprintf);
-
-	slab_init();
-}
-
-void pmm_init_ap(void)
-{
 	list_entry_t *page_struct_free_list =
 	    get_cpu_ptr(page_struct_free_list);
 	list_init(page_struct_free_list);

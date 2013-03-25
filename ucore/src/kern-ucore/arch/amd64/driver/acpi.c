@@ -86,11 +86,13 @@ int lapic_init(void)
 	chip->cpu_init(chip);
 
 	if(bsp){
-		//TODO percpu
+		// not necessary
+		mycpu()->hwid = chip->id(chip);
 		bsp = 0;
 	}
 	return 0;
 }
+
 #define FOR_ACPI_TABLE(head, subtype, sub) for(sub=(subtype *)((head)+1);\
 		sub < (subtype *)((char*)head + (head)->Header.Length);  \
 		sub=(subtype *)((char*)sub + (sub->Length)))
