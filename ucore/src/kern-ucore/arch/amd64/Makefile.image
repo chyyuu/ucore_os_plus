@@ -8,6 +8,12 @@ KERNEL_IMG := $(OBJPATH_ROOT)/kernel.img
 KERNEL_ELF := $(KTREE_OBJ_ROOT)/kernel-$(ARCH).elf
 ENTRY32_OBJ := ${KTREE_OBJ_ROOT}/arch/$(ARCH)/init/entry32.o
 ENTRY32_SRC := ${KTREE}/arch/$(ARCH)/init/entry32.S
+BOOTOTHERS_SRC := ${KTREE}/arch/$(ARCH)/init/bootother.S
+BOOTOTHERS_OBJ := ${KTREE_OBJ_ROOT}/arch/$(ARCH)/init/bootother.o
+BOOTOTHERS_OUT := ${KTREE_OBJ_ROOT}/arch/$(ARCH)/init/bootother
+PIGGYCODE_SRC_IN := ${KTREE}/arch/${ARCH}/piggycode.S.in
+PIGGYCODE_SRC := ${KTREE_OBJ_ROOT}/arch/${ARCH}/piggycode.S
+PIGGYCODE_OBJ := ${KTREE_OBJ_ROOT}/arch/${ARCH}/piggycode.o
 BOOTSECT   := $(OBJPATH_ROOT)/bootloader/bootsect
 LINK_FILE_IN	:= $(KTREE)/arch/${ARCH}/ucore.ld.in
 LINK_FILE     := $(KTREE_OBJ_ROOT)/arch/$(ARCH)/ucore.ld
@@ -19,9 +25,9 @@ $(KERNEL_IMG): $(BOOTSECT) $(KERNEL_ELF)
 	$(Q)dd if=$(BOOTSECT) of=$@ conv=notrunc
 	$(Q)dd if=$(KERNEL_ELF) of=$@ seek=1 conv=notrunc
 
-$(KERNEL_ELF): $(LINK_FILE) $(KERNEL_BUILTIN) $(ENTRY32_OBJ) $(RAMDISK_OBJ)
+$(KERNEL_ELF): $(LINK_FILE) $(KERNEL_BUILTIN) $(ENTRY32_OBJ) $(PIGGYCODE_OBJ) $(RAMDISK_OBJ)
 	@echo Linking uCore
-	$(Q)$(TARGET_LD) $(TARGET_LDFLAGS) -T $(LINK_FILE) $(KERNEL_BUILTIN) $(ENTRY32_OBJ) $(RAMDISK_OBJ) -o $@
+	$(Q)$(TARGET_LD) $(TARGET_LDFLAGS) -T $(LINK_FILE) $(KERNEL_BUILTIN) $(ENTRY32_OBJ) $(PIGGYCODE_OBJ) $(RAMDISK_OBJ) -o $@
 
 $(LINK_FILE): $(LINK_FILE_IN) $(KCONFIG_AUTOCONFIG)
 	@echo "creating linker script"
@@ -32,6 +38,19 @@ $(BOOTSECT): $(OBJPATH_ROOT)
 
 $(ENTRY32_OBJ): $(ENTRY32_SRC)
 	$(Q)$(TARGET_CC) -D__ASSEMBLY__ $(TARGET_CFLAGS) -c -o $@ $<
+
+$(BOOTOTHERS_OBJ): $(BOOTOTHERS_SRC)
+	$(Q)$(TARGET_CC) -D__ASSEMBLY__ $(TARGET_CFLAGS) -c -o $@ $<
+
+$(BOOTOTHERS_OUT): $(BOOTOTHERS_OBJ)
+	$(Q)$(TARGET_LD) -Ttext=0x7000 -o $@.elf $<
+	$(Q)$(TARGET_OBJCOPY) -S -O binary $@.elf $@
+
+$(PIGGYCODE_SRC): $(PIGGYCODE_SRC_IN)
+	$(Q)sed 's|MAKE_OUT|$(KTREE_OBJ_ROOT)/arch/$(ARCH)|g' $< > $@
+
+$(PIGGYCODE_OBJ): $(BOOTOTHERS_OUT) $(PIGGYCODE_SRC)
+	$(Q)$(TARGET_CC) -D__ASSEMBLY__ $(TARGET_CFLAGS) -c -o $@ $(PIGGYCODE_SRC)
 
 .PHONY: all clean FORCE
 all: $(KERNEL_IMG)

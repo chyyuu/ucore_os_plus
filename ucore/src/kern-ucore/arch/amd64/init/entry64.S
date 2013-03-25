@@ -14,6 +14,13 @@ kern_entry64:
 spin:
     jmp spin
 
+.global kern_ap_entry64
+kern_ap_entry64:
+    movq $0x0, %rbp
+#rsp already setup
+    call ap_init
+    jmp spin
+
 .data
 .align PGSIZE
     .globl bootstack
