@@ -86,6 +86,7 @@ config BOOTLOADER_START_ADDR
 
 endmenu
 
+source src/kern-ucore/numa/Kconfig
 source src/kern-ucore/mm/Kconfig
 source src/kern-ucore/schedule/Kconfig
 source src/kern-ucore/fs/Kconfig

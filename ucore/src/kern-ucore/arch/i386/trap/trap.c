@@ -17,7 +17,7 @@
 #include <syscall.h>
 #include <error.h>
 #include <kio.h>
-#include <glue_mp.h>
+#include <mp.h>
 
 #define TICK_NUM 30
 
@@ -143,15 +143,15 @@ static int pgfault_handler(struct trapframe *tf)
 	extern struct mm_struct *check_mm_struct;
 	struct mm_struct *mm;
 	if (check_mm_struct != NULL) {
-		assert(pls_read(current) == pls_read(idleproc));
+		assert(current == idleproc);
 		mm = check_mm_struct;
 	} else {
-		if (pls_read(current) == NULL) {
+		if (current == NULL) {
 			print_trapframe(tf);
 			print_pgfault(tf);
 			panic("unhandled page fault.\n");
 		}
-		mm = pls_read(current)->mm;
+		mm = current->mm;
 	}
 	return do_pgfault(mm, tf->tf_err, rcr2());
 }
@@ -169,7 +169,7 @@ static void trap_dispatch(struct trapframe *tf)
 	case T_PGFLT:
 		if ((ret = pgfault_handler(tf)) != 0) {
 			print_trapframe(tf);
-			if (pls_read(current) == NULL) {
+			if (current == NULL) {
 				panic("handle pgfault failed. %e\n", ret);
 			} else {
 				if (trap_in_kernel(tf)) {
@@ -187,7 +187,7 @@ static void trap_dispatch(struct trapframe *tf)
 		break;
 	case IRQ_OFFSET + IRQ_TIMER:
 		ticks++;
-		assert(pls_read(current) != NULL);
+		assert(current != NULL);
 		run_timer_list();
 		break;
 	case IRQ_OFFSET + IRQ_COM1:
@@ -205,7 +205,7 @@ static void trap_dispatch(struct trapframe *tf)
 		break;
 	default:
 		print_trapframe(tf);
-		if (pls_read(current) != NULL) {
+		if (current != NULL) {
 			kprintf("unhandled trap.\n");
 			do_exit(-E_KILLED);
 		}
@@ -216,21 +216,21 @@ static void trap_dispatch(struct trapframe *tf)
 void trap(struct trapframe *tf)
 {
 	// used for previous projects
-	if (pls_read(current) == NULL) {
+	if (current == NULL) {
 		trap_dispatch(tf);
 	} else {
 		// keep a trapframe chain in stack
-		struct trapframe *otf = pls_read(current)->tf;
-		pls_read(current)->tf = tf;
+		struct trapframe *otf = current->tf;
+		current->tf = tf;
 
 		bool in_kernel = trap_in_kernel(tf);
 
 		trap_dispatch(tf);
 
-		pls_read(current)->tf = otf;
+		current->tf = otf;
 		if (!in_kernel) {
 			may_killed();
-			if (pls_read(current)->need_resched) {
+			if (current->need_resched) {
 				schedule();
 			}
 		}

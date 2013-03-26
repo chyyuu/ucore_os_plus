@@ -1,1 +1,0 @@
-obj-y := kio.o mp.o pmm.o trap.o trapentry.o vectors.o

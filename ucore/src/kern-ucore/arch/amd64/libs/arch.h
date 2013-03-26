@@ -10,9 +10,6 @@
 #define __noret__   __attribute__((noreturn))
 
 /* maxinum cpu number */
-#define NCPU 128
-#define MAX_NUMA_NODES 16
-#define MAX_NUMA_MEMS  16
 #define MAX_IOAPIC     8
 
 static inline

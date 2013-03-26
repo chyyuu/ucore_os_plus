@@ -11,6 +11,7 @@
 #include <error.h>
 #include <proc.h>
 #include <kio.h>
+#include <mp.h>
 
 /* *
  * Task State Segment:
@@ -78,6 +79,20 @@ static struct segdesc gdt[] = {
 static struct pseudodesc gdt_pd = {
 	sizeof(gdt) - 1, (uintptr_t) gdt
 };
+
+static DEFINE_PERCPU_NOINIT(size_t, used_pages);
+DEFINE_PERCPU_NOINIT(list_entry_t, page_struct_free_list);
+
+// virtual address of physicall page array
+struct Page *pages;
+// amount of physical memory (in pages)
+size_t npage = 0;
+
+// virtual address of boot-time page directory
+pde_t *boot_pgdir = NULL;
+
+// physical memory management
+const struct pmm_manager *pmm_manager;
 
 /* *
  * lgdt - load the global descriptor table register and reset the
@@ -249,6 +264,50 @@ static void enable_paging(void)
 	lcr0(cr0);
 }
 
+size_t nr_used_pages(void)
+{
+	return get_cpu_var(used_pages);
+}
+
+/**
+ * nr_free_pages - call pmm->nr_free_pages to get the size (nr*PAGESIZE) of current free memory
+ * @return number of free pages
+ */
+size_t nr_free_pages(void)
+{
+	size_t ret;
+	bool intr_flag;
+	local_intr_save(intr_flag);
+	{
+		ret = pmm_manager->nr_free_pages();
+	}
+	local_intr_restore(intr_flag);
+	return ret;
+}
+
+/**
+ * boot_map_segment - setup&enable the paging mechanism
+ * @param la    linear address of this memory need to map (after x86 segment map)
+ * @param size  memory size
+ * @param pa    physical address of this memory
+ * @param perm  permission of this memory
+ */
+void
+boot_map_segment(pde_t * pgdir, uintptr_t la, size_t size, uintptr_t pa,
+		 uint32_t perm)
+{
+	assert(PGOFF(la) == PGOFF(pa));
+	size_t n = ROUNDUP(size + PGOFF(la), PGSIZE) / PGSIZE;
+	la = ROUNDDOWN(la, PGSIZE);
+	pa = ROUNDDOWN(pa, PGSIZE);
+	for (; n > 0; n--, la += PGSIZE, pa += PGSIZE) {
+		pte_t *ptep = get_pte(pgdir, la, 1);
+		assert(ptep != NULL);
+		ptep_map(ptep, pa);
+		ptep_set_perm(ptep, perm);
+	}
+}
+
 //pmm_init - setup a pmm to manage physical memory, build PDT&PT to setup paging mechanism 
 //         - check the correctness of pmm & paging mechanism, print PDT&PT
 void pmm_init(void)
@@ -309,6 +368,66 @@ void pmm_init(void)
 	slab_init();
 }
 
+void pmm_init_ap(void)
+{
+	list_entry_t *page_struct_free_list =
+	    get_cpu_ptr(page_struct_free_list);
+	list_init(page_struct_free_list);
+	get_cpu_var(used_pages) = 0;
+}
+
+/**
+ * call pmm->alloc_pages to allocate a continuing n*PAGESIZE memory
+ * @param n pages to be allocated
+ */
+struct Page *alloc_pages(size_t n)
+{
+	struct Page *page;
+	bool intr_flag;
+try_again:
+	local_intr_save(intr_flag);
+	{
+		page = pmm_manager->alloc_pages(n);
+	}
+	local_intr_restore(intr_flag);
+	if (page == NULL && try_free_pages(n)) {
+		goto try_again;
+	}
+
+	get_cpu_var(used_pages) += n;
+	return page;
+}
+
+/**
+ * boot_alloc_page - allocate one page using pmm->alloc_pages(1) 
+ * @return the kernel virtual address of this allocated page
+ * note: this function is used to get the memory for PDT(Page Directory Table)&PT(Page Table)
+ */
+void *boot_alloc_page(void)
+{
+	struct Page *p = alloc_page();
+	if (p == NULL) {
+		panic("boot_alloc_page failed.\n");
+	}
+	return page2kva(p);
+}
+
+/**
+ * free_pages - call pmm->free_pages to free a continuing n*PAGESIZE memory
+ * @param base the first page to be freed
+ * @param n number of pages to be freed
+ */
+void free_pages(struct Page *base, size_t n)
+{
+	bool intr_flag;
+	local_intr_save(intr_flag);
+	{
+		pmm_manager->free_pages(base, n);
+	}
+	local_intr_restore(intr_flag);
+	get_cpu_var(used_pages) -= n;
+}
+
 // invalidate a TLB entry, but only if the page tables being
 // edited are the ones currently in use by the processor.
 void tlb_update(pde_t * pgdir, uintptr_t la)
@@ -356,6 +475,61 @@ void check_boot_pgdir(void)
 	boot_pgdir[0] = 0;
 
 	kprintf("check_boot_pgdir() succeeded!\n");
+}
+
+/*
+ * Check page table
+ */
+void check_pgdir(void)
+{
+	assert(npage <= KMEMSIZE / PGSIZE);
+	assert(boot_pgdir != NULL && (uint32_t) PGOFF(boot_pgdir) == 0);
+	assert(get_page(boot_pgdir, TEST_PAGE, NULL) == NULL);
+
+	struct Page *p1, *p2;
+	p1 = alloc_page();
+	assert(page_insert(boot_pgdir, p1, TEST_PAGE, 0) == 0);
+
+	pte_t *ptep, perm;
+	assert((ptep = get_pte(boot_pgdir, TEST_PAGE, 0)) != NULL);
+	assert(pa2page(*ptep) == p1);
+	assert(page_ref(p1) == 1);
+
+	ptep = &((pte_t *) KADDR(PTE_ADDR(boot_pgdir[PDX(TEST_PAGE)])))[1];
+	assert(get_pte(boot_pgdir, TEST_PAGE + PGSIZE, 0) == ptep);
+
+	p2 = alloc_page();
+	ptep_unmap(&perm);
+	ptep_set_u_read(&perm);
+	ptep_set_u_write(&perm);
+	assert(page_insert(boot_pgdir, p2, TEST_PAGE + PGSIZE, perm) == 0);
+	assert((ptep = get_pte(boot_pgdir, TEST_PAGE + PGSIZE, 0)) != NULL);
+	assert(ptep_u_read(ptep));
+	assert(ptep_u_write(ptep));
+	assert(ptep_u_read(&(boot_pgdir[PDX(TEST_PAGE)])));
+	assert(page_ref(p2) == 1);
+
+	assert(page_insert(boot_pgdir, p1, TEST_PAGE + PGSIZE, 0) == 0);
+	assert(page_ref(p1) == 2);
+	assert(page_ref(p2) == 0);
+	assert((ptep = get_pte(boot_pgdir, TEST_PAGE + PGSIZE, 0)) != NULL);
+	assert(pa2page(*ptep) == p1);
+	assert(!ptep_u_read(ptep));
+
+	page_remove(boot_pgdir, TEST_PAGE);
+	assert(page_ref(p1) == 1);
+	assert(page_ref(p2) == 0);
+
+	page_remove(boot_pgdir, TEST_PAGE + PGSIZE);
+	assert(page_ref(p1) == 0);
+	assert(page_ref(p2) == 0);
+
+	assert(page_ref(pa2page(boot_pgdir[PDX(TEST_PAGE)])) == 1);
+	free_page(pa2page(boot_pgdir[PDX(TEST_PAGE)]));
+	boot_pgdir[PDX(TEST_PAGE)] = 0;
+	exit_range(boot_pgdir, TEST_PAGE, TEST_PAGE + PGSIZE);
+
+	kprintf("check_pgdir() succeeded.\n");
 }
 
 //perm2str - use string 'u,r,w,-' to present the permission

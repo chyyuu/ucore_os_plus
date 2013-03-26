@@ -7,14 +7,10 @@
 #include <assert.h>
 #include <arch.h>
 #include <vmm.h>
+#include <sysconf.h>
 
-PLS int pls_lapic_id;
-PLS int pls_lcpu_idx;
-PLS int pls_lcpu_count;
-
-PLS static int volatile pls_local_kern_locking;
-
-volatile int ipi_raise[LAPIC_COUNT] = { 0 };
+void *percpu_offsets[NCPU];
+DEFINE_PERCPU_NOINIT(struct cpu, cpus);
 
 #if 0
 #define mp_debug(a ...) kprintf(a)
@@ -24,9 +20,10 @@ volatile int ipi_raise[LAPIC_COUNT] = { 0 };
 
 int mp_init(void)
 {
-	pls_write(lapic_id, 0);
-	pls_write(lcpu_idx, 0);
-	pls_write(lcpu_count, 1);
+	sysconf.lcpu_boot = 0;
+	sysconf.lnuma_count = 0;
+	sysconf.lcpu_count = 1;
+	percpu_offsets[0] = __percpu_start;
 
 	return 0;
 }

@@ -11,7 +11,7 @@
 #include <monitor.h>
 #include <assert.h>
 #include <kio.h>
-#include <glue_mp.h>
+#include <mp.h>
 
 #define STACKFRAME_DEPTH 20
 
@@ -156,8 +156,7 @@ int debuginfo_eip(uintptr_t addr, struct eipdebuginfo *info)
 
 		// make sure that debugger (current process) can access this memory
 		struct mm_struct *mm;
-		if (pls_read(current) == NULL
-		    || (mm = pls_read(current)->mm) == NULL) {
+		if (current == NULL || (mm = current->mm) == NULL) {
 			return -1;
 		}
 		if (!user_mem_check
