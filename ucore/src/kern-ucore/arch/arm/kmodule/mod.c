@@ -116,7 +116,7 @@ apply_relocate_add(struct secthdr *sechdrs, const char *strtab,
 		   unsigned int symindex, unsigned int relsec,
 		   struct module *module)
 {
-	printk("apply_relocate_add: module %s: ADD RELOCATION unsupported\n",
-	       module->name);
+	kprintf("apply_relocate_add: module %s: ADD RELOCATION unsupported\n",
+	        module->name);
 	return -1;
 }
