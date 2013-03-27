@@ -1,6 +1,6 @@
 #include <kio.h>
 #include <console.h>
-#include <glue_intr.h>
+#include <trap.h>
 #include <stdio.h>
 #include <spinlock.h>
 #include <stdarg.h>
@@ -13,7 +13,7 @@
  * */
 static void cputch(int c, int *cnt, int fd)
 {
-	kcons_putc(c);
+	cons_putc(c);
 	(*cnt)++;
 }
 

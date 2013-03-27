@@ -104,7 +104,7 @@ static inline void print_pgfault(struct trapframe *tf)
 		0x4 ? "Translation" : "Alignment",
 		//((fsr_v & 0xC) == 0) || ((fsr_v & 0xE) == 0x4) ? "Domain invalid" : "Domain valid",
 		(tf->tf_err & 1 << 11) ? "W" : "R",
-		pls_read(current) ? pls_read(current)->pid : -1);
+		current ? current->pid : -1);
 	/* error_code:
 	 * bit 0 == 0 means no page found, 1 means protection fault // translation or domain/permission
 	 * bit 1 == 0 means read, 1 means write // permission
@@ -121,16 +121,15 @@ static int pgfault_handler(struct trapframe *tf)
 	extern struct mm_struct *check_mm_struct;
 	struct mm_struct *mm;
 	if (check_mm_struct != NULL) {
-		//assert(current == idleproc);
-		assert(pls_read(current) == pls_read(idleproc));
+		assert(current == idleproc);
 		mm = check_mm_struct;
 	} else {
-		if (pls_read(current) == NULL) {
+		if (current == NULL) {
 			print_trapframe(tf);
 			print_pgfault(tf);
 			panic("unhandled page fault.\n");
 		}
-		mm = pls_read(current)->mm;
+		mm = current->mm;
 	}
 	//print_pgfault(tf);
 	/* convert ARM error code to kernel error code */
@@ -152,7 +151,7 @@ static int pgfault_handler(struct trapframe *tf)
 static void killed_by_kernel()
 {
 	kprintf("Process %d killed by kernel.\n",
-		pls_read(current) ? pls_read(current)->pid : -1);
+		current ? current->pid : -1);
 	do_exit(-E_KILLED);
 }
 
@@ -190,7 +189,7 @@ static void trap_dispatch(struct trapframe *tf)
 		if ((ret = pgfault_handler(tf)) != 0) {
 			print_pgfault(tf);
 			print_trapframe(tf);
-			if (pls_read(current) == NULL) {
+			if (current == NULL) {
 				panic("handle pgfault failed. %e\n", ret);
 			} else {
 				if (trap_in_kernel(tf)) {
@@ -250,7 +249,7 @@ static void trap_dispatch(struct trapframe *tf)
 		break;
 	default:
 		print_trapframe(tf);
-		if (pls_read(current) != NULL) {
+		if (current != NULL) {
 			kprintf("unhandled trap.\n");
 			do_exit(-E_KILLED);
 		}
@@ -270,21 +269,21 @@ static int __is_irq(struct trapframe *tf)
 void trap(struct trapframe *tf)
 {
 	//print_trapframe(tf);
-	if (pls_read(current) == NULL) {
+	if (current == NULL) {
 		trap_dispatch(tf);
 	} else {
 		// keep a trapframe chain in stack
-		struct trapframe *otf = pls_read(current)->tf;
-		pls_read(current)->tf = tf;
+		struct trapframe *otf = current->tf;
+		current->tf = tf;
 
 		bool in_kernel = trap_in_kernel(tf);
 
 		trap_dispatch(tf);
 
-		pls_read(current)->tf = otf;
+		current->tf = otf;
 		if (!in_kernel) {
 			may_killed();
-			if (pls_read(current)->need_resched) {
+			if (current->need_resched) {
 				schedule();
 			}
 			do_signal(tf, NULL);

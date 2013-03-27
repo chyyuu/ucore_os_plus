@@ -38,7 +38,7 @@ void *ucore_map_pfn_range(unsigned long addr, unsigned long pfn,
 			  unsigned long size, unsigned long flags)
 {
 	void *ret = NULL;
-	struct mm_struct *mm = pls_read(current)->mm;
+	struct mm_struct *mm = current->mm;
 	uint32_t vm_flags = VM_READ | VM_WRITE;
 	if (flags & VM_IO)
 		vm_flags |= VM_IO;

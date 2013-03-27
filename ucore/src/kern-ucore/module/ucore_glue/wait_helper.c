@@ -21,8 +21,6 @@
 #include <sched.h>
 #include <mp.h>
 
-#define current pls_read(current)
-
 void __ucore_wait_self()
 {
 	//kprintf("ucore_wait_self self=%d\n", current->pid);

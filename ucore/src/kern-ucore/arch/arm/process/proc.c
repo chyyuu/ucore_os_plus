@@ -66,8 +66,6 @@ SYS_getpid      : get the process's pid
 
 */
 
-#define current (pls_read(current))
-
 static void forkret();
 //trap/entry.S
 extern void forkrets(struct trapframe *tf);

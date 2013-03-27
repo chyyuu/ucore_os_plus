@@ -21,7 +21,7 @@
 // constructor.  This is for special cases like cpus that must be
 // initialized remotely.
 #define DEFINE_PERCPU_NOINIT(type, name)                           \
-  type __percpu_##name __attribute__((__section__(".percpu,\"aw\",@nobits#"))); \
+  type __percpu_##name __attribute__((PERCPU_SECTION)); \
 
 #define DECLARE_PERCPU(type, name) \
   extern type __percpu_##name;                \

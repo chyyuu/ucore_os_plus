@@ -4,6 +4,8 @@
 #include <types.h>
 #include <percpu.h>
 
+#define PERCPU_SECTION	__section__(".percpu,\"aw\",@nobits#")
+
 static inline struct cpu* mycpu(void)
 {
 	return per_cpu_ptr(cpus, 0);
