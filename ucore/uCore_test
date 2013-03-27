@@ -123,7 +123,9 @@ run_test() {
     grep "^@sfs_force_rebuild[ \t]*$" $TEST_SPEC > /dev/null 2>&1
     found=$(($? == 0))
     if [ $found -eq 1 ] && [ $SFSIMG_CLEAN -ne 1 ]; then
-        rebuild_sfsimg
+	# FIXME: The arguments here are dummy
+	# It won't work if any test case other than those with uCore requires to rebuild the image
+        rebuild_testimg $UCORE_TEST_DIR sfs-orig.img
         if [ $? -ne 0 ]; then
             return 1
         fi
