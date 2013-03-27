@@ -26,13 +26,6 @@
 #include <list.h>
 #include <mmu.h>
 
-typedef uintptr_t pte_t;
-typedef uintptr_t pde_t;
-typedef uintptr_t pud_t;
-typedef uintptr_t pmd_t;
-typedef uintptr_t pgd_t;
-typedef pte_t swap_entry_t;	//the pte can also be a swap entry
-
 /* Memory map */
 #define MEMMAPMAX			20	// number of entries
 /* Type */

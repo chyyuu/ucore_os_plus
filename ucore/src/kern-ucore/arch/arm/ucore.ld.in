@@ -87,6 +87,13 @@ SECTIONS {
     .bss : {
         *(.bss)
     }
+    . = ALIGN(0x1000);
+
+    .percpu : {
+        PROVIDE(__percpu_start = .);
+        *(.percpu)
+        PROVIDE(__percpu_end = .);
+    }
 
     PROVIDE(end = .);
 

@@ -4,6 +4,7 @@
 #include <types.h>
 
 #define LAPIC_COUNT 1
+#define PERCPU_SECTION	__section__(".percpu,\"aw\",@nobits#")
 
 static inline struct cpu* mycpu(void)
 {

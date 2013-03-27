@@ -29,7 +29,7 @@ UCORE_TEST=xx make O=$BUILD_DIR_ARM sfsimg > /dev/null && \
 make O=$BUILD_DIR_ARM kernel > /dev/null
 if [ $? -ne 0 ]; then
     echo "build uCore for arm failed!"
-#    exit 1
+    exit 1
 fi
 
 # Build uCore for amd64

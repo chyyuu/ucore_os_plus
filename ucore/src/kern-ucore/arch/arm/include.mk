@@ -1,4 +1,4 @@
-ARCH_INLUCDES:=debug driver include libs mm process sync trap syscall module
+ARCH_INLUCDES:=debug driver include libs mm numa process sync trap syscall kmodule
 
 ### DEFINE THE BOARD MACROS ###
 ifdef UCONFIG_ARM_BOARD_GOLDFISH

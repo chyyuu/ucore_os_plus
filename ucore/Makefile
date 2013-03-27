@@ -6,7 +6,6 @@
 TOPDIR=$(shell pwd)
 Q :=@
 
-ARCH ?= amd64
 KTREE = $(TOPDIR)/src/kern-ucore
 ifndef O
 OBJPATH_ROOT := $(TOPDIR)/obj
@@ -22,8 +21,6 @@ export KCONFIG_CONFIG=$(CONFIG_SCRIPT)
 CONFIG_DIR := $(OBJPATH_ROOT)/config
 KCONFIG_AUTOCONFIG=$(CONFIG_DIR)/auto.conf
 KCONFIG_AUTOHEADER=$(CONFIG_DIR)/autoconf.h
-CONFIG_CONFIG_IN = $(KTREE)/arch/$(ARCH)/Kconfig
-CONFIG_DEFCONFIG = $(KTREE)/arch/$(ARCH)/configs/$(BOARD)_defconfig
 
 CONFIG_SHELL:=$(shell if [ -x "$$BASH" ]; then echo $$BASH; \
 	else if [ -x /bin/bash ]; then echo /bin/bash; \
@@ -35,8 +32,12 @@ MAKEFLAGS += -rR --no-print-directory
 
 #### CROSS COMPILE HERE ####
 ARCH ?= $(patsubst "%",%,$(UCONFIG_ARCH))
+ARCH ?= amd64
 BOARD ?= default
 CROSS_COMPILE ?= $(UCONFIG_CROSS_COMPILE)
+
+CONFIG_CONFIG_IN = $(KTREE)/arch/$(ARCH)/Kconfig
+CONFIG_DEFCONFIG = $(KTREE)/arch/$(ARCH)/configs/$(BOARD)_defconfig
 
 export CONFIG_SHELL quiet Q KBUILD_VERBOSE
 export ARCH CROSS_COMPILE
