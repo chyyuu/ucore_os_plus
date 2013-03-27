@@ -983,7 +983,7 @@ int do_pgfault(struct mm_struct *mm, machine_word_t error_code, uintptr_t addr)
 
 	pte_perm_t perm, nperm;
 #ifdef ARCH_ARM
-#warning ARM9 software emulated PTE_xxx
+//#warning ARM9 software emulated PTE_xxx
 	perm = PTE_P | PTE_U;
 	if (vma->vm_flags & VM_WRITE) {
 		perm |= PTE_W;
@@ -1134,7 +1134,7 @@ int do_pgfault(struct mm_struct *mm, machine_word_t error_code, uintptr_t addr)
 #endif
 			if (!(error_code & 2) && cow) {
 #ifdef ARCH_ARM
-#warning ARM9 software emulated PTE_xxx
+//#warning ARM9 software emulated PTE_xxx
 				perm &= ~PTE_W;
 #else
 				ptep_unset_s_write(&perm);

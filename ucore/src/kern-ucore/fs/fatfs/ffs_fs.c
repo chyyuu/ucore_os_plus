@@ -63,7 +63,7 @@ static int ffs_unmount(struct fs *fs)
 /* cleanup of filesystem
  * i.e. sync the filesystem
  */
-static void ffs_cleanup(struct fs *fs)
+static int ffs_cleanup(struct fs *fs)
 {
 	FAT_PRINTF("[ffs_cleanup]");
 	int i, ret;

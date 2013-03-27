@@ -157,7 +157,11 @@ endif
 	@$(Q)$(MAKE) -f $(TOPDIR)/src/user-ucore/Makefile -C $(TOPDIR)/src/user-ucore initial_dir
 	-cp -r $(TOPDIR)/src/user-ucore/_initial/* $(TMPSFS)
 	@rm -f $@
+ifdef AUTO_TEST	
+	@dd if=/dev/zero of=$@ bs=1M count=$(UCONFIG_SFS_IMAGE_SIZE) >/dev/null 2>&1
+else
 	@dd if=/dev/zero of=$@ bs=1M count=$(UCONFIG_SFS_IMAGE_SIZE)
+endif
 	@$(TOOLS_MKSFS) $@ $(TMPSFS)
 	@rm -rf $(TMPSFS)
 
@@ -169,7 +173,11 @@ swapimg: $(SWAPFS_FILE)
 
 $(SWAPFS_FILE): | $(OBJPATH_ROOT)
 	@echo Making $@
+ifdef AUTO_TEST	
+	$(Q)dd if=/dev/zero of=$@ bs=1M count=128 >/dev/null 2>&1
+else
 	$(Q)dd if=/dev/zero of=$@ bs=1M count=128
+endif
 endif
 
 $(OBJPATH_ROOT):
