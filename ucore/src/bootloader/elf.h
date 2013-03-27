@@ -5,7 +5,7 @@
 
 #define ELF_MAGIC   0x464C457FU	// "\x7FELF" in little endian
 
-#if defined(__UCORE_64__) || defined(__ARCH_X86_64__)
+#if defined(__UCORE_64__) || defined(__ARCH_AMD64__)
 
 /* file header */
 struct elfhdr {
