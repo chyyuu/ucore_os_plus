@@ -21,7 +21,7 @@ UCLIBC_ENABLED=
 BRK_FUNC=readline
 QEMU_SERIAL_LOG=serial.log
 
-export SUMMARY=${SUMMAY:-$stdout}
+export SUMMARY=${SUMMARY:-$stdout}
 TEST_LIST=testlist
 LOCK_FILENAME=.build-lock
 SPEC_TMP=.spec.tmp
