@@ -25,13 +25,20 @@ else
 fi
 
 # Dump results to stdout
-echo "==================== i386 ===================="
-cat $BUILD_DIR_I386/test-result.latest/summary
-echo ""
-echo "==================== arm  ===================="
-cat $BUILD_DIR_ARM/test-result.latest/summary
-echo ""
-echo "=================== amd64 ===================="
-cat $BUILD_DIR_AMD64/test-result.latest/summary
+echo "========================= SUMMARY =========================="
+printf "%-20s%-10s%-10s%-10s%-10s\n" "" passed failed broken total
+tail -n 1 $BUILD_DIR_I386/test-result.latest/summary
+tail -n 1 $BUILD_DIR_ARM/test-result.latest/summary
+tail -n 1 $BUILD_DIR_AMD64/test-result.latest/summary
+echo
+
+echo "=========================== i386 ==========================="
+head -n $[ `cat $BUILD_DIR_I386/test-result.latest/summary | wc -l` - 3 ] $BUILD_DIR_I386/test-result.latest/summary
+echo
+echo "=========================== ARM ============================"
+head -n $[ `cat $BUILD_DIR_ARM/test-result.latest/summary | wc -l` - 3 ] $BUILD_DIR_ARM/test-result.latest/summary
+echo
+echo "========================== amd64 ==========================="
+head -n $[ `cat $BUILD_DIR_AMD64/test-result.latest/summary | wc -l` - 3 ] $BUILD_DIR_AMD64/test-result.latest/summary
 
 popd > /dev/null
