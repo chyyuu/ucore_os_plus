@@ -240,7 +240,10 @@ run_test_suite() {
         fi
         echo $TEST_CASE > $TEST_RESULT_DIR/$TEST_LIST
     else
-        find $2/testspecs | grep "\.testspec$" | sort > $TEST_RESULT_DIR/$TEST_LIST
+	find $2/testspecs -name *.testspec | while read file; do
+	    timeout=`grep "^@timeout" $file | egrep -o "[0-9]+"`
+	    echo ${timeout:-10} $file
+	done | sort -nr | grep -o " .*$" > $TEST_RESULT_DIR/$TEST_LIST
     fi
     cat $TEST_RESULT_DIR/$TEST_LIST | xargs --max-procs=$MAX_PROCS -n 1 "$0" -1
 }
