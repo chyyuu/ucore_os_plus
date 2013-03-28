@@ -13,7 +13,6 @@ rm -rf $BUILD_DIR_AMD64
 make O=$BUILD_DIR_I386 ARCH=i386 defconfig > /dev/null && \
 make O=$BUILD_DIR_I386 kernel > /dev/null && \
 UCORE_TEST=xx make O=$BUILD_DIR_I386 sfsimg > /dev/null
-#make O=$BUILD_DIR_I386 swapimg > /dev/null
 if [ $? -ne 0 ]; then
     echo "build uCore for i386 failed!"
     exit 1
