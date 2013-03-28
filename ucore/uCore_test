@@ -114,13 +114,14 @@ check_regexps() {
     fi
 }
 
-# usage: print_info <test name> <result> <expected result>
+# usage: print_info <test name> <result> <expected result> <count file>
 print_result() {
     decorator='!'
     if [ $2 = $3 ]; then
 	decorator=' '
     fi
     printf "%-60s[%c%6s%c]\n" "TEST <$TEST_SUITE_NAME> $1" "$decorator" "$2" "$decorator" >> $SUMMARY
+    echo -n "$decorator" >> $4
 }
 
 # usage: acquire_lock <lock file path>
@@ -175,8 +176,7 @@ run_test() {
 	# It won't work if any test case other than those with uCore requires to rebuild the image
         rebuild_testimg $UCORE_TEST_DIR sfs-orig.img
         if [ $? -ne 0 ]; then
-	    print_result $name "BROKEN" $expected
-	    echo -n . >> $BUILD_DIR/$BROKEN_COUNT_TMP
+	    print_result $name "BROKEN" $expected $BUILD_DIR/$BROKEN_COUNT_TMP
 	    return 1
         fi
 	cp $BUILD_DIR/sfs.img $BUILD_DIR/sfs.img.$$
@@ -190,8 +190,7 @@ run_test() {
     cp $BUILD_DIR/kernel/kernel-$UCONFIG_ARCH.elf $BUILD_DIR/kernel/kernel-$UCONFIG_ARCH.elf.$$
     release_lock $BUILD_DIR/$LOCK_FILENAME
     if [ $result -ne 0 ]; then
-	print_result $name "BROKEN" $expected
-	echo -n . >> $BUILD_DIR/$BROKEN_COUNT_TMP
+	print_result $name "BROKEN" $expected $BUILD_DIR/$BROKEN_COUNT_TMP
         exit 1
     fi
 
@@ -213,12 +212,10 @@ run_test() {
     check_regexps $BUILD_DIR/$QEMU_SERIAL_LOG.$$ $TEST_SPEC
     case $? in
 	0)
-	    print_result $name " PASS " $expected
-	    echo -n . >> $BUILD_DIR/$PASSED_COUNT_TMP
+	    print_result $name " PASS " $expected $BUILD_DIR/$PASSED_COUNT_TMP
 	    ;;
 	1)
-	    print_result $name " FAIL " $expected
-	    echo -n . >> $BUILD_DIR/$FAILED_COUNT_TMP
+	    print_result $name " FAIL " $expected $BUILD_DIR/$FAILED_COUNT_TMP
 	    ;;
     esac
 
@@ -365,12 +362,16 @@ if [[ $UCLIBC_TEST_ENABLED = "y" ]] && [ -e $UCLIBC_TEST_DIR ]; then
     run_test_suite "uclibc" $BIONIC_LIBC_TEST_DIR sfs-uclibc.img
 fi
 
+passed=`cat $BUILD_DIR/$PASSED_COUNT_TMP | wc -m`
+passed_unexpected=`grep -o '!' $BUILD_DIR/$PASSED_COUNT_TMP | wc -l`
+failed=`cat $BUILD_DIR/$FAILED_COUNT_TMP | wc -m`
+failed_unexpected=`grep -o '!' $BUILD_DIR/$FAILED_COUNT_TMP | wc -l`
+broken=`cat $BUILD_DIR/$BROKEN_COUNT_TMP | wc -m`
+total=`cat $BUILD_DIR/$TOTAL_COUNT_TMP | wc -m`
+
 echo "========== Test Summary ==========" >> $SUMMARY
-echo "  Total   " `cat $BUILD_DIR/$TOTAL_COUNT_TMP | wc -m` >> $SUMMARY
-echo "  Passed  " `cat $BUILD_DIR/$PASSED_COUNT_TMP | wc -m` >> $SUMMARY
-echo "  Failed  " `cat $BUILD_DIR/$FAILED_COUNT_TMP | wc -m` >> $SUMMARY
-echo "  Broken  " `cat $BUILD_DIR/$BROKEN_COUNT_TMP | wc -m` >> $SUMMARY
-echo "==================================" >> $SUMMARY
+printf "%-20s%-10s%-10s%-10s%-10s\n" "" passed failed broken total >> $SUMMARY
+printf "%-20s%-10s%-10s%-10s%-10s\n" $UCONFIG_ARCH "$passed($passed_unexpected)" "$failed($failed_unexpected)" $broken $total >> $SUMMARY
 
 rm -f $BUILD_DIR/$TOTAL_COUNT_TMP $BUILD_DIR/$PASSED_COUNT_TMP $BUILD_DIR/$FAILED_COUNT_TMP $BUILD_DIR/$BROKEN_COUNT_TMP
 rm -f $BUILD_DIR/kernel.img.* 2>/dev/null
@@ -380,5 +381,5 @@ rm -f $BUILD_DIR/kernel/kernel-$UCONFIG_ARCH.elf.*
 rm -f $TEST_RESULT_DIR/$SPEC_TMP.*
 
 if [[ $RECORD_MODE = "y" ]]; then
-    tail -n 6 $SUMMARY
+    tail -n 3 $SUMMARY
 fi
