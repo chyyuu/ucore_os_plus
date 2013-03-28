@@ -114,9 +114,13 @@ check_regexps() {
     fi
 }
 
-# usage: print_info <test name> <result>
+# usage: print_info <test name> <result> <expected result>
 print_result() {
-    printf "%-60s%10s\n" "TEST <$TEST_SUITE_NAME> $1" "$2" >> $SUMMARY
+    decorator='!'
+    if [ $2 = $3 ]; then
+	decorator=' '
+    fi
+    printf "%-60s[%c%6s%c]\n" "TEST <$TEST_SUITE_NAME> $1" "$decorator" "$2" "$decorator" >> $SUMMARY
 }
 
 # usage: acquire_lock <lock file path>
@@ -149,6 +153,13 @@ run_test() {
             return 10
         fi
     fi
+    expected=" PASS "
+    if [ "$failin" ]; then
+        echo $failin | grep "\b$UCONFIG_ARCH\b" > /dev/null 2>&1
+        if [ $? -eq 0 ]; then
+	    expected=" FAIL "
+	fi
+    fi
     if [ -z "$timeout" ] || [ $timeout -gt 600 ]; then
         timeout=$TIMEOUT
     fi
@@ -164,7 +175,7 @@ run_test() {
 	# It won't work if any test case other than those with uCore requires to rebuild the image
         rebuild_testimg $UCORE_TEST_DIR sfs-orig.img
         if [ $? -ne 0 ]; then
-	    print_result $name "[  BROKEN  ]"
+	    print_result $name "BROKEN" $expected
 	    echo -n . >> $BUILD_DIR/$BROKEN_COUNT_TMP
 	    return 1
         fi
@@ -179,7 +190,7 @@ run_test() {
     cp $BUILD_DIR/kernel/kernel-$UCONFIG_ARCH.elf $BUILD_DIR/kernel/kernel-$UCONFIG_ARCH.elf.$$
     release_lock $BUILD_DIR/$LOCK_FILENAME
     if [ $result -ne 0 ]; then
-	print_result $name "[ BROKEN ]"
+	print_result $name "BROKEN" $expected
 	echo -n . >> $BUILD_DIR/$BROKEN_COUNT_TMP
         exit 1
     fi
