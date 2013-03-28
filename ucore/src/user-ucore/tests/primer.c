@@ -4,7 +4,7 @@
 #include <malloc.h>
 #include <lock.h>
 
-int total = 1000;
+int total = 10;
 
 int *note;
 lock_t *locks;
