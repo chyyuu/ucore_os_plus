@@ -196,7 +196,7 @@ run_test() {
 
     (
         ulimit -t $timeout
-	exec ./uCore_run -d $BUILD_DIR -t $$
+    exec ./uCore_run -d $BUILD_DIR -t $$
     ) > /dev/null 2>&1 &
     pid=$!
     sleep $WAIT_TIMEOUT
