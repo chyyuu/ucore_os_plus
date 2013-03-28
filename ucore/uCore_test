@@ -4,7 +4,7 @@ stdout=/dev/stdout
 stderr=/dev/stderr
 
 BUILD_DIR=${BUILD_DIR:-obj}
-RECORD_MODE=
+RECORD_MODE=${RECORD_MODE:-}
 TEST_CASE=
 TIMEOUT=10
 WAIT_TIMEOUT=0
@@ -202,20 +202,14 @@ run_test() {
     check_regexps $BUILD_DIR/$QEMU_SERIAL_LOG.$$ $TEST_SPEC
     case $? in
 	0)
-	    print_result $name "[  PASS  ]"
+	    print_result $name " PASS " $expected
 	    echo -n . >> $BUILD_DIR/$PASSED_COUNT_TMP
 	    ;;
 	1)
-	    print_result $name "[  FAIL  ]"
+	    print_result $name " FAIL " $expected
 	    echo -n . >> $BUILD_DIR/$FAILED_COUNT_TMP
 	    ;;
     esac
-
-    rm $BUILD_DIR/kernel.img.$$ 2>/dev/null
-    rm $BUILD_DIR/sfs.img.$$
-    rm $BUILD_DIR/serial.log.$$
-    rm $BUILD_DIR/kernel/kernel-$UCONFIG_ARCH.elf.$$
-    rm $TEST_RESULT_DIR/$SPEC_TMP.$$
 
     if [[ $RECORD_MODE = "y" ]]; then
         tail -n 1 $SUMMARY
@@ -282,7 +276,7 @@ while getopts "d:f:hrs:t:w:1:" opt; do
             exit 0
             ;;
         r)
-            RECORD_MODE=y
+            export RECORD_MODE=y
             ;;
         s)
             DEFAULT_TEST=
@@ -368,6 +362,11 @@ echo "  Broken  " `cat $BUILD_DIR/$BROKEN_COUNT_TMP | wc -m` >> $SUMMARY
 echo "==================================" >> $SUMMARY
 
 rm -f $BUILD_DIR/$TOTAL_COUNT_TMP $BUILD_DIR/$PASSED_COUNT_TMP $BUILD_DIR/$FAILED_COUNT_TMP $BUILD_DIR/$BROKEN_COUNT_TMP
+rm -f $BUILD_DIR/kernel.img.* 2>/dev/null
+rm -f $BUILD_DIR/sfs.img.*
+rm -f $BUILD_DIR/serial.log.*
+rm -f $BUILD_DIR/kernel/kernel-$UCONFIG_ARCH.elf.*
+rm -f $TEST_RESULT_DIR/$SPEC_TMP.*
 
 if [[ $RECORD_MODE = "y" ]]; then
     tail -n 6 $SUMMARY
