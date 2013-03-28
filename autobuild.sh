@@ -1,4 +1,4 @@
-# !/bin/bash
+#!/bin/bash
 
 pushd `dirname $0` > /dev/null
 source autotest.config
