@@ -8,7 +8,7 @@ ADDITIONAL_LDFLAGS=""
 #
 # Memory Management
 #
-SWAP=y
+# HAVE_SWAP is not set
 
 #
 # Schedule

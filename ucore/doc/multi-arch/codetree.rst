@@ -3,7 +3,8 @@ Code-tree Ucore
 ===============
 
 :Author: Mao Junjie <eternal.n08@gmail.com>
-:Version: $Revision: 1 $
+:Author: Chen Yu (chyyuu@gmail.com)
+:Version: $Revision: 1.1 $
 
 This document describes the code tree from the view of multi-arch.
 
@@ -12,7 +13,7 @@ This document describes the code tree from the view of multi-arch.
 General
 =======
 
-Ucore is currently divided into various modules, each of which will be built seperately and then merged together by the instructions specified in the architecture-specific makefile. Most modules are divided into two parts: the architecture-independent (will be abbreviated to arch-dep below) part and the architecture-independent (will be abbreviated to arch-indep below) part. The former is shared among all implementations, while the latter is only used for specific architecture. Attached to a module's top directory, the arch-indep part are located in all directories except arch, and the arch-dep part are located in arch/$ARCH where ARCH is the architecture's name (this will be used through this document).
+Ucore is currently divided into various modules, each of which will be built seperately and then merged together by the instructions specified in the architecture-specific makefile. Most modules are divided into two parts: the architecture-dependent (will be abbreviated to arch-dep below) part and the architecture-independent (will be abbreviated to arch-indep below) part. The former is shared among all implementations, while the latter is only used for specific architecture. Attached to a module's top directory, the arch-indep part are located in all directories except arch, and the arch-dep part are located in arch/$ARCH where ARCH is the architecture's name (this will be used through this document).
 
 The arch-dep part of each module usually at least contains a makefile and a link script.
 
@@ -21,9 +22,9 @@ The relative paths used below are all based on the assumption that it is attache
 Bootloader
 ==========
 
-The arch-indep part only includes elf headers and common type definitions. All executable code are located in arch/$ARCH.
+The arch-dep part only includes elf headers and common type definitions. All executable code are located in arch/$ARCH.
 
-For *i386*, *x86_64* and *or32*, this is a real bootloader which will be located on the first block of external storage. The only function of it is to load the kernel in elf format from external storage to a pre-defined location in memory.
+For *i386*, *amd64* and *or32*, this is a real bootloader which will be located on the first block of external storage. The only function of it is to load the kernel in elf format from external storage to a pre-defined location in memory.
 
 For *um*, the so-called bootloader is actually a user interface. It parses arguments given, initialize the environment, load the kernel and finally start running it.
 
@@ -37,7 +38,7 @@ Debug
 
 Located at arch/$ARCH/debug.
 
-This subsystem should at least provide **__warn** and **__panic** which is used by **panic** and **assert**. Extra debug support may be included such as the kernel debug monitor in *i386* and *x86_64*.
+This subsystem should at least provide **__warn** and **__panic** which is used by **panic** and **assert**. Extra debug support may be included such as the kernel debug monitor in *i386* and *amd64*.
 
 Drivers
 -------
@@ -51,7 +52,7 @@ Interrupt configuration is usually included in this subsystem. Files named intr.
 Initialization
 --------------
 
-Located at arch/$ARCH/init for *i386*, *or32* and *um*, and at arch/$ARCH/glue_ucore for *x86_64*.
+Located at arch/$ARCH/init for *i386*, *or32* and *um*, and at arch/$ARCH/glue_ucore for *amd64*.
 
 This subsystem usually provides an entry.c/init.c/main.c. It includes the C side kernel entry which initializes ucore's other subsystems and start running user processes.
 
@@ -104,17 +105,4 @@ Userspace Test Cases
 ====================
 
 User programs should be totally unaware of what platform it is running on if a library is properly designed and provided. It is so for most programs except *badsegment.c* and *softint.c* which use inline assembly to test ucore's error handling. Thus, they are now put into archive and won't be compiled into the fs image by default.
-
-On the Supervisor
-=================
-
-Supervisor is the OS architecture introduced by Yuan Xinhao in his mp64 implementation [#]_. The OS is seperated into two independent parts, the supervisor and the kernel. The former initialize the basic system, including all APs, and then load the kernel from external storage and let it handle the rest.
-
-Because of this design, some arch-dep code are moved to module *supervisor* such as drivers. This also gives rise to the *glue-kern* module and the directory arch/$ARCH/glue-ucore.
-
-At present, implementations except *x86_64* don't have the supervisor layer. What's the relationship between supervisor/kernel layer and HAL is a topic remained to be further discussed.
-
-References
-==========
-.. [#] https://github.com/xinhaoyuan/ucore-mp64
 

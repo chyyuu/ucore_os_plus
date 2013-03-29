@@ -80,8 +80,7 @@ case $UCONFIG_ARCH in
         fi
         exec $QEMU -m 128 \
             -hda $BUILD_DIR/kernel.img$TEST_POSTFIX \
-            -drive file=$BUILD_DIR/swap.img,media=disk,cache=writeback \
-            -drive file=$BUILD_DIR/sfs.img$TEST_POSTFIX,media=disk,cache=writeback \
+            -drive file=$BUILD_DIR/sfs.img$TEST_POSTFIX,media=disk,cache=writeback,index=2 \
             -s -serial file:$BUILD_DIR/serial.log$TEST_POSTFIX \
             $EXTRA_OPT
         ;;

@@ -1,5 +1,5 @@
 SRCFILES	+= $(filter %.c %.S, $(wildcard arch/${ARCH}/*))
-T_CC_ALL_FLAGS	+= -m32 -Iarch/${ARCH} -D__ARCH_X86_64__
+T_CC_ALL_FLAGS	+= -m32 -Iarch/${ARCH} -D__ARCH_AMD64__
 
 include ${T_BASE}/mk/compbl.mk
 include ${T_BASE}/mk/template.mk

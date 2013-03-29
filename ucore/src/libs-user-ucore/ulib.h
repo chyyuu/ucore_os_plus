@@ -71,4 +71,6 @@ int __exec(const char *name, const char **argv, const char **envp);
 #define exec(path, ...)                         __exec0(NULL, path, ##__VA_ARGS__)
 #define nexec(name, path, ...)                  __exec0(name, path, ##__VA_ARGS__)
 
+void halt(void);
+
 #endif /* !__USER_LIBS_ULIB_H__ */

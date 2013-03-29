@@ -73,6 +73,8 @@ void tls_init(struct cpu* cpu);
 /* alloc percpu memory */
 void percpu_init(void);
 
+void cpu_up(int id);
+
 #define myid() (mycpu()->id)
 
 #endif

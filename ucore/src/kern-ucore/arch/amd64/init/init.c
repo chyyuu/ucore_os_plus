@@ -18,12 +18,20 @@
 #include <mp.h>
 #include <mod.h>
 #include <percpu.h>
+#include <sysconf.h>
 
 int kern_init(void) __attribute__ ((noreturn));
 
 static void bootaps(void)
 {
+	int i;
 	kprintf("starting to boot Application Processors!\n");
+	for(i=0;i<sysconf.lcpu_count;i++){
+		if(i == myid())
+			continue;
+		kprintf("booting cpu%d\n", i);
+		cpu_up(i);
+	}
 }
 
 int kern_init(void)
@@ -45,7 +53,6 @@ int kern_init(void)
 	tls_init(per_cpu_ptr(cpus, 0));
 
 	pmm_init();		// init physical memory management
-	pmm_init_ap();
 
 	hz_init();
 
@@ -88,4 +95,10 @@ int kern_init(void)
 
 	/* do nothing */
 	cpu_idle();		// run idle process
+}
+
+void do_halt(void)
+{
+	acpi_power_off();
+	for (;;);
 }

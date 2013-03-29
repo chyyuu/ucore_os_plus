@@ -97,7 +97,10 @@ void AcpiOsFree(void *ptr)
 
 ACPI_THREAD_ID AcpiOsGetThreadId(void)
 {
-	panic("AcpiOsGetThreadId not implemented");
+	//TODO XXX
+	//chy: for sys_halt, disable it first
+	//panic("AcpiOsGetThreadId not implemented");
+	return 0;
 }
 
 ACPI_STATUS
@@ -148,13 +151,17 @@ ACPI_STATUS AcpiOsDeleteSemaphore(struct semaphore * handle)
 ACPI_STATUS
 AcpiOsWaitSemaphore(struct semaphore * handle, uint32_t units, uint16_t timeout)
 {
-	panic("AcpiOsWaitSemaphore not implemented");
+	//TODO XXX
+	//chy: for sys_halt, disable it first
+	//panic("AcpiOsWaitSemaphore not implemented");
 	return AE_OK;
 }
 
 ACPI_STATUS AcpiOsSignalSemaphore(struct semaphore * handle, uint32_t units)
 {
-	panic("AcpiOsSignalSemaphore not implemented");
+	//TODO XXX
+	//chy: for sys_halt, disable it first
+	//panic("AcpiOsSignalSemaphore not implemented");
 	return AE_OK;
 }
 
@@ -171,9 +178,10 @@ void AcpiOsDeleteLock(struct spinlock *handle)
 
 ACPI_CPU_FLAGS AcpiOsAcquireLock(struct spinlock *handle)
 {
-	//XXX
-	panic("AcpiOsAcquireLock not implemented");
-	return 0;
+	//TODO XXX
+	//chy: for sys_halt, disable it first
+	//panic("AcpiOsAcquireLock not implemented");
+	return AE_OK;
 }
 
 void AcpiOsReleaseLock(struct spinlock *handle, ACPI_CPU_FLAGS flags)

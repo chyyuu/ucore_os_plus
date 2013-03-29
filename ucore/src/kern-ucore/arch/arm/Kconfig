@@ -72,12 +72,12 @@ config HAVE_BOOTLOADER
 
 config FPU_ENABLE
   bool "Enable FPU"
-  default y
+  default n
 
 config BIONIC_LIBC
   depends FPU_ENABLE
   bool "Support Bionic Libc"
-  default y
+  default n
 
 config BOOTLOADER_START_ADDR
   depends HAVE_BOOTLOADER

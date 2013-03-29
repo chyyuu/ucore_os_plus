@@ -1,3 +1,4 @@
+#include <arch.h>
 #include <stdio.h>
 #include <string.h>
 #include <mmu.h>
@@ -40,6 +41,7 @@ static struct command commands[] = {
 	 "    'x': the specified debug register(0~3)\n"
 	 "    @example: delbp 3", mon_delete_dr},
 	{"listdr", "List all breakpoints or watchpoints.", mon_list_dr},
+	{"halt", "shutdown qemu(modified)",mon_halt},
 };
 
 /* return if kernel is panic, in kern/debug/panic.c */
@@ -323,5 +325,19 @@ bad_argv:
 int mon_list_dr(int argc, char **argv, struct trapframe *tf)
 {
 	debug_list_dr();
+	return 0;
+}
+
+/* *
+ * mon_halt - write  io port 0x8900 "Shutdown" to shutdown qemu
+ * NOTICE: only used in modified qemu (with 0x8900 IO write support)
+ *         in qemu/hw/pc.c::bochs_bios_write function
+ * */
+int mon_halt(int argc, char **argv, struct trapframe *tf)
+{
+	char *p = "Shutdown";
+	for( ; *p; p++)
+		outb(0x8900, *p);
+
 	return 0;
 }

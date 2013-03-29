@@ -327,6 +327,12 @@ static uint64_t sys_mkfifo(uint64_t arg[])
 	return sysfile_mkfifo(name, open_flags);
 }
 
+static uint64_t sys_halt(uint64_t arg[])
+{
+	do_halt();
+	panic("halt returned");
+}
+
 static uint64_t(*syscalls[]) (uint64_t arg[]) = {
 [SYS_exit] sys_exit,
 	    [SYS_fork] sys_fork,
@@ -371,7 +377,8 @@ static uint64_t(*syscalls[]) (uint64_t arg[]) = {
 	    [SYS_rename] sys_rename,
 	    [SYS_unlink] sys_unlink,
 	    [SYS_getdirentry] sys_getdirentry,
-	    [SYS_dup] sys_dup,[SYS_pipe] sys_pipe,[SYS_mkfifo] sys_mkfifo,};
+	    [SYS_dup] sys_dup,[SYS_pipe] sys_pipe,[SYS_mkfifo] sys_mkfifo,
+            [SYS_halt] sys_halt,};
 
 #define NUM_SYSCALLS        ((sizeof(syscalls)) / (sizeof(syscalls[0])))
 

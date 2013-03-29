@@ -39,7 +39,9 @@ extern char __percpu_end[];
 
 #define __my_cpu_offset (percpu_offsets[myid()])
 
-/* TODO: we should disable preempt if the kernel is preemptable */
+/* TODO: we should disable preempt if the kernel is preemptable,
+ * because thread migration will render a percpu var invalid
+ */
 #define get_cpu_var(var) (*(typeof(&__percpu_##var))((char*)(&__percpu_##var) - __percpu_start + __my_cpu_offset))
 #define get_cpu_ptr(var) (&get_cpu_var(var))
 

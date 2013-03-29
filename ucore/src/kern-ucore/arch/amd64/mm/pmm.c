@@ -178,25 +178,30 @@ static void init_memmap(struct Page *base, size_t n)
 	pmm_manager->init_memmap(base, n);
 }
 
+char* e820map_type[5]={"Usable","Reserved","ACPI reclaimable memory","ACPI NVS memory", "Area containing bad memory"};
+
 /* pmm_init - initialize the physical memory management */
 static void page_init(void)
 {
 	struct e820map *memmap = (struct e820map *)(0x8000 + PBASE);
-	uint64_t maxpa = 0;
+	uint64_t maxpa = 0, totalmemsize=0;
 
-	kprintf("e820map:\n");
+	kprintf("e820map: size, begin, end, type\n");
+	kprintf("----------------------------------------\n");
 	int i;
 	for (i = 0; i < memmap->nr_map; i++) {
 		uint64_t begin = memmap->map[i].addr, end = begin + memmap->map[i].size;
-		kprintf("  memory: %016llx, [%016llx, %016llx], type = %d.\n",
+		kprintf("  memory: %016llx, [%016llx, %016llx], %s.\n",
 			memmap->map[i].size, begin, end - 1,
-			memmap->map[i].type);
+			e820map_type[memmap->map[i].type - 1]);
 		if (memmap->map[i].type == E820_ARM) {
+			totalmemsize+=memmap->map[i].size;
 			if (maxpa < end && begin < KMEMSIZE) {
 				maxpa = end;
 			}
 		}
 	}
+	kprintf("--------Total Usable Phy Mem Size %lld MB-----------\n", totalmemsize/1024/1024);
 	if (maxpa > KMEMSIZE) {
 		maxpa = KMEMSIZE;
 	}
@@ -365,6 +370,16 @@ void pmm_init(void)
 	/* and map the first 1MB for the ap booting */
 	/* boot_map_segment(boot_pgdir, 0, 0x100000, 0, PTE_W); */
 
+	//TODO put here?
+	pmm_init_ap();
+
+	print_pgdir(kprintf);
+	slab_init();
+}
+
+void pmm_init_ap(void)
+{
+
 	lcr3(boot_cr3);
 
 	// set CR0
@@ -377,13 +392,6 @@ void pmm_init(void)
 
 	gdt_init();
 
-	print_pgdir(kprintf);
-
-	slab_init();
-}
-
-void pmm_init_ap(void)
-{
 	list_entry_t *page_struct_free_list =
 	    get_cpu_ptr(page_struct_free_list);
 	list_init(page_struct_free_list);
@@ -496,8 +504,9 @@ void print_pgdir(int (*printf) (const char *fmt, ...))
 	};
 	size_t s2[] = { PUSIZE, PMSIZE, PTSIZE, PGSIZE };
 	uintptr_t *s3[] = { vgd, vud, vmd, vpt };
-	printf("-------------------- BEGIN --------------------\n");
+	printf("PageTable: (num of items), mem-range, mem size, permission \n");
+	printf("----------------------------------------\n");
 	print_pgdir_sub(sizeof(s1) / sizeof(s1[0]), 0, NPGENTRY, s1, s2, s3,
 			printf);
-	printf("--------------------- END ---------------------\n");
+	printf("------------------------------------------\n");
 }

@@ -48,7 +48,9 @@ int kern_init(void)
 	sync_init();		// init sync struct
 
 	ide_init();		// init ide devices
+#ifdef UCONFIG_SWAP
 	swap_init();		// init swap
+#endif
 	fs_init();		// init fs
 
 	clock_init();		// init clock interrupt

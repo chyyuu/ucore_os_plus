@@ -4,7 +4,7 @@
 
 #define printf(...)                     fprintf(1, __VA_ARGS__)
 
-int main(int argc, char **argv)
+int main(int argc, const char **argv)
 {
 	int pid;
 	argv[argc] = 0;

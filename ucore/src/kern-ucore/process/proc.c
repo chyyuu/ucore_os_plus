@@ -257,12 +257,12 @@ static void put_pgdir(struct mm_struct *mm)
 	free_page(kva2page(mm->pgdir));
 }
 #else
-#warning ARM PDT is 16k
+/* ARM PDT is 16k */
 static int setup_pgdir(struct mm_struct *mm)
 {
 	struct Page *page;
 	/* 4 * 4K = 16K */
-#warning dirty hack
+	/* dirty hack */
 	if ((page = alloc_pages(8)) == NULL) {
 		return -E_NO_MEM;
 	}
@@ -1959,7 +1959,7 @@ static int init_main(void *arg)
 	kswapd = find_proc(pid);
 	set_proc_name(kswapd, "kswapd");
 #else
-#warning swapping disabled
+	kprintf("init_main:: swapping is disabled.\n");
 #endif
 
 	int ret;

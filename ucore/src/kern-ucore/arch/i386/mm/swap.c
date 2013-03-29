@@ -13,6 +13,8 @@
 #include <stdlib.h>
 #include <kio.h>
 
+#ifdef UCONFIG_SWAP
+
 typedef struct {
 	list_entry_t swap_list;
 	size_t nr_pages;
@@ -478,3 +480,4 @@ void check_mm_shm_swap(void)
 
 	kprintf("check_mm_shm_swap() succeeded.\n");
 }
+#endif

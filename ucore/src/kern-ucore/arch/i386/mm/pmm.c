@@ -384,15 +384,19 @@ struct Page *alloc_pages(size_t n)
 {
 	struct Page *page;
 	bool intr_flag;
+#ifdef UCONFIG_SWAP
 try_again:
+#endif
 	local_intr_save(intr_flag);
 	{
 		page = pmm_manager->alloc_pages(n);
 	}
 	local_intr_restore(intr_flag);
+#ifdef UCONFIG_SWAP
 	if (page == NULL && try_free_pages(n)) {
 		goto try_again;
 	}
+#endif
 
 	get_cpu_var(used_pages) += n;
 	return page;
