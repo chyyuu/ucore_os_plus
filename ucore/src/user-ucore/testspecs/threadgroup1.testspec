@@ -1,5 +1,6 @@
 @program	/testbin/threadgroup1
-@arch		i386
+@arch		i386 amd64
+@failin         i386 amd64
 
   - 'kernel_execve: pid = [0-9]{1,2}, name = "/testbin/threadgroup1".'
     'thread ok.'

@@ -17,6 +17,7 @@ if [ $? -ne 0 ]; then
     echo "build uCore for i386 failed!"
     exit 1
 fi
+echo "build uCore for i386: OK"
 
 # Build uCore for arm on goldfishv7
 # Disable DDE at present as it violates the checks after all user-mode processes quit
@@ -30,6 +31,7 @@ if [ $? -ne 0 ]; then
     echo "build uCore for arm failed!"
     exit 1
 fi
+echo "build uCore for arm: OK"
 
 # Build uCore for amd64
 make O=$BUILD_DIR_AMD64 ARCH=amd64 defconfig > /dev/null && \
@@ -39,5 +41,6 @@ if [ $? -ne 0 ]; then
     echo "build uCore for amd64 failed!"
     exit 1
 fi
+echo "build uCore for amd64: OK"
 
 popd > /dev/null

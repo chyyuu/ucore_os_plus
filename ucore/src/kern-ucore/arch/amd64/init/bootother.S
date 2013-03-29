@@ -21,12 +21,12 @@
         .word (((lim) >> 12) & 0xffff), ((base) & 0xffff);      \
         .byte (((base) >> 16) & 0xff), (0x90 | (type)),         \
                 (0xC0 | (((lim) >> 28) & 0xf)), (((base) >> 24) & 0xff)
-        
+
 #define PROT_MODE_CSEG 0x8
 #define PROT_MODE_DSEG 0x10
 #define CR0_PE_ON      0x1
-        
-.code16           
+
+.code16
 .globl _start
 _start:
 start:
@@ -39,7 +39,7 @@ start:
 	# Announce we made it this far.
 	# Useful for debugging in bootothers.
 	movl $0x0a55face, start - 64
-        
+
 	lgdt gdtdesc
 	movl %cr0, %eax
 	orl $CR0_PE_ON, %eax

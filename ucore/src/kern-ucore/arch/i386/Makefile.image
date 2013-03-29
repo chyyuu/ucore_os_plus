@@ -13,15 +13,10 @@ SEDFLAGS	= s/TEXT_START/$(UCONFIG_KERNEL_BASE)/
 
 $(KERNEL_IMG): $(BOOTSECT) $(KERNEL_ELF)
 	@echo Making $@
-ifdef AUTO_TEST	
 	$(Q)dd if=/dev/zero of=$@ count=10000 >/dev/null 2>&1
 	$(Q)dd if=$(BOOTSECT) of=$@ conv=notrunc >/dev/null 2>&1
 	$(Q)dd if=$(KERNEL_ELF) of=$@ seek=1 conv=notrunc >/dev/null 2>&1
-else
-	$(Q)dd if=/dev/zero of=$@ count=10000
-	$(Q)dd if=$(BOOTSECT) of=$@ conv=notrunc
-	$(Q)dd if=$(KERNEL_ELF) of=$@ seek=1 conv=notrunc
-endif	
+
 $(KERNEL_ELF): $(LINK_FILE) $(KERNEL_BUILTIN) $(RAMDISK_OBJ)
 	@echo Linking uCore
 	$(Q)$(TARGET_LD) $(TARGET_LDFLAGS) -T $(LINK_FILE) $(KERNEL_BUILTIN) $(RAMDISK_OBJ) -o $@

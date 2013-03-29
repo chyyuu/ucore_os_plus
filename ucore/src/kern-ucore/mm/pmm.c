@@ -88,12 +88,11 @@ pte_t *get_pte(pgd_t * pgdir, uintptr_t la, bool create)
 #else
 		ptep_map(pmdp, pa);
 #endif
+		/* ARM9 PDE does not have access field */
 #ifndef ARCH_ARM
 		ptep_set_u_write(pmdp);
 		ptep_set_accessed(pmdp);
 		ptep_set_dirty(pmdp);
-#else
-//#warning ARM9 PDE does not have access field
 #endif
 	}
 	return &((pte_t *) KADDR(PMD_ADDR(*pmdp)))[PTX(la)];

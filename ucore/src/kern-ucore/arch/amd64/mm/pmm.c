@@ -187,7 +187,7 @@ static void page_init(void)
 	uint64_t maxpa = 0, totalmemsize=0;
 
 	kprintf("e820map: size, begin, end, type\n");
-    kprintf("----------------------------------------\n");
+	kprintf("----------------------------------------\n");
 	int i;
 	for (i = 0; i < memmap->nr_map; i++) {
 		uint64_t begin = memmap->map[i].addr, end = begin + memmap->map[i].size;
@@ -195,13 +195,13 @@ static void page_init(void)
 			memmap->map[i].size, begin, end - 1,
 			e820map_type[memmap->map[i].type - 1]);
 		if (memmap->map[i].type == E820_ARM) {
-            totalmemsize+=memmap->map[i].size;
+			totalmemsize+=memmap->map[i].size;
 			if (maxpa < end && begin < KMEMSIZE) {
 				maxpa = end;
 			}
 		}
 	}
-    kprintf("--------Total Usable Phy Mem Size %lld MB-----------\n", totalmemsize/1024/1024);
+	kprintf("--------Total Usable Phy Mem Size %lld MB-----------\n", totalmemsize/1024/1024);
 	if (maxpa > KMEMSIZE) {
 		maxpa = KMEMSIZE;
 	}
@@ -504,7 +504,7 @@ void print_pgdir(int (*printf) (const char *fmt, ...))
 	};
 	size_t s2[] = { PUSIZE, PMSIZE, PTSIZE, PGSIZE };
 	uintptr_t *s3[] = { vgd, vud, vmd, vpt };
-    printf("PageTable: (num of items), mem-range, mem size, permission \n");
+	printf("PageTable: (num of items), mem-range, mem size, permission \n");
 	printf("----------------------------------------\n");
 	print_pgdir_sub(sizeof(s1) / sizeof(s1[0]), 0, NPGENTRY, s1, s2, s3,
 			printf);

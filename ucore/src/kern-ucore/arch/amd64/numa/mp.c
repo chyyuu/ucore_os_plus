@@ -52,35 +52,31 @@ void percpu_init(void)
 
 
 #define IO_RTC  0x70
-static void
-warmreset(uint32_t addr)
+static void warmreset(uint32_t addr)
 {
-  volatile uint16_t *wrv;
+	volatile uint16_t *wrv;
 
-  // "The BSP must initialize CMOS shutdown code to 0AH
-  // and the warm reset vector (DWORD based at 40:67) to point at
-  // the AP startup code prior to the [universal startup algorithm]."
-  outb(IO_RTC, 0xF);  // offset 0xF is shutdown code
-  outb(IO_RTC+1, 0x0A);
-  wrv = (uint16_t*)VADDR_DIRECT(0x40<<4 | 0x67);  // Warm reset vector
-  wrv[0] = 0;
-  wrv[1] = addr >> 4;
+	// "The BSP must initialize CMOS shutdown code to 0AH
+	// and the warm reset vector (DWORD based at 40:67) to point at
+	// the AP startup code prior to the [universal startup algorithm]."
+	outb(IO_RTC, 0xF);  // offset 0xF is shutdown code
+	outb(IO_RTC+1, 0x0A);
+	wrv = (uint16_t*)VADDR_DIRECT(0x40<<4 | 0x67);  // Warm reset vector
+	wrv[0] = 0;
+	wrv[1] = addr >> 4;
 }
 
-static void
-rstrreset(void)
+static void rstrreset(void)
 {
-  volatile uint16_t *wrv;
+	volatile uint16_t *wrv;
 
-  // Paranoid: set warm reset code and vector back to defaults
-  outb(IO_RTC, 0xF);
-  outb(IO_RTC+1, 0);
-  wrv = (uint16_t*)VADDR_DIRECT(0x40<<4 | 0x67);
-  wrv[0] = 0;
-  wrv[1] = 0;
+	// Paranoid: set warm reset code and vector back to defaults
+	outb(IO_RTC, 0xF);
+	outb(IO_RTC+1, 0);
+	wrv = (uint16_t*)VADDR_DIRECT(0x40<<4 | 0x67);
+	wrv[0] = 0;
+	wrv[1] = 0;
 }
-
-
 
 static int bcpuid;
 static atomic_t bsync = ATOMIC_INIT(0);

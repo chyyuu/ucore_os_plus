@@ -203,5 +203,5 @@ void raise()
 
 void halt()
 {
-    sys_halt();
+	sys_halt();
 }

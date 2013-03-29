@@ -177,34 +177,32 @@ void lapic_eoi_send(struct lapic_chip* chip)
 	xapicw(EOI, 0);
 }
 
-static void x_lapic_start_ap(struct lapic_chip *_this, struct cpu *c, 
-		uint32_t addr)
+static void x_lapic_start_ap(struct lapic_chip *_this, struct cpu *c,
+			     uint32_t addr)
 {
-  int i;
+	int i;
 
-  // "Universal startup algorithm."
-  // Send INIT (level-triggered) interrupt to reset other CPU.
+	// "Universal startup algorithm."
+	// Send INIT (level-triggered) interrupt to reset other CPU.
 
-  xapicw(ICRHI, c->hwid << 24);
-  xapicw(ICRLO, INIT | LEVEL | ASSERT);
-  xapicwait();
-  microdelay(10000);
-  xapicw(ICRLO, INIT | LEVEL);
-  xapicwait();
-  microdelay(10000);    // should be 10ms, but too slow in Bochs!
- 
-  // Send startup IPI (twice!) to enter bootstrap code.
-  // Regular hardware is supposed to only accept a STARTUP
-  // when it is in the halted state due to an INIT.  So the second
-  // should be ignored, but it is part of the official Intel algorithm.
-  // Bochs complains about the second one.  Too bad for Bochs.
-  for(i = 0; i < 2; i++){
-    xapicw(ICRHI, c->hwid << 24);
-    xapicw(ICRLO, STARTUP | (addr>>12));
-    microdelay(200);
-  }
+	xapicw(ICRHI, c->hwid << 24);
+	xapicw(ICRLO, INIT | LEVEL | ASSERT);
+	xapicwait();
+	microdelay(10000);
+	xapicw(ICRLO, INIT | LEVEL);
+	xapicwait();
+	microdelay(10000);    // should be 10ms, but too slow in Bochs!
 
- 
+	// Send startup IPI (twice!) to enter bootstrap code.
+	// Regular hardware is supposed to only accept a STARTUP
+	// when it is in the halted state due to an INIT.  So the second
+	// should be ignored, but it is part of the official Intel algorithm.
+	// Bochs complains about the second one.  Too bad for Bochs.
+	for(i = 0; i < 2; i++){
+		xapicw(ICRHI, c->hwid << 24);
+		xapicw(ICRLO, STARTUP | (addr>>12));
+		microdelay(200);
+	}
 }
 
 

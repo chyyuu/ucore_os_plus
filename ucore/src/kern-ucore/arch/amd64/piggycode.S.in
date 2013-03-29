@@ -12,4 +12,3 @@
 
 .section .piggydata, "a", @progbits
 include_bin(init/bootother, bootother)
-

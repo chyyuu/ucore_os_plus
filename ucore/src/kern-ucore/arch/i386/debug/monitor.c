@@ -41,7 +41,7 @@ static struct command commands[] = {
 	 "    'x': the specified debug register(0~3)\n"
 	 "    @example: delbp 3", mon_delete_dr},
 	{"listdr", "List all breakpoints or watchpoints.", mon_list_dr},
-    {"halt", "shutdown qemu(modified)",mon_halt},
+	{"halt", "shutdown qemu(modified)",mon_halt},
 };
 
 /* return if kernel is panic, in kern/debug/panic.c */
@@ -335,9 +335,9 @@ int mon_list_dr(int argc, char **argv, struct trapframe *tf)
  * */
 int mon_halt(int argc, char **argv, struct trapframe *tf)
 {
-  char *p = "Shutdown";
-  for( ; *p; p++)
-    outb(0x8900, *p);
+	char *p = "Shutdown";
+	for( ; *p; p++)
+		outb(0x8900, *p);
 
-  return 0;
+	return 0;
 }

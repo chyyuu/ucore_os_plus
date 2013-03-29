@@ -208,7 +208,6 @@ int module_kallsyms_on_each_symbol(int (*fn)
 
 // TODO: SMP?
 extern void __module_put_and_exit(struct module *mod, long code);
-//    __attribute__ ((noreturn));
 #define module_put_and_exit(code) __module_put_and_exit(THIS_MODULE, code)
 
 // TODO: UNLOAD

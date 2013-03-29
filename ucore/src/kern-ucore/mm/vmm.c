@@ -157,10 +157,10 @@ static inline struct vma_struct *find_vma_rb(rb_tree * tree, uintptr_t addr)
 			if (tmp->vm_start <= addr) {
 				break;
 			}
-            vma = NULL;
+			vma = NULL;
 			node = rb_node_left(tree, node);
 		} else {
-            vma = NULL;
+			vma = NULL;
 			node = rb_node_right(tree, node);
 		}
 	}
@@ -191,7 +191,7 @@ struct vma_struct *find_vma(struct mm_struct *mm, uintptr_t addr)
 				    list;
 				while ((le = list_next(le)) != list) {
 					vma = le2vma(le, list_link);
-                    if (vma->vm_start<=addr && addr < vma->vm_end) {
+					if (vma->vm_start<=addr && addr < vma->vm_end) {
 						found = 1;
 						break;
 					}
@@ -765,53 +765,7 @@ static void check_vma_struct(void)
 //	int step1 = 2, step2 = step1 * 10;
 
 	int i;
-    for (i = step1; i >= 1; i --) {
-        struct vma_struct *vma = vma_create(i * 5, i * 5 + 2, 0);
-        assert(vma != NULL);
-        insert_vma_struct(mm, vma);
-    }
-
-    for (i = step1 + 1; i <= step2; i ++) {
-        struct vma_struct *vma = vma_create(i * 5, i * 5 + 2, 0);
-        assert(vma != NULL);
-        insert_vma_struct(mm, vma);
-    }
-
-    list_entry_t *le = list_next(&(mm->mmap_list));
-
-    for (i = 1; i <= step2; i ++) {
-        assert(le != &(mm->mmap_list));
-        struct vma_struct *mmap = le2vma(le, list_link);
-        assert(mmap->vm_start == i * 5 && mmap->vm_end == i * 5 + 2);
-        le = list_next(le);
-    }
-
-    for (i = 5; i <= 5 * step2; i +=5) {
-        //kprintf("check_vma_struct:: i is %d\n",i);
-        struct vma_struct *vma1 = find_vma(mm, i);
-        //kprintf("check_vma_struct:: addr is %d, vma1 start %d, end %d\n",i,vma1->vm_start,vma1->vm_end);
-        assert(vma1 != NULL);
-        struct vma_struct *vma2 = find_vma(mm, i+1);
-        //kprintf("check_vma_struct:: addr is %d, vma2 start %d, end %d\n",i+1,vma2->vm_start,vma2->vm_end);
-        assert(vma2 != NULL);
-        struct vma_struct *vma3 = find_vma(mm, i+2);
-        //kprintf("check_vma_struct:: addr is %d, vma3 start %d, end %d\n",i+2,vma3->vm_start,vma3->vm_end);
-        assert(vma3 == NULL);
-        struct vma_struct *vma4 = find_vma(mm, i+3);
-        assert(vma4 == NULL);
-        struct vma_struct *vma5 = find_vma(mm, i+4);
-        assert(vma5 == NULL);
-
-        assert(vma1->vm_start == i  && vma1->vm_end == i  + 2);
-        assert(vma2->vm_start == i  && vma2->vm_end == i  + 2);
-    }
-
-    for (i =4; i>=0; i--) {
-        struct vma_struct *vma_below_5= find_vma(mm,i);
-        assert(vma_below_5 == NULL);
-    }
-#if 0
-	for (i = step1; i >= 0; i--) {
+	for (i = step1; i >= 1; i--) {
 		struct vma_struct *vma = vma_create(i * 5, i * 5 + 2, 0);
 		assert(vma != NULL);
 		insert_vma_struct(mm, vma);
@@ -825,23 +779,33 @@ static void check_vma_struct(void)
 
 	list_entry_t *le = list_next(&(mm->mmap_list));
 
-	for (i = 0; i <= step2; i++) {
+	for (i = 1; i <= step2; i++) {
 		assert(le != &(mm->mmap_list));
 		struct vma_struct *mmap = le2vma(le, list_link);
 		assert(mmap->vm_start == i * 5 && mmap->vm_end == i * 5 + 2);
 		le = list_next(le);
 	}
 
-	for (i = 0; i < 5 * step2 + 2; i++) {
-		struct vma_struct *vma = find_vma(mm, i);
-		assert(vma != NULL);
-		int j = i / 5;
-		if (i >= 5 * j + 2) {
-			j++;
-		}
-		assert(vma->vm_start == j * 5 && vma->vm_end == j * 5 + 2);
+	for (i = 5; i <= 5 * step2; i+=5) {
+		struct vma_struct *vma1 = find_vma(mm, i);
+		assert(vma1 != NULL);
+		struct vma_struct *vma2 = find_vma(mm, i+1);
+		assert(vma2 != NULL);
+		struct vma_struct *vma3 = find_vma(mm, i+2);
+		assert(vma3 == NULL);
+		struct vma_struct *vma4 = find_vma(mm, i+3);
+		assert(vma4 == NULL);
+		struct vma_struct *vma5 = find_vma(mm, i+4);
+		assert(vma5 == NULL);
+
+		assert(vma1->vm_start == i  && vma1->vm_end == i  + 2);
+		assert(vma2->vm_start == i  && vma2->vm_end == i  + 2);
 	}
-#endif
+
+	for (i =4; i>=0; i--) {
+		struct vma_struct *vma_below_5= find_vma(mm,i);
+		assert(vma_below_5 == NULL);
+	}
 	mm_destroy(mm);
 
 	__CHECK_MEMORY_LEAK();
@@ -983,7 +947,7 @@ int do_pgfault(struct mm_struct *mm, machine_word_t error_code, uintptr_t addr)
 
 	pte_perm_t perm, nperm;
 #ifdef ARCH_ARM
-//#warning ARM9 software emulated PTE_xxx
+	/* ARM9 software emulated PTE_xxx */
 	perm = PTE_P | PTE_U;
 	if (vma->vm_flags & VM_WRITE) {
 		perm |= PTE_W;
@@ -1021,7 +985,7 @@ int do_pgfault(struct mm_struct *mm, machine_word_t error_code, uintptr_t addr)
 				}
 				nperm = perm;
 #ifdef ARCH_ARM
-#warning ARM9 software emulated PTE_xxx
+				/* ARM9 software emulated PTE_xxx */
 				nperm &= ~PTE_W;
 #else
 				ptep_unset_s_write(&nperm);
@@ -1056,7 +1020,7 @@ int do_pgfault(struct mm_struct *mm, machine_word_t error_code, uintptr_t addr)
 			} else {
 				nperm = perm;
 #ifdef ARCH_ARM
-#warning ARM9 software emulated PTE_xxx
+				/* ARM9 software emulated PTE_xxx */
 				nperm &= ~PTE_W;
 #else
 				ptep_unset_s_write(&nperm);

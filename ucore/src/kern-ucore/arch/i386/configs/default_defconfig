@@ -7,8 +7,7 @@ ADDITIONAL_LDFLAGS=""
 
 #
 # Memory Management
-# 
-# HAVE_SWAP is not set
+#
 
 #
 # Schedule
@@ -27,4 +26,3 @@ SFS_IMAGE_SIZE=256
 #
 # Linux Device Driver Environment
 #
-# HAVE_LINUX_DDE_BASE is not set

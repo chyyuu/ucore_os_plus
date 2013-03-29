@@ -97,9 +97,8 @@ int kern_init(void)
 	cpu_idle();		// run idle process
 }
 
-void
-do_halt(void)
+void do_halt(void)
 {
-  acpi_power_off();
-  for (;;);
+	acpi_power_off();
+	for (;;);
 }

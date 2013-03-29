@@ -257,12 +257,12 @@ static void put_pgdir(struct mm_struct *mm)
 	free_page(kva2page(mm->pgdir));
 }
 #else
-//#warning ARM PDT is 16k
+/* ARM PDT is 16k */
 static int setup_pgdir(struct mm_struct *mm)
 {
 	struct Page *page;
 	/* 4 * 4K = 16K */
-//#warning dirty hack
+	/* dirty hack */
 	if ((page = alloc_pages(8)) == NULL) {
 		return -E_NO_MEM;
 	}

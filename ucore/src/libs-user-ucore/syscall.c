@@ -286,12 +286,12 @@ int sys_halt(void)
 #ifdef ARCH_AMD64
 	return syscall(SYS_halt);
 #else
-    return 0;
+	return 0;
 #endif
 }
 
 #else
-#warning ARM use different syscall method
+/* ARM use different syscall method */
 
 #define __sys2(x) #x
 #define __sys1(x) __sys2(x)
@@ -452,7 +452,7 @@ int sys_recv_event(int *pid_store, int *event_store, unsigned int timeout)
 //halt the system, now only used in AMD64, is nll in ARM
 int sys_halt(void)
 {
-    return 0;
+	return 0;
 }
 
 #endif
