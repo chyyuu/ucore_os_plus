@@ -61,7 +61,7 @@ void pdev_bus_init()
 		device.name[0] = 0;
 		if (device.name_len < 61) {
 			outw(GOLDFISH_PDEV_BUS + PDEV_BUS_GET_NAME,
-			     device.name);
+			     (uint32_t) device.name);
 			device.name[device.name_len] = 0;
 		}
 		kprintf

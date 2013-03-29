@@ -502,9 +502,9 @@ static uint32_t __sys_linux_mmap2(uint32_t arg[])
 		int ret = __do_linux_mmap((uintptr_t) & addr, len, ucoreflags);
 		//kprintf("@@@ ret=%d %e %08x\n", ret,ret, addr);
 		if (ret)
-			return MAP_FAILED;
+			return (uint32_t)MAP_FAILED;
 		//kprintf("__sys_linux_mmap2 ret=%08x\n", addr);
-		return addr;
+		return (uint32_t) addr;
 	} else {
 		return (uint32_t) sysfile_linux_mmap2(addr, len, prot, flags,
 						      fd, off);

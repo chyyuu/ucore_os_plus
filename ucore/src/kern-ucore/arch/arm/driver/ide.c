@@ -95,7 +95,7 @@ void ide_init(void)
 #ifdef UCONFIG_HAVE_RAMDISK
 	int devno = DISK0_DEV_NO;
 	assert(devno < MAX_IDE);
-	ide_devices[devno] = kmalloc(sizeof(struct ide_device));
+	ide_devices[devno] = (struct ide_device *)kmalloc(sizeof(struct ide_device));
 	assert(ide_devices[devno] != NULL);
 	ramdisk_init_struct(ide_devices[devno]);
 	if (CHECK_CALL(devno, init))

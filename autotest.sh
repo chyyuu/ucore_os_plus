@@ -14,7 +14,7 @@ if [ $NR_CPUS -ge 4 ]; then
     ./uCore_test -d $BUILD_DIR_AMD64 -t 20 -r -s ucore > /dev/null 2>&1 &
     PIDS[2]=$!
 
-    for i in {0..0}; do
+    for i in {0..2}; do
 	wait ${PIDS[i]}
     done
 else
