@@ -25,7 +25,7 @@ static uint32_t sys_exit(uint32_t arg[])
 
 static uint32_t sys_fork(uint32_t arg[])
 {
-	struct trapframe *tf = pls_read(current)->tf;
+	struct trapframe *tf = current->tf;
 	uintptr_t stack = tf->tf_esp;
 	return do_fork(0, stack, tf);
 }
@@ -47,7 +47,7 @@ static uint32_t sys_execve(uint32_t arg[])
 
 static uint32_t sys_clone(uint32_t arg[])
 {
-	struct trapframe *tf = pls_read(current)->tf;
+	struct trapframe *tf = current->tf;
 	uint32_t clone_flags = (uint32_t) arg[0];
 	uintptr_t stack = (uintptr_t) arg[1];
 	if (stack == 0) {
@@ -75,7 +75,7 @@ static uint32_t sys_kill(uint32_t arg[])
 
 static uint32_t sys_getpid(uint32_t arg[])
 {
-	return pls_read(current)->pid;
+	return current->pid;
 }
 
 static uint32_t sys_sleep(uint32_t arg[])
@@ -92,7 +92,7 @@ static uint32_t sys_gettime(uint32_t arg[])
 static uint32_t sys_putc(uint32_t arg[])
 {
 	int c = (int)arg[0];
-	kcons_putc(c);
+	cons_putc(c);
 	return 0;
 }
 
@@ -488,7 +488,7 @@ static uint32_t __sys_linux_mmap2(uint32_t arg[])
 	     addr, len, prot, flags, fd, off);
 #endif //UCONFIG_BIONIC_LIBC
 	if (fd == -1 || flags & MAP_ANONYMOUS) {
-		//print_trapframe(pls_read(current)->tf);
+		//print_trapframe(current->tf);
 #ifdef UCONFIG_BIONIC_LIBC
 		if (flags & MAP_FIXED) {
 			return linux_regfile_mmap2(addr, len, prot, flags, fd,
@@ -502,9 +502,9 @@ static uint32_t __sys_linux_mmap2(uint32_t arg[])
 		int ret = __do_linux_mmap((uintptr_t) & addr, len, ucoreflags);
 		//kprintf("@@@ ret=%d %e %08x\n", ret,ret, addr);
 		if (ret)
-			return MAP_FAILED;
+			return (uint32_t)MAP_FAILED;
 		//kprintf("__sys_linux_mmap2 ret=%08x\n", addr);
-		return addr;
+		return (uint32_t) addr;
 	} else {
 		return (uint32_t) sysfile_linux_mmap2(addr, len, prot, flags,
 						      fd, off);
@@ -606,7 +606,7 @@ static uint32_t __sys_linux_ugetrlimit(uint32_t arg[])
  */
 static uint32_t __sys_linux_clone(uint32_t arg[])
 {
-	struct trapframe *tf = pls_read(current)->tf;
+	struct trapframe *tf = current->tf;
 	uint32_t clone_flags = (uint32_t) arg[0];
 	uintptr_t stack = (uintptr_t) arg[1];
 	if (stack == 0) {
@@ -623,7 +623,7 @@ static uint32_t __sys_linux_pipe(uint32_t arg[])
 
 static uint32_t __sys_linux_getppid(uint32_t arg[])
 {
-	struct proc_struct *parent = pls_read(current)->parent;
+	struct proc_struct *parent = current->parent;
 	if (!parent)
 		return 0;
 	return parent->pid;
@@ -695,7 +695,7 @@ static uint32_t __sys_linux_gettimeofday(uint32_t arg[])
 #ifdef UCONFIG_BIONIC_LIBC
 static uint32_t __sys_linux_gettid(uint32_t arg[])
 {
-	return pls_read(current)->tid;
+	return current->tid;
 }
 
 static uint32_t __sys_arm_linux_set_tls(uint32_t arg[])
@@ -934,7 +934,7 @@ static uint32_t(*syscalls[]) (uint32_t arg[]) = {
 void syscall()
 {
 	uint32_t arg[5];
-	struct trapframe *tf = pls_read(current)->tf;
+	struct trapframe *tf = current->tf;
 	int num = tf->tf_err;	// SYS_xxx
 	if (num == 0) {
 		if (__sys_linux_entry(tf))
@@ -954,6 +954,6 @@ void syscall()
 bad_call:
 	print_trapframe(tf);
 	kprintf("undefined syscall %d, pid = %d, name = %s.\n",
-		num, pls_read(current)->pid, pls_read(current)->name);
+		num, current->pid, current->name);
 	do_exit(-E_KILLED);
 }

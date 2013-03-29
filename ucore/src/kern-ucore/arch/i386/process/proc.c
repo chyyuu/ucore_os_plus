@@ -52,7 +52,7 @@ struct proc_struct *alloc_proc(void)
 //       after switch_to, the current proc will execute here.
 static void forkret(void)
 {
-	forkrets(pls_read(current)->tf);
+	forkrets(current->tf);
 }
 
 // kernel_thread - create a kernel thread using "fn" function
@@ -143,7 +143,7 @@ int kernel_execve(const char *name, const char **argv, const char **kenvp)
 void cpu_idle(void)
 {
 	while (1) {
-		if (pls_read(current)->need_resched) {
+		if (current->need_resched) {
 			schedule();
 		}
 	}

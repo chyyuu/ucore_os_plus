@@ -22,7 +22,7 @@ static uint32_t sys_exit(uint32_t arg[])
 
 static uint32_t sys_fork(uint32_t arg[])
 {
-	struct trapframe *tf = pls_read(current)->tf;
+	struct trapframe *tf = current->tf;
 	uintptr_t stack = tf->tf_esp;
 	return do_fork(0, stack, tf);
 }
@@ -44,7 +44,7 @@ static uint32_t sys_exec(uint32_t arg[])
 
 static uint32_t sys_clone(uint32_t arg[])
 {
-	struct trapframe *tf = pls_read(current)->tf;
+	struct trapframe *tf = current->tf;
 	uint32_t clone_flags = (uint32_t) arg[0];
 	uintptr_t stack = (uintptr_t) arg[1];
 	if (stack == 0) {
@@ -83,7 +83,7 @@ static uint32_t sys_gettime(uint32_t arg[])
 
 static uint32_t sys_getpid(uint32_t arg[])
 {
-	return pls_read(current)->pid;
+	return current->pid;
 }
 
 static uint32_t sys_brk(uint32_t arg[])
@@ -418,7 +418,7 @@ static uint32_t(*syscalls[]) (uint32_t arg[]) = {
 
 void syscall(void)
 {
-	struct trapframe *tf = pls_read(current)->tf;
+	struct trapframe *tf = current->tf;
 	uint32_t arg[5];
 	int num = tf->tf_regs.reg_eax;
 	if (num >= 0 && num < NUM_SYSCALLS) {
@@ -434,5 +434,5 @@ void syscall(void)
 	}
 	print_trapframe(tf);
 	panic("undefined syscall %d, pid = %d, name = %s.\n",
-	      num, pls_read(current)->pid, pls_read(current)->name);
+	      num, current->pid, current->name);
 }

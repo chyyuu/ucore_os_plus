@@ -81,6 +81,7 @@ static void test3(void)
 		total += ret;
 	}
 	buf[total] = '\0';
+	cprintf("pipetest step3:: total %d, len %d, buf %s, msg %s, buf[total-1] %c, buf[total-2] %c\n", total, len, buf,msg,buf[total-1],buf[total-2]);
 	assert(total == len && strcmp(buf, msg) == 0);
 	assert(wait() == 0 && close(fd) == 0);
 	cprintf("pipetest step3 pass.\n");

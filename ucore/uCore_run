@@ -2,8 +2,10 @@
 
 BUILD_DIR=obj
 TEST_MODE=
+TEST_POSTFIX=
+GDB_PORT=1234
 
-while getopts "hd:t" opt; do
+while getopts "hd:t:" opt; do
     case $opt in
         d)
             BUILD_DIR=$OPTARG
@@ -15,14 +17,17 @@ while getopts "hd:t" opt; do
             echo "                                 default to obj/"
             echo "  -t                             run in background for test"
             echo "                                 i.e. do not use stdio or open SDL window"
+	    echo "                                 and use images with the given postfix"
             echo ""
-            echo "Supported architectures: i386, arm(goldfishv7), x86_64"
+            echo "Supported architectures: i386, arm(goldfishv7), amd64"
             echo ""
             echo "Report bugs to https://github.com/chyyuu/ucore_plus/issues"
             exit 0
             ;;
         t)
             TEST_MODE=y
+	    TEST_POSTFIX=.$OPTARG
+	    GDB_PORT=$[ $OPTARG % 10000 + 40000 ]
             ;;
         ?)
             exit 1
@@ -51,11 +56,11 @@ case $UCONFIG_ARCH in
                 echo AVD not specified. Fetch the first avd from \"android list avd\" and get \"$AVD\"
             fi
             if [[ $TEST_MODE = y ]]; then
-                QEMU_OPT="-s -S -serial file:$BUILD_DIR/serial.log"
+                QEMU_OPT="-s -S -serial file:$BUILD_DIR/serial.log$TEST_POSTFIX -gdb tcp::$GDB_PORT"
             else
                 QEMU_OPT="-serial stdio"
             fi
-            exec emulator-arm -avd $AVD -kernel $BUILD_DIR/kernel/kernel-arm.elf -no-window -qemu $QEMU_OPT
+            exec emulator-arm -avd $AVD -kernel $BUILD_DIR/kernel/kernel-arm.elf$TEST_POSTFIX -no-window -qemu $QEMU_OPT
         else
             echo What kind of board for ARM is this?
             echo Consider supporting your board in uCore_run
@@ -69,33 +74,31 @@ case $UCONFIG_ARCH in
             QEMU=qemu-system-i386
         fi
         if [[ $TEST_MODE = y ]]; then
-            EXTRA_OPT="-S -display none"
+            EXTRA_OPT="-S -display none -gdb tcp::$GDB_PORT"
         else
             EXTRA_OPT="-monitor stdio"
         fi
         exec $QEMU -m 128 \
-            -hda $BUILD_DIR/kernel.img \
-            -drive file=$BUILD_DIR/swap.img,media=disk,cache=writeback \
-            -drive file=$BUILD_DIR/sfs.img,media=disk,cache=writeback \
-            -s -serial file:$BUILD_DIR/serial.log \
+            -hda $BUILD_DIR/kernel.img$TEST_POSTFIX \
+            -drive file=$BUILD_DIR/sfs.img$TEST_POSTFIX,media=disk,cache=writeback,index=2 \
+            -s -serial file:$BUILD_DIR/serial.log$TEST_POSTFIX \
             $EXTRA_OPT
         ;;
-    x86_64)
+    amd64)
         QEMU=qemu
         which qemu-system-x86_64 > /dev/null 2>&1
         if [ $? -eq 0 ]; then
             QEMU=qemu-system-x86_64
         fi
         if [[ $TEST_MODE = y ]]; then
-            EXTRA_OPT="-S -display none"
+            EXTRA_OPT="-S -display none -gdb tcp::$GDB_PORT"
         else
             EXTRA_OPT="-monitor stdio"
         fi
-        exec $QEMU -smp 4 -m 512 \
-            -hda $BUILD_DIR/kernel.img \
-            -drive file=$BUILD_DIR/swap.img,media=disk,cache=writeback \
-            -drive file=$BUILD_DIR/sfs.img,media=disk,cache=writeback \
-            -s -serial file:$BUILD_DIR/serial.log \
+        exec $QEMU -m 512 \
+            -hda $BUILD_DIR/kernel.img$TEST_POSTFIX \
+            -drive file=$BUILD_DIR/sfs.img$TEST_POSTFIX,media=disk,cache=writeback,index=2 \
+            -s -serial file:$BUILD_DIR/serial.log$TEST_POSTFIX \
             $EXTRA_OPT
         ;;
 esac

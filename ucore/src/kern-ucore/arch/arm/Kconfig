@@ -72,12 +72,12 @@ config HAVE_BOOTLOADER
 
 config FPU_ENABLE
   bool "Enable FPU"
-  default y
+  default n
 
 config BIONIC_LIBC
   depends FPU_ENABLE
   bool "Support Bionic Libc"
-  default y
+  default n
 
 config BOOTLOADER_START_ADDR
   depends HAVE_BOOTLOADER
@@ -86,6 +86,7 @@ config BOOTLOADER_START_ADDR
 
 endmenu
 
+source src/kern-ucore/numa/Kconfig
 source src/kern-ucore/mm/Kconfig
 source src/kern-ucore/schedule/Kconfig
 source src/kern-ucore/fs/Kconfig

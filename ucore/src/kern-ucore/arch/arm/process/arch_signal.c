@@ -22,15 +22,14 @@
 #include <proc.h>
 #include <slab.h>
 #include <error.h>
-#include <glue_mp.h>
 #include "arch_signal.h"
 
 // set user stack for signal handler, also set eip to handler
 int __sig_setup_frame(int sign, struct sigaction *act, sigset_t oldset,
 		      struct trapframe *tf)
 {
-	struct mm_struct *mm = pls_read(current)->mm;
-	uintptr_t stack = pls_read(current)->signal_info.sas_ss_sp;
+	struct mm_struct *mm = current->mm;
+	uintptr_t stack = current->signal_info.sas_ss_sp;
 	if (stack == 0) {
 		stack = tf->tf_esp;
 	}
@@ -73,10 +72,10 @@ int __sig_setup_frame(int sign, struct sigaction *act, sigset_t oldset,
 // do syscall sigreturn, reset the user stack and eip
 int do_sigreturn()
 {
-	struct mm_struct *mm = pls_read(current)->mm;
-	if (!pls_read(current))
+	struct mm_struct *mm = current->mm;
+	if (!current)
 		return -E_INVAL;
-	struct sighand_struct *sighand = pls_read(current)->signal_info.sighand;
+	struct sighand_struct *sighand = current->signal_info.sighand;
 	if (!sighand)
 		return -E_INVAL;
 
@@ -85,7 +84,7 @@ int do_sigreturn()
 		return -E_NO_MEM;
 
 	struct sigframe *frame =
-	    (struct sigframe *)(pls_read(current)->tf->tf_esp);
+	    (struct sigframe *)(current->tf->tf_esp);
 	lock_mm(mm);
 	{
 		if (!copy_from_user
@@ -103,11 +102,11 @@ int do_sigreturn()
 	}
 
 	lock_sig(sighand);
-	pls_read(current)->signal_info.blocked = kframe->old_blocked;
-	sig_recalc_pending(pls_read(current));
+	current->signal_info.blocked = kframe->old_blocked;
+	sig_recalc_pending(current);
 	unlock_sig(sighand);
 
-	*(pls_read(current)->tf) = kframe->tf;
+	*(current->tf) = kframe->tf;
 	kfree(kframe);
 
 	return 0;

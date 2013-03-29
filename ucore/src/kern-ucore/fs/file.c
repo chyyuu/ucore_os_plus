@@ -18,7 +18,7 @@
 
 static struct file *get_filemap(void)
 {
-	struct fs_struct *fs_struct = pls_read(current)->fs_struct;
+	struct fs_struct *fs_struct = current->fs_struct;
 	assert(fs_struct != NULL && fs_count(fs_struct) > 0);
 	return fs_struct->filemap;
 }
@@ -561,7 +561,7 @@ void *linux_regfile_mmap2(void *addr, size_t len, int prot, int flags, int fd,
 			  size_t off)
 {
 	int subret = -E_INVAL;
-	struct mm_struct *mm = pls_read(current)->mm;
+	struct mm_struct *mm = current->mm;
 	assert(mm != NULL);
 	if (len == 0) {
 		return -1;

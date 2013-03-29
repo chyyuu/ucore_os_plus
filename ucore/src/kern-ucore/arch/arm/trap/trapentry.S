@@ -1,6 +1,6 @@
 #by Chen Yuheng 2012/8
 
-#include <glue_intr.h>
+#include <trap.h>
 
 	.macro	zero_fp
 	mov	fp, #0

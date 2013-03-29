@@ -39,8 +39,6 @@ Now, ucore didn't implementation 'Special Case&Operation for User Semaphore' in 
 
 */
 
-#define current (pls_read(current))
-
 #define VALID_SEMID(sem_id)                     \
     ((uintptr_t)(sem_id) < (uintptr_t)(sem_id) + PBASE)
 
@@ -286,9 +284,9 @@ static int semu_search_with_addr(list_entry_t * list, uintptr_t addr)
 static int
 ipc_sem_find_or_init_with_address(uintptr_t addr, int value, int create)
 {
-	assert(pls_read(current)->sem_queue != NULL);
+	assert(current->sem_queue != NULL);
 
-	sem_queue_t *sem_queue = pls_read(current)->sem_queue;
+	sem_queue_t *sem_queue = current->sem_queue;
 	down(&(sem_queue->sem));
 	sem_t sem_id = semu_search_with_addr(&(sem_queue->semu_list), addr);
 	up(&(sem_queue->sem));
@@ -343,10 +341,10 @@ int ipc_sem_post(sem_t sem_id)
 #ifdef UCONFIG_BIONIC_LIBC
 int ipc_sem_post_max(sem_t sem_id, int max)
 {
-	assert(pls_read(current)->sem_queue != NULL);
+	assert(current->sem_queue != NULL);
 
 	sem_undo_t *semu;
-	sem_queue_t *sem_queue = pls_read(current)->sem_queue;
+	sem_queue_t *sem_queue = current->sem_queue;
 	down(&(sem_queue->sem));
 	semu = semu_list_search(&(sem_queue->semu_list), sem_id);
 	up(&(sem_queue->sem));

@@ -1,0 +1,56 @@
+OUTPUT_FORMAT("elf64-x86-64", "elf64-x86-64", "elf64-x86-64")
+OUTPUT_ARCH(i386:x86-64)
+ENTRY(kern_entry32)
+
+ENTRY32_BASE =         0x00200000;
+MEM_BASE     = 0xFFFF800000000000;
+
+SECTIONS {
+
+	. = ENTRY32_BASE;
+
+	.entry32 : AT(ADDR(.entry32)) {
+	 	  *entry32.o(.text .rodata .data)
+	}
+
+	. += MEM_BASE;
+
+	PROVIDE(__kern_text_start = .);
+
+	.text : AT(ADDR(.text) - MEM_BASE) {
+		*(.text .stub .text.* .gnu.linkonce.t.*)
+	}
+
+	. = ALIGN(0x1000);
+	PROVIDE(__kern_ro_start = .);
+	.rodata : AT(ADDR(.rodata) - MEM_BASE) {
+		*(.rodata .rodata.* .gnu.linkonce.r.*)
+	}
+
+	. = ALIGN(0x1000);
+	PROVIDE(__kern_data_start = .);
+	.data : AT(ADDR(.data) - MEM_BASE) {
+		*(.data)
+	}
+
+	. = ALIGN(0x1000);
+	PROVIDE(edata = .);
+	.bss : AT(ADDR(.bss) - MEM_BASE) {
+		*(.bss)
+	}
+
+	. = ALIGN(0x1000);
+	.percpu : AT(ADDR(.percpu) - MEM_BASE){
+		PROVIDE(__percpu_start = .);
+		*(.percpu)
+		PROVIDE(__percpu_end = .);
+	}
+
+
+	. = ALIGN(0x1000);
+	PROVIDE(end = .);
+ 
+	/DISCARD/ : {
+		*(.eh_frame .note.GNU-stack)
+	}
+}

@@ -280,8 +280,18 @@ int sys_rf212_reset()
 	return syscall(SYS_rf212, 0);
 }
 
+//halt the system, now only used in AMD64
+int sys_halt(void)
+{
+#ifdef ARCH_AMD64
+	return syscall(SYS_halt);
 #else
-#warning ARM use different syscall method
+	return 0;
+#endif
+}
+
+#else
+/* ARM use different syscall method */
 
 #define __sys2(x) #x
 #define __sys1(x) __sys2(x)
@@ -437,6 +447,12 @@ int sys_send_event(int pid, int event, unsigned int timeout)
 int sys_recv_event(int *pid_store, int *event_store, unsigned int timeout)
 {
 	return sys_event_recv(pid_store, event_store, timeout);
+}
+
+//halt the system, now only used in AMD64, is nll in ARM
+int sys_halt(void)
+{
+	return 0;
 }
 
 #endif

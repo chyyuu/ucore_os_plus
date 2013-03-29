@@ -1,11 +1,10 @@
-#include <glue_kio.h>
 #include <kio.h>
 
 #define BUFSIZE 1024
 static char buf[BUFSIZE];
 
-#define getchar  kcons_getc
-#define cputchar kcons_putc
+#define getchar  cons_getc
+#define cputchar cons_putc
 
 /* *
  * readline - get a line from stdin

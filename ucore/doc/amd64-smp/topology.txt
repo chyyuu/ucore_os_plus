@@ -1,0 +1,355 @@
+The Topology for x86-64 architecuture
+=======================================
+qemu-kvm -serial mon:stdio -nographic -numa node -m 1024 -smp 32 -kernel XXXX
+
+NUMA architecture intro:
+------------------------
+Non-Uniform Memory Access (NUMA) is a computer memory design used in multiprocessing, where the memory access time depends on the memory location relative to a processor. Under NUMA, a processor can access its own local memory faster than non-local memory (memory local to another processor or memory shared between processors).
+
+
+important struct
+struct phys_map  mem //used to maintains a set of usable physical memory regions. each region has (basem end)
+
+#define KCODE 0xFFFFFFFFC0000000
+
+init part for NUMA:
+--------------- 
+in CPU0 (BSP)
+--------------------
+initphysmem(addr of multiboot info)
+   parse_mb_map  //pass multiboot info of mem map 
+                 //mem struct record the info of the e820 info 
+                 //now os can know the phy memory map
+
+--------------------
+//need initphysmem
+initpg  // Create a direct mapping starting at PA 0 to VA KBASE up to
+        // KBASEEND.  This augments the KCODE mapping created by the
+        // bootloader.  Perform per-core control register set up.
+        // after setup pagetable, lcf4(rcr4()|CR4_PGE) to enable page
+        // writefs and emsr for FS info
+
+--------------------
+initseg(&cpu[0]) //Load per-CPU GDT,the bootgdt is in bootdata.c 
+
+--------------------
+// need initseg
+inittls(&cpu[0]) // Set up CPU's kernel segment descriptors.
+                 // Run once at boot time on each CPU.
+                 //  Initialize cpu-local storage.
+
+
+--------------------
+// http://www.acpi.info/links.htm
+// http://wiki.osdev.org/ACPI
+// need initpg, inittls
+initacpitables() //get MADT(Multiple APIC Description Table), 
+                 // http://wiki.osdev.org/MADT
+                 //SRAT (Static Resource Affinity Table) 
+                 //** http://msdn.microsoft.com/en-us/windows/hardware/gg463361 **
+                 // http://wiki.osdev.org/Detecting_CPU_Topology_(80x86)
+                 // http://www.techarp.com/showfreebog.aspx?lang=0&bogno=351
+                 //DMAR (DMA remapping reporting table)
+                 //** http://blog.csdn.net/hotsolaris/article/details/1757777 **
+                 //now madt, srat, dmar get real info
+                 //
+
+--------------------
+//need initpg
+initlapic       // init lapic include xapic 2xapic
+            
+--------------------
+// http://wiki.osdev.org/Detecting_CPU_Topology_(80x86)
+//need initacpitables, initlapic
+initnuma        //get numa info from SRAT,
+                // and print numa map
+  -->inticpumap() //Initialize cpu_id_to_apicid.
+  write info to numa_nodes struct array
+
+
+--------------------
+//need initnuma
+initpuercpu      // Assign per-CPU memory from each CPU's NUMA node.
+                 //  cpus[cpuid].percpu_base = base;
+
+--------------------
+//need initnuma, initpercpu
+initcpus
+  -->initcpus_acpi   //use madt !!!
+                    //  Create CPUs.  We already did most of the work in initcpumap.
+                    //  Associate CPUs with NUMA nodes
+
+
+
+--------------------
+initpic            // Initialize the 8259A interrupt controllers.
+
+
+--------------------
+//in kvm, no dmar, so initiommu is failed,but xv6 can continue to run.
+initiommu  
+    --> acpi_setup_iommu (intel_iommu) //use dmar !!!
+    --> inte_iommu.configure()
+    
+
+--------------------
+//in kvm, has madt, so acpi_setup_ioapic return true 
+initextpic
+    --> acpi_setup_ioapic  //setup 82093 ioapic
+
+
+--------------------
+//simple
+inituartcons  //require interrupt routing
+
+
+--------------------
+//simple
+initcga
+--------------------
+//
+  // Some global constructors require mycpu()->id (via myid()) which
+  // we setup in inittls.  (Note that gcc 4.7 eliminated the .ctors
+  // section entirely, but gcc has supported .init_array for some
+  // time.)  Note that this will implicitly initialize CPU 0's per-CPU
+  // objects as well.
+  extern void (*__init_array_start[])(int, char **, char **);
+  extern void (*__init_array_end[])(int, char **, char **);
+  for (size_t i = 0; i < __init_array_end - __init_array_start; i++)
+      (*__init_array_start[i])(0, nullptr, nullptr);
+
+--------------------
+//simple
+inittrap //setup IDT
+
+--------------------
+//simple
+initcmdline //show command line of xv6
+
+--------------------
+// Initialize free list of physical pages.
+initkalloc
+
+
+--------------------
+--------------------
+--------------------
+--------------------
+--------------------
+--------------------
+--------------------
+--------------------
+--------------------
+--------------------
+--------------------
+--------------------
+--------------------
+--------------------
+
+==================================
+demo of xv6
+==================================
+qemu-kvm -serial mon:stdio -nographic -numa node -m 1024 -smp 32 -kernel o.ben/kernel.elf
+xv6
+e820: 0x0000000000000000-0x000000000009fbff usable
+e820: 0x000000000009fc00-0x000000000009ffff reserved
+e820: 0x00000000000f0000-0x00000000000fffff reserved
+e820: 0x0000000000100000-0x000000003fffbfff usable
+e820: 0x000000003fffc000-0x000000003fffffff reserved
+e820: 0x00000000feffc000-0x00000000feffffff reserved
+Scrubbed memory map:
+phys: 0x0000000000100000-0x000000003fffbfff
+inithz: PIT stuck, assuming 2GHz
+ACPI: RSDP 0xfd780 00014 (v0 BOCHS )
+ACPI: RSDT 0x3fffce50 0003C (v1 BOCHS  BXPCRSDT 00000001 BXPC 00000001)
+ACPI: FACP 0x3ffff900 00074 (v1 BOCHS  BXPCFACP 00000001 BXPC 00000001)
+ACPI: DSDT 0x3fffce90 0124A (v1   BXPC   BXDSDT 00000001 INTL 20100528)
+ACPI: FACS 0x3ffff8c0 00040
+ACPI: SSDT 0x3fffec50 00C6E (v1 BOCHS  BXPCSSDT 00000001 BXPC 00000001)
+ACPI: APIC 0x3fffea40 00170 (v1 BOCHS  BXPCAPIC 00000001 BXPC 00000001)
+ACPI: HPET 0x3fffea00 00038 (v1 BOCHS  BXPCHPET 00000001 BXPC 00000001)
+ACPI: SRAT 0x3fffe750 002A8 (v1 BOCHS  BXPCSRAT 00000001 BXPC 00000001)
+ACPI: SSDT 0x3fffe0e0 0066E (v1   BXPC BXSSDTPC 00000001 INTL 20100528)
+xapic: Using xAPIC LAPIC
+xapic: Initializing LAPIC (CPU 0)
+acpi: NUMA node 0: cpus 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 mem 0-0x9ffff 0x100000-0x3fffffff
+kalloc: CPU 0 per-CPU memory at 0xffffffffc1233000..0xffffffffc1243bbf
+kalloc: CPU 1 per-CPU memory at 0xffffff0001540000..0xffffff0001550bbf
+kalloc: CPU 2 per-CPU memory at 0xffffff0001550bc0..0xffffff000156177f
+kalloc: CPU 3 per-CPU memory at 0xffffff0001561780..0xffffff000157233f
+kalloc: CPU 4 per-CPU memory at 0xffffff0001572340..0xffffff0001582eff
+kalloc: CPU 5 per-CPU memory at 0xffffff0001582f00..0xffffff0001593abf
+kalloc: CPU 6 per-CPU memory at 0xffffff0001593ac0..0xffffff00015a467f
+kalloc: CPU 7 per-CPU memory at 0xffffff00015a4680..0xffffff00015b523f
+kalloc: CPU 8 per-CPU memory at 0xffffff00015b5240..0xffffff00015c5dff
+kalloc: CPU 9 per-CPU memory at 0xffffff00015c5e00..0xffffff00015d69bf
+kalloc: CPU 10 per-CPU memory at 0xffffff00015d69c0..0xffffff00015e757f
+kalloc: CPU 11 per-CPU memory at 0xffffff00015e7580..0xffffff00015f813f
+kalloc: CPU 12 per-CPU memory at 0xffffff00015f8140..0xffffff0001608cff
+kalloc: CPU 13 per-CPU memory at 0xffffff0001608d00..0xffffff00016198bf
+kalloc: CPU 14 per-CPU memory at 0xffffff00016198c0..0xffffff000162a47f
+kalloc: CPU 15 per-CPU memory at 0xffffff000162a480..0xffffff000163b03f
+kalloc: CPU 16 per-CPU memory at 0xffffff000163b040..0xffffff000164bbff
+kalloc: CPU 17 per-CPU memory at 0xffffff000164bc00..0xffffff000165c7bf
+kalloc: CPU 18 per-CPU memory at 0xffffff000165c7c0..0xffffff000166d37f
+kalloc: CPU 19 per-CPU memory at 0xffffff000166d380..0xffffff000167df3f
+kalloc: CPU 20 per-CPU memory at 0xffffff000167df40..0xffffff000168eaff
+kalloc: CPU 21 per-CPU memory at 0xffffff000168eb00..0xffffff000169f6bf
+kalloc: CPU 22 per-CPU memory at 0xffffff000169f6c0..0xffffff00016b027f
+kalloc: CPU 23 per-CPU memory at 0xffffff00016b0280..0xffffff00016c0e3f
+kalloc: CPU 24 per-CPU memory at 0xffffff00016c0e40..0xffffff00016d19ff
+kalloc: CPU 25 per-CPU memory at 0xffffff00016d1a00..0xffffff00016e25bf
+kalloc: CPU 26 per-CPU memory at 0xffffff00016e25c0..0xffffff00016f317f
+kalloc: CPU 27 per-CPU memory at 0xffffff00016f3180..0xffffff0001703d3f
+kalloc: CPU 28 per-CPU memory at 0xffffff0001703d40..0xffffff00017148ff
+kalloc: CPU 29 per-CPU memory at 0xffffff0001714900..0xffffff00017254bf
+kalloc: CPU 30 per-CPU memory at 0xffffff00017254c0..0xffffff000173607f
+kalloc: CPU 31 per-CPU memory at 0xffffff0001736080..0xffffff0001746c3f
+acpi: Initializing CPUs
+acpi: CPU 0 APICID 0
+acpi: CPU 1 APICID 1
+acpi: CPU 2 APICID 2
+acpi: CPU 3 APICID 3
+acpi: CPU 4 APICID 4
+acpi: CPU 5 APICID 5
+acpi: CPU 6 APICID 6
+acpi: CPU 7 APICID 7
+acpi: CPU 8 APICID 8
+acpi: CPU 9 APICID 9
+acpi: CPU 10 APICID 10
+acpi: CPU 11 APICID 11
+acpi: CPU 12 APICID 12
+acpi: CPU 13 APICID 13
+acpi: CPU 14 APICID 14
+acpi: CPU 15 APICID 15
+acpi: CPU 16 APICID 16
+acpi: CPU 17 APICID 17
+acpi: CPU 18 APICID 18
+acpi: CPU 19 APICID 19
+acpi: CPU 20 APICID 20
+acpi: CPU 21 APICID 21
+acpi: CPU 22 APICID 22
+acpi: CPU 23 APICID 23
+acpi: CPU 24 APICID 24
+acpi: CPU 25 APICID 25
+acpi: CPU 26 APICID 26
+acpi: CPU 27 APICID 27
+acpi: CPU 28 APICID 28
+acpi: CPU 29 APICID 29
+acpi: CPU 30 APICID 30
+acpi: CPU 31 APICID 31
+acpi: Initializing IOAPICs
+ioapic: IOAPIC version 0x11 for IRQs 0..23 at 0xfec00000
+ioapic: Routing IRQ 4 (rising edge) to APICID 0
+cmdline: o.ben/kernel.elf 
+kalloc: page_info 0xffffff000174d000..0xffffff00024ccfff => 0xffffff00024cd000..0xffffff003fffbfff
+kalloc: page_info map has 1 entries using formula (pa+0x7fffffffc0004000) >> 63
+987 mbytes
+cpu_high is 1, node_low 0, node_buddies 29
+cpu_high is 1, node_low 0, node_buddies 29
+cpu_high is 2, node_low 0, node_buddies 29
+cpu_high is 3, node_low 0, node_buddies 29
+cpu_high is 4, node_low 0, node_buddies 29
+cpu_high is 5, node_low 0, node_buddies 29
+cpu_high is 6, node_low 0, node_buddies 29
+cpu_high is 7, node_low 0, node_buddies 29
+cpu_high is 8, node_low 0, node_buddies 29
+cpu_high is 9, node_low 0, node_buddies 29
+cpu_high is 10, node_low 0, node_buddies 29
+cpu_high is 10, node_low 0, node_buddies 29
+cpu_high is 11, node_low 0, node_buddies 29
+cpu_high is 12, node_low 0, node_buddies 29
+cpu_high is 13, node_low 0, node_buddies 29
+cpu_high is 14, node_low 0, node_buddies 29
+cpu_high is 15, node_low 0, node_buddies 29
+cpu_high is 16, node_low 0, node_buddies 29
+cpu_high is 17, node_low 0, node_buddies 29
+cpu_high is 18, node_low 0, node_buddies 29
+cpu_high is 19, node_low 0, node_buddies 29
+cpu_high is 20, node_low 0, node_buddies 29
+cpu_high is 20, node_low 0, node_buddies 29
+cpu_high is 21, node_low 0, node_buddies 29
+cpu_high is 22, node_low 0, node_buddies 29
+cpu_high is 23, node_low 0, node_buddies 29
+cpu_high is 24, node_low 0, node_buddies 29
+cpu_high is 25, node_low 0, node_buddies 29
+cpu_high is 26, node_low 0, node_buddies 29
+cpu_high is 27, node_low 0, node_buddies 29
+cpu_high is 28, node_low 0, node_buddies 29
+cpu_high is 29, node_low 0, node_buddies 29
+initinode: 300 inode blocks (3 / core)
+ioapic: Routing IRQ 1 (rising edge) to APICID 0
+GenuineIntel
+initsamp: Unsupported performance monitor version 0
+initsamp: Unknown manufacturer
+AcpiOsInstallInterruptHandler not implemented (9, 0xffffffffc0181050, 0xffffff000323fc08)
+acpi: Using ACPI for PCI root enumeration
+pci: Scanning bus 0
+ncpu 32 2000 MHz
+xapic: Initializing LAPIC (CPU 1)
+gc_worker: 1
+xapic: Initializing LAPIC (CPU 2)
+gc_worker: 2
+xapic: Initializing LAPIC (CPU 3)
+gc_worker: 3
+xapic: Initializing LAPIC (CPU 4)
+gc_worker: 4
+xapic: Initializing LAPIC (CPU 5)
+gc_worker: 5
+xapic: Initializing LAPIC (CPU 6)
+gc_worker: 6
+xapic: Initializing LAPIC (CPU 7)
+gc_worker: 7
+xapic: Initializing LAPIC (CPU 8)
+gc_worker: 8
+xapic: Initializing LAPIC (CPU 9)
+gc_worker: 9
+xapic: Initializing LAPIC (CPU 10)
+gc_worker: 10
+xapic: Initializing LAPIC (CPU 11)
+gc_worker: 11
+xapic: Initializing LAPIC (CPU 12)
+gc_worker: 12
+xapic: Initializing LAPIC (CPU 13)
+gc_worker: 13
+xapic: Initializing LAPIC (CPU 14)
+gc_worker: 14
+xapic: Initializing LAPIC (CPU 15)
+gc_worker: 15
+xapic: Initializing LAPIC (CPU 16)
+gc_worker: 16
+xapic: Initializing LAPIC (CPU 17)
+gc_worker: 17
+xapic: Initializing LAPIC (CPU 18)
+gc_worker: 18
+xapic: Initializing LAPIC (CPU 19)
+gc_worker: 19
+xapic: Initializing LAPIC (CPU 20)
+gc_worker: 20
+xapic: Initializing LAPIC (CPU 21)
+gc_worker: 21
+xapic: Initializing LAPIC (CPU 22)
+gc_worker: 22
+xapic: Initializing LAPIC (CPU 23)
+gc_worker: 23
+xapic: Initializing LAPIC (CPU 24)
+gc_worker: 24
+xapic: Initializing LAPIC (CPU 25)
+gc_worker: 25
+xapic: Initializing LAPIC (CPU 26)
+gc_worker: 26
+xapic: Initializing LAPIC (CPU 27)
+gc_worker: 27
+xapic: Initializing LAPIC (CPU 28)
+gc_worker: 28
+xapic: Initializing LAPIC (CPU 29)
+gc_worker: 29
+xapic: Initializing LAPIC (CPU 30)
+gc_worker: 30
+xapic: Initializing LAPIC (CPU 31)
+gc_worker: 31
+gc_worker: 0
+init complete at Tue Mar 12 16:43:40 2013
+
+
+

@@ -200,3 +200,8 @@ void raise()
 {
 	exit(-1);
 }
+
+void halt()
+{
+	sys_halt();
+}

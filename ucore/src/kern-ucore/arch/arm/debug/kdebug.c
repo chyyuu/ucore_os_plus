@@ -354,8 +354,8 @@ void end_debug()
 int kdebug_check_mem_range(uint32_t addr, uint32_t size)
 {
 	pde_t *pgdir = boot_pgdir;
-	if (pls_read(current) && pls_read(current)->mm) {
-		pgdir = pls_read(current)->mm->pgdir;
+	if (current && current->mm) {
+		pgdir = current->mm->pgdir;
 	}
 	assert(pgdir);
 	addr = PTE_ADDR(addr);

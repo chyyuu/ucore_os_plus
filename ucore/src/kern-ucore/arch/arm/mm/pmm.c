@@ -13,13 +13,13 @@
 #include <error.h>
 #include <ide.h>
 #include <trap.h>
-#include <glue_mp.h>
+#include <mp.h>
 #include <ramdisk.h>
 
 uint32_t do_set_tls(struct user_tls_desc *tlsp)
 {
 	void *tp = (void *)tlsp;
-	pls_read(current)->tls_pointer = tp;
+	current->tls_pointer = tp;
 	asm("mcr p15, 0, %0, c13, c0, 3"::"r"(tp));
 	return 0;
 }
@@ -57,8 +57,8 @@ struct Page *pages;
 size_t npage = 0;
 unsigned long max_pfn;
 
-PLS static size_t pls_used_pages;
-PLS list_entry_t pls_page_struct_free_list;
+static DEFINE_PERCPU_NOINIT(size_t, used_pages);
+DEFINE_PERCPU_NOINIT(list_entry_t, page_struct_free_list);
 
 // virtual address of boot-time page directory
 pde_t *boot_pgdir = NULL;
@@ -88,15 +88,15 @@ static void init_memmap(struct Page *base, size_t n)
 
 size_t nr_used_pages(void)
 {
-	return pls_read(used_pages);
+	return get_cpu_var(used_pages);
 }
 
 void pmm_init_ap(void)
 {
 	list_entry_t *page_struct_free_list =
-	    pls_get_ptr(page_struct_free_list);
+	    get_cpu_ptr(page_struct_free_list);
 	list_init(page_struct_free_list);
-	pls_write(used_pages, 0);
+	get_cpu_var(used_pages) = 0;
 }
 
 //alloc_pages - call pmm->alloc_pages to allocate a continuous n*PAGESIZE memory 
@@ -110,7 +110,7 @@ struct Page *alloc_pages(size_t n)
 	}
 	local_intr_restore(intr_flag);
 	if (page)
-		pls_write(used_pages, pls_read(used_pages) + n);
+		get_cpu_var(used_pages) += n;
 	return page;
 }
 
@@ -123,7 +123,7 @@ void free_pages(struct Page *base, size_t n)
 		pmm_manager->free_pages(base, n);
 	}
 	local_intr_restore(intr_flag);
-	pls_write(used_pages, pls_read(used_pages) - n);
+	get_cpu_var(used_pages) -= n;
 }
 
 //nr_free_pages - call pmm->nr_free_pages to get the size (nr*PAGESIZE) 
@@ -313,9 +313,9 @@ void pmm_init(void)
 	//kprintf("## %08x %08x\n", __kernel_text_start, __kernel_text_end);
 	boot_map_segment(boot_pgdir, KERNBASE, KMEMSIZE, KERNBASE, PTE_W);	// fixed address
 	/* kernel code readonly protection */
-	boot_map_segment(boot_pgdir, __kernel_text_start,
+	boot_map_segment(boot_pgdir, (uintptr_t) __kernel_text_start,
 			 __kernel_text_end - __kernel_text_start,
-			 __kernel_text_start, PTE_P);
+			 (uintptr_t) __kernel_text_start, PTE_P);
 
 	boot_map_segment(boot_pgdir, KIOBASE, KIOSIZE, KIOBASE, PTE_W | PTE_IOMEM);	// fixed address
 
@@ -755,5 +755,5 @@ void *__ucore_ioremap(unsigned long phys_addr, size_t size, unsigned int mtype)
 	__current_ioremap_base += size;
 
 	tlb_invalidate_all();
-	return oldaddr;
+	return (void *)oldaddr;
 }

@@ -1,7 +1,7 @@
 @program	/testbin/semtest
 
   - 'kernel_execve: pid = [0-9]{1,2}, name = "/testbin/semtest".'
-  - 'sem_id = 0x07......'
+  - 'sem_id = 0x.*'
     'post ok.'
     'wait ok.'
     'wait semaphore...'

@@ -3,7 +3,7 @@ uCore AutoTest Framework
 ========================
 
 :Author: Mao Junjie <eternal.n08@gmail.com>
-:Version: $Revision: 1 $
+:Version: $Revision: 2 $
 
 This document introduces the format of test specifications used in uCore.
 
@@ -33,6 +33,9 @@ timeout
 sfs_force_rebuild
   Always rebuild sfs image before running this test if this variable is defined. The value of this variable is ignored. This is for tests on file system to make sure former tests can't pollute their test environment.
 
+failin
+  The test is expected to fail when executing in the architectures listed. This is for marking hard-to-debug cases and provide a clearer view on old and new bugs.
+
 Constraints
 -----------
 The lines which doesn't match the pattern of settings lines are considered constraints. A constraint is some text quoted with single quotes and will be used as patterns to match the log of uCore (mostly from the serial port). Some modifiers can be added before the text to change how the match is carried out. Some examples are followed.
@@ -51,7 +54,7 @@ The lines which doesn't match the pattern of settings lines are considered const
 
 How to Use AutoBuild System
 =========
-See https://github.com/chyh1990/autobuild_tester/blob/master/README.md.
+See https://github.com/chyh1990/autotester_v2
 
 Known Bugs
 ==========

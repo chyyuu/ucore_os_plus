@@ -8,6 +8,8 @@
 //#define BYPASS_CHECK
 //#define BYPASS_CHECK_SLAB
 
+#define CACHELINE 64
+
 static inline uint8_t inb(uint32_t port) __attribute__ ((always_inline));
 static inline void outb(uint32_t port, uint8_t data)
     __attribute__ ((always_inline));
