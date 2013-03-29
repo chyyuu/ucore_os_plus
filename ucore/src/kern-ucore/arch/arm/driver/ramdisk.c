@@ -75,7 +75,7 @@ void ramdisk_init_struct(struct ide_device *dev)
 		dev->valid = 1;
 		dev->sets = ~0;
 		dev->lba = INITRD_SIZE() / SECTSIZE;
-		dev->iobase = (uintptr_t) DISK_FS_VBASE;
+		dev->iobase = (void *) DISK_FS_VBASE;
 		dev->if_type = IF_TYPE_IDE;
 		strcpy(dev->model, "KERN_INITRD");
 		dev->init = ramdisk_init;

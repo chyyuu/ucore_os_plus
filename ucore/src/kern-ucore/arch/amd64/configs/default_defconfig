@@ -15,7 +15,6 @@ NR_MEMS_PER_NODE=16
 #
 # Memory Management
 #
-# SWAP is not set
 
 #
 # Schedule
@@ -34,4 +33,3 @@ SFS_IMAGE_SIZE=256
 #
 # Linux Device Driver Environment
 #
-# HAVE_LINUX_DDE_BASE is not set

@@ -291,7 +291,7 @@ int sys_halt(void)
 }
 
 #else
-#warning ARM use different syscall method
+/* ARM use different syscall method */
 
 #define __sys2(x) #x
 #define __sys1(x) __sys2(x)

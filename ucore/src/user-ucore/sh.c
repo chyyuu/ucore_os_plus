@@ -238,7 +238,7 @@ int main(int argc, char **argv)
 		if (interactive && !strncmp(buffer, "!halt", 10))
 			return 0;
 		if (interactive && !strncmp(buffer, "!debug", 10)) {
-			__asm__ volatile (".word 0xe7f001f0");
+			__asm__ volatile (".long 0xe7f001f0");
 			continue;
 		}
 		if ((pid = fork()) == 0) {

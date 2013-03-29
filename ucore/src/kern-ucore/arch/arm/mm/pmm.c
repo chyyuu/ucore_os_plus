@@ -313,9 +313,9 @@ void pmm_init(void)
 	//kprintf("## %08x %08x\n", __kernel_text_start, __kernel_text_end);
 	boot_map_segment(boot_pgdir, KERNBASE, KMEMSIZE, KERNBASE, PTE_W);	// fixed address
 	/* kernel code readonly protection */
-	boot_map_segment(boot_pgdir, __kernel_text_start,
+	boot_map_segment(boot_pgdir, (uintptr_t) __kernel_text_start,
 			 __kernel_text_end - __kernel_text_start,
-			 __kernel_text_start, PTE_P);
+			 (uintptr_t) __kernel_text_start, PTE_P);
 
 	boot_map_segment(boot_pgdir, KIOBASE, KIOSIZE, KIOBASE, PTE_W | PTE_IOMEM);	// fixed address
 
@@ -755,5 +755,5 @@ void *__ucore_ioremap(unsigned long phys_addr, size_t size, unsigned int mtype)
 	__current_ioremap_base += size;
 
 	tlb_invalidate_all();
-	return oldaddr;
+	return (void *)oldaddr;
 }
