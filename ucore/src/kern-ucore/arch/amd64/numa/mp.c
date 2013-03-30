@@ -32,23 +32,41 @@ tls_init(struct cpu *c)
 	c->cpu = c;
 }
 
-/* TODO alloc percpu var in the corresponding    NUMA nodes */
+/* alloc percpu var in the corresponding    NUMA nodes */
 void percpu_init(void)
 {
 	size_t percpu_size = ROUNDUP(__percpu_end - __percpu_start, CACHELINE);
 	if(!percpu_size || sysconf.lcpu_count<=1)
 		return;
-	int i;
-	size_t totalsize = percpu_size * (sysconf.lcpu_count - 1);
-	unsigned int pages = ROUNDUP_DIV(totalsize, PGSIZE);
-	kprintf("percpu_init: alloc %d pages for percpu variables\n", pages);
-	struct Page *p = alloc_pages(pages);
-	assert(p != NULL);
-	void *kva = page2kva(p);
-	/* zero it out */
-	memset(kva, 0, pages * PGSIZE);
-	for(i=1;i<sysconf.lcpu_count;i++, kva += percpu_size)
-		percpu_offsets[i] = kva;
+	int i, j;
+	for(i=0; i<sysconf.lnuma_count;i++){
+		struct numa_node *node = &numa_nodes[i];
+		int nr_cpus = node->nr_cpus;
+		for(j=0;j<node->nr_cpus;j++){
+			if(node->cpu_ids[j] == myid()){
+				nr_cpus--;
+				break;
+			}
+		}
+		size_t totalsize = percpu_size * nr_cpus;
+		unsigned int pages = ROUNDUP_DIV(totalsize, PGSIZE);
+		if(!pages)
+			continue;
+		kprintf("percpu_init: node%d alloc %d pages for percpu variables\n", i, pages);
+		struct Page *p = alloc_pages_numa(node, pages);
+		assert(p != NULL);
+		void *kva = page2kva(p);
+		/* zero it out */
+		memset(kva, 0, pages * PGSIZE);
+		for(j=0;j<node->nr_cpus;j++, kva += percpu_size){
+			if(node->cpu_ids[j] == myid())
+				continue;
+			percpu_offsets[node->cpu_ids[j]] = kva;
+		}
+	}
+	for(i=0;i<sysconf.lcpu_count;i++){
+		kprintf("percpu_init: cpu%d get 0x%016llx\n", i, percpu_offsets[i]);
+	}
 }
 
 

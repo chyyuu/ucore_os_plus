@@ -41,6 +41,7 @@ void boot_map_segment(pgd_t * pgdir, uintptr_t la, size_t size, uintptr_t pa,
 
 struct Page *alloc_pages(size_t n);
 struct Page *alloc_pages_cpu(struct cpu *cpu, size_t n);
+struct Page *alloc_pages_numa(struct numa_node *node, size_t n);
 void *boot_alloc_page(void);
 void free_pages(struct Page *base, size_t n);
 size_t nr_used_pages(void);

@@ -34,7 +34,7 @@
  * mode, the x86-64 CPU will look in the TSS for SS0 and RSP0 and load their value
  * into SS and RSP respectively.
  * */
-static struct taskstate ts = {0};
+//static struct taskstate ts = {0};
 uintptr_t boot_cr3;
 
 static uintptr_t freemem;
@@ -58,19 +58,23 @@ pgd_t *const vgd = (pgd_t *) PGADDR(PGX(VPT), PGX(VPT), PGX(VPT), PGX(VPT), 0);
  *   - 0x50:  user data segment
  *   - 0x60:  defined for tss, initialized in gdt_init
  * */
-static struct segdesc gdt[8 + LAPIC_COUNT] = {
+static struct segdesc __gdt[SEG_COUNT] = {
 	SEG_NULL,
 	[SEG_KTEXT] = SEG(STA_X | STA_R, DPL_KERNEL),
 	[SEG_KDATA] = SEG(STA_W, DPL_KERNEL),
 	[SEG_UTEXT] = SEG(STA_X | STA_R, DPL_USER),
 	[SEG_UDATA] = SEG(STA_W, DPL_USER),
+	/*
 	[SEG_TLS1] = SEG(STA_W, DPL_USER),
 	[SEG_TLS2] = SEG(STA_W, DPL_USER),
+	*/
 };
 
-struct pseudodesc gdt_pd = {
+#if 0
+static struct pseudodesc __gdt_pd = {
 	sizeof(gdt) - 1, (uintptr_t) gdt
 };
+#endif
 
 static DEFINE_PERCPU_NOINIT(size_t, used_pages);
 DEFINE_PERCPU_NOINIT(list_entry_t, page_struct_free_list);
@@ -117,7 +121,8 @@ static inline void lgdt(struct pseudodesc *pd)
  * */
 void load_rsp0(uintptr_t rsp0)
 {
-	ts.ts_rsp0 = rsp0;
+	//XXX
+	mycpu()->arch_data.ts.ts_rsp0 = rsp0;
 }
 
 /**
@@ -155,12 +160,22 @@ size_t nr_used_pages(void)
 }
 
 /* gdt_init - initialize the default GDT and TSS */
+/* must be called from corresponding cpu */
 void gdt_init(struct cpu *c)
 {
 	// initialize the TSS filed of the gdt
 	// XXX
-	gdt[SEG_TSS] =
-		SEGTSS(STS_T32A, (uintptr_t) & ts, sizeof(ts), DPL_KERNEL);
+	//gdt[SEG_TSS] =
+	//	SEGTSS(STS_T32A, (uintptr_t) & ts, sizeof(ts), DPL_KERNEL);
+
+	memcpy(&c->arch_data.gdt, &__gdt, sizeof(__gdt));
+	c->arch_data.gdt[SEG_TSS] = 
+		SEGTSS(STS_T32A, (uintptr_t) &c->arch_data.ts,
+		sizeof(struct taskstate), DPL_KERNEL);
+
+	struct pseudodesc gdt_pd = {
+		sizeof(__gdt) - 1, (uintptr_t) c->arch_data.gdt
+	};
 
 	// reload all segment registers
 	lgdt(&gdt_pd);
@@ -313,6 +328,23 @@ struct Page *alloc_pages_cpu(struct cpu *cpu, size_t n)
 	per_cpu(used_pages, cpu->id) += n;
 	return page;
 }
+
+struct Page *alloc_pages_numa(struct numa_node* node, size_t n)
+{
+#ifdef UCONFIG_SWAP
+#error alloc_pages_numa: swap not supported
+#endif
+	struct Page *page;
+	bool intr_flag;
+	assert(node!=NULL);
+	local_intr_save(intr_flag);
+	{
+		page = pmm_manager->alloc_pages_numa(node, n);
+	}
+	local_intr_restore(intr_flag);
+	return page;
+}
+
 
 //boot_alloc_page - allocate one page using pmm->alloc_pages(1) 
 // return value: the kernel virtual address of this allocated page

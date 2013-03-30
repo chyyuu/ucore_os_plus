@@ -52,7 +52,7 @@ int kern_init(void)
 
 	/* get_cpu_var not available before tls_init() */
 	hz_init();
-	gdt_init(per_cpu_ptr(cpus,0));
+	gdt_init(per_cpu_ptr(cpus, 0));
 	tls_init(per_cpu_ptr(cpus, 0));
 	acpitables_init();
 	lapic_init();
