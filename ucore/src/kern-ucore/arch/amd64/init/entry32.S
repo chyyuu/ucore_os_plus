@@ -136,9 +136,6 @@ longmode_ap_entry:
     mov %ax, %es
     mov %ax, %ss
 
-    # setup rsp
-    mov (%esp), %rsp
-
     # Jump to kern_entry64
     movq $KERNBASE, %rax
     addq $kern_ap_entry64 - KERNBASE, %rax

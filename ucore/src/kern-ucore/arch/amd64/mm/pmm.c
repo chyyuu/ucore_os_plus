@@ -97,6 +97,7 @@ static inline void lgdt(struct pseudodesc *pd)
 	asm volatile ("lgdt (%0)"::"r" (pd));
 	asm volatile ("movw %%ax, %%es"::"a" (KERNEL_DS));
 	asm volatile ("movw %%ax, %%ds"::"a" (KERNEL_DS));
+	asm volatile ("movw %%ax, %%gs"::"a" (KERNEL_DS));
 
 	// reload cs & ss
 	asm volatile ("movq %%rsp, %%rax;"	// move %rsp to %rax
@@ -154,9 +155,10 @@ size_t nr_used_pages(void)
 }
 
 /* gdt_init - initialize the default GDT and TSS */
-static void gdt_init(void)
+void gdt_init(struct cpu *c)
 {
 	// initialize the TSS filed of the gdt
+	// XXX
 	gdt[SEG_TSS] =
 		SEGTSS(STS_T32A, (uintptr_t) & ts, sizeof(ts), DPL_KERNEL);
 
@@ -438,7 +440,7 @@ void pmm_init_ap(void)
 	cr0 &= ~(CR0_TS | CR0_EM);
 	lcr0(cr0);
 
-	gdt_init();
+	//gdt_init();
 
 	list_entry_t *page_struct_free_list =
 	    get_cpu_ptr(page_struct_free_list);

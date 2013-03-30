@@ -84,6 +84,7 @@ static atomic_t bsync = ATOMIC_INIT(0);
 
 void ap_init(void)
 {
+	gdt_init(per_cpu_ptr(cpus, bcpuid));
 	tls_init(per_cpu_ptr(cpus, bcpuid));
 	kprintf("CPU%d alive\n", myid());
 	/* load new pagetable(shared with bsp) */

@@ -35,6 +35,7 @@ void check_boot_pgdir(void);
 
 void pmm_init_numa(void);
 void pmm_init_ap(void);
+void gdt_init(struct cpu *c);
 void boot_map_segment(pgd_t * pgdir, uintptr_t la, size_t size, uintptr_t pa,
 		      uint32_t perm);
 
