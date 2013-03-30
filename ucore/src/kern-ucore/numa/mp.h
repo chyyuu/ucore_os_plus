@@ -10,6 +10,7 @@
 #include <types.h>
 #include <arch.h>
 #include <percpu.h>
+#include <arch_cpu.h>
 
 #ifndef CACHELINE
 #warning CACHELINE not defined
@@ -24,7 +25,6 @@
 struct cpu;
 struct numa_node;
 
-#include <arch_mp.h>
 
 struct numa_node{
 	uint32_t id;
@@ -69,6 +69,7 @@ DECLARE_PERCPU(struct cpu, cpus);
 extern struct numa_node numa_nodes[MAX_NUMA_NODES];
 extern struct numa_mem_zone numa_mem_zones[MAX_NUMA_MEM_ZONES];
 
+#include <arch_mp.h>
 
 extern pgd_t *mpti_pgdir;
 extern uintptr_t mpti_la;
