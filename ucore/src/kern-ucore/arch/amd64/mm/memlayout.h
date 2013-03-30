@@ -164,10 +164,12 @@ struct Page {
 #define le2page(le, member)                 \
     to_struct((le), struct Page, member)
 
+struct numa_mem_zone;
 /* free_area_t - maintains a doubly linked list to record free (unused) pages */
 typedef struct {
 	list_entry_t free_list;	// the list header
 	unsigned int nr_free;	// # of free pages in this free list
+	struct numa_mem_zone *zone;
 } free_area_t;
 
 #endif /* !__ASSEMBLER__ */

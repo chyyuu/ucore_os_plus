@@ -25,6 +25,7 @@ tls_init(struct cpu *c)
 {
 	// Initialize cpu-local storage.
 	writegs(KERNEL_DS);
+
 	/* gs base shadow reg in msr */
 	writemsr(MSR_GS_BASE, (uint64_t)&c->cpu);
 	writemsr(MSR_GS_KERNBASE, (uint64_t)&c->cpu);
@@ -89,8 +90,14 @@ void ap_init(void)
 	pmm_init_ap();
 	idt_init();		// init interrupt descriptor table
 
+	/* test pmm */
+	struct Page *p = alloc_pages(2);
+	kprintf("I'm %d, get 0x%016llx(PA)\n", myid(), page2pa(p));
+	free_pages(p, 2);
+
 	atomic_inc(&bsync); /* let BSP know we are up */
-	while(1);
+	while(1)
+		nop_pause();
 }
 
 void cpu_up(int id)
@@ -106,7 +113,7 @@ void cpu_up(int id)
 	assert(c->id == id);
 	memcpy(code, _bootother_start, _bootother_size);
 
-	stack = (char*)page2kva(alloc_pages(KSTACKPAGE));
+	stack = (char*)page2kva(alloc_pages_cpu(c, KSTACKPAGE));
 	assert(stack != NULL);
 
 	kprintf("LAPIC %d, CODE %p PA: %p, STACK: %p\n", c->hwid, code, PADDR_DIRECT(code), stack);
@@ -114,6 +121,7 @@ void cpu_up(int id)
 
 	*(uint32_t*)(code-4) = (uint32_t)PADDR_DIRECT(&apstart);
 	*(uint64_t*)(code-12) = (uint64_t)stack + KSTACKSIZE;
+	*(uint64_t*)(code-20) = (uint64_t)boot_cr3;
 	// bootother.S sets this to 0x0a55face early on
 	*(uint32_t*)(code-64) = 0;
 	bcpuid = c->id;

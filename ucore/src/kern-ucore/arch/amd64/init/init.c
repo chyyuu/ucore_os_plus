@@ -19,6 +19,7 @@
 #include <mod.h>
 #include <percpu.h>
 #include <sysconf.h>
+#include <lapic.h>
 
 int kern_init(void) __attribute__ ((noreturn));
 
@@ -50,21 +51,23 @@ int kern_init(void)
 	print_kerninfo();
 
 	/* get_cpu_var not available before tls_init() */
-	tls_init(per_cpu_ptr(cpus, 0));
-
-	pmm_init();		// init physical memory management
-
 	hz_init();
+	tls_init(per_cpu_ptr(cpus, 0));
+	acpitables_init();
+	lapic_init();
+	numa_init();
+
+	pmm_init_numa();		// init physical memory management, numa awared
+	lapic_init_late();
 
 	//init the acpi stuff
-	acpitables_init();
 
 	idt_init();		// init interrupt descriptor table
 	pic_init();		// init interrupt controller
 
 //	acpi_conf_init();
-	lapic_init();
-	numa_init();
+
+
 	percpu_init();
 	cpus_init();
 

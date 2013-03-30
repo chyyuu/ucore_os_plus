@@ -49,13 +49,20 @@ kern_entry32:
     movl $pmd, %eax
     orl $0x3, %eax
     movl %eax, (%edi)
+    addl $4096, %eax
+    movl %eax, 0x08(%edi)
+    addl $4096, %eax
+    movl %eax, 0x10(%edi)
+    addl $4096, %eax
+    movl %eax, 0x18(%edi)
 
     # set pmd, Mark each entry as (PTE_W | PTE_P | PTE_PS)
     movl $pmd, %edi
     movl $0x83, %ebx
-    movl $0x200, %ecx                               # 512 entries
+    movl $0x800, %ecx                               # 512 entries
 
-    # map 2M * 512 = 1G memory
+    # map 2M * 512 * 4 = 4G memory
+    # this should be enough for all IO mapped mem
 loop:
     movl %ebx, (%edi)
     addl $0x8, %edi
@@ -130,7 +137,6 @@ longmode_ap_entry:
     mov %ax, %ss
 
     # setup rsp
-    movq $KERNBASE, %rax
     mov (%esp), %rsp
 
     # Jump to kern_entry64
@@ -174,7 +180,7 @@ pud:
     .long 0x0
     .endr
 pmd:
-    .rept 1024
+    .rept (1024*4)
     .long 0x0
     .endr
 
