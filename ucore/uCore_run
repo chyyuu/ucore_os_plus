@@ -1,23 +1,28 @@
 #!/bin/bash
 
 BUILD_DIR=obj
+COMMAND_LINE_MODE=
 TEST_MODE=
 TEST_POSTFIX=
 GDB_PORT=1234
 
-while getopts "hd:t:" opt; do
+while getopts "chd:t:" opt; do
     case $opt in
+        c)
+            COMMAND_LINE_MODE=y
+            ;;
         d)
             BUILD_DIR=$OPTARG
             ;;
         h)
             echo "Usage $0 [options]"
             echo "Options:"
+            echo "  -c                             run in command prompt w/o graphic"
             echo "  -d <directory>                 uCore build directory"
             echo "                                 default to obj/"
             echo "  -t                             run in background for test"
             echo "                                 i.e. do not use stdio or open SDL window"
-	    echo "                                 and use images with the given postfix"
+            echo "                                 and use images with the given postfix"
             echo ""
             echo "Supported architectures: i386, arm(goldfishv7), amd64"
             echo ""
@@ -26,14 +31,19 @@ while getopts "hd:t:" opt; do
             ;;
         t)
             TEST_MODE=y
-	    TEST_POSTFIX=.$OPTARG
-	    GDB_PORT=$[ $OPTARG % 10000 + 40000 ]
+            TEST_POSTFIX=.$OPTARG
+            GDB_PORT=$[ $OPTARG % 10000 + 40000 ]
             ;;
         ?)
             exit 1
             ;;
     esac
 done
+
+# If we are invoked w/o GUI, fall back to command line mode
+if [[ -z $DISPLAY ]]; then
+    COMMAND_LINE_MODE=y
+fi
 
 if [[ ! -d $BUILD_DIR ]]; then
     echo $BUILD_DIR does not exist or is not a directory.
@@ -74,14 +84,15 @@ case $UCONFIG_ARCH in
             QEMU=qemu-system-i386
         fi
         if [[ $TEST_MODE = y ]]; then
-            EXTRA_OPT="-S -display none -gdb tcp::$GDB_PORT"
+            EXTRA_OPT="-S -display none -gdb tcp::$GDB_PORT -serial file:$BUILD_DIR/serial.log$TEST_POSTFIX"
+        elif [[ $COMMAND_LINE_MODE = y ]]; then
+            EXTRA_OPT="-nographic"
         else
-            EXTRA_OPT="-monitor stdio"
+            EXTRA_OPT="-monitor stdio -s -serial file:$BUILD_DIR/serial.log"
         fi
         exec $QEMU -m 128 \
             -hda $BUILD_DIR/kernel.img$TEST_POSTFIX \
             -drive file=$BUILD_DIR/sfs.img$TEST_POSTFIX,media=disk,cache=writeback,index=2 \
-            -s -serial file:$BUILD_DIR/serial.log$TEST_POSTFIX \
             $EXTRA_OPT
         ;;
     amd64)
@@ -91,14 +102,15 @@ case $UCONFIG_ARCH in
             QEMU=qemu-system-x86_64
         fi
         if [[ $TEST_MODE = y ]]; then
-            EXTRA_OPT="-S -display none -gdb tcp::$GDB_PORT"
+            EXTRA_OPT="-S -display none -gdb tcp::$GDB_PORT -serial file:$BUILD_DIR/serial.log$TEST_POSTFIX"
+        elif [[ $COMMAND_LINE_MODE = y ]]; then
+            EXTRA_OPT="-nographic"
         else
-            EXTRA_OPT="-monitor stdio"
+            EXTRA_OPT="-monitor stdio -s -serial file:$BUILD_DIR/serial.log"
         fi
         exec $QEMU -m 512 \
             -hda $BUILD_DIR/kernel.img$TEST_POSTFIX \
             -drive file=$BUILD_DIR/sfs.img$TEST_POSTFIX,media=disk,cache=writeback,index=2 \
-            -s -serial file:$BUILD_DIR/serial.log$TEST_POSTFIX \
             $EXTRA_OPT
         ;;
 esac
