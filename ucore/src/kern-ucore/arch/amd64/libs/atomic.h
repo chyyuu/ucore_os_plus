@@ -311,4 +311,7 @@ static inline bool test_bit(int nr, volatile void *addr)
 	return oldbit != 0;
 }
 
+/* gcc builtin */
+#define atomic_compare_and_swap(ptr, oval, nval) __sync_bool_compare_and_swap(ptr, oval, nval)
+
 #endif /* !__ARCH_UM_INCLUDE_ATOMIC_H */

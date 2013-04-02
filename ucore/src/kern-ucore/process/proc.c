@@ -2035,7 +2035,7 @@ void proc_init(void)
 
 	idle->pid = cpuid;
 	idle->state = PROC_RUNNABLE;
-	// XXX
+	// No need to be set for kthread (no privilege switch)
 	// idleproc->kstack = (uintptr_t)bootstack;
 	idle->need_resched = 1;
 	idle->tf = NULL;
@@ -2077,7 +2077,7 @@ void proc_init_ap(void)
 
 	idle->pid = cpuid;
 	idle->state = PROC_RUNNABLE;
-	// XXX
+	// No need to be set for kthread (no privilege switch)
 	// idle->kstack = (uintptr_t)bootstack;
 	idle->need_resched = 1;
 	idle->tf = NULL;

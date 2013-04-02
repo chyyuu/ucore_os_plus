@@ -59,6 +59,7 @@ int kern_init(void)
 	numa_init();
 
 	pmm_init_numa();		// init physical memory management, numa awared
+	/* map the lapic */
 	lapic_init_late();
 
 	//init the acpi stuff

@@ -115,7 +115,7 @@ static inline void lgdt(struct pseudodesc *pd)
 }
 
 /* *
- * load_esp0 - change the ESP0 in default task state segment,
+ * load_rsp0 - change the ESP0 in default task state segment,
  * so that we can use different kernel stack when we trap frame
  * user to kernel.
  * */

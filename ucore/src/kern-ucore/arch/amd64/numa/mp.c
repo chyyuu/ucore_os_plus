@@ -114,9 +114,13 @@ void ap_init(void)
 	kprintf("I'm %d, get 0x%016llx(PA)\n", myid(), page2pa(p));
 	free_pages(p, 2);
 
+	lapic_init();
+	proc_init_ap();
+
 	atomic_inc(&bsync); /* let BSP know we are up */
-	while(1)
-		nop_pause();
+
+	intr_enable();		// enable irq interrupt
+	cpu_idle();
 }
 
 void cpu_up(int id)
