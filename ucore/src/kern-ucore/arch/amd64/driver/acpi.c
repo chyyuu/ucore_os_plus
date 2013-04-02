@@ -26,7 +26,13 @@
 #include "sysconf.h"
 #include "cpuid.h"
 
+/* declared in mp.h */
+struct numa_node numa_nodes[MAX_NUMA_NODES];
+
+#define MAX_TABLE_DESC 16
+
 static int table_inited = 0;
+static ACPI_TABLE_DESC table_desc[MAX_TABLE_DESC];
 static ACPI_TABLE_MADT *hdr_madt;
 static ACPI_TABLE_SRAT *hdr_srat;
 static ACPI_TABLE_DMAR *hdr_dmar;
@@ -34,10 +40,12 @@ static ACPI_TABLE_DMAR *hdr_dmar;
 /* Early ACPI Table Access */
 int acpitables_init(void)
 {
+	if(table_inited)
+		return;
 	kprintf("acpitables_init()\n");
 	ACPI_STATUS r;
 	ACPI_TABLE_HEADER *hdr;
-	if (ACPI_FAILURE(r = AcpiInitializeTables(NULL, 16, FALSE)))
+	if (ACPI_FAILURE(r = AcpiInitializeTables(table_desc, MAX_TABLE_DESC, FALSE)))
 		panic("acpi: AcpiInitializeTables failed: %s", AcpiFormatException(r));
 
 	// Get the MADT
@@ -75,9 +83,9 @@ int lapic_init(void)
 {
 	static int bsp = 1;
 	if(bsp){
-		__lapic_chip = x2apic_lapic_init();
+		__lapic_chip = x2apic_lapic_init_early();
 		if(!__lapic_chip)
-			__lapic_chip = xapic_lapic_init();
+			__lapic_chip = xapic_lapic_init_early();
 		if(!__lapic_chip)
 			panic("ERROR: No LAPIC found\n");
 	}
@@ -98,7 +106,6 @@ int lapic_init(void)
 		sub=(subtype *)((char*)sub + (sub->Length)))
 
 static uint32_t cpu_id_to_apicid[NCPU];
-static struct numa_node numa_nodes[MAX_NUMA_NODES];
 
 static void cpumap_init(void)
 {
@@ -172,6 +179,7 @@ int numa_init(void)
 	cpumap_init();
 	if(!hdr_srat){
 		kprintf("numa_init: SRAT not found! Assuming one NUMA node\n");
+		numa_nodes[0].id = 0;
 		numa_nodes[0].hwid = 0;
 		numa_nodes[0].nr_mems = 1;
 		numa_nodes[0].nr_cpus = sysconf.lcpu_count;
@@ -194,6 +202,7 @@ int numa_init(void)
 		struct numa_node* node = proximity_domain_to_node(proximity_domain);
 		if(!node){
 			int nr = sysconf.lnuma_count;
+			numa_nodes[nr].id = nr;
 			numa_nodes[nr].hwid = proximity_domain;
 			node = &numa_nodes[nr];
 			sysconf.lnuma_count++;

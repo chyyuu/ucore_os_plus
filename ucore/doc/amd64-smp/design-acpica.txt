@@ -108,7 +108,7 @@ RSDT/XSDT can only be loaded via the AML LoadTable operator.
 
 As the various ACPI tables are loaded (installed into the internal data structures of the CA
 subsystem), the internal ACPI Namespace (database of named ACPI objects) is constructed from
-those tables.
+those tables. 
 
 4.2.3 Hardware Initialization – AcpiEnableSubsystem
 
@@ -130,8 +130,8 @@ To summarize the actions performed by this call:
 TERMINOLOGY:
 ===========
 I.) TABLES OF ACPI
-    SDTH    : System Description Table Header
-          (注意这个不是Table，它是每个Table都包含的头)
+    SDTH    : System Description Table Header 
+          (注意这个不是Table，它是每个Table都包含的头) 
     RSDP    : Root System Description Pointer
           ('RSD PTR')
     RSDT    : Root System Description Table
@@ -178,7 +178,7 @@ I.) TABLES OF ACPI
           ('WDRT')
     ASFT?    : Alert Standard Format Table
           ('ASF!')
-
+          
 THE OTHER TERMINOLOGIES
     ASL        : ACPI Source Language
     AML        : ACPI Machine Language
@@ -201,8 +201,8 @@ THE OTHER TERMINOLOGIES
     TOM        : Top Of Memory
     UUID        : Universal Uniform IDentifiers
     xface        : Linux内核ACPI源文件的命名法，表示Interface。例如tbxface.c实现table的接口。
-
-
+    
+    
  RSDP, RSDT and XSDT
     RSDP是位于系统内存地址空间中的，它的值由firmware设置。
     RSDP包含了两个指针(还有其他字段，见Linux的struct acpi_table_rsdp)，分别保存着RSDT表的物理地址
@@ -210,7 +210,7 @@ THE OTHER TERMINOLOGIES
     Linux寻找RSDP的代码见acpi_os_get_root_pointer()函数。
     从ACPI2.0+开始，XSDT就取代了RSDT。 RSDT是ACPI 1.0中的，现代的OEM厂商一般也还提供RSDT，但那只
     是为了向后兼容ACPI-1.0而已。 或者用RSDT，或者用XSDT，不管选择用那个，它都包含了其他ACPI表数组
-    的地址。
+    的地址。 
     Linux下这2者的定义是：
     struct acpi_table_rsdt {
         struct acpi_table_header header;    /* Common ACPI table header */
@@ -219,13 +219,13 @@ THE OTHER TERMINOLOGIES
     struct acpi_table_xsdt {
         struct acpi_table_header header;    /* Common ACPI table header */
         u64 table_offset_entry[1];        /* Array of pointers to ACPI tables */
-                            /* FIXME: 为什么数组大小是1？
+                            /* FIXME: 为什么数组大小是1？ 
                              */
     };
-
-
+    
+    
     ACPI Table Header
-
+    
     ACPI所有的描述表(FACS表除外？Linux的acpi_table_facs结构不包含header，ACPI规范中也没有)都包含
     着一个Header， 所有描述表的Header结构都是一样的。Linux把它定义为：
     struct acpi_table_header {
@@ -239,31 +239,31 @@ THE OTHER TERMINOLOGIES
         char asl_compiler_id[ACPI_NAME_SIZE];        /* ASCII ASL compiler vendor ID */
         u32 asl_compiler_revision;            /* ASL compiler version */
     };
-
-
+    
+    
     (RSDT/XSDT之外的) ACPI描述表数组的第一个：FADT
     这个数组的第一个元素由XSDT中的table_offset_entry[0]指定位置。
-
+    
     被指向的第一个表通常是FADT(Fixed ACPI
     Description Table)，它的几个主要作用：
-
+        
         1) 保存着FACS和DSDT表的地址(64位也是)
         2) 包含一些entries，每个entry有固定的length，描述一个硬件的ACPI feature（我的理解就是，
            硬件对ACPI的支持程度）
-
+    
     Linux下FADT的定义见struct acpi_table_fadt结构。
-
-
-
+    
+    
+    
     DSDT表(Differentiated System Description Table)
-
+    
     由FADT中的字段指向。
     //Thanks for wheelz!
-    DSDT表包含一个Definition Block，叫作'Differentiated Definition Block for the DSDT'，它包含了
+    DSDT表包含一个Definition Block，叫作'Differentiated Definition Block for the DSDT'，它包含了 
     实现与配置信息(implementation and configuration information)。 OSPM用这些信息来实现：电源管理，
     热量管理，以及(在ACPI硬件寄存器所描述的信息之外的)即插即用。
     //FIXME: 奇怪的是，Linux没有提供一个struct acpi_table_dsdt 结构的定义，只提供了一个`
-    acpi_system_read_dsdt()函数。
+    acpi_system_read_dsdt()函数。 
     //FIXED: 注意，这个acpi_system_read_dsdt()函数不是内核用来load DSDT表的，而
     是为了让用户程序(例如cp)通过/proc/acpi/dsdt来读取DSDT表的(in AML format)，以便给内核开发者诊断
     问题。
@@ -274,17 +274,17 @@ THE OTHER TERMINOLOGIES
     acpixtract程序把ACPI的表从BIOS中提取出来，再用iasl工具(Intel ACPICA中的ASL编译器、AML反汇编器)
     反汇编它，修正BUG，然后编译。
     这个原理，参考Linux内核的acpi_os_table_override()函数。
-
+    
     SSDT表
     它是DSDT表的扩展。如果有这个表，RSDT/XSDT中就有指向它的指针。 SSDT表可能有不止一个。
     Definition Blocks, 都是定义在DSDT或者SSDT(s)表里的。其它的表没有 定义块。
-
+    
     FACS表(Firmware ACPI Control Structure)
     跟DSDT表一样，FACS表也由FADT表中的字段指向。
-
-
+    
+    
     MADT表, Multiple APIC Description Table
-
+    
     ACPI规范认为，一共有3种中断模型： Dual-8259, APIC和SAPIC。 Firmware可以同时提供对它们的支持，
     但OSPM只能选择一个。
     1.) Linux的MADT表的结构定义为：
@@ -295,7 +295,7 @@ THE OTHER TERMINOLOGIES
         };
     其中MADT表在44字节偏移处，有个APIC Structure[n]结构数组，每个元素的第一个字节是该Structure的
     类型，第二个字节是该Structure的长度。Linux把这两个字节封装成了一个acpi_subtable_header结构：
-
+        
         struct acpi_subtable_header {
             u8 type;
             u8 length;
@@ -313,25 +313,25 @@ THE OTHER TERMINOLOGIES
         9-127    : Reserved. OSPM skips structures of the reserved type
         128-255    : Reserved for OEM use
         从0到8的这九个结构，在Linux下分别是：
-        0, acpi_madt_local_apic,
-        1, acpi_madt_io_apic,
-        2, acpi_madt_interrupt_override,
+        0, acpi_madt_local_apic, 
+        1, acpi_madt_io_apic, 
+        2, acpi_madt_interrupt_override, 
            对于同时支持APIC和dual-8259A两种中断模型的平台，GSI中断的0-15必须被映射到8259A的0-15
            引脚上。如果不是这样，那么就必须提供Interrupt Override。
            例如，如果你有一个ISA的PIT，连接到ISA IRQ 0；但是在APIC模式下，它连接到I/O APIC 的
            IRQ 2。你就需要提供Interrupt Source Override，在source entry == 0处，指定其GSI为2。
-
-        3, acpi_madt_nmi_source,
+        
+        3, acpi_madt_nmi_source, 
            该结构指定，I/O APIC的中断输入中，哪些应被当作NMI。
-        4, acpi_madt_local_apic_nmi,
+        4, acpi_madt_local_apic_nmi, 
            该结构指定，每个CPU的Local APIC，其中断输入(LINT)，哪一个连接的是NMI。
-
-        5, acpi_madt_local_override,
-           MADT中的address是local APIC的地址，32位。为了提供对64位系统的支持，可以提供local
+           
+        5, acpi_madt_local_override, 
+           MADT中的address是local APIC的地址，32位。为了提供对64位系统的支持，可以提供local 
            APIC Address Override Structure，这样local APIC的地址就可以被Override成64位。
-        6, acpi_madt_io_sapic,
+        6, acpi_madt_io_sapic, 
            IA64的I/O SAPIC。
-        7, acpi_madt_local_sapic,
+        7, acpi_madt_local_sapic, 
            IA64的Local SAPIC。
         8, acpi_madt_interrupt_source.
            用来管理PMI(Platform Management Interrupts)的. PMI是IA-64上的，跟IA32的SMI类似。
@@ -345,9 +345,9 @@ THE OTHER TERMINOLOGIES
         1.  OSPM应该以 逻辑处理器在MADT表中出现的顺序来初始化它们
         2。 Firmware应该把每个处理器的第一个逻辑处理器，在MADT表中
             列在任何2nd逻辑处理器之前。
-
+    
     4.) 参考9.1/9.2中的信息，看看Linux下对local APIC和I/O APIC的定义：
-
+        
         /* 0：Processor Local APIC */
         struct acpi_madt_local_apic {
             struct acpi_subtable_header header;
@@ -365,28 +365,28 @@ THE OTHER TERMINOLOGIES
         };
         在Linux上，引导时通过acpi_parse_madt_lapic_entries()和acpi_parse_madt_ioapic_entries()
         两个函数来获取BIOS中ACPI提供的Local APIC和I/O APIC的信息。
-
+    
     5.) 多个IO-APIC
          I/O APIC有一或多个。在ACPI-enabled系统中，有两种中断模型：APIC模型和PC-AT的一对主从8259A
          模型。
-         APIC模型下，每个IO APIC支持的irq输入数目，可以是不同的, OSPM读取每个IO APIC的Max
+         APIC模型下，每个IO APIC支持的irq输入数目，可以是不同的, OSPM读取每个IO APIC的Max 
          Redirection Register来获取这个数目.
          参考acpi_madt_io_apic结构,如果一个io apic是系统中的第二个io apic，而第一个io apic的中断
          数目是24， 那么第二个io apic的global_irq_base就是24 -- 亦即，第二个io apic的中断输入从第
          24开始递增。
-
-
+         
+         
     SRAT表(System Resource Affinity Table)
-
+    
     该表可选.
-
+    
     E820及其它(ACPI spec, CH14)
-
+    
     传统的PC使用INT 15H这个BIOS调用来获得内存布局; 用EFI的系统，则可以通过EFI的一个boot service：
     GetMemoryMap()函数，来获取内存布局.
     OS loader获取的memory map，然后把它传递给OSPM。
     1). ACPI定义了5种类型的内存范围：
-
+        
         Value  ||   Mnemonic            Description
         ==================================================================================
          1     ||   AddressRangeMemory        该范围是OS可用的RAM
@@ -402,28 +402,28 @@ THE OTHER TERMINOLOGIES
         ==================================================================================
         Other  ||   Undefined             未定义，即保留给将来。OSPM应该象对待
                             AddressRangeReserved一样对待它。
-    2). INT 15H, E820H - 查询memory map
-
+    2). INT 15H, E820H - 查询memory map    
+        
         只能在real mode使用。 "int 15, e820h"的意思是，给EAX赋值e820h，然后int 0x15来调用BIOS的15号
         调用。
         PC机上一共有3中memmap探测方法，Linux采用的顺序是：先使用e820h，然后使用e801h，然后使用88h。
             e820h    : lets us assemble a memory map
         e801h    : returns a 32-bit memory size
         88h    : returns 0-64m memory
-
+         
         见arch/i386/boot/setup.S
         ACPI规定的是，要作出一个int 15h，e820h BIOS调用，要准备以下的输入：
-
+            
         EAX    : E820h
         EBX    : 如果是第一次调用，为0。 如果不是，则存放上次调用之后的Continuation value。ACPI
-              规范说，EBX应该包含上一次调用的返回值，意思是每次调用后BIOS都自动把continuation
+              规范说，EBX应该包含上一次调用的返回值，意思是每次调用后BIOS都自动把continuation 
               value写入了ebx中。如果BIOS往ebx写的值为0，则说明EOF，不要进行下一次调用了。
         ES:DI    : Buffer地址，指向一个Address Range Descriptor结构，BIOS把信息写入这个结构。
         ECX    : Buffer size
         EDX    : 签名。应该是"SMAP"这4个字母的ASCII值。 Linux写作#define SMAP  0x534d4150
-
+        
         而输出是：
-
+            
         CF    : 为1表示出错
         EAX    : 签名。为"SMAP"表示正确，可以判断ebx值进行下一次调用；否则为出错，应该放弃e820方法
         ES:DI    : 和输入一样
@@ -441,9 +441,9 @@ THE OTHER TERMINOLOGIES
         LengthLow和LengthHigh一起组成了64位的长度，即该range的size。
         Type，就是1)中说的5种类型之一了:)
         扩展属性我就不抄了，见ACPI Spec CH14。表14-5.
-
+    
     3). 如果是EFI enabled
-
+    
         OS loader使用GetMemoryMap()函数--它是EFI提供的Boot Services之一--来获取memmap，并且把它传递给
         OSPM。
         EFI没研究，暂且不说。
@@ -453,29 +453,29 @@ THE OTHER TERMINOLOGIES
             #define E820NR  0x1e8
         和E820最多能有多少entries：
             #define E820MAX 128
-
+      
         而在setup.S中：
         设置ES:DI的值为E820MAP，以便调用int 15h，e820h时让BIOS把memmap写入这个地址：
             movw     $E820MAP, %di
-        在每次调用int 15h，e820h时，都增加(E820NR)的值:
+        在每次调用int 15h，e820h时，都增加(E820NR)的值: 
             incb    (E820NR)
-
+        
         这样，当调用完毕，(E820NR)这块内存就保存了entries数目。
-
-
+       
+        
         Linu引导时，设置memmap的调用路径是：
         start_kernel() > setup_arch() > memory_setup() > sanitize_e820_map(E820_MAP, &E820_MAP_NR)
                                    > copy_e820_map(E820_MAP, E820_MAP_NR)
-
+        
         其中E820_MAP和E820_MAP_NR的定义：
          #define E820_MAP_NR (*(char*) (PARAM+E820NR))
          #define E820_MAP    ((struct e820entry *) (PARAM+E820MAP))
-
+        
         //FIXME:PARAM是什么意思？ 猜测是Linux用来保存boot parameters的页面，见arch/i386/kernel/
         head.S
         其中E820NR和E820MAP是两个16位的内存地址，已经在setup.S中调用bios call时设置好了。见上边
         的笔记。
-        /**
+        /** 
          * 一个个range地添加从bios获得的内存布局信息
          *
          * 作者注释：
@@ -499,7 +499,7 @@ THE OTHER TERMINOLOGIES
                     if (start .dsl
     来看，一个DSDT或SSDT只有一个DefinitionBlock。 不知道这是否是ACPI规范了的)
     Name的命名约定：
-
+    
         1. 每个Name都是固定的32bit(4字节)大小。
         2. Name的第一个字符必须是'A'-'Z'，或者下划线'_'
         3. Name不足4个字节的，ASL编译器会对它进行填充。 惯用的填充方式就是在
@@ -509,29 +509,29 @@ THE OTHER TERMINOLOGIES
         5. 以''开头的Name，表示引用namespace的根。(''不算在4字节长度之内)
         6. 以'^'开头的Name，表示引用本namespace的parent。('^'不算在4字节长
            度之内)
-
+    
     预定义了的namespaces(见规范3.0之5.3.1部分)
-
+    
         _GPE        : General events in GPE register block
         _PR        : ACPI 1.0 Processor Namespace.
         _SB        : All Device/Bus Objects under this namespace
         _SI        : System Indicator.
         _TZ        : ACPI 1.0 Thermal Zonen namespace.
 15. Linux至少加载ACPI的3个Tables: FADT, FACS, DSDT (RSDT不算在内)
-
+    
     见acpi_tb_tables_loaded()函数：
     if (acpi_gbl_root_table_list.count >= 3) {
         return (TRUE);
     else
         return (FALSE);
-
+    
     其中DSDT和FACS在acpi_gbl_root_table_list数组中的索引是固定的,DSDT是0, FACS是1:
-
+    
     /* Predefined (fixed) table indexes */
     #define ACPI_TABLE_INDEX_DSDT    (0)
     #define ACPI_TABLE_INDEX_FACS    (1)
 16, ACPI in Linux: 启动和初试化
-
+    
 /*{{{*/
     0). NND，最先执行的ACPI函数不是acpi_early_init()，害我cscope查了半天！
     start_kernel() > setup_arch() > acpi_boot_table_init() > acpi_table_init() > acpi_initialize_tables():
@@ -557,7 +557,7 @@ THE OTHER TERMINOLOGIES
     #ifdef CONFIG_X86_GENERICARCH
                 generic_bigsmp_probe();
     #endif
-
+                
                 /*
                  * Parse MADT IO-APIC entries
                  */
@@ -631,7 +631,7 @@ THE OTHER TERMINOLOGIES
             1. checksums all tables;
         2. enumerates lapics
         3. enumerates io-apics
-
+        
         acpi_table_init() is seperate to allow reading SRAT without other
         side effects
         side effects of acpi_boot_init:
@@ -642,34 +642,34 @@ THE OTHER TERMINOLOGIES
         acpi_irq_model = ...
         ...
     1). acpi_early_init()何时执行
-
+    
         2.6.22中，start_kernel() > acpi_early_init()
-                         > rest_init()
+                         > rest_init() 
                          > kernel_init(KERNEL THREAD)
                             > do_basic_setup()
                               > do_initcalls()
-
+        
         可见，acpi_early_init()比带有__init属性的函数执行得要早。
         另外，注释说：acpi_early_init() is before LAPIC and SMP init.
         SMP和LAPIC的初试化在哪里呢？答曰：
-        start_kernel() > rest_init() > kernel_init() > smp_prepare_cpus() >
-        smp_ops.smp_prepare_cpus() [这个即是native_smp_prepare_cpus()] >
+        start_kernel() > rest_init() > kernel_init() > smp_prepare_cpus() > 
+        smp_ops.smp_prepare_cpus() [这个即是native_smp_prepare_cpus()] > 
         smp_boot_cpus() > setup_local_APIC()
                     > smpboot_setup_io_apic()
-
+    
     2). acpi_early_init()都干了些什么
-
+        
         ...
         status = acpi_reallocate_root_table();    /* 在dynamic memory中申请ACPI tables的空间
-                               ，然后从别处把它们copy过来 */
+                               ，然后从别处把它们copy过来 */ 
         ...
         status = acpi_initialize_subsystem();    /* 初试化所有ACPI相关的全局变量 */
         ...
         status = acpi_load_tables();            /* 从DSDT/SSDTs/PSDT表获取数据，构建ACPI namespace */
         ...
-
+    
     3). 看看acpi_reallocate_root_table()函数
-
+        
         ...
         struct acpi_table_desc *tables;
         acpi_size new_size;
@@ -680,22 +680,22 @@ THE OTHER TERMINOLOGIES
         ACPI_MEMCPY(tables, acpi_gbl_root_table_list.tables, new_size); /* memcpy */
         ...
     4). PCI设备的IRQ Routing
-
+        
         有个带__init属性的pci_acpi_init()函数，它有这么2句：
-
+            
         pcibios_enable_irq    = acpi_pci_irq_enable;
         pcibios_disable_irq    = acpi_pci_irq_disable;
-
+        
         而这两个函数指针类型的变量，其原型为：
             int (*pcibios_enable_irq)(struct pci_dev *dev) = NULL;
             void (*pcibios_disable_irq)(struct pci_dev *dev) = NULL;
-
+         
         这两行赋值代码，其作用要等到PCI驱动程序调用pci_enable_device()和pci_disable_device()的
         时候，才能真正发挥出来：
             pci_enable_device() > pci_enable_device_bars() > do_pci_enable_device() >
         pcibios_enable_device() > pcibios_enable_irq() -- 在这里，调用的就是
         acpi_pci_irq_enable()
-
+    
        Linux定义的PCI IRQ Routing Table：
            struct acpi_prt_entry {
                struct list_head        node;
@@ -720,7 +720,7 @@ THE OTHER TERMINOLOGIES
                char source[4];
            };
            /*
-            *             XXX
+            *             XXX 
             *
             * Type 1: Dynamic
             * the 'source' field specifies the PCI interrupt link
@@ -735,7 +735,7 @@ THE OTHER TERMINOLOGIES
             * specifies the IRQ value, which is hardwired to specific
             * interrupt inputs on the interrupt controller.
             */
-
+        
     参考acpi_pci_irq_add_entry()函数。
 /*}}}*/
 51.1) ACPI和Linux设备驱动模型的集成//FIXME: 我还不理解!!
@@ -750,7 +750,7 @@ THE OTHER TERMINOLOGIES
             .start    = acpi_pci_root_start,
             },
     };
-
+    
     struct acpi_driver {
         char name[80];
         char class[20];
@@ -759,7 +759,7 @@ THE OTHER TERMINOLOGIES
         struct device_driver drv; /* XXX : struct device那层的 */
         struct module *owner;
     };
-
+    
     struct acpi_device_ops {
         acpi_op_add    add;
         acpi_op_remove    remove;
@@ -773,11 +773,11 @@ THE OTHER TERMINOLOGIES
         acpi_op_unbind    unbind;
         acpi_op_shutdown shutdown;
     };
-
+    
     struct acpi_bus_ops {
         ...;
     };
-
+    
     struct acpi_device {
         acpi_handle        handle;
         struct acpi_device    *parent;
@@ -787,7 +787,7 @@ THE OTHER TERMINOLOGIES
         struct list_head    g_list;
         struct acpi_device_status status;
         ...;
-
+        
         struct acpi_device {
         acpi_handle        handle;
         struct acpi_device    *parent;
@@ -804,7 +804,7 @@ THE OTHER TERMINOLOGIES
         struct acpi_bus_ops    bus_ops;
         ...;
     };
-
+    
     ACPI的PRT表(PCI IRQ Routing Table)
     struct acpi_prt_list {
         int            count; //number of entries
@@ -843,9 +843,9 @@ THE OTHER TERMINOLOGIES
      *         table
      *         Instance            - Which instance (for SSDTs)
      *         out_table           - Where the pointer to the table is returned
-     *
+     *        
      * RETURN:      Status and pointer to table
-     *
+     * 
      * DESCRIPTION: Finds and verifies an ACPI table.
      *
      ******************************************************************************/
@@ -863,7 +863,7 @@ THE OTHER TERMINOLOGIES
         /**
          * 遍历acpi_gbl_root_table_list表
          */
-        for (i = 0, j = 0; i  setup_arch > acpi_boot_init > acpi_process_madt >
+        for (i = 0, j = 0; i  setup_arch > acpi_boot_init > acpi_process_madt > 
     acpi_table_parse/acpi_parse_madt中:
     if(madt->address) {
         acpi_lapic_addr = (u64) madt->address;
@@ -875,7 +875,7 @@ THE OTHER TERMINOLOGIES
         acpi_physical_address rsdp_address = acpi_os_get_root_pointer();
         status = acpi_tb_parse_root_table(rsdp_address, ACPI_TABLE_ORIGIN_MAPPED);
     > acpi_tb_install_table() :
-
+        
         struct acpi_table_header *table;
         table = acpi_os_map_memory(address, sizeof(struct acpi_table_header));
     //FIXME: 为什么要有ioremap和__acpi_map_table()两种方式？
@@ -895,8 +895,9 @@ THE OTHER TERMINOLOGIES
     }
 /*}}}*/
 62, Questions and (possibly) Answers
-
+    
     1. Linux的initial_tables变量从未被赋值，所以acpi_initialize_tables()函数
        中的if判断永远为真
-
+       
        //FIXME: is it a trivial BUG?
+                
