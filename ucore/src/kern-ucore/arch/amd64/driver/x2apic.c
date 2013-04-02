@@ -31,7 +31,7 @@ static struct lapic_chip x2apic_chip = {
 	.cpu_init = x2_cpu_init,
 };
 
-struct lapic_chip* x2apic_lapic_init(void){
+struct lapic_chip* x2apic_lapic_init_early(void){
 	if(!cpuid_check_feature(CPUID_FEATURE_X2APIC))
 		return NULL;
 	uint64_t apic_bar = readmsr(MSR_APIC_BAR);

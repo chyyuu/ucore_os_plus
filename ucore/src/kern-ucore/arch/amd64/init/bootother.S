@@ -58,6 +58,8 @@ protcseg:
 	movw %ax, %ss
 
         movl $start-12, %esp
+#longmode boot cr3
+        movl $start-20, %ebp
 	movl start-4, %ecx
 	jmp *%ecx
 
