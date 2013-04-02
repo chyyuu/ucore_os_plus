@@ -1,9 +1,7 @@
 @program	/testbin/faultreadkernel
-@arch		i386
 
   - 'kernel_execve: pid = [0-9]{1,2}, name = "/testbin/faultreadkernel".'
-  - 'trapframe at 0xc.......'
-    'trap 0x0000000e Page Fault'
-    '  err  0x00000005'
-  - '  eip  0x008.....'
+  - 'trapframe at 0x.*'
+    'killed by kernel'
+!   'FAIL: T.T'
 ! - 'user panic at .*'
