@@ -1,8 +1,28 @@
 #include <mmu.h>
 #include <memlayout.h>
 
+#define MULTIBOOT_PAGE_ALIGN    (1<<0)
+#define MULTIBOOT_EXTRA_INFO   (1<<16)
+
+#define MULTIBOOT_HEADER_MAGIC 0x1BADB002
+#define MULTIBOOT_HEADER_FLAGS (MULTIBOOT_PAGE_ALIGN | MULTIBOOT_EXTRA_INFO)
+#define CHECKSUM  -(MULTIBOOT_HEADER_MAGIC + MULTIBOOT_HEADER_FLAGS)
+
 .text
 .code32
+   jmp kern_entry32
+.align 4
+multiboot_header:
+   .long MULTIBOOT_HEADER_MAGIC
+   .long MULTIBOOT_HEADER_FLAGS
+   .long CHECKSUM
+   .long multiboot_header
+   .long multiboot_header
+   .long (edata - KERNBASE)
+   .long (end - KERNBASE)
+   .long kern_entry32
+
+.align 4
 .global kern_entry32
 kern_entry32:
     # Detection of CPUID:
