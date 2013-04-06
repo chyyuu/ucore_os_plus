@@ -8,6 +8,7 @@
 #include <sem.h>
 #include <assert.h>
 #include <kio.h>
+#include <ramdisk.h>
 
 #define ISA_DATA                0x00
 #define ISA_ERROR               0x01
@@ -70,12 +71,7 @@ static void unlock_channel(unsigned short ideno)
 #define IO_BASE(ideno)          (channels[(ideno) >> 1].base)
 #define IO_CTRL(ideno)          (channels[(ideno) >> 1].ctrl)
 
-static struct ide_device {
-	unsigned char valid;	// 0 or 1 (If Device Really Exists)
-	unsigned int sets;	// Commend Sets Supported
-	unsigned int size;	// Size in Sectors
-	unsigned char model[41];	// Model in String
-} ide_devices[MAX_IDE];
+static struct ide_device ide_devices[MAX_IDE];
 
 static int ide_wait_ready(unsigned short iobase, bool check_error)
 {
@@ -91,6 +87,12 @@ static int ide_wait_ready(unsigned short iobase, bool check_error)
 void ide_init(void)
 {
 	static_assert((SECTSIZE % 4) == 0);
+	if(initrd_begin){
+		struct ide_device *dev = &ide_devices[DISK0_DEV_NO];
+		ramdisk_init_struct(dev);
+		ramdisk_init(dev);
+		return;
+	}
 	unsigned short ideno, iobase;
 	for (ideno = 0; ideno < MAX_IDE; ideno++) {
 		/* assume that no device here */
@@ -180,6 +182,8 @@ int ide_read_secs(unsigned short ideno, uint32_t secno, void *dst, size_t nsecs)
 {
 	assert(nsecs <= MAX_NSECS && VALID_IDE(ideno));
 	assert(secno < MAX_DISK_NSECS && secno + nsecs <= MAX_DISK_NSECS);
+	if(ide_devices[ideno].ramdisk)
+		return ramdisk_read(&ide_devices[ideno], secno, dst, nsecs);
 	unsigned short iobase = IO_BASE(ideno), ioctrl = IO_CTRL(ideno);
 
 	lock_channel(ideno);
@@ -215,6 +219,9 @@ ide_write_secs(unsigned short ideno, uint32_t secno, const void *src,
 {
 	assert(nsecs <= MAX_NSECS && VALID_IDE(ideno));
 	assert(secno < MAX_DISK_NSECS && secno + nsecs <= MAX_DISK_NSECS);
+
+	if(ide_devices[ideno].ramdisk)
+		return ramdisk_write(&ide_devices[ideno], secno, src, nsecs);
 	unsigned short iobase = IO_BASE(ideno), ioctrl = IO_CTRL(ideno);
 
 	lock_channel(ideno);

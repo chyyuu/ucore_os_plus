@@ -203,6 +203,7 @@ static void trap_dispatch(struct trapframe *tf)
 		break;
 	case IRQ_OFFSET + IRQ_COM1:
 	case IRQ_OFFSET + IRQ_KBD:
+	case IRQ_OFFSET + IRQ_LPT1:
 		c = cons_getc();
 
 		extern void dev_stdin_write(char c);

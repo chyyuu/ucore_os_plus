@@ -2,6 +2,7 @@
 #include <memlayout.h>
 
 #define MULTIBOOT_PAGE_ALIGN    (1<<0)
+#define MULTIBOOT_MEMORY_INFO   (1<<1)
 #define MULTIBOOT_EXTRA_INFO   (1<<16)
 
 #define MULTIBOOT_HEADER_MAGIC 0x1BADB002
@@ -25,6 +26,14 @@ multiboot_header:
 .align 4
 .global kern_entry32
 kern_entry32:
+    #save boot param
+    movl %eax, %edi
+    movl %ebx, %esi
+    movl $bootparam, %eax
+    movl %edi, 0x0(%eax)
+    movl %esi, 0x4(%eax)
+
+    call savecmdline
     # Detection of CPUID:
     #  Basically, detecting wheterh CPUID is supported is covered here.
     #  CPUID is supported when the ID-bit in the FLAGS-register can be flipped.
@@ -110,6 +119,8 @@ loop:
     orl $0x80000001, %eax
     movl %eax, %cr0
 
+    movl $bootparam, %esi
+
     movl $gdtdesc, %edi
     lgdt (%edi)
     ljmp $KERNEL_CS, $longmode_entry
@@ -148,6 +159,37 @@ apstart:
     lgdt (%edi)
     ljmp $KERNEL_CS, $longmode_ap_entry
 
+.code32        
+savecmdline:
+        pushl %eax
+        pushl %ebx
+        pushl %ecx
+        pushl %edx
+
+        // Check for for cmdline in flags
+        movl (%esi), %eax
+        and $(1<<2), %eax
+        jz 2f
+
+        // Save null-terminated cmdline
+        movl 0x10(%esi), %eax
+        movl $cmdline, %ebx
+        movl $255, %ecx
+1:      movb (%eax), %dl
+        movb %dl, (%ebx)
+        cmp $0, %dl
+        je 2f
+        inc %eax
+        inc %ebx
+        loop 1b
+
+2:      popl %eax
+        popl %ebx
+        popl %ecx
+        popl %edx
+        ret
+
+
 .code64
 longmode_ap_entry:
     # Set up the protected-mode data segment registers
@@ -162,6 +204,7 @@ longmode_ap_entry:
     jmp *%rax
 
 
+# %esi = bootparam phy addr
 # long-mode code here
 .code64
 longmode_entry:
@@ -170,6 +213,11 @@ longmode_entry:
     mov %ax, %ds
     mov %ax, %es
     mov %ax, %ss
+
+    movq $KERNBASE, %rax
+    addq %rax, %rsi
+    movl 0x00(%rsi), %edi
+    movl 0x04(%rsi), %esi
 
     # Jump to kern_entry64
     movq $KERNBASE, %rax
@@ -186,6 +234,14 @@ gdt:
 gdtdesc:
     .word 0x2f
     .quad gdt
+
+.global cmdline
+cmdline:
+	.space 256
+
+bootparam:
+	.long 0
+	.long 0
 
 .align PGSIZE
 pgd:
