@@ -223,8 +223,12 @@ extern unsigned long long time_sync_thresh;
  */
 #define __set_current_state(state_value)			\
 	do { current->state = (state_value); } while (0)
+#if 0
 #define set_current_state(state_value)		\
 	set_mb(current->state, (state_value))
+#else
+#define set_current_state(state_value)
+#endif
 
 /* Task command name length */
 #define TASK_COMM_LEN 16
