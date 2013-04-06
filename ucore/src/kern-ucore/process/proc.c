@@ -922,7 +922,7 @@ static int load_icode(int fd, int argc, char **kargv, int envc, char **kenvp)
 		}
 
 		if (ph->p_va == 0 && !bias) {
-			bias = 0x30800000;
+			bias = 0x00008000;
 		}
 
 		if ((ret = map_ph(fd, ph, mm, &bias, 0)) != 0) {
