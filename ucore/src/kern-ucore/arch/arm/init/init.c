@@ -109,7 +109,12 @@ int kern_init(void)
 	extern char edata[], end[];
 	memset(edata, 0, end - edata);
 
+	//char *p = 0xc81aa000;
+//	*p = 0;
+
 	exception_vector_init();
+//	pmm_init();		// init physical memory management
+//	pmm_init_ap();
 	board_init_early();
 
 #ifdef UCONFIG_HAVE_RAMDISK
@@ -187,5 +192,6 @@ int kern_init(void)
 #endif
 
 	enable_timer_list();
+	print_pgdir(kprintf);
 	cpu_idle();		// run idle process
 }

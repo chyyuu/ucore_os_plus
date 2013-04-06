@@ -2,6 +2,7 @@
 #include <kio.h>
 #include <mmu.h>
 #include <string.h>
+#include <pmm.h>
 
 static void domainAccessSet(uint32_t value, uint32_t mask);
 static void controlSet(uint32_t value, uint32_t mask);
@@ -19,7 +20,7 @@ static void controlSet(uint32_t value, uint32_t mask);
 int mmu_init_pdt(Pagetable * pt)
 {
 	uint32_t PTE, *PTEptr;
-	PTEptr = (uint32_t *) pt->ptAddress;
+	PTEptr = (uint32_t *) KADDR(pt->ptAddress);
 
 	//kprintf("Pagetable type %d\n", pt->type);
 	switch (pt->type) {
