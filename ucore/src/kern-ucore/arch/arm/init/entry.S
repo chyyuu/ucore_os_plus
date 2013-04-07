@@ -139,11 +139,20 @@ control_access_value:
 control_access_mask:
 .long	CHANGEALLDOM
 
+
+#ifdef __MACH_ARM_ARMV6
+mmu_value:
+.long  ENABLEMMU | ENABLEICACHE | ENABLEDCACHE | ENABLEHIGHEVT | ENABLENEWPT
+mmu_mask:
+.long  CHANGEMMU | CHANGEICACHE | CHANGEDCACHE | CHANGEHIGHEVT | CHANGENEWPT
+#elif defined __MACH_ARM_ARMV7
 mmu_value:
 .long	ENABLEMMU | ENABLEICACHE | ENABLEDCACHE | ENABLEHIGHEVT
-
 mmu_mask:
 .long	CHANGEMMU | CHANGEICACHE | CHANGEDCACHE | CHANGEHIGHEVT
+#else
+#error Unsupported arch
+#endif
 
 __create_pgtbl:
 	pgtbl	r4
