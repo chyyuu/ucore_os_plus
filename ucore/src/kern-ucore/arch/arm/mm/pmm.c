@@ -47,7 +47,6 @@ static Pagetable masterPT = { 0, 0, 0, MASTER, 0 };
 
 static struct memmap masterMemmap = { 1,
 	{
-//	 {KERNBASE, KMEMSIZE, MEMMAP_MEMORY}
 	 {SDRAM0_START, SDRAM0_SIZE, MEMMAP_MEMORY}
 	 }
 };
@@ -181,9 +180,7 @@ static void page_init(void)
 	pages = (struct Page *)ROUNDUP((void *)end, PGSIZE);
 	//kprintf("maxpa: 0x%08x  npage: 0x%08x  pages: 0x%08x  end: 0x%08x\n", maxpa, npage, pages, end);
 
-	//for (i = KERNBASE / PGSIZE; i < npage; i++) {	// trick to not consider non existing pages
 	for (i = 0; i < npage; i++) {	// trick to not consider non existing pages
-//	kprintf("*****i=%d\n", i);
 		SetPageReserved(pages + i);
 	}
 
@@ -290,7 +287,6 @@ void pmm_init(void)
 
 	memset(boot_pgdir, 0, 4 * PGSIZE);
 	boot_pgdir_pa = PADDR(boot_pgdir);
-//	boot_pgdir_pa = boot_pgdir;
 	kprintf("boot_pgdir at: 0x%08x \n", boot_pgdir);
 
 	// initialize master table / PDT
@@ -714,7 +710,7 @@ void print_pgdir(int (*printf) (const char *fmt, ...))
 			size_t range_perm;
 			size_t l, r = 0;
 			while ((range_perm =
-				get_pgtable_items(0, NPTEENTRY, r, KADDR(curr_pt), &l,
+				get_pgtable_items(0, NPTEENTRY, r, KADDR((uintptr_t)curr_pt), &l,
 						  &r, PTEX_UW)) != 0) {
 				size_t range_l =
 				    curr_pt_id * PTSIZE + l * PGSIZE;
