@@ -205,6 +205,7 @@ static void x_lapic_start_ap(struct lapic_chip *_this, struct cpu *c,
 	}
 }
 
+
 static void x_cpu_init(struct lapic_chip* _this)
 {
 	uint64_t count;
@@ -265,11 +266,19 @@ static void x_cpu_init(struct lapic_chip* _this)
 
 	return;
 }
+static void x_init_late(struct lapic_chip* c)
+{
+	
+	uint64_t apic_base = readmsr(MSR_APIC_BAR);
+	/* map xapic registers */
+	*get_pte(boot_pgdir, (uintptr_t)xapic, 1) = apic_base | PTE_P | PTE_W;
+}
 
 static struct lapic_chip xapic_chip = {
 	.cpu_init = x_cpu_init,
 	.id = x_lapic_id,
 	.eoi = lapic_eoi_send,
+	.init_late = x_init_late,
 	.start_ap = x_lapic_start_ap,
 };
 
@@ -283,14 +292,14 @@ static xapic_init_once()
 
 	xapic = (uint32_t*)VADDR_DIRECT(apic_base & ~0xffful);
 	//map xapic registers
-	*get_pte(boot_pgdir, (uintptr_t)xapic, 1) =
-		apic_base | PTE_P | PTE_W;
+	//*get_pte(boot_pgdir, (uintptr_t)xapic, 1) =
+	//	apic_base | PTE_P | PTE_W;
 
 	kprintf("xapic_init_once: xapic base %p\n", xapic);
 
 }
 
-struct lapic_chip* xapic_lapic_init(void)
+struct lapic_chip* xapic_lapic_init_early(void)
 {
 	if(!cpuid_check_feature(CPUID_FEATURE_APIC))
 		return NULL;

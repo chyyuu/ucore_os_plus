@@ -651,7 +651,6 @@ static int __do_exit(void)
 
 	struct mm_struct *mm = current->mm;
 	if (mm != NULL) {
-		mm->cpuid = -1;
 		mp_set_mm_pagetable(NULL);
 		if (mm_count_dec(mm) == 0) {
 			exit_mmap(mm);
@@ -1096,7 +1095,6 @@ static int load_icode(int fd, int argc, char **kargv, int envc, char **kenvp)
 	mm_count_inc(mm);
 	current->mm = mm;
 	set_pgdir(current, mm->pgdir);
-	mm->cpuid = myid();
 	mp_set_mm_pagetable(mm);
 
 	if (!is_dynamic) {
@@ -1236,7 +1234,6 @@ int do_execve(const char *filename, const char **argv, const char **envp)
 	}
 
 	if (mm != NULL) {
-		mm->cpuid = -1;
 		mp_set_mm_pagetable(NULL);
 		if (mm_count_dec(mm) == 0) {
 			exit_mmap(mm);
@@ -2035,7 +2032,7 @@ void proc_init(void)
 
 	idle->pid = cpuid;
 	idle->state = PROC_RUNNABLE;
-	// XXX
+	// No need to be set for kthread (no privilege switch)
 	// idleproc->kstack = (uintptr_t)bootstack;
 	idle->need_resched = 1;
 	idle->tf = NULL;
@@ -2077,7 +2074,7 @@ void proc_init_ap(void)
 
 	idle->pid = cpuid;
 	idle->state = PROC_RUNNABLE;
-	// XXX
+	// No need to be set for kthread (no privilege switch)
 	// idle->kstack = (uintptr_t)bootstack;
 	idle->need_resched = 1;
 	idle->tf = NULL;

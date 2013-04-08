@@ -109,7 +109,6 @@ struct mm_struct *mm_create(void)
 		mm->brk_start = mm->brk = 0;
 		list_init(&(mm->proc_mm_link));
 		sem_init(&(mm->mm_sem), 1);
-		mm->cpuid = -1;
 	}
 	return mm;
 }
@@ -148,8 +147,10 @@ static inline struct vma_struct *find_vma_rb(rb_tree * tree, uintptr_t addr)
 {
 	rb_node *node = rb_node_root(tree);
 	struct vma_struct *vma = NULL, *tmp;
+    //kprintf("  find_vma_rb begin:: addr is %d\n",addr);
 	while (node != NULL) {
 		tmp = rbn2vma(node, rb_link);
+        //kprintf("find_vma_rb while:: vma tmp start %d, end %d, addr %d\n",tmp->vm_start, tmp->vm_end, addr);
 		if (tmp->vm_end > addr) {
 			vma = tmp;
 			if (tmp->vm_start <= addr) {
@@ -162,12 +163,19 @@ static inline struct vma_struct *find_vma_rb(rb_tree * tree, uintptr_t addr)
 			node = rb_node_right(tree, node);
 		}
 	}
+#if 0
+    if (vma!=NULL) 
+      kprintf("  find_vma_rb end:: addr %d, vma %x, start %d, end %d\n",addr, vma, vma->vm_start, vma->vm_end);
+    else
+      kprintf("  find_vma_rb end:: vma is NULL\n");
+#endif
 	return vma;
 }
 
 // find_vma - find a vma  (vma->vm_start <= addr < vma_vm_end)
 struct vma_struct *find_vma(struct mm_struct *mm, uintptr_t addr)
 {
+    //kprintf("find_vma begin:: addr %d\n",addr);
 	struct vma_struct *vma = NULL;
 	if (mm != NULL) {
 		vma = mm->mmap_cache;
@@ -190,6 +198,7 @@ struct vma_struct *find_vma(struct mm_struct *mm, uintptr_t addr)
 				if (!found) {
 					vma = NULL;
 				}
+                //kprintf("  find_vma linear:: vma %d\n",vma);
 			}
 		}
 		if (vma != NULL) {
@@ -752,6 +761,7 @@ static void check_vma_struct(void)
 	assert(mm != NULL);
 
 	int step1 = RB_MIN_MAP_COUNT * 2, step2 = step1 * 10;
+//	int step1 = 2, step2 = step1 * 10;
 
 	int i;
 	for (i = step1; i >= 1; i--) {
