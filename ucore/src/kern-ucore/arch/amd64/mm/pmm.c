@@ -13,6 +13,7 @@
 #include <kio.h>
 #include <mp.h>
 #include <sysconf.h>
+#include <ramdisk.h>
 
 /* *
  * Task State Segment:
@@ -206,9 +207,10 @@ struct numa_mem_zone numa_mem_zones[MAX_NUMA_MEM_ZONES];
 static int numa_mem_zones_cnt;
 
 /* pmm_init - initialize the physical memory management */
+extern struct e820map *e820map_addr;
 static void page_init(void)
 {
-	struct e820map *memmap = (struct e820map *)(0x8000 + PBASE);
+	struct e820map *memmap = e820map_addr;
 	uint64_t maxpa = 0, totalmemsize=0;
 
 	kprintf("e820map: size, begin, end, type\n");
@@ -233,9 +235,14 @@ static void page_init(void)
 	}
 
 	extern char end[];
+	char *reserve_end = end;
+	if(initrd_end){
+		assert(initrd_end > end);
+		reserve_end = initrd_end;
+	}
 
 	npage = maxpa / PGSIZE;
-	pages = (struct Page *)ROUNDUP((uintptr_t) end, PGSIZE);
+	pages = (struct Page *)ROUNDUP((uintptr_t)reserve_end, PGSIZE);
 
 	for (i = 0; i < npage; i++) {
 		SetPageReserved(pages + i);
@@ -439,7 +446,7 @@ void pmm_init_numa(void)
 
 	/* patched by xinhaoyuan: to fix the unmapped space when reading ACPI */
 	/* configuration table under X86-64 */
-	struct e820map *memmap = (struct e820map *)(0x8000 + PBASE);
+	struct e820map *memmap = e820map_addr;
 	int i;
 	for (i = 0; i < memmap->nr_map; i++) {
 		if (memmap->map[i].type != 1) {

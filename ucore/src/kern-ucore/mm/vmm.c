@@ -109,7 +109,6 @@ struct mm_struct *mm_create(void)
 		mm->brk_start = mm->brk = 0;
 		list_init(&(mm->proc_mm_link));
 		sem_init(&(mm->mm_sem), 1);
-		mm->cpuid = -1;
 	}
 	return mm;
 }
