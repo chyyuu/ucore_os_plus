@@ -44,6 +44,15 @@
 #define IRQ_ERROR               19
 #define IRQ_SPURIOUS            31
 
+// These are arbitrarily chosen, but with care not to overlap
+// processor defined exceptions or interrupt vectors.
+#define T_TLBFLUSH      65      // flush TLB
+#define T_SAMPCONF      66      // configure event counters
+#define T_IPICALL       67      // Queued IPI call
+#define T_DEFAULT      500      // catchall
+
+
+
 /* registers as pushed by pushal */
 struct pushregs {
 	uint64_t reg_r15;

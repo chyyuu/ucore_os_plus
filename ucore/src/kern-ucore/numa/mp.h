@@ -54,7 +54,7 @@ struct cpu {
 	struct cpu *cpu;  //mysellf
 	void *percpu_base;           // Per-CPU memory region base
 
-	struct proc_struct *current;
+	struct proc_struct *__current;
 	struct proc_struct *idleproc;
 } __mpalign__;
 

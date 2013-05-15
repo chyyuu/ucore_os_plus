@@ -103,7 +103,7 @@ struct linux_timespec {
 #define le2proc(le, member)         \
   to_struct((le), struct proc_struct, member)
 
-#define current (mycpu()->current)
+#define current (mycpu()->__current)
 #define idleproc (mycpu()->idleproc)
 
 extern struct proc_struct *initproc;

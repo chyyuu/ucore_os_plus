@@ -20,6 +20,7 @@ struct lapic_chip{
 	void (*eoi)(struct lapic_chip*);
 	void (*init_late)(struct lapic_chip*);
 	void (*start_ap)(struct lapic_chip*, struct cpu*, uint32_t addr);
+	void (*send_ipi)(struct lapic_chip*, struct cpu*, int num);
 	void *private_data;
 };
 
@@ -31,6 +32,9 @@ struct lapic_chip *lapic_get_chip();
 /* helper macros */
 #define lapic_eoi() do{struct lapic_chip* __c = lapic_get_chip(); \
 	__c->eoi(__c);}while(0)
+
+#define lapic_send_ipi(cpu, num) do{struct lapic_chip* __c = lapic_get_chip(); \
+	__c->send_ipi(__c, cpu, num);}while(0)
 
 #define lapic_start_ap(cpuid, addr) do{struct lapic_chip* __c = lapic_get_chip(); \
 	assert(__c->start_ap != NULL); \

@@ -11,8 +11,14 @@
 #include <mp.h>
 #include <trap.h>
 #include <sysconf.h>
+#include <spinlock.h>
 
-static list_entry_t timer_list;
+struct __timer_list_t{
+	list_entry_t tl;	
+	spinlock_s lock;
+};
+static struct __timer_list_t __timer_list;
+#define timer_list __timer_list.tl
 
 static struct sched_class *sched_class;
 static DEFINE_PERCPU_NOINIT(struct run_queue, runqueues);
@@ -227,6 +233,7 @@ void run_timer_list(void)
 	bool intr_flag;
 	local_intr_save(intr_flag);
 	{
+		spinlock_acquire(&__timer_list.lock);
 		list_entry_t *le = list_next(&timer_list);
 		if (le != &timer_list) {
 			timer_t *timer = le2timer(le, timer_link);
@@ -237,8 +244,12 @@ void run_timer_list(void)
 				if (__ucore_is_linux_timer(timer)) {
 					struct __ucore_linux_timer *lt =
 					    &(timer->linux_timer);
+
+					spinlock_release(&__timer_list.lock);
 					if (lt->function)
 						(lt->function) (lt->data);
+					spinlock_acquire(&__timer_list.lock);
+
 					del_timer(timer);
 					kfree(timer);
 					continue;
@@ -262,6 +273,7 @@ void run_timer_list(void)
 			}
 		}
 		sched_class_proc_tick(current);
+		spinlock_release(&__timer_list.lock);
 	}
 	local_intr_restore(intr_flag);
 }

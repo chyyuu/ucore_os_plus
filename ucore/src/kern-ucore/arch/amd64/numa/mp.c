@@ -168,22 +168,54 @@ void kern_leave(void)
 
 void mp_set_mm_pagetable(struct mm_struct *mm)
 {
+	struct cpu *cpu = mycpu();
+	uintptr_t new_cr3;
 	if (mm != NULL && mm->pgdir != NULL)
-		lcr3(PADDR(mm->pgdir));
+		new_cr3 = PADDR(mm->pgdir);
 	else
-		lcr3(boot_cr3);
+		new_cr3 = boot_cr3;
+
+	mp_lcr3(new_cr3);
 }
 
 pgd_t *mpti_pgdir;
 uintptr_t mpti_la;
 volatile int mpti_end;
 
+static void dump_processors()
+{
+	int i;
+	for(i=0; i < sysconf.lcpu_count; i++){
+		struct cpu *cpu = per_cpu_ptr(cpus, i);
+		kprintf("CPU%d: pid %d, name: %s\n", i, cpu->__current?cpu->__current->pid:-1,
+				cpu->__current?cpu->__current->name:NULL);
+	}
+}
+
+/* XXX naive */
+static void shootdown_tlb_all(pgd_t *pgdir)
+{
+	int i;
+	//dump_processors();
+	for(i=0;i<sysconf.lcpu_count;i++){
+		struct cpu *cpu = per_cpu_ptr(cpus, i);
+		if(cpu->id == myid())
+			continue;
+		if(cpu->arch_data.tlb_cr3 != PADDR(pgdir))
+			continue;
+		kprintf("XX_TLB_SHUTDOWN %d %d\n", myid(), i);
+		lapic_send_ipi(cpu, T_TLBFLUSH);
+	}
+}
+
 void mp_tlb_invalidate(pgd_t * pgdir, uintptr_t la)
 {
 	tlb_invalidate(pgdir, la);
+	shootdown_tlb_all(pgdir);
 }
 
 void mp_tlb_update(pgd_t * pgdir, uintptr_t la)
 {
 	tlb_update(pgdir, la);
+	shootdown_tlb_all(pgdir);
 }

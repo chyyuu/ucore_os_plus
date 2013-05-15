@@ -113,6 +113,7 @@ static void serial_init(void)
 	}
 }
 
+#ifdef UCONFIG_CONSOLE_LPT
 static void lpt_putc_sub(int c)
 {
 	int i;
@@ -135,6 +136,10 @@ static void lpt_putc(int c)
 		lpt_putc_sub('\b');
 	}
 }
+#else
+static inline void lpt_putc_sub(int c){}
+static inline void lpt_putc(int c){}
+#endif
 
 /* cga_putc - print character to console */
 static void cga_putc(int c)

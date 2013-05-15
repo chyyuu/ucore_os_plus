@@ -469,7 +469,7 @@ void pmm_init_numa(void)
 void pmm_init_ap(void)
 {
 
-	lcr3(boot_cr3);
+	mp_lcr3(boot_cr3);
 
 	// set CR0
 	uint64_t cr0 = rcr0();

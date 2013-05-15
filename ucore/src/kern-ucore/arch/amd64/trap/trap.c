@@ -196,6 +196,10 @@ static void trap_dispatch(struct trapframe *tf)
 	case 0x6:
 		syscall();
 		break;
+		/* IPI */
+	case T_TLBFLUSH:
+		lcr3(rcr3());	
+		break;
 	case IRQ_OFFSET + IRQ_TIMER:
 		ticks++;
 		refcache_tick();

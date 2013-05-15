@@ -6,6 +6,7 @@
 struct __arch_cpu{
 	struct taskstate ts;
 	struct segdesc gdt[MAX_GDT_ITEMS];
+	uintptr_t tlb_cr3;
 };
 
 
