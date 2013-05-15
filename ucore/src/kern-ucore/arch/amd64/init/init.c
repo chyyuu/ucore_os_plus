@@ -21,6 +21,7 @@
 #include <sysconf.h>
 #include <lapic.h>
 #include <multiboot.h>
+#include <refcache.h>
 
 int kern_init(uint64_t, uint64_t) __attribute__ ((noreturn));
 
@@ -117,6 +118,8 @@ int kern_init(uint64_t mbmagic, uint64_t mbmem)
 
 	percpu_init();
 	cpus_init();
+
+	refcache_init();
 
 	vmm_init();		// init virtual memory management
 	sched_init();		// init scheduler

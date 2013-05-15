@@ -35,6 +35,7 @@ struct proc_struct *alloc_proc(void)
 		proc->sem_queue = NULL;
 		event_box_init(&(proc->event_box));
 		proc->fs_struct = NULL;
+		proc->cpu_affinity = PROC_CPU_NO_AFFINITY;
 	}
 	return proc;
 }

@@ -20,6 +20,7 @@
 #include <mp.h>
 #include <ioapic.h>
 #include <sysconf.h>
+#include <refcache.h>
 
 #define TICK_NUM 30
 
@@ -197,6 +198,7 @@ static void trap_dispatch(struct trapframe *tf)
 		break;
 	case IRQ_OFFSET + IRQ_TIMER:
 		ticks++;
+		refcache_tick();
 
 		assert(current != NULL);
 		run_timer_list();

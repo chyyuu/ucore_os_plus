@@ -24,6 +24,7 @@
 #include <mp.h>
 #include <resource.h>
 #include <sysconf.h>
+#include <refcache.h>
 
 /* ------------- process/thread mechanism design&implementation -------------
 (an simplified Linux process/thread mechanism )
@@ -2091,6 +2092,18 @@ void proc_init_ap(void)
 
 	idleproc = idle;
 	current = idle;
+#if 1
+	int pid;
+	char proc_name[32];
+	if((pid = ucore_kernel_thread(krefcache_cleaner, NULL, 0)) <= 0){
+		panic("krefcache_cleaner init failed.\n");
+	}
+	struct proc_struct* cleaner = find_proc(pid);
+	snprintf(proc_name, 32, "krefcache/%d", myid());
+	set_proc_name(cleaner, proc_name);
+	set_proc_cpu_affinity(cleaner, myid());
+	nr_process++;
+#endif
 
 	assert(idleproc != NULL && idleproc->pid == cpuid);
 }

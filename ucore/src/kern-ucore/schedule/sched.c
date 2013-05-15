@@ -6,6 +6,7 @@
 #include <assert.h>
 #include <sched_RR.h>
 #include <sched_MLFQ.h>
+#include <sched_mpRR.h>
 #include <kio.h>
 #include <mp.h>
 #include <trap.h>
@@ -14,11 +15,13 @@
 static list_entry_t timer_list;
 
 static struct sched_class *sched_class;
+static DEFINE_PERCPU_NOINIT(struct run_queue, runqueues);
 
-static struct run_queue *rq;
+//static struct run_queue *rq;
 
 static inline void sched_class_enqueue(struct proc_struct *proc)
 {
+	struct run_queue *rq = get_cpu_ptr(runqueues);
 	if (proc != idleproc) {
 		sched_class->enqueue(rq, proc);
 	}
@@ -26,45 +29,57 @@ static inline void sched_class_enqueue(struct proc_struct *proc)
 
 static inline void sched_class_dequeue(struct proc_struct *proc)
 {
+	struct run_queue *rq = get_cpu_ptr(runqueues);
 	sched_class->dequeue(rq, proc);
 }
 
 static inline struct proc_struct *sched_class_pick_next(void)
 {
+	struct run_queue *rq = get_cpu_ptr(runqueues);
 	return sched_class->pick_next(rq);
 }
 
 static void sched_class_proc_tick(struct proc_struct *proc)
 {
 	if (proc != idleproc) {
+		struct run_queue *rq = get_cpu_ptr(runqueues);
 		sched_class->proc_tick(rq, proc);
 	} else {
 		proc->need_resched = 1;
 	}
 }
 
-static struct run_queue __rq[4];
+//static struct run_queue __rq[NCPU];
 
 void sched_init(void)
 {
 	list_init(&timer_list);
 
-	rq = __rq;
-	list_init(&(rq->rq_link));
-	rq->max_time_slice = 8;
+	//rq = __rq;
+	//list_init(&(__rq[0].rq_link));
+	struct run_queue *rq0 = get_cpu_ptr(runqueues);
+	list_init(&(rq0->rq_link));
+	rq0->max_time_slice = 8;
 
 	int i;
-	for (i = 1; i < sizeof(__rq) / sizeof(__rq[0]); i++) {
-		list_add_before(&(rq->rq_link), &(__rq[i].rq_link));
-		__rq[i].max_time_slice = rq->max_time_slice * (1 << i);
+	for (i = 1; i < sysconf.lcpu_count; i++) {
+		struct run_queue *rqi = per_cpu_ptr(runqueues, i);
+		list_add_before(&(rq0->rq_link), 
+				&(rqi->rq_link));
+		rqi->max_time_slice = rq0->max_time_slice;
 	}
 
 #ifdef UCONFIG_SCHEDULER_MLFQ
 	sched_class = &MLFQ_sched_class;
-#else
+#elif defined UCONFIG_SCHEDULER_RR
 	sched_class = &RR_sched_class;
+#else
+	sched_class = &MPRR_sched_class;
 #endif
-	sched_class->init(rq);
+	for (i = 0; i < sysconf.lcpu_count; i++) {
+		struct run_queue *rqi = per_cpu_ptr(runqueues, i);
+		sched_class->init(rqi);
+	}
 
 	kprintf("sched class: %s\n", sched_class->name);
 }
