@@ -67,7 +67,13 @@ struct proc_struct {
 	struct proc_signal signal_info;
 
 	void *tls_pointer;
+
+	int cpu_affinity;
 };
+
+#define PROC_CPU_NO_AFFINITY (-1)
+#define set_proc_cpu_affinity(proc, cpuid) \
+	do{(proc)->cpu_affinity = cpuid;}while(0)
 
 struct linux_timespec {
 	long tv_sec;		/* seconds */
