@@ -74,7 +74,7 @@ void *dma_alloc_writecombine(struct device *dev, size_t size,
 	void *cpuaddr =
 	    ucore_kva_alloc_pages((size + PAGE_SIZE - 1) / PAGE_SIZE,
 				  UCORE_KAP_IO);
-	*handle = cpuaddr;
+	*handle = (dma_addr_t*)(cpuaddr - KERNBASE);
 	return cpuaddr;
 }
 

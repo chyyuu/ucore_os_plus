@@ -7,10 +7,11 @@ ENTRY(kern_entry)
 
 SECTIONS {
     /* Load the kernel at this address: "." means the current address */
-    . = TEXT_START;
+    . = 0xc0008000;
     PROVIDE(__kernel_text_start = .);
 
     .text : {
+	  *(.entrytext)
       *(.text .stub .text.* .gnu.linkonce.t.*)
       *(.init.text)
       . = ALIGN(4);

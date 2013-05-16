@@ -47,7 +47,7 @@ static Pagetable masterPT = { 0, 0, 0, MASTER, 0 };
 
 static struct memmap masterMemmap = { 1,
 	{
-	 {KERNBASE, KMEMSIZE, MEMMAP_MEMORY}
+	 {SDRAM0_START, SDRAM0_SIZE, MEMMAP_MEMORY}
 	 }
 };
 
@@ -180,7 +180,7 @@ static void page_init(void)
 	pages = (struct Page *)ROUNDUP((void *)end, PGSIZE);
 	//kprintf("maxpa: 0x%08x  npage: 0x%08x  pages: 0x%08x  end: 0x%08x\n", maxpa, npage, pages, end);
 
-	for (i = KERNBASE / PGSIZE; i < npage; i++) {	// trick to not consider non existing pages
+	for (i = 0; i < npage; i++) {	// trick to not consider non existing pages
 		SetPageReserved(pages + i);
 	}
 
@@ -276,7 +276,9 @@ void pmm_init(void)
 	page_init();
 
 	//use pmm->check to verify the correctness of the alloc/free function in a pmm
+	kprintf("begin check!!!");
 	check_alloc_page();
+	kprintf("end check!!!");
 
 	// create boot_pgdir, an initial page directory(Page Directory Table, PDT)
 	boot_pgdir = boot_alloc_page();
@@ -311,11 +313,11 @@ void pmm_init(void)
 	//boot_map_segment(boot_pgdir, virtual, PGSIZE, physical, PTEX_W); // base location of vector table
 	extern char __kernel_text_start[], __kernel_text_end[];
 	//kprintf("## %08x %08x\n", __kernel_text_start, __kernel_text_end);
-	boot_map_segment(boot_pgdir, KERNBASE, KMEMSIZE, KERNBASE, PTE_W);	// fixed address
+	boot_map_segment(boot_pgdir, KERNBASE, KMEMSIZE, PADDR(KERNBASE), PTE_W);	// fixed address
 	/* kernel code readonly protection */
 	boot_map_segment(boot_pgdir, (uintptr_t) __kernel_text_start,
 			 __kernel_text_end - __kernel_text_start,
-			 (uintptr_t) __kernel_text_start, PTE_P);
+			 (uintptr_t) PADDR(__kernel_text_start), PTE_P);
 
 	boot_map_segment(boot_pgdir, KIOBASE, KIOSIZE, KIOBASE, PTE_W | PTE_IOMEM);	// fixed address
 
@@ -327,7 +329,7 @@ void pmm_init(void)
 	if (CHECK_INITRD_EXIST()) {
 		boot_map_segment(boot_pgdir, DISK_FS_VBASE,
 				 ROUNDUP(initrd_end - initrd_begin, PGSIZE),
-				 (uintptr_t) initrd_begin, PTE_W);
+				 (uintptr_t) PADDR(initrd_begin), PTE_W);
 		kprintf("mapping initrd to 0x%08x\n", DISK_FS_VBASE);
 	}
 #endif
@@ -351,7 +353,7 @@ void pmm_init(void)
 	assert(kern_shm_pbase);
 	boot_map_segment(boot_pgdir, SHARED_KERNMEM_VBASE,
 			 SHARED_KERNMEM_PAGES * PGSIZE,
-			 (uintptr_t) kern_shm_pbase, PTE_W | PTE_U);
+			 (uintptr_t) PADDR(kern_shm_pbase), PTE_W | PTE_U);
 	kprintf("mapping kern_shm 0x%08x to 0x%08x, size: %d Pages\n",
 		kern_shm_pbase, SHARED_KERNMEM_VBASE, SHARED_KERNMEM_PAGES);
 	*(uint32_t *) kern_shm_pbase = 0;
@@ -368,7 +370,7 @@ void pmm_init(void)
 	print_pgdir(kprintf);
 
 	/* Part 3 activating page tables */
-	ttbSet((uint32_t) boot_pgdir);
+	ttbSet((uint32_t) PADDR(boot_pgdir));
 
 	/* enable cache and MMU */
 	mmu_init();
@@ -519,7 +521,8 @@ static void check_alloc_page(void)
 static void check_pgdir(void)
 {
 #ifndef BYPASS_CHECK
-	assert(npage - KERNBASE / PGSIZE <= KMEMSIZE / PGSIZE);	// pdt exists but is empty
+	// make any sense?
+//	assert(npage - KERNBASE / PGSIZE <= KMEMSIZE / PGSIZE);	// pdt exists but is empty
 	// pdt has a valid address format
 	assert(boot_pgdir != NULL && (uint32_t) PGOFF(boot_pgdir) == 0);
 	// initial address empty
@@ -707,7 +710,7 @@ void print_pgdir(int (*printf) (const char *fmt, ...))
 			size_t range_perm;
 			size_t l, r = 0;
 			while ((range_perm =
-				get_pgtable_items(0, NPTEENTRY, r, curr_pt, &l,
+				get_pgtable_items(0, NPTEENTRY, r, KADDR((uintptr_t)curr_pt), &l,
 						  &r, PTEX_UW)) != 0) {
 				size_t range_l =
 				    curr_pt_id * PTSIZE + l * PGSIZE;

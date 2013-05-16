@@ -186,7 +186,7 @@ run_test() {
 
     make O=$BUILD_DIR > /dev/null 2>&1
     result=$?
-    cp $BUILD_DIR/kernel.img $BUILD_DIR/kernel.img.$$ 2>/dev/null
+    cp $BUILD_DIR/kernel.img $BUILD_DIR/kernel.img.$$
     cp $BUILD_DIR/kernel/kernel-$UCONFIG_ARCH.elf $BUILD_DIR/kernel/kernel-$UCONFIG_ARCH.elf.$$
     release_lock $BUILD_DIR/$LOCK_FILENAME
     if [ $result -ne 0 ]; then
@@ -374,7 +374,7 @@ printf "%-20s%-10s%-10s%-10s%-10s\n" "" passed failed broken total >> $SUMMARY
 printf "%-20s%-10s%-10s%-10s%-10s\n" $UCONFIG_ARCH "$passed($passed_unexpected)" "$failed($failed_unexpected)" $broken $total >> $SUMMARY
 
 rm -f $BUILD_DIR/$TOTAL_COUNT_TMP $BUILD_DIR/$PASSED_COUNT_TMP $BUILD_DIR/$FAILED_COUNT_TMP $BUILD_DIR/$BROKEN_COUNT_TMP
-rm -f $BUILD_DIR/kernel.img.* 2>/dev/null
+rm -f $BUILD_DIR/kernel.img.*
 rm -f $BUILD_DIR/sfs.img.*
 rm -f $BUILD_DIR/serial.log.*
 rm -f $BUILD_DIR/kernel/kernel-$UCONFIG_ARCH.elf.*

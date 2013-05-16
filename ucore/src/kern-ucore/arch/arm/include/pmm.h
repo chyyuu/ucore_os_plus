@@ -74,7 +74,7 @@ void print_pgdir(int (*printf) (const char *fmt, ...));
             if (__m_kva < KERNBASE) {                                   \
                 panic("PADDR called with invalid kva 0x%08lx", __m_kva);\
             }                                                           \
-            __m_kva;                                         \
+            __m_kva - KERNBASE;                                         \
         })
 
 /* *
@@ -88,7 +88,7 @@ void print_pgdir(int (*printf) (const char *fmt, ...));
             if (__m_ppn >= npage) {                                     \
                 panic("KADDR called with invalid pa 0x%08lx", __m_pa);  \
             }                                                           \
-            (void *) (__m_pa);                                          \
+            (void *) (__m_pa + KERNBASE);                                          \
         })
 
 #define NEXT_PAGE(pg) (pg + 1)
@@ -189,10 +189,9 @@ struct user_tls_desc {
 
 uint32_t do_set_tls(struct user_tls_desc *tlsp);
 
-//TODO, FIX ME! 
 static inline pgd_t *init_pgdir_get(void)
 {
-	return (pgd_t *) boot_pgdir_pa;
+	return (pgd_t *)KADDR( boot_pgdir_pa);
 }
 
 void pmm_init_ap(void);

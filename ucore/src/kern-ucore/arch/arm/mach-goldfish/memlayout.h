@@ -69,7 +69,7 @@
  * */
 
 /* All physical memory mapped at this address */
-#define KERNBASE            SDRAM0_START
+#define KERNBASE            0xc0000000//SDRAM0_START
 #define KMEMSIZE            SDRAM0_SIZE	// the maximum amount of physical memory
 #define KERNTOP             (KERNBASE + KMEMSIZE)
 
@@ -98,8 +98,8 @@
 #define USTACKPAGE          256	// # of pages in user stack
 #define USTACKSIZE          (USTACKPAGE * PGSIZE)	// sizeof user stack
 
-#define USERBASE            0x30000000
-#define UTEXT               0x30800000	// where user programs generally begin
+#define USERBASE            0x00008000
+#define UTEXT               0x00808000	// where user programs generally begin
 #define USTAB               USERBASE	// the location of the user STABS data structure
 
 #define USER_ACCESS(start, end)                     \

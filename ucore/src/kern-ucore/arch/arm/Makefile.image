@@ -12,7 +12,10 @@ endif
 RAMDISK_OBJ := $(RAMDISK_FILE).o
 endif
 
+KERNEL_TEXT_PHY_BASE := $(shell printf "%08x\n" $$[$(UCONFIG_DRAM_START)+0x8000])
+
 KERNEL_ELF := $(KTREE_OBJ_ROOT)/kernel-$(ARCH).elf
+KERNEL_UIMAGE := $(OBJPATH_ROOT)/kernel.img
 LINK_FILE_IN	:= $(KTREE)/arch/${ARCH}/ucore.ld.in
 LINK_FILE     := $(KTREE_OBJ_ROOT)/arch/$(ARCH)/ucore.ld
 SEDFLAGS	= s/TEXT_START/$(UCONFIG_KERNEL_BASE)/
@@ -22,6 +25,11 @@ LIBGCC := $(shell $(TARGET_CC) --print-file-name=libgcc.a)
 $(KERNEL_ELF) : $(LINK_FILE) $(KERNEL_BUILTIN) $(RAMDISK_OBJ)
 	@echo Linking uCore
 	$(Q)$(TARGET_LD) -T $(LINK_FILE) $(KERNEL_BUILTIN) $(RAMDISK_OBJ) $(LIBGCC) -o $@
+
+$(KERNEL_UIMAGE) : $(KERNEL_ELF)
+	@echo Making uImage
+	$(Q)$(CROSS_COMPILE)objcopy -O binary $(KERNEL_ELF) $(KERNEL_ELF).bin
+	$(Q)mkimage -A arm -O linux -T kernel -C none -a $(KERNEL_TEXT_PHY_BASE) -e $(KERNEL_TEXT_PHY_BASE) -n linux -d $(KERNEL_ELF).bin $(KERNEL_UIMAGE)
 
 $(LINK_FILE): $(LINK_FILE_IN) $(KCONFIG_AUTOCONFIG)
 	@echo "creating linker script"
@@ -37,7 +45,7 @@ $(RAMDISK_OBJ): $(RAMDISK_FILE)
 
 
 .PHONY: all clean FORCE
-all: $(KERNEL_ELF)
+all: $(KERNEL_ELF) $(KERNEL_UIMAGE)
 
 FORCE:
 

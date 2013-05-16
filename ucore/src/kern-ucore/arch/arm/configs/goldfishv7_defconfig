@@ -1,4 +1,9 @@
 #
+# Automatically generated make config: don't edit
+# Sun Apr  7 00:38:17 2013
+#
+
+#
 # Toolchain setup
 #
 CROSS_COMPILE="arm-eabi-"
@@ -9,22 +14,33 @@ ADDITIONAL_LDFLAGS=""
 # Ucore Kernel Configuration (ARM)
 #
 # ARM_CPU_V5 is not set
+# ARM_CPU_V6 is not set
 ARM_CPU_V7=y
 ARM_BOARD_GOLDFISH=y
 # ARM_BOARD_VERSATILEPB is not set
 # ARM_BOARD_AT91 is not set
 # ARM_BOARD_PANDABOARD is not set
+# ARM_BOARD_RASPBERRYPI is not set
 HAVE_RAMDISK=y
 RAMDISK_FILE="sfs.img"
 DRAM_START=0x0
 DRAM_SIZE=0x8000000
-KERNEL_BASE=0x10000
 # HAVE_BOOTLOADER is not set
+# FPU_ENABLE is not set
+
+#
+# NUMA Support
+#
+NR_CPUS=1
+NR_NUMA_NODES=1
+NR_MEMS_PER_NODE=1
 
 #
 # Memory Management
 #
 # SWAP is not set
+HEAP_SLAB=y
+# HEAP_SLOB is not set
 
 #
 # Schedule
@@ -37,6 +53,7 @@ SCHEDULER_MLFQ=y
 #
 HAVE_SFS=y
 SFS_IMAGE_SIZE=48
+# SFS_MINIMAL_CONTENT is not set
 # HAVE_YAFFS2 is not set
 HAVE_FATFS=y
 
@@ -51,4 +68,4 @@ DDE_MMC_SUPPORT=y
 # DDE_MMC_HAVE_SDIO is not set
 DDE_GOLDFISH_MMC=y
 # DDE_MMC_TEST is not set
-DDE_MMC_UCORE_BLOCK=y
+# DDE_MMC_UCORE_BLOCK is not set

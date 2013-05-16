@@ -148,6 +148,7 @@ $(SFSIMG_LINK): $(SFSIMG_FILE)
 
 $(SFSIMG_FILE): $(TOOLS_MKSFS) userlib userapp FORCE | $(OBJPATH_ROOT)
 	@echo Making $@
+	@rm -rf $(TMPSFS)
 	@mkdir -p $(TMPSFS)
 	@mkdir -p $(TMPSFS)/lib/modules
 	@cp -r $(OBJPATH_ROOT)/user-ucore/bin $(TMPSFS)

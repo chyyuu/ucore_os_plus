@@ -5,11 +5,40 @@
 #include <mmu.h>
 #include <memlayout.h>
 #include <board.h>
+#include <pgtable-hwdef.h>
+#include <mmu.h>
 
+
+#define PAGE_OFFSET		0xc0000000
+#define TEXT_OFFSET		0x8000
+#define PHYS_OFFSET		UCONFIG_DRAM_START
+
+
+#define __virt_to_phys(x)	((x) - PAGE_OFFSET + PHYS_OFFSET)
+#define __phys_to_virt(x)	((x) - PHYS_OFFSET + PAGE_PFFSET)
 
 #if (SDRAM0_START & 0x001fffff)
 #error "SDRAM0_START must be at an even 2MiB boundary!"
 #endif
+
+
+#ifdef CONFIG_XIP_KERNEL
+#define KERNEL_START	XIP_VIRT_ADDR(CONFIG_XIP_PHYS_ADDR)
+#define KERNEL_END	_edata_loc
+#else
+#define KERNEL_START	KERNEL_RAM_VADDR
+#define KERNEL_END	_end
+#endif
+
+
+#define KERNEL_RAM_VADDR	(PAGE_OFFSET + TEXT_OFFSET)
+##if (KERNEL_RAM_VADDR & 0xffff) != 0x8000
+##error KERNEL_RAM_VADDR must start at 0xXXXX8000
+##endif
+
+
+
+
 
 
 .text
@@ -25,9 +54,15 @@
 .equ MEM_SIZE, SDRAM0_SIZE 
 .equ TEXT_BASE, SDRAM0_START
 
+
+	.macro	pgtbl, rd
+	ldr	\rd, =(__virt_to_phys(KERNEL_RAM_VADDR - 0x4000))
+	.endm
+
+
 # assuming:
 # MMU off, D-cache off
-
+.section .entrytext, "a"
 .globl kern_entry
 kern_entry:
   mrs r0, cpsr
@@ -73,12 +108,176 @@ relocated:
   MCR p15, 0, r1, c1, c0, 0
 #endif
 
+#  b kern_init
+.globl ttest
+ttest:
+	bl __create_pgtbl
+
+#	ldr r13, kern_init
+#	ldr r13, =kern_init
+
+	b __enable_mmu
+
 # now kernel stack is ready , call the first C function
     b kern_init
 
 # should never get here
     spin:
     b spin
+
+###################################################################
+
+mm_mmuflag:
+.long	PMD_TYPE_SECT | PMD_SECT_AP_WRITE | PMD_SECT_AP_READ
+# | PMD_FLAGS_SMP
+#.long   PMD_TYPE_SECT | PMD_SECT_BUFFERABLE | PMD_SECT_CACHEABLE | PMD_BIT4 | PMD_SECT_AP_WRITE | PMD_SECT_AP_READ
+#.long   PMD_TYPE_SECT | PMD_BIT4 | PMD_SECT_AP_WRITE | PMD_SECT_AP_READ
+
+control_access_value:
+.long	DOM3CLT
+
+control_access_mask:
+.long	CHANGEALLDOM
+
+
+#ifdef __MACH_ARM_ARMV6
+mmu_value:
+.long  ENABLEMMU | ENABLEICACHE | ENABLEDCACHE | ENABLEHIGHEVT | ENABLENEWPT
+mmu_mask:
+.long  CHANGEMMU | CHANGEICACHE | CHANGEDCACHE | CHANGEHIGHEVT | CHANGENEWPT
+#elif defined __MACH_ARM_ARMV7
+mmu_value:
+.long	ENABLEMMU | ENABLEICACHE | ENABLEDCACHE | ENABLEHIGHEVT
+mmu_mask:
+.long	CHANGEMMU | CHANGEICACHE | CHANGEDCACHE | CHANGEHIGHEVT
+#else
+#error Unsupported arch
+#endif
+
+__create_pgtbl:
+	pgtbl	r4
+
+	mov r0, r4
+	mov r3, #0
+	add r6, r0, #0x4000
+1:	str	r3, [r0], #4
+	str	r3, [r0], #4
+	str	r3, [r0], #4
+	str	r3, [r0], #4
+	teq	r0, r6
+	bne	1b
+
+#	mov r7, #mm_mmuflag
+#	ldr r7, [r7, #0]
+	ldr r7, =mm_mmuflag
+	eor r7, r7, #0xc << 28
+	ldr r7, [r7]
+
+	# map 0x0 to 0x0
+	ldr r6, =0
+	orr r6, r6, r7
+	str r6, [r4]
+
+	# map first section
+	mov r6, pc, lsr #20
+	orr r3, r7, r6, lsl #20
+	str r3, [r4, r6, lsl #2]
+
+	# map first kernel section
+	add r0, r4, #(KERNEL_RAM_VADDR & 0xff000000) >> 18
+	str r3, [r0, #(KERNEL_RAM_VADDR & 0x00f00000) >> 18]!
+
+#	ldr r6, =(end - PAGE_OFFSET - 1)
+#	ldr r6, =(end - PAGE_OFFSET - 1)
+	ldr r6, =(KMEMSIZE - 1)
+	mov r6, r6, lsr #20
+
+	#add some more memory for dynamically allocation
+#	add r6, r6, #23
+
+1:	add r3, r3, #1 << 20
+	str r3, [r0, #4]!
+	subs r6, r6, #1
+	bgt 1b
+
+	add r0, r4, #PAGE_OFFSET >> 18
+	orr r6, r7, #PHYS_OFFSET
+	str r6, [r0]
+
+	# map io space to new page table
+	ldr r6, =IO_SPACE_START
+	mov r6, r6, lsr #20
+	mov r0, r6
+	orr r3, r7, r6, lsl #20
+#	str r3, [r4, r6, lsl #2]
+
+	add r0, r4, r0, lsl #2
+
+	ldr r6, =IO_SPACE_SIZE
+	mov r6, r6, lsr #20
+
+1:	str r3, [r0]
+	add r0, r0, #4
+	add r3, r3, #1 << 20
+	subs r6, r6, #1
+	bgt 1b
+
+
+	mov pc, lr
+
+
+	.ltorg
+	.align
+__enable_mmu_loc:
+	.long	.
+	.long	__enable_mmu
+	.long	__enable_mmu_end
+
+/*
+   r0, r1, r2
+*/
+__enable_mmu:
+
+	mcr	p15, 0, r4, c2, c0, 0		@ load page table pointer
+
+	#set domain access
+	mrc p15, 0, r0, c3, c0, 0
+	ldr r1, control_access_value
+	ldr r2, control_access_mask
+	mvn r2, r2
+	and r0, r0, r2
+	orr	r0, r0, r1
+	mcr p15, 0, r0, c3, c0, 0
+
+	#enable cache
+	mrc p15, 0, r0, c1, c0, 0
+	ldr r1, mmu_value
+	ldr r2, mmu_mask
+	mvn r2, r2
+	and r0, r0, r2
+	orr r0, r0, r1
+	mcr p15, 0, r0, c1, c0, 0
+
+	ldr r0, =kern_init
+
+	# initialize the stack top
+	ldr sp,=bootstacktop
+
+	mov r0, r0
+	mov r0, r0
+	mov r0, r0
+
+	# goto kern_init
+	mov pc, r0
+
+__enable_mmu_end:
+
+
+
+
+
+
+
 
     .data
     .align 6
@@ -103,6 +302,14 @@ bootstack:
     .space KSTACKSIZE
     .globl bootstacktop
 bootstacktop:
+
+/*
+.section data_initpg, "a"
+initpg:
+	.space 4096*4
+initpgend:
+*/
+
 
 /*
  * User helpers.

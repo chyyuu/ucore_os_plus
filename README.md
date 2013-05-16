@@ -1,12 +1,27 @@
 uCore_plus
 ==========
 
+##Current Progress
+ We are working on ucore plus for amd64 smp porting. 
+ You can chekout the "amd64-smp" branch to see the newest progress of ucore plus.
+
+##Quick Try
+ 1. download or clone ucore plus source code
+ 1. cd ucore
+ 2. make ARCH=i386 defconfig
+ 3. make 
+ 4. make sfsimg
+ 5. uCore_run -d obj
+
+
 ##Makefile
 **Cross Compile**
 
 set the environment variables:
 
 export ARCH = ?
+
+you can use archs: i386, arm, amd64, mips, or32, um, nios2 
 
 export CROSS\_COMPILE = ?
 
