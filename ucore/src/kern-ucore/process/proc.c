@@ -567,6 +567,8 @@ int do_fork(uint32_t clone_flags, uintptr_t stack, struct trapframe *tf)
 	if ((proc = alloc_proc()) == NULL) {
 		goto fork_out;
 	}
+	if(clone_flags & __CLONE_PINCPU)
+		proc->flags |= PF_PINCPU;
 
 	proc->parent = current;
 	list_init(&(proc->thread_group));

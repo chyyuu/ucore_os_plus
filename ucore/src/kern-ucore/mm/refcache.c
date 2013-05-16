@@ -209,8 +209,8 @@ void refcache_tick(void)
 int krefcache_cleaner(void *arg)
 {
 	int id = myid();
+	kprintf("start refcache test %d %d\n", id, current->cpu_affinity);
 	assert(current->cpu_affinity == id);
-	kprintf("start refcache test %d\n", id);
 	int i = 0;
 	while(1){
 #ifdef __REFCACHE_TEST

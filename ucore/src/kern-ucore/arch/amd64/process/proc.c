@@ -35,7 +35,7 @@ struct proc_struct *alloc_proc(void)
 		proc->sem_queue = NULL;
 		event_box_init(&(proc->event_box));
 		proc->fs_struct = NULL;
-		proc->cpu_affinity = PROC_CPU_NO_AFFINITY;
+		proc->cpu_affinity = myid();
 	}
 	return proc;
 }
@@ -69,7 +69,7 @@ int kernel_thread(int (*fn) (void *), void *arg, uint32_t clone_flags)
 	tf.tf_regs.reg_rdi = (uint64_t) fn;
 	tf.tf_regs.reg_rsi = (uint64_t) arg;
 	tf.tf_rip = (uint64_t) kernel_thread_entry;
-	return do_fork(clone_flags | CLONE_VM, 0, &tf);
+	return do_fork(clone_flags | CLONE_VM |__CLONE_PINCPU, 0, &tf);
 }
 
 // forkret -- the first kernel entry point of a new thread/process

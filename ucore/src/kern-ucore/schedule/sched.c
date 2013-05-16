@@ -27,8 +27,15 @@ static DEFINE_PERCPU_NOINIT(struct run_queue, runqueues);
 
 static inline void sched_class_enqueue(struct proc_struct *proc)
 {
-	struct run_queue *rq = get_cpu_ptr(runqueues);
 	if (proc != idleproc) {
+		//TODO load balance
+		struct run_queue *rq = get_cpu_ptr(runqueues);
+		if(proc->flags & PF_PINCPU){
+			assert(proc->cpu_affinity >= 0 
+					&& proc->cpu_affinity < sysconf.lcpu_count);
+			rq = per_cpu_ptr(runqueues, proc->cpu_affinity);
+		}
+		//XXX lock
 		sched_class->enqueue(rq, proc);
 	}
 }

@@ -81,6 +81,7 @@ struct linux_timespec {
 };
 
 #define PF_EXITING                  0x00000001	// getting shutdown
+#define PF_PINCPU                   0x00000002
 
 //the wait state
 #define WT_CHILD                    (0x00000001 | WT_INTERRUPTED)	// wait child process

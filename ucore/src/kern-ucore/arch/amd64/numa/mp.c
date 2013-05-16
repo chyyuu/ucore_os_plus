@@ -203,7 +203,7 @@ static void shootdown_tlb_all(pgd_t *pgdir)
 			continue;
 		if(cpu->arch_data.tlb_cr3 != PADDR(pgdir))
 			continue;
-		kprintf("XX_TLB_SHUTDOWN %d %d\n", myid(), i);
+		//kprintf("XX_TLB_SHUTDOWN %d %d\n", myid(), i);
 		lapic_send_ipi(cpu, T_TLBFLUSH);
 	}
 }
