@@ -1,22 +1,13 @@
 #ifndef __GLUE_UCORE_MP_H__
 #define __GLUE_UCORE_MP_H__
-
-#define NCPU		UCONFIG_NR_CPUS
-#define MAX_NUMA_NODES	UCONFIG_NR_NUMA_NODES
-#define MAX_NUMA_MEMS	UCONFIG_NR_MEMS_PER_NODE
-#define MAX_NUMA_MEM_ZONES 16
-
+#include "mplimits.h"
 #include <memlayout.h>
 #include <types.h>
-#include <arch.h>
 #include <percpu.h>
 #include <arch_cpu.h>
-
-#ifndef CACHELINE
-#warning CACHELINE not defined
-#define CACHELINE 64
-#endif
-
+#include <list.h>
+#include <spinlock.h>
+#include <cpuset.h>
 #define __padout__  \
   char __XCONCAT(__padout, __COUNTER__)[0] __attribute__((aligned(CACHELINE)))
 #define __mpalign__ __attribute__((aligned(CACHELINE)))
@@ -93,5 +84,24 @@ void percpu_init(void);
 void cpu_up(int id);
 
 #define myid() (mycpu()->id)
+
+struct ipi_call{
+	void *private_data;
+	void (*callback)(struct ipi_call *data);
+	atomic_t waiting;
+	list_entry_t call_queue_link[NCPU]; /* percpu call queue link */
+};
+
+struct ipi_queue{
+	spinlock_s lock;
+	bool ipi_running;
+	list_entry_t head;
+};
+DECLARE_PERCPU(struct ipi_queue, ipi_queues);
+
+void ipi_init(void);
+void do_ipicall(void);
+void ipi_run_on_cpu(const cpuset_t *cs, void *data, void (*cb)(struct ipi_call*));
+void fire_ipi_one(int cpuid);
 
 #endif

@@ -108,6 +108,7 @@ void ap_init(void)
 	/* load new pagetable(shared with bsp) */
 	pmm_init_ap();
 	idt_init();		// init interrupt descriptor table
+	ipi_init();
 
 	/* test pmm */
 	struct Page *p = alloc_pages(2);
@@ -219,3 +220,9 @@ void mp_tlb_update(pgd_t * pgdir, uintptr_t la)
 	tlb_update(pgdir, la);
 	shootdown_tlb_all(pgdir);
 }
+
+void fire_ipi_one(int cpuid)
+{
+	lapic_send_ipi(cpuid, T_IPICALL);
+}
+

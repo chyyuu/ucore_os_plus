@@ -100,6 +100,8 @@ static void check_alloc_page(void);
 static inline void lgdt(struct pseudodesc *pd)
 {
 	asm volatile ("lgdt (%0)"::"r" (pd));
+	//XXX needed? may confuse the compiler
+#if 0
 	asm volatile ("movw %%ax, %%es"::"a" (KERNEL_DS));
 	asm volatile ("movw %%ax, %%ds"::"a" (KERNEL_DS));
 	asm volatile ("movw %%ax, %%gs"::"a" (KERNEL_DS));
@@ -113,6 +115,7 @@ static inline void lgdt(struct pseudodesc *pd)
 		      "call 1f;"	// push %rip
 		      "jmp 2f;"
 		      "1: iretq; 2:"::"i" (KERNEL_CS), "i"(KERNEL_DS));
+#endif
 }
 
 /* *
@@ -182,7 +185,7 @@ void gdt_init(struct cpu *c)
 	lgdt(&gdt_pd);
 
 	// load the TSS
-	ltr(GD_TSS);
+	ltr((uint16_t)GD_TSS);
 }
 
 //init_pmm_manager - initialize a pmm_manager instance

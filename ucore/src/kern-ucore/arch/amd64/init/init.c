@@ -118,6 +118,7 @@ int kern_init(uint64_t mbmagic, uint64_t mbmem)
 
 	percpu_init();
 	cpus_init();
+	ipi_init();
 
 	refcache_init();
 
