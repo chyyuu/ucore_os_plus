@@ -43,10 +43,13 @@ int ipc_event_send(int pid, int event, unsigned int timeout)
 	if ((proc = find_proc(pid)) == NULL || proc->state == PROC_ZOMBIE) {
 		return -E_INVAL;
 	}
-	if (proc == current || proc == idleproc || proc == initproc
-	    || proc == kswapd) {
+	if (proc == current || proc == idleproc || proc == initproc) {
 		return -E_INVAL;
 	}
+#ifdef UCONFIG_SWAP
+	if(proc == kswapd)
+		return -E_INVAL;
+#endif
 	if (proc->wait_state == WT_EVENT_RECV) {
 		wakeup_proc(proc);
 	}

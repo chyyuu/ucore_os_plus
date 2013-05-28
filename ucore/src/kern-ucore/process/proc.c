@@ -25,6 +25,7 @@
 #include <resource.h>
 #include <sysconf.h>
 #include <refcache.h>
+#include <spinlock.h>
 
 /* ------------- process/thread mechanism design&implementation -------------
 (an simplified Linux process/thread mechanism )
@@ -73,8 +74,12 @@ SYS_getpid      : get the process's pid
 */
 
 struct proc_struct *initproc;
+#ifdef UCONFIG_SWAP
 struct proc_struct *kswapd;
+#endif
 
+/* lock to protect the following data struct */
+spinlock_s proc_lock;
 // the process set's list
 list_entry_t proc_list;
 // the process set's mm's list
@@ -88,6 +93,8 @@ list_entry_t proc_mm_list;
 static list_entry_t hash_list[HASH_LIST_SIZE];
 static int nr_process = 0;
 
+////////////////////////////////////////////////
+
 static int __do_exit(void);
 static int __do_kill(struct proc_struct *proc, int error_code);
 
@@ -98,6 +105,7 @@ char *set_proc_name(struct proc_struct *proc, const char *name)
 	return memcpy(proc->name, name, PROC_NAME_LEN);
 }
 
+#if 0
 // get_proc_name - get the name of proc
 char *get_proc_name(struct proc_struct *proc)
 {
@@ -105,6 +113,7 @@ char *get_proc_name(struct proc_struct *proc)
 	memset(name, 0, sizeof(name));
 	return memcpy(name, proc->name, PROC_NAME_LEN);
 }
+#endif
 
 // set_links - set the relation links of process
 static void set_links(struct proc_struct *proc)
@@ -2022,6 +2031,7 @@ void proc_init(void)
 	int cpuid = myid();
 	struct proc_struct *idle;
 
+	spinlock_init(&proc_lock);
 	list_init(&proc_list);
 	list_init(&proc_mm_list);
 	for (i = 0; i < HASH_LIST_SIZE; i++) {
