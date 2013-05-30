@@ -109,8 +109,10 @@ static inline struct refway * __get_my_way(struct refobj* obj)
 	if(way->obj!= NULL && way->obj != obj){
 		__evict(way);
 	}
-	way->obj = obj;
-	way->delta = 0;
+	if(way->obj == NULL){
+		way->obj = obj;
+		way->delta = 0;
+	}
 	return way;
 }
 
@@ -149,6 +151,7 @@ static void flush(void)
 		if(!way->obj)
 			continue;
 		if(way->delta != 0){
+			kprintf("RC %d %d\n", myid(), way->delta);
 			nflush ++;
 			__evict(way);
 		}
@@ -161,7 +164,7 @@ static void flush(void)
 	}
 done:
 	local_intr_restore(intr_flag);
-	REFCACHE_DEBUG("flushed %d\n", nflush);
+	REFCACHE_DEBUG("cpu%d flushed %d\n", myid(), nflush);
 }
 
 static void review(void)

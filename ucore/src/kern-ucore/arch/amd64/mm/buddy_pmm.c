@@ -6,8 +6,7 @@
 #include <sysconf.h>
 #include <mp.h>
 #include <spinlock.h>
-
-//race condition!
+/* XXX struct page may contain race condition?? */
 
 struct numa_mem_zone;
 /* free_area_t - maintains a doubly linked list to record free (unused) pages */
