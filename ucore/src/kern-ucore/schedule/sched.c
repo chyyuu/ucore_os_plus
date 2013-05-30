@@ -13,8 +13,9 @@
 #include <sysconf.h>
 #include <spinlock.h>
 
+/* we may use lock free list */
 struct __timer_list_t{
-	list_entry_t tl;	
+	list_entry_t tl;
 	spinlock_s lock;
 };
 static struct __timer_list_t __timer_list;
