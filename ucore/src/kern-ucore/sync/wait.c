@@ -11,6 +11,7 @@ void wait_init(wait_t * wait, struct proc_struct *proc)
 	wait->proc = proc;
 	wait->wakeup_flags = WT_INTERRUPTED;
 	list_init(&(wait->wait_link));
+	spinlock_init(&wait->lock);
 }
 
 void wait_queue_init(wait_queue_t * queue)

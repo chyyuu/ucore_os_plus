@@ -12,6 +12,7 @@
 #include <elf.h>
 #include <arch_proc.h>
 #include <signal.h>
+#include <spinlock.h>
 
 // process's state in his life cycle
 enum proc_state {
@@ -69,6 +70,7 @@ struct proc_struct {
 	void *tls_pointer;
 
 	int cpu_affinity;
+	spinlock_s lock;
 };
 
 #define PROC_CPU_NO_AFFINITY (-1)

@@ -2,6 +2,7 @@
 #define __KERN_SYNC_WAIT_H__
 
 #include <list.h>
+#include <spinlock.h>
 
 typedef struct {
 	list_entry_t wait_head;
@@ -14,6 +15,7 @@ typedef struct {
 	uint32_t wakeup_flags;
 	wait_queue_t *wait_queue;
 	list_entry_t wait_link;
+	spinlock_s lock;
 } wait_t;
 
 #define le2wait(le, member)         \

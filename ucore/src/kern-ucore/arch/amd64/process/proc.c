@@ -36,6 +36,7 @@ struct proc_struct *alloc_proc(void)
 		event_box_init(&(proc->event_box));
 		proc->fs_struct = NULL;
 		proc->cpu_affinity = myid();
+		spinlock_init(&proc->lock);
 	}
 	return proc;
 }

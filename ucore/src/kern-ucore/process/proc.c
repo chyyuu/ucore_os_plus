@@ -612,7 +612,7 @@ int do_fork(uint32_t clone_flags, uintptr_t stack, struct trapframe *tf)
 	proc->tls_pointer = current->tls_pointer;
 
 	bool intr_flag;
-	local_intr_save(intr_flag);
+	spin_lock_irqsave(&proc_lock, intr_flag);
 	{
 		proc->pid = get_pid();
 		proc->tid = proc->pid;
@@ -626,7 +626,7 @@ int do_fork(uint32_t clone_flags, uintptr_t stack, struct trapframe *tf)
 			proc->gid = proc->pid;
 		}
 	}
-	local_intr_restore(intr_flag);
+	spin_unlock_irqrestore(&proc_lock, intr_flag);
 
 	wakeup_proc(proc);
 
@@ -1367,12 +1367,12 @@ found:
 		panic("wait idleproc or initproc.\n");
 	}
 	int exit_code = proc->exit_code;
-	local_intr_save(intr_flag);
+	spin_lock_irqsave(&proc_lock, intr_flag);
 	{
 		unhash_proc(proc);
 		remove_links(proc);
 	}
-	local_intr_restore(intr_flag);
+	spin_unlock_irqrestore(&proc_lock, intr_flag);
 	put_kstack(proc);
 	kfree(proc);
 

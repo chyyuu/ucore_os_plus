@@ -25,7 +25,7 @@
 #include <sync.h>
 #include <proc.h>
 
-#define __REFCACHE_TEST
+//#define __REFCACHE_TEST
 #if 0
 #define REFCACHE_DEBUG(...) kprintf(__VA_ARGS__)
 #else
