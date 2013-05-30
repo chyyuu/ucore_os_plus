@@ -192,55 +192,65 @@ void schedule(void)
 	local_intr_restore(intr_flag);
 }
 
+static void __add_timer(timer_t * timer)
+{
+	assert(timer->expires > 0 && timer->proc != NULL);
+	assert(list_empty(&(timer->timer_link)));
+	list_entry_t *le = list_next(&timer_list);
+	while (le != &timer_list) {
+		timer_t *next = le2timer(le, timer_link);
+		if (timer->expires < next->expires) {
+			next->expires -= timer->expires;
+			break;
+		}
+		timer->expires -= next->expires;
+		le = list_next(le);
+	}
+	list_add_before(le, &(timer->timer_link));
+}
+
 void add_timer(timer_t * timer)
 {
 	bool intr_flag;
-	local_intr_save(intr_flag);
+	spin_lock_irqsave(&__timer_list.lock, intr_flag);
 	{
-		assert(timer->expires > 0 && timer->proc != NULL);
-		assert(list_empty(&(timer->timer_link)));
-		list_entry_t *le = list_next(&timer_list);
-		while (le != &timer_list) {
-			timer_t *next = le2timer(le, timer_link);
-			if (timer->expires < next->expires) {
-				next->expires -= timer->expires;
-				break;
-			}
-			timer->expires -= next->expires;
-			le = list_next(le);
-		}
-		list_add_before(le, &(timer->timer_link));
+		__add_timer(timer);
 	}
-	local_intr_restore(intr_flag);
+	spin_unlock_irqrestore(&__timer_list.lock, intr_flag);
+}
+
+static void __del_timer(timer_t * timer)
+{
+	if (!list_empty(&(timer->timer_link))) {
+		if (timer->expires != 0) {
+			list_entry_t *le =
+				list_next(&(timer->timer_link));
+			if (le != &timer_list) {
+				timer_t *next =
+					le2timer(le, timer_link);
+				next->expires += timer->expires;
+			}
+		}
+		list_del_init(&(timer->timer_link));
+	}
 }
 
 void del_timer(timer_t * timer)
 {
+
 	bool intr_flag;
-	local_intr_save(intr_flag);
+	spin_lock_irqsave(&__timer_list.lock, intr_flag);
 	{
-		if (!list_empty(&(timer->timer_link))) {
-			if (timer->expires != 0) {
-				list_entry_t *le =
-				    list_next(&(timer->timer_link));
-				if (le != &timer_list) {
-					timer_t *next =
-					    le2timer(le, timer_link);
-					next->expires += timer->expires;
-				}
-			}
-			list_del_init(&(timer->timer_link));
-		}
+		__del_timer(timer);
 	}
-	local_intr_restore(intr_flag);
+	spin_unlock_irqrestore(&__timer_list.lock, intr_flag);
 }
 
 void run_timer_list(void)
 {
 	bool intr_flag;
-	local_intr_save(intr_flag);
+	spin_lock_irqsave(&__timer_list.lock, intr_flag);
 	{
-		spinlock_acquire(&__timer_list.lock);
 		list_entry_t *le = list_next(&timer_list);
 		if (le != &timer_list) {
 			timer_t *timer = le2timer(le, timer_link);
@@ -252,12 +262,12 @@ void run_timer_list(void)
 					struct __ucore_linux_timer *lt =
 					    &(timer->linux_timer);
 
-					spinlock_release(&__timer_list.lock);
+					spin_unlock_irqrestore(&__timer_list.lock, intr_flag);
 					if (lt->function)
 						(lt->function) (lt->data);
-					spinlock_acquire(&__timer_list.lock);
+					spin_lock_irqsave(&__timer_list.lock, intr_flag);
 
-					del_timer(timer);
+					__del_timer(timer);
 					kfree(timer);
 					continue;
 				}
@@ -272,7 +282,7 @@ void run_timer_list(void)
 
 				wakeup_proc(proc);
 
-				del_timer(timer);
+				__del_timer(timer);
 				if (le == &timer_list) {
 					break;
 				}
@@ -280,7 +290,6 @@ void run_timer_list(void)
 			}
 		}
 		sched_class_proc_tick(current);
-		spinlock_release(&__timer_list.lock);
 	}
-	local_intr_restore(intr_flag);
+	spin_unlock_irqrestore(&__timer_list.lock, intr_flag);
 }

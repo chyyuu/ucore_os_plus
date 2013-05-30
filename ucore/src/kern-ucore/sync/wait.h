@@ -4,8 +4,10 @@
 #include <list.h>
 #include <spinlock.h>
 
+/* TODO use lock-free linked list  */
 typedef struct {
 	list_entry_t wait_head;
+	spinlock_s lock;
 } wait_queue_t;
 
 struct proc_struct;
