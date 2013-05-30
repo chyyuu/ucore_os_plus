@@ -5,10 +5,23 @@
 #include <stdio.h>
 #include <sysconf.h>
 #include <mp.h>
+#include <spinlock.h>
+
+//race condition!
+
+struct numa_mem_zone;
+/* free_area_t - maintains a doubly linked list to record free (unused) pages */
+typedef struct {
+	list_entry_t free_list;	// the list header
+	unsigned int nr_free;	// # of free pages in this free list
+	struct numa_mem_zone *zone;
+} free_area_t;
 
 // {1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024}
 // from 2^0 ~ 2^10
 #define MAX_ORDER 10
+/* XXX contented lock? */
+static spinlock_s fa_lock[MAX_NUMA_NODES];
 static free_area_t free_area[MAX_NUMA_NODES][MAX_ORDER + 1];
 static int buddy_numa_borrow = 1;
 
@@ -33,6 +46,7 @@ static void buddy_init(void)
 			list_init(&free_list(n,i));
 			nr_free(n,i) = 0;
 		}
+		spinlock_init(&fa_lock[n]);
 	}
 }
 
@@ -88,6 +102,9 @@ static inline struct Page *buddy_alloc_pages_sub(uint32_t numa_id, size_t order)
 {
 	assert(order <= MAX_ORDER);
 	size_t cur_order;
+
+	int intr_flag;
+	spin_lock_irqsave(&fa_lock[numa_id], intr_flag);
 	for (cur_order = order; cur_order <= MAX_ORDER; cur_order++) {
 		if (!list_empty(&free_list(numa_id, cur_order))) {
 			list_entry_t *le = list_next(&free_list(numa_id, cur_order));
@@ -106,9 +123,11 @@ static inline struct Page *buddy_alloc_pages_sub(uint32_t numa_id, size_t order)
 					 &(buddy->page_link));
 			}
 			ClearPageProperty(page);
+			spin_unlock_irqrestore(&fa_lock[numa_id], intr_flag);
 			return page;
 		}
 	}
+	spin_unlock_irqrestore(&fa_lock[numa_id], intr_flag);
 	return NULL;
 }
 
@@ -193,14 +212,19 @@ static void buddy_free_pages_sub(uint32_t numa_id, struct Page *base, size_t ord
 		set_page_ref(p, 0);
 	}
 	int zone_num = base->zone_num;
+	int intr_flag;
 	while (order < MAX_ORDER) {
 		buddy_idx = page_idx ^ (1 << order);
 		struct Page *buddy = idx2page(zone_num, buddy_idx);
 		if (!page_is_buddy(buddy, order, zone_num)) {
 			break;
 		}
+		/* modify free_list, should lock first */
+		spin_lock_irqsave(&fa_lock[numa_id], intr_flag);
 		nr_free(numa_id, order)--;
 		list_del(&(buddy->page_link));
+		spin_unlock_irqrestore(&fa_lock[numa_id], intr_flag);
+
 		ClearPageProperty(buddy);
 		page_idx &= buddy_idx;
 		order++;
@@ -208,8 +232,10 @@ static void buddy_free_pages_sub(uint32_t numa_id, struct Page *base, size_t ord
 	struct Page *page = idx2page(zone_num, page_idx);
 	page->property = order;
 	SetPageProperty(page);
+	spin_lock_irqsave(&fa_lock[numa_id], intr_flag);
 	nr_free(numa_id, order)++;
 	list_add(&free_list(numa_id, order), &(page->page_link));
+	spin_unlock_irqrestore(&fa_lock[numa_id], intr_flag);
 }
 
 //buddy_free_pages - call buddy_free_pages_sub to free n continuing page block
@@ -248,9 +274,12 @@ static void buddy_free_pages(struct Page *base, size_t n)
 static size_t __buddy_nr_free_pages(uint32_t numa_id)
 {
 	size_t ret = 0, order = 0;
+	int intr_flag;
+	spin_lock_irqsave(&fa_lock[numa_id], intr_flag);
 	for (; order <= MAX_ORDER; order++) {
 		ret += nr_free(numa_id, order) * (1 << order);
 	}
+	spin_unlock_irqrestore(&fa_lock[numa_id], intr_flag);
 	return ret;
 }
 

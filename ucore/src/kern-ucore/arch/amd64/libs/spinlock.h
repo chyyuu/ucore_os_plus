@@ -3,6 +3,7 @@
 #include <arch.h>
 #include <atomic.h>
 #include <assert.h>
+#include <sync.h>
 
 typedef struct spinlock_s {
 	volatile unsigned int lock;
@@ -29,5 +30,9 @@ static inline void spinlock_release(spinlock_t lock)
 	assert(lock->lock != 0);
 	lock->lock = 0;
 }
+
+#define spin_lock_irqsave(lock, x)      do { x = __intr_save();spinlock_acquire(lock); } while (0)
+
+#define spin_unlock_irqrestore(lock, x)      do { spinlock_release(lock);__intr_restore(x); } while (0)
 
 #endif
