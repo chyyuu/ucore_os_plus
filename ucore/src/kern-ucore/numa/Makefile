@@ -1,1 +1,1 @@
-obj-y += ipi.o
+obj-$(UCONFIG_ENABLE_IPI) += ipi.o
