@@ -9,6 +9,7 @@
 #include <rb_tree.h>
 #include <kio.h>
 #include <mp.h>
+#include <spinlock.h>
 
 /*
  * SLOB Allocator: Simple List Of Blocks
@@ -42,8 +43,10 @@
  */
 
 //some helper
+#if 0
 #define spin_lock_irqsave(l, f) local_intr_save(f)
 #define spin_unlock_irqrestore(l, f) local_intr_restore(f)
+#endif
 typedef unsigned int gfp_t;
 #ifndef PAGE_SIZE
 #define PAGE_SIZE PGSIZE
@@ -78,6 +81,9 @@ static slob_t arena = {.next = &arena,.units = 1 };
 
 static slob_t *slobfree = &arena;
 static bigblock_t *bigblocks;
+
+static spinlock_s slob_lock;
+static spinlock_s block_lock;
 
 static void *__slob_get_free_pages(gfp_t gfp, int order)
 {
@@ -187,6 +193,8 @@ static void slob_free(void *block, int size)
 
 void slab_init(void)
 {
+	spinlock_init(&slob_lock);
+	spinlock_init(&block_lock);
 	kprintf("use SLOB allocator\n");
 	check_slab();
 }
