@@ -24,6 +24,7 @@
 #include <mp.h>
 #include <sync.h>
 #include <proc.h>
+#include <string.h>
 
 //#define __REFCACHE_TEST
 #if 0
@@ -38,9 +39,10 @@ static atomic_t global_epoch;
 static atomic_t global_epoch_left;
 
 #ifdef __REFCACHE_TEST
+static int __evict_counter = 0;
 static struct refobj __test_obj;
 static void test_on_zero(struct refobj* obj){
-	kprintf("CPU%d: free %p\n", myid(), obj);
+	kprintf("CPU%d: free %p, evict %d\n", myid(), obj, __evict_counter);
 }
 #endif
 
@@ -53,7 +55,7 @@ void refcache_init(void)
 		assert(r!=NULL);
 		list_init(&r->review_head);
 		for(j=0;j<REF_CACHE_SLOT;j++)
-			memset(r->way[i], 0, sizeof(struct refway));
+			memset(&r->way[i], 0, sizeof(struct refway));
 	}
 	atomic_set(&global_epoch, 1);
 	atomic_set(&global_epoch_left, sysconf.lcpu_count);
@@ -86,12 +88,15 @@ static void __evict(struct refway *way)
 	assert(way->delta != 0);
 	spinlock_acquire(&obj->lock);
 	obj->refcount += way->delta;
+#ifdef __REFCACHE_TEST
+	__evict_counter++;
+#endif
 	if(obj->refcount == 0){
 		if(obj->review_epoch == 0){
 			obj->flag &= ~REFOBJ_FLAG_DIRTY;
 			/* 3 is always OK */
 			obj->review_epoch = cache->local_epoch + 3;
-			list_add(&(cache->review_head), 
+			list_add_before(&(cache->review_head), 
 					&(obj->review_link));
 		}else{
 			obj->flag |= REFOBJ_FLAG_DIRTY;
@@ -152,7 +157,7 @@ static void flush(void)
 		if(!way->obj)
 			continue;
 		if(way->delta != 0){
-			kprintf("RC %d %d\n", myid(), way->delta);
+			REFCACHE_DEBUG("RC %d %d\n", myid(), way->delta);
 			nflush ++;
 			__evict(way);
 		}
@@ -182,13 +187,14 @@ static void review(void)
 			continue;
 		spinlock_acquire(&obj->lock);
 		list_del(&obj->review_link);
+		obj->review_epoch = 0;
 		ntotal ++;
 		if(obj->refcount != 0){
 			/* nothing */
 		}else if(obj->flag & REFOBJ_FLAG_DIRTY){
 			obj->flag &= ~REFOBJ_FLAG_DIRTY;
 			obj->review_epoch = epoch + 2;
-			list_add(&r->review_head, &obj->review_link);
+			list_add_before(&r->review_head, &obj->review_link);
 		}else{
 			if(obj->onzero)
 				obj->onzero(obj);
@@ -218,21 +224,28 @@ int krefcache_cleaner(void *arg)
 	int i = 0;
 	while(1){
 #ifdef __REFCACHE_TEST
+#define TEST_ROUND 19
 		/* basic test */
-		if(i < 2){
+		if(i < TEST_ROUND){
 			refcache_refobj_inc(&__test_obj);
 		}
-		if(i >= 10 && i<12){
+		if(i >= 10 && i<10+TEST_ROUND){
 			refcache_refobj_dec(&__test_obj);
 		}
-		if(i ==14 && id==1){
+		if(i ==10+TEST_ROUND*2 && id==1){
 			/* should die soon */
 			refcache_refobj_dec(&__test_obj);
+		}else if(i>10+TEST_ROUND*2){
+			do_sleep(1);
 		}
 		i++;
-		kprintf("XX cpu%d g %d\n", id, __test_obj.refcount);
+		if(i%10==0)
+			kprintf("XX cpu%d g %d\n", id, __test_obj.refcount);
+		if(id % 4==0)
+			do_sleep(id*2);
+#else
+		do_sleep(1);
 #endif
-		do_sleep(10+id*10);
 	}
 }
 
