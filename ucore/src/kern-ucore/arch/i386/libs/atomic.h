@@ -30,6 +30,14 @@ static inline int atomic_add_return(atomic_t * v, int i)
 static inline int atomic_sub_return(atomic_t * v, int i)
     __attribute__ ((always_inline));
 
+/*
+ * Atomic operations that C can't guarantee us.  Useful for
+ * resource counting etc..
+ */
+
+#define ATOMIC_INIT(i)	{ (i) }
+
+
 /* *
  * atomic_read - read atomic variable
  * @v:  pointer of type atomic_t

@@ -34,7 +34,7 @@
 
 DEFINE_PERCPU_NOINIT(struct refcache, refcaches);
 
-static atomic_t global_epoch = ATOMIC_INIT(1);
+static atomic_t global_epoch;
 static atomic_t global_epoch_left;
 
 #ifdef __REFCACHE_TEST
@@ -55,6 +55,7 @@ void refcache_init(void)
 		for(j=0;j<REF_CACHE_SLOT;j++)
 			memset(r->way[i], 0, sizeof(struct refway));
 	}
+	atomic_set(&global_epoch, 1);
 	atomic_set(&global_epoch_left, sysconf.lcpu_count);
 #ifdef __REFCACHE_TEST
 	refcache_refobj_init(&__test_obj);
