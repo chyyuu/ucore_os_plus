@@ -73,16 +73,19 @@ case $UCONFIG_ARCH in
         if [ $? -eq 0 ]; then
             QEMU=qemu-system-i386
         fi
+        EXTRA_OPT="-serial file:$BUILD_DIR/serial.log$TEST_POSTFIX"
         if [[ $TEST_MODE = y ]]; then
-            EXTRA_OPT="-S -display none -gdb tcp::$GDB_PORT"
+            EXTRA_OPT+=" -S -display none -gdb tcp::$GDB_PORT"
+        elif [[ $DISPLAY == "" ]]; then
+            echo -e "\033[0;36;1mNote: Qemu is running under no graphic mode. Press 'Ctrl-a x' to exit\033[0m"
+            EXTRA_OPT="-nographic"
         else
-            EXTRA_OPT="-monitor stdio"
+            EXTRA_OPT+=" -monitor stdio"
         fi
         exec $QEMU -m 128 \
             -hda $BUILD_DIR/kernel.img$TEST_POSTFIX \
             -drive file=$BUILD_DIR/sfs.img$TEST_POSTFIX,media=disk,cache=writeback,index=2 \
-            -s -serial file:$BUILD_DIR/serial.log$TEST_POSTFIX \
-            $EXTRA_OPT
+            -s $EXTRA_OPT
         ;;
     amd64)
         QEMU=qemu
@@ -90,15 +93,18 @@ case $UCONFIG_ARCH in
         if [ $? -eq 0 ]; then
             QEMU=qemu-system-x86_64
         fi
+        EXTRA_OPT="-serial file:$BUILD_DIR/serial.log$TEST_POSTFIX"
         if [[ $TEST_MODE = y ]]; then
-            EXTRA_OPT="-S -display none -gdb tcp::$GDB_PORT"
+            EXTRA_OPT+=" -S -display none -gdb tcp::$GDB_PORT "
+        elif [[ $DISPLAY == "" ]]; then
+            echo -e "\033[0;36;1mNote: Qemu is running under no graphic mode. Press 'Ctrl-a x' to exit\033[0m"
+            EXTRA_OPT="-nographic"
         else
-            EXTRA_OPT="-monitor stdio"
+            EXTRA_OPT+=" -monitor stdio -serial file:$BUILD_DIR/serial.log$TEST_POSTFIX"
         fi
         exec $QEMU -m 512 \
             -hda $BUILD_DIR/kernel.img$TEST_POSTFIX \
             -drive file=$BUILD_DIR/sfs.img$TEST_POSTFIX,media=disk,cache=writeback,index=2 \
-            -s -serial file:$BUILD_DIR/serial.log$TEST_POSTFIX \
-            $EXTRA_OPT
+            -s $EXTRA_OPT
         ;;
 esac
