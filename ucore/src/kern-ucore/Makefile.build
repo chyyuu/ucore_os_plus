@@ -16,7 +16,8 @@ KTREE_OBJ_ROOT := $(OBJPATH_ROOT)/kernel
 export KTREE_OBJ_ROOT
 
 KERN_INCLUDES := . libs syscall debug driver mm numa sync schedule process fs \
-                 fs/swap fs/vfs fs/pipe fs/sfs fs/devs module kmodule sysconf
+                 fs/swap fs/vfs fs/pipe fs/sfs fs/devs module kmodule sysconf \
+                 dde36
 
 ifdef UCONFIG_HAVE_LINUX_DDE_BASE
 KERN_INCLUDES += module/include

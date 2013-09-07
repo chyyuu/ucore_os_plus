@@ -23,6 +23,7 @@
 #include <ramdisk.h>
 #include <kgdb-stub.h>
 #include <module.h>
+#include <dde_kit/dde_kit.h>
 
 #ifdef UCONFIG_HAVE_YAFFS2
 #include <yaffs2_direct/yaffsfs.h>
@@ -163,6 +164,9 @@ int kern_init(void)
 #ifdef UCONFIG_HAVE_LINUX_DDE_BASE
 	calibrate_delay();
 	dde_init();
+#endif
+#ifdef UCONFIG_HAVE_LINUX_DDE36_BASE
+	dde_kit_init();
 #endif
 
 #ifdef UCONFIG_HAVE_YAFFS2
