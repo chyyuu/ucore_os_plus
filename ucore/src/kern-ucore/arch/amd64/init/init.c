@@ -19,6 +19,7 @@
 #include <mod.h>
 #include <percpu.h>
 #include <sysconf.h>
+#include <dde_kit/dde_kit.h>
 
 int kern_init(void) __attribute__ ((noreturn));
 
@@ -92,6 +93,10 @@ int kern_init(void)
 	bootaps();
 
 	intr_enable();		// enable irq interrupt
+
+#ifdef UCONFIG_HAVE_LINUX_DDE36_BASE
+	dde_kit_init();
+#endif
 
 	/* do nothing */
 	cpu_idle();		// run idle process
