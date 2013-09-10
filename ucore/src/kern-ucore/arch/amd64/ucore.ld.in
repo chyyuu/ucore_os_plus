@@ -20,7 +20,7 @@ SECTIONS {
 	.text : AT(ADDR(.text) - MEM_BASE) {
 		*(.text .stub .text.* .gnu.linkonce.t.*)
 		*(.init.text)
-		. = ALIGN(4);
+		. = ALIGN(8);
 		PROVIDE(__initcall_start = .);
 		*(.initcall1.init)
 		*(.initcall2.init)
