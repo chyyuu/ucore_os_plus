@@ -1,0 +1,43 @@
+#!/bin/bash
+
+SRC_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+BUILD_DIR=obj
+
+while getopts "hd:" opt; do
+    case $opt in
+        d)
+            BUILD_DIR=$OPTARG
+            ;;
+        h)
+            echo "Usage $0 [options]"
+            echo "Options:"
+            echo "  -d <directory>                 uCore build directory"
+            echo "                                 default to obj/"
+            echo ""
+            echo "Supported architectures: i386, arm(goldfishv7), amd64"
+            echo ""
+            echo "Report bugs to https://github.com/chyyuu/ucore_plus/issues"
+            exit 0
+            ;;
+        ?)
+            exit 1
+            ;;
+    esac
+done
+
+if [[ ! -d $BUILD_DIR ]]; then
+    echo $BUILD_DIR does not exist or is not a directory.
+    echo Use -d to specify your custom build directory.
+    exit 1
+fi
+
+if [[ ! -e $BUILD_DIR/config/auto.conf ]]; then
+    echo Is $BUILD_DIR properly configured?
+    exit 1
+fi
+
+source $BUILD_DIR/config/auto.conf
+
+"$UCONFIG_CROSS_COMPILE"gdb \
+    -s $BUILD_DIR/kernel/kernel-$UCONFIG_ARCH.elf \
+    -x $SRC_DIR/gdbinit.$UCONFIG_ARCH
