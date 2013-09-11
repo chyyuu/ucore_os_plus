@@ -7,6 +7,7 @@
 #include <kio.h>
 #include <picirq.h>
 #include <percpu.h>
+#include <sync.h>
 
 /* The LAPIC access */
 // Local APIC registers, divided by 4 for use as uint[] indices.
@@ -266,12 +267,33 @@ static void x_cpu_init(struct lapic_chip* _this)
 
 	return;
 }
+static void x_init_late(struct lapic_chip* c)
+{
+	
+	uint64_t apic_base = readmsr(MSR_APIC_BAR);
+	/* map xapic registers */
+	*get_pte(boot_pgdir, (uintptr_t)xapic, 1) = apic_base | PTE_P | PTE_W;
+}
+	
+static void x_lapic_send_ipi(struct lapic_chip* thiz, struct cpu* c, int ino)
+{
+	bool intr_flag;
+	local_intr_save(intr_flag);
+	xapicw(ICRHI, c->hwid << 24);
+	xapicw(ICRLO, FIXED | DEASSERT | ino);
+	if (xapicwait() < 0)
+		panic("xapic_lapic::send_ipi: xapicwait failure");
+
+	local_intr_restore(intr_flag);
+}
 
 static struct lapic_chip xapic_chip = {
 	.cpu_init = x_cpu_init,
 	.id = x_lapic_id,
 	.eoi = lapic_eoi_send,
+	.init_late = x_init_late,
 	.start_ap = x_lapic_start_ap,
+	.send_ipi = x_lapic_send_ipi,
 };
 
 static xapic_init_once()
@@ -284,14 +306,14 @@ static xapic_init_once()
 
 	xapic = (uint32_t*)VADDR_DIRECT(apic_base & ~0xffful);
 	//map xapic registers
-	*get_pte(boot_pgdir, (uintptr_t)xapic, 1) =
-		apic_base | PTE_P | PTE_W;
+	//*get_pte(boot_pgdir, (uintptr_t)xapic, 1) =
+	//	apic_base | PTE_P | PTE_W;
 
 	kprintf("xapic_init_once: xapic base %p\n", xapic);
 
 }
 
-struct lapic_chip* xapic_lapic_init(void)
+struct lapic_chip* xapic_lapic_init_early(void)
 {
 	if(!cpuid_check_feature(CPUID_FEATURE_APIC))
 		return NULL;

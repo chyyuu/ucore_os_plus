@@ -4,12 +4,14 @@
 #include <types.h>
 #include <atomic.h>
 #include <wait.h>
+#include <spinlock.h>
 
 typedef struct semaphore {
 	int value;
 	bool valid;
 	atomic_t count;
 	wait_queue_t wait_queue;
+	spinlock_s lock;
 #ifdef UCONFIG_BIONIC_LIBC
 	uintptr_t addr;
 #endif				//UCONFIG_BIONIC_LIBC

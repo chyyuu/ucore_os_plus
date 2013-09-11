@@ -16,8 +16,15 @@ spin:
 
 .global kern_ap_entry64
 kern_ap_entry64:
+    # setup rsp
+    mov (%esp), %rsp
+
+    # boot_cr3 cr3
+    mov  (%ebp), %rax
+    mov  %rax, %cr3
+
     movq $0x0, %rbp
-#rsp already setup
+
     call ap_init
     jmp spin
 

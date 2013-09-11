@@ -11,6 +11,9 @@
 #include <error.h>
 #include <proc.h>
 #include <kio.h>
+#include <mp.h>
+#include <sysconf.h>
+#include <ramdisk.h>
 
 /* *
  * Task State Segment:
@@ -32,7 +35,7 @@
  * mode, the x86-64 CPU will look in the TSS for SS0 and RSP0 and load their value
  * into SS and RSP respectively.
  * */
-static struct taskstate ts = {0};
+//static struct taskstate ts = {0};
 uintptr_t boot_cr3;
 
 static uintptr_t freemem;
@@ -56,19 +59,23 @@ pgd_t *const vgd = (pgd_t *) PGADDR(PGX(VPT), PGX(VPT), PGX(VPT), PGX(VPT), 0);
  *   - 0x50:  user data segment
  *   - 0x60:  defined for tss, initialized in gdt_init
  * */
-static struct segdesc gdt[8 + LAPIC_COUNT] = {
+static struct segdesc __gdt[SEG_COUNT] = {
 	SEG_NULL,
 	[SEG_KTEXT] = SEG(STA_X | STA_R, DPL_KERNEL),
 	[SEG_KDATA] = SEG(STA_W, DPL_KERNEL),
 	[SEG_UTEXT] = SEG(STA_X | STA_R, DPL_USER),
 	[SEG_UDATA] = SEG(STA_W, DPL_USER),
+	/*
 	[SEG_TLS1] = SEG(STA_W, DPL_USER),
 	[SEG_TLS2] = SEG(STA_W, DPL_USER),
+	*/
 };
 
-struct pseudodesc gdt_pd = {
+#if 0
+static struct pseudodesc __gdt_pd = {
 	sizeof(gdt) - 1, (uintptr_t) gdt
 };
+#endif
 
 static DEFINE_PERCPU_NOINIT(size_t, used_pages);
 DEFINE_PERCPU_NOINIT(list_entry_t, page_struct_free_list);
@@ -93,8 +100,12 @@ static void check_alloc_page(void);
 static inline void lgdt(struct pseudodesc *pd)
 {
 	asm volatile ("lgdt (%0)"::"r" (pd));
+	//XXX needed? may confuse the compiler
+#if 0
 	asm volatile ("movw %%ax, %%es"::"a" (KERNEL_DS));
 	asm volatile ("movw %%ax, %%ds"::"a" (KERNEL_DS));
+	asm volatile ("movw %%ax, %%gs"::"a" (KERNEL_DS));
+
 	// reload cs & ss
 	asm volatile ("movq %%rsp, %%rax;"	// move %rsp to %rax
 		      "pushq %1;"	// push %ss
@@ -104,16 +115,18 @@ static inline void lgdt(struct pseudodesc *pd)
 		      "call 1f;"	// push %rip
 		      "jmp 2f;"
 		      "1: iretq; 2:"::"i" (KERNEL_CS), "i"(KERNEL_DS));
+#endif
 }
 
 /* *
- * load_esp0 - change the ESP0 in default task state segment,
+ * load_rsp0 - change the ESP0 in default task state segment,
  * so that we can use different kernel stack when we trap frame
  * user to kernel.
  * */
 void load_rsp0(uintptr_t rsp0)
 {
-	ts.ts_rsp0 = rsp0;
+	//XXX
+	mycpu()->arch_data.ts.ts_rsp0 = rsp0;
 }
 
 /**
@@ -151,17 +164,28 @@ size_t nr_used_pages(void)
 }
 
 /* gdt_init - initialize the default GDT and TSS */
-static void gdt_init(void)
+/* must be called from corresponding cpu */
+void gdt_init(struct cpu *c)
 {
 	// initialize the TSS filed of the gdt
-	gdt[SEG_TSS] =
-		SEGTSS(STS_T32A, (uintptr_t) & ts, sizeof(ts), DPL_KERNEL);
+	// XXX
+	//gdt[SEG_TSS] =
+	//	SEGTSS(STS_T32A, (uintptr_t) & ts, sizeof(ts), DPL_KERNEL);
+
+	memcpy(&c->arch_data.gdt, &__gdt, sizeof(__gdt));
+	c->arch_data.gdt[SEG_TSS] = 
+		SEGTSS(STS_T32A, (uintptr_t) &c->arch_data.ts,
+		sizeof(struct taskstate), DPL_KERNEL);
+
+	struct pseudodesc gdt_pd = {
+		sizeof(__gdt) - 1, (uintptr_t) c->arch_data.gdt
+	};
 
 	// reload all segment registers
 	lgdt(&gdt_pd);
 
 	// load the TSS
-	ltr(GD_TSS);
+	ltr((uint16_t)GD_TSS);
 }
 
 //init_pmm_manager - initialize a pmm_manager instance
@@ -173,22 +197,28 @@ static void init_pmm_manager(void)
 }
 
 //init_memmap - call pmm->init_memmap to build Page struct for free memory  
-static void init_memmap(struct Page *base, size_t n)
+static inline void init_memmap(struct numa_mem_zone *z)
 {
-	pmm_manager->init_memmap(base, n);
+	pmm_manager->init_memmap(z);
 }
 
 char* e820map_type[5]={"Usable","Reserved","ACPI reclaimable memory","ACPI NVS memory", "Area containing bad memory"};
 
+#define MAX(x,y) ((x)<(y)?(y):(x))
+#define MIN(x,y) ((x)>(y)?(y):(x))
+struct numa_mem_zone numa_mem_zones[MAX_NUMA_MEM_ZONES];
+static int numa_mem_zones_cnt;
+
 /* pmm_init - initialize the physical memory management */
+extern struct e820map *e820map_addr;
 static void page_init(void)
 {
-	struct e820map *memmap = (struct e820map *)(0x8000 + PBASE);
+	struct e820map *memmap = e820map_addr;
 	uint64_t maxpa = 0, totalmemsize=0;
 
 	kprintf("e820map: size, begin, end, type\n");
 	kprintf("----------------------------------------\n");
-	int i;
+	int i, j, k;
 	for (i = 0; i < memmap->nr_map; i++) {
 		uint64_t begin = memmap->map[i].addr, end = begin + memmap->map[i].size;
 		kprintf("  memory: %016llx, [%016llx, %016llx], %s.\n",
@@ -203,13 +233,19 @@ static void page_init(void)
 	}
 	kprintf("--------Total Usable Phy Mem Size %lld MB-----------\n", totalmemsize/1024/1024);
 	if (maxpa > KMEMSIZE) {
+		kprintf("warning: memory size > 0x%llx\n", KMEMSIZE);
 		maxpa = KMEMSIZE;
 	}
 
 	extern char end[];
+	char *reserve_end = end;
+	if(initrd_end){
+		assert(initrd_end > end);
+		reserve_end = initrd_end;
+	}
 
 	npage = maxpa / PGSIZE;
-	pages = (struct Page *)ROUNDUP((uintptr_t) end, PGSIZE);
+	pages = (struct Page *)ROUNDUP((uintptr_t)reserve_end, PGSIZE);
 
 	for (i = 0; i < npage; i++) {
 		SetPageReserved(pages + i);
@@ -218,23 +254,44 @@ static void page_init(void)
 	freemem = PADDR(ROUNDUP((uintptr_t) pages + sizeof(struct Page) * npage, PGSIZE));
 
 	for (i = 0; i < memmap->nr_map; i++) {
+		/* skip the first 1MB */
 		uint64_t begin = memmap->map[i].addr, end = begin + memmap->map[i].size;
-		if (memmap->map[i].type == E820_ARM) {
-			if (begin < freemem) {
-				begin = freemem;
-			}
-			if (end > KMEMSIZE) {
-				end = KMEMSIZE;
-			}
-			if (begin < end) {
-				begin = ROUNDUP(begin, PGSIZE);
-				end = ROUNDDOWN(end, PGSIZE);
-				if (begin < end) {
-					init_memmap(pa2page(begin),
-						    (end - begin) / PGSIZE);
-				}
+		if (end <= 0x100000)
+			continue;
+		if (memmap->map[i].type != E820_ARM)
+			continue;
+		begin = MAX(begin, freemem);
+		end = MIN(end, KMEMSIZE);
+		if (begin >= end)
+			continue;
+		begin = ROUNDUP(begin, PGSIZE);
+		end = ROUNDDOWN(end, PGSIZE);
+		if (begin >= end)
+			continue;
+		for(j=0; j<sysconf.lnuma_count; j++){
+			struct numa_node *node = &numa_nodes[j];
+			for(k=0;k<numa_nodes[j].nr_mems;k++){
+				uint64_t l = MAX(begin, (uint64_t)node->mems[k].base),
+					 r = MIN(end, (uint64_t)node->mems[k].base + node->mems[k].length);
+				l = ROUNDUP(l, PGSIZE);
+				r = ROUNDDOWN(r, PGSIZE);
+				if(l>=r)
+					continue;
+				struct numa_mem_zone *z = &numa_mem_zones[numa_mem_zones_cnt++];
+				z->id = numa_mem_zones_cnt - 1;
+				z->page = pa2page(l);
+				z->n = (r - l) / PGSIZE;
+				z->node = node;
+				//init_memmap(pa2page(begin),
+				//		(end - begin) / PGSIZE);
 			}
 		}
+	}
+	for(i=0;i<numa_mem_zones_cnt;i++){
+		kprintf("numa_mem_zone %d: 0x%016llx - 0x%016llx, %lldMB\n",
+				i, page2pa(numa_mem_zones[i].page),
+				numa_mem_zones[i].n * PGSIZE - 1, numa_mem_zones[i].n*PGSIZE/1024/1024);
+		init_memmap(&numa_mem_zones[i]);
 	}
 }
 
@@ -263,6 +320,41 @@ try_again:
 	get_cpu_var(used_pages) += n;
 	return page;
 }
+
+
+struct Page *alloc_pages_cpu(struct cpu *cpu, size_t n)
+{
+#ifdef UCONFIG_SWAP
+#error alloc_pages_numa: swap not supported
+#endif
+	struct Page *page;
+	bool intr_flag;
+	assert(cpu->node!=NULL);
+	local_intr_save(intr_flag);
+	{
+		page = pmm_manager->alloc_pages_numa(cpu->node, n);
+	}
+	local_intr_restore(intr_flag);
+	per_cpu(used_pages, cpu->id) += n;
+	return page;
+}
+
+struct Page *alloc_pages_numa(struct numa_node* node, size_t n)
+{
+#ifdef UCONFIG_SWAP
+#error alloc_pages_numa: swap not supported
+#endif
+	struct Page *page;
+	bool intr_flag;
+	assert(node!=NULL);
+	local_intr_save(intr_flag);
+	{
+		page = pmm_manager->alloc_pages_numa(node, n);
+	}
+	local_intr_restore(intr_flag);
+	return page;
+}
+
 
 //boot_alloc_page - allocate one page using pmm->alloc_pages(1) 
 // return value: the kernel virtual address of this allocated page
@@ -308,9 +400,9 @@ size_t nr_free_pages(void)
 	return ret;
 }
 
-void
+	void
 boot_map_segment(pgd_t * pgdir, uintptr_t la, size_t size, uintptr_t pa,
-		 uint32_t perm)
+		uint32_t perm)
 {
 	assert(PGOFF(la) == PGOFF(pa));
 	size_t n = ROUNDUP(size + PGOFF(la), PGSIZE) / PGSIZE;
@@ -325,7 +417,7 @@ boot_map_segment(pgd_t * pgdir, uintptr_t la, size_t size, uintptr_t pa,
 
 //pmm_init - setup a pmm to manage physical memory, build PDT&PT to setup paging mechanism 
 //         - check the correctness of pmm & paging mechanism, print PDT&PT
-void pmm_init(void)
+void pmm_init_numa(void)
 {
 	//We need to alloc/free the physical memory (granularity is 4KB or other size). 
 	//So a framework of physical memory manager (struct pmm_manager)is defined in pmm.h
@@ -357,7 +449,7 @@ void pmm_init(void)
 
 	/* patched by xinhaoyuan: to fix the unmapped space when reading ACPI */
 	/* configuration table under X86-64 */
-	struct e820map *memmap = (struct e820map *)(0x8000 + PBASE);
+	struct e820map *memmap = e820map_addr;
 	int i;
 	for (i = 0; i < memmap->nr_map; i++) {
 		if (memmap->map[i].type != 1) {
@@ -380,7 +472,7 @@ void pmm_init(void)
 void pmm_init_ap(void)
 {
 
-	lcr3(boot_cr3);
+	mp_lcr3(boot_cr3);
 
 	// set CR0
 	uint64_t cr0 = rcr0();
@@ -390,7 +482,7 @@ void pmm_init_ap(void)
 	cr0 &= ~(CR0_TS | CR0_EM);
 	lcr0(cr0);
 
-	gdt_init();
+	//gdt_init();
 
 	list_entry_t *page_struct_free_list =
 	    get_cpu_ptr(page_struct_free_list);

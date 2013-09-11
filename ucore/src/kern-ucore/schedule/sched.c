@@ -6,125 +6,94 @@
 #include <assert.h>
 #include <sched_RR.h>
 #include <sched_MLFQ.h>
+#include <sched_mpRR.h>
 #include <kio.h>
 #include <mp.h>
 #include <trap.h>
 #include <sysconf.h>
+#include <spinlock.h>
 
-/* For GDB ONLY - START */
-/* Collect scheduling information to check how are the CPUs... */
-#define SLICEPOOL_SIZE 21
-
-static uint16_t sched_info_pid[PGSIZE / sizeof(uint16_t)];
-static uint16_t sched_info_times[PGSIZE / sizeof(uint16_t)];
-static int sched_info_head[8];
-static int sched_slices[8][SLICEPOOL_SIZE];
-int sched_collect_info = 1;
-
-void db_sched(int lines)
-{
-	kprintf("\n");
-
-	int lcpu_count = sysconf.lcpu_count;
-	int i, j, k;
-	/* Print a header */
-	kprintf("        ");
-	for (i = 0; i < lcpu_count; i++)
-		kprintf("|    CPU%d    ", i);
-	kprintf("\n");
-	/* Print the table */
-	for (i = 0; i < lines; i++) {
-		kprintf(" %4d ", i);
-		for (k = 0; k < lcpu_count; k++) {
-			j = sched_info_head[k] - i;
-			if (j < 0)
-				j += PGSIZE / sizeof(uint16_t) / lcpu_count;
-			kprintf("  %4d(%4d) ",
-				sched_info_pid[j * lcpu_count + k],
-				sched_info_times[j * lcpu_count + k]);
-		}
-		kprintf("\n");
-	}
-}
-
-void db_time(uint16_t left, uint16_t right)
-{
-	kprintf("\n");
-
-	int lcpu_count = sysconf.lcpu_count;
-	int i, j;
-	for (i = 0; i < lcpu_count; i++) {
-		kprintf("On CPU%d: ", i);
-		int sum = 0, total = PGSIZE / sizeof(uint16_t) / lcpu_count;
-		for (j = 0; j < total; j++) {
-			uint16_t pid = sched_info_pid[j * lcpu_count + i];
-			if (pid >= left && pid <= right)
-				sum += sched_info_times[j * lcpu_count + i];
-		}
-		kprintf("%4d", sum);
-		sum = 0;
-		for (j = left; j <= right; j++)
-			sum += sched_slices[i][j % SLICEPOOL_SIZE];
-		kprintf("(%4d)\n", sum);
-	}
-}
-
-/* For GDB ONLY - END */
-
-static list_entry_t timer_list;
+/* we may use lock free list */
+struct __timer_list_t{
+	list_entry_t tl;
+	spinlock_s lock;
+};
+static struct __timer_list_t __timer_list;
+#define timer_list __timer_list.tl
 
 static struct sched_class *sched_class;
+static DEFINE_PERCPU_NOINIT(struct run_queue, runqueues);
 
-static struct run_queue *rq;
+//static struct run_queue *rq;
 
 static inline void sched_class_enqueue(struct proc_struct *proc)
 {
 	if (proc != idleproc) {
+		//TODO load balance
+		struct run_queue *rq = get_cpu_ptr(runqueues);
+		if(proc->flags & PF_PINCPU){
+			assert(proc->cpu_affinity >= 0 
+					&& proc->cpu_affinity < sysconf.lcpu_count);
+			rq = per_cpu_ptr(runqueues, proc->cpu_affinity);
+		}
+		//XXX lock
 		sched_class->enqueue(rq, proc);
 	}
 }
 
 static inline void sched_class_dequeue(struct proc_struct *proc)
 {
+	struct run_queue *rq = get_cpu_ptr(runqueues);
 	sched_class->dequeue(rq, proc);
 }
 
 static inline struct proc_struct *sched_class_pick_next(void)
 {
+	struct run_queue *rq = get_cpu_ptr(runqueues);
 	return sched_class->pick_next(rq);
 }
 
 static void sched_class_proc_tick(struct proc_struct *proc)
 {
 	if (proc != idleproc) {
+		struct run_queue *rq = get_cpu_ptr(runqueues);
 		sched_class->proc_tick(rq, proc);
 	} else {
 		proc->need_resched = 1;
 	}
 }
 
-static struct run_queue __rq[4];
+//static struct run_queue __rq[NCPU];
 
 void sched_init(void)
 {
 	list_init(&timer_list);
 
-	rq = __rq;
-	list_init(&(rq->rq_link));
-	rq->max_time_slice = 8;
+	//rq = __rq;
+	//list_init(&(__rq[0].rq_link));
+	struct run_queue *rq0 = get_cpu_ptr(runqueues);
+	list_init(&(rq0->rq_link));
+	rq0->max_time_slice = 8;
 
 	int i;
-	for (i = 1; i < sizeof(__rq) / sizeof(__rq[0]); i++) {
-		list_add_before(&(rq->rq_link), &(__rq[i].rq_link));
-		__rq[i].max_time_slice = rq->max_time_slice * (1 << i);
+	for (i = 1; i < sysconf.lcpu_count; i++) {
+		struct run_queue *rqi = per_cpu_ptr(runqueues, i);
+		list_add_before(&(rq0->rq_link), 
+				&(rqi->rq_link));
+		rqi->max_time_slice = rq0->max_time_slice;
 	}
 
 #ifdef UCONFIG_SCHEDULER_MLFQ
 	sched_class = &MLFQ_sched_class;
-#else
+#elif defined UCONFIG_SCHEDULER_RR
 	sched_class = &RR_sched_class;
+#else
+	sched_class = &MPRR_sched_class;
 #endif
-	sched_class->init(rq);
+	for (i = 0; i < sysconf.lcpu_count; i++) {
+		struct run_queue *rqi = per_cpu_ptr(runqueues, i);
+		sched_class->init(rqi);
+	}
 
 	kprintf("sched class: %s\n", sched_class->name);
 }
@@ -196,153 +165,92 @@ int try_to_wakeup(struct proc_struct *proc)
 
 #include <vmm.h>
 
-#define MT_SUPPORT
-
 void schedule(void)
 {
 	/* schedule in irq ctx is not allowed */
 	assert(!ucore_in_interrupt());
 	bool intr_flag;
 	struct proc_struct *next;
-#ifndef MT_SUPPORT
-	list_entry_t head;
-#endif
 
 	local_intr_save(intr_flag);
 	int lcpu_count = sysconf.lcpu_count;
 	{
 		current->need_resched = 0;
-#ifndef MT_SUPPORT
-		if (current->mm) {
-			assert(current->mm->cpuid == myid());
-			current->mm->cpuid = -1;
-		}
-#endif
 		if (current->state == PROC_RUNNABLE
 		    && current->pid >= lcpu_count) {
 			sched_class_enqueue(current);
 		}
-#ifndef MT_SUPPORT
-		list_init(&head);
-		while (1) {
-			next = sched_class_pick_next();
-			if (next != NULL)
-				sched_class_dequeue(next);
 
-			if (next && next->mm && next->mm->lapic != -1) {
-				list_add(&head, &(next->run_link));
-			} else {
-				list_entry_t *cur;
-				while ((cur = list_next(&head)) != &head) {
-					list_del_init(cur);
-					sched_class_enqueue(le2proc
-							    (cur, run_link));
-				}
-
-				break;
-			}
-		}
-#else
 		next = sched_class_pick_next();
 		if (next != NULL)
 			sched_class_dequeue(next);
-#endif /* !MT_SUPPORT */
-		if (next == NULL) {
+		else
 			next = idleproc;
-		}
 		next->runs++;
-		/* Collect information here */
-		if (sched_collect_info) {
-			int lcpu_count = sysconf.lcpu_count;
-			int cpuid = myid();
-			int loc = sched_info_head[cpuid];
-			int prev = sched_info_pid[loc * lcpu_count + cpuid];
-			if (next->pid == prev)
-				sched_info_times[loc * lcpu_count + cpuid]++;
-			else {
-				sched_info_head[cpuid]++;
-				if (sched_info_head[cpuid] >=
-				    PGSIZE / sizeof(uint16_t) / lcpu_count)
-					sched_info_head[cpuid] = 0;
-				loc = sched_info_head[cpuid];
-				uint16_t prev_pid =
-				    sched_info_pid[loc * lcpu_count + cpuid];
-				uint16_t prev_times =
-				    sched_info_times[loc * lcpu_count +
-						     cpuid];
-				if (prev_times > 0
-				    && prev_pid >= lcpu_count + 2)
-					sched_slices[cpuid][prev_pid %
-							       SLICEPOOL_SIZE]
-					    += prev_times;
-				sched_info_pid[loc * lcpu_count + cpuid] =
-				    next->pid;
-				sched_info_times[loc * lcpu_count + cpuid] =
-				    1;
-			}
-		}
-#ifndef MT_SUPPORT
-		assert(!next->mm || next->mm->lapic == -1);
-		if (next->mm)
-			next->mm->lapic = lapic_id;
-#endif
-		if (next != current) {
-#if 0
-			kprintf("N %d to %d\n", current->pid, next->pid);
-#endif
+		if (next != current)
 			proc_run(next);
-		}
 	}
 	local_intr_restore(intr_flag);
+}
+
+static void __add_timer(timer_t * timer)
+{
+	assert(timer->expires > 0 && timer->proc != NULL);
+	assert(list_empty(&(timer->timer_link)));
+	list_entry_t *le = list_next(&timer_list);
+	while (le != &timer_list) {
+		timer_t *next = le2timer(le, timer_link);
+		if (timer->expires < next->expires) {
+			next->expires -= timer->expires;
+			break;
+		}
+		timer->expires -= next->expires;
+		le = list_next(le);
+	}
+	list_add_before(le, &(timer->timer_link));
 }
 
 void add_timer(timer_t * timer)
 {
 	bool intr_flag;
-	local_intr_save(intr_flag);
+	spin_lock_irqsave(&__timer_list.lock, intr_flag);
 	{
-		assert(timer->expires > 0 && timer->proc != NULL);
-		assert(list_empty(&(timer->timer_link)));
-		list_entry_t *le = list_next(&timer_list);
-		while (le != &timer_list) {
-			timer_t *next = le2timer(le, timer_link);
-			if (timer->expires < next->expires) {
-				next->expires -= timer->expires;
-				break;
-			}
-			timer->expires -= next->expires;
-			le = list_next(le);
-		}
-		list_add_before(le, &(timer->timer_link));
+		__add_timer(timer);
 	}
-	local_intr_restore(intr_flag);
+	spin_unlock_irqrestore(&__timer_list.lock, intr_flag);
+}
+
+static void __del_timer(timer_t * timer)
+{
+	if (!list_empty(&(timer->timer_link))) {
+		if (timer->expires != 0) {
+			list_entry_t *le =
+				list_next(&(timer->timer_link));
+			if (le != &timer_list) {
+				timer_t *next =
+					le2timer(le, timer_link);
+				next->expires += timer->expires;
+			}
+		}
+		list_del_init(&(timer->timer_link));
+	}
 }
 
 void del_timer(timer_t * timer)
 {
+
 	bool intr_flag;
-	local_intr_save(intr_flag);
+	spin_lock_irqsave(&__timer_list.lock, intr_flag);
 	{
-		if (!list_empty(&(timer->timer_link))) {
-			if (timer->expires != 0) {
-				list_entry_t *le =
-				    list_next(&(timer->timer_link));
-				if (le != &timer_list) {
-					timer_t *next =
-					    le2timer(le, timer_link);
-					next->expires += timer->expires;
-				}
-			}
-			list_del_init(&(timer->timer_link));
-		}
+		__del_timer(timer);
 	}
-	local_intr_restore(intr_flag);
+	spin_unlock_irqrestore(&__timer_list.lock, intr_flag);
 }
 
 void run_timer_list(void)
 {
 	bool intr_flag;
-	local_intr_save(intr_flag);
+	spin_lock_irqsave(&__timer_list.lock, intr_flag);
 	{
 		list_entry_t *le = list_next(&timer_list);
 		if (le != &timer_list) {
@@ -354,9 +262,13 @@ void run_timer_list(void)
 				if (__ucore_is_linux_timer(timer)) {
 					struct __ucore_linux_timer *lt =
 					    &(timer->linux_timer);
+
+					spin_unlock_irqrestore(&__timer_list.lock, intr_flag);
 					if (lt->function)
 						(lt->function) (lt->data);
-					del_timer(timer);
+					spin_lock_irqsave(&__timer_list.lock, intr_flag);
+
+					__del_timer(timer);
 					kfree(timer);
 					continue;
 				}
@@ -371,7 +283,7 @@ void run_timer_list(void)
 
 				wakeup_proc(proc);
 
-				del_timer(timer);
+				__del_timer(timer);
 				if (le == &timer_list) {
 					break;
 				}
@@ -380,5 +292,5 @@ void run_timer_list(void)
 		}
 		sched_class_proc_tick(current);
 	}
-	local_intr_restore(intr_flag);
+	spin_unlock_irqrestore(&__timer_list.lock, intr_flag);
 }

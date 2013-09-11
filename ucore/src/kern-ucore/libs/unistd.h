@@ -99,6 +99,9 @@
 //FIXME
 #define CLONE_SEM            CLONE_THREAD
 
+/* ucore */
+#define __CLONE_PINCPU       0x04000000
+
 /* SYS_mmap flags */
 #define MMAP_WRITE          0x00000100
 #define MMAP_STACK          0x00000200

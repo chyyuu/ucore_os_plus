@@ -311,4 +311,36 @@ static inline bool test_bit(int nr, volatile void *addr)
 	return oldbit != 0;
 }
 
+/* gcc builtin */
+#define atomic_compare_and_swap(ptr, oval, nval) __sync_bool_compare_and_swap(ptr, oval, nval)
+
+//----------------------------------------------------------------
+// CAS functions
+//----------------------------------------------------------------
+static inline char CAS (volatile void * addr, volatile void * value, void * newvalue) 
+{
+	register char ret;
+	__asm__ __volatile__ (
+		"# CAS \n\t"
+		LOCK_PREFIX "cmpxchg %2, (%1) \n\t"
+		"sete %0               \n\t"
+		:"=a" (ret)
+		:"c" (addr), "d" (newvalue), "a" (value)
+	);
+	return ret;
+}
+
+static inline char CAS2 (volatile void * addr, volatile void * v1, volatile long v2, void * n1, long n2) 
+{
+	register char ret;
+	__asm__ __volatile__ (
+		"# CAS2 \n\t"
+		LOCK_PREFIX "cmpxchg16b (%1) \n\t"
+		"sete %0               \n\t"
+		:"=a" (ret)
+		:"D" (addr), "d" (v2), "a" (v1), "b" (n1), "c" (n2)
+	);
+	return ret;
+}
+
 #endif /* !__ARCH_UM_INCLUDE_ATOMIC_H */

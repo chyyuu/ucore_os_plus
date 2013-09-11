@@ -9,6 +9,7 @@
 #include <rb_tree.h>
 #include <kio.h>
 #include <mp.h>
+#include <spinlock.h>
 
 /* The slab allocator used in ucore is based on an algorithm first introduced by 
    Jeff Bonwick for the SunOS operating system. The paper can be download from 
@@ -95,6 +96,15 @@ struct kmem_cache_s {
 	size_t page_order;
 
 	kmem_cache_t *slab_cachep;
+
+	/* spinlock to protect a kmem_cache,
+	 * XXX contention when multicore parallel 
+	 * allocating/freeing objects of the same size
+	 */
+	/* xv6 use lock-free linked list to implement free_list,
+	 * but may suffer from ABA race problem
+	 */
+	spinlock_s lock;
 };
 
 #define MIN_SIZE_ORDER          5	// 32
@@ -240,6 +250,7 @@ static void init_kmem_cache(kmem_cache_t * cachep, size_t objsize, size_t align)
 {
 	list_init(&(cachep->slabs_full));
 	list_init(&(cachep->slabs_notfull));
+	spinlock_init(&cachep->lock);
 
 	objsize = ROUNDUP(objsize, align);
 	cachep->objsize = objsize;
@@ -309,6 +320,7 @@ static slab_t *kmem_cache_slabmgmt(kmem_cache_t * cachep, struct Page *page)
 //                 - set control area in the new slab
 static bool kmem_cache_grow(kmem_cache_t * cachep)
 {
+	bool intr_flag;
 	struct Page *page = alloc_pages(1 << cachep->page_order);
 	if (page == NULL) {
 		goto failed;
@@ -336,10 +348,11 @@ static bool kmem_cache_grow(kmem_cache_t * cachep)
 	slab_bufctl(slabp)[cachep->num - 1] = BUFCTL_END;
 	slabp->free = 0;
 
-	bool intr_flag;
 	local_intr_save(intr_flag);
 	{
+		spinlock_acquire(&cachep->lock);
 		list_add(&(cachep->slabs_notfull), &(slabp->slab_link));
+		spinlock_release(&cachep->lock);
 	}
 	local_intr_restore(intr_flag);
 	return 1;
@@ -351,7 +364,8 @@ failed:
 }
 
 // kmem_cache_alloc_one - allocate a obj in a slab
-static void *kmem_cache_alloc_one(kmem_cache_t * cachep, slab_t * slabp)
+// Precondition: lock acquried
+static void *__kmem_cache_alloc_one(kmem_cache_t * cachep, slab_t * slabp)
 {
 	slabp->inuse++;
 	void *objp = slabp->s_mem + slabp->free * cachep->objsize;
@@ -364,7 +378,7 @@ static void *kmem_cache_alloc_one(kmem_cache_t * cachep, slab_t * slabp)
 	return objp;
 }
 
-// kmem_cache_alloc - call kmem_cache_alloc_one function to allocate a obj
+// kmem_cache_alloc - call __kmem_cache_alloc_one function to allocate a obj
 //                  - if no free obj, try to allocate a slab
 static void *kmem_cache_alloc(kmem_cache_t * cachep)
 {
@@ -373,15 +387,18 @@ static void *kmem_cache_alloc(kmem_cache_t * cachep)
 
 try_again:
 	local_intr_save(intr_flag);
+	spinlock_acquire(&cachep->lock);
 	if (list_empty(&(cachep->slabs_notfull))) {
 		goto alloc_new_slab;
 	}
 	slab_t *slabp = le2slab(list_next(&(cachep->slabs_notfull)), slab_link);
-	objp = kmem_cache_alloc_one(cachep, slabp);
+	objp = __kmem_cache_alloc_one(cachep, slabp);
+	spinlock_release(&cachep->lock);
 	local_intr_restore(intr_flag);
 	return objp;
 
 alloc_new_slab:
+	spinlock_release(&cachep->lock);
 	local_intr_restore(intr_flag);
 	if (kmem_cache_grow(cachep)) {
 		goto try_again;
@@ -425,8 +442,9 @@ static void kmem_slab_destroy(kmem_cache_t * cachep, slab_t * slabp)
 
 // kmem_cache_free_one - free an obj in a slab
 //                     - if slab->inuse==0, then free the slab
+// lock held
 static void
-kmem_cache_free_one(kmem_cache_t * cachep, slab_t * slabp, void *objp)
+__kmem_cache_free_one(kmem_cache_t * cachep, slab_t * slabp, void *objp)
 {
 	//should not use divide operator ???
 	size_t objnr = (objp - slabp->s_mem) / cachep->objsize;
@@ -461,7 +479,9 @@ static void kmem_cache_free(kmem_cache_t * cachep, void *objp)
 	}
 	local_intr_save(intr_flag);
 	{
-		kmem_cache_free_one(cachep, GET_PAGE_SLAB(page), objp);
+		spinlock_acquire(&cachep->lock);
+		__kmem_cache_free_one(cachep, GET_PAGE_SLAB(page), objp);
+		spinlock_release(&cachep->lock);
 	}
 	local_intr_restore(intr_flag);
 }

@@ -19,8 +19,11 @@
 #include <mod.h>
 #include <percpu.h>
 #include <sysconf.h>
+#include <lapic.h>
+#include <multiboot.h>
+#include <refcache.h>
 
-int kern_init(void) __attribute__ ((noreturn));
+int kern_init(uint64_t, uint64_t) __attribute__ ((noreturn));
 
 static void bootaps(void)
 {
@@ -34,7 +37,46 @@ static void bootaps(void)
 	}
 }
 
-int kern_init(void)
+struct e820map *e820map_addr = (struct e820map *)(0x8000 + PBASE);
+static void mbmem2e820(Mbdata *mb)
+{
+	static struct e820map m;
+	if(!(mb->flags & (1<<6)))
+    		panic("multiboot header has no memory map");
+	e820map_addr = &m;
+  	uint8_t *p = (uint8_t*) VADDR_DIRECT(mb->mmap_addr);
+  	uint8_t *ep = p + mb->mmap_length;
+	int i = 0;
+	while(p<ep){
+		if(i>=E820MAX) break;
+		struct Mbmem *mbmem = (Mbmem*)p;
+		p += 4 + mbmem->size;
+		m.map[i].addr = mbmem->base;
+		m.map[i].size = mbmem->length;
+		m.map[i].type = mbmem->type;
+		i++;
+	}
+	m.nr_map = i;
+}
+
+char *initrd_begin, *initrd_end;
+static void parse_initrd(Mbdata *mb)
+{
+	if(!mb->flags & (1<<3))
+		kprintf("multiboot header has no modules\n");
+	int i;
+	struct Mbmod *mods = (struct Mbmod*)VADDR_DIRECT(mb->mods_addr);
+	for(i=0;i<mb->mods_count;i++){
+		kprintf("mbmod: %d %p %p\n", i, 
+		  mods[i].start, mods[i].end);
+	}
+	if(mb->mods_count<1)
+		return;
+	initrd_begin = VADDR_DIRECT(mods[0].start);
+	initrd_end = VADDR_DIRECT(mods[0].end);
+}
+
+int kern_init(uint64_t mbmagic, uint64_t mbmem)
 {
 	extern char edata[], end[];
 	memset(edata, 0, end - edata);
@@ -46,27 +88,39 @@ int kern_init(void)
 
 	const char *message = "(THU.CST) os is loading ...";
 	kprintf("%s\n\n", message);
+	if(mbmagic == MULTIBOOT_BOOTLOADER_MAGIC){
+		kprintf("Multiboot dectected: param %p\n", (void*)mbmem);
+		mbmem2e820((Mbdata*)VADDR_DIRECT(mbmem));
+		parse_initrd((Mbdata*)VADDR_DIRECT(mbmem));
+	}
 
 	print_kerninfo();
 
 	/* get_cpu_var not available before tls_init() */
-	tls_init(per_cpu_ptr(cpus, 0));
-
-	pmm_init();		// init physical memory management
-
 	hz_init();
+	gdt_init(per_cpu_ptr(cpus, 0));
+	tls_init(per_cpu_ptr(cpus, 0));
+	acpitables_init();
+	lapic_init();
+	numa_init();
+
+	pmm_init_numa();		// init physical memory management, numa awared
+	/* map the lapic */
+	lapic_init_late();
 
 	//init the acpi stuff
-	acpitables_init();
 
 	idt_init();		// init interrupt descriptor table
 	pic_init();		// init interrupt controller
 
 //	acpi_conf_init();
-	lapic_init();
-	numa_init();
+
+
 	percpu_init();
 	cpus_init();
+	ipi_init();
+
+	refcache_init();
 
 	vmm_init();		// init virtual memory management
 	sched_init();		// init scheduler

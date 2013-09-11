@@ -3,6 +3,13 @@
 
 #include <types.h>
 
+struct ide_device {
+	unsigned char valid;	// 0 or 1 (If Device Really Exists)
+	unsigned int sets;	// Commend Sets Supported
+	unsigned int size;	// Size in Sectors
+	unsigned int ramdisk;
+	unsigned char model[41];	// Model in String
+}; 
 void ide_init(void);
 bool ide_device_valid(unsigned short ideno);
 size_t ide_device_size(unsigned short ideno);

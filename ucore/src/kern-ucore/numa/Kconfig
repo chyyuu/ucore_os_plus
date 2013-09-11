@@ -12,4 +12,7 @@ config NR_MEMS_PER_NODE
   int "Maximum number of continuous memory regions supported in a NUMA node"
   default 1
 
+config ENABLE_IPI
+  bool "Enable IPI"
+  default n
 endmenu

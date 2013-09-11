@@ -9,13 +9,19 @@
 
 #define TEST_PAGE 0x0
 
+struct numa_mem_zone;
+struct numa_node;
+struct cpu;
+
 struct pmm_manager {
 	const char *name;
 	void (*init) (void);
-	void (*init_memmap) (struct Page * base, size_t n);
+	void (*init_memmap) (struct numa_mem_zone *zone);
 	struct Page *(*alloc_pages) (size_t n);
+	struct Page *(*alloc_pages_numa) (struct numa_node *node, size_t n);
 	void (*free_pages) (struct Page * base, size_t n);
 	 size_t(*nr_free_pages) (void);
+	 size_t(*nr_free_pages_numa) (struct numa_node *node);
 	void (*check) (void);
 };
 struct proc_struct;
@@ -27,12 +33,15 @@ extern uintptr_t boot_cr3;
 void check_pgdir(void);
 void check_boot_pgdir(void);
 
-void pmm_init(void);
+void pmm_init_numa(void);
 void pmm_init_ap(void);
+void gdt_init(struct cpu *c);
 void boot_map_segment(pgd_t * pgdir, uintptr_t la, size_t size, uintptr_t pa,
 		      uint32_t perm);
 
 struct Page *alloc_pages(size_t n);
+struct Page *alloc_pages_cpu(struct cpu *cpu, size_t n);
+struct Page *alloc_pages_numa(struct numa_node *node, size_t n);
 void *boot_alloc_page(void);
 void free_pages(struct Page *base, size_t n);
 size_t nr_used_pages(void);

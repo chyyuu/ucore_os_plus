@@ -52,6 +52,7 @@ void sem_init(semaphore_t * sem, int value)
 {
 	sem->value = value;
 	sem->valid = 1;
+	spinlock_init(&sem->lock);
 #ifdef UCONFIG_BIONIC_LIBC
 	sem->addr = 0;		//-1 : // Not for futex
 #endif //UCONFIG_BIONIC_LIBC
@@ -65,6 +66,7 @@ void sem_init_with_address(semaphore_t * sem, uintptr_t addr, int value)
 	sem->value = value;
 	sem->addr = addr;
 	sem->valid = 1;
+	spinlock_init(&sem->lock);
 	set_sem_count(sem, 0);
 	wait_queue_init(&(sem->wait_queue));
 }
@@ -75,7 +77,7 @@ static void
 {
 	assert(sem->valid);
 	bool intr_flag;
-	local_intr_save(intr_flag);
+	spin_lock_irqsave(&sem->lock, intr_flag);
 	{
 		wait_t *wait;
 		if ((wait = wait_queue_first(&(sem->wait_queue))) == NULL) {
@@ -85,7 +87,7 @@ static void
 			wakeup_wait(&(sem->wait_queue), wait, wait_state, 1);
 		}
 	}
-	local_intr_restore(intr_flag);
+	spin_unlock_irqrestore(&sem->lock, intr_flag);
 }
 
 static uint32_t
@@ -94,23 +96,23 @@ static uint32_t
 {
 	assert(sem->valid);
 	bool intr_flag;
-	local_intr_save(intr_flag);
+	spin_lock_irqsave(&sem->lock, intr_flag);
 	if (sem->value > 0) {
 		sem->value--;
-		local_intr_restore(intr_flag);
+		spin_unlock_irqrestore(&sem->lock, intr_flag);
 		return 0;
 	}
 	wait_t __wait, *wait = &__wait;
 	wait_current_set(&(sem->wait_queue), wait, wait_state);
 	ipc_add_timer(timer);
-	local_intr_restore(intr_flag);
+	spin_unlock_irqrestore(&sem->lock, intr_flag);
 
 	schedule();
 
-	local_intr_save(intr_flag);
+	spin_lock_irqsave(&sem->lock, intr_flag);
 	ipc_del_timer(timer);
 	wait_current_del(&(sem->wait_queue), wait);
-	local_intr_restore(intr_flag);
+	spin_unlock_irqrestore(&sem->lock, intr_flag);
 
 	if (wait->wakeup_flags != wait_state) {
 		return wait->wakeup_flags;
@@ -132,11 +134,11 @@ void down(semaphore_t * sem)
 bool try_down(semaphore_t * sem)
 {
 	bool intr_flag, ret = 0;
-	local_intr_save(intr_flag);
+	spin_lock_irqsave(&sem->lock, intr_flag);
 	if (sem->value > 0) {
 		sem->value--, ret = 1;
 	}
-	local_intr_restore(intr_flag);
+	spin_unlock_irqrestore(&sem->lock, intr_flag);
 	return ret;
 }
 

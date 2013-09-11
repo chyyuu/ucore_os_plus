@@ -20,6 +20,7 @@
 #include <mp.h>
 #include <ioapic.h>
 #include <sysconf.h>
+#include <refcache.h>
 
 #define TICK_NUM 30
 
@@ -173,6 +174,7 @@ static void trap_dispatch(struct trapframe *tf)
 {
 	char c;
 	int ret;
+	int id = myid();
 
 	switch (tf->tf_trapno) {
 	case T_PGFLT:
@@ -195,14 +197,25 @@ static void trap_dispatch(struct trapframe *tf)
 	case 0x6:
 		syscall();
 		break;
+		/* IPI */
+	case T_IPICALL:
+		do_ipicall();
+		break;
+	case T_TLBFLUSH:
+		lcr3(rcr3());	
+		break;
 	case IRQ_OFFSET + IRQ_TIMER:
-		ticks++;
+		if(id==0){
+			ticks++;
+			run_timer_list();
+		}
+		refcache_tick();
 
 		assert(current != NULL);
-		run_timer_list();
 		break;
 	case IRQ_OFFSET + IRQ_COM1:
 	case IRQ_OFFSET + IRQ_KBD:
+	case IRQ_OFFSET + IRQ_LPT1:
 		c = cons_getc();
 
 		extern void dev_stdin_write(char c);

@@ -40,6 +40,7 @@ static void delay(void)
 #define COM_LSR_DATA    0x01	// Data available
 #define COM_LSR_TXRDY   0x20	// Transmit buffer avail
 #define COM_LSR_TSRE    0x40	// Transmitter off
+#define COM_BAUDRATE    115200
 
 #define MONO_BASE       0x3B4
 #define MONO_BUF        0xB0000
@@ -90,7 +91,7 @@ static void serial_init(void)
 
 	// Set speed; requires DLAB latch
 	outb(COM1 + COM_LCR, COM_LCR_DLAB);
-	outb(COM1 + COM_DLL, (uint8_t) (115200 / 9600));
+	outb(COM1 + COM_DLL, (uint8_t) (115200 / COM_BAUDRATE));
 	outb(COM1 + COM_DLM, 0);
 
 	// 8 data bits, 1 stop bit, parity off; turn off DLAB latch
@@ -112,6 +113,7 @@ static void serial_init(void)
 	}
 }
 
+#ifdef UCONFIG_CONSOLE_LPT
 static void lpt_putc_sub(int c)
 {
 	int i;
@@ -134,6 +136,10 @@ static void lpt_putc(int c)
 		lpt_putc_sub('\b');
 	}
 }
+#else
+static inline void lpt_putc_sub(int c){}
+static inline void lpt_putc(int c){}
+#endif
 
 /* cga_putc - print character to console */
 static void cga_putc(int c)
@@ -189,12 +195,15 @@ static void serial_putc_sub(int c)
 /* serial_putc - print character to serial port */
 static void serial_putc(int c)
 {
-	if (c != '\b') {
-		serial_putc_sub(c);
-	} else {
+	if (c == '\b') {
 		serial_putc_sub('\b');
 		serial_putc_sub(' ');
 		serial_putc_sub('\b');
+	} else if(c == '\n') {
+		serial_putc_sub('\r');
+		serial_putc_sub('\n');
+	} else {
+		serial_putc_sub(c);
 	}
 }
 

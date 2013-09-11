@@ -10,6 +10,8 @@ config SCHEDULER_RR
 config SCHEDULER_MLFQ
   bool "MLFQ"
 
+config SCHEDULER_MPRR
+  bool "MPRR"
 endchoice
 
 endmenu
