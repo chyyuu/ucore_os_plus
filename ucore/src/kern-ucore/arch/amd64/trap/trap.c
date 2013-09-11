@@ -197,10 +197,12 @@ static void trap_dispatch(struct trapframe *tf)
 	case 0x6:
 		syscall();
 		break;
+#ifdef UCONFIG_ENABLE_IPI
 		/* IPI */
 	case T_IPICALL:
 		do_ipicall();
 		break;
+#endif
 	case T_TLBFLUSH:
 		lcr3(rcr3());	
 		break;

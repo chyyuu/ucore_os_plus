@@ -108,7 +108,9 @@ void ap_init(void)
 	/* load new pagetable(shared with bsp) */
 	pmm_init_ap();
 	idt_init();		// init interrupt descriptor table
+#ifdef UCONFIG_ENABLE_IPI
 	ipi_init();
+#endif
 
 	/* test pmm */
 	struct Page *p = alloc_pages(2);

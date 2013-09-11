@@ -118,7 +118,9 @@ int kern_init(uint64_t mbmagic, uint64_t mbmem)
 
 	percpu_init();
 	cpus_init();
+#ifdef UCONFIG_ENABLE_IPI
 	ipi_init();
+#endif
 
 	refcache_init();
 
