@@ -19,15 +19,20 @@ LINK_FILE_IN	:= $(KTREE)/arch/${ARCH}/ucore.ld.in
 LINK_FILE     := $(KTREE_OBJ_ROOT)/arch/$(ARCH)/ucore.ld
 SEDFLAGS	= s/TEXT_START/$(UCONFIG_KERNEL_BASE)/
 
+ifdef UCONFIG_HAVE_LINUX_DDE36_BASE
+DDELIB := $(TOPLEVEL_DIR)/build/lib/dde
+DRIVERS_O := $(DDELIB)/drivers.o
+endif
+
 $(KERNEL_IMG): $(BOOTSECT) $(KERNEL_ELF)
 	@echo Making $@
 	$(Q)dd if=/dev/zero of=$@ count=10000 >/dev/null 2>&1
 	$(Q)dd if=$(BOOTSECT) of=$@ conv=notrunc >/dev/null 2>&1
 	$(Q)dd if=$(KERNEL_ELF) of=$@ seek=1 conv=notrunc >/dev/null 2>&1
 
-$(KERNEL_ELF): $(LINK_FILE) $(KERNEL_BUILTIN) $(ENTRY32_OBJ) $(PIGGYCODE_OBJ) $(RAMDISK_OBJ)
+$(KERNEL_ELF): $(LINK_FILE) $(KERNEL_BUILTIN) $(ENTRY32_OBJ) $(PIGGYCODE_OBJ) $(RAMDISK_OBJ) $(DRIVERS_O)
 	@echo Linking uCore
-	$(Q)$(TARGET_LD) $(TARGET_LDFLAGS) -z max-page-size=0x1000 -T $(LINK_FILE) $(KERNEL_BUILTIN) $(ENTRY32_OBJ) $(PIGGYCODE_OBJ) $(RAMDISK_OBJ) -o $@
+	$(Q)$(TARGET_LD) $(TARGET_LDFLAGS) -z max-page-size=0x1000 -T $(LINK_FILE) $(KERNEL_BUILTIN) $(ENTRY32_OBJ) $(PIGGYCODE_OBJ) $(RAMDISK_OBJ) $(DRIVERS_O) -o $@
 
 $(LINK_FILE): $(LINK_FILE_IN) $(KCONFIG_AUTOCONFIG)
 	@echo "creating linker script"

@@ -84,6 +84,7 @@ DEFINE_PERCPU_NOINIT(list_entry_t, page_struct_free_list);
 struct Page *pages;
 // amount of physical memory (in pages)
 size_t npage = 0;
+unsigned long max_pfn;
 
 // virtual address of boot-time page directory
 pgd_t *boot_pgdir = NULL;
@@ -245,6 +246,7 @@ static void page_init(void)
 	}
 
 	npage = maxpa / PGSIZE;
+	max_pfn = npage;
 	pages = (struct Page *)ROUNDUP((uintptr_t)reserve_end, PGSIZE);
 
 	for (i = 0; i < npage; i++) {

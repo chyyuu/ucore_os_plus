@@ -22,7 +22,8 @@
 
 volatile size_t ticks = 0;
 
-#ifdef UCONFIG_HAVE_LINUX_DDE_BASE
+#if (defined UCONFIG_HAVE_LINUX_DDE_BASE) \
+ || (defined UCONFIG_HAVE_LINUX_DDE36_BASE)
 extern volatile uint64_t jiffies_64;
 extern unsigned long volatile jiffies;
 #endif
@@ -37,7 +38,8 @@ void enable_timer_list()
 void __common_timer_int_handler()
 {
 	ticks++;
-#ifdef UCONFIG_HAVE_LINUX_DDE_BASE
+#if (defined UCONFIG_HAVE_LINUX_DDE_BASE) \
+ || (defined UCONFIG_HAVE_LINUX_DDE36_BASE)
 	jiffies++;
 	jiffies_64++;
 #endif

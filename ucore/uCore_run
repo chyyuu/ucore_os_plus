@@ -2,11 +2,12 @@
 
 BUILD_DIR=obj
 COMMAND_LINE_MODE=
+DEBUG_MODE=
 TEST_MODE=
 TEST_POSTFIX=
 GDB_PORT=1234
 
-while getopts "chd:t:" opt; do
+while getopts "chgd:t:" opt; do
     case $opt in
         c)
             COMMAND_LINE_MODE=y
@@ -28,6 +29,9 @@ while getopts "chd:t:" opt; do
             echo ""
             echo "Report bugs to https://github.com/chyyuu/ucore_plus/issues"
             exit 0
+            ;;
+        g)
+            DEBUG_MODE=y
             ;;
         t)
             TEST_MODE=y
@@ -66,9 +70,12 @@ case $UCONFIG_ARCH in
                 echo AVD not specified. Fetch the first avd from \"android list avd\" and get \"$AVD\"
             fi
             if [[ $TEST_MODE = y ]]; then
-                QEMU_OPT="-s -S -serial file:$BUILD_DIR/serial.log$TEST_POSTFIX -gdb tcp::$GDB_PORT"
+                QEMU_OPT="-S -serial file:$BUILD_DIR/serial.log$TEST_POSTFIX -gdb tcp::$GDB_PORT"
             else
                 QEMU_OPT="-serial stdio"
+                if [[ $DEBUG_MODE = y ]]; then
+                    QEMU_OPT+=" -s -S"
+                fi
             fi
             exec emulator-arm -avd $AVD -kernel $BUILD_DIR/kernel.img$TEST_POSTFIX -no-window -qemu $QEMU_OPT
         else
@@ -83,12 +90,19 @@ case $UCONFIG_ARCH in
         if [ $? -eq 0 ]; then
             QEMU=qemu-system-i386
         fi
+        EXTRA_OPT="-serial file:$BUILD_DIR/serial.log$TEST_POSTFIX"
         if [[ $TEST_MODE = y ]]; then
-            EXTRA_OPT="-S -display none -gdb tcp::$GDB_PORT -serial file:$BUILD_DIR/serial.log$TEST_POSTFIX"
-        elif [[ $COMMAND_LINE_MODE = y ]]; then
-            EXTRA_OPT="-nographic"
+            EXTRA_OPT+=" -S -display none -gdb tcp::$GDB_PORT"
         else
-            EXTRA_OPT="-monitor stdio -s -serial file:$BUILD_DIR/serial.log"
+            if [[ $COMMAND_LINE_MODE = y ]]; then
+                echo -e "\033[0;36;1mNote: Qemu is running under no graphic mode. Press 'Ctrl-a x' to exit\033[0m"
+                EXTRA_OPT="-nographic"
+            else
+                EXTRA_OPT+=" -monitor stdio -serial file:$BUILD_DIR/serial.log$TEST_POSTFIX"
+            fi
+            if [[ $DEBUG_MODE = y ]]; then
+                EXTRA_OPT+=" -s -S"
+            fi
         fi
         exec $QEMU -m 128 \
             -hda $BUILD_DIR/kernel.img$TEST_POSTFIX \
@@ -101,12 +115,19 @@ case $UCONFIG_ARCH in
         if [ $? -eq 0 ]; then
             QEMU=qemu-system-x86_64
         fi
+        EXTRA_OPT="-serial file:$BUILD_DIR/serial.log$TEST_POSTFIX"
         if [[ $TEST_MODE = y ]]; then
-            EXTRA_OPT="-S -display none -gdb tcp::$GDB_PORT -serial file:$BUILD_DIR/serial.log$TEST_POSTFIX"
-        elif [[ $COMMAND_LINE_MODE = y ]]; then
-            EXTRA_OPT="-nographic"
+            EXTRA_OPT+=" -S -display none -gdb tcp::$GDB_PORT "
         else
-            EXTRA_OPT="-monitor stdio -s -serial file:$BUILD_DIR/serial.log"
+            if [[ $COMMAND_LINE_MODE = y ]]; then
+                echo -e "\033[0;36;1mNote: Qemu is running under no graphic mode. Press 'Ctrl-a x' to exit\033[0m"
+                EXTRA_OPT="-nographic"
+            else
+                EXTRA_OPT+=" -monitor stdio -serial file:$BUILD_DIR/serial.log$TEST_POSTFIX"
+            fi
+            if [[ $DEBUG_MODE = y ]]; then
+                EXTRA_OPT+=" -s -S"
+            fi
         fi
         exec $QEMU -m 512 \
             -hda $BUILD_DIR/kernel.img$TEST_POSTFIX \
