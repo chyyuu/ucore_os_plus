@@ -366,6 +366,20 @@ int conf_read(const char *name)
 	return 0;
 }
 
+int move(const char *from, const char *to)
+{
+	if (rename(from, to)) {
+		char *cmd = malloc(strlen(from) + strlen(to) + 16);
+		int ret;
+		sprintf(cmd, "mv %s %s", from, to);
+		ret = system(cmd);
+		free(cmd);
+		if (ret)
+			return 1;
+	}
+	return 0;
+}
+
 int conf_write(const char *name)
 {
 	FILE *out;
@@ -514,9 +528,8 @@ int conf_write(const char *name)
 	if (*tmpname) {
 		strcat(dirname, basename);
 		strcat(dirname, ".old");
-		rename(newname, dirname);
-		if (rename(tmpname, newname))
-			return 1;
+		move(newname, dirname);
+		move(tmpname, newname);
 	}
 
 	printf(_("#\n"
@@ -759,7 +772,7 @@ int conf_write_autoconf(void)
 	name = getenv("KCONFIG_AUTOHEADER");
 	if (!name)
 		name = "include/linux/autoconf.h";
-	if (rename(".tmpconfig.h", name))
+	if (move(".tmpconfig.h", name))
 		return 1;
 	name = getenv("KCONFIG_AUTOCONFIG");
 	if (!name)
@@ -768,7 +781,7 @@ int conf_write_autoconf(void)
 	 * This must be the last step, kbuild has a dependency on auto.conf
 	 * and this marks the successful completion of the previous steps.
 	 */
-	if (rename(".tmpconfig", name))
+	if (move(".tmpconfig", name))
 		return 1;
 
 	return 0;
