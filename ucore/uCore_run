@@ -60,7 +60,7 @@ case $UCONFIG_ARCH in
                 echo AVD not specified. Fetch the first avd from \"android list avd\" and get \"$AVD\"
             fi
             if [[ $TEST_MODE = y ]]; then
-                QEMU_OPT="-s -S -serial file:$BUILD_DIR/serial.log$TEST_POSTFIX -gdb tcp::$GDB_PORT"
+                QEMU_OPT="-S -serial file:$BUILD_DIR/serial.log$TEST_POSTFIX -gdb tcp::$GDB_PORT"
             else
                 QEMU_OPT="-serial stdio"
             fi
