@@ -1,4 +1,5 @@
 @program	/testbin/pipetest
+@failin         amd64
 
   - 'kernel_execve: pid = [0-9]{1,2}, name = "/testbin/pipetest".'
     'child write ok'
