@@ -1,6 +1,7 @@
 #!/bin/bash
 
 NR_CPUS=`grep processor /proc/cpuinfo | wc -l`
+RESULT_SAVETO=$1
 
 pushd `dirname $0` > /dev/null
 source autotest.config
@@ -32,10 +33,18 @@ tail -n 1 $BUILD_DIR_ARM/test-result.latest/summary
 tail -n 1 $BUILD_DIR_AMD64/test-result.latest/summary
 echo
 
+# Save error logs if result output dir is given
+if [ "$RESULT_SAVETO" != "" ]; then
+    COMMIT=`git rev-parse HEAD`
+    mkdir -p $RESULT_SAVETO/$COMMIT/i386 && cp $BUILD_DIR_I386/test-result.latest/*.error $RESULT_SAVETO/$COMMIT/i386/
+    mkdir -p $RESULT_SAVETO/$COMMIT/arm && cp $BUILD_DIR_ARM/test-result.latest/*.error $RESULT_SAVETO/$COMMIT/arm/
+    mkdir -p $RESULT_SAVETO/$COMMIT/amd64 && cp $BUILD_DIR_AMD64/test-result.latest/*.error $RESULT_SAVETO/$COMMIT/amd64/
+fi
+
 echo "=========================== i386 ==========================="
 head -n $[ `cat $BUILD_DIR_I386/test-result.latest/summary | wc -l` - 3 ] $BUILD_DIR_I386/test-result.latest/summary
 echo
-echo "=========================== ARM ============================"
+echo "=========================== arm ============================"
 head -n $[ `cat $BUILD_DIR_ARM/test-result.latest/summary | wc -l` - 3 ] $BUILD_DIR_ARM/test-result.latest/summary
 echo
 echo "========================== amd64 ==========================="
