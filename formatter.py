@@ -29,6 +29,12 @@ if not m:
 commit = m.group(1)
 
 if section == 'AutoTest':
+    sys.stdout.write('Legend:<br>')
+    sys.stdout.write('<span class="line-ok">[  PASS  ]</span>:\tThe test terminates successfully with correct output<br>')
+    sys.stdout.write('<span class="line-warning">[! PASS !]</span>:\tThe test passes, but it is expected to fail in previous builds<br>')
+    sys.stdout.write('<span class="line-warning">[  FAIL  ]</span>:\tSomething wrong happened in the test, but it is expected and has a corresponding issue on github<br>')
+    sys.stdout.write('<span class="line-error">[! FAIL !]</span>:\tThe test fails and it is not expected so<br>')
+    sys.stdout.write('<span class="line-error">[!BROKEN!]</span>:\tThe test is not executed normally, usually due to disk out of space or bugs in the test script<br><br>')
     sys.stdout.write('<center>')
 
 arch = ''
