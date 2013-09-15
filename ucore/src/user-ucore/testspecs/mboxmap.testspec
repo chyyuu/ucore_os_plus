@@ -1,5 +1,6 @@
 @program	/testbin/mboxmap
 @timeout	20
+@failin         arm
 
   - 'kernel_execve: pid = [0-9]{1,2}, name = "/testbin/mboxmap".'
     'fork children ok.'
