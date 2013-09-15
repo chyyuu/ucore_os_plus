@@ -120,7 +120,7 @@ print_result() {
     if [ $2 = $3 ]; then
         decorator=' '
     fi
-    printf "%-60s[%c%6s%c]\n" "TEST <$TEST_SUITE_NAME> $1" "$decorator" "$2" "$decorator" >> $SUMMARY
+    printf "%-60s[%c%6s%c]\n" "<$TEST_SUITE_NAME> $1" "$decorator" "$2" "$decorator" >> $SUMMARY
     echo -n "$decorator" >> $4
 }
 
