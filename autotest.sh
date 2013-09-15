@@ -26,7 +26,7 @@ fi
 
 # Dump results to stdout
 echo "========================= SUMMARY =========================="
-printf "%-20s%-10s%-10s%-10s%-10s\n" "" passed failed broken total
+printf "%-8s%-20s%-20s%-10s%-10s\n" "" "passed(unexpected)" "failed(unexpected)" broken total
 tail -n 1 $BUILD_DIR_I386/test-result.latest/summary
 tail -n 1 $BUILD_DIR_ARM/test-result.latest/summary
 tail -n 1 $BUILD_DIR_AMD64/test-result.latest/summary
