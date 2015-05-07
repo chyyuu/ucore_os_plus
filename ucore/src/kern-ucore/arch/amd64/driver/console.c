@@ -199,6 +199,9 @@ static void serial_putc(int c)
 		serial_putc_sub('\b');
 		serial_putc_sub(' ');
 		serial_putc_sub('\b');
+	} else if(c == '\n') {
+		serial_putc_sub('\r');
+		serial_putc_sub('\n');
 	} else {
 		serial_putc_sub(c);
 	}

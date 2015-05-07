@@ -1,6 +1,6 @@
 #include <pmm.h>
 #include <vmm.h>
-#include <swap.h>
+#include <swap_manager.h>
 #include <swapfs.h>
 #include <slab.h>
 #include <assert.h>

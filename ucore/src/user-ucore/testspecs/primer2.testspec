@@ -1,6 +1,5 @@
 @program	/testbin/primer2
 @timeout	500
-@failin         arm
 
   - 'kernel_execve: pid = [0-9]{1,2}, name = "/testbin/primer2".'
     'sharemem init ok.'

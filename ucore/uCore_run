@@ -94,6 +94,7 @@ case $UCONFIG_ARCH in
         if [[ $TEST_MODE = y ]]; then
             EXTRA_OPT+=" -S -display none -gdb tcp::$GDB_PORT"
         else
+			echo $COMMAND_LINE_MODE
             if [[ $COMMAND_LINE_MODE = y ]]; then
                 echo -e "\033[0;36;1mNote: Qemu is running under no graphic mode. Press 'Ctrl-a x' to exit\033[0m"
                 EXTRA_OPT="-nographic"
@@ -104,9 +105,11 @@ case $UCONFIG_ARCH in
                 EXTRA_OPT+=" -s -S"
             fi
         fi
-        exec $QEMU -m 128 \
+        exec $QEMU -m 3 \
             -hda $BUILD_DIR/kernel.img$TEST_POSTFIX \
+			-drive file=$BUILD_DIR/swap.img$TEST_POSTFIX,media=disk,cache=writeback,index=1 \
             -drive file=$BUILD_DIR/sfs.img$TEST_POSTFIX,media=disk,cache=writeback,index=2 \
+			-drive file=$BUILD_DIR/fat.img$TEST_POSTFIX,media=disk,cache=writeback,index=3 \
             $EXTRA_OPT
         ;;
     amd64)

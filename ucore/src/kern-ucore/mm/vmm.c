@@ -7,7 +7,7 @@
 #include <error.h>
 #include <pmm.h>
 #include <arch.h>
-#include <swap.h>
+#include <swap_manager.h>
 #include <shmem.h>
 #include <proc.h>
 #include <sem.h>
@@ -892,6 +892,7 @@ int do_madvise(void *addr, size_t len, int advice)
 
 int do_pgfault(struct mm_struct *mm, machine_word_t error_code, uintptr_t addr)
 {
+	//kprintf("do pgfault, mm: %x, addr:%x\n", mm, addr);
 	if (mm == NULL) {
 		assert(current != NULL);
 		/* Chen Yuheng 

@@ -2,7 +2,7 @@
 #include <string.h>
 #include <error.h>
 #include <memlayout.h>
-#include <swap.h>
+#include <swap_manager.h>
 #include <mp.h>
 
 /**************************************************

@@ -11,12 +11,12 @@
 #include <vmm.h>
 #include <ide.h>
 #include <fs.h>
-#include <swap.h>
 #include <proc.h>
 #include <sched.h>
 #include <kio.h>
 #include <mp.h>
 #include <mod.h>
+#include <swap_manager.h>
 
 int kern_init(void) __attribute__ ((noreturn));
 
@@ -49,7 +49,7 @@ int kern_init(void)
 
 	ide_init();		// init ide devices
 #ifdef UCONFIG_SWAP
-	swap_init();		// init swap
+	swap_manager_init();	// init swap
 #endif
 	fs_init();		// init fs
 

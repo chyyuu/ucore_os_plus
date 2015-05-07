@@ -87,4 +87,3 @@ source src/kern-ucore/mm/Kconfig
 source src/kern-ucore/schedule/Kconfig
 source src/kern-ucore/fs/Kconfig
 source src/kern-ucore/module/Kconfig
-source src/kern-ucore/dde36/Kconfig

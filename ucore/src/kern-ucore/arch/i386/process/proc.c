@@ -12,7 +12,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <assert.h>
-#include <swap.h>
+#include <swap_manager.h>
 #include <fs.h>
 
 void forkrets(struct trapframe *tf);

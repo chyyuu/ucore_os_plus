@@ -225,6 +225,6 @@ void mp_tlb_update(pgd_t * pgdir, uintptr_t la)
 
 void fire_ipi_one(int cpuid)
 {
-	lapic_send_ipi(per_cpu_ptr(cpus, cpuid), T_IPICALL);
+	lapic_send_ipi(cpuid, T_IPICALL);
 }
 

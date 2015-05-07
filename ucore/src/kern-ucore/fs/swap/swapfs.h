@@ -2,7 +2,7 @@
 #define __KERN_FS_SWAP_SWAPFS_H__
 
 #include <memlayout.h>
-#include <swap.h>
+#include <swap_manager.h>
 
 #ifdef UCONFIG_SWAP
 void swapfs_init(void);

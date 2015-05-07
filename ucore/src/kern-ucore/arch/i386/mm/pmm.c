@@ -393,8 +393,12 @@ try_again:
 	}
 	local_intr_restore(intr_flag);
 #ifdef UCONFIG_SWAP
-	if (page == NULL && try_free_pages(n)) {
-		goto try_again;
+	if (page == NULL){
+	//	kprintf("nr free pages before swap:%d\n", nr_free_pages());
+		if (try_free_pages(n)){
+	//		kprintf("nr free pages after swap:%d\n", nr_free_pages());
+			goto try_again;
+		}
 	}
 #endif
 

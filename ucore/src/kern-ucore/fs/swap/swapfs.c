@@ -1,4 +1,4 @@
-#include <swap.h>
+#include <swap_manager.h>
 #include <swapfs.h>
 #include <mmu.h>
 #include <fs.h>

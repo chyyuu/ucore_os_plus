@@ -111,6 +111,7 @@ struct linux_timespec {
 
 extern struct proc_struct *initproc;
 extern struct proc_struct *kswapd;
+extern struct proc_struct *kloopd;
 
 void proc_init(void);
 void proc_init_ap(void);

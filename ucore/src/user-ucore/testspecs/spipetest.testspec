@@ -1,5 +1,4 @@
 @program	/testbin/spipetest
-@failin         arm
 
   - 'kernel_execve: pid = [0-9]{1,2}, name = "/testbin/spipetest".'
     'child write ok'

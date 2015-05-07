@@ -4,7 +4,7 @@
 #include <sync.h>
 #include <pmm.h>
 #include <string.h>
-#include <swap.h>
+#include <swap_manager.h>
 #include <error.h>
 #include <sem.h>
 

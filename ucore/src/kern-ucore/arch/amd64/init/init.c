@@ -22,7 +22,6 @@
 #include <lapic.h>
 #include <multiboot.h>
 #include <refcache.h>
-#include <dde_kit/dde_kit.h>
 
 int kern_init(uint64_t, uint64_t) __attribute__ ((noreturn));
 
@@ -149,10 +148,6 @@ int kern_init(uint64_t mbmagic, uint64_t mbmem)
 	bootaps();
 
 	intr_enable();		// enable irq interrupt
-
-#ifdef UCONFIG_HAVE_LINUX_DDE36_BASE
-	dde_kit_init();
-#endif
 
 	/* do nothing */
 	cpu_idle();		// run idle process
