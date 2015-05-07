@@ -1,3 +1,11 @@
+config:
+make ARCH=i386 defconfig
+make ARCH=i386 menuconfig
+ add mm::swap option
+ add fs::fat32  option
+
+also try ARCH=amd64
+
 compile:
 make 
 make sfsimg
