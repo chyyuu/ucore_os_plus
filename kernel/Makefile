@@ -76,7 +76,7 @@ ifeq ($(uname), Darwin)
 prefix := x86_64-elf-
 endif
 ifeq ($(arch), riscv32)
-prefix := riscv64-unknown-elf-
+prefix := riscv32-unknown-elf-
 endif
 
 ld := $(prefix)ld
@@ -132,7 +132,7 @@ else
 	 	--enable-32bit \
 	 	--enable-logo \
 	 	--disable-fp-emulation \
-	 	--host=riscv64-unknown-elf \
+	 	--host=riscv32-unknown-elf \
 	 	--with-payload=$(abspath $(rust_lib)) && \
 	 make && \
 	 cp bbl ../../kernel/$@
