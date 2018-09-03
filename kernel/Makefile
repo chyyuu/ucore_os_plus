@@ -55,6 +55,11 @@ ifdef d
 qemu_opts := $(qemu_opts) -d $(d)
 endif
 
+# verbose.  Run "make -v" for a verbose build.
+ifdef V
+V  := @
+endif
+
 build_args := --target $(target).json --features "$(features)"
 
 ifeq ($(mode), release)
@@ -89,43 +94,44 @@ as := $(prefix)as
 all: $(kernel)
 
 clean:
-	@rm -r build target
+	$(V)rm -r build target
 
 doc:
-	@cargo rustdoc -- --document-private-items
+	$(V)cargo rustdoc -- --document-private-items
 
 run: $(iso) justrun
 
 justrun:
-	@qemu-system-$(arch) $(qemu_opts) || [ $$? -eq 11 ] # run qemu and assert it exit 11
+	$(V)qemu-system-$(arch) $(qemu_opts) || [ $$? -eq 11 ] # run qemu and assert it exit 11
 
 debug: $(iso)
-	@qemu-system-$(arch) $(qemu_opts) -s -S &
+	$(V)qemu-system-$(arch) $(qemu_opts) -s -S &
 
 iso: $(iso)
 
 build: iso
 
 asm:
-	@$(objdump) -dS $(kernel) | less
+	$(V)$(objdump) -dS $(kernel) | less
 
 elf-h:
-	@$(objdump) -h $(kernel)
+	$(V)$(objdump) -h $(kernel)
 
 build/x86_64/os.iso: $(kernel) $(grub_cfg)
-	@mkdir -p build/isofiles/boot/grub
-	@cp $(kernel) build/isofiles/boot/kernel.bin
-	@cp $(grub_cfg) build/isofiles/boot/grub
-	@grub-mkrescue -o $(iso) build/isofiles 2> /dev/null
-	@rm -r build/isofiles
+	$(V)mkdir -p build/isofiles/boot/grub
+	$(V)cp $(kernel) build/isofiles/boot/kernel.bin
+	$(V)cp $(grub_cfg) build/isofiles/boot/grub
+	$(V)grub-mkrescue -o $(iso) build/isofiles 2> /dev/null
+	$(V)rm -r build/isofiles
 
 build/riscv32/os.iso: kernel
-	@cp $(rust_lib) $(kernel)
+	$(V)mkdir -p build/riscv32
+	$(V)cp $(rust_lib) $(kernel)
 ifdef board
-	@cp $(rust_lib) $@
+	$(V)cp $(rust_lib) $@
 else
-	@mkdir -p build/riscv32
-	@cd ../riscv-pk && \
+	$(V)mkdir -p build/riscv32
+	$(V)cd ../riscv-pk && \
 	 mkdir -p build && \
 	 cd build && \
 	 ../configure \
@@ -139,18 +145,18 @@ else
 endif
 
 $(kernel): kernel $(assembly_object_files) $(linker_script)
-	@$(ld) -n --gc-sections -T $(linker_script) -o $(kernel) \
+	$(V)$(ld) -n --gc-sections -T $(linker_script) -o $(kernel) \
 		$(assembly_object_files) target/x86_64-blog_os/$(mode)/libucore.a
 
 kernel:
-	@CC=$(cc) cargo xbuild $(build_args)
+	$(V)CC=$(cc) cargo xbuild $(build_args)
 
 # compile assembly files
 build/x86_64/boot/%.o: $(boot_src)/%.asm
-	@mkdir -p $(shell dirname $@)
-	@nasm -felf64 $< -o $@
+	$(V)mkdir -p $(shell dirname $@)
+	$(V)nasm -felf64 $< -o $@
 
 # make user.o from binary files
 $(user_obj): $(user_bins)
-	@cd $(user_bin_path) && \
+	$(V)cd $(user_bin_path) && \
 		$(ld) -o $(abspath $@) $(patsubst %, -b binary %, $(notdir $(user_bins)))
