@@ -32,6 +32,21 @@ In fact, it's more complicated than we expected to write an OS starting from scr
   * `grub-mkrescue`
   * `xorriso`
 
+```
+sudo apt install libsdl2-dev
+cd DIR
+git clone https://github.com/riscv/riscv-qemu.git
+cd riscv-qemu
+./configure --target-list=riscv32-softmmu
+make -j8
+rustup upgrade
+cargo install cargo-xbuild
+rustup override set nightly-2018-08-03
+cd DIR
+git clone https://github.com/chyyuu/RustOS.git --recursive
+cd RustOS/kernel
+make run arch=riscv32
+```
 ### How to run
 
 ```bash
