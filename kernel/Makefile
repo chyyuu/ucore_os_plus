@@ -149,7 +149,7 @@ $(kernel): kernel $(assembly_object_files) $(linker_script)
 		$(assembly_object_files) target/x86_64-blog_os/$(mode)/libucore.a
 
 kernel:
-	$(V)CC=$(cc) cargo xbuild $(build_args)
+	$(V)CC=$(cc) cargo -v xbuild $(build_args)
 
 # compile assembly files
 build/x86_64/boot/%.o: $(boot_src)/%.asm

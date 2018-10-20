@@ -5,3 +5,6 @@ target
 kernel/.idea/*
 *.org
 kernel/kernel.iml
+Cargo.lock
+.idea
+*.iml
