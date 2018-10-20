@@ -44,17 +44,17 @@ use linked_list_allocator::LockedHeap;
 
 #[macro_use]    // print!
 pub mod logging;
-mod memory;
+//mod memory;
 mod lang;
 mod util;
 mod consts;
-mod process;
-mod syscall;
-mod fs;
+//mod process;
+//mod syscall;
+//mod fs;
 
-use process::{thread, thread_};
-mod sync;
-mod trap;
+//use process::{thread, thread_};
+//mod sync;
+//mod trap;
 mod console;
 
 #[allow(dead_code)]
@@ -72,12 +72,12 @@ pub extern "C" fn rust_main() -> ! {
     // ATTENTION: we have a very small stack and no guard page
     println!("Hello World{}", "!");
 
-    logging::init();
-    arch::init();
-    process::init();
-    unsafe { arch::interrupt::enable(); }
-
-    fs::shell();
+//    logging::init();
+//    arch::init();
+//    process::init();
+//    unsafe { arch::interrupt::enable(); }
+//
+//    fs::shell();
 
 //    thread::test::local_key();
 //    thread::test::unpack();
