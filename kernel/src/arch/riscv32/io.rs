@@ -1,5 +1,4 @@
 use core::fmt::{Write, Result, Arguments};
-use core::ptr::{read_volatile, write_volatile};
 use super::bbl::sbi;
 
 struct SerialPort;
@@ -29,26 +28,11 @@ fn putchar(c: u8) {
     sbi::console_putchar(c as usize);
 }
 
-pub fn getchar() -> char {
-    #[cfg(feature = "no_bbl")]
-    let c = unsafe {
-        while read_volatile(STATUS) & CAN_READ == 0 {}
-        read_volatile(DATA)
-    };
-    #[cfg(not(feature = "no_bbl"))]
-    let c = sbi::console_getchar() as u8;
-
-    match c {
-        255 => '\0',   // null
-        c => c as char,
-    }
-}
-
 pub fn putfmt(fmt: Arguments) {
     SerialPort.write_fmt(fmt).unwrap();
 }
 
-const DATA: *mut u8 = 0x10000000 as *mut u8;
-const STATUS: *const u8 = 0x10000005 as *const u8;
-const CAN_READ: u8 = 1 << 0;
-const CAN_WRITE: u8 = 1 << 5;
+// const DATA: *mut u8 = 0x10000000 as *mut u8;
+// const STATUS: *const u8 = 0x10000005 as *const u8;
+// const CAN_READ: u8 = 1 << 0;
+// const CAN_WRITE: u8 = 1 << 5;

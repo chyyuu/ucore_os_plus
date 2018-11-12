@@ -3,7 +3,7 @@
 #![feature(const_fn)]
 #![feature(alloc)]
 #![feature(allocator_api)]
-#![feature(iterator_step_by)]
+//#![feature(iterator_step_by)]
 #![feature(unboxed_closures)]
 #![feature(naked_functions)]
 #![feature(asm)]
@@ -13,17 +13,13 @@
 #![feature(compiler_builtins_lib)]
 #![no_std]
 
-#[macro_use]
 extern crate alloc;
 extern crate bit_field;
-#[macro_use]
 extern crate bitflags;
-#[macro_use]
 extern crate lazy_static;
 extern crate linked_list_allocator;
 #[macro_use]
 extern crate log;
-#[macro_use]
 extern crate once;
 extern crate spin;
 extern crate volatile;
@@ -34,9 +30,6 @@ use linked_list_allocator::LockedHeap;
 pub mod logging;
 
 mod lang;
-mod util;
-mod consts;
-mod console;
 
 #[cfg(target_arch = "riscv32")]
 #[path = "arch/riscv32/mod.rs"]

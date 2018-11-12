@@ -1,6 +1,6 @@
 // Rust language features implementions
 //#![feature(custom_attribute)]
-use core::fmt;
+//use core::fmt;
 use core::panic::PanicInfo;
 use core::alloc::Layout;
 
