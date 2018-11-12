@@ -8,7 +8,7 @@
 # 	make clean					Clean
 #
 # Options:
-#   arch = x86_64 | riscv32
+#   arch = riscv32
 #   d    = int | in_asm | ...	QEMU debug info
 #   mode = debug | release
 #   LOG  = off | error | warn | info | debug | trace
@@ -18,26 +18,26 @@ arch ?= riscv32
 mode ?= debug
 LOG  ?= debug
 
+kernel := build/$(arch)/kernel.bin
+iso := build/$(arch)/os.iso
 target := $(arch)-blog_os
-kernel := target/$(target)/$(mode)/ucore
-bin := target/$(target)/$(mode)/kernel.bin
-bootimage := target/$(target)/bootimage.bin
+rust_lib := target/$(target)/$(mode)/ucore
 
+boot_src := src/arch/$(arch)/boot
+linker_script := $(boot_src)/linker.ld
+grub_cfg := $(boot_src)/grub.cfg
+assembly_source_files := $(wildcard $(boot_src)/*.asm)
+assembly_object_files := $(patsubst $(boot_src)/%.asm, \
+	build/$(arch)/boot/%.o, $(assembly_source_files))
 user_bin_path := ../user/target/$(arch)-ucore/debug
 user_bins := $(patsubst $(user_bin_path)/%.d, $(user_bin_path)/%, $(wildcard $(user_bin_path)/*.d))
 user_obj := build/$(arch)/user.o
 SFSIMG := ../user/ucore32.img
-ifeq ($(arch), x86_64)
-qemu_opts := \
-	-drive format=raw,file=$(bootimage) \
-	-drive format=raw,file=$(SFSIMG),media=disk,cache=writeback \
-	-smp 4 \
-	-serial mon:stdio \
-	-device isa-debug-exit
-endif
+
 ifeq ($(arch), riscv32)
-qemu_opts := -machine virt -kernel $(bin) -nographic -smp 4
+qemu_opts := -machine virt -kernel $(iso) -nographic
 endif
+#features := use_apic
 
 ifdef board
 features := $(features) no_bbl
@@ -53,23 +53,21 @@ ifdef d
 qemu_opts := $(qemu_opts) -d $(d)
 endif
 
+# verbose.  Run "make -v" for a verbose build.
+ifdef V
+V  := @
+endif
+
 build_args := --target $(target).json --features "$(features)"
 
 ifeq ($(mode), release)
 build_args := $(build_args) --release
 endif
 
-ifeq ($(OS),Windows_NT)
-uname := Win32
-else
 uname := $(shell uname)
-endif
 
-ifeq ($(uname), Darwin)
-prefix := x86_64-elf-
-endif
 ifeq ($(arch), riscv32)
-prefix := riscv64-unknown-elf-
+prefix := riscv32-unknown-elf-
 endif
 
 ld := $(prefix)ld
@@ -77,61 +75,58 @@ objdump := $(prefix)objdump
 cc := $(prefix)gcc
 as := $(prefix)as
 
-.PHONY: all clean run build asm doc justrun kernel
+.PHONY: all clean run iso build asm doc justrun kernel
 
 all: $(kernel)
 
 clean:
-	@cargo clean
+	$(V)rm -r build target
 
 doc:
-	@cargo rustdoc -- --document-private-items
+	$(V)cargo rustdoc -- --document-private-items
 
-run: build justrun
+run: $(iso) justrun
 
 justrun:
-	@qemu-system-$(arch) $(qemu_opts) || [ $$? -eq 11 ] # run qemu and assert it exit 11
+	$(V)qemu-system-$(arch) $(qemu_opts) || [ $$? -eq 11 ] # run qemu and assert it exit 11
 
-debug: $(bin)
-	@qemu-system-$(arch) $(qemu_opts) -s -S &
+debug: $(iso)
+	$(V)qemu-system-$(arch) $(qemu_opts) -s -S &
 
-ifeq ($(arch), x86_64)
-build: kernel
-else
-build: $(bin)
-endif
+iso: $(iso)
+
+build: iso
 
 asm:
-	@$(objdump) -dS $(kernel) | less
+	$(V)$(objdump) -dS $(kernel) | less
 
 elf-h:
-	@$(objdump) -h $(kernel)
+	$(V)$(objdump) -h $(kernel)
 
-$(bin): kernel
+build/riscv32/os.iso: kernel
+	$(V)mkdir -p build/riscv32
+	$(V)cp $(rust_lib) $(kernel)
 ifdef board
-	@cp $(kernel) $@
+	$(V)cp $(rust_lib) $@
 else
-	@cd ../riscv-pk && \
+	$(V)mkdir -p build/riscv32
+	$(V)cd ../riscv-pk && \
 	 mkdir -p build && \
 	 cd build && \
 	 ../configure \
 	 	--enable-32bit \
 	 	--enable-logo \
 	 	--disable-fp-emulation \
-	 	--host=riscv64-unknown-elf \
-	 	--with-payload=$(abspath $(kernel)) && \
+	 	--host=riscv32-unknown-elf \
+	 	--with-payload=$(abspath $(rust_lib)) && \
 	 make && \
 	 cp bbl ../../kernel/$@
 endif
 
-kernel:
-ifeq ($(arch), x86_64)
-	@bootimage build $(build_args)
-else
-	@cargo xbuild $(build_args)
-endif
+$(kernel): kernel $(assembly_object_files) $(linker_script)
+		$(V)$(ld) -n --gc-sections -T $(linker_script) -o $(kernel) \
+		$(assembly_object_files) target/riscv32-blog_os/$(mode)/libucore.a
 
-# make user.o from binary files
-$(user_obj): $(user_bins)
-	@cd $(user_bin_path) && \
-		$(ld) -o $(abspath $@) $(patsubst %, -b binary %, $(notdir $(user_bins)))
+
+kernel:
+	$(V)CC=$(cc) cargo -v xbuild $(build_args)
