@@ -22,9 +22,6 @@ impl VirtAddr {
     pub fn page_offset(&self) -> usize {
         self.0.get_bits(0..12)
     }
-    pub(crate) unsafe fn as_mut<'a, 'b, T>(&'a self) -> &'b mut T {
-        &mut *(self.0 as *mut T)
-    }
 }
 
 #[derive(Debug, Copy, Clone, PartialEq, Eq, PartialOrd, Ord)]
