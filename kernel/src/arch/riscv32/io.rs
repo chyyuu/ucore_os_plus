@@ -31,8 +31,3 @@ fn putchar(c: u8) {
 pub fn putfmt(fmt: Arguments) {
     SerialPort.write_fmt(fmt).unwrap();
 }
-
-// const DATA: *mut u8 = 0x10000000 as *mut u8;
-// const STATUS: *const u8 = 0x10000005 as *const u8;
-// const CAN_READ: u8 = 1 << 0;
-// const CAN_WRITE: u8 = 1 << 5;

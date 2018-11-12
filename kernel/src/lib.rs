@@ -3,7 +3,6 @@
 #![feature(const_fn)]
 #![feature(alloc)]
 #![feature(allocator_api)]
-//#![feature(iterator_step_by)]
 #![feature(unboxed_closures)]
 #![feature(naked_functions)]
 #![feature(asm)]

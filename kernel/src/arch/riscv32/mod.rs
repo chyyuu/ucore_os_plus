@@ -7,4 +7,4 @@ pub mod compiler_rt;
 #[cfg(feature = "no_bbl")]
 global_asm!(include_str!("boot/boot.asm"));
 global_asm!(include_str!("boot/entry.asm"));
-global_asm!(include_str!("boot/trap.asm"));
+//global_asm!(include_str!("boot/trap.asm"));

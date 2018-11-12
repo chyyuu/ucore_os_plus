@@ -1,6 +1,4 @@
 // Rust language features implementions
-//#![feature(custom_attribute)]
-//use core::fmt;
 use core::panic::PanicInfo;
 use core::alloc::Layout;
 
@@ -8,7 +6,6 @@ use core::alloc::Layout;
 extern fn eh_personality() {
 }
 
-//#[panic_implementation]
 #[panic_handler]
 #[no_mangle]
 pub fn panic(info: &PanicInfo) -> ! {
