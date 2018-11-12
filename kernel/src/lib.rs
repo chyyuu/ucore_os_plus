@@ -11,7 +11,7 @@
 #![feature(naked_functions)]
 #![feature(asm)]
 #![feature(optin_builtin_traits)]
-#![feature(panic_implementation)]
+//#![feature(panic_implementation)]
 #![feature(panic_info_message)]
 #![feature(global_asm)]
 #![feature(compiler_builtins_lib)]
@@ -31,7 +31,7 @@ extern crate linked_list_allocator;
 extern crate log;
 #[macro_use]
 extern crate once;
-extern crate simple_filesystem;
+//extern crate simple_filesystem;
 extern crate spin;
 extern crate ucore_memory;
 extern crate ucore_process;
