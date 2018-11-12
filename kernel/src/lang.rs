@@ -9,6 +9,7 @@ extern fn eh_personality() {
 }
 
 //#[panic_implementation]
+#[panic_handler]
 #[no_mangle]
 pub fn panic(info: &PanicInfo) -> ! {
     let location = info.location().unwrap();
