@@ -52,9 +52,12 @@ pub unsafe extern fn __atomic_store_4(dst: *mut u32, val: u32) {
 }
 
 unsafe fn __atomic_compare_exchange<T: PartialEq>(dst: *mut T, expected: *mut T, desired: T) -> bool {
+    use super::interrupt;
+    let flags = interrupt::disable_and_store();
     let val = read(dst);
     let success = val == read(expected);
     write(dst, if success {desired} else {val});
+    interrupt::restore(flags);
     success
 }
 
