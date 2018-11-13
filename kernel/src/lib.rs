@@ -13,6 +13,7 @@
 #![no_std]
 
 extern crate alloc;
+extern crate bit_allocator;
 extern crate bit_field;
 extern crate bitflags;
 extern crate lazy_static;
@@ -21,14 +22,16 @@ extern crate linked_list_allocator;
 extern crate log;
 extern crate once;
 extern crate spin;
+extern crate ucore_memory;
 extern crate volatile;
 extern crate xmas_elf;
 use linked_list_allocator::LockedHeap;
 
 #[macro_use]    // print!
 pub mod logging;
-
+mod memory;
 mod lang;
+mod consts;
 
 #[cfg(target_arch = "riscv32")]
 #[path = "arch/riscv32/mod.rs"]

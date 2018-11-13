@@ -16,5 +16,7 @@ extern crate bitflags;
 extern crate bit_field;
 
 pub mod asm;
+pub mod interrupt;
 pub mod register;
 pub mod addr;
+pub mod paging;
