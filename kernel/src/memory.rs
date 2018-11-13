@@ -4,7 +4,7 @@ use consts::MEMORY_OFFSET;
 use spin::{Mutex, MutexGuard};
 use super::HEAP_ALLOCATOR;
 use ucore_memory::{*, paging::PageTable};
-use ucore_memory::cow::CowExt;
+//use ucore_memory::cow::CowExt;
 pub use ucore_memory::memory_set::{MemoryArea, MemoryAttr, MemorySet as MemorySet_, Stack};
 
 pub type MemorySet = MemorySet_<InactivePageTable0>;
@@ -34,13 +34,13 @@ pub fn alloc_stack() -> Stack {
 }
 
 lazy_static! {
-    static ref ACTIVE_TABLE: Mutex<CowExt<ActivePageTable>> = Mutex::new(unsafe {
-        CowExt::new(ActivePageTable::new())
+    static ref ACTIVE_TABLE: Mutex<ActivePageTable> = Mutex::new(unsafe {
+        ActivePageTable::new()
     });
 }
 
 /// The only way to get active page table
-pub fn active_table() -> MutexGuard<'static, CowExt<ActivePageTable>> {
+pub fn active_table() -> MutexGuard<'static, ActivePageTable> {
     ACTIVE_TABLE.lock()
 }
 
@@ -48,8 +48,9 @@ pub fn active_table() -> MutexGuard<'static, CowExt<ActivePageTable>> {
 pub fn page_fault_handler(addr: usize) -> bool {
     // Handle copy on write
     unsafe { ACTIVE_TABLE.force_unlock(); }
-    active_table().page_fault_handler(addr, || alloc_frame().unwrap())
+    false
 }
+
 
 pub fn init_heap() {
     use consts::{KERNEL_HEAP_OFFSET, KERNEL_HEAP_SIZE};
