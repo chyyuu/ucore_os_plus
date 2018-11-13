@@ -15,7 +15,9 @@
 extern crate alloc;
 extern crate bit_allocator;
 extern crate bit_field;
+#[macro_use]
 extern crate bitflags;
+#[macro_use]
 extern crate lazy_static;
 extern crate linked_list_allocator;
 #[macro_use]

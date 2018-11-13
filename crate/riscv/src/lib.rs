@@ -12,6 +12,7 @@
 #![feature(const_fn)]
 
 extern crate bare_metal;
+#[macro_use]
 extern crate bitflags;
 extern crate bit_field;
 

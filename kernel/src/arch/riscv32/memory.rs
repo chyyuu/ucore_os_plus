@@ -1,4 +1,3 @@
-use core::slice;
 use memory::{active_table, FRAME_ALLOCATOR, init_heap, MemoryArea, MemoryAttr, MemorySet, Stack};
 use super::riscv::{addr::*, register::sstatus};
 use ucore_memory::PAGE_SIZE;
