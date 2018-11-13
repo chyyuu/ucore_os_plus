@@ -38,6 +38,9 @@ pub mod arch;
 #[no_mangle]
 pub extern "C" fn rust_main() -> ! {
     println!("Hello World{}", "!");
+    logging::init();
+    arch::init();
+    unsafe { arch::interrupt::enable(); }
     loop {}
 }
 
