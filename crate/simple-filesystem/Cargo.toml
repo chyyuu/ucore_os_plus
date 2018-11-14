@@ -1,0 +1,17 @@
+[package]
+name = "simple-filesystem"
+version = "0.0.1"
+authors = ["WangRunji <wangrunji0408@163.com>"]
+
+[[bin]]
+name = "mksfs"
+path = "src/bin/mksfs.rs"
+required-features = ["std"]
+
+[dependencies]
+bit-vec = { default-features = false, git = "https://github.com/AltSysrq/bit-vec.git" } # default-features contains 'std'
+static_assertions = "0.2.5"
+
+[features]
+debug_print = []
+std = []

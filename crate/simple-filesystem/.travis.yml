@@ -1,0 +1,5 @@
+language: rust
+rust:
+  - nightly
+script:
+  - cargo test --verbose -- --test-threads=1

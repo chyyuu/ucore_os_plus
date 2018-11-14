@@ -32,6 +32,7 @@ lazy_static = { version = "1.0.0", features = ["spin_no_std"] }
 bit-allocator = { path = "../crate/bit-allocator" }
 ucore-memory = { path = "../crate/memory" }
 ucore-process = { path = "../crate/process" }
+simple-filesystem = { path = "../crate/simple-filesystem" }
 [target.'cfg(target_arch = "riscv32")'.dependencies]
 riscv = { path = "../crate/riscv" }
 bbl = { path = "../crate/bbl" }

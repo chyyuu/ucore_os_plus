@@ -26,10 +26,12 @@ mod util;
 mod consts;
 mod process;
 mod syscall;
+mod fs;
 
 use crate::process::{thread, thread_};
 mod sync;
 mod trap;
+mod console;
 
 #[cfg(target_arch = "riscv32")]
 #[path = "arch/riscv32/mod.rs"]
@@ -44,8 +46,7 @@ pub extern "C" fn rust_main() -> ! {
     process::init();
     unsafe { arch::interrupt::enable(); }
 
-    sync::test::philosopher_using_mutex();
-    sync::test::philosopher_using_monitor();    
+    fs::shell();
 
     loop {}
 }

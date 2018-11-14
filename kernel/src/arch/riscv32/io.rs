@@ -28,6 +28,21 @@ fn putchar(c: u8) {
     sbi::console_putchar(c as usize);
 }
 
+pub fn getchar() -> char {
+    #[cfg(feature = "no_bbl")]
+    let c = unsafe {
+        while read_volatile(STATUS) & CAN_READ == 0 {}
+        read_volatile(DATA)
+    };
+    #[cfg(not(feature = "no_bbl"))]
+    let c = sbi::console_getchar() as u8;
+
+    match c {
+        255 => '\0',   // null
+        c => c as char,
+    }
+}
+
 pub fn putfmt(fmt: Arguments) {
     SerialPort.write_fmt(fmt).unwrap();
 }
