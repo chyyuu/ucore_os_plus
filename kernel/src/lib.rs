@@ -34,8 +34,10 @@ use linked_list_allocator::LockedHeap;
 pub mod logging;
 mod memory;
 mod lang;
+mod util;
 mod consts;
 mod process;
+mod syscall;
 
 use process::{thread, thread_};
 mod sync;
