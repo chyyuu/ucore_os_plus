@@ -25,6 +25,7 @@ extern crate log;
 extern crate once;
 extern crate spin;
 extern crate ucore_memory;
+extern crate ucore_process;
 extern crate volatile;
 extern crate xmas_elf;
 use linked_list_allocator::LockedHeap;
@@ -34,6 +35,10 @@ pub mod logging;
 mod memory;
 mod lang;
 mod consts;
+mod process;
+
+use process::{thread, thread_};
+mod sync;
 
 #[cfg(target_arch = "riscv32")]
 #[path = "arch/riscv32/mod.rs"]
@@ -44,7 +49,8 @@ pub mod arch;
 pub extern "C" fn rust_main() -> ! {
     println!("Hello World{}", "!");
     logging::init();
-    arch::init();
+    arch::init(); //include memory::init()
+    process::init();
     unsafe { arch::interrupt::enable(); }
     loop {}
 }

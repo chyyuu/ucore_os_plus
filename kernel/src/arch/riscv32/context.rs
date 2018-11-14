@@ -10,6 +10,69 @@ pub struct TrapFrame {
     pub scause: scause::Scause,
 }
 
+/// 用于在内核栈中构造新线程的中断帧
+impl TrapFrame {
+    fn new_kernel_thread(entry: extern fn(usize) -> !, arg: usize, sp: usize) -> Self {
+        use core::mem::zeroed;
+        let mut tf: Self = unsafe { zeroed() };
+        tf.x[10] = arg; // a0
+        tf.x[2] = sp;
+        tf.sepc = entry as usize;
+        tf.sstatus = sstatus::read();
+        tf.sstatus.set_spie(true);
+        tf.sstatus.set_sie(false);
+        tf.sstatus.set_spp(sstatus::SPP::Supervisor);
+        tf
+    }
+    fn new_user_thread(entry_addr: usize, sp: usize) -> Self {
+        use core::mem::zeroed;
+        let mut tf: Self = unsafe { zeroed() };
+        tf.x[2] = sp;
+        tf.sepc = entry_addr;
+        tf.sstatus = sstatus::read();
+        tf.sstatus.set_spie(false);     // Enable interrupt
+        tf.sstatus.set_spp(sstatus::SPP::User);
+        tf
+    }
+    pub fn is_user(&self) -> bool {
+        unimplemented!()
+    }
+}
+
+/// 新线程的内核栈初始内容
+#[derive(Debug)]
+#[repr(C)]
+pub struct InitStack {
+    context: ContextData,
+    tf: TrapFrame,
+}
+
+impl InitStack {
+    unsafe fn push_at(self, stack_top: usize) -> Context {
+        let ptr = (stack_top as *mut Self).offset(-1);
+        *ptr = self;
+        Context(ptr as usize)
+    }
+}
+
+extern {
+    fn __trapret();
+}
+
+#[derive(Debug, Default)]
+#[repr(C)]
+struct ContextData {
+    ra: usize,
+    satp: usize,
+    s: [usize; 12],
+}
+
+impl ContextData {
+    fn new(satp: usize) -> Self {
+        ContextData { ra: __trapret as usize, satp, ..ContextData::default() }
+    }
+}
+
 #[derive(Debug)]
 pub struct Context(usize);
 
@@ -71,5 +134,28 @@ impl Context {
 
     pub unsafe fn null() -> Self {
         Context(0)
+    }
+
+    pub unsafe fn new_kernel_thread(entry: extern fn(usize) -> !, arg: usize, kstack_top: usize, cr3: usize) -> Self {
+        InitStack {
+            context: ContextData::new(cr3),
+            tf: TrapFrame::new_kernel_thread(entry, arg, kstack_top),
+        }.push_at(kstack_top)
+    }
+    pub unsafe fn new_user_thread(entry_addr: usize, ustack_top: usize, kstack_top: usize, is32: bool, cr3: usize) -> Self {
+        InitStack {
+            context: ContextData::new(cr3),
+            tf: TrapFrame::new_user_thread(entry_addr, ustack_top),
+        }.push_at(kstack_top)
+    }
+    pub unsafe fn new_fork(tf: &TrapFrame, kstack_top: usize, cr3: usize) -> Self {
+        InitStack {
+            context: ContextData::new(cr3),
+            tf: {
+                let mut tf = tf.clone();
+                tf.x[10] = 0; // a0
+                tf
+            },
+        }.push_at(kstack_top)
     }
 }
