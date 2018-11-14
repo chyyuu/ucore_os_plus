@@ -44,21 +44,28 @@ pub extern fn rust_trap(tf: &mut TrapFrame) {
     match tf.scause.cause() {
         Trap::Interrupt(I::SupervisorTimer) => timer(),
         Trap::Exception(E::IllegalInstruction) => illegal_inst(tf),
-        _ => trace!("Error Interrupt"),
+        Trap::Exception(E::UserEnvCall) => syscall(tf),
+        _ => ::trap::error(tf),
     }
-    //::trap::before_return();
+    ::trap::before_return();
     trace!("Interrupt end");
 }
 
 fn timer() {
-    //::trap::timer();
+    ::trap::timer();
     super::timer::set_next();
-    println!("tick");
+    //println!("tick");
+}
+
+fn syscall(tf: &mut TrapFrame) {
+    tf.sepc += 4;   // Must before syscall, because of fork.
+    let ret = ::syscall::syscall(tf.x[10], [tf.x[11], tf.x[12], tf.x[13], tf.x[14], tf.x[15], tf.x[16]], tf);
+    tf.x[10] = ret as usize;
 }
 
 fn illegal_inst(tf: &mut TrapFrame) {
     if !emulate_mul_div(tf) {
-        
+        ::trap::error(tf);
     }
 }
 
