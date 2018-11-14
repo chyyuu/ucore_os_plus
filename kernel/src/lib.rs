@@ -39,6 +39,7 @@ mod process;
 
 use process::{thread, thread_};
 mod sync;
+mod trap;
 
 #[cfg(target_arch = "riscv32")]
 #[path = "arch/riscv32/mod.rs"]
@@ -52,6 +53,9 @@ pub extern "C" fn rust_main() -> ! {
     arch::init(); //include memory::init()
     process::init();
     unsafe { arch::interrupt::enable(); }
+
+    //thread::test::local_key();
+
     loop {}
 }
 

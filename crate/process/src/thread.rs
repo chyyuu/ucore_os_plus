@@ -162,11 +162,11 @@ impl<S: ThreadSupport, T> JoinHandle<S, T> {
     }
 }
 
-//pub struct LocalKey<T: 'static> {
+// pub struct LocalKey<T: 'static> {
 //    init: fn() -> T,
-//}
-//
-//impl<T: 'static> LocalKey<T> {
+// }
+
+// impl<T: 'static> LocalKey<T> {
 //    pub fn with<F, R>(&'static self, f: F) -> R
 //        where F: FnOnce(&T) -> R
 //    {
@@ -193,13 +193,13 @@ impl<S: ThreadSupport, T> JoinHandle<S, T> {
 //        }
 //        map.as_mut().unwrap()
 //    }
-//}
-//
-//pub mod test {
+// }
+
+// pub mod test {
 //    use thread;
 //    use core::cell::RefCell;
 //    use core::time::Duration;
-//
+
 //    pub fn unpack() {
 //        let parked_thread = thread::spawn(|| {
 //            println!("Parking thread");
@@ -207,25 +207,25 @@ impl<S: ThreadSupport, T> JoinHandle<S, T> {
 //            println!("Thread unparked");
 //            5
 //        });
-//
+
 //        // Let some time pass for the thread to be spawned.
 //        thread::sleep(Duration::from_secs(2));
-//
+
 //        println!("Unpark the thread");
 //        parked_thread.thread().unpark();
-//
+
 //        let ret = parked_thread.join().unwrap();
 //        assert_eq!(ret, 5);
 //    }
-//
+
 //    pub fn local_key() {
 //        static FOO: thread::LocalKey<RefCell<usize>> = thread::LocalKey::new(|| RefCell::new(1));
-//
+
 //        FOO.with(|f| {
 //            assert_eq!(*f.borrow(), 1);
 //            *f.borrow_mut() = 2;
 //        });
-//
+
 //        // each thread starts out with the initial value of 1
 //        thread::spawn(move || {
 //            FOO.with(|f| {
@@ -233,11 +233,11 @@ impl<S: ThreadSupport, T> JoinHandle<S, T> {
 //                *f.borrow_mut() = 3;
 //            });
 //        }).join();
-//
+
 //        // we retain our original value of 2 despite the child thread
 //        FOO.with(|f| {
 //            assert_eq!(*f.borrow(), 2);
 //        });
 //        println!("local key success");
 //    }
-//}
+// }
