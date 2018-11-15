@@ -78,9 +78,12 @@ as := $(prefix)as
 .PHONY: all clean run iso build asm doc justrun kernel
 
 all: $(kernel)
-
+link_user :=1
 clean:
-	$(V)rm -r build target
+	-rm -r build target
+ifdef link_user
+	-rm -r ../user/target		
+endif
 
 doc:
 	$(V)cargo rustdoc -- --document-private-items
@@ -102,7 +105,12 @@ asm:
 
 elf-h:
 	$(V)$(objdump) -h $(kernel)
-
+ifdef link_user
+user: ../user/src/bin/hello.rs
+	$(V)cd ../user && \
+	$(V)make && \
+	$(V)cd ../kernel
+endif
 build/riscv32/os.iso: kernel
 	$(V)mkdir -p build/riscv32
 	$(V)cp $(rust_lib) $(kernel)
@@ -128,5 +136,5 @@ $(kernel): kernel $(assembly_object_files) $(linker_script)
 		$(assembly_object_files) target/riscv32-blog_os/$(mode)/libucore.a
 
 
-kernel:
+kernel: user
 	$(V)CC=$(cc) cargo -v xbuild $(build_args)

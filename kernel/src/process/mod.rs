@@ -9,6 +9,22 @@ mod context;
 
 type Processor = Processor_<Context, StrideScheduler>;
 
+// Hard link user program
+// Need to build user process first!
+global_asm!(r#"
+    .section .rodata
+    .global _hello_bin_start
+    .global _hello_bin_end
+_hello_bin_start:
+    .incbin "../user/target/riscv32-ucore/debug/hello"
+_hello_bin_end:
+"#);
+
+extern {
+    fn _hello_bin_start();
+    fn _hello_bin_end();
+}
+
 pub fn init() {
     PROCESSOR.call_once(||
         SpinNoIrqLock::new({
@@ -21,6 +37,9 @@ pub fn init() {
                 loop {}
             }
             processor.add(Context::new_kernel(idle, 0));
+            let hello_bin_data = unsafe { ::core::slice::from_raw_parts(_hello_bin_start as usize as *const u8, _hello_bin_end as usize - _hello_bin_start as usize) };
+            processor.add(Context::new_user(hello_bin_data));
+
             processor
         })
     );
