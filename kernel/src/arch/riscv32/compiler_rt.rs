@@ -51,6 +51,26 @@ pub unsafe extern fn __atomic_store_4(dst: *mut u32, val: u32) {
     write(dst, val)
 }
 
+#[no_mangle]
+pub unsafe extern fn __atomic_fetch_add_4(dst: *mut u32, val: u32) -> u32 {
+    use super::interrupt;
+    let flags = interrupt::disable_and_store();
+    let old = dst.read();
+    dst.write(old + val);
+    interrupt::restore(flags);
+    old
+}
+
+#[no_mangle]
+pub unsafe extern fn __atomic_fetch_sub_4(dst: *mut u32, val: u32) -> u32 {
+    use super::interrupt;
+    let flags = interrupt::disable_and_store();
+    let old = dst.read();
+    dst.write(old - val);
+    interrupt::restore(flags);
+    old
+}
+
 unsafe fn __atomic_compare_exchange<T: PartialEq>(dst: *mut T, expected: *mut T, desired: T) -> bool {
     use super::interrupt;
     let flags = interrupt::disable_and_store();
