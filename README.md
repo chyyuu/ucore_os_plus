@@ -1,38 +1,21 @@
-# RustOS
-
-[![Build Status](https://travis-ci.org/wangrunji0408/RustOS.svg?branch=master)](https://travis-ci.org/wangrunji0408/RustOS)
-
-Rust port for uCore OS, supporting x86_64 and riscv32i.
+# uCore OS by Rust Lang, supporting riscv32
 
 ## Summary
 
-This is a project of THU Operating System (2018 Spring) && Comprehensive Experiment of Computer System (2018 Summer).
-
-Project wiki (internal access only): [OS](http://os.cs.tsinghua.edu.cn/oscourse/OS2018spring/projects/g11), [CECS](http://os.cs.tsinghua.edu.cn/oscourse/csproject2018/group05)
-
-Reports (in Chinese): [MidReport](./docs/MidReport.md), [FinalReport](./docs/FinalReport.md), [RISCV port note](./docs/RISCV.md)
-
-
-
-The initial goal is to write a mini OS in Rust with multi-core support. More specifically, it would start from the post of the [Writing an OS in Rust](http://os.phil-opp.com) series, then reimplement [xv6-x86_64](https://github.com/jserv/xv6-x86_64) in Rust style.
-
-In fact, it's more complicated than we expected to write an OS starting from scratch. So by the end of OS course, we only finished rewriting [ucore_os_lab](https://github.com/chyyuu/ucore_os_lab), without multi-core support. Then as a part of [CECS project](https://github.com/riscv-and-rust-and-decaf), we ported it from x86_64 to RISCV32I, and made it work on our FPGA CPU.
+This is a training project of THU Operating System (2018 Autumn).
 
 ## Building
 
 ### Environment
 
-* Rust toolchain at nightly-2018-08-03
+* Rust toolchain: rustc 1.32.0-nightly (36a50c29f 2018-11-09)
 *  `cargo-xbuild`
 * `QEMU` >= 2.12.0
 * riscv32
-  * RISCV64 GNU toolchain
-* x86_64
-  * `nasm`
-  * `grub-mkrescue`
-  * `xorriso`
+  * RISCV32 GNU toolchain
 
 ```
+### setup environment
 sudo apt install libsdl2-dev
 cd DIR
 git clone https://github.com/riscv/riscv-qemu.git
@@ -41,22 +24,28 @@ cd riscv-qemu
 make -j8
 rustup upgrade
 cargo install cargo-xbuild
-rustup override set nightly-2018-08-03
-cd DIR
-git clone https://github.com/chyyuu/RustOS.git --recursive
-cd RustOS/kernel
-make run arch=riscv32
-```
+rustup override set nightly-2018-11-09
+// setenv for qemu-system-riscv32 and riscv32-unknown-e3lf-gcc
+export PATH=PATH of qemu-system-riscv32:PATH of riscv32-unknown-e3lf-gcc:$PATH
+
 ### How to run
 
-```bash
-git clone https://github.com/wangrunji0408/RustOS.git --recursive
+git clone https://github.com/chyyuu/RustOS.git
+cd RustOS
+//LABX is one of lab1-rv32-showstr lab1-rv32-interrupt lab2-rv32-paging
+        lab3-rv32-swaping lab4-rv32-thread lab5-rv32-usrprocess
+        lab6-rv32-scheduling lab7-rv32-mutexsync lab8-rv32-fs
+git checkout LABX 
 cd RustOS/kernel
-make run arch=riscv32|x86_64
-# For FPGA: 
-# make run arch=riscv32 board=1
+make run arch=riscv32
 ```
 
 ## License
 
-The source code is dual-licensed under MIT or the Apache License (Version 2.0).
+The source code is licensed under the Apache License (Version 2.0).
+
+## Contact
+Runji Wang <wangrunji0408@163.com>
+Zhengyang Dai <daizy15@mails.tsinghua.edu.cn>
+Yu Chen <yuchen@tsinghua.edu.cn>
+Yong Xiang <xyong@tsinghua.edu.cn>
