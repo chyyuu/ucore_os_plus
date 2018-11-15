@@ -13,6 +13,7 @@
 #![feature(extern_crate_item_prelude)]
 #![no_std]
 
+#[macro_use]  // vec![...]
 extern crate alloc;
 
 use linked_list_allocator::LockedHeap;
@@ -43,7 +44,8 @@ pub extern "C" fn rust_main() -> ! {
     process::init();
     unsafe { arch::interrupt::enable(); }
 
-    //thread::test::local_key();
+    sync::test::philosopher_using_mutex();
+    sync::test::philosopher_using_monitor();    
 
     loop {}
 }
