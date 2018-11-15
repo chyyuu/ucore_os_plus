@@ -4,6 +4,7 @@ pub use self::context::Context;
 pub use ucore_process::processor::{*, Context as _whatever};
 pub use ucore_process::scheduler::*;
 pub use ucore_process::thread::*;
+use core::time::Duration;
 
 mod context;
 
@@ -17,14 +18,29 @@ pub fn init() {
                 // NOTE: max_time_slice <= 5 to ensure 'priority' test pass
                 StrideScheduler::new(5),
             );
-            extern fn idle(arg: usize) -> ! {
-                loop {}
-            }
-            processor.add(Context::new_kernel(idle, 0));
+            processor.add(Context::new_kernel(thread1, 0));
+            processor.add(Context::new_kernel(thread2, 0));
             processor
         })
     );
     info!("process init end");
+}
+extern fn thread1(arg: usize) -> ! {
+    loop {
+        println!("I'm thread 1.");
+        spin_sleep();
+    }
+}
+
+extern fn thread2(arg: usize) -> ! {
+    loop {
+        println!("I'm thread 2.");
+        spin_sleep();
+    }
+}
+
+fn spin_sleep() {
+    for i in 0..500000 {}
 }
 
 pub static PROCESSOR: Once<SpinNoIrqLock<Processor>> = Once::new();
