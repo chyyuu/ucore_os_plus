@@ -45,14 +45,14 @@ pub extern fn rust_trap(tf: &mut TrapFrame) {
     match tf.scause.cause() {
         Trap::Interrupt(I::SupervisorTimer) => timer(),
         Trap::Exception(E::IllegalInstruction) => illegal_inst(tf),
-        _ => ::trap::error(tf),
+        _ => crate::trap::error(tf),
     }
-    ::trap::before_return();
+    crate::trap::before_return();
     trace!("Interrupt end");
 }
 
 fn timer() {
-    ::trap::timer();
+    crate::trap::timer();
     super::timer::set_next();
     //println!("tick");
 }
@@ -65,7 +65,7 @@ fn timer() {
 
 fn illegal_inst(tf: &mut TrapFrame) {
     if !emulate_mul_div(tf) {
-        ::trap::error(tf);
+        crate::trap::error(tf);
     }
 }
 

@@ -24,7 +24,7 @@ mod lang;
 mod consts;
 mod process;
 
-use process::{thread, thread_};
+use crate::process::{thread, thread_};
 mod sync;
 mod trap;
 

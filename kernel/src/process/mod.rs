@@ -1,10 +1,11 @@
 use spin::Once;
-use sync::{SpinNoIrqLock, Mutex, MutexGuard, SpinNoIrq};
+use crate::sync::{SpinNoIrqLock, Mutex, MutexGuard, SpinNoIrq};
 pub use self::context::Context;
 pub use ucore_process::processor::{*, Context as _whatever};
 pub use ucore_process::scheduler::*;
 pub use ucore_process::thread::*;
 use core::time::Duration;
+use log::*;
 
 mod context;
 
@@ -46,7 +47,7 @@ fn spin_sleep() {
 pub static PROCESSOR: Once<SpinNoIrqLock<Processor>> = Once::new();
 
 pub fn processor() -> MutexGuard<'static, Processor, SpinNoIrq> {
-    PROCESSOR.try().unwrap().lock()
+    PROCESSOR.r#try().unwrap().lock()
 }
 
 #[allow(non_camel_case_types)]
