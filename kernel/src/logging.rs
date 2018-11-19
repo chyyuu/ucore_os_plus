@@ -1,3 +1,4 @@
+//extern crate core;
 use core::fmt;
 
 #[macro_export]
@@ -14,6 +15,6 @@ macro_rules! println {
 }
 
 pub fn print(args: fmt::Arguments) {
-    use arch::io;
+    use crate::arch::io;
     io::putfmt(args);
 }

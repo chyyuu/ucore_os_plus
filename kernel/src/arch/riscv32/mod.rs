@@ -1,6 +1,3 @@
-extern crate riscv;
-extern crate bbl;
-
 pub mod io;
 pub mod compiler_rt;
 
