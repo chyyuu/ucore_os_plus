@@ -1,5 +1,6 @@
-use super::riscv::register::*;
-use super::bbl::sbi;
+use riscv::register::*;
+use bbl::sbi;
+use log::*;
 
 #[cfg(target_pointer_width = "64")]
 pub fn get_cycle() -> u64 {
