@@ -1,4 +1,4 @@
-use super::super::riscv::register::*;
+use riscv::register::*;
 
 #[derive(Debug, Clone)]
 #[repr(C)]
