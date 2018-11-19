@@ -1,5 +1,5 @@
 use core::fmt::{Write, Result, Arguments};
-use super::bbl::sbi;
+use bbl::sbi;
 
 struct SerialPort;
 

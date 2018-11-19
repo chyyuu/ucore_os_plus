@@ -1,3 +1,4 @@
+//extern crate core;
 use core::fmt;
 use log::{self, Level, LevelFilter, Log, Metadata, Record};
 
@@ -42,7 +43,7 @@ fn print_in_color(args: fmt::Arguments, color: Color) {
 }
 
 pub fn print(args: fmt::Arguments) {
-    use arch::io;
+    use crate::arch::io;
     io::putfmt(args);
 }
 

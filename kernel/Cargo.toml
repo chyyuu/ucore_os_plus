@@ -2,6 +2,7 @@
 name = "ucore"
 version = "0.1.0"
 authors = ["Runji Wang <wangrunji0408@163.com>", "Yu Chen <yuchen@tsinghua.edu.cn"]
+edition = "2018"
 
 [lib]
 crate-type = ["staticlib", "rlib"]
