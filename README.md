@@ -8,7 +8,7 @@ This is a training project of THU Operating System (2018 Autumn).
 
 ### Environment
 
-* Rust toolchain: rustc 1.32.0-nightly (36a50c29f 2018-11-09)
+* Rust toolchain: rustc EDITION 2018 1.32.0-nightly (36a50c29f 2018-11-09) 
 *  `cargo-xbuild`
 * `QEMU` >= 2.12.0
 * riscv32
@@ -39,7 +39,11 @@ git checkout LABX
 cd RustOS/kernel
 make run arch=riscv32
 ```
-
+NOTICE: The kernel/Cargo.toml contains below line:
+```
+edition = "2018"
+```
+It means this kernel is compiled by rustc EDITION2018
 ## License
 
 The source code is licensed under the Apache License (Version 2.0).
