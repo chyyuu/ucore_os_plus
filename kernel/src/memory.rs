@@ -1,11 +1,13 @@
-pub use arch::paging::*;
+pub use crate::arch::paging::*;
 use bit_allocator::{BitAlloc, BitAlloc4K};
-use consts::MEMORY_OFFSET;
+use crate::consts::MEMORY_OFFSET;
 use spin::{Mutex, MutexGuard};
 use super::HEAP_ALLOCATOR;
 use ucore_memory::{*, paging::PageTable};
 use ucore_memory::cow::CowExt;
 pub use ucore_memory::memory_set::{MemoryArea, MemoryAttr, MemorySet as MemorySet_, Stack};
+use lazy_static::*;
+use log::*;
 
 pub type MemorySet = MemorySet_<InactivePageTable0>;
 
@@ -52,7 +54,7 @@ pub fn page_fault_handler(addr: usize) -> bool {
 }
 
 pub fn init_heap() {
-    use consts::{KERNEL_HEAP_OFFSET, KERNEL_HEAP_SIZE};
+    use crate::consts::{KERNEL_HEAP_OFFSET, KERNEL_HEAP_SIZE};
     unsafe { HEAP_ALLOCATOR.lock().init(KERNEL_HEAP_OFFSET, KERNEL_HEAP_SIZE); }
     info!("heap init end");
 }

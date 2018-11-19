@@ -37,7 +37,7 @@ macro_rules! with_color {
 }
 
 fn print_in_color(args: fmt::Arguments, color: Color) {
-    use arch::io;
+    use crate::arch::io;
     io::putfmt(with_color!(args, color));
 }
 
