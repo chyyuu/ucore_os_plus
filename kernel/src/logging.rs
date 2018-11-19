@@ -1,4 +1,3 @@
-//extern crate core;
 use core::fmt;
 use log::{self, Level, LevelFilter, Log, Metadata, Record};
 
