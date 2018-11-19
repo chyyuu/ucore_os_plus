@@ -2,10 +2,11 @@
 
 #![allow(unused)]
 
-use arch::interrupt::TrapFrame;
-use process::*;
-use thread;
-use util;
+use crate::arch::interrupt::TrapFrame;
+use crate::process::*;
+use crate::thread;
+use crate::util;
+use log::*;
 
 /// 系统调用入口点
 ///
@@ -27,7 +28,7 @@ pub fn syscall(id: usize, args: [usize; 6], tf: &TrapFrame) -> i32 {
         SYS_PUTC => sys_putc(args[0] as u8 as char),
         _ => {
             error!("unknown syscall id: {:#x?}, args: {:x?}", id, args);
-            ::trap::error(tf);
+            crate::trap::error(tf);
         }
     }
 }
