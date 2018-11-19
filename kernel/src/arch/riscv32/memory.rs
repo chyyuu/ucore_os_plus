@@ -1,6 +1,7 @@
-use memory::{active_table, FRAME_ALLOCATOR, init_heap, MemoryArea, MemoryAttr, MemorySet, Stack};
-use super::riscv::{addr::*, register::sstatus};
+use riscv::{addr::*, register::sstatus};
 use ucore_memory::PAGE_SIZE;
+use log::*;
+use crate::memory::{active_table, FRAME_ALLOCATOR, init_heap, MemoryArea, MemoryAttr, MemorySet, Stack};
 
 pub fn init() {
     #[repr(align(4096))]
@@ -18,10 +19,10 @@ pub fn init() {
 fn init_frame_allocator() {
     use bit_allocator::BitAlloc;
     use core::ops::Range;
-    use consts::{MEMORY_OFFSET, MEMORY_END};
+    use crate::consts::{MEMORY_OFFSET, MEMORY_END};
 
     let mut ba = FRAME_ALLOCATOR.lock();
-    use consts::{KERNEL_HEAP_OFFSET, KERNEL_HEAP_SIZE};
+    use crate::consts::{KERNEL_HEAP_OFFSET, KERNEL_HEAP_SIZE};
     ba.insert(to_range(KERNEL_HEAP_OFFSET + KERNEL_HEAP_SIZE, MEMORY_END));
     info!("FrameAllocator init end");
 
@@ -33,7 +34,7 @@ fn init_frame_allocator() {
 }
 
 fn remap_the_kernel() {
-    use consts::{KERNEL_HEAP_OFFSET, KERNEL_HEAP_SIZE};
+    use crate::consts::{KERNEL_HEAP_OFFSET, KERNEL_HEAP_SIZE};
     let kstack = Stack {
         top: bootstacktop as usize,
         bottom: bootstack as usize + PAGE_SIZE,

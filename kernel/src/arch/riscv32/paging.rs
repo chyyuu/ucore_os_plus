@@ -1,14 +1,15 @@
-use consts::{KERNEL_PML4, RECURSIVE_PAGE_PML4};
+use crate::consts::{KERNEL_PML4, RECURSIVE_PAGE_PML4};
 // Depends on kernel
-use memory::{active_table, alloc_frame, alloc_stack, dealloc_frame};
-use super::riscv::addr::*;
-use super::riscv::asm::{sfence_vma, sfence_vma_all};
-use super::riscv::paging::{Mapper, PageTable as RvPageTable, PageTableEntry, PageTableFlags as EF, RecursivePageTable};
-use super::riscv::paging::{FrameAllocator, FrameDeallocator};
-use super::riscv::register::satp;
+use crate::memory::{active_table, alloc_frame, alloc_stack, dealloc_frame};
+use riscv::addr::*;
+use riscv::asm::{sfence_vma, sfence_vma_all};
+use riscv::paging::{Mapper, PageTable as RvPageTable, PageTableEntry, PageTableFlags as EF, RecursivePageTable};
+use riscv::paging::{FrameAllocator, FrameDeallocator};
+use riscv::register::satp;
 use ucore_memory::memory_set::*;
 use ucore_memory::PAGE_SIZE;
 use ucore_memory::paging::*;
+use log::*;
 
 // need 1 page
 pub fn setup_page_table(frame: Frame) {
@@ -21,7 +22,7 @@ pub fn setup_page_table(frame: Frame) {
     p2[KERNEL_PML4].set(Frame::of_addr(PhysAddr::new((KERNEL_PML4 as u32) << 22)), EF::VALID | EF::READABLE | EF::WRITABLE | EF::EXECUTABLE);
     p2[KERNEL_PML4 + 1].set(Frame::of_addr(PhysAddr::new((KERNEL_PML4 as u32 + 1) << 22)), EF::VALID | EF::READABLE | EF::WRITABLE | EF::EXECUTABLE);
 
-    use super::riscv::register::satp;
+    use riscv::register::satp;
     unsafe { satp::set(satp::Mode::Sv32, 0, frame); }
     sfence_vma_all();
     info!("setup init page table end");
