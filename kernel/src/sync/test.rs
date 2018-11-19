@@ -4,9 +4,9 @@
 
 use alloc::{sync::Arc, vec::Vec};
 use core::time::Duration;
-use sync::Condvar;
-use sync::ThreadLock as Mutex;
-use thread;
+use crate::sync::Condvar;
+use crate::sync::ThreadLock as Mutex;
+use crate::thread;
 
 struct Philosopher {
     name: &'static str,
