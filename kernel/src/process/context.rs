@@ -1,7 +1,8 @@
-use arch::interrupt::{TrapFrame, Context as ArchContext};
-use memory::{MemoryArea, MemoryAttr, MemorySet};
+use crate::arch::interrupt::{TrapFrame, Context as ArchContext};
+use crate::memory::{MemoryArea, MemoryAttr, MemorySet};
 use xmas_elf::{ElfFile, header, program::{Flags, ProgramHeader, Type}};
 use core::fmt::{Debug, Error, Formatter};
+use log::*;
 
 pub struct Context {
     arch: ArchContext,
@@ -10,7 +11,7 @@ pub struct Context {
 
 impl ::ucore_process::processor::Context for Context {
     unsafe fn switch(&mut self, target: &mut Self) {
-        super::PROCESSOR.try().unwrap().force_unlock();
+        super::PROCESSOR.r#try().unwrap().force_unlock();
         self.arch.switch(&mut target.arch);
         use core::mem::forget;
         forget(super::processor());
@@ -44,7 +45,7 @@ impl Context {
         assert_eq!(elf.header.pt2.type_().as_type(), header::Type::Executable, "ELF is not executable");
 
         // User stack
-        use consts::{USER_STACK_OFFSET, USER_STACK_SIZE, USER32_STACK_OFFSET};
+        use crate::consts::{USER_STACK_OFFSET, USER_STACK_SIZE, USER32_STACK_OFFSET};
         let (user_stack_buttom, user_stack_top) = match is32 {
             true => (USER32_STACK_OFFSET, USER32_STACK_OFFSET + USER_STACK_SIZE),
             false => (USER_STACK_OFFSET, USER_STACK_OFFSET + USER_STACK_SIZE),

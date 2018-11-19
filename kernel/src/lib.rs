@@ -26,7 +26,7 @@ mod consts;
 mod process;
 mod syscall;
 
-use process::{thread, thread_};
+use crate::process::{thread, thread_};
 mod sync;
 mod trap;
 
