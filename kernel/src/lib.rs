@@ -10,28 +10,15 @@
 #![feature(panic_info_message)]
 #![feature(global_asm)]
 #![feature(compiler_builtins_lib)]
+#![feature(extern_crate_item_prelude)]
 #![no_std]
 
 extern crate alloc;
-extern crate bit_allocator;
-extern crate bit_field;
-#[macro_use]
-extern crate bitflags;
-#[macro_use]
-extern crate lazy_static;
-extern crate linked_list_allocator;
-#[macro_use]
-extern crate log;
-extern crate once;
-extern crate spin;
-extern crate ucore_memory;
-extern crate ucore_process;
-extern crate volatile;
-extern crate xmas_elf;
+
 use linked_list_allocator::LockedHeap;
 
 #[macro_use]    // print!
-pub mod logging;
+mod logging;
 mod memory;
 mod lang;
 mod consts;
