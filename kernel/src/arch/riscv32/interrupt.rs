@@ -38,6 +38,7 @@ pub unsafe fn restore(flags: usize) {
     }
 }
 
+// trap.asm::__alltraps --> rust_trap --> trap.asm::__trapret
 #[no_mangle]
 pub extern fn rust_trap(tf: &mut TrapFrame) {
     use riscv::register::scause::{Trap, Interrupt as I, Exception as E};
@@ -52,7 +53,6 @@ pub extern fn rust_trap(tf: &mut TrapFrame) {
 }
 
 fn timer() {
-    //::trap::timer();
     super::timer::set_next();
     println!("tick");
 }
