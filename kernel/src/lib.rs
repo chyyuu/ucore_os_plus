@@ -28,8 +28,8 @@ pub mod arch;
 #[no_mangle]
 pub extern "C" fn rust_main() -> ! {
     println!("Hello World{}", "!");
-    arch::init();
-    unsafe { arch::interrupt::enable(); }
+    arch::init();   //Set the exception vector addr, enable supervisor timer intr, set timer cnt.
+    unsafe { arch::interrupt::enable(); } //Enable intr, then clock can show str "tick"
     loop {}
 }
 
