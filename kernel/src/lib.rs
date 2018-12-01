@@ -10,7 +10,6 @@
 #![feature(panic_info_message)]
 #![feature(global_asm)]
 #![feature(compiler_builtins_lib)]
-#![feature(extern_crate_item_prelude)]
 #![no_std]
 
 extern crate alloc;
