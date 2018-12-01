@@ -1,6 +1,11 @@
 use core::fmt::{Write, Result, Arguments};
 use bbl::sbi;
 
+// println! process:
+// $crate::logging::println!-->$crate::logging::print!-->crate::arch::io::putfmt(args)
+// -->crate::arch::io::SerialPort.write_fmt(FROM trait Write) --> trait Write.write_str-->putchar
+// --> sbi::console_putchar(c as usize)
+
 struct SerialPort;
 
 impl Write for SerialPort {

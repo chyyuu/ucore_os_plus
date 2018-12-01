@@ -10,7 +10,7 @@
 #![feature(panic_info_message)]
 #![feature(global_asm)]
 #![feature(compiler_builtins_lib)]
-#![feature(extern_crate_item_prelude)]
+//#![feature(extern_crate_item_prelude)]
 #![no_std]
 
 extern crate alloc;
@@ -28,6 +28,12 @@ pub mod arch;
 /// The entry point of Rust kernel
 #[no_mangle]
 pub extern "C" fn rust_main() -> ! {
+
+// println! process:
+// $crate::logging::println!-->$crate::logging::print!-->crate::arch::io::putfmt(args)
+// -->crate::arch::io::SerialPort.write_fmt(FROM trait Write) --> trait Write.write_str-->putchar
+// --> sbi::console_putchar(c as usize)
+
     println!("Hello World{}", "!");
     loop {}
 }
