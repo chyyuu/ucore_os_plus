@@ -1,5 +1,7 @@
 # uCore OS by Rust Lang, supporting riscv32
 
+[![Build Status](https://travis-ci.com/chyyuu/ucore_os_plus.svg?branch=lab1-rv32-showstr)](https://travis-ci.com/chyyuu/ucore_os_plus)
+
 ## Summary
 
 This is a training project of THU Operating System (2018 Autumn).

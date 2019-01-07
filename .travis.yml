@@ -2,25 +2,18 @@ sudo: required
 
 language: rust
 
-rust: nightly-2018-08-03
+rust: nightly
 
 cache:
   cargo: true
 
-addons:
-  apt:
-    packages:
-      - nasm
-      - qemu
-
 env:
   matrix:
     - ARCH="riscv32"
-    - ARCH="x86_64"
 
 install:
   - if [ $ARCH = riscv32 ]; then
-    export FILE="riscv64-unknown-elf-gcc-2018.07.0-x86_64-linux-ubuntu14";
+    export FILE="riscv64-unknown-elf-gcc-20181030-x86_64-linux-ubuntu14";
     wget https://static.dev.sifive.com/dev-tools/$FILE.tar.gz;
     tar xf $FILE.tar.gz;
     export PATH=$PATH:$PWD/$FILE/bin;
@@ -28,9 +21,10 @@ install:
 
 before_script:
   - rustup component add rust-src
-  - (test -x $HOME/.cargo/bin/cargo-install-update || cargo install cargo-update)
   - (test -x $HOME/.cargo/bin/cargo-xbuild || cargo install cargo-xbuild)
-  - cargo install-update -a
+  - (test -x $HOME/.cargo/bin/bootimage || cargo install bootimage)
+  - (wget https://download.qemu.org/qemu-3.1.0.tar.xz && tar xvJf qemu-3.1.0.tar.xz > /dev/null && cd qemu-3.1.0 && ./configure --target-list=riscv32-softmmu && make)
+  - export PATH=$PATH:$PWD/qemu-3.1.0/riscv32-softmmu
 
 script:
-  - cd kernel && make build arch=$ARCH
+  - python test/test.py
