@@ -9,8 +9,6 @@ keywords = ["riscv", "register", "peripheral"]
 license = "ISC"
 
 [dependencies]
-bare-metal = "0.2.0" #no-use now
-bitflags = "1.0"
 bit_field = "0.9.0"
 
 [features]

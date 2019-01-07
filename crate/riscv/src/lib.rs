@@ -11,8 +11,6 @@
 #![feature(asm)]
 #![feature(const_fn)]
 
-extern crate bare_metal;
-extern crate bitflags;
 extern crate bit_field;
 
 pub mod asm;

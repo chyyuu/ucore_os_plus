@@ -1,7 +1,6 @@
-// Rust language features implementions
+/// Rust language features implementions
 use core::panic::PanicInfo;
 use core::alloc::Layout;
-use log::*;
 
 #[lang = "eh_personality"] 
 extern fn eh_personality() {

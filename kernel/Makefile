@@ -123,10 +123,7 @@ else
 	 cp bbl ../../kernel/$@
 endif
 
-$(kernel): kernel $(assembly_object_files) $(linker_script)
-		$(V)$(ld) -n --gc-sections -T $(linker_script) -o $(kernel) \
-		$(assembly_object_files) target/riscv32-blog_os/$(mode)/libucore.a
-
-
 kernel:
 	$(V)CC=$(cc) cargo -v xbuild $(build_args)
+
+

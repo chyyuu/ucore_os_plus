@@ -8,7 +8,6 @@ edition = "2018"
 crate-type = ["staticlib", "rlib"]
 
 [features]
-link_user_program = []
 no_bbl = []
 
 [profile.dev]
@@ -21,14 +20,6 @@ debug = true
 
 [dependencies]
 log = "0.4"
-spin = "0.4.8"
-once = "0.3.3"
-xmas-elf = "0.6"
-bitflags = "1.0"
-bit_field = "0.9.0"
-volatile = "0.1.0"
-linked_list_allocator = "0.6"
-lazy_static = { version = "1.0.0", features = ["spin_no_std"] }
 
 [target.'cfg(target_arch = "riscv32")'.dependencies]
 riscv = { path = "../crate/riscv" }
