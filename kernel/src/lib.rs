@@ -13,6 +13,9 @@
 #![feature(extern_crate_item_prelude)]
 #![no_std]
 
+#[macro_use]
+extern crate bitflags;
+
 #[macro_use]  // vec![...]
 extern crate alloc;
 
@@ -27,15 +30,17 @@ mod consts;
 mod process;
 mod syscall;
 mod fs;
+mod bbl;
+mod riscv;
 
 use crate::process::{thread, thread_};
 mod sync;
 mod trap;
 mod console;
 
-#[cfg(target_arch = "riscv32")]
-#[path = "arch/riscv32/mod.rs"]
-pub mod arch;
+//#[cfg(target_arch = "riscv32")]
+//#[path = "arch/riscv32/mod.rs"]
+mod arch;
 
 /// The entry point of Rust kernel
 #[no_mangle]

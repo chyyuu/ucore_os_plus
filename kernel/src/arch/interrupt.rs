@@ -1,4 +1,4 @@
-use riscv::register::*;
+use crate::riscv::register::*;
 pub use self::context::*;
 use log::*;
 
@@ -40,7 +40,7 @@ pub unsafe fn restore(flags: usize) {
 
 #[no_mangle]
 pub extern fn rust_trap(tf: &mut TrapFrame) {
-    use riscv::register::scause::{Trap, Interrupt as I, Exception as E};
+    use crate::riscv::register::scause::{Trap, Interrupt as I, Exception as E};
     trace!("Interrupt: {:?}", tf.scause.cause());
     match tf.scause.cause() {
         Trap::Interrupt(I::SupervisorTimer) => timer(),

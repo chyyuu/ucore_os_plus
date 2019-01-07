@@ -1,7 +1,7 @@
 use simple_filesystem::*;
 use alloc::boxed::Box;
-#[cfg(target_arch = "x86_64")]
-use arch::driver::ide;
+//#[cfg(target_arch = "x86_64")]
+//use arch::driver::ide;
 use spin::Mutex;
 
 // Hard link user program
@@ -78,17 +78,17 @@ impl Device for MemBuf {
 
 use core::slice;
 
-#[cfg(target_arch = "x86_64")]
-impl BlockedDevice for &'static ide::DISK0 {
-    const BLOCK_SIZE_LOG2: u8 = 9;
-    fn read_at(&mut self, block_id: usize, buf: &mut [u8]) -> bool {
-        assert!(buf.len() >= ide::BLOCK_SIZE);
-        let buf = unsafe { slice::from_raw_parts_mut(buf.as_ptr() as *mut u32, ide::BLOCK_SIZE / 4) };
-        self.0.lock().read(block_id as u64, 1, buf).is_ok()
-    }
-    fn write_at(&mut self, block_id: usize, buf: &[u8]) -> bool {
-        assert!(buf.len() >= ide::BLOCK_SIZE);
-        let buf = unsafe { slice::from_raw_parts(buf.as_ptr() as *mut u32, ide::BLOCK_SIZE / 4) };
-        self.0.lock().write(block_id as u64, 1, buf).is_ok()
-    }
-}
+//#[cfg(target_arch = "x86_64")]
+//impl BlockedDevice for &'static ide::DISK0 {
+//    const BLOCK_SIZE_LOG2: u8 = 9;
+//    fn read_at(&mut self, block_id: usize, buf: &mut [u8]) -> bool {
+//        assert!(buf.len() >= ide::BLOCK_SIZE);
+//        let buf = unsafe { slice::from_raw_parts_mut(buf.as_ptr() as *mut u32, ide::BLOCK_SIZE / 4) };
+//        self.0.lock().read(block_id as u64, 1, buf).is_ok()
+//    }
+//    fn write_at(&mut self, block_id: usize, buf: &[u8]) -> bool {
+//        assert!(buf.len() >= ide::BLOCK_SIZE);
+//        let buf = unsafe { slice::from_raw_parts(buf.as_ptr() as *mut u32, ide::BLOCK_SIZE / 4) };
+//        self.0.lock().write(block_id as u64, 1, buf).is_ok()
+//    }
+//}

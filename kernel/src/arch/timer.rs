@@ -1,5 +1,5 @@
-use riscv::register::*;
-use bbl::sbi;
+use crate::riscv::register::*;
+use crate::bbl::sbi;
 use log::*;
 
 #[cfg(target_pointer_width = "64")]

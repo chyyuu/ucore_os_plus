@@ -20,6 +20,7 @@ opt-level = 1
 debug = true
 
 [dependencies]
+bare-metal = "0.2.0"
 log = "0.4"
 spin = "0.4.8"
 once = "0.3.3"
@@ -34,8 +35,8 @@ ucore-memory = { path = "../crate/memory" }
 ucore-process = { path = "../crate/process" }
 simple-filesystem = { path = "../crate/simple-filesystem" }
 [target.'cfg(target_arch = "riscv32")'.dependencies]
-riscv = { path = "../crate/riscv" }
-bbl = { path = "../crate/bbl" }
+#riscv = { path = "../crate/riscv" }
+#bbl = { path = "../crate/bbl" }
 
 [build-dependencies]
 cc = "1.0"
